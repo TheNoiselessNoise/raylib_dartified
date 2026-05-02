@@ -1,0 +1,98 @@
+part of '../../../../raylib.dart';
+
+extension RenderTextureCPEx on Pointer<RenderTextureC> {
+  Pointer<RenderTextureC> setC(RenderTextureC o) {
+    ref.setC(o);
+    return this;
+  }
+
+  Pointer<RenderTextureC> setD(RenderTextureD o) {
+    ref.setD(o);
+    return this;
+  }
+
+  RenderTextureD toD() => ref.toD(this);
+}
+
+extension RenderTextureCEx on RenderTextureC {
+  RenderTextureC setC(RenderTextureC o) {
+    id = o.id;
+    texture.setC(o.texture);
+    depth.setC(o.depth);
+    return this;
+  }
+
+  RenderTextureC setD(RenderTextureD o) {
+    id = o.id;
+    texture.setD(o.texture);
+    depth.setD(o.depth);
+    return this;
+  }
+
+  RenderTextureD toD([Pointer<RenderTextureC>? ptr]) => .new(
+    originalPointer: ptr,
+    id: id,
+    texture: texture.toD(),
+    depth: depth.toD(),
+  );
+}
+
+class RenderTextureD extends StructDLiteral<RenderTextureD, RenderTextureC> {
+  int id;
+  TextureD texture;
+  TextureD depth;
+
+  RenderTextureD({
+    super.originalPointer,
+    this.id = 0,
+    TextureD? texture,
+    TextureD? depth,
+  }) :
+    texture = texture ?? .new(),
+    depth = depth ?? .new();
+
+  factory RenderTextureD.zero() => .new();
+
+  @override
+  RenderTextureD setC(RenderTextureC o) {
+    id = o.id;
+    texture.setC(o.texture);
+    depth.setC(o.depth);
+    return this;
+  }
+
+  @override
+  RenderTextureD setD(RenderTextureD o) {
+    originalPointer ??= o.originalPointer;
+    id = o.id;
+    texture = o.texture;
+    depth = o.texture;
+    return this;
+  }
+
+  @override
+  Pointer<RenderTextureC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
+    => temp.RenderTexture$.At('${key}_$id', count);
+
+  @override
+  void allocateInto(RaylibTemp temp, Pointer<RenderTextureC> p, String key)
+    => writeInto(p.ref);
+
+  @override
+  void writeInto(RenderTextureC p) {
+    p.id = id;
+    texture.writeInto(p.texture);
+    depth.writeInto(p.depth);
+  }
+
+  @override
+  String signature() => '$structName(id: $id, texture: $texture, depth: $depth)';
+
+  @override
+  RenderTextureD clone() => .new(
+    originalPointer: originalPointer,
+    id: id,
+    texture: texture.clone(),
+    depth: depth.clone(),
+  );
+}

@@ -1,0 +1,98 @@
+part of '../../../../raylib.dart';
+
+extension MaterialMapCPEx on Pointer<MaterialMapC> {
+  Pointer<MaterialMapC> setC(MaterialMapC o) {
+    ref.setC(o);
+    return this;
+  }
+  
+  Pointer<MaterialMapC> setD(MaterialMapD o) {
+    ref.setD(o);
+    return this;
+  }
+
+  MaterialMapD toD() => ref.toD(this);
+}
+
+extension MaterialMapCEx on MaterialMapC {
+  MaterialMapC setC(MaterialMapC o) {
+    texture = o.texture;
+    color = o.color;
+    value = o.value;
+    return this;
+  }
+
+  MaterialMapC setD(MaterialMapD o) {
+    texture.setD(o.texture);
+    color.setD(o.color);
+    value = o.value;
+    return this;
+  }
+
+  MaterialMapD toD([Pointer<MaterialMapC>? ptr]) => .new(
+    originalPointer: ptr,
+    texture: texture.toD(),
+    color: color.toD(),
+    value: value,
+  );
+}
+
+class MaterialMapD extends StructDLiteral<MaterialMapD, MaterialMapC> {
+  TextureD texture;
+  ColorD color;
+  double value;
+
+  MaterialMapD({
+    super.originalPointer,
+    TextureD? texture,
+    ColorD? color,
+    this.value = 0,
+  }) :
+    texture = texture ?? .zero(),
+    color = color ?? .zero();
+
+  factory MaterialMapD.zero() => .new();
+
+  @override
+  MaterialMapD setC(MaterialMapC o) {
+    texture.setC(o.texture); 
+    color.setC(o.color); 
+    value = o.value;
+    return this;
+  }
+
+  @override
+  MaterialMapD setD(MaterialMapD o) {
+    originalPointer ??= o.originalPointer;
+    texture.setD(o.texture); 
+    color.setD(o.color); 
+    value = o.value;
+    return this;
+  }
+
+  @override
+  Pointer<MaterialMapC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
+    => temp.MaterialMap$.At(key, count);
+
+  @override
+  void allocateInto(RaylibTemp temp, Pointer<MaterialMapC> p, String key)
+    => writeInto(p.ref);
+
+  @override
+  void writeInto(MaterialMapC p) {
+    texture.writeInto(p.texture);
+    color.writeInto(p.color);
+    p.value = value;
+  }
+
+  @override
+  String signature() => '$structName(texture: $texture, color: $color, value: $value)';
+
+  @override
+  MaterialMapD clone() => .new(
+    originalPointer: originalPointer,
+    texture: texture.clone(),
+    color: color.clone(),
+    value: value,
+  );
+}
