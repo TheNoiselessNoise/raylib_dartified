@@ -1,6 +1,6 @@
 name: raylib_dartified
 description: Dart-native Raylib bindings that don't make you feel like you're writing C.
-version: 5.5.0
+version: 5.5.1
 repository: https://github.com/TheNoiselessNoise/raylib_dartified
 
 environment:
