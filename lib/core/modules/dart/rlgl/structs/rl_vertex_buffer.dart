@@ -206,8 +206,8 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> {
     p.ref.vertices = temp.Float$.Array(vertices, key: '${key}_vertices');
     p.ref.texcoords = temp.Float$.Array(texcoords, key: '${key}_texcoords');
     p.ref.normals = temp.Float$.Array(normals, key: '${key}_normals');
-    p.ref.colors = temp.UChar$.Array(colors, key: '${key}_colors');
-    p.ref.indices = temp.UInt$.Array(indices, key: '${key}_indices');
+    p.ref.colors = temp.UnsignedChar$.Array(colors, key: '${key}_colors');
+    p.ref.indices = temp.UnsignedInt$.Array(indices, key: '${key}_indices');
   }
 
   @override

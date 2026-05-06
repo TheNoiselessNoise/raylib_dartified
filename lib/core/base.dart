@@ -126,15 +126,15 @@ mixin HasTempRefs on HasTempHelpers {
   Pointer<Int> refInt3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.Int$.Value);
   Pointer<Int> refInt4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.Int$.Value);
   
-  Pointer<UnsignedInt> refListUInt(List<num> y, [String? x]) => rl.Temp.UInt$.Array(y, key: x);
-  Pointer<UnsignedInt> refUInt1([int? y]) => rl.Temp.UInt$.Value(y, '1');
-  Pointer<UnsignedInt> refUInt2([int? y]) => rl.Temp.UInt$.Value(y, '2');
-  Pointer<UnsignedInt> refUInt3([int? y]) => rl.Temp.UInt$.Value(y, '3');
-  Pointer<UnsignedInt> refUInt4([int? y]) => rl.Temp.UInt$.Value(y, '4');
-  Pointer<UnsignedInt> refUInt1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.UInt$.Value);
-  Pointer<UnsignedInt> refUInt2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.UInt$.Value);
-  Pointer<UnsignedInt> refUInt3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.UInt$.Value);
-  Pointer<UnsignedInt> refUInt4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.UInt$.Value);
+  Pointer<UnsignedInt> refListUInt(List<num> y, [String? x]) => rl.Temp.UnsignedInt$.Array(y, key: x);
+  Pointer<UnsignedInt> refUInt1([int? y]) => rl.Temp.UnsignedInt$.Value(y, '1');
+  Pointer<UnsignedInt> refUInt2([int? y]) => rl.Temp.UnsignedInt$.Value(y, '2');
+  Pointer<UnsignedInt> refUInt3([int? y]) => rl.Temp.UnsignedInt$.Value(y, '3');
+  Pointer<UnsignedInt> refUInt4([int? y]) => rl.Temp.UnsignedInt$.Value(y, '4');
+  Pointer<UnsignedInt> refUInt1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.UnsignedInt$.Value);
+  Pointer<UnsignedInt> refUInt2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.UnsignedInt$.Value);
+  Pointer<UnsignedInt> refUInt3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.UnsignedInt$.Value);
+  Pointer<UnsignedInt> refUInt4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.UnsignedInt$.Value);
 
   Pointer<Short> refListShort(List<num> y, [String? x]) => rl.Temp.Short$.Array(y, key: x);
   Pointer<Short> refShort1([int? y]) => rl.Temp.Short$.Value(y, '1');
@@ -172,16 +172,16 @@ mixin HasTempRefs on HasTempHelpers {
   Pointer<Char> refString3([String? y]) => rl.Temp.String$.ValueAt('3', y);
   Pointer<Char> refString4([String? y]) => rl.Temp.String$.ValueAt('4', y);
 
-  Pointer<Uint8> refSizedUInt8(int count, [String? x]) => refLitSized(count, x, rl.Temp.UInt8$.At);
-  Pointer<Uint8> refListUInt8(List<num> y, [String? x]) => rl.Temp.UInt8$.Array(y, key: x);
-  Pointer<Uint8> refTypedListUInt8(Uint8List y, [String? x]) => rl.Temp.UInt8$.Array(y.toList(), key: x);
+  Pointer<Uint8> refSizedUInt8(int count, [String? x]) => refLitSized(count, x, rl.Temp.Uint8$.At);
+  Pointer<Uint8> refListUInt8(List<num> y, [String? x]) => rl.Temp.Uint8$.Array(y, key: x);
+  Pointer<Uint8> refTypedListUInt8(Uint8List y, [String? x]) => rl.Temp.Uint8$.Array(y.toList(), key: x);
   Pointer<Uint8> refTypedDataUInt8(TypedData y, [String? x]) => refTypedListUInt8(y.buffer.asUint8List(y.offsetInBytes, y.lengthInBytes), x);
   
   Pointer<Float> refTypedListFloat(Float32List y, [String? x]) => rl.Temp.Float$.Array(y.toList(), key: x);
-  Pointer<Uint16> refTypedListUInt16(Uint16List y, [String? x]) => rl.Temp.UInt16$.Array(y.toList(), key: x);
+  Pointer<Uint16> refTypedListUInt16(Uint16List y, [String? x]) => rl.Temp.Uint16$.Array(y.toList(), key: x);
   Pointer<Int32> refTypedListInt32(Int32List y, [String? x]) => rl.Temp.Int32$.Array(y.toList(), key: x);
-  Pointer<Uint32> refTypedListUInt32(Uint32List y, [String? x]) => rl.Temp.UInt32$.Array(y.toList(), key: x);
-  Pointer<UnsignedChar> refListUChars(List<num> y, [String? x]) => rl.Temp.UChar$.Array(y, key: x);
+  Pointer<Uint32> refTypedListUInt32(Uint32List y, [String? x]) => rl.Temp.Uint32$.Array(y.toList(), key: x);
+  Pointer<UnsignedChar> refListUChars(List<num> y, [String? x]) => rl.Temp.UnsignedChar$.Array(y, key: x);
 }
 
 abstract class RaylibModuleD extends RaylibModule

@@ -58,12 +58,12 @@ void main()
   rl.Core.UnloadFileText(golTransfertCode);
 
   int ssboA = rl.Rlgl.rlLoadShaderBuffer(
-    rl.Temp.UInt$.Size(GOL_WIDTH*GOL_WIDTH),
+    rl.Temp.UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
     nullptr,
     RlUsageHint.RL_DYNAMIC_COPY.value
   );
   int ssboB = rl.Rlgl.rlLoadShaderBuffer(
-    rl.Temp.UInt$.Size(GOL_WIDTH*GOL_WIDTH),
+    rl.Temp.UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
     nullptr,
     RlUsageHint.RL_DYNAMIC_COPY.value
   );

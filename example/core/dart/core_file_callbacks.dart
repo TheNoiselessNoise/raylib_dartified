@@ -31,7 +31,7 @@ TestResult testLoadFileData() {
     lfdResult.assertIt(fileName.toD == 'LoadFileData');
     const dummyDataSize = 8;
     dataSize.value = dummyDataSize;
-    final data = rl.Temp.UChar$.At('lfd_${fileName.toD}', dummyDataSize);
+    final data = rl.Temp.UnsignedChar$.At('lfd_${fileName.toD}', dummyDataSize);
     for (int i = 0; i < dummyDataSize ~/ 2; i++) data[i] = 1;
     return data;
   }));
@@ -61,7 +61,7 @@ TestResult testSaveFileData() {
   },));
 
   const count = 6;
-  final buf = rl.Temp.UChar$.At('sfd_buf', count);
+  final buf = rl.Temp.UnsignedChar$.At('sfd_buf', count);
   for (int i = 0; i < count; i++) buf[i] = (i + 1) * 10;
 
   final ok = rl.Core.SaveFileData('SaveFileData'.toC, buf.cast(), count);

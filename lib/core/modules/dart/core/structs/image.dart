@@ -156,7 +156,7 @@ class ImageD extends StructD<ImageD, ImageC> {
     p.ref.height = height;
     p.ref.mipmaps = mipmaps;
     p.ref.format = format.value;
-    p.ref.data = temp.UInt8$.RawArray(data).cast();
+    p.ref.data = temp.Uint8$.RawArray(data).cast();
   }
 
   @override

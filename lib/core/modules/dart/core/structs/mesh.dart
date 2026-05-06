@@ -249,11 +249,11 @@ class MeshD extends StructD<MeshD, MeshC> {
     p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float$.RawArray(texcoords2) : nullptr;
     p.ref.normals = normals.isNotEmpty ? temp.Float$.RawArray(normals) : nullptr;
     p.ref.tangents = tangents.isNotEmpty ? temp.Float$.RawArray(tangents) : nullptr;
-    p.ref.colors = colors.isNotEmpty ? temp.UChar$.RawArray(colors) : nullptr;
-    p.ref.indices = indices.isNotEmpty ? temp.UShort$.RawArray(indices) : nullptr;
+    p.ref.colors = colors.isNotEmpty ? temp.UnsignedChar$.RawArray(colors) : nullptr;
+    p.ref.indices = indices.isNotEmpty ? temp.UnsignedShort$.RawArray(indices) : nullptr;
     p.ref.animVertices = animVertices.isNotEmpty ? temp.Float$.RawArray(animVertices) : nullptr;
     p.ref.animNormals = animNormals.isNotEmpty ? temp.Float$.RawArray(animNormals) : nullptr;
-    p.ref.boneIds = boneIds.isNotEmpty ? temp.UChar$.RawArray(boneIds) : nullptr;
+    p.ref.boneIds = boneIds.isNotEmpty ? temp.UnsignedChar$.RawArray(boneIds) : nullptr;
     p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float$.RawArray(boneWeights) : nullptr;
     p.ref.boneMatrices = boneMatrices.isNotEmpty ? temp.Matrix$.RawArray(boneMatrices) : nullptr;
     p.ref.vboId = nullptr;

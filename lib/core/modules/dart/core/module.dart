@@ -855,7 +855,7 @@ class RaylibCoreD extends RaylibModuleD {
     () {
       final fileSize = refInt1();
       final data = rl.Core.LoadFileData(refStr(fileName), fileSize);
-      final listData = rl.Temp.UChar$.asDartList(data, fileSize.value);
+      final listData = rl.Temp.UnsignedChar$.asDartList(data, fileSize.value);
       rl.Core.UnloadFileData(data);
       return listData.cast();
     },
@@ -1070,7 +1070,7 @@ class RaylibCoreD extends RaylibModuleD {
         data.length,
         compDataSize,
       );
-      return rl.Temp.UChar$.asDartList(compData, compDataSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(compData, compDataSize.value).cast();
     },
   );
 
@@ -1085,7 +1085,7 @@ class RaylibCoreD extends RaylibModuleD {
         compData.length,
         dataSize,
       );
-      return rl.Temp.UChar$.asDartList(data, dataSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(data, dataSize.value).cast();
     },
   );
 
@@ -1114,7 +1114,7 @@ class RaylibCoreD extends RaylibModuleD {
         refListUInt8(data).cast(),
         outputSize
       );
-      return rl.Temp.UChar$.asDartList(outputData, outputSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(outputData, outputSize.value).cast();
     },
   );
 
@@ -1140,7 +1140,7 @@ class RaylibCoreD extends RaylibModuleD {
         data.length
       );
 
-      return rl.Temp.UInt$.ToLEBytes(md5, hashLength);
+      return rl.Temp.UnsignedInt$.ToLEBytes(md5, hashLength);
     },
   );
 
@@ -1156,7 +1156,7 @@ class RaylibCoreD extends RaylibModuleD {
         data.length
       );
 
-      return rl.Temp.UInt$.ToBEBytes(sha1, hashLength);
+      return rl.Temp.UnsignedInt$.ToBEBytes(sha1, hashLength);
     },
   );
     
@@ -2703,7 +2703,7 @@ class RaylibCoreD extends RaylibModuleD {
         refStr(fileType),
         fileSize,
       );
-      return rl.Temp.UChar$.asDartList(data, fileSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(data, fileSize.value).cast();
     },
   );
 

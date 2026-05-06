@@ -129,7 +129,6 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-bool isFirst = true;
 MeshC GenMeshPoints(Raylib rl, int numPoints)
 {
   final vertices = <double>[];
@@ -161,7 +160,7 @@ MeshC GenMeshPoints(Raylib rl, int numPoints)
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = numPoints;
   mesh.ref.vertices = rl.Temp.Float$.RawArray(vertices);
-  mesh.ref.colors = rl.Temp.UChar$.RawArray(colors);
+  mesh.ref.colors = rl.Temp.UnsignedChar$.RawArray(colors);
 
   rl.Core.UploadMesh(mesh, false);
 

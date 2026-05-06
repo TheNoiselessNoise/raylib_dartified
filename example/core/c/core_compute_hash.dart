@@ -16,8 +16,8 @@ Pointer<Char> GetDataAsHexText(Raylib rl, Pointer<UnsignedInt> data, int size, [
   if (data == nullptr) return ('00000000' * size).toC;
 
   final fixedData = switch (endian) {
-    .BIG => rl.Temp.UInt$.ToBEBytes(data, size),
-    .LITTLE => rl.Temp.UInt$.ToLEBytes(data, size),
+    .BIG => rl.Temp.UnsignedInt$.ToBEBytes(data, size),
+    .LITTLE => rl.Temp.UnsignedInt$.ToLEBytes(data, size),
   };
 
   return fixedData.map((b) => b.hex).join('').toC;

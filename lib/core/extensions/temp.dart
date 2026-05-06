@@ -768,30 +768,30 @@ class RaylibTemp extends RaylibModule {
   late RTempLitPtrAlloc<num, Float> Ptr$Float$;
   late RTempLitTypedIntListAlloc<num, Int> Int$;
   late RTempLitPtrAlloc<num, Int> Ptr$Int$;
-  late RTempLitTypedIntListAlloc<num, UnsignedInt> UInt$;
-  late RTempLitPtrAlloc<num, UnsignedInt> Ptr$UInt$;
+  late RTempLitTypedIntListAlloc<num, UnsignedInt> UnsignedInt$;
+  late RTempLitPtrAlloc<num, UnsignedInt> Ptr$UnsignedInt$;
   late RTempLitTypedIntListAlloc<num, Int8> Int8$;
   late RTempLitPtrAlloc<num, Int8> Ptr$Int8$;
-  late RTempLitTypedIntListAlloc<num, Uint8> UInt8$;
-  late RTempLitPtrAlloc<num, Uint8> Ptr$UInt8$;
+  late RTempLitTypedIntListAlloc<num, Uint8> Uint8$;
+  late RTempLitPtrAlloc<num, Uint8> Ptr$Uint8$;
   late RTempLitTypedIntListAlloc<num, Int16> Int16$;
   late RTempLitPtrAlloc<num, Int16> Ptr$Int16$;
-  late RTempLitTypedIntListAlloc<num, Uint16> UInt16$;
-  late RTempLitPtrAlloc<num, Uint16> Ptr$UInt16$;
+  late RTempLitTypedIntListAlloc<num, Uint16> Uint16$;
+  late RTempLitPtrAlloc<num, Uint16> Ptr$Uint16$;
   late RTempLitTypedIntListAlloc<num, Int32> Int32$;
   late RTempLitPtrAlloc<num, Int32> Ptr$Int32$;
-  late RTempLitTypedIntListAlloc<num, Uint32> UInt32$;
-  late RTempLitPtrAlloc<num, Uint32> Ptr$UInt32$;
+  late RTempLitTypedIntListAlloc<num, Uint32> Uint32$;
+  late RTempLitPtrAlloc<num, Uint32> Ptr$Uint32$;
   late RTempLitTypedIntListAlloc<num, Int64> Int64$;
   late RTempLitPtrAlloc<num, Int64> Ptr$Int64$;
-  late RTempLitTypedIntListAlloc<num, Uint64> UInt64$;
-  late RTempLitPtrAlloc<num, Uint64> Ptr$UInt64$;
+  late RTempLitTypedIntListAlloc<num, Uint64> Uint64$;
+  late RTempLitPtrAlloc<num, Uint64> Ptr$Uint64$;
   late RTempLitTypedIntListAlloc<num, Char> Char$;
   late RTempLitPtrAlloc<num, Char> Ptr$Char$;
-  late RTempLitTypedIntListAlloc<num, UnsignedChar> UChar$;
-  late RTempLitPtrAlloc<num, UnsignedChar> Ptr$UChar$;
-  late RTempLitTypedIntListAlloc<num, UnsignedShort> UShort$;
-  late RTempLitPtrAlloc<num, UnsignedShort> Ptr$UShort$;
+  late RTempLitTypedIntListAlloc<num, UnsignedChar> UnsignedChar$;
+  late RTempLitPtrAlloc<num, UnsignedChar> Ptr$UnsignedChar$;
+  late RTempLitTypedIntListAlloc<num, UnsignedShort> UnsignedShort$;
+  late RTempLitPtrAlloc<num, UnsignedShort> Ptr$UnsignedShort$;
   late RTempLitTypedIntListAlloc<num, Short> Short$;
   late RTempLitPtrAlloc<num, Short> Ptr$Short$;
   late RTempStructAlloc<AutomationEventListC, AutomationEventListD> AutomationEventList$;
@@ -976,7 +976,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Int$.RawArray,
     );
 
-    UInt$ = .new(this, r'UInt$',
+    UnsignedInt$ = .new(this, r'UnsignedInt$',
       allocatorFunc: ([count = 1]) => calloc<UnsignedInt>(count),
       castFunc: (ptr) => ptr.cast<UnsignedInt>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -984,13 +984,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<UnsignedInt>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.cast<Uint32>().asTypedList(length),
-      asDartList: (ptr, length) => UInt$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => UnsignedInt$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UInt$ = .new(this, r'Ptr$UInt$',
+    Ptr$UnsignedInt$ = .new(this, r'Ptr$UnsignedInt$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedInt>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<UnsignedInt>> at this level',
-      rawArrayFunc: UInt$.RawArray,
+      rawArrayFunc: UnsignedInt$.RawArray,
     );
 
     Int8$ = .new(this, r'Int8$',
@@ -1010,7 +1010,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Int8$.RawArray,
     );
 
-    UInt8$ = .new(this, r'UInt8$',
+    Uint8$ = .new(this, r'Uint8$',
       allocatorFunc: ([count = 1]) => calloc<Uint8>(count),
       castFunc: (ptr) => ptr.cast<Uint8>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1018,13 +1018,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<Uint8>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.asTypedList(length),
-      asDartList: (ptr, length) => UInt8$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => Uint8$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UInt8$ = .new(this, r'Ptr$UInt8$',
+    Ptr$Uint8$ = .new(this, r'Ptr$Uint8$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<Uint8>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Uint8>> at this level',
-      rawArrayFunc: UInt8$.RawArray,
+      rawArrayFunc: Uint8$.RawArray,
     );
 
     Int16$ = .new(this, r'Int16$',
@@ -1044,7 +1044,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Int16$.RawArray,
     );
 
-    UInt16$ = .new(this, r'UInt16$',
+    Uint16$ = .new(this, r'Uint16$',
       allocatorFunc: ([count = 1]) => calloc<Uint16>(count),
       castFunc: (ptr) => ptr.cast<Uint16>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1052,13 +1052,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<Uint16>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.asTypedList(length),
-      asDartList: (ptr, length) => UInt16$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => Uint16$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UInt16$ = .new(this, r'Ptr$UInt16$',
+    Ptr$Uint16$ = .new(this, r'Ptr$Uint16$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<Uint16>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Uint16>> at this level',
-      rawArrayFunc: UInt16$.RawArray,
+      rawArrayFunc: Uint16$.RawArray,
     );
 
     Int32$ = .new(this, r'Int32$',
@@ -1078,7 +1078,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Int32$.RawArray,
     );
 
-    UInt32$ = .new(this, r'UInt32$',
+    Uint32$ = .new(this, r'Uint32$',
       allocatorFunc: ([count = 1]) => calloc<Uint32>(count),
       castFunc: (ptr) => ptr.cast<Uint32>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1086,13 +1086,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<Uint32>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.asTypedList(length),
-      asDartList: (ptr, length) => UInt32$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => Uint32$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UInt32$ = .new(this, r'Ptr$UInt32$',
+    Ptr$Uint32$ = .new(this, r'Ptr$Uint32$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<Uint32>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Uint32>> at this level',
-      rawArrayFunc: UInt32$.RawArray,
+      rawArrayFunc: Uint32$.RawArray,
     );
 
     Int64$ = .new(this, r'Int64$',
@@ -1112,7 +1112,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Int64$.RawArray,
     );
 
-    UInt64$ = .new(this, r'UInt64$',
+    Uint64$ = .new(this, r'Uint64$',
       allocatorFunc: ([count = 1]) => calloc<Uint64>(count),
       castFunc: (ptr) => ptr.cast<Uint64>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1120,13 +1120,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<Uint64>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.asTypedList(length),
-      asDartList: (ptr, length) => UInt64$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => Uint64$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UInt64$ = .new(this, r'Ptr$UInt64$',
+    Ptr$Uint64$ = .new(this, r'Ptr$Uint64$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<Uint64>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Uint64>> at this level',
-      rawArrayFunc: UInt64$.RawArray,
+      rawArrayFunc: Uint64$.RawArray,
     );
 
     Char$ = .new(this, r'Char$',
@@ -1146,7 +1146,7 @@ class RaylibTemp extends RaylibModule {
       rawArrayFunc: Char$.RawArray,
     );
 
-    UChar$ = .new(this, r'UChar$',
+    UnsignedChar$ = .new(this, r'UnsignedChar$',
       allocatorFunc: ([count = 1]) => calloc<UnsignedChar>(count),
       castFunc: (ptr) => ptr.cast<UnsignedChar>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1154,16 +1154,16 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<UnsignedChar>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.cast<Uint8>().asTypedList(length),
-      asDartList: (ptr, length) => UChar$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => UnsignedChar$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UChar$ = .new(this, r'Ptr$UChar$',
+    Ptr$UnsignedChar$ = .new(this, r'Ptr$UnsignedChar$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedChar>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<UnsignedChar>> at this level',
-      rawArrayFunc: UChar$.RawArray,
+      rawArrayFunc: UnsignedChar$.RawArray,
     );
 
-    UShort$ = .new(this, r'UShort$',
+    UnsignedShort$ = .new(this, r'UnsignedShort$',
       allocatorFunc: ([count = 1]) => calloc<UnsignedShort>(count),
       castFunc: (ptr) => ptr.cast<UnsignedShort>(),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
@@ -1171,13 +1171,13 @@ class RaylibTemp extends RaylibModule {
       sizeOfFunc: () => sizeOf<UnsignedShort>(),
       printerFunc: (ptr) => ptr.value.toString(),
       asTypedList: (ptr, length) => ptr.cast<Uint16>().asTypedList(length),
-      asDartList: (ptr, length) => UShort$.asTypedList(ptr, length).toList().cast(),
+      asDartList: (ptr, length) => UnsignedShort$.asTypedList(ptr, length).toList().cast(),
     );
 
-    Ptr$UShort$ = .new(this, r'Ptr$UShort$',
+    Ptr$UnsignedShort$ = .new(this, r'Ptr$UnsignedShort$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedShort>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<UnsignedShort>> at this level',
-      rawArrayFunc: UShort$.RawArray,
+      rawArrayFunc: UnsignedShort$.RawArray,
     );
 
     Short$ = .new(this, r'Short$',
@@ -1966,30 +1966,30 @@ class RaylibTemp extends RaylibModule {
       Ptr$Float$.name: Ptr$Float$,
       Int$.name: Int$,
       Ptr$Int$.name: Ptr$Int$,
-      UInt$.name: UInt$,
-      Ptr$UInt$.name: Ptr$UInt$,
+      UnsignedInt$.name: UnsignedInt$,
+      Ptr$UnsignedInt$.name: Ptr$UnsignedInt$,
       Int8$.name: Int8$,
       Ptr$Int8$.name: Ptr$Int8$,
-      UInt8$.name: UInt8$,
-      Ptr$UInt8$.name: Ptr$UInt8$,
+      Uint8$.name: Uint8$,
+      Ptr$Uint8$.name: Ptr$Uint8$,
       Int16$.name: Int16$,
       Ptr$Int16$.name: Ptr$Int16$,
-      UInt16$.name: UInt16$,
-      Ptr$UInt16$.name: Ptr$UInt16$,
+      Uint16$.name: Uint16$,
+      Ptr$Uint16$.name: Ptr$Uint16$,
       Int32$.name: Int32$,
       Ptr$Int32$.name: Ptr$Int32$,
-      UInt32$.name: UInt32$,
-      Ptr$UInt32$.name: Ptr$UInt32$,
+      Uint32$.name: Uint32$,
+      Ptr$Uint32$.name: Ptr$Uint32$,
       Int64$.name: Int64$,
       Ptr$Int64$.name: Ptr$Int64$,
-      UInt64$.name: UInt64$,
-      Ptr$UInt64$.name: Ptr$UInt64$,
+      Uint64$.name: Uint64$,
+      Ptr$Uint64$.name: Ptr$Uint64$,
       Char$.name: Char$,
       Ptr$Char$.name: Ptr$Char$,
-      UChar$.name: UChar$,
-      Ptr$UChar$.name: Ptr$UChar$,
-      UShort$.name: UShort$,
-      Ptr$UShort$.name: Ptr$UShort$,
+      UnsignedChar$.name: UnsignedChar$,
+      Ptr$UnsignedChar$.name: Ptr$UnsignedChar$,
+      UnsignedShort$.name: UnsignedShort$,
+      Ptr$UnsignedShort$.name: Ptr$UnsignedShort$,
       Short$.name: Short$,
       Ptr$Short$.name: Ptr$Short$,
       AutomationEventList$.name: AutomationEventList$,
