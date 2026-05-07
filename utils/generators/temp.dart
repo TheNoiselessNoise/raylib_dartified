@@ -30,19 +30,20 @@ abstract class TempGenType extends Writable {
     String? abbr,
     required String value,
     TempGenNumType numType = .none,
-    bool supportsTypedList = false,
+    String? typedList,
     String? underlyingType,
   }) => TempGenLitType(
     type: type,
     abbr: abbr,
     value: value,
     numType: numType,
-    supportsTypedList: supportsTypedList,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
   factory TempGenType.litTypedList({
     required String type,
+    required String typedList,
     String? abbr,
     required String value,
     TempGenNumType numType = .none,
@@ -52,51 +53,53 @@ abstract class TempGenType extends Writable {
     abbr: abbr,
     value: value,
     numType: numType,
-    supportsTypedList: true,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
   factory TempGenType.litFloat(String type, {
     String? abbr,
-    bool supportsTypedList = false,
+    String? typedList,
     String? underlyingType,
   }) => TempGenLitType(
     type: type,
     abbr: abbr,
     value: 'num',
     numType: .double,
-    supportsTypedList: supportsTypedList,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
   factory TempGenType.litFloatTypedList(String type, {
+    required String typedList,
     String? abbr,
     String? underlyingType,
   }) => .litFloat(type,
     abbr: abbr,
-    supportsTypedList: true,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
   factory TempGenType.litInt(String type, {
     String? abbr,
-    bool supportsTypedList = false,
+    String? typedList,
     String? underlyingType,
   }) => TempGenLitType(
     type: type,
     abbr: abbr,
     value: 'num',
     numType: .int,
-    supportsTypedList: supportsTypedList,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
   factory TempGenType.litIntTypedList(String type, {
+    required String typedList,
     String? abbr,
     String? underlyingType,
   }) => .litInt(type,
     abbr: abbr,
-    supportsTypedList: true,
+    typedList: typedList,
     underlyingType: underlyingType,
   );
 
@@ -185,7 +188,7 @@ abstract class TempGenLiteralType extends TempGenType {
 }
 
 final class TempGenLitType extends TempGenLiteralType {
-  final bool supportsTypedList;
+  final String? typedList;
 
   TempGenLitType({
     required super.type,
@@ -194,7 +197,7 @@ final class TempGenLitType extends TempGenLiteralType {
     super.generatePointerVariant,
     super.numType = .none,
     super.underlyingType,
-    this.supportsTypedList = false,
+    this.typedList,
   });
 
   String toNumType(String what) => switch (numType) {
@@ -268,7 +271,7 @@ final class TempGenStructPtrType extends TempGenStructType {
 
 class TempGenTypeWriter extends Writable {
   String allocatorInterface(TempGenType gen) => switch(gen) {
-    TempGenLitType(supportsTypedList: true) => switch(gen.numType) {
+    TempGenLitType(typedList: != null) => switch(gen.numType) {
       .int => 'RTempLitTypedIntListAlloc',
       .double => 'RTempLitTypedFloatListAlloc',
       .none => 'UNREACHABLE',
@@ -295,7 +298,11 @@ class TempGenTypeWriter extends Writable {
     if (gen is TempGenStructType) {
       pad('late ${allocatorInterface(gen)}<${gen.type}, ${gen.value}> ${propName(gen)};');
     } else {
-      pad('late ${allocatorInterface(gen)}<${gen.value}, ${gen.type}> ${propName(gen)};');        
+      if (gen is TempGenLitType && gen.typedList != null) {
+        pad('late ${allocatorInterface(gen)}<${gen.value}, ${gen.type}, ${gen.typedList}> ${propName(gen)};');
+      } else {
+        pad('late ${allocatorInterface(gen)}<${gen.value}, ${gen.type}> ${propName(gen)};');
+      }
     }
   });
 
@@ -316,15 +323,19 @@ class TempGenTypeWriter extends Writable {
         pad3ln('rawArrayFunc: $rdrProp.RawArray,');
         pad3ln('indexSetterFunc: (ptr, i, value) => ptr[i] = value,');
       } else {
-        pad3ln('allocatorFunc: ([count = 1]) => calloc<$type>(count),');
-        pad3ln('castFunc: (ptr) => ptr.cast<$type>(),');
-        pad3ln('printerFunc: (ptr) => ptr.toD().signature(),');
-        pad3ln('sizeOfFunc: () => sizeOf<$type>(),');
-        pad3ln('indexerFunc: (ptr, i) => ptr[i],');
-        pad3ln('writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),');
-        pad3ln('writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),');
-        pad3ln('setCFunc: (ptr, i, v) => ptr[i].setC(v),');
-        pad3ln('indexSetterFunc: (ptr, i, v) => ptr[i] = v,');
+
+        pad3ln('allocatorFunc:        ([count = 1]) => calloc<$type>(count),');
+        pad3ln('sizeOfFunc:           ()            => sizeOf<$type>(),');
+        pad3ln('castFunc:             (ptr)         => ptr.cast<$type>(),');
+        pad3ln('refFunc:              (ptr)         => ptr.ref,');
+        pad3ln('setRefFunc:           (ptr, v)      => ptr..ref = v,');
+        pad3ln('ptrToDFunc:           (ptr)         => ptr.toD(),');
+        pad3ln('printerFunc:          (ptr)         => ptr.toD().signature(),');
+        pad3ln('indexerFunc:          (ptr, i)      => ptr[i],');
+        pad3ln('writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),');
+        pad3ln('writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),');
+        pad3ln('setCFunc:             (ptr, i, v)   => ptr[i].setC(v),');
+        pad3ln('indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,');
       }
 
     } else if (gen is TempGenLiteralType) {
@@ -341,14 +352,16 @@ class TempGenTypeWriter extends Writable {
         pad3ln('sizeOfFunc: () => sizeOf<$type>(),');
         pad3ln('printerFunc: (ptr) => ptr.value.toString(),');
 
-        if (gen.supportsTypedList) {
+        if (gen.typedList != null) {
+          pad3ln('asDartList: (ptr, length) => $prop.asTypedList(ptr, length).toList().cast(),');
+
           if (gen.underlyingType != null) {
             pad3ln('asTypedList: (ptr, length) => ptr.cast<${gen.underlyingType}>().asTypedList(length),');
           } else {
             pad3ln('asTypedList: (ptr, length) => ptr.asTypedList(length),');
           }
 
-          pad3ln('asDartList: (ptr, length) => $prop.asTypedList(ptr, length).toList().cast(),');
+          pad3ln('fromBuffer: (buf, offset, len) => buf.as${gen.typedList}(offset, len),');
         }
       }
     }

@@ -33,24 +33,33 @@ Using simple custom example [C library](./utils/resources/mylib/src/).
 Given a C header, the codegen produces a D-layer module that looks roughly like this:
 
 ```dart
-class MyModuleD extends RaylibModuleD {
+class MyModuleD extends RaylibModule {
   MyModuleD(super.rl);
 
   MyModule get _ffi => rl.module<MyModule>();
 
+  // C: MyStruct CreateMyStruct(int x, float y)
   MyStructD CreateMyStruct(int x, double y) => run(
-    () => 'CreateMyStruct(x, y)',
+    () => 'CreateMyStruct($x, $y)',
     () => _ffi.CreateMyStruct(x, y).toD(),
   );
 
-  void MutateMyStruct(MyStructD s) => run(
-    () => 'MutateMyStruct(s)',
-    () => _ffi.MutateMyStruct(refMyStruct1(s).ref),
+  // C: MyStruct SpecialMyStruct()
+  MyStructD SpecialMyStruct() => run(
+    () => 'SpecialMyStruct()',
+    () => _ffi.SpecialMyStruct().toD(),
   );
 
+  // C: void MutateMyStruct(MyStruct *s)
+  void MutateMyStruct(MyStructD s) => run(
+    () => 'MutateMyStruct($s)',
+    () => _ffi.MutateMyStruct(rl.Temp.MyStruct$.Ref1(s)),
+  );
+
+  // C: void GetMyStruct(MyStruct *out)
   void GetMyStruct(MyStructD out) => run(
     () => 'GetMyStruct(out: $out)',
-    () => _ffi.GetMyStruct(refMyStruct1(out)),
+    () => _ffi.GetMyStruct(rl.Temp.MyStruct$.Ref1(out)),
   );
 }
 ```
@@ -70,29 +79,42 @@ The four cases are:
 
 **[[ Returned struct ]] > convert immediately** (codegen default):
 ```dart
-() => _ffi.CreateMyStruct(x, y).toD(),
+MyStructD CreateMyStruct(int x, double y) => run(
+  () => 'CreateMyStruct($x, $y)',
+  () => _ffi.CreateMyStruct(x, y).toD(),
+);
 ```
 
 **[[ Mutated struct ]] > sync changes back after the call:**
 ```dart
-() => refUpdateMyStruct(s, (p) => _ffi.MutateMyStruct(p)),
+void MutateMyStruct(MyStructD s) => run(
+  () => 'MutateMyStruct($s)',
+  () => rl.Temp.MyStruct$.RefUpdate1(s,
+    (p) => _ffi.MutateMyStruct(p),
+  ),
+);
 ```
 
 **[[ Returned struct ]] > capture and preserve `originalPointer`:**
 ```dart
-() => refCaptureMyStruct(
-  'SpecialMyStruct', // key identifying where this struct came from
-  _ffi.SpecialMyStruct(),
-),
+MyStructD SpecialMyStruct() => run(
+  () => 'SpecialMyStruct()',
+  () => rl.Temp.MyStruct$.RefCapture(
+    'SpecialMyStruct', // key identifying where this struct came from
+    _ffi.SpecialMyStruct(),
+  ),
+);
 ```
 
 **[[ Out parameter ]] > allocate, pass in, read back:**
 ```dart
-// C: void GetMyStruct(MyStruct *out)
 MyStructD GetMyStruct() => run(
   () => 'GetMyStruct()',
   () {
-    final ptr = refMyStruct1();
+    // 1) same slot reused across calls, fine if the result is consumed before the next call
+    final ptr = rl.Temp.MyStruct$.At('GetMyStruct');
+    // 2) unique slot per call, necessary if multiple results must coexist
+    // final ptr = rl.Temp.MyStruct$.AtUnique('GetMyStruct');
     _ffi.GetMyStruct(ptr);
     return ptr.toD();
   },

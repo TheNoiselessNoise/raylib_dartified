@@ -106,11 +106,11 @@ final class RaylibApiStruct extends Copyable<RaylibApiStruct> {
   String get ptrTempVar => 'Ptr\$$tempVar';
   String get tempKey => '$c\\\$';
   String get ptrTempKey => 'Ptr\\\$$tempKey';
-  String get refMethod => 'ref$c';
-  String get refListPtrMethod => 'refListPtr$c';
-  String get refListMethod => 'refList$c';
-  String get refCaptureMethod => 'refCapture$c';
-  String get refUpdateMethod => 'refUpdate$c';
+  String get refMethod => 'rl.Temp.$tempVar.Ref';
+  String get refListPtrMethod => 'rl.Temp.$ptrTempVar.Array';
+  String get refListMethod => 'rl.Temp.$tempVar.Array';
+  String get refCaptureMethod => 'rl.Temp.$tempVar.RefCapture';
+  String get refUpdateMethod => 'rl.Temp.$tempVar.RefUpdate1';
   String get ptr => 'Pointer<$c>';
   String get ptrPtr => 'Pointer<Pointer<$c>>';
 }
@@ -213,7 +213,6 @@ final class RaylibApiFunction extends Copyable<RaylibApiFunction> {
   );
 }
 
-// TODO: generalize this, don't constrain it to Raylib only
 final class RaylibApiReaderResult {
   final List<RaylibApiDefine> defines;
   final List<RaylibApiStruct> structs;

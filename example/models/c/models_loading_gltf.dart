@@ -58,7 +58,7 @@ void main()
         10, 10, 20, rl.C.GRAY
       );
       rl.Core.DrawText(
-        "Animation: ${anim.name.toD(anim.nameLength)}".toC,
+        "Animation: ${anim.nameString}".toC,
         10, rl.Core.GetScreenHeight() - 20, 10, rl.C.DARKGRAY
       );
 

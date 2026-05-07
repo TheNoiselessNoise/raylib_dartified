@@ -1,6 +1,6 @@
 part of '../../../raylib.dart';
 
-class RaylibCameraD extends RaylibModuleD {
+class RaylibCameraD extends RaylibModule {
   RaylibCameraD(super.lib);
 
   Vector3D GetCameraForward(
@@ -8,7 +8,7 @@ class RaylibCameraD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraForward($camera)',
     () => rl.Cam.GetCameraForward(
-      _refCamera3D1(camera),
+      rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
@@ -17,7 +17,7 @@ class RaylibCameraD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraUp($camera)',
     () => rl.Cam.GetCameraUp(
-      _refCamera3D1(camera),
+      rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
@@ -26,7 +26,7 @@ class RaylibCameraD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraRight($camera)',
     () => rl.Cam.GetCameraRight(
-      _refCamera3D1(camera),
+      rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
@@ -36,7 +36,7 @@ class RaylibCameraD extends RaylibModuleD {
     bool moveInWorldPlane,
   ) => run(
     () => 'CameraMoveForward($camera, $distance, $moveInWorldPlane)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraMoveForward(
         pc,
         distance.toDouble(),
@@ -50,7 +50,7 @@ class RaylibCameraD extends RaylibModuleD {
     num distance,
   ) => run(
     () => 'CameraMoveUp($camera, $distance)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraMoveUp(
         pc,
         distance.toDouble(),
@@ -64,7 +64,7 @@ class RaylibCameraD extends RaylibModuleD {
     bool moveInWorldPlane,
   ) => run(
     () => 'CameraMoveRight($camera, $distance, $moveInWorldPlane)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraMoveRight(
         pc,
         distance.toDouble(),
@@ -78,7 +78,7 @@ class RaylibCameraD extends RaylibModuleD {
     num delta,
   ) => run(
     () => 'CameraMoveToTarget($camera, $delta)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraMoveToTarget(
         pc,
         delta.toDouble(),
@@ -92,7 +92,7 @@ class RaylibCameraD extends RaylibModuleD {
     bool rotateAroundTarget,
   ) => run(
     () => 'CameraYaw($camera, $angle, $rotateAroundTarget)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraYaw(
         pc,
         angle.toDouble(),
@@ -109,7 +109,7 @@ class RaylibCameraD extends RaylibModuleD {
     bool rotateUp,
   ) => run(
     () => 'CameraPitch($camera, $angle, $lockView, $rotateAroundTarget, $rotateUp)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraPitch(
         pc,
         angle.toDouble(),
@@ -125,7 +125,7 @@ class RaylibCameraD extends RaylibModuleD {
     num angle,
   ) => run(
     () => 'CameraRoll($camera, $angle)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Cam.CameraRoll(
         pc,
         angle.toDouble(),
@@ -138,7 +138,7 @@ class RaylibCameraD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraViewMatrix($camera)',
     () => rl.Cam.GetCameraViewMatrix(
-      _refCamera3D1(camera),
+      rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
@@ -148,7 +148,7 @@ class RaylibCameraD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraProjectionMatrix($camera)',
     () => rl.Cam.GetCameraProjectionMatrix(
-      _refCamera3D1(camera),
+      rl.Temp.Camera3D$.Ref1(camera),
       aspect.toDouble(),
     ).toD(),
   );

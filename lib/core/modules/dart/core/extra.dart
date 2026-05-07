@@ -1,12 +1,12 @@
 part of '../../../raylib.dart';
 
-final class FMouseButtonInfoD {
+final class MouseButtonInfoD {
   final bool up;
   final bool down;
   final bool pressed;
   final bool released;
 
-  const FMouseButtonInfoD({
+  const MouseButtonInfoD({
     this.up = false,
     this.down = false,
     this.pressed = false,
@@ -14,29 +14,29 @@ final class FMouseButtonInfoD {
   });
 }
 
-final class FMouseInfoD {
+final class MouseInfoD {
   final Vector2D position;
   final Vector2D delta;
   final Vector2D wheel;
-  final FMouseButtonInfoD left;
-  final FMouseButtonInfoD middle;
-  final FMouseButtonInfoD right;
-  final FMouseButtonInfoD side;
-  final FMouseButtonInfoD extra;
-  final FMouseButtonInfoD forward;
-  final FMouseButtonInfoD back;
+  final MouseButtonInfoD left;
+  final MouseButtonInfoD middle;
+  final MouseButtonInfoD right;
+  final MouseButtonInfoD side;
+  final MouseButtonInfoD extra;
+  final MouseButtonInfoD forward;
+  final MouseButtonInfoD back;
 
-  FMouseInfoD({
+  MouseInfoD({
     Vector2D? position,
     Vector2D? delta,
     Vector2D? wheel,
-    FMouseButtonInfoD? left,
-    FMouseButtonInfoD? middle,
-    FMouseButtonInfoD? right,
-    FMouseButtonInfoD? side,
-    FMouseButtonInfoD? extra,
-    FMouseButtonInfoD? forward,
-    FMouseButtonInfoD? back,
+    MouseButtonInfoD? left,
+    MouseButtonInfoD? middle,
+    MouseButtonInfoD? right,
+    MouseButtonInfoD? side,
+    MouseButtonInfoD? extra,
+    MouseButtonInfoD? forward,
+    MouseButtonInfoD? back,
   }) :
     position = position ?? .zero(),
     delta = delta ?? .zero(),
@@ -51,14 +51,14 @@ final class FMouseInfoD {
 }
 
 extension RaylibCoreDExtra on RaylibCoreD {
-  FMouseButtonInfoD GetMouseButtonInfo(MouseButton button) => .new(
+  MouseButtonInfoD GetMouseButtonInfo(MouseButton button) => .new(
     up: IsMouseButtonUp(button),
     down: IsMouseButtonDown(button),
     pressed: IsMouseButtonPressed(button),
     released: IsMouseButtonReleased(button),
   );
 
-  FMouseInfoD GetMouseInfo() => .new(
+  MouseInfoD GetMouseInfo() => .new(
     position: GetMousePosition(),
     delta: GetMouseDelta(),
     wheel: GetMouseWheelMoveV(),

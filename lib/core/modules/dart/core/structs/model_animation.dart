@@ -2,6 +2,7 @@ part of '../../../../raylib.dart';
 
 extension ModelAnimationCLike on ModelAnimationC {
   int get nameLength => 32;
+  String get nameString => name.toDartString(nameLength);
 }
 
 extension ModelAnimationDLike on ModelAnimationD {
@@ -49,7 +50,7 @@ extension ModelAnimationCEx on ModelAnimationC {
     framePoses: .generate(frameCount, (i) =>
       .generate(boneCount, (j) => framePoses[i][j].toD())
     ),
-    name: name.toD(nameLength),
+    name: name.toDartString(nameLength),
   );
 }
 
@@ -82,7 +83,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
     framePoses = .generate(o.frameCount, (i) =>
       .generate(o.boneCount, (j) => o.framePoses[i][j].toD())
     );
-    name = o.name.toD(nameLength);
+    name = o.name.toDartString(nameLength);
     return this;
   }
 
@@ -116,7 +117,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
       (i) => temp.Transform$.Array(key: '${key}_framePoses_$i', framePoses[i]),
     );
 
-    p.ref.name.setString(name, nameLength);
+    p.ref.name.setDartString(name, nameLength);
   }
 
   @override
@@ -136,7 +137,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
       }
     }
 
-    p.name.setString(name, nameLength);
+    p.name.setDartString(name, nameLength);
   }
 
   @override

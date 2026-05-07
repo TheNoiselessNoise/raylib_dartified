@@ -142,19 +142,13 @@ class Raylib {
   (T, DynamicLibrary) registerDynLib<T extends RaylibModule>(T module, DynamicLibrary dynLib) {
     logInfo('Registering DynamicLibrary for $T');
 
-    if (module is RaylibModuleD) {
-      throw StateError(
-        "Cannot register a DynamicLibrary for a D-layer module. "
-        "D modules wrap base FFI modules. Register the underlying "
-        "`$RaylibModule` instead."
-      );
-    }
     final key = module.runtimeType;
     if (_customDynLibs.containsKey(key)) {
       throw StateError(
         "A DynamicLibrary for $key is already registered."
       );
     }
+    
     _customDynLibs[key] = dynLib;
     return (registerModule(module), dynLib);
   }

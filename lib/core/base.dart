@@ -68,276 +68,66 @@ abstract class RaylibModule extends BaseRaylibModule {
   RaylibModule(super.rl);
 }
 
-mixin HasTempHelpers {
-  Raylib get rl;
-
-  // Helpers
-
-  String refId(String x) => '${rl.Temp.nextId()}_$x';
-
-  Pointer<U> refPtrStructOrNull<U extends Struct, D extends StructD<D, U>>(
-    D? x, String key, Pointer<U> Function([D, String]) alloc
-  ) => x == null ? nullptr : alloc(x, key);
-
-  Pointer<U> refPtrLitOrNull<U extends NativeType, D>(
-    D? x, String key, Pointer<U> Function([D, String]) alloc
-  ) => x == null ? nullptr : alloc(x, key);
-
-  Pointer<U> refLitSized<U extends NativeType, D>(
-    int count, String? key, Pointer<U> Function(String, [int]) alloc
-  ) => alloc(key ?? 'Sized$U', count);
-
-  T refUpdateNullable$<T, C extends Struct, D extends StructD<D, C>>(
-    D? o,
-    T Function(Pointer<C> p) callback,
-    Pointer<C> Function(D) alloc,
-    void Function(Pointer<C> p, D o) update,
-  ) {
-    final p = o != null ? alloc(o) : nullptr;
-    final result = callback(p);
-    if (o != null) update(p, o);
-    return result;
-  }
-}
-
-mixin HasTempRefs on HasTempHelpers {
-
-  // Literals
-
-  Pointer<Char> refStr(String? s) => s == null ? nullptr : rl.Temp.str(s);
-
-  Pointer<Char> refListChar(List<num> y, [String? x]) => rl.Temp.Char$.Array(y, key: x);
-  Pointer<Char> refChar1([int? y]) => rl.Temp.Char$.Value(y, '1');
-  Pointer<Char> refChar2([int? y]) => rl.Temp.Char$.Value(y, '2');
-  Pointer<Char> refChar3([int? y]) => rl.Temp.Char$.Value(y, '3');
-  Pointer<Char> refChar4([int? y]) => rl.Temp.Char$.Value(y, '4');
-  Pointer<Char> refChar1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.Char$.Value);
-  Pointer<Char> refChar2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.Char$.Value);
-  Pointer<Char> refChar3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.Char$.Value);
-  Pointer<Char> refChar4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.Char$.Value);
-  
-  Pointer<Int> refListInt(List<num> y, [String? x]) => rl.Temp.Int$.Array(y, key: x);
-  Pointer<Int> refInt1([int? y]) => rl.Temp.Int$.Value(y, '1');
-  Pointer<Int> refInt2([int? y]) => rl.Temp.Int$.Value(y, '2');
-  Pointer<Int> refInt3([int? y]) => rl.Temp.Int$.Value(y, '3');
-  Pointer<Int> refInt4([int? y]) => rl.Temp.Int$.Value(y, '4');
-  Pointer<Int> refInt1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.Int$.Value);
-  Pointer<Int> refInt2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.Int$.Value);
-  Pointer<Int> refInt3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.Int$.Value);
-  Pointer<Int> refInt4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.Int$.Value);
-  
-  Pointer<UnsignedInt> refListUInt(List<num> y, [String? x]) => rl.Temp.UnsignedInt$.Array(y, key: x);
-  Pointer<UnsignedInt> refUInt1([int? y]) => rl.Temp.UnsignedInt$.Value(y, '1');
-  Pointer<UnsignedInt> refUInt2([int? y]) => rl.Temp.UnsignedInt$.Value(y, '2');
-  Pointer<UnsignedInt> refUInt3([int? y]) => rl.Temp.UnsignedInt$.Value(y, '3');
-  Pointer<UnsignedInt> refUInt4([int? y]) => rl.Temp.UnsignedInt$.Value(y, '4');
-  Pointer<UnsignedInt> refUInt1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.UnsignedInt$.Value);
-  Pointer<UnsignedInt> refUInt2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.UnsignedInt$.Value);
-  Pointer<UnsignedInt> refUInt3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.UnsignedInt$.Value);
-  Pointer<UnsignedInt> refUInt4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.UnsignedInt$.Value);
-
-  Pointer<Short> refListShort(List<num> y, [String? x]) => rl.Temp.Short$.Array(y, key: x);
-  Pointer<Short> refShort1([int? y]) => rl.Temp.Short$.Value(y, '1');
-  Pointer<Short> refShort2([int? y]) => rl.Temp.Short$.Value(y, '2');
-  Pointer<Short> refShort3([int? y]) => rl.Temp.Short$.Value(y, '3');
-  Pointer<Short> refShort4([int? y]) => rl.Temp.Short$.Value(y, '4');
-  Pointer<Short> refShort1OrNull([int? y]) => refPtrLitOrNull(y, '1', rl.Temp.Short$.Value);
-  Pointer<Short> refShort2OrNull([int? y]) => refPtrLitOrNull(y, '2', rl.Temp.Short$.Value);
-  Pointer<Short> refShort3OrNull([int? y]) => refPtrLitOrNull(y, '3', rl.Temp.Short$.Value);
-  Pointer<Short> refShort4OrNull([int? y]) => refPtrLitOrNull(y, '4', rl.Temp.Short$.Value);
-
-  Pointer<Float> refListFloat(List<num> y, [String? x]) => rl.Temp.Float$.Array(y, key: x);
-  Pointer<Float> refFloat1([double? y, String? x]) => rl.Temp.Float$.Value(y, x ?? '1');
-  Pointer<Float> refFloat2([double? y, String? x]) => rl.Temp.Float$.Value(y, x ?? '2');
-  Pointer<Float> refFloat3([double? y, String? x]) => rl.Temp.Float$.Value(y, x ?? '3');
-  Pointer<Float> refFloat4([double? y, String? x]) => rl.Temp.Float$.Value(y, x ?? '4');
-  Pointer<Float> refFloat1OrNull([double? y]) => refPtrLitOrNull(y, '1', rl.Temp.Float$.Value);
-  Pointer<Float> refFloat2OrNull([double? y]) => refPtrLitOrNull(y, '2', rl.Temp.Float$.Value);
-  Pointer<Float> refFloat3OrNull([double? y]) => refPtrLitOrNull(y, '3', rl.Temp.Float$.Value);
-  Pointer<Float> refFloat4OrNull([double? y]) => refPtrLitOrNull(y, '4', rl.Temp.Float$.Value);
-
-  Pointer<Bool> refListBool(List<bool> y, [String? x]) => rl.Temp.Bool$.Array(y, key: x);
-  Pointer<Bool> refBool1([bool? y, String? x]) => rl.Temp.Bool$.Value(y, x ?? '1');
-  Pointer<Bool> refBool2([bool? y, String? x]) => rl.Temp.Bool$.Value(y, x ?? '2');
-  Pointer<Bool> refBool3([bool? y, String? x]) => rl.Temp.Bool$.Value(y, x ?? '3');
-  Pointer<Bool> refBool4([bool? y, String? x]) => rl.Temp.Bool$.Value(y, x ?? '4');
-  Pointer<Bool> refBool1OrNull([bool? y]) => refPtrLitOrNull(y, '1', rl.Temp.Bool$.Value);
-  Pointer<Bool> refBool2OrNull([bool? y]) => refPtrLitOrNull(y, '2', rl.Temp.Bool$.Value);
-  Pointer<Bool> refBool3OrNull([bool? y]) => refPtrLitOrNull(y, '3', rl.Temp.Bool$.Value);
-  Pointer<Bool> refBool4OrNull([bool? y]) => refPtrLitOrNull(y, '4', rl.Temp.Bool$.Value);
-  
-  Pointer<Pointer<Char>> refListString(List<String> y, [String? x]) => rl.Temp.String$.Array(y, key: x);
-  Pointer<Char> refString1([String? y]) => rl.Temp.String$.ValueAt('1', y);
-  Pointer<Char> refString2([String? y]) => rl.Temp.String$.ValueAt('2', y);
-  Pointer<Char> refString3([String? y]) => rl.Temp.String$.ValueAt('3', y);
-  Pointer<Char> refString4([String? y]) => rl.Temp.String$.ValueAt('4', y);
-
-  Pointer<Uint8> refSizedUInt8(int count, [String? x]) => refLitSized(count, x, rl.Temp.Uint8$.At);
-  Pointer<Uint8> refListUInt8(List<num> y, [String? x]) => rl.Temp.Uint8$.Array(y, key: x);
-  Pointer<Uint8> refTypedListUInt8(Uint8List y, [String? x]) => rl.Temp.Uint8$.Array(y.toList(), key: x);
-  Pointer<Uint8> refTypedDataUInt8(TypedData y, [String? x]) => refTypedListUInt8(y.buffer.asUint8List(y.offsetInBytes, y.lengthInBytes), x);
-  
-  Pointer<Float> refTypedListFloat(Float32List y, [String? x]) => rl.Temp.Float$.Array(y.toList(), key: x);
-  Pointer<Uint16> refTypedListUInt16(Uint16List y, [String? x]) => rl.Temp.Uint16$.Array(y.toList(), key: x);
-  Pointer<Int32> refTypedListInt32(Int32List y, [String? x]) => rl.Temp.Int32$.Array(y.toList(), key: x);
-  Pointer<Uint32> refTypedListUInt32(Uint32List y, [String? x]) => rl.Temp.Uint32$.Array(y.toList(), key: x);
-  Pointer<UnsignedChar> refListUChars(List<num> y, [String? x]) => rl.Temp.UnsignedChar$.Array(y, key: x);
-}
-
-abstract class RaylibModuleD extends RaylibModule
-  with
-    HasTempHelpers,
-    HasTempRefs {
-
-  RaylibModuleD(super.rl);
-
-  // Structs
-
-  Pointer<Vector2C> _refListVector2(List<Vector2D> y, [String? x]) => rl.Temp.Vector2$.Array(y, key: x);
-  Pointer<Vector2C> _refVector21([Vector2D? x]) => refPtrStructOrNull(x, '1', rl.Temp.Vector2$.ToC);
-  Pointer<Vector2C> _refVector22([Vector2D? x]) => refPtrStructOrNull(x, '2', rl.Temp.Vector2$.ToC);
-  Pointer<Vector2C> _refVector23([Vector2D? x]) => refPtrStructOrNull(x, '3', rl.Temp.Vector2$.ToC);
-  Pointer<Vector2C> _refVector24([Vector2D? x]) => refPtrStructOrNull(x, '4', rl.Temp.Vector2$.ToC);
-  Pointer<Vector2C> _refVector25([Vector2D? x]) => refPtrStructOrNull(x, '5', rl.Temp.Vector2$.ToC);
-  
-  Pointer<Vector3C> _refListVector3(List<Vector3D> y, [String? x]) => rl.Temp.Vector3$.Array(y, key: x);
-  Pointer<Vector3C> _refVector31([Vector3D? x]) => refPtrStructOrNull(x, '1', rl.Temp.Vector3$.ToC);
-  Pointer<Vector3C> _refVector32([Vector3D? x]) => refPtrStructOrNull(x, '2', rl.Temp.Vector3$.ToC);
-  Pointer<Vector3C> _refVector33([Vector3D? x]) => refPtrStructOrNull(x, '3', rl.Temp.Vector3$.ToC);
-  Pointer<Vector3C> _refVector34([Vector3D? x]) => refPtrStructOrNull(x, '4', rl.Temp.Vector3$.ToC);
-  Pointer<Vector4C> _refVector41([Vector4D? x]) => refPtrStructOrNull(x, '1', rl.Temp.Vector4$.ToC);
-  
-  Pointer<ColorC> _refColor1([ColorD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Color$.ToC);
-  Pointer<ColorC> _refColor2([ColorD? x]) => refPtrStructOrNull(x, '2', rl.Temp.Color$.ToC);
-  Pointer<ColorC> _refColor3([ColorD? x]) => refPtrStructOrNull(x, '3', rl.Temp.Color$.ToC);
-  Pointer<ColorC> _refColor4([ColorD? x]) => refPtrStructOrNull(x, '4', rl.Temp.Color$.ToC);
-  
-  Pointer<ImageC> _refListImage(List<ImageD> y, [String? x]) => rl.Temp.Image$.Array(y, key: x);
-  Pointer<ImageC> _refImage1([ImageD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Image$.ToC);
-  Pointer<ImageC> _refImage2([ImageD? x]) => refPtrStructOrNull(x, '2', rl.Temp.Image$.ToC);
-  
-  Pointer<Camera2DC> _refCamera2D1([Camera2DD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Camera2D$.ToC);
-  Pointer<Camera3DC> _refCamera3D1([Camera3DD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Camera3D$.ToC);
-  
-  Pointer<TextureC> _refTexture1([TextureD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Texture$.ToC);
-  Pointer<NPatchInfoC> _refNPatchInfo1([NPatchInfoD? x]) => refPtrStructOrNull(x, '1', rl.Temp.NPatchInfo$.ToC);
-  Pointer<RenderTextureC> _refRenderTexture1([RenderTextureD? x]) => refPtrStructOrNull(x, '1', rl.Temp.RenderTexture$.ToC);
-  Pointer<ShaderC> _refShader1([ShaderD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Shader$.ToC);
-  Pointer<FontC> _refFont1([FontD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Font$.ToC);
-  Pointer<MatrixC> _refListMatrix(List<MatrixD> y, [String? x]) => rl.Temp.Matrix$.Array(y, key: x);
-  Pointer<MatrixC> _refMatrix1([MatrixD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Matrix$.ToC);
-  Pointer<MatrixC> _refMatrix2([MatrixD? x]) => refPtrStructOrNull(x, '2', rl.Temp.Matrix$.ToC);
-  
-  Pointer<RectangleC> _refRectangle1([RectangleD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Rectangle$.ToC);
-  Pointer<RectangleC> _refRectangle2([RectangleD? x]) => refPtrStructOrNull(x, '2', rl.Temp.Rectangle$.ToC);
-  Pointer<RectangleC> _refRectangle3([RectangleD? x]) => refPtrStructOrNull(x, '3', rl.Temp.Rectangle$.ToC);
-  
-  Pointer<GlyphInfoC> _refListGlyphInfo(List<GlyphInfoD> y, [String? x])
-    => y.firstOrNull?.originalPointer ?? rl.Temp.GlyphInfo$.Array(y, key: x);
-  Pointer<RayC> _refRay1([RayD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Ray$.ToC);
-  
-  Pointer<BoundingBoxC> _refBoundingBox1([BoundingBoxD? x]) => refPtrStructOrNull(x, '1', rl.Temp.BoundingBox$.ToC);
-  Pointer<BoundingBoxC> _refBoundingBox2([BoundingBoxD? x]) => refPtrStructOrNull(x, '2', rl.Temp.BoundingBox$.ToC);
-  
-  Pointer<MeshC> _refMesh1([MeshD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Mesh$.ToC);
-  Pointer<MaterialC> _refMaterial1([MaterialD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Material$.ToC);
-  Pointer<ModelC> _refModel1([ModelD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Model$.ToC);
-  Pointer<ModelAnimationC> _refModelAnimation1([ModelAnimationD? x]) => refPtrStructOrNull(x, '1', rl.Temp.ModelAnimation$.ToC);
-  Pointer<RlRenderBatchC> _refRlRenderBatch1([RlRenderBatchD? x]) => refPtrStructOrNull(x, '1', rl.Temp.RlRenderBatch$.ToC);
-  Pointer<AudioStreamC> _refAudioStream1([AudioStreamD? x]) => refPtrStructOrNull(x, '1', rl.Temp.AudioStream$.ToC);
-  Pointer<MusicC> _refMusic1([MusicD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Music$.ToC);
-  Pointer<AutomationEventListC> _refAutomationEventList1([AutomationEventListD? x]) => refPtrStructOrNull(x, '1', rl.Temp.AutomationEventList$.ToC);
-  Pointer<VrDeviceInfoC> _refVrDeviceInfo1([VrDeviceInfoD? x]) => refPtrStructOrNull(x, '1', rl.Temp.VrDeviceInfo$.ToC);
-  Pointer<VrStereoConfigC> _refVrStereoConfig1([VrStereoConfigD? x]) => refPtrStructOrNull(x, '1', rl.Temp.VrStereoConfig$.ToC);
-  Pointer<AutomationEventC> _refAutomationEvent1([AutomationEventD? x]) => refPtrStructOrNull(x, '1', rl.Temp.AutomationEvent$.ToC);
-  Pointer<SoundC> _refSound1([SoundD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Sound$.ToC);
-  Pointer<WaveC> _refWave1([WaveD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Wave$.ToC);
-  Pointer<WaveC> _refWave2([WaveD? x]) => refPtrStructOrNull(x, '2', rl.Temp.Wave$.ToC);
-  Pointer<LightC> _refLight1([LightD? x]) => refPtrStructOrNull(x, '1', rl.Temp.Light$.ToC);
-
-  // Capture
-
-  FontD _refCaptureFont(String x, FontC o) => (rl.Temp.Font$.At(refId(x))..ref = o).toD();
-  MaterialD _refCaptureMaterial(String x, MaterialC o) => (rl.Temp.Material$.At(refId(x))..ref = o).toD();
-  ShaderD _refCaptureShader(String x, ShaderC o) => (rl.Temp.Shader$.At(refId(x))..ref = o).toD();
-  MusicD _refCaptureMusic(String x, MusicC o) => (rl.Temp.Music$.At(refId(x))..ref = o).toD();
-  RenderTextureD _refCaptureRenderTexture(String x, RenderTextureC o) => (rl.Temp.RenderTexture$.At(refId(x))..ref = o).toD();
-  AutomationEventListD _refCaptureAutomationEventList(String x, AutomationEventListC o) => (rl.Temp.AutomationEventList$.At(refId(x))..ref = o).toD();
-  FilePathListD _refCaptureFilePathList(String x, FilePathListC o) => (rl.Temp.FilePathList$.At(refId(x))..ref = o).toD();
-  VrStereoConfigD _refCaptureVrStereoConfig(String x, VrStereoConfigC o) => (rl.Temp.VrStereoConfig$.At(refId(x))..ref = o).toD();
-  ModelD _refCaptureModel(String x, ModelC o) => (rl.Temp.Model$.At(refId(x))..ref = o).toD();
-  MeshD _refCaptureMesh(String x, MeshC o) => (rl.Temp.Mesh$.At(refId(x))..ref = o).toD();
-  ImageD _refCaptureImage(String x, ImageC o) => (rl.Temp.Image$.At(refId(x))..ref = o).toD();
-  TextureD _refCaptureTexture(String x, TextureC o) => (rl.Temp.Texture$.At(refId(x))..ref = o).toD();
-  WaveD _refCaptureWave(String x, WaveC o) => (rl.Temp.Wave$.At(refId(x))..ref = o).toD();
-  SoundD _refCaptureSound(String x, SoundC o) => (rl.Temp.Sound$.At(refId(x))..ref = o).toD();
-  AudioStreamD _refCaptureAudioStream(String x, AudioStreamC o) => (rl.Temp.AudioStream$.At(refId(x))..ref = o).toD();
-  RlRenderBatchD _refCaptureRlRenderBatch(String x, RlRenderBatchC o) => (rl.Temp.RlRenderBatch$.At(refId(x))..ref = o).toD();
-
-  // Update
-
-  T _refUpdateModel<T>(ModelD? o, T Function(Pointer<ModelC> p) callback)
-    => refUpdateNullable$(o, callback, _refModel1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateModelAnimation<T>(ModelAnimationD? o, T Function(Pointer<ModelAnimationC> p) callback)
-    => refUpdateNullable$(o, callback, _refModelAnimation1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateMesh<T>(MeshD? o, T Function(Pointer<MeshC> p) callback)
-    => refUpdateNullable$(o, callback, _refMesh1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateImage<T>(ImageD? o, T Function(Pointer<ImageC> p) callback)
-    => refUpdateNullable$(o, callback, _refImage1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateTexture<T>(TextureD? o, T Function(Pointer<TextureC> p) callback)
-    => refUpdateNullable$(o, callback, _refTexture1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateWave<T>(WaveD? o, T Function(Pointer<WaveC> p) callback)
-    => refUpdateNullable$(o, callback, _refWave1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateSound<T>(SoundD? o, T Function(Pointer<SoundC> p) callback)
-    => refUpdateNullable$(o, callback, _refSound1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateAudioStream<T>(AudioStreamD? o, T Function(Pointer<AudioStreamC> p) callback)
-    => refUpdateNullable$(o, callback, _refAudioStream1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateRLRenderBatch<T>(RlRenderBatchD? o, T Function(Pointer<RlRenderBatchC> p) callback)
-    => refUpdateNullable$(o, callback, _refRlRenderBatch1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateCamera3D<T>(Camera3DD? o, T Function(Pointer<Camera3DC> p) callback)
-    => refUpdateNullable$(o, callback, _refCamera3D1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateVector2<T>(Vector2D? o, T Function(Pointer<Vector2C> p) callback)
-    => refUpdateNullable$(o, callback, _refVector21, (p, o) => o.setC(p.ref));
-  
-  T _refUpdateRectangle<T>(RectangleD? o, T Function(Pointer<RectangleC> p) callback)
-    => refUpdateNullable$(o, callback, _refRectangle1, (p, o) => o.setC(p.ref));
-
-  T _refUpdateLight<T>(LightD? o, T Function(Pointer<LightC> p) callback)
-    => refUpdateNullable$(o, callback, _refLight1, (p, o) => o.setC(p.ref));
-}
-
+/// A Dart-side wrapper around a [NativeCallable<C>], bridging a Dart function
+/// of type [D] to a native callback of type [C].
+///
+/// Subclasses define the actual [function] and [registry] they belong to.
+/// Each concrete callback type (e.g. `AudioCallbackD`) owns a static registry
+/// that tracks all live instances, enabling bulk disposal via [disposeRegistry].
+///
+/// Initialization of the underlying [NativeCallable] is deferred to the first
+/// access of [nativeFunction] rather than the constructor, to avoid preventing
+/// proper [dispose] calls on app exit.
+///
+/// Typical usage:
+/// ```dart
+/// final cb = AudioCallbackD.function((buffer, frames) { ... });
+/// rl.Audio.AttachAudioMixedProcessor(cb); // calls attach() internally
+/// // ...
+/// rl.Audio.DetachAudioMixedProcessor(cb); // calls detach() internally, disposes cb
+/// ```
 abstract class CallbackD<C extends Function, D extends Function> {
+
+  /// The underlying [NativeCallable] wrapping [function].
+  ///
+  /// Initialized lazily on first access of [nativeFunction].
   late final NativeCallable<C> _callable;
+
   bool _isDisposed = false;
 
+  /// The Dart function exposed to the native side.
+  ///
+  /// Subclasses return their concrete callback implementation here.
   D get function;
 
+  /// A human-readable name for this callback, used in [toString] and logging.
+  ///
+  /// Defaults to `runtimeType.toString()` if not provided.
   late String name;
 
   CallbackD([String? name]) {
     this.name = name ?? runtimeType.toString();
   }
 
-  // NOTE: Example overriden implementation:
-  //       @override
-  //       initializer() => .listener(function);
   bool _initialized = false;
+
+  /// Creates and returns the [NativeCallable<C>] wrapping [function].
+  ///
+  /// Called exactly once, on first access of [nativeFunction]. Subclasses
+  /// must override this to provide the appropriate [NativeCallable] constructor,
+  /// typically `.listener(function)`:
+  ///
+  /// ```dart
+  /// @override
+  /// initializer() => .listener(function);
+  /// ```
   NativeCallable<C> initializer();
 
+  /// Returns the native function pointer for this callback.
+  ///
+  /// Initializes the [NativeCallable] on first access. Asserts that the
+  /// callback has not been [dispose]d.
   Pointer<NativeFunction<C>> get nativeFunction {
-    // NOTE: we initialize in getter, because constructor
-    //       initialization made the app hang on exit,
-    //       because callbacks were not disposed() properly
     if (!_initialized) {
       _initialized = true;
       _callable = initializer();
@@ -346,39 +136,96 @@ abstract class CallbackD<C extends Function, D extends Function> {
     return _callable.nativeFunction;
   }
 
+  /// The registry of live callbacks for this callback type.
+  ///
+  /// Each concrete subclass owns a static `List<CallbackD>` and returns it
+  /// here. The registry is used to track active callbacks and support bulk
+  /// disposal via [disposeRegistry].
   List<CallbackD> get registry;
 
+  /// Registers this callback and returns its native function pointer.
+  ///
+  /// Adds `this` to [registry] if not already present, then returns
+  /// [nativeFunction]. Pass the result directly to the native attach API:
+  ///
+  /// ```dart
+  /// rl.Audio.AttachAudioMixedProcessor(callback.attach());
+  /// ```
   Pointer<NativeFunction<C>> attach() {
     if (!registry.contains(this)) registry.add(this);
     return nativeFunction;
   }
 
-  void detach([bool keepAlive = false]) {
-    if (keepAlive) return;
+  /// Removes this callback from [registry], optionally disposes it, and
+  /// returns its native function pointer.
+  ///
+  /// The pointer is returned so it can be passed directly to the native detach
+  /// API in the same call. The native side needs the pointer to identify which
+  /// callback to remove, even as we're tearing it down on the Dart side:
+  ///
+  /// ```dart
+  /// rl.Audio.DetachAudioMixedProcessor(callback.detach());
+  /// ```
+  ///
+  /// If [keepAlive] is `true`, the callback is neither removed from [registry]
+  /// nor disposed, only the pointer is returned. Useful when temporarily
+  /// detaching without releasing resources.
+  Pointer<NativeFunction<C>> detach([bool keepAlive = false]) {
+    if (keepAlive) return nativeFunction;
     registry.remove(this);
     dispose();
+    return nativeFunction;
   }
 
+  /// Closes the underlying [NativeCallable] and marks this instance as disposed.
+  ///
+  /// Safe to call multiple times, subsequent calls are no-ops. After disposal,
+  /// accessing [nativeFunction] will trigger an assertion failure.
   void dispose() {
     if (_isDisposed) return;
     _isDisposed = true;
     _callable.close();
   }
 
+  /// Disposes all callbacks in [registry] and clears it.
+  ///
+  /// Intended to be called at shutdown by each concrete callback type via a
+  /// typed static wrapper:
+  ///
+  /// ```dart
+  /// static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  /// ```
   static void disposeRegistry(List<CallbackD> registry) {
     registry.forEach((f) => f.dispose());
     registry.clear();
   }
 
+  /// Returns [name].
   @override
   String toString() => name;
 }
 
+/// Abstract Dart-side mirror of a native struct of type [C].
+///
+/// [D] is the concrete subclass (CRTP pattern), [C] is the corresponding
+/// [NativeType]. Every C struct that crosses the FFI boundary has a
+/// paired `StructD` subclass that owns the Dart-visible fields and knows
+/// how to read/write itself from/into native memory.
 abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
+  /// The C-owned or RaylibTemp-owned native pointer for this struct, if any.
+  ///
+  /// Set automatically by [toC] on first allocation.
   Pointer<C>? originalPointer;
 
   String _pointerTag = 'default';
+
+  /// The slot tag used to disambiguate [RaylibTemp] keys for this instance.
+  ///
+  /// Defaults to `'default'`. Change via [setTag] when the same struct must
+  /// occupy multiple slots in the same frame.
   String get tag => _pointerTag;
+
+  /// Sets [tag] to [newTag] and returns `this` for chaining.
   @nonVirtual
   D setTag(String newTag) {
     _pointerTag = newTag;
@@ -386,64 +233,115 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
   }
 
   String? _allocKey;
-  String get allocKey => _allocKey ?? _getBaseKey();
+
+  /// The [RaylibTemp] slot key used during the most recent [toC] allocation.
+  String? get allocKey => _allocKey;
 
   static int _internalIdCounter = 0;
   int _internalId = -1;
+
+  /// A stable numeric ID assigned on first [toC] call for pointer-owning structs.
+  ///
+  /// Incorporated into slot keys to prevent collisions between distinct instances
+  /// of the same struct type sharing the same [tag].
   int get internalId => _internalId;
 
   StructD({
     this.originalPointer,
   });
 
+  /// The Dart-side type name of this struct
   String get structName => runtimeType.toString();
 
-  String get cStructName {
-    final name = structName;
-    return '${name.substring(0, name.length - 1)}C';
-  }
-
+  /// Builds a [RaylibTemp] slot key from [structName], [tag], and an optional
+  /// [inner] suffix.
   @nonVirtual
-  String _getBaseKey([String? inner]) => '${cStructName}_${tag}_$inner';
+  String _getBaseKey([String? inner]) => '${structName}_${tag}_$inner';
 
+  /// Like [_getBaseKey] but prefixed with [internalId], used for
+  /// pointer-owning structs to prevent cross-instance key collisions.
   @nonVirtual
-  String _getBaseKeyWithId([String? inner]) => '${internalId}_${cStructName}_${tag}_$inner';
+  String _getBaseKeyWithId([String? inner]) => '${internalId}_${_getBaseKey(inner)}';
 
+  /// Copies the fields of the native struct [o] into this instance.
   D setC(C o);
+
+  /// Copies the fields of the Dart struct [o] into this instance.
   D setD(D o);
+
+  /// Returns a human-readable description of this struct's current field values.
   String signature();
-  D clone(); // preserves originalPointer
-  D copy() { // clone without originalPointer
+
+  /// Returns a deep copy of this instance, preserving [originalPointer].
+  D clone();
+
+  /// Returns a deep copy of this instance without [originalPointer].
+  ///
+  /// Useful when you need an independent value that should not accidentally
+  /// sync back into raylib-owned memory.
+  D copy() {
     final clone = this.clone();
     clone.originalPointer = null;
     return clone;
   }
 
+  /// Whether this struct requires an [originalPointer] to function correctly.
+  ///
+  /// `true` for resource structs (shaders, models, etc.); `false` for
+  /// value-type structs (subclasses of [StructDLiteral]).
   bool get _requiresOriginalPointer => true;
 
-  // NOTE: Just redirect the call to `temp.***(key, count)`
+  /// Allocates a native slot of [count] elements in [temp] under [key] and
+  /// returns the resulting pointer.
+  ///
+  /// Implementations should simply delegate to the appropriate
+  /// `temp.<Type>(key, count)` call. The returned memory is zeroed (or reused) but not
+  /// yet populated, call [allocateInto] or [writeInto] to fill it.
   Pointer<C> allocatePointer(RaylibTemp temp, String key, [int count = 1]);
 
-  // NOTE: For syncing D side stuff into C, most of the time just redirect to `writeInto(p.ref)`
+  /// Syncs Dart-side fields into the already-allocated native pointer [p].
+  ///
+  /// Called by [toC] when [originalPointer] is set. The default implementation
+  /// delegates to [allocateInto]; override only when sync and full allocation
+  /// differ (e.g. to skip re-allocating nested pointers).
   void syncInto(RaylibTemp temp, Pointer<C> p, String key) => allocateInto(temp, p, key);
 
-  // NOTE: In cases you want to allocate some OUR OWN pointers into struct
+  /// Writes all fields into the native struct at [p], allocating nested pointers
+  /// into [temp] under [key] as needed.
+  ///
+  /// Called after [allocatePointer] to populate the zeroed memory (or reuse). For structs
+  /// with no nested pointers this is typically equivalent to `writeInto(p.ref)`.
   void allocateInto(RaylibTemp temp, Pointer<C> p, String key);
   
-  // NOTE: Just write everything directly into the reference
+  /// Writes all fields directly into the native struct reference [p].
+  /// For nested structs, use `writeInto` as well.
   void writeInto(C p);
 
   bool _isDisposed = false;
+
+  /// Whether [markDisposed] has been called on this instance.
   bool get isDisposed => _isDisposed;
 
+  /// Marks this instance as disposed and clears [originalPointer].
+  ///
+  /// Called internally after the native resource is unloaded. Accessing
+  /// [getOriginalPointer] after disposal will throw.
   @nonVirtual
   void markDisposed() {
     _isDisposed = true;
     originalPointer = null;
   }
 
+  /// Returns [originalPointer], throwing a descriptive [StateError] if unavailable or this instance [isDisposed].
   @nonVirtual
   Pointer<C> getOriginalPointer() {
+    if (isDisposed) {
+      throw StateError(
+        '$structName.getOriginalPointer() was called on a disposed struct. '
+        'The pointer is no longer valid and cannot be accessed.'
+      );
+    }
+
     if (originalPointer == null) {
       if (!_requiresOriginalPointer) {
         throw StateError(
@@ -463,6 +361,10 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
     return originalPointer!;
   }
 
+  /// Returns [originalPointer] and immediately calls [markDisposed].
+  ///
+  /// The canonical way to hand the pointer back to C and `unload`.
+  /// Gets the pointer, then ensures this instance can no longer be used.
   @nonVirtual
   Pointer<C> getOriginalPointerAndDispose() {
     final pointer = getOriginalPointer();
@@ -470,6 +372,11 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
     return pointer;
   }
 
+  /// Emits a debug warning if `this` is **NOT** [StructDLiteral] and
+  /// [originalPointer] is not set.
+  ///
+  /// Called by [toC] before attempting allocation to catch structs that were
+  /// constructed manually rather than obtained from C.
   @nonVirtual
   void _warnIfNoOriginalPointer(RaylibTemp temp) {
     if (_requiresOriginalPointer && originalPointer == null) {
@@ -480,16 +387,33 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
     }
   }
 
+  /// Calls [callback] with [originalPointer] if it is set, otherwise no-ops.
   @nonVirtual
   void onOriginalPointer(void Function(Pointer<C> p) callback) {
     if (originalPointer != null) callback(originalPointer!);
   }
 
+  /// Returns a native pointer for this struct, allocating or syncing as needed.
+  ///
+  /// This is the primary entry point for passing a `StructD` to a C call.
+  /// The behavior depends on the struct type and state:
+  ///
+  /// - **Value-type** ([StructDLiteral]): always allocates a
+  ///   fresh slot (or reuse) in [temp] and writes into it via [allocateInto].
+  /// - **Pointer-owning, with [originalPointer]**: syncs Dart fields back into
+  ///   the existing native pointer via [syncInto] and returns it directly.
+  ///   Skipped entirely if the instance [isDisposed] or `temp.doSync` is false.
+  /// - **Pointer-owning, without [originalPointer]**: allocates a new slot,
+  ///   populates it via [allocateInto], and stores the result as [originalPointer].
+  ///
+  /// [key] is incorporated into the slot key to allow the same instance to
+  /// occupy distinct slots within the same frame (see [setTag]).
   @nonVirtual
   Pointer<C> toC(RaylibTemp temp, String key) {
     String baseKey = _getBaseKey(key);
 
     if (!_requiresOriginalPointer) {
+      _allocKey = baseKey;
       final p = allocatePointer(temp, baseKey);
       allocateInto(temp, p, baseKey);
       return p;
@@ -521,6 +445,14 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
   String toString() => signature();
 }
 
+/// A [StructD] for value-type structs that are always passed by value.
+///
+/// Subclasses never own an [originalPointer]. [toC] always allocates a
+/// fresh [RaylibTemp] slot (or reuses) and writes into it. Typical examples are `Vector2`,
+/// `Color`, `Rectangle`: small flat structs that raylib accepts and returns
+/// by value rather than by pointer.
+///
+/// Implementations of [allocateInto] should simply redirect to `writeInto(p.ref)`.
 abstract class StructDLiteral<D extends StructD<D, C>, C extends NativeType> extends StructD<D, C> {
   StructDLiteral({
     super.originalPointer,
@@ -528,15 +460,29 @@ abstract class StructDLiteral<D extends StructD<D, C>, C extends NativeType> ext
 
   @override
   bool get _requiresOriginalPointer => false;
-
-  // NOTE: just redirect allocateInto to writeInto(p.ref);
 }
 
+/// A read-only [StructD] that wraps an existing native pointer without owning it.
+///
+/// Constructed directly from a `Pointer<C>` (e.g. when iterating over a native
+/// array), a `StructDView` exposes the live native memory through [ref] but
+/// refuses all write operations. Attempting to call [setC], [setD],
+/// [allocatePointer], [allocateInto], or [writeInto] throws [UnsupportedError].
+///
+/// [syncInto] is a deliberate no-op, views never push changes back into native
+/// memory.
 abstract class StructDView<D extends StructD<D, C>, C extends NativeType> extends StructD<D, C> {
   StructDView(Pointer<C> originalPointer) : super(
     originalPointer: originalPointer,
   );
 
+  /// Live reference into the native struct at [originalPointer].
+  /// 
+  /// You can literally implement it like so:
+  /// ```dart
+  /// @override
+  /// C get ref => getOriginalPointer().ref;
+  /// ```
   C get ref;
 
   @override

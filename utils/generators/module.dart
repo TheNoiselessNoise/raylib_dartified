@@ -312,16 +312,16 @@ class ModuleDartWriter extends ModuleWriter {
         if (ffiType == 'Void') return p.name;
 
         if (listParams.contains(p.name)) {
-          return 'refList$ffiType(${p.name})';
+          return 'rl.Temp.$ffiType\$.Array(${p.name})';
         }
 
         final ref = _nextRef(refsUsed, pType.dartType);
-        return 'ref$ffiType$ref(${p.name})';
+        return 'rl.Temp.$ffiType\$.Ref$ref(${p.name})';
       }
 
       if (pStruct != null) {
         final ref = _nextRef(refsUsed, pStruct.name);
-        return 'ref${pStruct.name}$ref(${p.name}).ref';
+        return '${pStruct.refMethod}$ref(${p.name}).ref';
       } else {
         return p.name;
       }
@@ -379,31 +379,6 @@ class ModuleDartWriter extends ModuleWriter {
     }
   }
 
-  void _writeRefExtension() {
-    writeln('extension ${libraryNameD}Refs on $libraryNameD {');
-    for (final s in generator.builtAPI.structMap.values) {
-      // ptr list
-      padln('${s.ptrPtr} ${s.refListPtrMethod}(List<${s.d}> y, [String? x]) => rl.Temp.${s.ptrTempVar}.Array(y, key: x);');
-
-      // list
-      padln('${s.ptr} ${s.refListMethod}(List<${s.d}> y, [String? x]) => rl.Temp.${s.tempVar}.Array(y, key: x);');
-
-      // ref 1-4
-      for (int i = 1; i <= 4; i++) {
-        padln('${s.ptr} ${s.refMethod}$i([${s.d}? x]) => refPtrStructOrNull(x, \'$i\', rl.Temp.${s.tempVar}.ToC);');
-      }
-
-      // capture
-      padln('${s.d} ${s.refCaptureMethod}(String x, ${s.c} o) => (rl.Temp.${s.tempVar}.At(refId(x))..ref = o).toD();');
-
-      // update
-      padln('T ${s.refUpdateMethod}<T>(${s.d}? o, T Function(${s.ptr} p) callback)');
-      padln('  => refUpdateNullable\$(o, callback, ${s.refMethod}1, (p, o) => o.setC(p.ref));');
-      writeln();
-    }
-    writeln('}');
-  }
-
   void _writeRaylibExtension() {
     writeln('extension ${libraryNameD}Shortcuts on Raylib {');
 
@@ -415,7 +390,7 @@ class ModuleDartWriter extends ModuleWriter {
 
   void _writeModule() {
     writeln();
-    writeln('class $libraryNameD extends RaylibModuleD {');
+    writeln('class $libraryNameD extends RaylibModule {');
     writeln('  $libraryNameD(super.rl);');
     writeln();
     writeln('  $libraryName get $ffiLib => rl.module<$libraryName>();');
@@ -447,8 +422,6 @@ class ModuleDartWriter extends ModuleWriter {
     writeln();
 
     _writeStructsD();
-
-    _writeRefExtension();
 
     _writeRaylibExtension();
 

@@ -1,6 +1,6 @@
 part of '../../../raylib.dart';
 
-class RaylibLightD extends RaylibModuleD {
+class RaylibLightD extends RaylibModule {
   RaylibLightD(super.lib);
 
   LightD CreateLight(
@@ -13,10 +13,10 @@ class RaylibLightD extends RaylibModuleD {
     () => 'CreateLight(${type.name}, $position, $target, $color, $shader)',
     () => rl.Light.CreateLight(
       type.value,
-      _refVector31(position).ref,
-      _refVector32(target).ref,
-      _refColor1(color).ref,
-      _refShader1(shader).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(target).ref,
+      rl.Temp.Color$.Ref1(color).ref,
+      rl.Temp.Shader$.Ref1(shader).ref,
     ).toD(),
   );
 
@@ -25,9 +25,9 @@ class RaylibLightD extends RaylibModuleD {
     LightD light,
   ) => run(
     () => 'UpdateLightValues($shader, $light)',
-    () => _refUpdateLight(light,
+    () => rl.Temp.Light$.RefUpdate1(light,
       (pl) => rl.Light.UpdateLightValues(
-        _refShader1(shader).ref,
+        rl.Temp.Shader$.Ref1(shader).ref,
         pl.ref
       ),
     ),

@@ -1,6 +1,6 @@
 part of '../../../raylib.dart';
 
-class RaylibCoreD extends RaylibModuleD {
+class RaylibCoreD extends RaylibModule {
   RaylibCoreD(super.lib);
   
   @override
@@ -21,7 +21,7 @@ class RaylibCoreD extends RaylibModuleD {
     () => rl.Core.InitWindow(
       width.toInt(),
       height.toInt(),
-      refStr(title),
+      rl.Temp.String$.ValueOrNull(title),
     ),
   );
 
@@ -120,7 +120,9 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'SetWindowIcon($image)',
-    () => rl.Core.SetWindowIcon(_refImage1(image).ref),
+    () => rl.Core.SetWindowIcon(
+      rl.Temp.Image$.Ref1(image).ref,
+    ),
   );
     
   void SetWindowIcons(
@@ -128,7 +130,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SetWindowIcons(${images.map((i) => i.internalId).join(', ')})',
     () => rl.Core.SetWindowIcons(
-      _refListImage(images),
+      rl.Temp.Image$.Array(images),
       images.length,
     ),
   );
@@ -137,7 +139,9 @@ class RaylibCoreD extends RaylibModuleD {
     String title,
   ) => run(
     () => 'SetWindowTitle($title)',
-    () => rl.Core.SetWindowTitle(refStr(title)),
+    () => rl.Core.SetWindowTitle(
+      rl.Temp.String$.ValueOrNull(title),
+    ),
   );
 
   void SetWindowPosition(
@@ -296,7 +300,9 @@ class RaylibCoreD extends RaylibModuleD {
     String text,
   ) => run(
     () => 'SetClipboardText($text)',
-    () => rl.Core.SetClipboardText(refStr(text)),
+    () => rl.Core.SetClipboardText(
+      rl.Temp.String$.ValueOrNull(text),
+    ),
   );
     
   String GetClipboardText() => run(
@@ -306,7 +312,7 @@ class RaylibCoreD extends RaylibModuleD {
     
   ImageD GetClipboardImage() => run(
     () => 'GetClipboardImage()',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GetClipboardImage',
       rl.Core.GetClipboardImage(),
     ),
@@ -356,7 +362,9 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ClearBackground($color)',
-    () => rl.Core.ClearBackground(_refColor1(color).ref),
+    () => rl.Core.ClearBackground(
+      rl.Temp.Color$.Ref1(color).ref,
+    ),
   );
     
   void BeginDrawing() => run(
@@ -373,7 +381,9 @@ class RaylibCoreD extends RaylibModuleD {
     Camera2DD camera,
   ) => run(
     () => 'BeginMode2D($camera)',
-    () => rl.Core.BeginMode2D(_refCamera2D1(camera).ref),
+    () => rl.Core.BeginMode2D(
+      rl.Temp.Camera2D$.Ref1(camera).ref,
+    ),
   );
     
   void EndMode2D() => run(
@@ -385,7 +395,9 @@ class RaylibCoreD extends RaylibModuleD {
     Camera3DD camera,
   ) => run(
     () => 'BeginMode3D($camera)',
-    () => rl.Core.BeginMode3D(_refCamera3D1(camera).ref),
+    () => rl.Core.BeginMode3D(
+      rl.Temp.Camera3D$.Ref1(camera).ref,
+    ),
   );
     
   void EndMode3D() => run(
@@ -397,7 +409,9 @@ class RaylibCoreD extends RaylibModuleD {
     RenderTexture2DD target,
   ) => run(
     () => 'BeginTextureMode($target)',
-    () => rl.Core.BeginTextureMode(_refRenderTexture1(target).ref),
+    () => rl.Core.BeginTextureMode(
+      rl.Temp.RenderTexture$.Ref1(target).ref,
+    ),
   );
     
   void EndTextureMode() => run(
@@ -409,7 +423,9 @@ class RaylibCoreD extends RaylibModuleD {
     ShaderD shader,
   ) => run(
     () => 'BeginShaderMode($shader)',
-    () => rl.Core.BeginShaderMode(_refShader1(shader).ref),
+    () => rl.Core.BeginShaderMode(
+      rl.Temp.Shader$.Ref1(shader).ref,
+    ),
   );
     
   void EndShaderMode() => run(
@@ -455,7 +471,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'BeginVrStereoMode($config)',
     () => rl.Core.BeginVrStereoMode(
-      _refVrStereoConfig1(config).ref,
+      rl.Temp.VrStereoConfig$.Ref1(config).ref,
     ),
   );
     
@@ -470,10 +486,10 @@ class RaylibCoreD extends RaylibModuleD {
     VrDeviceInfoD device,
   ) => run(
     () => 'LoadVrStereoConfig($device)',
-    () => _refCaptureVrStereoConfig(
+    () => rl.Temp.VrStereoConfig$.RefCapture(
       'LoadVrStereoConfig_${device.internalId}',
       rl.Core.LoadVrStereoConfig(
-        _refVrDeviceInfo1(device).ref,
+        rl.Temp.VrDeviceInfo$.Ref1(device).ref,
       ),
     ),
   );
@@ -483,7 +499,6 @@ class RaylibCoreD extends RaylibModuleD {
     VrStereoConfigD config,
   ) => run(
     () => 'UnloadVrStereoConfig($config)',
-    // () => rl.Core.UnloadVrStereoConfig(_vrStereoConfig1(config).ref),
     () => rl.Core.UnloadVrStereoConfig(config.getOriginalPointerAndDispose().ref),
   );
     
@@ -492,11 +507,11 @@ class RaylibCoreD extends RaylibModuleD {
     String? fsFileName,
   ) => run(
     () => 'LoadShader($vsFileName, $fsFileName)',
-    () => _refCaptureShader(
+    () => rl.Temp.Shader$.RefCapture(
       'LoadShader_${vsFileName ?? 'default'}_${fsFileName ?? 'default'}',
       rl.Core.LoadShader(
-        refStr(vsFileName),
-        refStr(fsFileName),
+        rl.Temp.String$.ValueOrNull(vsFileName),
+        rl.Temp.String$.ValueOrNull(fsFileName),
       ),
     ),
   );
@@ -506,11 +521,11 @@ class RaylibCoreD extends RaylibModuleD {
     String? fsCode,
   ) => run(
     () => 'LoadShaderFromMemory($vsCode, $fsCode)',
-    () => _refCaptureShader(
+    () => rl.Temp.Shader$.RefCapture(
       'LoadShaderFromMemory',
       rl.Core.LoadShaderFromMemory(
-        refStr(vsCode),
-        refStr(fsCode),
+        rl.Temp.String$.ValueOrNull(vsCode),
+        rl.Temp.String$.ValueOrNull(fsCode),
       ),
     ),
   );
@@ -519,7 +534,9 @@ class RaylibCoreD extends RaylibModuleD {
     ShaderD shader,
   ) => run(
     () => 'IsShaderValid($shader)',
-    () => rl.Core.IsShaderValid(_refShader1(shader).ref),
+    () => rl.Core.IsShaderValid(
+      rl.Temp.Shader$.Ref1(shader).ref,
+    ),
   );
     
   int GetShaderLocation(
@@ -528,8 +545,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetShaderLocation($shader, $uniformName)',
     () => rl.Core.GetShaderLocation(
-      _refShader1(shader).ref,
-      refStr(uniformName),
+      rl.Temp.Shader$.Ref1(shader).ref,
+      rl.Temp.String$.ValueOrNull(uniformName),
     ),
   );
     
@@ -539,8 +556,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetShaderLocationAttrib($shader, $attribName)',
     () => rl.Core.GetShaderLocationAttrib(
-      _refShader1(shader).ref,
-      refStr(attribName),
+      rl.Temp.Shader$.Ref1(shader).ref,
+      rl.Temp.String$.ValueOrNull(attribName),
     ),
   );
   
@@ -571,18 +588,18 @@ class RaylibCoreD extends RaylibModuleD {
         .SHADER_UNIFORM_FLOAT ||
         .SHADER_UNIFORM_VEC2  ||
         .SHADER_UNIFORM_VEC3  ||
-        .SHADER_UNIFORM_VEC4  => refListFloat(value, 'SetShaderValueV_Float'),
+        .SHADER_UNIFORM_VEC4  => rl.Temp.Float$.Array(value, key: 'SetShaderValueV_Float'),
         
         .SHADER_UNIFORM_INT   ||
         .SHADER_UNIFORM_IVEC2 ||
         .SHADER_UNIFORM_IVEC3 ||
-        .SHADER_UNIFORM_IVEC4 => refListInt(value, 'SetShaderValueV_Int'),
+        .SHADER_UNIFORM_IVEC4 => rl.Temp.Int$.Array(value, key: 'SetShaderValueV_Int'),
         
-        .SHADER_UNIFORM_SAMPLER2D => refListInt(value, 'SetShaderValueV_Int'),
+        .SHADER_UNIFORM_SAMPLER2D => rl.Temp.Int$.Array(value, key: 'SetShaderValueV_Int'),
       };
 
       rl.Core.SetShaderValueV(
-        _refShader1(shader).ref,
+        rl.Temp.Shader$.Ref1(shader).ref,
         locIndex.toInt(),
         ptr.cast(),
         uniformType.value,
@@ -598,9 +615,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SetShaderValueMatrix($shader, $locIndex, $mat)',
     () => rl.Core.SetShaderValueMatrix(
-      _refShader1(shader).ref,
+      rl.Temp.Shader$.Ref1(shader).ref,
       locIndex.toInt(),
-      _refMatrix1(mat).ref,
+      rl.Temp.Matrix$.Ref1(mat).ref,
     ),
   );
     
@@ -611,9 +628,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SetShaderValueTexture($shader, $locIndex, $texture)',
     () => rl.Core.SetShaderValueTexture(
-      _refShader1(shader).ref,
+      rl.Temp.Shader$.Ref1(shader).ref,
       locIndex.toInt(),
-      _refTexture1(texture).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
     ),
   );
     
@@ -622,7 +639,6 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'UnloadShader($shader)',
     () => rl.Core.UnloadShader(shader.getOriginalPointerAndDispose().ref),
-    // () => rl.Core.UnloadShader(_shader1(shader).ref),
   );
     
   RayD GetScreenToWorldRay(
@@ -631,8 +647,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetScreenToWorldRay($position, $camera)',
     () => rl.Core.GetScreenToWorldRay(
-      _refVector21(position).ref,
-      _refCamera3D1(camera).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
     ).toD(),
   );
     
@@ -644,8 +660,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetScreenToWorldRayEx($position, $camera, $width, $height)',
     () => rl.Core.GetScreenToWorldRayEx(
-      _refVector21(position).ref,
-      _refCamera3D1(camera).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
       width.toInt(),
       height.toInt(),
     ).toD(),
@@ -657,8 +673,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetWorldToScreen($position, $camera)',
     () => rl.Core.GetWorldToScreen(
-      _refVector31(position).ref,
-      _refCamera3D1(camera).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
     ).toD(),
   );
 
@@ -670,8 +686,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetWorldToScreenEx($position, $camera, $width, $height)',
     () => rl.Core.GetWorldToScreenEx(
-      _refVector31(position).ref,
-      _refCamera3D1(camera).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
       width.toInt(),
       height.toInt(),
     ).toD(),
@@ -683,8 +699,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetWorldToScreen2D($position, $camera)',
     () => rl.Core.GetWorldToScreen2D(
-      _refVector21(position).ref,
-      _refCamera2D1(camera).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Camera2D$.Ref1(camera).ref,
     ).toD(),
   );
 
@@ -694,8 +710,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetScreenToWorld2D($position, $camera)',
     () => rl.Core.GetScreenToWorld2D(
-      _refVector21(position).ref,
-      _refCamera2D1(camera).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Camera2D$.Ref1(camera).ref,
     ).toD(),
   );
 
@@ -704,7 +720,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraMatrix($camera)',
     () => rl.Core.GetCameraMatrix(
-      _refCamera3D1(camera).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
     ).toD(),
   );
 
@@ -713,7 +729,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCameraMatrix2D($camera)',
     () => rl.Core.GetCameraMatrix2D(
-      _refCamera2D1(camera).ref,
+      rl.Temp.Camera2D$.Ref1(camera).ref,
     ).toD(),
   );
     
@@ -788,7 +804,9 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'TakeScreenshot($fileName)',
-    () => rl.Core.TakeScreenshot(refStr(fileName)),
+    () => rl.Core.TakeScreenshot(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
 
   void SetConfigFlags(
@@ -802,7 +820,9 @@ class RaylibCoreD extends RaylibModuleD {
     String url,
   ) => run(
     () => 'OpenURL($url)',
-    () => rl.Core.OpenURL(refStr(url)),
+    () => rl.Core.OpenURL(
+      rl.Temp.String$.ValueOrNull(url),
+    ),
   );
 
   void TraceLog(
@@ -810,7 +830,10 @@ class RaylibCoreD extends RaylibModuleD {
     String text,
   ) => run(
     () => 'TraceLog(${logLevel.name}, $text)',
-    () => rl.Core.TraceLog(logLevel.value, refStr(text)),
+    () => rl.Core.TraceLog(
+      logLevel.value,
+      rl.Temp.String$.ValueOrNull(text),
+    ),
   );
 
   void SetTraceLogLevel(
@@ -853,8 +876,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadFileData($fileName)',
     () {
-      final fileSize = refInt1();
-      final data = rl.Core.LoadFileData(refStr(fileName), fileSize);
+      final fileSize = rl.Temp.Int$.Ref1();
+      final data = rl.Core.LoadFileData(
+        rl.Temp.String$.ValueOrNull(fileName),
+        fileSize,
+      );
       final listData = rl.Temp.UnsignedChar$.asDartList(data, fileSize.value);
       rl.Core.UnloadFileData(data);
       return listData.cast();
@@ -867,7 +893,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SaveFileData($fileName, data: ${data.length})',
     () => rl.Core.SaveFileData(
-      refStr(fileName), refListUInt8(data).cast(), data.length
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.Uint8$.Array(data).cast(),
+      data.length,
     ),
   );
 
@@ -877,7 +905,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportDataAsCode(data: ${data.length}, $fileName)',
     () => rl.Core.ExportDataAsCode(
-      refListUInt8(data).cast(), data.length, refStr(fileName)
+      rl.Temp.Uint8$.Array(data).cast(),
+      data.length,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
@@ -886,7 +916,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadFileText($fileName)',
     () {
-      final text = rl.Core.LoadFileText(refStr(fileName));
+      final text = rl.Core.LoadFileText(
+        rl.Temp.String$.ValueOrNull(fileName),
+      );
       final fileText = text.toD;
       rl.Core.UnloadFileText(text);
       return fileText;
@@ -899,7 +931,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SaveFileText($fileName, $text)',
     () => rl.Core.SaveFileText(
-      refStr(fileName), refStr(text)
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.String$.ValueOrNull(text),
     ),
   );
     
@@ -907,14 +940,18 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'FileExists($fileName)',
-    () => rl.Core.FileExists(refStr(fileName)),
+    () => rl.Core.FileExists(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
 
   bool DirectoryExists(
     String dirPath,
   ) => run(
     () => 'DirectoryExists($dirPath)',
-    () => rl.Core.DirectoryExists(refStr(dirPath)),
+    () => rl.Core.DirectoryExists(
+      rl.Temp.String$.ValueOrNull(dirPath),
+    ),
   );
 
   bool IsFileExtension(
@@ -922,49 +959,64 @@ class RaylibCoreD extends RaylibModuleD {
     String ext,
   ) => run(
     () => 'IsFileExtension($fileName, $ext)',
-    () => rl.Core.IsFileExtension(refStr(fileName), refStr(ext)),
+    () => rl.Core.IsFileExtension(
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.String$.ValueOrNull(ext),
+    ),
   );
 
   int GetFileLength(
     String fileName,
   ) => run(
     () => 'GetFileLength($fileName)',
-    () => rl.Core.GetFileLength(refStr(fileName)),
+    () => rl.Core.GetFileLength(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
 
   String GetFileExtension(
     String fileName,
   ) => run(
     () => 'GetFileExtension($fileName)',
-    () => rl.Core.GetFileExtension(refStr(fileName)).toD,
+    () => rl.Core.GetFileExtension(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ).toD,
   );
 
   String GetFileName(
     String filePath,
   ) => run(
     () => 'GetFileName($filePath)',
-    () => rl.Core.GetFileName(refStr(filePath)).toD,
+    () => rl.Core.GetFileName(
+      rl.Temp.String$.ValueOrNull(filePath),
+    ).toD,
   );
 
   String GetFileNameWithoutExt(
     String filePath,
   ) => run(
     () => 'GetFileNameWithoutExt($filePath)',
-    () => rl.Core.GetFileNameWithoutExt(refStr(filePath)).toD,
+    () => rl.Core.GetFileNameWithoutExt(
+      rl.Temp.String$.ValueOrNull(filePath),
+    ).toD,
   );
 
   String GetDirectoryPath(
     String filePath,
   ) => run(
     () => 'GetDirectoryPath($filePath)',
-    () => rl.Core.GetDirectoryPath(refStr(filePath)).toD,
+    () => rl.Core.GetDirectoryPath(
+      rl.Temp.String$.ValueOrNull(filePath),
+    ).toD,
   );
 
   String GetPrevDirectoryPath(
     String dirPath,
   ) => run(
     () => 'GetPrevDirectoryPath($dirPath)',
-    () => rl.Core.GetPrevDirectoryPath(refStr(dirPath)).toD,
+    () => rl.Core.GetPrevDirectoryPath(
+      rl.Temp.String$.ValueOrNull(dirPath),
+    ).toD,
   );
 
   String GetWorkingDirectory() => run(
@@ -981,37 +1033,47 @@ class RaylibCoreD extends RaylibModuleD {
     String dirPath,
   ) => run(
     () => 'MakeDirectory($dirPath)',
-    () => rl.Core.MakeDirectory(refStr(dirPath)),
+    () => rl.Core.MakeDirectory(
+      rl.Temp.String$.ValueOrNull(dirPath),
+    ),
   );
 
   bool ChangeDirectory(
     String dir,
   ) => run(
     () => 'ChangeDirectory($dir)',
-    () => rl.Core.ChangeDirectory(refStr(dir)),
+    () => rl.Core.ChangeDirectory(
+      rl.Temp.String$.ValueOrNull(dir),
+    ),
   );
 
   bool IsPathFile(
     String path,
   ) => run(
     () => 'IsPathFile($path)',
-    () => rl.Core.IsPathFile(refStr(path)),
+    () => rl.Core.IsPathFile(
+      rl.Temp.String$.ValueOrNull(path),
+    ),
   );
 
   bool IsFileNameValid(
     String fileName,
   ) => run(
     () => 'IsFileNameValid($fileName)',
-    () => rl.Core.IsFileNameValid(refStr(fileName)),
+    () => rl.Core.IsFileNameValid(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
     
   FilePathListD LoadDirectoryFiles(
     String dirPath,
   ) => run(
     () => 'LoadDirectoryFiles($dirPath)',
-    () => _refCaptureFilePathList(
+    () => rl.Temp.FilePathList$.RefCapture(
       'LoadDirectoryFiles_$dirPath',
-      rl.Core.LoadDirectoryFiles(refStr(dirPath)),
+      rl.Core.LoadDirectoryFiles(
+        rl.Temp.String$.ValueOrNull(dirPath),
+      ),
     ),
   );
     
@@ -1021,11 +1083,11 @@ class RaylibCoreD extends RaylibModuleD {
     bool scanSubdirs,
   ) => run(
     () => 'LoadDirectoryFilesEx($basePath, $filter, $scanSubdirs)',
-    () => _refCaptureFilePathList(
+    () => rl.Temp.FilePathList$.RefCapture(
       'LoadDirectoryFilesEx_$basePath',
       rl.Core.LoadDirectoryFilesEx(
-        refStr(basePath),
-        refStr(filter),
+        rl.Temp.String$.ValueOrNull(basePath),
+        rl.Temp.String$.ValueOrNull(filter),
         scanSubdirs,
       ),
     ),
@@ -1038,7 +1100,7 @@ class RaylibCoreD extends RaylibModuleD {
     
   FilePathListD LoadDroppedFiles() => run(
     () => 'LoadDroppedFiles()',
-    () => _refCaptureFilePathList(
+    () => rl.Temp.FilePathList$.RefCapture(
       'LoadDroppedFiles',
       rl.Core.LoadDroppedFiles(),
     ),
@@ -1048,7 +1110,6 @@ class RaylibCoreD extends RaylibModuleD {
     FilePathListD files,
   ) => run(
     () => 'UnloadDroppedFiles($files)',
-    // () => rl.Core.UnloadDroppedFiles(_filePathList1(files).ref),
     () => rl.Core.UnloadDroppedFiles(files.getOriginalPointerAndDispose().ref),
   );
 
@@ -1056,7 +1117,9 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'GetFileModTime($fileName)',
-    () => rl.Core.GetFileModTime(refStr(fileName)),
+    () => rl.Core.GetFileModTime(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
 
   List<int> CompressData(
@@ -1064,9 +1127,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CompressData(data: ${data.length})',
     () {
-      final compDataSize = refInt1();
+      final compDataSize = rl.Temp.Int$.Ref1();
       final compData = rl.Core.CompressData(
-        refListUInt8(data).cast(),
+        rl.Temp.Uint8$.Array(data).cast(),
         data.length,
         compDataSize,
       );
@@ -1079,9 +1142,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DecompressData(compData: ${compData.length})',
     () {
-      final dataSize = refInt1();
+      final dataSize = rl.Temp.Int$.Ref1();
       final data = rl.Core.DecompressData(
-        refListUInt8(compData).cast(),
+        rl.Temp.Uint8$.Array(compData).cast(),
         compData.length,
         dataSize,
       );
@@ -1094,9 +1157,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'EncodeDataBase64(data: ${data.length})',
     () {
-      final outputSize = refInt1();
+      final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.EncodeDataBase64(
-        refListUInt8(data).cast(),
+        rl.Temp.Uint8$.Array(data).cast(),
         data.length,
         outputSize,
       );
@@ -1109,9 +1172,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DecodeDataBase64(data: ${data.length})',
     () {
-      final outputSize = refInt1();
+      final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.DecodeDataBase64(
-        refListUInt8(data).cast(),
+        rl.Temp.Uint8$.Array(data).cast(),
         outputSize
       );
       return rl.Temp.UnsignedChar$.asDartList(outputData, outputSize.value).cast();
@@ -1123,7 +1186,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ComputeCRC32(data: ${data.length})',
     () => rl.Core.ComputeCRC32(
-      refListUInt8(data).cast(),
+      rl.Temp.Uint8$.Array(data).cast(),
       data.length
     ),
   );
@@ -1136,7 +1199,7 @@ class RaylibCoreD extends RaylibModuleD {
       const int hashLength = 4; 
 
       final md5 = rl.Core.ComputeMD5(
-        refListUInt8(data).cast(),
+        rl.Temp.Uint8$.Array(data).cast(),
         data.length
       );
 
@@ -1152,7 +1215,7 @@ class RaylibCoreD extends RaylibModuleD {
       const int hashLength = 5; 
 
       final sha1 = rl.Core.ComputeSHA1(
-        refListUInt8(data).cast(),
+        rl.Temp.Uint8$.Array(data).cast(),
         data.length
       );
 
@@ -1164,10 +1227,10 @@ class RaylibCoreD extends RaylibModuleD {
     String? fileName,
   ) => run(
     () => 'LoadAutomationEventList($fileName)',
-    () => _refCaptureAutomationEventList(
+    () => rl.Temp.AutomationEventList$.RefCapture(
       'LoadAutomationEventList_$fileName',
       rl.Core.LoadAutomationEventList(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
   );
@@ -1176,7 +1239,6 @@ class RaylibCoreD extends RaylibModuleD {
     AutomationEventListD list,
   ) => run(
     () => 'UnloadAutomationEventList($list)',
-    // () => rl.Core.UnloadAutomationEventList(_automationEventList1(list).ref),
     () => rl.Core.UnloadAutomationEventList(list.getOriginalPointerAndDispose().ref),
   );
     
@@ -1186,8 +1248,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportAutomationEventList($list, $fileName)',
     () => rl.Core.ExportAutomationEventList(
-      _refAutomationEventList1(list).ref,
-      refStr(fileName),
+      rl.Temp.AutomationEventList$.Ref1(list).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
     
@@ -1196,7 +1258,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SetAutomationEventList($list)',
     () => rl.Core.SetAutomationEventList(
-      _refAutomationEventList1(list),
+      rl.Temp.AutomationEventList$.Ref1(list),
     ),
   );
     
@@ -1222,7 +1284,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'PlayAutomationEvent($event)',
     () => rl.Core.PlayAutomationEvent(
-      _refAutomationEvent1(event).ref,
+      rl.Temp.AutomationEvent$.Ref1(event).ref,
     ),
   );
 
@@ -1363,7 +1425,9 @@ class RaylibCoreD extends RaylibModuleD {
     String mappings,
   ) => run(
     () => 'SetGamepadMappings($mappings)',
-    () => rl.Core.SetGamepadMappings(refStr(mappings)),
+    () => rl.Core.SetGamepadMappings(
+      rl.Temp.String$.ValueOrNull(mappings),
+    ),
   );
     
   void SetGamepadVibration(
@@ -1557,7 +1621,7 @@ class RaylibCoreD extends RaylibModuleD {
     CameraMode mode,
   ) => run(
     () => 'UpdateCamera($camera, $mode)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (p) => rl.Core.UpdateCamera(p, mode.value),
     ),
   );
@@ -1569,11 +1633,11 @@ class RaylibCoreD extends RaylibModuleD {
     num zoom,
   ) => run(
     () => 'UpdateCameraPro($camera, $movement, $rotation, $zoom)',
-    () => _refUpdateCamera3D(camera,
+    () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (p) => rl.Core.UpdateCameraPro(
         p,
-        _refVector31(movement).ref,
-        _refVector32(rotation).ref,
+        rl.Temp.Vector3$.Ref1(movement).ref,
+        rl.Temp.Vector3$.Ref2(rotation).ref,
         zoom.toDouble(),
       ),
     ),
@@ -1585,7 +1649,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'SetShapesTexture($texture, $source)',
     () => rl.Core.SetShapesTexture(
-      _refTexture1(texture).ref, _refRectangle1(source).ref
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Rectangle$.Ref1(source).ref,
     ),
   );
 
@@ -1608,7 +1673,7 @@ class RaylibCoreD extends RaylibModuleD {
     () => rl.Core.DrawPixel(
       posX.toInt(),
       posY.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1618,8 +1683,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPixelV($position, $color)',
     () => rl.Core.DrawPixelV(
-      _refVector21(position).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -1636,7 +1701,7 @@ class RaylibCoreD extends RaylibModuleD {
       startPosY.toInt(),
       endPosX.toInt(),
       endPosY.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1647,9 +1712,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawLineV($startPos, $endPos, $color)',
     () => rl.Core.DrawLineV(
-      _refVector21(startPos).ref,
-      _refVector22(endPos).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector2$.Ref1(startPos).ref,
+      rl.Temp.Vector2$.Ref2(endPos).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1661,10 +1726,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawLineEx($startPos, $endPos, $thick, $color)',
     () => rl.Core.DrawLineEx(
-      _refVector21(startPos).ref,
-      _refVector22(endPos).ref,
+      rl.Temp.Vector2$.Ref1(startPos).ref,
+      rl.Temp.Vector2$.Ref2(endPos).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1674,9 +1739,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawLineStrip(points: ${points.length}, $color)',
     () => rl.Core.DrawLineStrip(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
-      _refColor1(color).ref
+      rl.Temp.Color$.Ref1(color).ref
     ),
   );
 
@@ -1688,10 +1753,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawLineBezier($startPos, $endPos, $thick, $color)',
     () => rl.Core.DrawLineBezier(
-      _refVector21(startPos).ref,
-      _refVector22(endPos).ref,
+      rl.Temp.Vector2$.Ref1(startPos).ref,
+      rl.Temp.Vector2$.Ref2(endPos).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1706,7 +1771,7 @@ class RaylibCoreD extends RaylibModuleD {
       centerX.toInt(),
       centerY.toInt(),
       radius.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1720,12 +1785,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCircleSector($center, $radius, $startAngle, $endAngle, $segments, $color)',
     () => rl.Core.DrawCircleSector(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
       startAngle.toDouble(),
       endAngle.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1739,12 +1804,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCircleSectorLines($center, $radius, $startAngle, $endAngle, $segments, $color)',
     () => rl.Core.DrawCircleSectorLines(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
       startAngle.toDouble(),
       endAngle.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1760,8 +1825,8 @@ class RaylibCoreD extends RaylibModuleD {
       centerX.toInt(),
       centerY.toInt(),
       radius.toDouble(),
-      _refColor1(inner).ref,
-      _refColor2(outer).ref,
+      rl.Temp.Color$.Ref1(inner).ref,
+      rl.Temp.Color$.Ref2(outer).ref,
     ),
   );
 
@@ -1772,9 +1837,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCircleV($center, $radius, $color)',
     () => rl.Core.DrawCircleV(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1789,7 +1854,7 @@ class RaylibCoreD extends RaylibModuleD {
       centerX.toInt(),
       centerY.toInt(),
       radius.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1800,9 +1865,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCircleLinesV($center, $radius, $color)',
     () => rl.Core.DrawCircleLinesV(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -1819,7 +1884,7 @@ class RaylibCoreD extends RaylibModuleD {
       centerY.toInt(),
       radiusH.toDouble(),
       radiusV.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1836,7 +1901,7 @@ class RaylibCoreD extends RaylibModuleD {
       centerY.toInt(),
       radiusH.toDouble(),
       radiusV.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1851,13 +1916,13 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRing($center, $innerRadius, $outerRadius, $startAngle, $endAngle, $segments, $color)',
     () => rl.Core.DrawRing(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       innerRadius.toDouble(),
       outerRadius.toDouble(),
       startAngle.toDouble(),
       endAngle.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1872,13 +1937,13 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRingLines($center, $innerRadius, $outerRadius, $startAngle, $endAngle, $segments, $color)',
     () => rl.Core.DrawRingLines(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       innerRadius.toDouble(),
       outerRadius.toDouble(),
       startAngle.toDouble(),
       endAngle.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1895,7 +1960,7 @@ class RaylibCoreD extends RaylibModuleD {
       posY.toInt(),
       width.toInt(),
       height.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1906,9 +1971,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleV($position, $size, $color)',
     () => rl.Core.DrawRectangleV(
-      _refVector21(position).ref,
-      _refVector22(size).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Vector2$.Ref2(size).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1918,8 +1983,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleRec($rec, $color)',
     () => rl.Core.DrawRectangleRec(
-      _refRectangle1(rec).ref,
-      _refColor1(color).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -1931,10 +1996,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectanglePro($rec, $origin, $rotation, $color)',
     () => rl.Core.DrawRectanglePro(
-      _refRectangle1(rec).ref,
-      _refVector21(origin).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
+      rl.Temp.Vector2$.Ref1(origin).ref,
       rotation.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -1952,8 +2017,8 @@ class RaylibCoreD extends RaylibModuleD {
       posY.toInt(),
       width.toInt(),
       height.toInt(),
-      _refColor1(top).ref,
-      _refColor2(bottom).ref,
+      rl.Temp.Color$.Ref1(top).ref,
+      rl.Temp.Color$.Ref2(bottom).ref,
     ),
   );
 
@@ -1971,8 +2036,8 @@ class RaylibCoreD extends RaylibModuleD {
       posY.toInt(),
       width.toInt(),
       height.toInt(),
-      _refColor1(left).ref,
-      _refColor2(right).ref,
+      rl.Temp.Color$.Ref1(left).ref,
+      rl.Temp.Color$.Ref2(right).ref,
     ),
   );
 
@@ -1985,11 +2050,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleGradientEx($rec, $topLeft, $bottomLeft, $topRight, $bottomRight)',
     () => rl.Core.DrawRectangleGradientEx(
-      _refRectangle1(rec).ref,
-      _refColor1(topLeft).ref,
-      _refColor2(bottomLeft).ref,
-      _refColor3(topRight).ref,
-      _refColor4(bottomRight).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
+      rl.Temp.Color$.Ref1(topLeft).ref,
+      rl.Temp.Color$.Ref2(bottomLeft).ref,
+      rl.Temp.Color$.Ref3(topRight).ref,
+      rl.Temp.Color$.Ref4(bottomRight).ref,
     ),
   );
 
@@ -2006,7 +2071,7 @@ class RaylibCoreD extends RaylibModuleD {
       posY.toInt(),
       width.toInt(),
       height.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2017,9 +2082,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleLinesEx($rec, $lineThick, $color)',
     () => rl.Core.DrawRectangleLinesEx(
-      _refRectangle1(rec).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
       lineThick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2031,10 +2096,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleRounded($rec, $roundness, $segments, $color)',
     () => rl.Core.DrawRectangleRounded(
-      _refRectangle1(rec).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2046,10 +2111,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleRoundedLines($rec, $roundness, $segments, $color)',
     () => rl.Core.DrawRectangleRoundedLines(
-      _refRectangle1(rec).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
       segments.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2062,11 +2127,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRectangleRoundedLinesEx($rec, $roundness, $segments, $lineThick, $color)',
     () => rl.Core.DrawRectangleRoundedLinesEx(
-      _refRectangle1(rec).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
       segments.toInt(),
       lineThick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -2078,10 +2143,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangle($v1, $v2, $v3, $color)',
     () => rl.Core.DrawTriangle(
-      _refVector21(v1).ref,
-      _refVector22(v2).ref,
-      _refVector23(v3).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector2$.Ref1(v1).ref,
+      rl.Temp.Vector2$.Ref2(v2).ref,
+      rl.Temp.Vector2$.Ref3(v3).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2093,10 +2158,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangleLines($v1, $v2, $v3, $color)',
     () => rl.Core.DrawTriangleLines(
-      _refVector21(v1).ref,
-      _refVector22(v2).ref,
-      _refVector23(v3).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector2$.Ref1(v1).ref,
+      rl.Temp.Vector2$.Ref2(v2).ref,
+      rl.Temp.Vector2$.Ref3(v3).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2106,9 +2171,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangleFan(points: ${points.length}, $color)',
     () => rl.Core.DrawTriangleFan(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
-      _refColor1(color).ref
+      rl.Temp.Color$.Ref1(color).ref
     ),
   );
 
@@ -2118,9 +2183,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangleStrip(points: ${points.length}, $color)',
     () => rl.Core.DrawTriangleStrip(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
-      _refColor1(color).ref
+      rl.Temp.Color$.Ref1(color).ref
     ),
   );
 
@@ -2133,11 +2198,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPoly($center, $sides, $radius, $rotation, $color)',
     () => rl.Core.DrawPoly(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
       radius.toDouble(),
       rotation.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2150,11 +2215,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPolyLines($center, $sides, $radius, $rotation, $color)',
     () => rl.Core.DrawPolyLines(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
       radius.toDouble(),
       rotation.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2168,12 +2233,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPolyLinesEx($center, $sides, $radius, $rotation, $lineThick, $color)',
     () => rl.Core.DrawPolyLinesEx(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
       radius.toDouble(),
       rotation.toDouble(),
       lineThick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2184,10 +2249,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineLinear(points: ${points.length}, $thick, $color)',
     () => rl.Core.DrawSplineLinear(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2198,10 +2263,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineBasis(points: ${points.length}, $thick, $color)',
     () => rl.Core.DrawSplineBasis(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2212,10 +2277,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineCatmullRom(points: ${points.length}, $thick, $color)',
     () => rl.Core.DrawSplineCatmullRom(
-      _refListVector2(points), 
+      rl.Temp.Vector2$.Array(points), 
       points.length, 
       thick.toDouble(), 
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2226,10 +2291,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineBezierQuadratic(points: ${points.length}, $thick, $color)',
     () => rl.Core.DrawSplineBezierQuadratic(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2240,10 +2305,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineBezierCubic(points: ${points.length}, $thick, $color)',
     () => rl.Core.DrawSplineBezierCubic(
-      _refListVector2(points),
+      rl.Temp.Vector2$.Array(points),
       points.length,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -2255,10 +2320,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineSegmentLinear($p1, $p2, $thick, $color)',
     () => rl.Core.DrawSplineSegmentLinear(
-      _refVector21(p1).ref,
-      _refVector22(p2).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(p2).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2272,12 +2337,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineSegmentBasis($p1, $p2, $p3, $p4, $thick, $color)',
     () => rl.Core.DrawSplineSegmentBasis(
-      _refVector21(p1).ref,
-      _refVector22(p2).ref,
-      _refVector23(p3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(p2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2291,12 +2356,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineSegmentCatmullRom($p1, $p2, $p3, $p4, $thick, $color)',
     () => rl.Core.DrawSplineSegmentCatmullRom(
-      _refVector21(p1).ref,
-      _refVector22(p2).ref,
-      _refVector23(p3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(p2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2309,11 +2374,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineSegmentBezierQuadratic($p1, $c2, $p3, $thick, $color)',
     () => rl.Core.DrawSplineSegmentBezierQuadratic(
-      _refVector21(p1).ref,
-      _refVector22(c2).ref,
-      _refVector23(p3).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(c2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2327,12 +2392,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSplineSegmentBezierCubic($p1, $c2, $c3, $p4, $thick, $color)',
     () => rl.Core.DrawSplineSegmentBezierCubic(
-      _refVector21(p1).ref,
-      _refVector22(c2).ref,
-      _refVector23(c3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(c2).ref,
+      rl.Temp.Vector2$.Ref3(c3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       thick.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -2343,8 +2408,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetSplinePointLinear($startPos, $endPos, $t)',
     () => rl.Core.GetSplinePointLinear(
-      _refVector21(startPos).ref,
-      _refVector22(endPos).ref,
+      rl.Temp.Vector2$.Ref1(startPos).ref,
+      rl.Temp.Vector2$.Ref2(endPos).ref,
       t.toDouble(),
     ).toD(),
   );
@@ -2358,10 +2423,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetSplinePointBasis($p1, $p2, $p3, $p4, $t)',
     () => rl.Core.GetSplinePointBasis(
-      _refVector21(p1).ref,
-      _refVector22(p2).ref,
-      _refVector23(p3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(p2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       t.toDouble(),
     ).toD(),
   );
@@ -2375,10 +2440,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetSplinePointCatmullRom($p1, $p2, $p3, $p4, $t)',
     () => rl.Core.GetSplinePointCatmullRom(
-      _refVector21(p1).ref,
-      _refVector22(p2).ref,
-      _refVector23(p3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(p2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       t.toDouble(),
     ).toD(),
   );
@@ -2391,9 +2456,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetSplinePointBezierQuad($p1, $c2, $p3, $t)',
     () => rl.Core.GetSplinePointBezierQuad(
-      _refVector21(p1).ref,
-      _refVector22(c2).ref,
-      _refVector23(p3).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(c2).ref,
+      rl.Temp.Vector2$.Ref3(p3).ref,
       t.toDouble(),
     ).toD(),
   );
@@ -2407,10 +2472,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetSplinePointBezierCubic($p1, $c2, $c3, $p4, $t)',
     () => rl.Core.GetSplinePointBezierCubic(
-      _refVector21(p1).ref,
-      _refVector22(c2).ref,
-      _refVector23(c3).ref,
-      _refVector24(p4).ref,
+      rl.Temp.Vector2$.Ref1(p1).ref,
+      rl.Temp.Vector2$.Ref2(c2).ref,
+      rl.Temp.Vector2$.Ref3(c3).ref,
+      rl.Temp.Vector2$.Ref4(p4).ref,
       t.toDouble(),
     ).toD(),
   );
@@ -2421,8 +2486,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionRecs($rec1, $rec2)',
     () => rl.Core.CheckCollisionRecs(
-      _refRectangle1(rec1).ref,
-      _refRectangle2(rec2).ref,
+      rl.Temp.Rectangle$.Ref1(rec1).ref,
+      rl.Temp.Rectangle$.Ref2(rec2).ref,
     ),
   );
 
@@ -2434,9 +2499,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionCircles($center1, $radius1, $center2, $radius2)',
     () => rl.Core.CheckCollisionCircles(
-      _refVector21(center1).ref,
+      rl.Temp.Vector2$.Ref1(center1).ref,
       radius1.toDouble(),
-      _refVector22(center2).ref,
+      rl.Temp.Vector2$.Ref2(center2).ref,
       radius2.toDouble(),
     ),
   );
@@ -2448,9 +2513,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionCircleRec($center, $radius, $rec)',
     () => rl.Core.CheckCollisionCircleRec(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
-      _refRectangle1(rec).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
     ),
   );
 
@@ -2462,10 +2527,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionCircleLine($center, $radius, $p1, $p2)',
     () => rl.Core.CheckCollisionCircleLine(
-      _refVector21(center).ref,
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
-      _refVector22(p1).ref,
-      _refVector23(p2).ref,
+      rl.Temp.Vector2$.Ref2(p1).ref,
+      rl.Temp.Vector2$.Ref3(p2).ref,
     ),
   );
 
@@ -2475,8 +2540,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionPointRec($point, $rec)',
     () => rl.Core.CheckCollisionPointRec(
-      _refVector21(point).ref,
-      _refRectangle1(rec).ref,
+      rl.Temp.Vector2$.Ref1(point).ref,
+      rl.Temp.Rectangle$.Ref1(rec).ref,
     ),
   );
     
@@ -2487,8 +2552,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionPointCircle($point, $center, $radius)',
     () => rl.Core.CheckCollisionPointCircle(
-      _refVector21(point).ref,
-      _refVector22(center).ref,
+      rl.Temp.Vector2$.Ref1(point).ref,
+      rl.Temp.Vector2$.Ref2(center).ref,
       radius.toDouble(),
     ),
   );
@@ -2501,10 +2566,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionPointTriangle($point, $p1, $p2, $p3)',
     () => rl.Core.CheckCollisionPointTriangle(
-      _refVector21(point).ref,
-      _refVector22(p1).ref,
-      _refVector23(p2).ref,
-      _refVector24(p3).ref,
+      rl.Temp.Vector2$.Ref1(point).ref,
+      rl.Temp.Vector2$.Ref2(p1).ref,
+      rl.Temp.Vector2$.Ref3(p2).ref,
+      rl.Temp.Vector2$.Ref4(p3).ref,
     ),
   );
 
@@ -2516,9 +2581,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionPointLine($point, $p1, $p2, $threshold)',
     () => rl.Core.CheckCollisionPointLine(
-      _refVector21(point).ref,
-      _refVector22(p1).ref,
-      _refVector23(p2).ref,
+      rl.Temp.Vector2$.Ref1(point).ref,
+      rl.Temp.Vector2$.Ref2(p1).ref,
+      rl.Temp.Vector2$.Ref3(p2).ref,
       threshold.toInt(),
     ),
   );
@@ -2529,8 +2594,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionPointPoly($point, points: ${points.length})',
     () => rl.Core.CheckCollisionPointPoly(
-      _refVector21(point).ref,
-      _refListVector2(points),
+      rl.Temp.Vector2$.Ref1(point).ref,
+      rl.Temp.Vector2$.Array(points),
       points.length,
     ),
   );
@@ -2543,12 +2608,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionLines($startPos1, $endPos1, $startPos2, $endPos2)',
     () {
-      final collisionPoint = _refVector25();
+      final collisionPoint = rl.Temp.Vector2$.Ref5();
       final result = rl.Core.CheckCollisionLines(
-        _refVector21(startPos1).ref,
-        _refVector22(endPos1).ref,
-        _refVector23(startPos2).ref,
-        _refVector24(endPos2).ref,
+        rl.Temp.Vector2$.Ref1(startPos1).ref,
+        rl.Temp.Vector2$.Ref2(endPos1).ref,
+        rl.Temp.Vector2$.Ref3(startPos2).ref,
+        rl.Temp.Vector2$.Ref4(endPos2).ref,
         collisionPoint,
       );
       return (result, collisionPoint.ref.toD());
@@ -2561,8 +2626,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCollisionRec($rec1, $rec2)',
     () => rl.Core.GetCollisionRec(
-      _refRectangle1(rec1).ref,
-      _refRectangle2(rec2).ref,
+      rl.Temp.Rectangle$.Ref1(rec1).ref,
+      rl.Temp.Rectangle$.Ref2(rec2).ref,
     ).toD(),
   );
 
@@ -2570,9 +2635,11 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadImage($fileName)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'LoadImage_$fileName',
-      rl.Core.LoadImage(refStr(fileName)),
+      rl.Core.LoadImage(
+        rl.Temp.String$.ValueOrNull(fileName),
+      ),
     ),
   );
     
@@ -2584,10 +2651,10 @@ class RaylibCoreD extends RaylibModuleD {
     num headerSize,
   ) => run(
     () => 'LoadImageRaw($fileName, $width, $height, ${format.name}, $headerSize)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'LoadImageRaw_${fileName}_${width}_${height}_${format.name}',
       rl.Core.LoadImageRaw(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
         width.toInt(),
         height.toInt(),
         format.value,
@@ -2601,10 +2668,13 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadImageAnim($fileName)',
     () {
-      final frames = refInt1();
-      final image = _refCaptureImage(
+      final frames = rl.Temp.Int$.Ref1();
+      final image = rl.Temp.Image$.RefCapture(
         'LoadImageAnim_$fileName',
-        rl.Core.LoadImageAnim(refStr(fileName), frames),
+        rl.Core.LoadImageAnim(
+          rl.Temp.String$.ValueOrNull(fileName),
+          frames,
+        ),
       );
       image._updateFrameCount(frames.value);
       return (image, frames.value);
@@ -2617,12 +2687,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadImageAnimFromMemory($fileType, fileData: ${fileData.length})',
     () {
-      final frames = refInt1();
-      final image = _refCaptureImage(
+      final frames = rl.Temp.Int$.Ref1();
+      final image = rl.Temp.Image$.RefCapture(
         'LoadImageAnimFromMemory_$fileType',
         rl.Core.LoadImageAnimFromMemory(
-          refStr(fileType),
-          refListUChars(fileData),
+          rl.Temp.String$.ValueOrNull(fileType),
+          rl.Temp.UnsignedChar$.Array(fileData),
           fileData.length,
           frames,
         ),
@@ -2636,11 +2706,11 @@ class RaylibCoreD extends RaylibModuleD {
     List<int> fileData,
   ) => run(
     () => 'LoadImageFromMemory($fileType, fileData: ${fileData.length})',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'LoadImageFromMemory_${fileType}_${fileData.length}',
       rl.Core.LoadImageFromMemory(
-        refStr(fileType),
-        refListUChars(fileData),
+        rl.Temp.String$.ValueOrNull(fileType),
+        rl.Temp.UnsignedChar$.Array(fileData),
         fileData.length,
       )
     ),
@@ -2650,17 +2720,17 @@ class RaylibCoreD extends RaylibModuleD {
     Texture2DD texture,
   ) => run(
     () => 'LoadImageFromTexture($texture)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'LoadImageFromTexture_${texture.id}_${texture.width}_${texture.height}',
       rl.Core.LoadImageFromTexture(
-        _refTexture1(texture).ref,
+        rl.Temp.Texture$.Ref1(texture).ref,
       ),
     ),
   );
 
   ImageD LoadImageFromScreen() => run(
     () => 'LoadImageFromScreen()',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'LoadImageFromScreen',
       rl.Core.LoadImageFromScreen(),
     ),
@@ -2670,14 +2740,18 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'IsImageValid($image)',
-    () => rl.Core.IsImageValid(_refImage1(image).ref),
+    () => rl.Core.IsImageValid(
+      rl.Temp.Image$.Ref1(image).ref,
+    ),
   );
 
   void UnloadImage(
     ImageD image,
   ) => run(
     () => 'UnloadImage($image)',
-    () => rl.Core.UnloadImage(_refImage1(image).ref),
+    () => rl.Core.UnloadImage(
+      rl.Temp.Image$.Ref1(image).ref,
+    ),
   );
 
   bool ExportImage(
@@ -2686,8 +2760,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportImage($image, $fileName)',
     () => rl.Core.ExportImage(
-      _refImage1(image).ref,
-      refStr(fileName),
+      rl.Temp.Image$.Ref1(image).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
     
@@ -2697,10 +2771,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportImageToMemory($image, $fileType)',
     () {
-      final fileSize = refInt1();
+      final fileSize = rl.Temp.Int$.Ref1();
       final data = rl.Core.ExportImageToMemory(
-        _refImage1(image).ref,
-        refStr(fileType),
+        rl.Temp.Image$.Ref1(image).ref,
+        rl.Temp.String$.ValueOrNull(fileType),
         fileSize,
       );
       return rl.Temp.UnsignedChar$.asDartList(data, fileSize.value).cast();
@@ -2713,8 +2787,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportImageAsCode($image, $fileName)',
     () => rl.Core.ExportImageAsCode(
-      _refImage1(image).ref,
-      refStr(fileName),
+      rl.Temp.Image$.Ref1(image).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
@@ -2724,12 +2798,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'GenImageColor($width, $height, $color)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageColor_${width}_$height',
       rl.Core.GenImageColor(
         width.toInt(),
         height.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -2742,14 +2816,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD end,
   ) => run(
     () => 'GenImageGradientLinear($width, $height, $direction, $start, $end)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageGradientLinear_${width}_$height',
       rl.Core.GenImageGradientLinear(
         width.toInt(),
         height.toInt(),
         direction.toInt(),
-        _refColor1(start).ref,
-        _refColor2(end).ref,
+        rl.Temp.Color$.Ref1(start).ref,
+        rl.Temp.Color$.Ref2(end).ref,
       ),
     ),
   );
@@ -2762,14 +2836,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD outer,
   ) => run(
     () => 'GenImageGradientRadial($width, $height, $density, $inner, $outer)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageGradientRadial_${width}_$height',
       rl.Core.GenImageGradientRadial(
         width.toInt(),
         height.toInt(),
         density.toDouble(),
-        _refColor1(inner).ref,
-        _refColor2(outer).ref,
+        rl.Temp.Color$.Ref1(inner).ref,
+        rl.Temp.Color$.Ref2(outer).ref,
       ),
     ),
   );
@@ -2782,14 +2856,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD outer,
   ) => run(
     () => 'GenImageGradientSquare($width, $height, $density, $inner, $outer)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageGradientSquare_${width}_$height',
       rl.Core.GenImageGradientSquare(
         width.toInt(),
         height.toInt(),
         density.toDouble(),
-        _refColor1(inner).ref,
-        _refColor2(outer).ref,
+        rl.Temp.Color$.Ref1(inner).ref,
+        rl.Temp.Color$.Ref2(outer).ref,
       ),
     ),
   );
@@ -2803,15 +2877,15 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD col2,
   ) => run(
     () => 'GenImageChecked($width, $height, $checksX, $checksY, $col1, $col2)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageChecked_${width}_$height',
       rl.Core.GenImageChecked(
         width.toInt(),
         height.toInt(),
         checksX.toInt(),
         checksY.toInt(),
-        _refColor1(col1).ref,
-        _refColor2(col2).ref,
+        rl.Temp.Color$.Ref1(col1).ref,
+        rl.Temp.Color$.Ref2(col2).ref,
       ),
     ),
   );
@@ -2822,7 +2896,7 @@ class RaylibCoreD extends RaylibModuleD {
     num factor,
   ) => run(
     () => 'GenImageWhiteNoise($width, $height, $factor)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageWhiteNoise_${width}_$height',
       rl.Core.GenImageWhiteNoise(
         width.toInt(),
@@ -2840,7 +2914,7 @@ class RaylibCoreD extends RaylibModuleD {
     num scale,
   ) => run(
     () => 'GenImagePerlinNoise($width, $height, $offsetX, $offsetY, $scale)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImagePerlinNoise_${width}_$height',
       rl.Core.GenImagePerlinNoise(
         width.toInt(),
@@ -2858,7 +2932,7 @@ class RaylibCoreD extends RaylibModuleD {
     num tileSize,
   ) => run(
     () => 'GenImageCellular($width, $height, $tileSize)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageCellular_${width}_$height',
       rl.Core.GenImageCellular(
         width.toInt(),
@@ -2874,12 +2948,12 @@ class RaylibCoreD extends RaylibModuleD {
     String text,
   ) => run(
     () => 'GenImageText($width, $height, $text)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'GenImageText_${width}_$height',
       rl.Core.GenImageText(
         width.toInt(),
         height.toInt(),
-        refStr(text),
+        rl.Temp.String$.ValueOrNull(text),
       ),
     ),
   );
@@ -2888,10 +2962,10 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageCopy($image)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'ImageCopy_${image.internalId}',
       rl.Core.ImageCopy(
-        _refImage1(image).ref,
+        rl.Temp.Image$.Ref1(image).ref,
       ),
     ),
   );
@@ -2901,11 +2975,11 @@ class RaylibCoreD extends RaylibModuleD {
     RectangleD rec,
   ) => run(
     () => 'ImageFromImage($image, $rec)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'ImageFromImage_${image.internalId}',
       rl.Core.ImageFromImage(
-        _refImage1(image).ref,
-        _refRectangle1(rec).ref,
+        rl.Temp.Image$.Ref1(image).ref,
+        rl.Temp.Rectangle$.Ref1(rec).ref,
       ),
     ),
   );
@@ -2915,10 +2989,10 @@ class RaylibCoreD extends RaylibModuleD {
     num selectedChannel,
   ) => run(
     () => 'ImageFromChannel($image, $selectedChannel)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'ImageFromChannel_${image.internalId}',
       rl.Core.ImageFromChannel(
-        _refImage1(image).ref,
+        rl.Temp.Image$.Ref1(image).ref,
         selectedChannel.toInt(),
       ),
     ),
@@ -2930,12 +3004,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageText($text, $fontSize, $color)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'ImageText_$fontSize',
       rl.Core.ImageText(
-        refStr(text),
+        rl.Temp.String$.ValueOrNull(text),
         fontSize.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -2948,14 +3022,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD tint,
   ) => run(
     () => 'ImageTextEx($font, $text, $fontSize, $spacing, $tint)',
-    () => _refCaptureImage(
+    () => rl.Temp.Image$.RefCapture(
       'ImageTextEx_${font.internalId}',
       rl.Core.ImageTextEx(
-        _refFont1(font).ref,
-        refStr(text),
+        rl.Temp.Font$.Ref1(font).ref,
+        rl.Temp.String$.ValueOrNull(text),
         fontSize.toDouble(),
         spacing.toDouble(),
-        _refColor1(tint).ref,
+        rl.Temp.Color$.Ref1(tint).ref,
       ),
     ),
   );
@@ -2965,7 +3039,7 @@ class RaylibCoreD extends RaylibModuleD {
     PixelFormat newFormat,
   ) => run(
     () => 'ImageFormat($image, ${newFormat.name})',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFormat(
         p,
         newFormat.value,
@@ -2978,10 +3052,10 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD fill,
   ) => run(
     () => 'ImageToPOT($image, $fill)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageToPOT(
         p,
-        _refColor1(fill).ref,
+        rl.Temp.Color$.Ref1(fill).ref,
       ),
     ),
   );
@@ -2991,10 +3065,10 @@ class RaylibCoreD extends RaylibModuleD {
     RectangleD crop,
   ) => run(
     () => 'ImageCrop($image, $crop)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageCrop(
         p,
-        _refRectangle1(crop).ref,
+        rl.Temp.Rectangle$.Ref1(crop).ref,
       ),
     ),
   );
@@ -3004,7 +3078,7 @@ class RaylibCoreD extends RaylibModuleD {
     num threshold,
   ) => run(
     () => 'ImageAlphaCrop($image, $threshold)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaCrop(
         p,
         threshold.toDouble(),
@@ -3018,10 +3092,10 @@ class RaylibCoreD extends RaylibModuleD {
     num threshold,
   ) => run(
     () => 'ImageAlphaClear($image, $color, $threshold)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaClear(
         p,
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
         threshold.toDouble(),
       ),
     ),
@@ -3032,10 +3106,10 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD alphaMask,
   ) => run(
     () => 'ImageAlphaMask($image, $alphaMask)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaMask(
         p,
-        _refImage2(alphaMask).ref,
+        rl.Temp.Image$.Ref2(alphaMask).ref,
       ),
     ),
   );
@@ -3044,7 +3118,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageAlphaPremultiply($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaPremultiply(p),
     ),
   );
@@ -3054,7 +3128,7 @@ class RaylibCoreD extends RaylibModuleD {
     num blurSize,
   ) => run(
     () => 'ImageBlurGaussian($image, $blurSize)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageBlurGaussian(
         p,
         blurSize.toInt(),
@@ -3067,10 +3141,10 @@ class RaylibCoreD extends RaylibModuleD {
     List<double> kernel,
   ) => run(
     () => 'ImageKernelConvolution($image, kernel: ${kernel.length})',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageKernelConvolution(
         p,
-        refListFloat(kernel),
+        rl.Temp.Float$.Array(kernel),
         kernel.length,
       ),
     ),
@@ -3082,7 +3156,7 @@ class RaylibCoreD extends RaylibModuleD {
     num newHeight,
   ) => run(
     () => 'ImageResize($image, $newWidth, $newHeight)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResize(
         p,
         newWidth.toInt(),
@@ -3097,7 +3171,7 @@ class RaylibCoreD extends RaylibModuleD {
     num newHeight,
   ) => run(
     () => 'ImageResizeNN($image, $newWidth, $newHeight)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResizeNN(
         p,
         newWidth.toInt(),
@@ -3115,14 +3189,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD fill,
   ) => run(
     () => 'ImageResizeCanvas($image, $newWidth, $newHeight, $offsetX, $offsetY, $fill)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResizeCanvas(
         p,
         newWidth.toInt(),
         newHeight.toInt(),
         offsetX.toInt(),
         offsetY.toInt(),
-        _refColor1(fill).ref,
+        rl.Temp.Color$.Ref1(fill).ref,
       ),
     ),
   );
@@ -3131,7 +3205,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageMipmaps($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageMipmaps(p),
     ),
   );
@@ -3144,7 +3218,7 @@ class RaylibCoreD extends RaylibModuleD {
     num aBpp,
   ) => run(
     () => 'ImageDither($image, $rBpp, $gBpp, $bBpp, $aBpp)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageDither(
         p,
         rBpp.toInt(),
@@ -3159,7 +3233,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageFlipVertical($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFlipVertical(p),
     ),
   );
@@ -3168,7 +3242,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageFlipHorizontal($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFlipHorizontal(p),
     ),
   );
@@ -3178,7 +3252,7 @@ class RaylibCoreD extends RaylibModuleD {
     num degrees,
   ) => run(
     () => 'ImageRotate($image, $degrees)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotate(
         p,
         degrees.toInt(),
@@ -3190,7 +3264,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageRotateCW($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotateCW(p),
     ),
   );
@@ -3199,7 +3273,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageRotateCCW($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotateCCW(p),
     ),
   );
@@ -3209,10 +3283,10 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageColorTint($image, $color)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorTint(
         p,
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3221,7 +3295,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageColorInvert($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorInvert(p),
     ),
   );
@@ -3230,7 +3304,7 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'ImageColorGrayscale($image)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorGrayscale(p),
     ),
   );
@@ -3240,7 +3314,7 @@ class RaylibCoreD extends RaylibModuleD {
     num contrast,
   ) => run(
     () => 'ImageColorContrast($image, $contrast)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorContrast(
         p,
         contrast.toDouble(),
@@ -3253,7 +3327,7 @@ class RaylibCoreD extends RaylibModuleD {
     num brightness,
   ) => run(
     () => 'ImageColorBrightness($image, $brightness)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorBrightness(
         p,
         brightness.toInt(),
@@ -3267,22 +3341,23 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD replace,
   ) => run(
     () => 'ImageColorReplace($image, $color, $replace)',
-    () => _refUpdateImage(image,
+    () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorReplace(
         p,
-        _refColor1(color).ref,
-        _refColor2(replace).ref,
+        rl.Temp.Color$.Ref1(color).ref,
+        rl.Temp.Color$.Ref2(replace).ref,
       ),
     ),
   );
 
-  // NOTE: automatically frees the allocated images
   List<ColorD> LoadImageColors(
     ImageD image,
   ) => run(
     () => 'LoadImageColors($image)',
     () {
-      final colors = rl.Core.LoadImageColors(_refImage1(image).ref);
+      final colors = rl.Core.LoadImageColors(
+        rl.Temp.Image$.Ref1(image).ref,
+      );
       final count = image.width * image.height;
       try {
         return List.generate(count, (i) => colors[i].toD());
@@ -3298,9 +3373,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadImagePalette($image, $maxPaletteSize)',
     () {
-      final colorCount = refInt1();
+      final colorCount = rl.Temp.Int$.Ref1();
       final colors = rl.Core.LoadImagePalette(
-        _refImage1(image).ref,
+        rl.Temp.Image$.Ref1(image).ref,
         maxPaletteSize.toInt(),
         colorCount,
       );
@@ -3318,7 +3393,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetImageAlphaBorder($image, $threshold)',
     () => rl.Core.GetImageAlphaBorder(
-      _refImage1(image).ref,
+      rl.Temp.Image$.Ref1(image).ref,
       threshold.toDouble(),
     ).toD(),
   );
@@ -3330,7 +3405,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetImageColor($image, $x, $y)',
     () => rl.Core.GetImageColor(
-      _refImage1(image).ref,
+      rl.Temp.Image$.Ref1(image).ref,
       x.toInt(),
       y.toInt(),
     ).toD(),
@@ -3341,10 +3416,10 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageClearBackground($dst, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageClearBackground(
         p,
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3356,12 +3431,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawPixel($dst, $posX, $posY, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawPixel(
         p,
         posX.toInt(),
         posY.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3372,11 +3447,11 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawPixelV($dst, $position, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawPixelV(
         p,
-        _refVector21(position).ref,
-        _refColor1(color).ref,
+        rl.Temp.Vector2$.Ref1(position).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3390,14 +3465,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawLine($dst, $startPosX, $startPosY, $endPosX, $endPosY, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLine(
         p,
         startPosX.toInt(),
         startPosY.toInt(),
         endPosX.toInt(),
         endPosY.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3409,12 +3484,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawLineV($dst, $start, $end, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLineV(
         p,
-        _refVector21(start).ref,
-        _refVector22(end).ref,
-        _refColor1(color).ref,
+        rl.Temp.Vector2$.Ref1(start).ref,
+        rl.Temp.Vector2$.Ref2(end).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3427,13 +3502,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawLineEx($dst, $start, $end, $thick, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLineEx(
         p,
-        _refVector21(start).ref,
-        _refVector22(end).ref,
+        rl.Temp.Vector2$.Ref1(start).ref,
+        rl.Temp.Vector2$.Ref2(end).ref,
         thick.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3446,13 +3521,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawCircle($dst, $centerX, $centerY, $radius, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircle(
         p,
         centerX.toInt(),
         centerY.toInt(),
         radius.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3464,12 +3539,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawCircleV($dst, $center, $radius, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleV(
         p,
-        _refVector21(center).ref,
+        rl.Temp.Vector2$.Ref1(center).ref,
         radius.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3482,13 +3557,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawCircleLines($dst, $centerX, $centerY, $radius, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleLines(
         p,
         centerX.toInt(),
         centerY.toInt(),
         radius.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3500,12 +3575,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawCircleLinesV($dst, $center, $radius, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleLinesV(
         p,
-        _refVector21(center).ref,
+        rl.Temp.Vector2$.Ref1(center).ref,
         radius.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3519,14 +3594,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawRectangle($dst, $posX, $posY, $width, $height, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangle(
         p,
         posX.toInt(),
         posY.toInt(),
         width.toInt(),
         height.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3538,12 +3613,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawRectangleV($dst, $position, $size, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleV(
         p,
-        _refVector21(position).ref,
-        _refVector22(size).ref,
-        _refColor1(color).ref,
+        rl.Temp.Vector2$.Ref1(position).ref,
+        rl.Temp.Vector2$.Ref2(size).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3554,11 +3629,11 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawRectangleRec($dst, $rec, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleRec(
         p,
-        _refRectangle1(rec).ref,
-        _refColor1(color).ref,
+        rl.Temp.Rectangle$.Ref1(rec).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3570,12 +3645,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawRectangleLines($dst, $rec, $thick, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleLines(
         p,
-        _refRectangle1(rec).ref,
+        rl.Temp.Rectangle$.Ref1(rec).ref,
         thick.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3588,13 +3663,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawTriangle($dst, $v1, $v2, $v3, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangle(
         p,
-        _refVector21(v1).ref,
-        _refVector22(v2).ref,
-        _refVector23(v3).ref,
-        _refColor1(color).ref,
+        rl.Temp.Vector2$.Ref1(v1).ref,
+        rl.Temp.Vector2$.Ref2(v2).ref,
+        rl.Temp.Vector2$.Ref3(v3).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3609,15 +3684,15 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD c3,
   ) => run(
     () => 'ImageDrawTriangleEx($dst, $v1, $v2, $v3, $c1, $c2, $c3)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleEx(
         p,
-        _refVector21(v1).ref,
-        _refVector22(v2).ref,
-        _refVector23(v3).ref,
-        _refColor1(c1).ref,
-        _refColor2(c2).ref,
-        _refColor3(c3).ref,
+        rl.Temp.Vector2$.Ref1(v1).ref,
+        rl.Temp.Vector2$.Ref2(v2).ref,
+        rl.Temp.Vector2$.Ref3(v3).ref,
+        rl.Temp.Color$.Ref1(c1).ref,
+        rl.Temp.Color$.Ref2(c2).ref,
+        rl.Temp.Color$.Ref3(c3).ref,
       ),
     ),
   );
@@ -3630,13 +3705,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawTriangleLines($dst, $v1, $v2, $v3, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleLines(
         p,
-        _refVector21(v1).ref,
-        _refVector22(v2).ref,
-        _refVector23(v3).ref,
-        _refColor1(color).ref,
+        rl.Temp.Vector2$.Ref1(v1).ref,
+        rl.Temp.Vector2$.Ref2(v2).ref,
+        rl.Temp.Vector2$.Ref3(v3).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3647,12 +3722,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawTriangleFan($dst, points: ${points.length}, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleFan(
         p,
-        _refListVector2(points),
+        rl.Temp.Vector2$.Array(points),
         points.length,
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3663,12 +3738,12 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawTriangleStrip($dst, points: ${points.length}, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleStrip(
         p,
-        _refListVector2(points),
+        rl.Temp.Vector2$.Array(points),
         points.length,
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3681,13 +3756,13 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD tint,
   ) => run(
     () => 'ImageDraw($dst, $src, $srcRec, $dstRec, $tint)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDraw(
         p,
-        _refImage2(src).ref,
-        _refRectangle1(srcRec).ref,
-        _refRectangle2(dstRec).ref,
-        _refColor1(tint).ref,
+        rl.Temp.Image$.Ref2(src).ref,
+        rl.Temp.Rectangle$.Ref1(srcRec).ref,
+        rl.Temp.Rectangle$.Ref2(dstRec).ref,
+        rl.Temp.Color$.Ref1(tint).ref,
       ),
     ),
   );
@@ -3701,14 +3776,14 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ImageDrawText($dst, $text, $posX, $posY, $fontSize, $color)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawText(
         p,
-        refStr(text),
+        rl.Temp.String$.ValueOrNull(text),
         posX.toInt(),
         posY.toInt(),
         fontSize.toInt(),
-        _refColor1(color).ref,
+        rl.Temp.Color$.Ref1(color).ref,
       ),
     ),
   );
@@ -3723,15 +3798,15 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD tint,
   ) => run(
     () => 'ImageDrawTextEx($dst, $font, $text, $position, $fontSize, $spacing, $tint)',
-    () => _refUpdateImage(dst,
+    () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTextEx(
         p,
-        _refFont1(font).ref,
-        refStr(text),
-        _refVector21(position).ref,
+        rl.Temp.Font$.Ref1(font).ref,
+        rl.Temp.String$.ValueOrNull(text),
+        rl.Temp.Vector2$.Ref1(position).ref,
         fontSize.toDouble(),
         spacing.toDouble(),
-        _refColor1(tint).ref,
+        rl.Temp.Color$.Ref1(tint).ref,
       ),
     ),
   );
@@ -3740,9 +3815,11 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadTexture($fileName)',
-    () => _refCaptureTexture(
+    () => rl.Temp.Texture$.RefCapture(
       'LoadTexture_$fileName',
-      rl.Core.LoadTexture(refStr(fileName)),
+      rl.Core.LoadTexture(
+        rl.Temp.String$.ValueOrNull(fileName),
+      ),
     ),
   );
 
@@ -3750,9 +3827,11 @@ class RaylibCoreD extends RaylibModuleD {
     ImageD image,
   ) => run(
     () => 'LoadTextureFromImage($image)',
-    () => _refCaptureTexture(
+    () => rl.Temp.Texture$.RefCapture(
       'LoadTextureFromImage_${image.internalId}',
-      rl.Core.LoadTextureFromImage(_refImage1(image).ref),
+      rl.Core.LoadTextureFromImage(
+        rl.Temp.Image$.Ref1(image).ref,
+      ),
     ),
   );
 
@@ -3761,10 +3840,10 @@ class RaylibCoreD extends RaylibModuleD {
     CubemapLayout layout,
   ) => run(
     () => 'LoadTextureCubemap($image, $layout)',
-    () => _refCaptureTexture(
+    () => rl.Temp.Texture$.RefCapture(
       'LoadTextureCubemap_${image.internalId}',
       rl.Core.LoadTextureCubemap(
-        _refImage1(image).ref,
+        rl.Temp.Image$.Ref1(image).ref,
         layout.value,
       ),
     ),
@@ -3775,7 +3854,7 @@ class RaylibCoreD extends RaylibModuleD {
     num height,
   ) => run(
     () => 'LoadRenderTexture($width, $height)',
-    () => _refCaptureRenderTexture(
+    () => rl.Temp.RenderTexture$.RefCapture(
       'LoadRenderTexture_${width}_$height',
       rl.Core.LoadRenderTexture(
         width.toInt(),
@@ -3788,29 +3867,34 @@ class RaylibCoreD extends RaylibModuleD {
     Texture2DD texture,
   ) => run(
     () => 'IsTextureValid($texture)',
-    () => rl.Core.IsTextureValid(_refTexture1(texture).ref),
+    () => rl.Core.IsTextureValid(
+      rl.Temp.Texture$.Ref1(texture).ref,
+    ),
   );
 
   void UnloadTexture(
     Texture2DD texture,
   ) => run(
     () => 'UnloadTexture($texture)',
-    // () => rl.Core.UnloadTexture(texture.getOriginalPointerAndDispose().ref),
-    () => rl.Core.UnloadTexture(_refTexture1(texture).ref),
+    () => rl.Core.UnloadTexture(texture.getOriginalPointerAndDispose().ref),
   );
 
   bool IsRenderTextureValid(
     RenderTexture2DD target,
   ) => run(
     () => 'IsRenderTextureValid($target)',
-    () => rl.Core.IsRenderTextureValid(_refRenderTexture1(target).ref),
+    () => rl.Core.IsRenderTextureValid(
+      rl.Temp.RenderTexture$.Ref1(target).ref,
+    ),
   );
 
   void UnloadRenderTexture(
     RenderTexture2DD target,
   ) => run(
     () => 'UnloadRenderTexture($target)',
-    () => rl.Core.UnloadRenderTexture(_refRenderTexture1(target).ref),
+    () => rl.Core.UnloadRenderTexture(
+      rl.Temp.RenderTexture$.Ref1(target).ref,
+    ),
   );
 
   void UpdateTexture(
@@ -3818,10 +3902,10 @@ class RaylibCoreD extends RaylibModuleD {
     List<int> pixels,
   ) => run(
     () => 'UpdateTexture($texture, pixels: ${pixels.length})',
-    () => _refUpdateTexture(texture,
+    () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.UpdateTexture(
         p.ref,
-        refListUInt8(pixels).cast(),
+        rl.Temp.Uint8$.Array(pixels).cast(),
       ),
     ),
   );
@@ -3832,11 +3916,11 @@ class RaylibCoreD extends RaylibModuleD {
     List<int> pixels,
   ) => run(
     () => 'UpdateTextureRec($texture, $rec, pixels: ${pixels.length})',
-    () => _refUpdateTexture(texture,
+    () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.UpdateTextureRec(
         p.ref,
-        _refRectangle1(rec).ref,
-        refListUInt8(pixels).cast(),
+        rl.Temp.Rectangle$.Ref1(rec).ref,
+        rl.Temp.Uint8$.Array(pixels).cast(),
       ),
     ),
   );
@@ -3845,7 +3929,7 @@ class RaylibCoreD extends RaylibModuleD {
     Texture2DD texture,
   ) => run(
     () => 'GenTextureMipmaps($texture)',
-    () => _refUpdateTexture(texture,
+    () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.GenTextureMipmaps(p),
     ),
   );
@@ -3855,7 +3939,7 @@ class RaylibCoreD extends RaylibModuleD {
     TextureFilter filter,
   ) => run(
     () => 'SetTextureFilter($texture, $filter)',
-    () => _refUpdateTexture(texture,
+    () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.SetTextureFilter(
         p.ref,
         filter.value,
@@ -3868,7 +3952,7 @@ class RaylibCoreD extends RaylibModuleD {
     TextureWrap wrap,
   ) => run(
     () => 'SetTextureWrap($texture, $wrap)',
-    () => _refUpdateTexture(texture,
+    () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.SetTextureWrap(
         p.ref,
         wrap.value,
@@ -3884,10 +3968,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTexture($texture, $posX, $posY, $tint)',
     () => rl.Core.DrawTexture(
-      _refTexture1(texture).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
       posX.toInt(),
       posY.toInt(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -3898,9 +3982,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextureV($texture, $position, $tint)',
     () => rl.Core.DrawTextureV(
-      _refTexture1(texture).ref,
-      _refVector21(position).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -3913,11 +3997,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextureEx($texture, $position, $rotation, $scale, $tint)',
     () => rl.Core.DrawTextureEx(
-      _refTexture1(texture).ref,
-      _refVector21(position).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
       rotation.toDouble(),
       scale.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -3929,10 +4013,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextureRec($texture, $source, $position, $tint)',
     () => rl.Core.DrawTextureRec(
-      _refTexture1(texture).ref,
-      _refRectangle1(source).ref,
-      _refVector21(position).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Rectangle$.Ref1(source).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -3948,12 +4032,12 @@ class RaylibCoreD extends RaylibModuleD {
     () {
       if (identical(source, dest)) throw StateError("You cant blah blah blah");
       rl.Core.DrawTexturePro(
-        _refTexture1(texture).ref,
-        _refRectangle1(source).ref,
-        _refRectangle2(dest).ref,
-        _refVector21(origin).ref,
+        rl.Temp.Texture$.Ref1(texture).ref,
+        rl.Temp.Rectangle$.Ref1(source).ref,
+        rl.Temp.Rectangle$.Ref2(dest).ref,
+        rl.Temp.Vector2$.Ref1(origin).ref,
         rotation.toDouble(),
-        _refColor1(tint).ref,
+        rl.Temp.Color$.Ref1(tint).ref,
       );
     },
   );
@@ -3968,12 +4052,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextureNPatch($texture, $nPatchInfo, $dest, $origin, $rotation, $tint)',
     () => rl.Core.DrawTextureNPatch(
-      _refTexture1(texture).ref,
-      _refNPatchInfo1(nPatchInfo).ref,
-      _refRectangle1(dest).ref,
-      _refVector21(origin).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.NPatchInfo$.Ref1(nPatchInfo).ref,
+      rl.Temp.Rectangle$.Ref1(dest).ref,
+      rl.Temp.Vector2$.Ref1(origin).ref,
       rotation.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -3983,8 +4067,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorIsEqual($col1, $col2)',
     () => rl.Core.ColorIsEqual(
-      _refColor1(col1).ref,
-      _refColor2(col2).ref,
+      rl.Temp.Color$.Ref1(col1).ref,
+      rl.Temp.Color$.Ref2(col2).ref,
     ),
   );
 
@@ -3994,7 +4078,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'Fade($color, $alpha)',
     () => rl.Core.Fade(
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
       alpha.toDouble(),
     ).toD(),
   );
@@ -4003,28 +4087,36 @@ class RaylibCoreD extends RaylibModuleD {
     ColorD color,
   ) => run(
     () => 'ColorToInt($color)',
-    () => rl.Core.ColorToInt(_refColor1(color).ref),
+    () => rl.Core.ColorToInt(
+      rl.Temp.Color$.Ref1(color).ref,
+    ),
   );
 
   Vector4D ColorNormalize(
     ColorD color,
   ) => run(
     () => 'ColorNormalize($color)',
-    () => rl.Core.ColorNormalize(_refColor1(color).ref).toD(),
+    () => rl.Core.ColorNormalize(
+      rl.Temp.Color$.Ref1(color).ref,
+    ).toD(),
   );
 
   ColorD ColorFromNormalized(
     Vector4D normalized,
   ) => run(
     () => 'ColorFromNormalized($normalized)',
-    () => rl.Core.ColorFromNormalized(_refVector41(normalized).ref).toD(),
+    () => rl.Core.ColorFromNormalized(
+      rl.Temp.Vector4$.Ref1(normalized).ref,
+    ).toD(),
   );
 
   Vector3D ColorToHSV(
     ColorD color,
   ) => run(
     () => 'ColorToHSV($color)',
-    () => rl.Core.ColorToHSV(_refColor1(color).ref).toD(),
+    () => rl.Core.ColorToHSV(
+      rl.Temp.Color$.Ref1(color).ref,
+    ).toD(),
   );
 
   ColorD ColorFromHSV(
@@ -4046,8 +4138,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorTint($color, $tint)',
     () => rl.Core.ColorTint(
-      _refColor1(color).ref,
-      _refColor2(tint).ref,
+      rl.Temp.Color$.Ref1(color).ref,
+      rl.Temp.Color$.Ref2(tint).ref,
     ).toD(),
   );
 
@@ -4057,7 +4149,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorBrightness($color, $factor)',
     () => rl.Core.ColorBrightness(
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
       factor.toDouble(),
     ).toD(),
   );
@@ -4068,7 +4160,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorContrast($color, $contrast)',
     () => rl.Core.ColorContrast(
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
       contrast.toDouble(),
     ).toD(),
   );
@@ -4079,7 +4171,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorAlpha($color, $alpha)',
     () => rl.Core.ColorAlpha(
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
       alpha.toDouble(),
     ).toD(),
   );
@@ -4091,9 +4183,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorAlphaBlend($dst, $src, $tint)',
     () => rl.Core.ColorAlphaBlend(
-      _refColor1(dst).ref,
-      _refColor2(src).ref,
-      _refColor3(tint).ref,
+      rl.Temp.Color$.Ref1(dst).ref,
+      rl.Temp.Color$.Ref2(src).ref,
+      rl.Temp.Color$.Ref3(tint).ref,
     ).toD(),
   );
 
@@ -4104,8 +4196,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ColorLerp($color1, $color2, $factor)',
     () => rl.Core.ColorLerp(
-      _refColor1(color1).ref,
-      _refColor2(color2).ref,
+      rl.Temp.Color$.Ref1(color1).ref,
+      rl.Temp.Color$.Ref2(color2).ref,
       factor.toDouble(),
     ).toD(),
   );
@@ -4132,7 +4224,7 @@ class RaylibCoreD extends RaylibModuleD {
 
   FontD GetFontDefault() => run(
     () => 'GetFontDefault()',
-    () => _refCaptureFont(
+    () => rl.Temp.Font$.RefCapture(
       'GetFontDefault',
       rl.Core.GetFontDefault(),
     ),
@@ -4142,9 +4234,11 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadFont($fileName)',
-    () => _refCaptureFont(
+    () => rl.Temp.Font$.RefCapture(
       'LoadFont_$fileName',
-      rl.Core.LoadFont(refStr(fileName)),
+      rl.Core.LoadFont(
+        rl.Temp.String$.ValueOrNull(fileName),
+      ),
     ),
   );
     
@@ -4156,12 +4250,12 @@ class RaylibCoreD extends RaylibModuleD {
     ]
   ) => run(
     () => 'LoadFontEx($fileName, $fontSize, codepoints: ${codepoints?.length})',
-    () => _refCaptureFont(
+    () => rl.Temp.Font$.RefCapture(
       'LoadFontEx_${fileName}_$fontSize',
       rl.Core.LoadFontEx(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
         fontSize.toInt(),
-        codepoints == null ? nullptr : refListInt(codepoints),
+        codepoints == null ? nullptr : rl.Temp.Int$.Array(codepoints),
         codePointCount?.toInt() ?? codepoints?.length ?? 0,
       ),
     ),
@@ -4173,11 +4267,11 @@ class RaylibCoreD extends RaylibModuleD {
     num firstChar,
   ) => run(
     () => 'LoadFontFromImage($image, $key, $firstChar)',
-    () => _refCaptureFont(
+    () => rl.Temp.Font$.RefCapture(
       'LoadFontFromImage_${image.internalId}',
       rl.Core.LoadFontFromImage(
-        _refImage1(image).ref,
-        _refColor1(key).ref,
+        rl.Temp.Image$.Ref1(image).ref,
+        rl.Temp.Color$.Ref1(key).ref,
         firstChar.toInt(),
       ),
     ),
@@ -4190,14 +4284,14 @@ class RaylibCoreD extends RaylibModuleD {
     List<int> codepoints,
   ) => run(
     () => 'LoadFontFromMemory($fileType, fileData: ${fileData.length}, $fontSize, codepoints: ${codepoints.length})',
-    () => _refCaptureFont(
+    () => rl.Temp.Font$.RefCapture(
       'LoadFontFromMemory_${fileType}_${fileData.length}_${fontSize}_${codepoints.length}',
       rl.Core.LoadFontFromMemory(
-        refStr(fileType),
-        refListUInt8(fileData).cast(),
+        rl.Temp.String$.ValueOrNull(fileType),
+        rl.Temp.Uint8$.Array(fileData).cast(),
         fileData.length,
         fontSize.toInt(),
-        refListInt(codepoints),
+        rl.Temp.Int$.Array(codepoints),
         codepoints.length,
       ),
     ),
@@ -4207,7 +4301,9 @@ class RaylibCoreD extends RaylibModuleD {
     FontD font,
   ) => run(
     () => 'IsFontValid($font)',
-    () => rl.Core.IsFontValid(_refFont1(font).ref),
+    () => rl.Core.IsFontValid(
+      rl.Temp.Font$.Ref1(font).ref,
+    ),
   );
 
   // TODO: ON NEW RAYLIB RELEASE - add glyphCount, now it defaults to 95
@@ -4222,10 +4318,10 @@ class RaylibCoreD extends RaylibModuleD {
     () {
       // final glyphCount = _int1();
       final glyphs = rl.Core.LoadFontData(
-        refListUChars(fileData),
+        rl.Temp.UnsignedChar$.Array(fileData),
         fileData.length,
         fontSize.toInt(),
-        codepoints == null ? nullptr : refListInt(codepoints),
+        codepoints == null ? nullptr : rl.Temp.Int$.Array(codepoints),
         codepointCount?.toInt() ?? codepoints?.length ?? 0,
         type.value,
         // glyphCount,
@@ -4249,10 +4345,10 @@ class RaylibCoreD extends RaylibModuleD {
       final recsPtr = rl.Temp.Ptr$Rectangle$.Raw();
 
       try {
-        final image = _refCaptureImage(
+        final image = rl.Temp.Image$.RefCapture(
           'GenImageFontAtlas_${glyphs.length}_${fontSize}_$padding',
           rl.Core.GenImageFontAtlas(
-            _refListGlyphInfo(glyphs),
+            glyphs.firstOrNull?.originalPointer ?? rl.Temp.GlyphInfo$.Array(glyphs),
             recsPtr,
             glyphs.length,
             fontSize.toInt(),
@@ -4277,7 +4373,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'UnloadFontData(glyphs: ${glyphs.length})',
     () => rl.Core.UnloadFontData(
-      _refListGlyphInfo(glyphs),
+      glyphs.firstOrNull?.originalPointer ?? rl.Temp.GlyphInfo$.Array(glyphs),
       glyphs.length,
     ),
   );
@@ -4286,7 +4382,9 @@ class RaylibCoreD extends RaylibModuleD {
     FontD font,
   ) => run(
     () => 'UnloadFont($font)',
-    () => rl.Core.UnloadFont(_refFont1(font).ref),
+    () => rl.Core.UnloadFont(
+      rl.Temp.Font$.Ref1(font).ref,
+    ),
   );
 
   bool ExportFontAsCode(
@@ -4295,8 +4393,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportFontAsCode($font, $fileName)',
     () => rl.Core.ExportFontAsCode(
-      _refFont1(font).ref,
-      refStr(fileName),
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
@@ -4320,11 +4418,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawText($text, $posX, $posY, $fontSize, $color)',
     () => rl.Core.DrawText(
-      refStr(text),
+      rl.Temp.String$.ValueOrNull(text),
       posX.toInt(),
       posY.toInt(),
       fontSize.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -4338,12 +4436,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextEx($font, $text, $position, $fontSize, $spacing, $tint)',
     () => rl.Core.DrawTextEx(
-      _refFont1(font).ref,
-      refStr(text),
-      _refVector21(position).ref,
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.String$.ValueOrNull(text),
+      rl.Temp.Vector2$.Ref1(position).ref,
       fontSize.toDouble(),
       spacing.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -4359,14 +4457,14 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextPro($font, $text, $position, $origin, $rotation, $fontSize, $spacing, $tint)',
     () => rl.Core.DrawTextPro(
-      _refFont1(font).ref,
-      refStr(text),
-      _refVector21(position).ref,
-      _refVector22(origin).ref,
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.String$.ValueOrNull(text),
+      rl.Temp.Vector2$.Ref1(position).ref,
+      rl.Temp.Vector2$.Ref2(origin).ref,
       rotation.toDouble(),
       fontSize.toDouble(),
       spacing.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -4379,11 +4477,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextCodepoint($font, $codepoint, $position, $fontSize, $tint)',
     () => rl.Core.DrawTextCodepoint(
-      _refFont1(font).ref,
+      rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
-      _refVector21(position).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
       fontSize.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -4397,13 +4495,13 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTextCodepoints($font, codepoints: ${codepoints.length}, $position, $fontSize, $spacing, $tint)',
     () => rl.Core.DrawTextCodepoints(
-      _refFont1(font).ref,
-      refListInt(codepoints),
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.Int$.Array(codepoints),
       codepoints.length,
-      _refVector21(position).ref,
+      rl.Temp.Vector2$.Ref1(position).ref,
       fontSize.toDouble(),
       spacing.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -4420,7 +4518,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'MeasureText($text, $fontSize)',
     () => rl.Core.MeasureText(
-      refStr(text),
+      rl.Temp.String$.ValueOrNull(text),
       fontSize.toInt(),
     ),
   );
@@ -4433,8 +4531,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'MeasureTextEx($font, $text, $fontSize, $spacing)',
     () => rl.Core.MeasureTextEx(
-      _refFont1(font).ref,
-      refStr(text),
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.String$.ValueOrNull(text),
       fontSize.toDouble(),
       spacing.toDouble(),
     ).toD(),
@@ -4448,7 +4546,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetGlyphIndex($font, $codepoint)',
     () => disableSync(() => rl.Core.GetGlyphIndex(
-        _refFont1(font).ref,
+        rl.Temp.Font$.Ref1(font).ref,
         codepoint.toInt(),
       ),
     ),
@@ -4460,7 +4558,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetGlyphInfo($font, $codepoint)',
     () => rl.Core.GetGlyphInfo(
-      _refFont1(font).ref,
+      rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
     ).toD(),
   );
@@ -4471,7 +4569,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetGlyphAtlasRec($font, $codepoint)',
     () => rl.Core.GetGlyphAtlasRec(
-      _refFont1(font).ref,
+      rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
     ).toD(),
   );
@@ -4482,7 +4580,7 @@ class RaylibCoreD extends RaylibModuleD {
     () => 'LoadUTF8(codepoints: ${codepoints.length})',
     () {
       final utf8 = rl.Core.LoadUTF8(
-        refListInt(codepoints),
+        rl.Temp.Int$.Array(codepoints),
         codepoints.length,
       );
       try {
@@ -4498,9 +4596,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadCodepoints($text)',
     () {
-      final count = refInt1();
+      final count = rl.Temp.Int$.Ref1();
       final result = rl.Core.LoadCodepoints(
-        refStr(text),
+        rl.Temp.String$.ValueOrNull(text),
         count,
       );
       try {
@@ -4515,7 +4613,9 @@ class RaylibCoreD extends RaylibModuleD {
     String text,
   ) => run(
     () => 'GetCodepointCount($text)',
-    () => rl.Core.GetCodepointCount(refStr(text)),
+    () => rl.Core.GetCodepointCount(
+      rl.Temp.String$.ValueOrNull(text),
+    ),
   );
 
   (int codepoint, int codepointSize) GetCodepoint(
@@ -4523,8 +4623,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCodepoint($text)',
     () {
-      final size = refInt1();
-      final codepoint = rl.Core.GetCodepoint(refStr(text), size);
+      final size = rl.Temp.Int$.Ref1();
+      final codepoint = rl.Core.GetCodepoint(
+        rl.Temp.String$.ValueOrNull(text),
+        size,
+      );
       return (codepoint, size.value);
     },
   );
@@ -4534,8 +4637,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCodepointNext($text)',
     () {
-      final size = refInt1();
-      final codepoint = rl.Core.GetCodepointNext(refStr(text), size);
+      final size = rl.Temp.Int$.Ref1();
+      final codepoint = rl.Core.GetCodepointNext(
+        rl.Temp.String$.ValueOrNull(text),
+        size,
+      );
       return (codepoint, size.value);
     },
   );
@@ -4545,8 +4651,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetCodepointPrevious($text)',
     () {
-      final size = refInt1();
-      final codepoint = rl.Core.GetCodepointPrevious(refStr(text), size);
+      final size = rl.Temp.Int$.Ref1();
+      final codepoint = rl.Core.GetCodepointPrevious(
+        rl.Temp.String$.ValueOrNull(text),
+        size,
+      );
       return (codepoint, size.value);
     },
   );
@@ -4556,7 +4665,7 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CodepointToUTF8($codepoint)',
     () {
-      final size = refInt1();
+      final size = rl.Temp.Int$.Ref1();
       final text = rl.Core.CodepointToUTF8(
         codepoint.toInt(),
         size,
@@ -4572,9 +4681,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawLine3D($startPos, $endPos, $color)',
     () => rl.Core.DrawLine3D(
-      _refVector31(startPos).ref,
-      _refVector32(endPos).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(startPos).ref,
+      rl.Temp.Vector3$.Ref2(endPos).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4584,8 +4693,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPoint3D($position, $color)',
     () => rl.Core.DrawPoint3D(
-      _refVector31(position).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4598,11 +4707,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCircle3D($center, $radius, $rotationAxis, $rotationAngle, $color)',
     () => rl.Core.DrawCircle3D(
-      _refVector31(center).ref,
+      rl.Temp.Vector3$.Ref1(center).ref,
       radius.toDouble(),
-      _refVector32(rotationAxis).ref,
+      rl.Temp.Vector3$.Ref2(rotationAxis).ref,
       rotationAngle.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4614,10 +4723,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangle3D($v1, $v2, $v3, $color)',
     () => rl.Core.DrawTriangle3D(
-      _refVector31(v1).ref,
-      _refVector32(v2).ref,
-      _refVector33(v3).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(v1).ref,
+      rl.Temp.Vector3$.Ref2(v2).ref,
+      rl.Temp.Vector3$.Ref3(v3).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4627,9 +4736,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawTriangleStrip3D(points: ${points.length}, $color)',
     () => rl.Core.DrawTriangleStrip3D(
-      _refListVector3(points),
+      rl.Temp.Vector3$.Array(points),
       points.length,
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4642,11 +4751,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCube($position, $width, $height, $length, $color)',
     () => rl.Core.DrawCube(
-      _refVector31(position).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       width.toDouble(),
       height.toDouble(),
       length.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4657,9 +4766,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCubeV($position, $size, $color)',
     () => rl.Core.DrawCubeV(
-      _refVector31(position).ref,
-      _refVector32(size).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(size).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4672,11 +4781,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCubeWires($position, $width, $height, $length, $color)',
     () => rl.Core.DrawCubeWires(
-      _refVector31(position).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       width.toDouble(),
       height.toDouble(),
       length.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4687,9 +4796,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCubeWiresV($position, $size, $color)',
     () => rl.Core.DrawCubeWiresV(
-      _refVector31(position).ref,
-      _refVector32(size).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(size).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4700,9 +4809,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSphere($centerPos, $radius, $color)',
     () => rl.Core.DrawSphere(
-      _refVector31(centerPos).ref,
+      rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4715,11 +4824,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSphereEx($centerPos, $radius, $rings, $slices, $color)',
     () => rl.Core.DrawSphereEx(
-      _refVector31(centerPos).ref,
+      rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
       rings.toInt(),
       slices.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4732,11 +4841,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawSphereWires($centerPos, $radius, $rings, $slices, $color)',
     () => rl.Core.DrawSphereWires(
-      _refVector31(centerPos).ref,
+      rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
       rings.toInt(),
       slices.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4750,12 +4859,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCylinder($position, $radiusTop, $radiusBottom, $height, $slices, $color)',
     () => rl.Core.DrawCylinder(
-      _refVector31(position).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       radiusTop.toDouble(),
       radiusBottom.toDouble(),
       height.toDouble(),
       slices.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4769,12 +4878,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCylinderEx($startPos, $endPos, $startRadius, $endRadius, $sides, $color)',
     () => rl.Core.DrawCylinderEx(
-      _refVector31(startPos).ref,
-      _refVector32(endPos).ref,
+      rl.Temp.Vector3$.Ref1(startPos).ref,
+      rl.Temp.Vector3$.Ref2(endPos).ref,
       startRadius.toDouble(),
       endRadius.toDouble(),
       sides.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4788,12 +4897,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCylinderWires($position, $radiusTop, $radiusBottom, $height, $slices, $color)',
     () => rl.Core.DrawCylinderWires(
-      _refVector31(position).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       radiusTop.toDouble(),
       radiusBottom.toDouble(),
       height.toDouble(),
       slices.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4807,12 +4916,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCylinderWiresEx($startPos, $endPos, $startRadius, $endRadius, $sides, $color)',
     () => rl.Core.DrawCylinderWiresEx(
-      _refVector31(startPos).ref,
-      _refVector32(endPos).ref,
+      rl.Temp.Vector3$.Ref1(startPos).ref,
+      rl.Temp.Vector3$.Ref2(endPos).ref,
       startRadius.toDouble(),
       endRadius.toDouble(),
       sides.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4826,12 +4935,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCapsule($startPos, $endPos, $radius, $slices, $rings, $color)',
     () => rl.Core.DrawCapsule(
-      _refVector31(startPos).ref,
-      _refVector32(endPos).ref,
+      rl.Temp.Vector3$.Ref1(startPos).ref,
+      rl.Temp.Vector3$.Ref2(endPos).ref,
       radius.toDouble(),
       slices.toInt(),
       rings.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4845,12 +4954,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawCapsuleWires($startPos, $endPos, $radius, $slices, $rings, $color)',
     () => rl.Core.DrawCapsuleWires(
-      _refVector31(startPos).ref,
-      _refVector32(endPos).ref,
+      rl.Temp.Vector3$.Ref1(startPos).ref,
+      rl.Temp.Vector3$.Ref2(endPos).ref,
       radius.toDouble(),
       slices.toInt(),
       rings.toInt(),
-      _refColor1(color).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4861,9 +4970,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawPlane($centerPos, $size, $color)',
     () => rl.Core.DrawPlane(
-      _refVector31(centerPos).ref,
-      _refVector21(size).ref,
-      _refColor1(color).ref,
+      rl.Temp.Vector3$.Ref1(centerPos).ref,
+      rl.Temp.Vector2$.Ref1(size).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4873,8 +4982,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawRay($ray, $color)',
     () => rl.Core.DrawRay(
-      _refRay1(ray).ref,
-      _refColor1(color).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
     
@@ -4893,9 +5002,11 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadModel($fileName)',
-    () => _refCaptureModel(
+    () => rl.Temp.Model$.RefCapture(
       'LoadModel_$fileName',
-      rl.Core.LoadModel(refStr(fileName)),
+      rl.Core.LoadModel(
+        rl.Temp.String$.ValueOrNull(fileName),
+      ),
     ),
   );
     
@@ -4903,9 +5014,11 @@ class RaylibCoreD extends RaylibModuleD {
     MeshD mesh,
   ) => run(
     () => 'LoadModelFromMesh($mesh)',
-    () => _refCaptureModel(
+    () => rl.Temp.Model$.RefCapture(
       'LoadModelFromMesh_${mesh.internalId}',
-      rl.Core.LoadModelFromMesh(_refMesh1(mesh).ref),
+      rl.Core.LoadModelFromMesh(
+        rl.Temp.Mesh$.Ref1(mesh).ref,
+      ),
     ),
   );
     
@@ -4913,7 +5026,9 @@ class RaylibCoreD extends RaylibModuleD {
     ModelD model,
   ) => run(
     () => 'IsModelValid($model)',
-    () => rl.Core.IsModelValid(_refModel1(model).ref),
+    () => rl.Core.IsModelValid(
+      rl.Temp.Model$.Ref1(model).ref,
+    ),
   );
     
   void UnloadModel(
@@ -4928,7 +5043,9 @@ class RaylibCoreD extends RaylibModuleD {
     ModelD model,
   ) => run(
     () => 'GetModelBoundingBox($model)',
-    () => rl.Core.GetModelBoundingBox(_refModel1(model).ref).toD(),
+    () => rl.Core.GetModelBoundingBox(
+      rl.Temp.Model$.Ref1(model).ref,
+    ).toD(),
   );
     
   void DrawModel(
@@ -4939,10 +5056,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModel($model, $position, $scale, $tint)',
     () => rl.Core.DrawModel(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       scale.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -4956,12 +5073,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModelEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
     () => rl.Core.DrawModelEx(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
-      _refVector32(rotationAxis).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(rotationAxis).ref,
       rotationAngle.toDouble(),
-      _refVector33(scale).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Vector3$.Ref3(scale).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -4973,10 +5090,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModelWires($model, $position, $scale, $tint)',
     () => rl.Core.DrawModelWires(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       scale.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -4990,12 +5107,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModelWiresEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
     () => rl.Core.DrawModelWiresEx(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
-      _refVector32(rotationAxis).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(rotationAxis).ref,
       rotationAngle.toDouble(),
-      _refVector33(scale).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Vector3$.Ref3(scale).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -5007,10 +5124,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModelPoints($model, $position, $scale, $tint)',
     () => rl.Core.DrawModelPoints(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       scale.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -5024,12 +5141,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawModelPointsEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
     () => rl.Core.DrawModelPointsEx(
-      _refModel1(model).ref,
-      _refVector31(position).ref,
-      _refVector32(rotationAxis).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(rotationAxis).ref,
       rotationAngle.toDouble(),
-      _refVector33(scale).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Vector3$.Ref3(scale).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
     
@@ -5039,8 +5156,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawBoundingBox($box, $color)',
     () => rl.Core.DrawBoundingBox(
-      _refBoundingBox1(box).ref,
-      _refColor1(color).ref,
+      rl.Temp.BoundingBox$.Ref1(box).ref,
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
@@ -5053,11 +5170,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawBillboard($camera, $texture, $position, $scale, $tint)',
     () => rl.Core.DrawBillboard(
-      _refCamera3D1(camera).ref,
-      _refTexture1(texture).ref,
-      _refVector31(position).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
       scale.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -5071,12 +5188,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawBillboardRec($camera, $texture, $source, $position, $size, $tint)',
     () => rl.Core.DrawBillboardRec(
-      _refCamera3D1(camera).ref,
-      _refTexture1(texture).ref,
-      _refRectangle1(source).ref,
-      _refVector31(position).ref,
-      _refVector21(size).ref,
-      _refColor1(tint).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Rectangle$.Ref1(source).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector2$.Ref1(size).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
 
@@ -5093,15 +5210,15 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawBillboardPro($camera, $texture, $source, $position, $up, $size, $origin, $rotation, $tint)',
     () => rl.Core.DrawBillboardPro(
-      _refCamera3D1(camera).ref,
-      _refTexture1(texture).ref,
-      _refRectangle1(source).ref,
-      _refVector31(position).ref,
-      _refVector32(up).ref,
-      _refVector21(size).ref,
-      _refVector22(origin).ref,
+      rl.Temp.Camera3D$.Ref1(camera).ref,
+      rl.Temp.Texture$.Ref1(texture).ref,
+      rl.Temp.Rectangle$.Ref1(source).ref,
+      rl.Temp.Vector3$.Ref1(position).ref,
+      rl.Temp.Vector3$.Ref2(up).ref,
+      rl.Temp.Vector2$.Ref1(size).ref,
+      rl.Temp.Vector2$.Ref2(origin).ref,
       rotation.toDouble(),
-      _refColor1(tint).ref,
+      rl.Temp.Color$.Ref1(tint).ref,
     ),
   );
   
@@ -5110,7 +5227,7 @@ class RaylibCoreD extends RaylibModuleD {
     bool dynamic,
   ) => run(
     () => 'UploadMesh($mesh, $dynamic)',
-    () => _refUpdateMesh(mesh,
+    () => rl.Temp.Mesh$.RefUpdate1(mesh,
       (p) => rl.Core.UploadMesh(p, dynamic),
     ),
   );
@@ -5123,9 +5240,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'UpdateMeshBuffer($mesh, $index, data: ${data.length}, $offset)',
     () => rl.Core.UpdateMeshBuffer(
-      _refMesh1(mesh).ref,
+      rl.Temp.Mesh$.Ref1(mesh).ref,
       index.toInt(),
-      refListInt(data).cast(),
+      rl.Temp.Int$.Array(data).cast(),
       data.length,
       offset.toInt(),
     ),
@@ -5135,7 +5252,9 @@ class RaylibCoreD extends RaylibModuleD {
     MeshD mesh,
   ) => run(
     () => 'UnloadMesh($mesh)',
-    () => rl.Core.UnloadMesh(_refMesh1(mesh).ref),
+    () => rl.Core.UnloadMesh(
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+    ),
   );
     
   void DrawMesh(
@@ -5145,9 +5264,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawMesh($mesh, $material, transform: $transform)',
     () => rl.Core.DrawMesh(
-      _refMesh1(mesh).ref,
-      _refMaterial1(material).ref,
-      _refMatrix1(transform).ref,
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+      rl.Temp.Material$.Ref1(material).ref,
+      rl.Temp.Matrix$.Ref1(transform).ref,
     ),
   );
     
@@ -5158,9 +5277,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'DrawMeshInstanced($mesh, $material, transforms: ${transforms.length})',
     () => rl.Core.DrawMeshInstanced(
-      _refMesh1(mesh).ref,
-      _refMaterial1(material).ref,
-      _refListMatrix(transforms),
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+      rl.Temp.Material$.Ref1(material).ref,
+      rl.Temp.Matrix$.Array(transforms),
       transforms.length,
     ),
   );
@@ -5169,14 +5288,16 @@ class RaylibCoreD extends RaylibModuleD {
     MeshD mesh,
   ) => run(
     () => 'GetMeshBoundingBox($mesh)',
-    () => rl.Core.GetMeshBoundingBox(_refMesh1(mesh).ref).toD(),
+    () => rl.Core.GetMeshBoundingBox(
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+    ).toD(),
   );
     
   void GenMeshTangents(
     MeshD mesh,
   ) => run(
     () => 'GenMeshTangents($mesh)',
-    () => _refUpdateMesh(mesh,
+    () => rl.Temp.Mesh$.RefUpdate1(mesh,
       (p) => rl.Core.GenMeshTangents(p),
     ),
   );
@@ -5186,7 +5307,10 @@ class RaylibCoreD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'ExportMesh($mesh, $fileName)',
-    () => rl.Core.ExportMesh(_refMesh1(mesh).ref, refStr(fileName)),
+    () => rl.Core.ExportMesh(
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
   );
     
   bool ExportMeshAsCode(
@@ -5195,8 +5319,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'ExportMeshAsCode($mesh, $fileName)',
     () => rl.Core.ExportMeshAsCode(
-      _refMesh1(mesh).ref,
-      refStr(fileName),
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
     
@@ -5205,7 +5329,7 @@ class RaylibCoreD extends RaylibModuleD {
     num radius,
   ) => run(
     () => 'GenMeshPoly($sides, $radius)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshPoly_${sides}_${radius.toDouble()}',
       rl.Core.GenMeshPoly(
         sides.toInt(),
@@ -5221,7 +5345,7 @@ class RaylibCoreD extends RaylibModuleD {
     num resZ,
   ) => run(
     () => 'GenMeshPlane($width, $length, $resX, $resZ)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshPlane_${width.toDouble()}_${length.toDouble()}',
       rl.Core.GenMeshPlane(
         width.toDouble(),
@@ -5238,7 +5362,7 @@ class RaylibCoreD extends RaylibModuleD {
     num length,
   ) => run(
     () => 'GenMeshCube($width, $height, $length)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshCube_${width.toDouble()}_${height.toDouble()}_${length.toDouble()}',
       rl.Core.GenMeshCube(
         width.toDouble(),
@@ -5254,7 +5378,7 @@ class RaylibCoreD extends RaylibModuleD {
     num slices,
   ) => run(
     () => 'GenMeshSphere($radius, $rings, $slices)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshSphere_${radius.toDouble()}_${rings}_$slices',
       rl.Core.GenMeshSphere(
         radius.toDouble(),
@@ -5270,7 +5394,7 @@ class RaylibCoreD extends RaylibModuleD {
     num slices,
   ) => run(
     () => 'GenMeshHemiSphere($radius, $rings, $slices)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshHemiSphere_${radius.toDouble()}_${rings}_$slices',
       rl.Core.GenMeshHemiSphere(
         radius.toDouble(),
@@ -5286,7 +5410,7 @@ class RaylibCoreD extends RaylibModuleD {
     num slices,
   ) => run(
     () => 'GenMeshCylinder($radius, $height, $slices)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshCylinder_${radius.toDouble()}_${height.toDouble()}_$slices',
       rl.Core.GenMeshCylinder(
         radius.toDouble(),
@@ -5302,7 +5426,7 @@ class RaylibCoreD extends RaylibModuleD {
     num slices,
   ) => run(
     () => 'GenMeshCone($radius, $height, $slices)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshCone_${radius.toDouble()}_${height.toDouble()}_$slices',
       rl.Core.GenMeshCone(
         radius.toDouble(),
@@ -5319,7 +5443,7 @@ class RaylibCoreD extends RaylibModuleD {
     num sides,
   ) => run(
     () => 'GenMeshTorus($radius, $size, $radSeg, $sides)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshTorus_${radius.toDouble()}_${size.toDouble()}_${radSeg}_$sides',
       rl.Core.GenMeshTorus(
         radius.toDouble(),
@@ -5337,7 +5461,7 @@ class RaylibCoreD extends RaylibModuleD {
     num sides,
   ) => run(
     () => 'GenMeshKnot($radius, $size, $radSeg, $sides)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshKnot_${radius.toDouble()}_${size.toDouble()}_${radSeg}_$sides',
       rl.Core.GenMeshKnot(
         radius.toDouble(),
@@ -5353,11 +5477,11 @@ class RaylibCoreD extends RaylibModuleD {
     Vector3D size,
   ) => run(
     () => 'GenMeshHeightmap($heightmap, $size)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshHeightmap_${heightmap.internalId}',
       rl.Core.GenMeshHeightmap(
-        _refImage1(heightmap).ref,
-        _refVector31(size).ref,
+        rl.Temp.Image$.Ref1(heightmap).ref,
+        rl.Temp.Vector3$.Ref1(size).ref,
       ),
     ),
   );
@@ -5367,11 +5491,11 @@ class RaylibCoreD extends RaylibModuleD {
     Vector3D cubeSize,
   ) => run(
     () => 'GenMeshCubicmap($cubicmap, $cubeSize)',
-    () => _refCaptureMesh(
+    () => rl.Temp.Mesh$.RefCapture(
       'GenMeshCubicmap_${cubicmap.internalId}',
       rl.Core.GenMeshCubicmap(
-        _refImage1(cubicmap).ref,
-        _refVector31(cubeSize).ref,
+        rl.Temp.Image$.Ref1(cubicmap).ref,
+        rl.Temp.Vector3$.Ref1(cubeSize).ref,
       ),
     ),
   );
@@ -5381,15 +5505,18 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadMaterials($fileName)',
     () {
-      final materialCount = refInt1();
-      final materials = rl.Core.LoadMaterials(refStr(fileName), materialCount);
+      final materialCount = rl.Temp.Int$.Ref1();
+      final materials = rl.Core.LoadMaterials(
+        rl.Temp.String$.ValueOrNull(fileName),
+        materialCount,
+      );
       return List.generate(materialCount.value, (i) => materials[i].toD());
     },
   );
     
   MaterialD LoadMaterialDefault() => run(
     () => 'LoadMaterialDefault()',
-    () => _refCaptureMaterial(
+    () => rl.Temp.Material$.RefCapture(
       'LoadMaterialDefault',
       rl.Core.LoadMaterialDefault(),
     ),
@@ -5399,7 +5526,9 @@ class RaylibCoreD extends RaylibModuleD {
     MaterialD material,
   ) => run(
     () => 'IsMaterialValid($material)',
-    () => rl.Core.IsMaterialValid(_refMaterial1(material).ref),
+    () => rl.Core.IsMaterialValid(
+      rl.Temp.Material$.Ref1(material).ref,
+    ),
   );
     
   void UnloadMaterial(
@@ -5407,7 +5536,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'UnloadMaterial($material)',
     // () => rl.Core.UnloadMaterial(material.getOriginalPointerAndDispose().ref),
-    () => rl.Core.UnloadMaterial(_refMaterial1(material).ref),
+    () => rl.Core.UnloadMaterial(
+      rl.Temp.Material$.Ref1(material).ref,
+    ),
   );
     
   void SetMaterialTexture(
@@ -5443,13 +5574,12 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'LoadModelAnimations($fileName)',
     () {
-      final animCount = refInt1();
-      final anims = rl.Core.LoadModelAnimations(refStr(fileName), animCount);
+      final animCount = rl.Temp.Int$.Ref1();
+      final anims = rl.Core.LoadModelAnimations(
+        rl.Temp.String$.ValueOrNull(fileName),
+        animCount,
+      );
       return List.generate(animCount.value, (i) => (anims + i).toD());
-      // return List.generate(animCount.value, (i) => _captureModelAnimation(
-      //   'LoadModelAnimations_${fileName}_$i',
-      //   anims[i],
-      // ));
     },
   );
     
@@ -5459,8 +5589,8 @@ class RaylibCoreD extends RaylibModuleD {
     num frame,
   ) => run(
     () => 'UpdateModelAnimation($model, $anim, $frame)',
-    () => _refUpdateModel(model,
-      (pm) => _refUpdateModelAnimation(anim,
+    () => rl.Temp.Model$.RefUpdate1(model,
+      (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
         (pma) => rl.Core.UpdateModelAnimation(
           pm.ref,
           pma.ref,
@@ -5476,8 +5606,8 @@ class RaylibCoreD extends RaylibModuleD {
     num frame,
   ) => run(
     () => 'UpdateModelAnimationBones($model, $anim, $frame)',
-    () => _refUpdateModel(model,
-      (pm) => _refUpdateModelAnimation(anim,
+    () => rl.Temp.Model$.RefUpdate1(model,
+      (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
         (pma) => rl.Core.UpdateModelAnimationBones(
           pm.ref,
           pma.ref,
@@ -5491,7 +5621,9 @@ class RaylibCoreD extends RaylibModuleD {
     ModelAnimationD anim,
   ) => run(
     () => 'UnloadModelAnimation($anim)',
-    () => rl.Core.UnloadModelAnimation(_refModelAnimation1(anim).ref),
+    () => rl.Core.UnloadModelAnimation(
+      rl.Temp.ModelAnimation$.Ref1(anim).ref,
+    ),
   );
     
   void UnloadModelAnimations(
@@ -5499,11 +5631,6 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'UnloadModelAnimations(animations: ${animations.length})',
     () => animations.forEach(UnloadModelAnimation),
-    // NOTE: raylib automatically frees the pointer of `_doModelAnims`, but that's `rl.Temp` owned
-    //       which results in double-free
-    // rl.Core.UnloadModelAnimations(
-    //   _doModelAnims(animations), animations.length
-    // );
   );
     
   bool IsModelAnimationValid(
@@ -5512,8 +5639,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'IsModelAnimationValid($model, $anim)',
     () => rl.Core.IsModelAnimationValid(
-      _refModel1(model).ref,
-      _refModelAnimation1(anim).ref,
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.ModelAnimation$.Ref1(anim).ref,
     ),
   );
     
@@ -5525,9 +5652,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionSpheres($center1, $radius1, $center2, $radius2)',
     () => rl.Core.CheckCollisionSpheres(
-      _refVector31(center1).ref,
+      rl.Temp.Vector3$.Ref1(center1).ref,
       radius1.toDouble(),
-      _refVector32(center2).ref,
+      rl.Temp.Vector3$.Ref2(center2).ref,
       radius2.toDouble(),
     ),
   );
@@ -5538,8 +5665,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionBoxes($box1, $box2)',
     () => rl.Core.CheckCollisionBoxes(
-      _refBoundingBox1(box1).ref,
-      _refBoundingBox2(box2).ref,
+      rl.Temp.BoundingBox$.Ref1(box1).ref,
+      rl.Temp.BoundingBox$.Ref2(box2).ref,
     ),
   );
     
@@ -5550,8 +5677,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'CheckCollisionBoxSphere($box, $center, $radius)',
     () => rl.Core.CheckCollisionBoxSphere(
-      _refBoundingBox1(box).ref,
-      _refVector31(center).ref,
+      rl.Temp.BoundingBox$.Ref1(box).ref,
+      rl.Temp.Vector3$.Ref1(center).ref,
       radius.toDouble(),
     ),
   );
@@ -5563,8 +5690,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetRayCollisionSphere($ray, $center, $radius)',
     () => rl.Core.GetRayCollisionSphere(
-      _refRay1(ray).ref,
-      _refVector31(center).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.Vector3$.Ref1(center).ref,
       radius.toDouble(),
     ).toD(),
   );
@@ -5575,8 +5702,8 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetRayCollisionBox($ray, $box)',
     () => rl.Core.GetRayCollisionBox(
-      _refRay1(ray).ref,
-      _refBoundingBox1(box).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.BoundingBox$.Ref1(box).ref,
     ).toD(),
   );
     
@@ -5587,9 +5714,9 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetRayCollisionMesh($ray, $mesh, $transform)',
     () => rl.Core.GetRayCollisionMesh(
-      _refRay1(ray).ref,
-      _refMesh1(mesh).ref,
-      _refMatrix1(transform).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.Mesh$.Ref1(mesh).ref,
+      rl.Temp.Matrix$.Ref1(transform).ref,
     ).toD(),
   );
     
@@ -5601,10 +5728,10 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetRayCollisionTriangle($ray, $p1, $p2, $p3)',
     () => rl.Core.GetRayCollisionTriangle(
-      _refRay1(ray).ref,
-      _refVector31(p1).ref,
-      _refVector32(p2).ref,
-      _refVector33(p3).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.Vector3$.Ref1(p1).ref,
+      rl.Temp.Vector3$.Ref2(p2).ref,
+      rl.Temp.Vector3$.Ref3(p3).ref,
     ).toD(),
   );
     
@@ -5617,11 +5744,11 @@ class RaylibCoreD extends RaylibModuleD {
   ) => run(
     () => 'GetRayCollisionQuad($ray, $p1, $p2, $p3, $p4)',
     () => rl.Core.GetRayCollisionQuad(
-      _refRay1(ray).ref,
-      _refVector31(p1).ref,
-      _refVector32(p2).ref,
-      _refVector33(p3).ref,
-      _refVector34(p4).ref,
+      rl.Temp.Ray$.Ref1(ray).ref,
+      rl.Temp.Vector3$.Ref1(p1).ref,
+      rl.Temp.Vector3$.Ref2(p2).ref,
+      rl.Temp.Vector3$.Ref3(p3).ref,
+      rl.Temp.Vector3$.Ref4(p4).ref,
     ).toD(),
   );
 }

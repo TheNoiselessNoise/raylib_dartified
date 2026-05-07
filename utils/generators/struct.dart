@@ -163,7 +163,7 @@ class StructWriter extends Writable {
       padln('int get ${f.name}Length => $length;');
 
       if (f.kind is CharArrayField) {
-        padln('String get ${f.name}String => ${f.name}.toD(${f.name}Length);');
+        padln('String get ${f.name}String => ${f.name}.toDartString(${f.name}Length);');
       }
     }
     writeln('}');
@@ -270,7 +270,7 @@ class StructWriter extends Writable {
       case EnumField():
         pad2ln('${f.name}: ${f.name},');
       case CharArrayField():
-        pad2ln('${f.name}: ${f.name}.toD(${f.name}Length),');
+        pad2ln('${f.name}: ${f.name}.toDartString(${f.name}Length),');
       case IntArrayField(:final length) || FloatArrayField(:final length):
         pad2ln('${f.name}: .generate($length, (i) => ${f.name}[i]),');
       case PrimitiveField():
@@ -451,7 +451,7 @@ class StructWriter extends Writable {
       case EnumField():
         pad2ln('${f.name} = o.${f.name};');
       case CharArrayField():
-        pad2ln('${f.name} = o.${f.name}.toD(${f.name}Length);');
+        pad2ln('${f.name} = o.${f.name}.toDartString(${f.name}Length);');
       case IntArrayField(:final length) || FloatArrayField(:final length):
         pad2ln('${f.name} = .generate($length, (i) => o.${f.name}[i]);');
       case PrimitiveField():
@@ -490,7 +490,7 @@ class StructWriter extends Writable {
       case EnumField():
         pad2ln('p.${f.name}AsInt = ${f.name}.value;');
       case CharArrayField():
-        pad2ln('p.${f.name}.setString(${f.name}, ${f.name}Length);');
+        pad2ln('p.${f.name}.setDartString(${f.name}, ${f.name}Length);');
       case IntArrayField(:final length) || FloatArrayField(:final length):
         pad2ln('for (int i = 0; i < $length; i++) p.${f.name}[i] = ${f.name}[i];');
       case PrimitiveField():
@@ -537,6 +537,9 @@ class StructWriter extends Writable {
     padln('  allocatorFunc:        ([count = 1]) => calloc<$c>(count),');
     padln('  sizeOfFunc:           ()            => sizeOf<$c>(),');
     padln('  castFunc:             (ptr)         => ptr.cast<$c>(),');
+    padln('  refFunc:              (ptr)         => ptr.ref,');
+    padln('  setRefFunc:           (ptr, v)      => ptr..ref = v,');
+    padln('  ptrToDFunc:           (ptr)         => ptr.toD(),');
     padln('  printerFunc:          (ptr)         => ptr.toD().signature(),');
     padln('  indexerFunc:          (ptr, i)      => ptr[i],');
     padln('  writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),');

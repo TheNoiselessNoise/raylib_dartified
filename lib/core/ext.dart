@@ -32,7 +32,7 @@ extension CharPointerEx on Pointer<Char> {
 extension IterableIntEx on Iterable<int> {
   int get or => fold(0, (acc, f) => acc | f);
 
-  String toDartString() => String.fromCharCodes(takeWhile((c) => c != 0));
+  String toDartString() => .fromCharCodes(takeWhile((c) => c != 0));
 }
 
 extension IterableFEnumEx on Iterable<FEnum> {
@@ -40,15 +40,15 @@ extension IterableFEnumEx on Iterable<FEnum> {
 }
 
 extension GetStringFromArrayChar on Array<Char> {
-  String toD(int length) {
+  String toDartString(int length) {
     final units = List.generate(length, (i) => this[i]);
     final end = units.indexOf(0);
-    return String.fromCharCodes(end == -1 ? units : units.sublist(0, end));
+    return .fromCharCodes(end == -1 ? units : units.sublist(0, end));
   }
 
-  void setString(String value, int maxLength) {
+  void setDartString(String value, [int? maxLength]) {
     final bytes = utf8.encode(value);
-    final len = bytes.length.clamp(0, maxLength - 1);
+    final len = bytes.length.clamp(0, (maxLength ?? value.length) - 1);
     for (int i = 0; i < len; i++) this[i] = bytes[i];
     this[len] = 0;
   }

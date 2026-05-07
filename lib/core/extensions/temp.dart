@@ -204,19 +204,81 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
     for (int i = 0; i < count; i++) indexSetterFunc(p, i, init(i));
     return p;
   }
+
+  /// Writes [o] into slot `'1'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '1')`. Use [RefOrNull1] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case.
+  Pointer<T> Ref1([X? o]) => Value(o, '1');
+
+  /// Writes [o] into slot `'2'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '2')`. Use [RefOrNull2] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<T> Ref2([X? o]) => Value(o, '2');
+
+  /// Writes [o] into slot `'3'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '3')`. Use [RefOrNull3] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<T> Ref3([X? o]) => Value(o, '3');
+
+  /// Writes [o] into slot `'4'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '4')`. Use [RefOrNull4] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<T> Ref4([X? o]) => Value(o, '4');
+
+  /// Writes [o] into slot `'1'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref1] when the C API uses a null pointer to signal "no value".
+  Pointer<T> RefOrNull1(X? o) => o == null ? nullptr : Ref1(o);
+
+  /// Writes [o] into slot `'2'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref2] when the C API uses a null pointer to signal "no value".
+  Pointer<T> RefOrNull2(X? o) => o == null ? nullptr : Ref2(o);
+
+  /// Writes [o] into slot `'3'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref3] when the C API uses a null pointer to signal "no value".
+  Pointer<T> RefOrNull3(X? o) => o == null ? nullptr : Ref3(o);
+
+  /// Writes [o] into slot `'4'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref4] when the C API uses a null pointer to signal "no value".
+  Pointer<T> RefOrNull4(X? o) => o == null ? nullptr : Ref4(o);
 }
 
 /// Extends [RTempLitAlloc] with typed-list bulk copy support.
 ///
 /// [asTypedList] bridges between the native pointer and a Dart [TypedDataList],
 /// enabling zero-copy bulk memory operations.
-abstract class RTempLitTypedListAlloc<X, T extends NativeType> extends RTempLitAlloc<X, T> {
+abstract class RTempLitTypedListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitAlloc<X, T> {
+
+  /// Returns a Dart [List<X>] view of [length] integer elements at [ptr].
+  List<int> Function(Pointer<T> ptr, int length) asDartList;
 
   /// Wraps [ptr] as a Dart [TypedDataList] of [length] elements.
   ///
   /// The list is a **view** into native memory, so mutations are reflected
   /// immediately in the native buffer.
   TypedDataList Function(Pointer<T> ptr, int length) asTypedList;
+
+  /// Wraps a region of [buffer] as a Dart [L] list without copying.
+  ///
+  /// Acts as the inverse of [asTypedList]: where [asTypedList] views native
+  /// memory as a Dart typed list, [fromBuffer] views an existing Dart
+  /// [ByteBuffer] as an [L], allowing [FromTypedData] to bulk-copy foreign
+  /// typed data into a slot without going through raw bytes.
+  ///
+  /// [offsetInBytes] and [length] are forwarded directly to the underlying
+  /// `buffer.asXxxList()` call, so the usual alignment and bounds rules apply.
+  L Function(ByteBuffer buffer, int offsetInBytes, int length) fromBuffer;
 
   RTempLitTypedListAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -225,11 +287,13 @@ abstract class RTempLitTypedListAlloc<X, T extends NativeType> extends RTempLitA
     required super.sizeOfFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
+    required this.asDartList,
     required this.asTypedList,
+    required this.fromBuffer,
   });
 
   @override
-  String signature() => '$runtimeType<$X, $T>';
+  String signature() => '$runtimeType<$X, $T, $L>';
 
   /// Copies [length] elements from [src] into a slot and returns the pointer.
   ///
@@ -241,16 +305,39 @@ abstract class RTempLitTypedListAlloc<X, T extends NativeType> extends RTempLitA
     asTypedList(castFunc(p), length).setAll(0, srcList);
     return p;
   }
+
+  /// Allocates (or reuses) a slot of [length] elements and returns its pointer,
+  /// without writing any data into it.
+  ///
+  /// Unlike [Array] or [Fill], the contents are left uninitialized, useful when
+  /// the buffer will be populated by a C call rather than from Dart.
+  /// [key] defaults to `'Sized<T>'`.
+  Pointer<T> Sized(int length, {String? key}) => At(key ?? 'Sized$T', length);
+
+  /// Copies [length] elements from a typed list [list] into a slot.
+  Pointer<T> FromTypedList(L list, {String? key}) {
+    final p = Sized(list.length, key: key);
+    asTypedList(castFunc(p), list.length).setAll(0, list);
+    return p;
+  }
+
+  Pointer<T> FromTypedData(TypedData data, {String? key}) {
+    final elemSize = sizeOfFunc();
+    final byteCount = data.lengthInBytes;
+    assert(byteCount % elemSize == 0);
+    final length = byteCount ~/ elemSize;
+    final p = Sized(length, key: key);
+    final src = fromBuffer(data.buffer, data.offsetInBytes, length);
+    asTypedList(castFunc(p), length).setAll(0, src);
+    return p;
+  }
 }
 
 /// A typed-list allocator for integer native types (e.g. `Int32`, `Uint8`).
 ///
 /// Adds byte-serialisation helpers that convert the native integer array to
 /// big-endian or little-endian byte lists, useful for hashing and I/O.
-class RTempLitTypedIntListAlloc<X, T extends NativeType> extends RTempLitTypedListAlloc<X, T> {
-
-  /// Returns a Dart [List<int>] view of [length] integer elements at [ptr].
-  List<int> Function(Pointer<T> ptr, int length) asDartList;
+class RTempLitTypedIntListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, T, L> {
 
   RTempLitTypedIntListAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -259,8 +346,9 @@ class RTempLitTypedIntListAlloc<X, T extends NativeType> extends RTempLitTypedLi
     required super.sizeOfFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
+    required super.asDartList,
     required super.asTypedList,
-    required this.asDartList,
+    required super.fromBuffer,
   });
 
   @override
@@ -288,8 +376,7 @@ class RTempLitTypedIntListAlloc<X, T extends NativeType> extends RTempLitTypedLi
 }
 
 /// A typed-list allocator for floating-point native types (e.g. `Float`, `Double`).
-class RTempLitTypedFloatListAlloc<X, T extends NativeType> extends RTempLitTypedListAlloc<X, T> {
-  List<double> Function(Pointer<T> ptr, int length) asDartList;
+class RTempLitTypedFloatListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, T, L> {
 
   RTempLitTypedFloatListAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -298,8 +385,9 @@ class RTempLitTypedFloatListAlloc<X, T extends NativeType> extends RTempLitTyped
     required super.sizeOfFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
+    required super.asDartList,
     required super.asTypedList,
-    required this.asDartList,
+    required super.fromBuffer,
   });
 
   @override
@@ -371,6 +459,19 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// Casts an untyped [Pointer] to `Pointer<T>`.
   Pointer<T> Function(Pointer ptr) castFunc;
 
+  /// Returns the [T] struct value referenced by [ptr].
+  ///
+  /// Equivalent to `ptr.ref`, provided as a function because Dart's type system
+  /// does not allow calling `.ref` directly on a generic `Pointer<T>`.
+  T Function(Pointer<T> ptr) refFunc;
+
+  /// Assigns [value] to the struct referenced by [ptr].
+  ///
+  /// Equivalent to `ptr.ref = value`, provided as a function for the same
+  /// reason as [refFunc]: Dart's type system does not permit assignment
+  /// through `.ref` on a generic `Pointer<T>`.
+  Pointer<T> Function(Pointer<T> ptr, T value) setRefFunc;
+
   /// Returns the size in bytes of a single [T] struct.
   int Function() sizeOfFunc;
   
@@ -389,16 +490,23 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// Overwrites the [i]-th element of the array at [ptr] with [value].
   void Function(Pointer<T> ptr, int i, T value) indexSetterFunc;
 
+  /// Converts a `Pointer<T>` to its Dart-side [X] wrapper, referencing the
+  /// memory at that pointer.
+  X Function(Pointer<T> ptr) ptrToDFunc;
+
   RTempStructAlloc(super.temp, super.name, {
     required super.allocatorFunc,
     required super.printerFunc,
     required this.castFunc,
+    required this.refFunc,
+    required this.setRefFunc,
     required this.sizeOfFunc,
     required this.writeIntoIndexedFunc,
     required this.writeIntoFunc,
     required this.setCFunc,
     required this.indexerFunc,
     required this.indexSetterFunc,
+    required this.ptrToDFunc,
   });
 
   @override
@@ -497,6 +605,144 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
     key = _slotKey(key);
     return value?.toC(_temp, key) ?? At(key);
   }
+
+  /// Returns a `Pointer<T>` for the given [X] value, using [nullptr] when
+  /// [x] is `null`.
+  ///
+  /// Allocates into a numbered slot (1–8) via the corresponding [ToC] call,
+  /// so the lifetime is tied to the owning [RTemp] frame.
+  Pointer<T> _Ref(X? x, String key) => x == null ? nullptr : ToC(x, key);
+
+  /// Allocates [o] into slot `'1'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate1] if the callee may write back into the pointer.
+  Pointer<T> Ref1([X? o]) => _Ref(o, '1');
+
+  /// Allocates [o] into slot `'2'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate2] if the callee may write back into the pointer.
+  Pointer<T> Ref2([X? o]) => _Ref(o, '2');
+
+  /// Allocates [o] into slot `'3'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate3] if the callee may write back into the pointer.
+  Pointer<T> Ref3([X? o]) => _Ref(o, '3');
+
+  /// Allocates [o] into slot `'4'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate4] if the callee may write back into the pointer.
+  Pointer<T> Ref4([X? o]) => _Ref(o, '4');
+
+  /// Allocates [o] into slot `'5'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate5] if the callee may write back into the pointer.
+  Pointer<T> Ref5([X? o]) => _Ref(o, '5');
+
+  /// Allocates [o] into slot `'6'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate6] if the callee may write back into the pointer.
+  Pointer<T> Ref6([X? o]) => _Ref(o, '6');
+
+  /// Allocates [o] into slot `'7'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate7] if the callee may write back into the pointer.
+  Pointer<T> Ref7([X? o]) => _Ref(o, '7');
+
+  /// Allocates [o] into slot `'8'`, or returns [nullptr] if [o] is `null`.
+  ///
+  /// Intended as a short-lived scratch reference within a single C call.
+  /// Use [RefUpdate8] if the callee may write back into the pointer.
+  Pointer<T> Ref8([X? o]) => _Ref(o, '8');
+
+  /// Allocates [o] into a numbered slot, invokes [fn] with the resulting
+  /// pointer, then syncs any mutations back from native memory into [o] via
+  /// [setCFunc].
+  ///
+  /// If [o] is `null`, passes [nullptr] to [fn] and skips the sync step.
+  /// This is the foundation for the [RefUpdate1]–[RefUpdate8] helpers, covering
+  /// the common pattern of passing a mutable struct pointer to a C function that
+  /// may write into it.
+  V _RefUpdate$<V>(
+    X? o,
+    V Function(Pointer<T> p) fn,
+    Pointer<T> Function(X) alloc,
+  ) {
+    final p = o != null ? alloc(o) : nullptr;
+    final result = fn(p);
+    if (o != null) o.setC(refFunc(p));
+    return result;
+  }
+
+  /// Allocates [o] into slot `'1'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref1] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate1<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref1);
+
+  /// Allocates [o] into slot `'2'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref2] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate2<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref2);
+
+  /// Allocates [o] into slot `'3'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref3] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate3<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref3);
+
+  /// Allocates [o] into slot `'4'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref4] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate4<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref4);
+
+  /// Allocates [o] into slot `'5'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref5] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate5<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref5);
+
+  /// Allocates [o] into slot `'6'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref6] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate6<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref6);
+
+  /// Allocates [o] into slot `'7'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref7] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate7<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref7);
+
+  /// Allocates [o] into slot `'8'`, calls [fn] with the pointer, then
+  /// syncs native memory back into [o] via [setCFunc].
+  ///
+  /// Use this instead of [Ref8] when the C function writes into the struct and
+  /// you want the mutations reflected in [o] after the call.
+  V RefUpdate8<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate$(o, fn, Ref8);
+
+  /// Copies the native struct [o] into a uniquely-keyed tracked slot and
+  /// returns its Dart-side [X] wrapper via [ptrToDFunc].
+  ///
+  /// Unique key of the form `'<id>_<key>'` is generated from the allocator's
+  /// ID counter. The returned [X] holds a live reference into temp-managed
+  /// memory.
+  X RefCapture(String key, T o) => ptrToDFunc(setRefFunc(At('${_temp.nextId()}_$key'), o));
 }
 
 /// A slot-based allocator for arrays of **pointers** to native structs of type [T].
@@ -639,6 +885,13 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
     return _writeStringToSlot(slot, text);
   }
 
+  /// Writes [text] into slot using `Value` and returns its pointer, or returns [nullptr]
+  /// if [text] is `null`.
+  ///
+  /// Use this instead of [Value] when the C API uses a null pointer to signal "no value".
+  Pointer<Char> ValueOrNull([String? text, String? key])
+    => text == null ? nullptr : Value(text, key);
+
   /// Returns the `Pointer<Char>` for the keyed slot [key], optionally writing
   /// [text] into it.
   ///
@@ -729,6 +982,54 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
     }
     _reset();
   }
+
+  /// Writes [o] into slot `'1'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '1')`. Use [RefOrNull1] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case.
+  Pointer<Char> Ref1([String? o]) => ValueAt('1', o);
+
+  /// Writes [o] into slot `'2'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '2')`. Use [RefOrNull2] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<Char> Ref2([String? o]) => ValueAt('2', o);
+
+  /// Writes [o] into slot `'3'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '3')`. Use [RefOrNull3] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<Char> Ref3([String? o]) => ValueAt('3', o);
+
+  /// Writes [o] into slot `'4'` and returns its pointer.
+  ///
+  /// Shorthand for `Value(o, '4')`. Use [RefOrNull4] if [o] may be `null`
+  /// and the callee expects [nullptr] in that case..
+  Pointer<Char> Ref4([String? o]) => ValueAt('4', o);
+
+  /// Writes [o] into slot `'1'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref1] when the C API uses a null pointer to signal "no value".
+  Pointer<Char> RefOrNull1(String? o) => o == null ? nullptr : Ref1(o);
+
+  /// Writes [o] into slot `'2'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref2] when the C API uses a null pointer to signal "no value".
+  Pointer<Char> RefOrNull2(String? o) => o == null ? nullptr : Ref2(o);
+
+  /// Writes [o] into slot `'3'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref3] when the C API uses a null pointer to signal "no value".
+  Pointer<Char> RefOrNull3(String? o) => o == null ? nullptr : Ref3(o);
+
+  /// Writes [o] into slot `'4'` and returns its pointer, or returns [nullptr]
+  /// if [o] is `null`.
+  ///
+  /// Use this instead of [Ref4] when the C API uses a null pointer to signal "no value".
+  Pointer<Char> RefOrNull4(String? o) => o == null ? nullptr : Ref4(o);
 }
 
 class RaylibTemp extends RaylibModule {
@@ -764,35 +1065,37 @@ class RaylibTemp extends RaylibModule {
 
   late RTempLitAlloc<bool, Bool> Bool$;
   late RTempLitPtrAlloc<bool, Bool> Ptr$Bool$;
-  late RTempLitTypedFloatListAlloc<num, Float> Float$;
+  late RTempLitTypedFloatListAlloc<num, Float, Float32List> Float$;
   late RTempLitPtrAlloc<num, Float> Ptr$Float$;
-  late RTempLitTypedIntListAlloc<num, Int> Int$;
+  late RTempLitTypedFloatListAlloc<num, Float, Float64List> Float64$;
+  late RTempLitPtrAlloc<num, Float> Ptr$Float64$;
+  late RTempLitTypedIntListAlloc<num, Int, Int32List> Int$;
   late RTempLitPtrAlloc<num, Int> Ptr$Int$;
-  late RTempLitTypedIntListAlloc<num, UnsignedInt> UnsignedInt$;
+  late RTempLitTypedIntListAlloc<num, UnsignedInt, Uint32List> UnsignedInt$;
   late RTempLitPtrAlloc<num, UnsignedInt> Ptr$UnsignedInt$;
-  late RTempLitTypedIntListAlloc<num, Int8> Int8$;
+  late RTempLitTypedIntListAlloc<num, Int8, Int8List> Int8$;
   late RTempLitPtrAlloc<num, Int8> Ptr$Int8$;
-  late RTempLitTypedIntListAlloc<num, Uint8> Uint8$;
+  late RTempLitTypedIntListAlloc<num, Uint8, Uint8List> Uint8$;
   late RTempLitPtrAlloc<num, Uint8> Ptr$Uint8$;
-  late RTempLitTypedIntListAlloc<num, Int16> Int16$;
+  late RTempLitTypedIntListAlloc<num, Int16, Int16List> Int16$;
   late RTempLitPtrAlloc<num, Int16> Ptr$Int16$;
-  late RTempLitTypedIntListAlloc<num, Uint16> Uint16$;
+  late RTempLitTypedIntListAlloc<num, Uint16, Uint16List> Uint16$;
   late RTempLitPtrAlloc<num, Uint16> Ptr$Uint16$;
-  late RTempLitTypedIntListAlloc<num, Int32> Int32$;
+  late RTempLitTypedIntListAlloc<num, Int32, Int32List> Int32$;
   late RTempLitPtrAlloc<num, Int32> Ptr$Int32$;
-  late RTempLitTypedIntListAlloc<num, Uint32> Uint32$;
+  late RTempLitTypedIntListAlloc<num, Uint32, Uint32List> Uint32$;
   late RTempLitPtrAlloc<num, Uint32> Ptr$Uint32$;
-  late RTempLitTypedIntListAlloc<num, Int64> Int64$;
+  late RTempLitTypedIntListAlloc<num, Int64, Int64List> Int64$;
   late RTempLitPtrAlloc<num, Int64> Ptr$Int64$;
-  late RTempLitTypedIntListAlloc<num, Uint64> Uint64$;
+  late RTempLitTypedIntListAlloc<num, Uint64, Uint64List> Uint64$;
   late RTempLitPtrAlloc<num, Uint64> Ptr$Uint64$;
-  late RTempLitTypedIntListAlloc<num, Char> Char$;
+  late RTempLitTypedIntListAlloc<num, Char, Int8List> Char$;
   late RTempLitPtrAlloc<num, Char> Ptr$Char$;
-  late RTempLitTypedIntListAlloc<num, UnsignedChar> UnsignedChar$;
+  late RTempLitTypedIntListAlloc<num, UnsignedChar, Uint8List> UnsignedChar$;
   late RTempLitPtrAlloc<num, UnsignedChar> Ptr$UnsignedChar$;
-  late RTempLitTypedIntListAlloc<num, UnsignedShort> UnsignedShort$;
+  late RTempLitTypedIntListAlloc<num, UnsignedShort, Uint16List> UnsignedShort$;
   late RTempLitPtrAlloc<num, UnsignedShort> Ptr$UnsignedShort$;
-  late RTempLitTypedIntListAlloc<num, Short> Short$;
+  late RTempLitTypedIntListAlloc<num, Short, Int16List> Short$;
   late RTempLitPtrAlloc<num, Short> Ptr$Short$;
   late RTempStructAlloc<AutomationEventListC, AutomationEventListD> AutomationEventList$;
   late RTempStructPtrAlloc<AutomationEventListC, AutomationEventListD> Ptr$AutomationEventList$;
@@ -897,11 +1200,11 @@ class RaylibTemp extends RaylibModule {
   RTempLitAlloc<X, T> allocLit<X, T extends NativeType>(String key) =>
     _getCustomAllocatorOrThrow(key) as RTempLitAlloc<X, T>;
 
-  RTempLitTypedIntListAlloc<X, T> allocIntList<X, T extends NativeType>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitTypedIntListAlloc<X, T>;
+  RTempLitTypedIntListAlloc<X, T, L> allocIntList<X, T extends NativeType, L extends TypedDataList>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitTypedIntListAlloc<X, T, L>;
 
-  RTempLitTypedFloatListAlloc<X, T> allocFloatList<X, T extends NativeType>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitTypedFloatListAlloc<X, T>;
+  RTempLitTypedFloatListAlloc<X, T, L> allocFloatList<X, T extends NativeType, L extends TypedDataList>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitTypedFloatListAlloc<X, T, L>;
 
   RTempLitPtrAlloc<X, T> allocLitPtr<X, T extends NativeType>(String key) =>
     _getCustomAllocatorOrThrow(key) as RTempLitPtrAlloc<X, T>;
@@ -949,14 +1252,33 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toDouble(),
       sizeOfFunc: () => sizeOf<Float>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Float$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asFloat32List(offset, len),
     );
 
     Ptr$Float$ = .new(this, r'Ptr$Float$',
       allocatorFunc: ([count = 1]) => calloc<Pointer<Float>>(count),
       printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Float>> at this level',
       rawArrayFunc: Float$.RawArray,
+    );
+
+    Float64$ = .new(this, r'Float64$',
+      allocatorFunc: ([count = 1]) => calloc<Float>(count),
+      castFunc: (ptr) => ptr.cast<Float>(),
+      indexSetterFunc: (ptr, i, value) => ptr[i] = value.toDouble(),
+      literalSetterFunc: (ptr, value) => ptr.value = value.toDouble(),
+      sizeOfFunc: () => sizeOf<Float>(),
+      printerFunc: (ptr) => ptr.value.toString(),
+      asDartList: (ptr, length) => Float64$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asFloat64List(offset, len),
+    );
+
+    Ptr$Float64$ = .new(this, r'Ptr$Float64$',
+      allocatorFunc: ([count = 1]) => calloc<Pointer<Float>>(count),
+      printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<Float>> at this level',
+      rawArrayFunc: Float64$.RawArray,
     );
 
     Int$ = .new(this, r'Int$',
@@ -966,8 +1288,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Int>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Int32>().asTypedList(length),
       asDartList: (ptr, length) => Int$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Int32>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt32List(offset, len),
     );
 
     Ptr$Int$ = .new(this, r'Ptr$Int$',
@@ -983,8 +1306,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<UnsignedInt>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Uint32>().asTypedList(length),
       asDartList: (ptr, length) => UnsignedInt$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Uint32>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint32List(offset, len),
     );
 
     Ptr$UnsignedInt$ = .new(this, r'Ptr$UnsignedInt$',
@@ -1000,8 +1324,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Int8>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Int8$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt8List(offset, len),
     );
 
     Ptr$Int8$ = .new(this, r'Ptr$Int8$',
@@ -1017,8 +1342,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Uint8>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Uint8$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint8List(offset, len),
     );
 
     Ptr$Uint8$ = .new(this, r'Ptr$Uint8$',
@@ -1034,8 +1360,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Int16>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Int16$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt16List(offset, len),
     );
 
     Ptr$Int16$ = .new(this, r'Ptr$Int16$',
@@ -1051,8 +1378,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Uint16>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Uint16$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint16List(offset, len),
     );
 
     Ptr$Uint16$ = .new(this, r'Ptr$Uint16$',
@@ -1068,8 +1396,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Int32>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Int32$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt32List(offset, len),
     );
 
     Ptr$Int32$ = .new(this, r'Ptr$Int32$',
@@ -1085,8 +1414,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Uint32>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Uint32$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint32List(offset, len),
     );
 
     Ptr$Uint32$ = .new(this, r'Ptr$Uint32$',
@@ -1102,8 +1432,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Int64>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Int64$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt64List(offset, len),
     );
 
     Ptr$Int64$ = .new(this, r'Ptr$Int64$',
@@ -1119,8 +1450,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Uint64>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.asTypedList(length),
       asDartList: (ptr, length) => Uint64$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint64List(offset, len),
     );
 
     Ptr$Uint64$ = .new(this, r'Ptr$Uint64$',
@@ -1136,8 +1468,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Char>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Int8>().asTypedList(length),
       asDartList: (ptr, length) => Char$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Int8>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt8List(offset, len),
     );
 
     Ptr$Char$ = .new(this, r'Ptr$Char$',
@@ -1153,8 +1486,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<UnsignedChar>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Uint8>().asTypedList(length),
       asDartList: (ptr, length) => UnsignedChar$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Uint8>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint8List(offset, len),
     );
 
     Ptr$UnsignedChar$ = .new(this, r'Ptr$UnsignedChar$',
@@ -1170,8 +1504,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<UnsignedShort>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Uint16>().asTypedList(length),
       asDartList: (ptr, length) => UnsignedShort$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Uint16>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint16List(offset, len),
     );
 
     Ptr$UnsignedShort$ = .new(this, r'Ptr$UnsignedShort$',
@@ -1187,8 +1522,9 @@ class RaylibTemp extends RaylibModule {
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
       sizeOfFunc: () => sizeOf<Short>(),
       printerFunc: (ptr) => ptr.value.toString(),
-      asTypedList: (ptr, length) => ptr.cast<Int16>().asTypedList(length),
       asDartList: (ptr, length) => Short$.asTypedList(ptr, length).toList().cast(),
+      asTypedList: (ptr, length) => ptr.cast<Int16>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt16List(offset, len),
     );
 
     Ptr$Short$ = .new(this, r'Ptr$Short$',
@@ -1198,15 +1534,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     AutomationEventList$ = .new(this, r'AutomationEventList$',
-      allocatorFunc: ([count = 1]) => calloc<AutomationEventListC>(count),
-      castFunc: (ptr) => ptr.cast<AutomationEventListC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<AutomationEventListC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<AutomationEventListC>(count),
+      sizeOfFunc:           ()            => sizeOf<AutomationEventListC>(),
+      castFunc:             (ptr)         => ptr.cast<AutomationEventListC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$AutomationEventList$ = .new(this, r'Ptr$AutomationEventList$',
@@ -1218,15 +1557,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     AutomationEvent$ = .new(this, r'AutomationEvent$',
-      allocatorFunc: ([count = 1]) => calloc<AutomationEventC>(count),
-      castFunc: (ptr) => ptr.cast<AutomationEventC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<AutomationEventC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<AutomationEventC>(count),
+      sizeOfFunc:           ()            => sizeOf<AutomationEventC>(),
+      castFunc:             (ptr)         => ptr.cast<AutomationEventC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$AutomationEvent$ = .new(this, r'Ptr$AutomationEvent$',
@@ -1238,15 +1580,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     AudioStream$ = .new(this, r'AudioStream$',
-      allocatorFunc: ([count = 1]) => calloc<AudioStreamC>(count),
-      castFunc: (ptr) => ptr.cast<AudioStreamC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<AudioStreamC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<AudioStreamC>(count),
+      sizeOfFunc:           ()            => sizeOf<AudioStreamC>(),
+      castFunc:             (ptr)         => ptr.cast<AudioStreamC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$AudioStream$ = .new(this, r'Ptr$AudioStream$',
@@ -1258,15 +1603,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     BoneInfo$ = .new(this, r'BoneInfo$',
-      allocatorFunc: ([count = 1]) => calloc<BoneInfoC>(count),
-      castFunc: (ptr) => ptr.cast<BoneInfoC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<BoneInfoC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<BoneInfoC>(count),
+      sizeOfFunc:           ()            => sizeOf<BoneInfoC>(),
+      castFunc:             (ptr)         => ptr.cast<BoneInfoC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$BoneInfo$ = .new(this, r'Ptr$BoneInfo$',
@@ -1278,15 +1626,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     BoundingBox$ = .new(this, r'BoundingBox$',
-      allocatorFunc: ([count = 1]) => calloc<BoundingBoxC>(count),
-      castFunc: (ptr) => ptr.cast<BoundingBoxC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<BoundingBoxC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<BoundingBoxC>(count),
+      sizeOfFunc:           ()            => sizeOf<BoundingBoxC>(),
+      castFunc:             (ptr)         => ptr.cast<BoundingBoxC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$BoundingBox$ = .new(this, r'Ptr$BoundingBox$',
@@ -1298,15 +1649,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Camera2D$ = .new(this, r'Camera2D$',
-      allocatorFunc: ([count = 1]) => calloc<Camera2DC>(count),
-      castFunc: (ptr) => ptr.cast<Camera2DC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<Camera2DC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<Camera2DC>(count),
+      sizeOfFunc:           ()            => sizeOf<Camera2DC>(),
+      castFunc:             (ptr)         => ptr.cast<Camera2DC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Camera2D$ = .new(this, r'Ptr$Camera2D$',
@@ -1318,15 +1672,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Camera3D$ = .new(this, r'Camera3D$',
-      allocatorFunc: ([count = 1]) => calloc<Camera3DC>(count),
-      castFunc: (ptr) => ptr.cast<Camera3DC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<Camera3DC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<Camera3DC>(count),
+      sizeOfFunc:           ()            => sizeOf<Camera3DC>(),
+      castFunc:             (ptr)         => ptr.cast<Camera3DC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Camera3D$ = .new(this, r'Ptr$Camera3D$',
@@ -1338,15 +1695,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Color$ = .new(this, r'Color$',
-      allocatorFunc: ([count = 1]) => calloc<ColorC>(count),
-      castFunc: (ptr) => ptr.cast<ColorC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<ColorC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<ColorC>(count),
+      sizeOfFunc:           ()            => sizeOf<ColorC>(),
+      castFunc:             (ptr)         => ptr.cast<ColorC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Color$ = .new(this, r'Ptr$Color$',
@@ -1358,15 +1718,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     FilePathList$ = .new(this, r'FilePathList$',
-      allocatorFunc: ([count = 1]) => calloc<FilePathListC>(count),
-      castFunc: (ptr) => ptr.cast<FilePathListC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<FilePathListC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<FilePathListC>(count),
+      sizeOfFunc:           ()            => sizeOf<FilePathListC>(),
+      castFunc:             (ptr)         => ptr.cast<FilePathListC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$FilePathList$ = .new(this, r'Ptr$FilePathList$',
@@ -1378,15 +1741,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Font$ = .new(this, r'Font$',
-      allocatorFunc: ([count = 1]) => calloc<FontC>(count),
-      castFunc: (ptr) => ptr.cast<FontC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<FontC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<FontC>(count),
+      sizeOfFunc:           ()            => sizeOf<FontC>(),
+      castFunc:             (ptr)         => ptr.cast<FontC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Font$ = .new(this, r'Ptr$Font$',
@@ -1398,15 +1764,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     GlyphInfo$ = .new(this, r'GlyphInfo$',
-      allocatorFunc: ([count = 1]) => calloc<GlyphInfoC>(count),
-      castFunc: (ptr) => ptr.cast<GlyphInfoC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<GlyphInfoC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<GlyphInfoC>(count),
+      sizeOfFunc:           ()            => sizeOf<GlyphInfoC>(),
+      castFunc:             (ptr)         => ptr.cast<GlyphInfoC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$GlyphInfo$ = .new(this, r'Ptr$GlyphInfo$',
@@ -1418,15 +1787,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Image$ = .new(this, r'Image$',
-      allocatorFunc: ([count = 1]) => calloc<ImageC>(count),
-      castFunc: (ptr) => ptr.cast<ImageC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<ImageC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<ImageC>(count),
+      sizeOfFunc:           ()            => sizeOf<ImageC>(),
+      castFunc:             (ptr)         => ptr.cast<ImageC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Image$ = .new(this, r'Ptr$Image$',
@@ -1438,15 +1810,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Light$ = .new(this, r'Light$',
-      allocatorFunc: ([count = 1]) => calloc<LightC>(count),
-      castFunc: (ptr) => ptr.cast<LightC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<LightC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<LightC>(count),
+      sizeOfFunc:           ()            => sizeOf<LightC>(),
+      castFunc:             (ptr)         => ptr.cast<LightC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Light$ = .new(this, r'Ptr$Light$',
@@ -1458,15 +1833,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Material$ = .new(this, r'Material$',
-      allocatorFunc: ([count = 1]) => calloc<MaterialC>(count),
-      castFunc: (ptr) => ptr.cast<MaterialC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<MaterialC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<MaterialC>(count),
+      sizeOfFunc:           ()            => sizeOf<MaterialC>(),
+      castFunc:             (ptr)         => ptr.cast<MaterialC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Material$ = .new(this, r'Ptr$Material$',
@@ -1478,15 +1856,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     MaterialMap$ = .new(this, r'MaterialMap$',
-      allocatorFunc: ([count = 1]) => calloc<MaterialMapC>(count),
-      castFunc: (ptr) => ptr.cast<MaterialMapC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<MaterialMapC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<MaterialMapC>(count),
+      sizeOfFunc:           ()            => sizeOf<MaterialMapC>(),
+      castFunc:             (ptr)         => ptr.cast<MaterialMapC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$MaterialMap$ = .new(this, r'Ptr$MaterialMap$',
@@ -1498,15 +1879,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Matrix$ = .new(this, r'Matrix$',
-      allocatorFunc: ([count = 1]) => calloc<MatrixC>(count),
-      castFunc: (ptr) => ptr.cast<MatrixC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<MatrixC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<MatrixC>(count),
+      sizeOfFunc:           ()            => sizeOf<MatrixC>(),
+      castFunc:             (ptr)         => ptr.cast<MatrixC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Matrix$ = .new(this, r'Ptr$Matrix$',
@@ -1518,15 +1902,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Mesh$ = .new(this, r'Mesh$',
-      allocatorFunc: ([count = 1]) => calloc<MeshC>(count),
-      castFunc: (ptr) => ptr.cast<MeshC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<MeshC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<MeshC>(count),
+      sizeOfFunc:           ()            => sizeOf<MeshC>(),
+      castFunc:             (ptr)         => ptr.cast<MeshC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Mesh$ = .new(this, r'Ptr$Mesh$',
@@ -1538,15 +1925,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Model$ = .new(this, r'Model$',
-      allocatorFunc: ([count = 1]) => calloc<ModelC>(count),
-      castFunc: (ptr) => ptr.cast<ModelC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<ModelC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<ModelC>(count),
+      sizeOfFunc:           ()            => sizeOf<ModelC>(),
+      castFunc:             (ptr)         => ptr.cast<ModelC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Model$ = .new(this, r'Ptr$Model$',
@@ -1558,15 +1948,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     ModelAnimation$ = .new(this, r'ModelAnimation$',
-      allocatorFunc: ([count = 1]) => calloc<ModelAnimationC>(count),
-      castFunc: (ptr) => ptr.cast<ModelAnimationC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<ModelAnimationC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<ModelAnimationC>(count),
+      sizeOfFunc:           ()            => sizeOf<ModelAnimationC>(),
+      castFunc:             (ptr)         => ptr.cast<ModelAnimationC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$ModelAnimation$ = .new(this, r'Ptr$ModelAnimation$',
@@ -1578,15 +1971,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Music$ = .new(this, r'Music$',
-      allocatorFunc: ([count = 1]) => calloc<MusicC>(count),
-      castFunc: (ptr) => ptr.cast<MusicC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<MusicC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<MusicC>(count),
+      sizeOfFunc:           ()            => sizeOf<MusicC>(),
+      castFunc:             (ptr)         => ptr.cast<MusicC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Music$ = .new(this, r'Ptr$Music$',
@@ -1598,15 +1994,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     NPatchInfo$ = .new(this, r'NPatchInfo$',
-      allocatorFunc: ([count = 1]) => calloc<NPatchInfoC>(count),
-      castFunc: (ptr) => ptr.cast<NPatchInfoC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<NPatchInfoC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<NPatchInfoC>(count),
+      sizeOfFunc:           ()            => sizeOf<NPatchInfoC>(),
+      castFunc:             (ptr)         => ptr.cast<NPatchInfoC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$NPatchInfo$ = .new(this, r'Ptr$NPatchInfo$',
@@ -1618,15 +2017,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Rectangle$ = .new(this, r'Rectangle$',
-      allocatorFunc: ([count = 1]) => calloc<RectangleC>(count),
-      castFunc: (ptr) => ptr.cast<RectangleC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RectangleC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RectangleC>(count),
+      sizeOfFunc:           ()            => sizeOf<RectangleC>(),
+      castFunc:             (ptr)         => ptr.cast<RectangleC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Rectangle$ = .new(this, r'Ptr$Rectangle$',
@@ -1638,15 +2040,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     RlDrawCall$ = .new(this, r'RlDrawCall$',
-      allocatorFunc: ([count = 1]) => calloc<RlDrawCallC>(count),
-      castFunc: (ptr) => ptr.cast<RlDrawCallC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RlDrawCallC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RlDrawCallC>(count),
+      sizeOfFunc:           ()            => sizeOf<RlDrawCallC>(),
+      castFunc:             (ptr)         => ptr.cast<RlDrawCallC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$RlDrawCall$ = .new(this, r'Ptr$RlDrawCall$',
@@ -1658,15 +2063,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     RlRenderBatch$ = .new(this, r'RlRenderBatch$',
-      allocatorFunc: ([count = 1]) => calloc<RlRenderBatchC>(count),
-      castFunc: (ptr) => ptr.cast<RlRenderBatchC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RlRenderBatchC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RlRenderBatchC>(count),
+      sizeOfFunc:           ()            => sizeOf<RlRenderBatchC>(),
+      castFunc:             (ptr)         => ptr.cast<RlRenderBatchC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$RlRenderBatch$ = .new(this, r'Ptr$RlRenderBatch$',
@@ -1678,15 +2086,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     RlVertexBuffer$ = .new(this, r'RlVertexBuffer$',
-      allocatorFunc: ([count = 1]) => calloc<RlVertexBufferC>(count),
-      castFunc: (ptr) => ptr.cast<RlVertexBufferC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RlVertexBufferC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RlVertexBufferC>(count),
+      sizeOfFunc:           ()            => sizeOf<RlVertexBufferC>(),
+      castFunc:             (ptr)         => ptr.cast<RlVertexBufferC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$RlVertexBuffer$ = .new(this, r'Ptr$RlVertexBuffer$',
@@ -1698,15 +2109,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Ray$ = .new(this, r'Ray$',
-      allocatorFunc: ([count = 1]) => calloc<RayC>(count),
-      castFunc: (ptr) => ptr.cast<RayC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RayC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RayC>(count),
+      sizeOfFunc:           ()            => sizeOf<RayC>(),
+      castFunc:             (ptr)         => ptr.cast<RayC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Ray$ = .new(this, r'Ptr$Ray$',
@@ -1718,15 +2132,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     RayCollision$ = .new(this, r'RayCollision$',
-      allocatorFunc: ([count = 1]) => calloc<RayCollisionC>(count),
-      castFunc: (ptr) => ptr.cast<RayCollisionC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RayCollisionC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RayCollisionC>(count),
+      sizeOfFunc:           ()            => sizeOf<RayCollisionC>(),
+      castFunc:             (ptr)         => ptr.cast<RayCollisionC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$RayCollision$ = .new(this, r'Ptr$RayCollision$',
@@ -1738,15 +2155,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     RenderTexture$ = .new(this, r'RenderTexture$',
-      allocatorFunc: ([count = 1]) => calloc<RenderTextureC>(count),
-      castFunc: (ptr) => ptr.cast<RenderTextureC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<RenderTextureC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<RenderTextureC>(count),
+      sizeOfFunc:           ()            => sizeOf<RenderTextureC>(),
+      castFunc:             (ptr)         => ptr.cast<RenderTextureC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$RenderTexture$ = .new(this, r'Ptr$RenderTexture$',
@@ -1758,15 +2178,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Shader$ = .new(this, r'Shader$',
-      allocatorFunc: ([count = 1]) => calloc<ShaderC>(count),
-      castFunc: (ptr) => ptr.cast<ShaderC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<ShaderC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<ShaderC>(count),
+      sizeOfFunc:           ()            => sizeOf<ShaderC>(),
+      castFunc:             (ptr)         => ptr.cast<ShaderC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Shader$ = .new(this, r'Ptr$Shader$',
@@ -1778,15 +2201,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Sound$ = .new(this, r'Sound$',
-      allocatorFunc: ([count = 1]) => calloc<SoundC>(count),
-      castFunc: (ptr) => ptr.cast<SoundC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<SoundC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<SoundC>(count),
+      sizeOfFunc:           ()            => sizeOf<SoundC>(),
+      castFunc:             (ptr)         => ptr.cast<SoundC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Sound$ = .new(this, r'Ptr$Sound$',
@@ -1798,15 +2224,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Texture$ = .new(this, r'Texture$',
-      allocatorFunc: ([count = 1]) => calloc<TextureC>(count),
-      castFunc: (ptr) => ptr.cast<TextureC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<TextureC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<TextureC>(count),
+      sizeOfFunc:           ()            => sizeOf<TextureC>(),
+      castFunc:             (ptr)         => ptr.cast<TextureC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Texture$ = .new(this, r'Ptr$Texture$',
@@ -1818,15 +2247,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Transform$ = .new(this, r'Transform$',
-      allocatorFunc: ([count = 1]) => calloc<TransformC>(count),
-      castFunc: (ptr) => ptr.cast<TransformC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<TransformC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<TransformC>(count),
+      sizeOfFunc:           ()            => sizeOf<TransformC>(),
+      castFunc:             (ptr)         => ptr.cast<TransformC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Transform$ = .new(this, r'Ptr$Transform$',
@@ -1838,15 +2270,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Vector2$ = .new(this, r'Vector2$',
-      allocatorFunc: ([count = 1]) => calloc<Vector2C>(count),
-      castFunc: (ptr) => ptr.cast<Vector2C>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<Vector2C>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<Vector2C>(count),
+      sizeOfFunc:           ()            => sizeOf<Vector2C>(),
+      castFunc:             (ptr)         => ptr.cast<Vector2C>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Vector2$ = .new(this, r'Ptr$Vector2$',
@@ -1858,15 +2293,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Vector3$ = .new(this, r'Vector3$',
-      allocatorFunc: ([count = 1]) => calloc<Vector3C>(count),
-      castFunc: (ptr) => ptr.cast<Vector3C>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<Vector3C>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<Vector3C>(count),
+      sizeOfFunc:           ()            => sizeOf<Vector3C>(),
+      castFunc:             (ptr)         => ptr.cast<Vector3C>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Vector3$ = .new(this, r'Ptr$Vector3$',
@@ -1878,15 +2316,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Vector4$ = .new(this, r'Vector4$',
-      allocatorFunc: ([count = 1]) => calloc<Vector4C>(count),
-      castFunc: (ptr) => ptr.cast<Vector4C>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<Vector4C>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<Vector4C>(count),
+      sizeOfFunc:           ()            => sizeOf<Vector4C>(),
+      castFunc:             (ptr)         => ptr.cast<Vector4C>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Vector4$ = .new(this, r'Ptr$Vector4$',
@@ -1898,15 +2339,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     VrDeviceInfo$ = .new(this, r'VrDeviceInfo$',
-      allocatorFunc: ([count = 1]) => calloc<VrDeviceInfoC>(count),
-      castFunc: (ptr) => ptr.cast<VrDeviceInfoC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<VrDeviceInfoC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<VrDeviceInfoC>(count),
+      sizeOfFunc:           ()            => sizeOf<VrDeviceInfoC>(),
+      castFunc:             (ptr)         => ptr.cast<VrDeviceInfoC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$VrDeviceInfo$ = .new(this, r'Ptr$VrDeviceInfo$',
@@ -1918,15 +2362,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     VrStereoConfig$ = .new(this, r'VrStereoConfig$',
-      allocatorFunc: ([count = 1]) => calloc<VrStereoConfigC>(count),
-      castFunc: (ptr) => ptr.cast<VrStereoConfigC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<VrStereoConfigC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<VrStereoConfigC>(count),
+      sizeOfFunc:           ()            => sizeOf<VrStereoConfigC>(),
+      castFunc:             (ptr)         => ptr.cast<VrStereoConfigC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$VrStereoConfig$ = .new(this, r'Ptr$VrStereoConfig$',
@@ -1938,15 +2385,18 @@ class RaylibTemp extends RaylibModule {
     );
 
     Wave$ = .new(this, r'Wave$',
-      allocatorFunc: ([count = 1]) => calloc<WaveC>(count),
-      castFunc: (ptr) => ptr.cast<WaveC>(),
-      printerFunc: (ptr) => ptr.toD().signature(),
-      sizeOfFunc: () => sizeOf<WaveC>(),
-      indexerFunc: (ptr, i) => ptr[i],
-      writeIntoIndexedFunc: (ptr, i, v) => v.writeInto((ptr + i).ref),
-      writeIntoFunc: (ptr, v) => v.writeInto(ptr.ref),
-      setCFunc: (ptr, i, v) => ptr[i].setC(v),
-      indexSetterFunc: (ptr, i, v) => ptr[i] = v,
+      allocatorFunc:        ([count = 1]) => calloc<WaveC>(count),
+      sizeOfFunc:           ()            => sizeOf<WaveC>(),
+      castFunc:             (ptr)         => ptr.cast<WaveC>(),
+      refFunc:              (ptr)         => ptr.ref,
+      setRefFunc:           (ptr, v)      => ptr..ref = v,
+      ptrToDFunc:           (ptr)         => ptr.toD(),
+      printerFunc:          (ptr)         => ptr.toD().signature(),
+      indexerFunc:          (ptr, i)      => ptr[i],
+      writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
+      writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
+      setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
+      indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
     );
 
     Ptr$Wave$ = .new(this, r'Ptr$Wave$',
@@ -1964,6 +2414,8 @@ class RaylibTemp extends RaylibModule {
       Ptr$Bool$.name: Ptr$Bool$,
       Float$.name: Float$,
       Ptr$Float$.name: Ptr$Float$,
+      Float64$.name: Float64$,
+      Ptr$Float64$.name: Ptr$Float64$,
       Int$.name: Int$,
       Ptr$Int$.name: Ptr$Int$,
       UnsignedInt$.name: UnsignedInt$,

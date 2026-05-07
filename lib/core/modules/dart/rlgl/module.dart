@@ -1,6 +1,6 @@
 part of '../../../raylib.dart';
 
-class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
+class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
   RaylibRlglD(super.lib);
 
   void rlMatrixMode(
@@ -70,7 +70,9 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     List<double> matf,
   ) => run(
     () => 'rlMultMatrixf($matf)',
-    () => rl.Rlgl.rlMultMatrixf(refListFloat(matf)),
+    () => rl.Rlgl.rlMultMatrixf(
+      rl.Temp.Float$.Array(matf),
+    ),
   );
 
   void rlFrustum(
@@ -720,7 +722,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     num bufferElements,
   ) => run(
     () => 'rlLoadRenderBatch($numBuffers, $bufferElements)',
-    () => _refCaptureRlRenderBatch(
+    () => rl.Temp.RlRenderBatch$.RefCapture(
       'rlLoadRenderBatch_${numBuffers}_$bufferElements',
       rl.Rlgl.rlLoadRenderBatch(
         numBuffers.toInt(),
@@ -734,7 +736,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlUnloadRenderBatch($batch)',
     () => rl.Rlgl.rlUnloadRenderBatch(
-      _refRlRenderBatch1(batch).ref,
+      rl.Temp.RlRenderBatch$.Ref1(batch).ref,
     ),
   );
 
@@ -742,7 +744,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     RlRenderBatchD batch,
   ) => run(
     () => 'rlDrawRenderBatch($batch)',
-    () => _refUpdateRLRenderBatch(batch,
+    () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlDrawRenderBatch(pb),
     ),
   );
@@ -751,7 +753,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     RlRenderBatchD batch,
   ) => run(
     () => 'rlSetRenderBatchActive($batch)',
-    () => _refUpdateRLRenderBatch(batch,
+    () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlSetRenderBatchActive(pb),
     ),
   );
@@ -788,7 +790,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () {
       final bytes = buffer.buffer.asUint8List(buffer.offsetInBytes, buffer.lengthInBytes);
       return rl.Rlgl.rlLoadVertexBuffer(
-        refListUInt8(bytes).cast(),
+        rl.Temp.Uint8$.Array(bytes).cast(),
         bytes.length,
         dynamic,
       );
@@ -803,7 +805,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () {
       final bytes = buffer.buffer.asUint8List(buffer.offsetInBytes, buffer.lengthInBytes);
       return rl.Rlgl.rlLoadVertexBufferElement(
-        refListUInt8(bytes).cast(),
+        rl.Temp.Uint8$.Array(bytes).cast(),
         bytes.length,
         dynamic,
       );
@@ -820,7 +822,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       return rl.Rlgl.rlUpdateVertexBuffer(
         bufferId.toInt(),
-        refListUInt8(bytes).cast(),
+        rl.Temp.Uint8$.Array(bytes).cast(),
         bytes.length,
         offset.toInt(),
       );
@@ -837,7 +839,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       return rl.Rlgl.rlUpdateVertexBufferElements(
         id.toInt(),
-        refListUInt8(bytes).cast(),
+        rl.Temp.Uint8$.Array(bytes).cast(),
         bytes.length,
         offset.toInt(),
       );
@@ -896,7 +898,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlSetVertexAttributeDefault($locIndex, ${value.length}, ${attribType.name})',
     () => rl.Rlgl.rlSetVertexAttributeDefault(
       locIndex.toInt(),
-      refTypedListFloat(value).cast(),
+      rl.Temp.Float$.FromTypedList(value).cast(),
       attribType.value,
       value.length,
     ),
@@ -922,7 +924,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => rl.Rlgl.rlDrawVertexArrayElements(
       offset.toInt(),
       count.toInt(),
-      refTypedListUInt16(buffer).cast(),
+      rl.Temp.Uint16$.FromTypedList(buffer).cast(),
     ),
   );
 
@@ -949,7 +951,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => rl.Rlgl.rlDrawVertexArrayElementsInstanced(
       offset.toInt(),
       count.toInt(),
-      refTypedListUInt16(buffer).cast(),
+      rl.Temp.Uint16$.FromTypedList(buffer).cast(),
       instances.toInt(),
     ),
   );
@@ -963,7 +965,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlLoadTexture(${data?.length}, $width, $height, $format, $mipmapCount)',
     () => rl.Rlgl.rlLoadTexture(
-      data == null ? nullptr : refTypedListUInt8(data).cast(),
+      data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
       width.toInt(),
       height.toInt(),
       format.value,
@@ -992,7 +994,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlLoadTextureCubemap(${data?.length}, $size, ${format.name}, $mipmapCount)',
     () => rl.Rlgl.rlLoadTextureCubemap(
-      data == null ? nullptr : refTypedListUInt8(data).cast(),
+      data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
       size.toInt(),
       format.value,
       mipmapCount.toInt(),
@@ -1016,7 +1018,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
       width.toInt(),
       height.toInt(),
       format.value,
-      refTypedListUInt8(data).cast(),
+      rl.Temp.Uint8$.FromTypedList(data).cast(),
     ),
   );
 
@@ -1025,9 +1027,9 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlGetGlTextureFormats(${format.name})',
     () {
-      final glInternalFormat = refUInt1();
-      final glFormat = refUInt2();
-      final glType = refUInt3();
+      final glInternalFormat = rl.Temp.UnsignedInt$.Ref1();
+      final glFormat = rl.Temp.UnsignedInt$.Ref2();
+      final glType = rl.Temp.UnsignedInt$.Ref3();
       rl.Rlgl.rlGetGlTextureFormats(
         format.value,
         glInternalFormat,
@@ -1062,7 +1064,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlGenTextureMipmaps($id, $width, $height, ${format.name})',
     () {
-      final mipmaps = refInt1();
+      final mipmaps = rl.Temp.Int$.Ref1();
       rl.Rlgl.rlGenTextureMipmaps(
         id.toInt(),
         width.toInt(),
@@ -1207,8 +1209,8 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlLoadShaderCode(vsCode: ${vsCode?.length}, fsCode: ${fsCode?.length})',
     () => rl.Rlgl.rlLoadShaderCode(
-      refStr(vsCode),
-      refStr(fsCode),
+      rl.Temp.String$.ValueOrNull(vsCode),
+      rl.Temp.String$.ValueOrNull(fsCode),
     ),
   );
 
@@ -1218,7 +1220,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlCompileShader(shaderCode: ${shaderCode.length}, ${type.name})',
     () => rl.Rlgl.rlCompileShader(
-      refStr(shaderCode),
+      rl.Temp.String$.ValueOrNull(shaderCode),
       type.value,
     ),
   );
@@ -1248,7 +1250,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlGetLocationUniform($shaderId, $uniformName)',
     () => rl.Rlgl.rlGetLocationUniform(
       shaderId.toInt(),
-      refStr(uniformName),
+      rl.Temp.String$.ValueOrNull(uniformName),
     ),
   );
 
@@ -1259,7 +1261,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlGetLocationAttrib($shaderId, $attribName)',
     () => rl.Rlgl.rlGetLocationAttrib(
       shaderId.toInt(),
-      refStr(attribName),
+      rl.Temp.String$.ValueOrNull(attribName),
     ),
   );
 
@@ -1277,18 +1279,18 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
         case .RL_SHADER_UNIFORM_VEC2:
         case .RL_SHADER_UNIFORM_VEC3:
         case .RL_SHADER_UNIFORM_VEC4:
-          ptr = refTypedListFloat(value as Float32List).cast();
+          ptr = rl.Temp.Float$.FromTypedData(value).cast();
         case .RL_SHADER_UNIFORM_INT:
         case .RL_SHADER_UNIFORM_IVEC2:
         case .RL_SHADER_UNIFORM_IVEC3:
         case .RL_SHADER_UNIFORM_IVEC4:
         case .RL_SHADER_UNIFORM_SAMPLER2D:
-          ptr = refTypedListInt32(value as Int32List).cast();
+          ptr = rl.Temp.Int32$.FromTypedData(value).cast();
         case .RL_SHADER_UNIFORM_UINT:
         case .RL_SHADER_UNIFORM_UIVEC2:
         case .RL_SHADER_UNIFORM_UIVEC3:
         case .RL_SHADER_UNIFORM_UIVEC4:
-          ptr = refTypedListUInt32(value as Uint32List).cast();
+          ptr = rl.Temp.Uint32$.FromTypedData(value).cast();
       }
       rl.Rlgl.rlSetUniform(
         locIndex.toInt(),
@@ -1306,7 +1308,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlSetUniformMatrix($locIndex, $mat)',
     () => rl.Rlgl.rlSetUniformMatrix(
       locIndex.toInt(),
-      _refMatrix1(mat).ref,
+      rl.Temp.Matrix$.Ref1(mat).ref,
     ),
   );
 
@@ -1340,7 +1342,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlSetShader($id, $locs)',
     () => rl.Rlgl.rlSetShader(
       id.toInt(),
-      refListInt(locs),
+      rl.Temp.Int$.Array(locs),
     ),
   );
 
@@ -1372,7 +1374,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
     () => 'rlLoadShaderBuffer($size, data: ${data?.lengthInBytes}, $usageHint)',
     () => rl.Rlgl.rlLoadShaderBuffer(
       size.toInt(),
-      data == null ? nullptr : refTypedDataUInt8(data).cast(),
+      data == null ? nullptr : rl.Temp.Uint8$.FromTypedData(data).cast(),
       usageHint?.value ?? 0,
     ),
   );
@@ -1394,7 +1396,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       rl.Rlgl.rlUpdateShaderBuffer(
         id.toInt(),
-        refListUInt8(bytes).cast(),
+        rl.Temp.Uint8$.Array(bytes).cast(),
         bytes.length,
         offset.toInt(),
       );
@@ -1419,7 +1421,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlReadShaderBuffer($id, $count, $offset)',
     () {
-      final values = refSizedUInt8(count.toInt());
+      final values = rl.Temp.Uint8$.Sized(count.toInt());
       rl.Rlgl.rlReadShaderBuffer(
         id.toInt(),
         values.cast(),
@@ -1503,7 +1505,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlSetMatrixProjection($proj)',
     () => rl.Rlgl.rlSetMatrixProjection(
-      _refMatrix1(proj).ref,
+      rl.Temp.Matrix$.Ref1(proj).ref,
     ),
   );
 
@@ -1512,7 +1514,7 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlSetMatrixModelview($view)',
     () => rl.Rlgl.rlSetMatrixModelview(
-      _refMatrix1(view).ref,
+      rl.Temp.Matrix$.Ref1(view).ref,
     ),
   );
 
@@ -1522,8 +1524,8 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlSetMatrixProjectionStereo($right, $left)',
     () => rl.Rlgl.rlSetMatrixProjectionStereo(
-      _refMatrix1(right).ref,
-      _refMatrix2(left).ref,
+      rl.Temp.Matrix$.Ref1(right).ref,
+      rl.Temp.Matrix$.Ref2(left).ref,
     ),
   );
 
@@ -1533,8 +1535,8 @@ class RaylibRlglD extends RaylibModuleD with RaylibRlglExtras {
   ) => run(
     () => 'rlSetMatrixViewOffsetStereo($right, $left)',
     () => rl.Rlgl.rlSetMatrixViewOffsetStereo(
-      _refMatrix1(right).ref,
-      _refMatrix2(left).ref,
+      rl.Temp.Matrix$.Ref1(right).ref,
+      rl.Temp.Matrix$.Ref2(left).ref,
     ),
   );
 

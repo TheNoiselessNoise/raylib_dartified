@@ -2,8 +2,7 @@ part of '../../../../raylib.dart';
 
 extension BoneInfoCLike on BoneInfoC {
   int get nameLength => 32;
-
-  String get nameString => name.toD(nameLength);
+  String get nameString => name.toDartString(nameLength);
 }
 
 extension BoneInfoDLike on BoneInfoD {
@@ -41,7 +40,7 @@ extension BoneInfoCEx on BoneInfoC {
 
   BoneInfoD toD([Pointer<BoneInfoC>? ptr]) => .new(
     originalPointer: ptr,
-    name: name.toD(nameLength),
+    name: name.toDartString(nameLength),
     parent: parent,
   );
 }
@@ -64,7 +63,7 @@ class BoneInfoD extends StructDLiteral<BoneInfoD, BoneInfoC> {
       p.ref.name = o.name;
     });
     parent = o.parent;
-    name = o.name.toD(nameLength);
+    name = o.name.toDartString(nameLength);
     return this;
   }
 
@@ -86,7 +85,7 @@ class BoneInfoD extends StructDLiteral<BoneInfoD, BoneInfoC> {
 
   @override
   void writeInto(BoneInfoC p) {
-    p.name.setString(name, nameLength);
+    p.name.setDartString(name, nameLength);
     p.parent = parent;
   }
 

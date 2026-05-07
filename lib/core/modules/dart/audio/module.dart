@@ -1,6 +1,6 @@
 part of '../../../raylib.dart';
 
-class RaylibAudioD extends RaylibModuleD {
+class RaylibAudioD extends RaylibModule {
   RaylibAudioD(super.lib);
 
   @override
@@ -43,10 +43,10 @@ class RaylibAudioD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadWave($fileName)',
-    () => _refCaptureWave(
+    () => rl.Temp.Wave$.RefCapture(
       'LoadWave_$fileName',
       rl.Audio.LoadWave(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
   );
@@ -56,11 +56,11 @@ class RaylibAudioD extends RaylibModuleD {
     List<int> fileData,
   ) => run(
     () => 'LoadWaveFromMemory($fileType, fileData: ${fileData.length})',
-    () => _refCaptureWave(
+    () => rl.Temp.Wave$.RefCapture(
       'LoadWaveFromMemory_${fileType}_${fileData.length}',
       rl.Audio.LoadWaveFromMemory(
-        refStr(fileType),
-        refListUChars(fileData),
+        rl.Temp.String$.ValueOrNull(fileType),
+        rl.Temp.UnsignedChar$.Array(fileData),
         fileData.length,
       ),
     ),
@@ -71,7 +71,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsWaveValid($wave)',
     () => rl.Audio.IsWaveValid(
-      _refWave1(wave).ref,
+      rl.Temp.Wave$.Ref1(wave).ref,
     ),
   );
 
@@ -79,10 +79,10 @@ class RaylibAudioD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadSound($fileName)',
-    () => _refCaptureSound(
+    () => rl.Temp.Sound$.RefCapture(
       'LoadSound_$fileName',
       rl.Audio.LoadSound(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
   );
@@ -91,10 +91,10 @@ class RaylibAudioD extends RaylibModuleD {
     WaveD wave,
   ) => run(
     () => 'LoadSoundFromWave($wave)',
-    () => _refCaptureSound(
+    () => rl.Temp.Sound$.RefCapture(
       'LoadSoundFromWave_${wave.internalId}',
       rl.Audio.LoadSoundFromWave(
-        _refWave1(wave).ref,
+        rl.Temp.Wave$.Ref1(wave).ref,
       ),
     ),
   );
@@ -103,10 +103,10 @@ class RaylibAudioD extends RaylibModuleD {
     SoundD source,
   ) => run(
     () => 'LoadSoundAlias($source)',
-    () => _refCaptureSound(
+    () => rl.Temp.Sound$.RefCapture(
       'LoadSoundAlias_${source.internalId}',
       rl.Audio.LoadSoundAlias(
-        _refSound1(source).ref,
+        rl.Temp.Sound$.Ref1(source).ref,
       ),
     ),
   );
@@ -116,7 +116,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsSoundValid($sound)',
     () => rl.Audio.IsSoundValid(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -126,10 +126,10 @@ class RaylibAudioD extends RaylibModuleD {
     num sampleCount,
   ) => run(
     () => 'UpdateSound($sound, data: ${data.length}, sampleCount: $sampleCount)',
-    () => _refUpdateSound(sound,
+    () => rl.Temp.Sound$.RefUpdate1(sound,
       (p) => rl.Audio.UpdateSound(
-        _refSound1(sound).ref,
-        refListShort(data).cast(),
+        p.ref,
+        rl.Temp.Short$.Array(data).cast(),
         sampleCount.toInt(),
       ),
     ),
@@ -140,7 +140,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UnloadWave($wave)',
     () => rl.Audio.UnloadWave(
-      _refWave1(wave).ref,
+      rl.Temp.Wave$.Ref1(wave).ref,
     ),
   );
 
@@ -149,7 +149,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UnloadSound($sound)',
     () => rl.Audio.UnloadSound(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -158,7 +158,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UnloadSoundAlias($alias)',
     () => rl.Audio.UnloadSoundAlias(
-      _refSound1(alias).ref,
+      rl.Temp.Sound$.Ref1(alias).ref,
     ),
   );
 
@@ -168,8 +168,8 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'ExportWave($wave, $fileName)',
     () => rl.Audio.ExportWave(
-      _refWave1(wave).ref,
-      refStr(fileName),
+      rl.Temp.Wave$.Ref1(wave).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
@@ -179,8 +179,8 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'ExportWaveAsCode($wave, $fileName)',
     () => rl.Audio.ExportWaveAsCode(
-      _refWave1(wave).ref,
-      refStr(fileName),
+      rl.Temp.Wave$.Ref1(wave).ref,
+      rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
@@ -189,7 +189,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PlaySound($sound)',
     () => rl.Audio.PlaySound(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -198,7 +198,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'StopSound($sound)',
     () => rl.Audio.StopSound(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -207,7 +207,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PauseSound($sound)',
     () => rl.Audio.PauseSound(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -216,7 +216,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'ResumeSound($sound)',
     () => rl.Audio.ResumeSound(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -225,7 +225,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsSoundPlaying($sound)',
     () => rl.Audio.IsSoundPlaying(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
     ),
   );
 
@@ -235,7 +235,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetSoundVolume($sound, $volume)',
     () => rl.Audio.SetSoundVolume(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
       volume.toDouble(),
     ),
   );
@@ -246,7 +246,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetSoundPitch($sound, $pitch)',
     () => rl.Audio.SetSoundPitch(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
       pitch.toDouble(),
     ),
   );
@@ -257,7 +257,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetSoundPan($sound, $pan)',
     () => rl.Audio.SetSoundPan(
-      _refSound1(sound).ref,
+      rl.Temp.Sound$.Ref1(sound).ref,
       pan.toDouble(),
     ),
   );
@@ -266,10 +266,10 @@ class RaylibAudioD extends RaylibModuleD {
     WaveD wave,
   ) => run(
     () => 'WaveCopy($wave)',
-    () => _refCaptureWave(
+    () => rl.Temp.Wave$.RefCapture(
       'WaveCopy_${wave.internalId}',
       rl.Audio.WaveCopy(
-        _refWave2(wave).ref,
+        rl.Temp.Wave$.Ref2(wave).ref,
       ),
     ),
   );
@@ -280,7 +280,7 @@ class RaylibAudioD extends RaylibModuleD {
     num finalFrame,
   ) => run(
     () => 'WaveCrop($wave, $initFrame, $finalFrame)',
-    () => _refUpdateWave(wave,
+    () => rl.Temp.Wave$.RefUpdate1(wave,
       (p) => rl.Audio.WaveCrop(
         p,
         initFrame.toInt(),
@@ -296,7 +296,7 @@ class RaylibAudioD extends RaylibModuleD {
     num channels,
   ) => run(
     () => 'WaveFormat($wave, $sampleRate, $sampleSize, $channels)',
-    () => _refUpdateWave(wave,
+    () => rl.Temp.Wave$.RefUpdate1(wave,
       (p) => rl.Audio.WaveFormat(
         p,
         sampleRate.toInt(),
@@ -311,9 +311,11 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'LoadWaveSamples($wave)',
     () {
-      final samples = rl.Audio.LoadWaveSamples(_refWave1(wave).ref);
+      final samples = rl.Audio.LoadWaveSamples(
+        rl.Temp.Wave$.Ref1(wave).ref
+      );
       try {
-        return List.generate(wave.dataLength, (i) => samples[i]);
+        return .generate(wave.dataLength, (i) => samples[i]);
       } finally {
         rl.Audio.UnloadWaveSamples(samples);
       }
@@ -324,10 +326,10 @@ class RaylibAudioD extends RaylibModuleD {
     String fileName,
   ) => run(
     () => 'LoadMusicStream($fileName)',
-    () => _refCaptureMusic(
+    () => rl.Temp.Music$.RefCapture(
       'LoadMusicStream_$fileName',
       rl.Audio.LoadMusicStream(
-        refStr(fileName),
+        rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
   );
@@ -337,11 +339,11 @@ class RaylibAudioD extends RaylibModuleD {
     List<int> data,
   ) => run(
     () => 'LoadMusicStreamFromMemory($fileType, data: ${data.length})',
-    () => _refCaptureMusic(
+    () => rl.Temp.Music$.RefCapture(
       'LoadMusicStreamFromMemory_${fileType}_${data.length}',
       rl.Audio.LoadMusicStreamFromMemory(
-        refStr(fileType),
-        refListUChars(data),
+        rl.Temp.String$.ValueOrNull(fileType),
+        rl.Temp.UnsignedChar$.Array(data),
         data.length,
       ),
     ),
@@ -352,7 +354,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsMusicValid($music)',
     () => rl.Audio.IsMusicValid(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -361,7 +363,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UnloadMusicStream($music)',
     () => rl.Audio.UnloadMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -370,7 +372,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PlayMusicStream($music)',
     () => rl.Audio.PlayMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -379,7 +381,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsMusicStreamPlaying($music)',
     () => rl.Audio.IsMusicStreamPlaying(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -388,7 +390,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UpdateMusicStream($music)',
     () => rl.Audio.UpdateMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -397,7 +399,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'StopMusicStream($music)',
     () => rl.Audio.StopMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -406,7 +408,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PauseMusicStream($music)',
     () => rl.Audio.PauseMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -415,7 +417,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'ResumeMusicStream($music)',
     () => rl.Audio.ResumeMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -425,7 +427,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SeekMusicStream($music, $position)',
     () => rl.Audio.SeekMusicStream(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
       position.toDouble(),
     ),
   );
@@ -436,7 +438,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetMusicVolume($music, $volume)',
     () => rl.Audio.SetMusicVolume(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
       volume.toDouble(),
     ),
   );
@@ -447,7 +449,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetMusicPitch($music, $pitch)',
     () => rl.Audio.SetMusicPitch(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
       pitch.toDouble(),
     ),
   );
@@ -458,7 +460,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetMusicPan($music, $pan)',
     () => rl.Audio.SetMusicPan(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
       pan.toDouble(),
     ),
   );
@@ -468,7 +470,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'GetMusicTimeLength($music)',
     () => rl.Audio.GetMusicTimeLength(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -477,7 +479,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'GetMusicTimePlayed($music)',
     () => rl.Audio.GetMusicTimePlayed(
-      _refMusic1(music).ref,
+      rl.Temp.Music$.Ref1(music).ref,
     ),
   );
 
@@ -487,7 +489,7 @@ class RaylibAudioD extends RaylibModuleD {
     num channels,
   ) => run(
     () => 'LoadAudioStream($sampleRate, $sampleSize, $channels)',
-    () => _refCaptureAudioStream(
+    () => rl.Temp.AudioStream$.RefCapture(
       'LoadAudioStream_${sampleRate}_${sampleSize}_$channels',
       rl.Audio.LoadAudioStream(
         sampleRate.toInt(),
@@ -502,7 +504,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsAudioStreamValid($stream)',
     () => rl.Audio.IsAudioStreamValid(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -511,7 +513,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'UnloadAudioStream($stream)',
     () => rl.Audio.UnloadAudioStream(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -520,10 +522,10 @@ class RaylibAudioD extends RaylibModuleD {
     List<int> data,
   ) => run(
     () => 'UpdateAudioStream($stream, data: ${data.length})',
-    () => _refUpdateAudioStream(stream,
+    () => rl.Temp.AudioStream$.RefUpdate1(stream,
       (p) => rl.Audio.UpdateAudioStream(
         p.ref,
-        refListShort(data).cast(),
+        rl.Temp.Short$.Array(data).cast(),
         data.length,
       ),
     ),
@@ -534,7 +536,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsAudioStreamProcessed($stream)',
     () => rl.Audio.IsAudioStreamProcessed(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -543,7 +545,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PlayAudioStream($stream)',
     () => rl.Audio.PlayAudioStream(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -552,7 +554,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'PauseAudioStream($stream)',
     () => rl.Audio.PauseAudioStream(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -561,7 +563,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'ResumeAudioStream($stream)',
     () => rl.Audio.ResumeAudioStream(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -570,7 +572,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'IsAudioStreamPlaying($stream)',
     () => rl.Audio.IsAudioStreamPlaying(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -579,7 +581,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'StopAudioStream($stream)',
     () => rl.Audio.StopAudioStream(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
     ),
   );
 
@@ -589,7 +591,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetAudioStreamVolume($stream, $volume)',
     () => rl.Audio.SetAudioStreamVolume(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
       volume.toDouble(),
     ),
   );
@@ -600,7 +602,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetAudioStreamPitch($stream, $pitch)',
     () => rl.Audio.SetAudioStreamPitch(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
       pitch.toDouble(),
     ),
   );
@@ -611,7 +613,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetAudioStreamPan($stream, $pan)',
     () => rl.Audio.SetAudioStreamPan(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
       pan.toDouble(),
     ),
   );
@@ -620,7 +622,9 @@ class RaylibAudioD extends RaylibModuleD {
     num size,
   ) => run(
     () => 'SetAudioStreamBufferSizeDefault($size)',
-    () => rl.Audio.SetAudioStreamBufferSizeDefault(size.toInt()),
+    () => rl.Audio.SetAudioStreamBufferSizeDefault(
+      size.toInt(),
+    ),
   );
 
   void SetAudioStreamCallback(
@@ -629,7 +633,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'SetAudioStreamCallback($stream, callback: $callback)',
     () => rl.Audio.SetAudioStreamCallback(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
       callback.attach(),
     ),
   );
@@ -640,7 +644,7 @@ class RaylibAudioD extends RaylibModuleD {
   ) => run(
     () => 'AttachAudioStreamProcessor($stream, callback: $callback)',
     () => rl.Audio.AttachAudioStreamProcessor(
-      _refAudioStream1(stream).ref,
+      rl.Temp.AudioStream$.Ref1(stream).ref,
       callback.attach(),
     ),
   );
@@ -651,17 +655,19 @@ class RaylibAudioD extends RaylibModuleD {
     {bool keepAlive = false}
   ) => run(
     () => 'DetachAudioStreamProcessor($stream, callback: $callback, keepAlive: $keepAlive)',
-    () {
-      rl.Audio.DetachAudioStreamProcessor(_refAudioStream1(stream).ref, callback.nativeFunction);
-      callback.detach(keepAlive);
-    },
+    () => rl.Audio.DetachAudioStreamProcessor(
+      rl.Temp.AudioStream$.Ref1(stream).ref,
+      callback.detach(keepAlive),
+    ),
   );
 
   void AttachAudioMixedProcessor(
     AudioCallbackD callback,
   ) => run(
     () => 'AttachAudioMixedProcessor(callback: $callback)',
-    () => rl.Audio.AttachAudioMixedProcessor(callback.attach()),
+    () => rl.Audio.AttachAudioMixedProcessor(
+      callback.attach(),
+    ),
   );
 
   void DetachAudioMixedProcessor(
@@ -669,9 +675,8 @@ class RaylibAudioD extends RaylibModuleD {
     {bool keepAlive = false}
   ) => run(
     () => 'DetachAudioMixedProcessor(callback: $callback, keepAlive: $keepAlive)',
-    () {
-      rl.Audio.DetachAudioMixedProcessor(callback.nativeFunction);
-      callback.detach(keepAlive);
-    },
+    () => rl.Audio.DetachAudioMixedProcessor(
+      callback.detach(keepAlive),
+    ),
   );
 }
