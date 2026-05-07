@@ -18,6 +18,44 @@ In short: `ffigen` gets you the raw function table. This project gives you somet
 
 <p align="center"><img src="raylib_dartified.png" width="128px"></p>
 
+## Platform Support
+
+| Platform | Status | Notes |
+|---|:-:|---|
+| **Linux** | ✅ | Primary development platform |
+| **Windows** | ✅ | Should work out of the box |
+| **macOS** | ❌ | See below |
+| **Web** | 🧪 | Under investigation |
+| **Android** | ❓ | Not tested |
+| **iOS** | ❓ | Not tested, likely blocked |
+
+---
+
+### macOS
+
+macOS is currently **not supported** due to a fundamental limitation of the Dart standalone runtime.
+
+Raylib (like most windowing/graphics libraries) requires OpenGL context creation and the main event loop to run on the OS main thread. In Flutter, this is somewhat worked around via platform channels, but in pure Dart FFI, the Dart VM does not run on the system's main thread, and there is no OS-level `DispatchQueue` or `NSRunLoop` set up. This causes crashes like:
+
+> NSWindow should only be instantiated on the main thread!
+
+This is a [known issue in the Dart SDK](https://github.com/dart-lang/sdk/issues/38315) and is not something that can be fixed at the binding layer. A native shim that bootstraps the macOS event loop and schedules Dart execution accordingly would be required, which is currently out of scope.
+
+---
+
+### Web
+
+Web support is being actively explored. Raylib itself compiles to WebAssembly via Emscripten, but bridging that with Dart FFI (which doesn't support Wasm interop in the traditional sense) requires a non-trivial approach. Some ideas are currently being prototyped.
+
+---
+
+### Android / iOS
+
+These platforms have not been tested.
+
+- **Android** - Raylib has official Android support and Dart FFI works on Android (dynamic libraries only, no static linking). In theory, this could work, but significant platform-specific setup (NDK, CMake, Activity lifecycle integration) would be required. Untested and unsupported for now.
+- **iOS** - Doubly blocked: raylib itself [does not have official iOS support](https://github.com/raysan5/raylib/discussions/2681) (there is an open PR with a community `rcore_ios.c` attempt), and Dart FFI on iOS shares the same main-thread issue as macOS. Not expected to work.
+
 ## Installation
 
 This package currently assumes you already have **raylib compiled** for your platform.

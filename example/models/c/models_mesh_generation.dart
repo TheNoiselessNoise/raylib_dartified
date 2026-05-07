@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_mesh_generation.c
 // Run it: dart run models_mesh_generation.dart
-// WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import '../../base.dart';
 

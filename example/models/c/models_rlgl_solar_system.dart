@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_rlgl_solar_system.c
 // Run it: dart run models_rlgl_solar_system.dart
-// WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import 'dart:math' as math;
 import '../../base.dart';

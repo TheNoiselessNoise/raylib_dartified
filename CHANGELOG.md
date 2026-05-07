@@ -1,3 +1,9 @@
+## 5.5.2
+
+- Extended `RaylibTemp` and made it the main entrypoint to anything memory-related.
+- Added Documentation comments to some crucial parts.
+- Added `Platform Support` section to [README.md](README.md#platform-support)
+
 ## 5.5.1
 
 - Add pub.dev example

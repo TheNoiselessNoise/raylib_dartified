@@ -42,10 +42,10 @@ void main() {
   // NOTE: you should see output:
   // Freeing user-defined 2 MyStruct$ slots
   // [FREE] yikes!
-  // [FREE] MyStructC_default_1
+  // [FREE] MyStructD_default_1
   // Freeing user-defined 2 MyVec3$ slots
-  // [FREE] MyVec3C_default_1
-  // [FREE] MyVec3C_default_2
+  // [FREE] MyVec3D_default_1
+  // [FREE] MyVec3D_default_2
   
   rl.CloseWindowAndDispose();
 }

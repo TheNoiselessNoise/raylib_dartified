@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/c1ab645ca298a2801097931d1079b10ff7eb9df8/examples/others/easings_testbed.c
 // Run it: dart run easings_testbed.dart
-// WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import '../../base.dart';
 
