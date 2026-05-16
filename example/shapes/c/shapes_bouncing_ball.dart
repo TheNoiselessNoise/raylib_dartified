@@ -48,16 +48,16 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawCircleV(ballPosition.ref, ballRadius.toDouble(), rl.C.MAROON);
+      rl.Core.DrawCircleV(ballPosition.ref, ballRadius.toDouble(), rl.Color.MAROON);
       rl.Core.DrawText(
         "PRESS SPACE to PAUSE BALL MOVEMENT".toC,
-        10, rl.Core.GetScreenHeight() - 25, 20, rl.C.LIGHTGRAY
+        10, rl.Core.GetScreenHeight() - 25, 20, rl.Color.LIGHTGRAY
       );
 
       if (pause && ((framesCounter/30)%2 == 0))
-        rl.Core.DrawText("PAUSED".toC, 350, 200, 30, rl.C.GRAY);
+        rl.Core.DrawText("PAUSED".toC, 350, 200, 30, rl.Color.GRAY);
 
       rl.Core.DrawFPS(10, 10);
 

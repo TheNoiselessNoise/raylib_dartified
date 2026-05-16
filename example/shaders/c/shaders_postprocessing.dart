@@ -80,43 +80,43 @@ void main()
     else if (currentShader.index < 0) currentShader = .values[shaders.length - 1];
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, rl.Temp.vec3Zero, 0.1, rl.C.WHITE);
+        rl.Core.DrawModel(model, rl.Temp.vec3Zero, 0.1, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 1.0);
       rl.Core.EndMode3D();
     rl.Core.EndTextureMode();
     
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shaders[currentShader]!);
         rl.Core.DrawTextureRec(
           target.texture,
           rl.Temp.rect1(0, 0, target.texture.width, -target.texture.height),
           rl.Temp.vec21(0, 0),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       rl.Core.EndShaderMode();
 
-      rl.Core.DrawRectangle(0, 9, 580, 30, rl.Core.Fade(rl.C.LIGHTGRAY, 0.7));
+      rl.Core.DrawRectangle(0, 9, 580, 30, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.7));
 
       rl.Core.DrawText(
         "(c) Church 3D model by Alberto Cano".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "CURRENT POSTPRO SHADER:".toC,
-        10, 15, 20, rl.C.BLACK
+        10, 15, 20, rl.Color.BLACK
       );
       rl.Core.DrawText(
         currentShader.name.toC,
-        330, 15, 20, rl.C.RED
+        330, 15, 20, rl.Color.RED
       );
       rl.Core.DrawText(
         "< >".toC,
-        540, 10, 30, rl.C.DARKBLUE
+        540, 10, 30, rl.Color.DARKBLUE
       );
       
       rl.Core.DrawFPS(700, 15);

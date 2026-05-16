@@ -72,7 +72,7 @@ void main()
   );
 
   final transfertBuffer = GolUpdateSSBO(
-    List.generate(MAX_BUFFERED_TRANSFERTS, (_) => .new())
+    .generate(MAX_BUFFERED_TRANSFERTS, (_) => .new())
   );
 
   final ssboTransfert = rl.RlglD.rlLoadShaderBuffer(

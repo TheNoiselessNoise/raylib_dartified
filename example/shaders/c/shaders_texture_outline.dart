@@ -58,29 +58,29 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shdrOutline);
 
         rl.Core.DrawTexture(texture,
           (rl.Core.GetScreenWidth()/2 - texture.width/2).toInt(),
           -30,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
 
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "Shader-based\ntexture\noutline".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Scroll mouse wheel to\nchange outline size".toC,
-        10, 72, 20, rl.C.GRAY
+        10, 72, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Outline size: $outlineSize px".toC,
-        10, 120, 20, rl.C.MAROON
+        10, 120, 20, rl.Color.MAROON
       );
 
       rl.Core.DrawFPS(710, 10);

@@ -30,7 +30,7 @@ void main()
     (i) => rl.Temp.strAt('label_$i', 'Slice $i')
   );
 
-  List<bool> editingLabel = List.generate(MAX_PIE_SLICES, (_) => false);
+  List<bool> editingLabel = .generate(MAX_PIE_SLICES, (_) => false);
 
   final showValues = rl.Temp.Bool$.Value(true, 'showValues');
   final showPercentages = rl.Temp.Bool$.Value(false, 'showPercentages');
@@ -96,7 +96,7 @@ void main()
     }
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       double startAngle = 0.0;
       for (int i = 0; i < sliceCount.value; i++)
@@ -127,17 +127,17 @@ void main()
           );
           rl.Core.DrawText(
             labelText.toC,
-            labelPos.ref.x.toInt(), labelPos.ref.y.toInt(), 20, rl.C.WHITE
+            labelPos.ref.x.toInt(), labelPos.ref.y.toInt(), 20, rl.Color.WHITE
           );
         }
 
-        if (showDonut.value) rl.Core.DrawCircleV(center.ref, donutInnerRadius.value, rl.C.RAYWHITE);
+        if (showDonut.value) rl.Core.DrawCircleV(center.ref, donutInnerRadius.value, rl.Color.RAYWHITE);
 
         startAngle += sweepAngle;
       }
 
-      rl.Core.DrawRectangleRec(panelRect.ref, rl.Core.Fade(rl.C.LIGHTGRAY, 0.5));
-      rl.Core.DrawRectangleLinesEx(panelRect.ref, 1.0, rl.C.GRAY);
+      rl.Core.DrawRectangleRec(panelRect.ref, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.5));
+      rl.Core.DrawRectangleLinesEx(panelRect.ref, 1.0, rl.Color.GRAY);
 
       rl.Gui.GuiSpinner(
         rl.Temp.rect1(panelPos.ref.x + 95, panelPos.ref.y + 12, 125, 25),

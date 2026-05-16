@@ -34,7 +34,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(5, 4, 5),
     target: .vec3(0, 1, 0),
     up: .vec3(0, 1, 0),
@@ -46,13 +46,13 @@ void main()
   final cube = rl.CoreD.LoadModelFromMesh(rl.CoreD.GenMeshCube(2.0, 2.0, 2.0));
 
   final gbufferShader = rl.CoreD.LoadShader(
-    "../resources/shaders/glsl330/gbuffer.vs",
-    "../resources/shaders/glsl330/gbuffer.fs",
+    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.vs",
+    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.fs",
   );
 
   final deferredShader = rl.CoreD.LoadShader(
-    "../resources/shaders/glsl330/deferred_shading.vs",
-    "../resources/shaders/glsl330/deferred_shading.fs",
+    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.vs",
+    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.fs",
   );
 
   deferredShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
@@ -70,13 +70,13 @@ void main()
   rl.RlglD.rlEnableFramebuffer(gBuffer.framebuffer);
 
   gBuffer.positionTexture = rl.RlglD.rlLoadTexture(
-    null, screenWidth, screenHeight, .RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
+    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
   );
   gBuffer.normalTexture = rl.RlglD.rlLoadTexture(
-    null, screenWidth, screenHeight, .RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
+    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
   );
   gBuffer.albedoSpecTexture = rl.RlglD.rlLoadTexture(
-    null, screenWidth, screenHeight, .RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 1
+    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 1
   );
 
   rl.RlglD.rlActiveDrawBuffers(3);
@@ -146,12 +146,12 @@ void main()
   ));
 
   const double CUBE_SCALE = 0.25;
-  final List<Vector3D> cubePositions = List.generate(MAX_CUBES, (_) => .vec3(
+  final List<Vector3D> cubePositions = .generate(MAX_CUBES, (_) => .vec3(
     rl.randC()%10 - 5,
     rl.randC()%5,
     rl.randC()%10 - 5,
   ));
-  final List<double> cubeRotations = List.generate(MAX_CUBES, (_) => rl.randC()%360);
+  final List<double> cubeRotations = .generate(MAX_CUBES, (_) => rl.randC()%360);
 
   DeferredMode mode = .DEFERRED_SHADING;
 

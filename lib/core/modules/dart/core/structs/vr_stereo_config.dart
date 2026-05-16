@@ -4,10 +4,6 @@ extension VrStereoConfigCLike on VrStereoConfigC {
   int get paramCount => 2;
 }
 
-extension VrStereoConfigDLike on VrStereoConfigD {
-  int get paramCount => 2;
-}
-
 extension VrStereoConfigCPEx on Pointer<VrStereoConfigC> {
   Pointer<VrStereoConfigC> setC(VrStereoConfigC o) {
     ref.setC(o);
@@ -94,14 +90,29 @@ extension VrStereoConfigCEx on VrStereoConfigC {
   );
 }
 
-class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> {
+class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> with VrStereoConfigBase {
+  @override
   late List<MatrixD> projection;
+  
+  @override
   late List<MatrixD> viewOffset;
+  
+  @override
   late List<double> leftLensCenter;
+  
+  @override
   late List<double> rightLensCenter;
+  
+  @override
   late List<double> leftScreenCenter;
+  
+  @override
   late List<double> rightScreenCenter;
+  
+  @override
   late List<double> scale;
+  
+  @override
   late List<double> scaleIn;
 
   VrStereoConfigD({
@@ -129,7 +140,7 @@ class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> {
 
   @override
   VrStereoConfigD setC(VrStereoConfigC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.projection = o.projection;
       p.ref.viewOffset = o.viewOffset;
       p.ref.leftLensCenter = o.leftLensCenter;
@@ -165,48 +176,15 @@ class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> {
   }
 
   @override
-  Pointer<VrStereoConfigC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.VrStereoConfig$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.VrStereoConfig$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<VrStereoConfigC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<VrStereoConfigC> p, String key) {
+  void nativeWriteInto(VrStereoConfigC p) {
     for (int i = 0; i < paramCount; i++) {
-      projection[i].writeInto(p.ref.projection[i]);
+      projection[i].nativeWriteInto(p.projection[i]);
     }
     for (int i = 0; i < paramCount; i++) {
-      viewOffset[i].writeInto(p.ref.viewOffset[i]);
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.leftLensCenter[i] = leftLensCenter[i];
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.rightLensCenter[i] = rightLensCenter[i];
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.leftScreenCenter[i] = leftScreenCenter[i];
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.rightScreenCenter[i] = rightScreenCenter[i];
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.scale[i] = scale[i];
-    }
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.scaleIn[i] = scaleIn[i];
-    }
-  }
-
-  @override
-  void writeInto(VrStereoConfigC p) {
-    for (int i = 0; i < paramCount; i++) {
-      projection[i].writeInto(p.projection[i]);
-    }
-    for (int i = 0; i < paramCount; i++) {
-      viewOffset[i].writeInto(p.viewOffset[i]);
+      viewOffset[i].nativeWriteInto(p.viewOffset[i]);
     }
     for (int i = 0; i < paramCount; i++) {
       p.leftLensCenter[i] = leftLensCenter[i];

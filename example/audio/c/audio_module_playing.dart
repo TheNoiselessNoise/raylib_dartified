@@ -33,10 +33,10 @@ void main()
   rl.Audio.InitAudioDevice();
 
   final colors = <ColorC>[
-    rl.C.ORANGE, rl.C.RED, rl.C.GOLD, rl.C.LIME,
-    rl.C.BLUE, rl.C.VIOLET, rl.C.BROWN, rl.C.LIGHTGRAY,
-    rl.C.PINK, rl.C.YELLOW, rl.C.GREEN, rl.C.SKYBLUE,
-    rl.C.PURPLE, rl.C.BEIGE
+    rl.Color.ORANGE, rl.Color.RED, rl.Color.GOLD, rl.Color.LIME,
+    rl.Color.BLUE, rl.Color.VIOLET, rl.Color.BROWN, rl.Color.LIGHTGRAY,
+    rl.Color.PINK, rl.Color.YELLOW, rl.Color.GREEN, rl.Color.SKYBLUE,
+    rl.Color.PURPLE, rl.Color.BEIGE
   ];
 
   final circles = calloc<CircleWave>(MAX_CIRCLES);
@@ -106,7 +106,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       for (int i = MAX_CIRCLES - 1; i >= 0; i--)
       {
@@ -117,16 +117,16 @@ void main()
         );
       }
 
-      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.C.LIGHTGRAY);
-      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, timePlayed.toInt(), 12, rl.C.MAROON);
-      rl.Core.DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.C.GRAY);
+      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.Color.LIGHTGRAY);
+      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, timePlayed.toInt(), 12, rl.Color.MAROON);
+      rl.Core.DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.Color.GRAY);
 
-      rl.Core.DrawRectangle(20, 20, 425, 145, rl.C.WHITE);
-      rl.Core.DrawRectangleLines(20, 20, 425, 145, rl.C.GRAY);
-      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 40, 40, 20, rl.C.BLACK);
-      rl.Core.DrawText("PRESS P TO PAUSE/RESUME".toC, 40, 70, 20, rl.C.BLACK);
-      rl.Core.DrawText("PRESS UP/DOWN TO CHANGE SPEED".toC, 40, 100, 20, rl.C.BLACK);
-      rl.Core.DrawText("SPEED: ${pitch.f2}".toC, 40, 130, 20, rl.C.MAROON);
+      rl.Core.DrawRectangle(20, 20, 425, 145, rl.Color.WHITE);
+      rl.Core.DrawRectangleLines(20, 20, 425, 145, rl.Color.GRAY);
+      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 40, 40, 20, rl.Color.BLACK);
+      rl.Core.DrawText("PRESS P TO PAUSE/RESUME".toC, 40, 70, 20, rl.Color.BLACK);
+      rl.Core.DrawText("PRESS UP/DOWN TO CHANGE SPEED".toC, 40, 100, 20, rl.Color.BLACK);
+      rl.Core.DrawText("SPEED: ${pitch.f2}".toC, 40, 130, 20, rl.Color.MAROON);
 
     rl.Core.EndDrawing();
   }

@@ -189,7 +189,7 @@ void main()
 
 void DrawTextureTiled(
   Raylib rl,
-  Texture2DD texture,
+  TextureD texture,
   RectangleD source,
   RectangleD dest,
   Vector2D origin,

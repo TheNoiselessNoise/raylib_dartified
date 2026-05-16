@@ -10,13 +10,13 @@ const int screenHeight = 450;
 void main() {
   final rl = loadBaseRaylib();
 
-  final camera = Camera2DD(zoom: 1);
-
-  int zoomMode = 0;
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera_mouse_zoom');
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
+
+  final camera = Camera2DD(zoom: 1);
+
+  int zoomMode = 0;
 
   while (!rl.CoreD.WindowShouldClose()) {
     if (rl.CoreD.IsKeyPressed(.KEY_ONE)) {

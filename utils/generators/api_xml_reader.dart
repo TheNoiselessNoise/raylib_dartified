@@ -213,12 +213,35 @@ final class RaylibApiFunction extends Copyable<RaylibApiFunction> {
   );
 }
 
+final class RaylibApiCallback extends Copyable<RaylibApiCallback> {
+  final String name;
+  final String retType;
+  final String desc;
+  final List<RaylibApiFunctionParam> params;
+
+  RaylibApiCallback({
+    required this.name,
+    required this.retType,
+    required this.desc,
+    required this.params,
+  });
+
+  @override
+  RaylibApiCallback copy() => RaylibApiCallback(
+    name: name,
+    retType: retType,
+    desc: desc,
+    params: params.map((p) => p.copy()).toList(),
+  );
+}
+
 final class RaylibApiReaderResult {
   final List<RaylibApiDefine> defines;
   final List<RaylibApiStruct> structs;
   final List<RaylibApiAlias> aliases;
   final List<RaylibApiEnum> enums;
   final List<RaylibApiFunction> functions;
+  final List<RaylibApiCallback> callbacks;
 
   final Map<String, RaylibApiStruct> structMap = {};
 
@@ -228,12 +251,14 @@ final class RaylibApiReaderResult {
     List<RaylibApiAlias>? aliases,
     List<RaylibApiEnum>? enums,
     List<RaylibApiFunction>? functions,
+    List<RaylibApiCallback>? callbacks,
   }) :
     defines = defines ?? [],
     structs = structs ?? [],
     aliases = aliases ?? [],
     enums = enums ?? [],
-    functions = functions ?? []
+    functions = functions ?? [],
+    callbacks = callbacks ?? []
   { update(); }
 
   RaylibApiDefine? getDefine(String name)
@@ -249,6 +274,9 @@ final class RaylibApiReaderResult {
 
   RaylibApiFunction? getFunction(String name)
      => functions.where((x) => x.name == name).firstOrNull;
+
+  RaylibApiCallback? getCallback(String name)
+     => callbacks.where((x) => x.name == name).firstOrNull;
 
   void update() {
     structMap.clear();
@@ -293,6 +321,10 @@ final class RaylibApiReader {
     structs: [
       .opaque('rAudioBuffer', 'Audio buffer'),
       .opaque('rAudioProcessor', 'Audio processor'),
+      .opaque('RlRenderBatch', 'RlRenderBatch'),
+      .opaque('RlDrawCall', 'RlDrawCall'),
+      .opaque('RlVertexBuffer', 'RlVertexBuffer'),
+      .opaque('Light', 'Built-in Light'),
     ],
   );
 
@@ -373,10 +405,6 @@ final class RaylibApiReader {
     ));
   });
 
-  void _processCallbacks(XmlElement node) {
-    // NOTE: we don't care about callbacks now
-  }
-
   void _processFunctions(XmlElement node) => _processChildren(node, (funcTag, func) {
     if (funcTag != 'Function') throw StateError('Invalid Function: $funcTag (should be: Function)');
     
@@ -398,6 +426,27 @@ final class RaylibApiReader {
     ));
   });
 
+  void _processCallbacks(XmlElement node) => _processChildren(node, (callbackTag, func) {
+    if (callbackTag != 'Callback') throw StateError('Invalid Callback: $callbackTag (should be: Callback)');
+    
+    final params = <RaylibApiFunctionParam>[];
+    _processChildren(func, (paramTag, param) {
+      if (paramTag != 'Param') throw StateError('Invalid Function Param: $paramTag (should be: Param)');
+      params.add(.new(
+        type: param.getAttributeSafe('type'),
+        name: param.getAttributeSafe('name'),
+        desc: param.getAttributeSafe('desc'),
+      ));
+    });
+
+    _result.callbacks.add(.new(
+      name: func.getAttributeSafe('name'),
+      retType: func.getAttributeSafe('retType'),
+      desc: func.getAttributeSafe('desc'),
+      params: params,
+    ));
+  });
+
   void _read() {
     final document = XmlDocument.parse(_content);
 
@@ -411,8 +460,8 @@ final class RaylibApiReader {
         case 'Structs': _processStructs(child); break;
         case 'Aliases': _processAliases(child); break;
         case 'Enums': _processEnums(child); break;
-        case 'Callbacks': _processCallbacks(child); break;
         case 'Functions': _processFunctions(child); break;
+        case 'Callbacks': _processCallbacks(child); break;
         default: throw StateError('Unknown Raylib Type: ${child.name}');
       }
     });

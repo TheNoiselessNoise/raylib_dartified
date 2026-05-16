@@ -54,50 +54,50 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "TOTAL GIF FRAMES: ${animFrames.value}".toC,
-        50, 30, 20, rl.C.LIGHTGRAY
+        50, 30, 20, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "CURRENT FRAME: $currentAnimFrame".toC,
-        50, 60, 20, rl.C.GRAY
+        50, 60, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "CURRENT FRAME IMAGE.DATA OFFSET: $nextFrameDataOffset".toC,
-        50, 90, 20, rl.C.GRAY
+        50, 90, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "FRAMES DELAY: ".toC,
-        100, 305, 10, rl.C.DARKGRAY
+        100, 305, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "$frameDelay frames".toC,
-        620, 305, 10, rl.C.DARKGRAY
+        620, 305, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "PRESS RIGHT/LEFT KEYS to CHANGE SPEED!".toC,
-        290, 350, 10, rl.C.DARKGRAY
+        290, 350, 10, rl.Color.DARKGRAY
       );
 
       for (int i = 0; i < MAX_FRAME_DELAY; i++)
       {
-        if (i < frameDelay) rl.Core.DrawRectangle(190 + 21*i, 300, 20, 20, rl.C.RED);
-        rl.Core.DrawRectangleLines(190 + 21*i, 300, 20, 20, rl.C.MAROON);
+        if (i < frameDelay) rl.Core.DrawRectangle(190 + 21*i, 300, 20, 20, rl.Color.RED);
+        rl.Core.DrawRectangleLines(190 + 21*i, 300, 20, 20, rl.Color.MAROON);
       }
 
       rl.Core.DrawTexture(
         texScarfyAnim,
         (rl.Core.GetScreenWidth()/2 - texScarfyAnim.width/2).toInt(),
         140,
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawText(
         "(c) Scarfy sprite by Eiden Marsal".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

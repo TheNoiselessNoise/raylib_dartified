@@ -1,7 +1,18 @@
 part of '../../../raylib.dart';
 
-class RaylibAudioD extends RaylibModule {
-  RaylibAudioD(super.lib);
+class RaylibAudioD extends RaylibModule implements RaylibAudioModuleBase<
+  // types
+  AudioStreamD,
+  MusicD,
+  SoundD,
+  WaveD,
+
+  // callbacks
+  AudioCallbackD
+
+> {
+
+  RaylibAudioD(super.rl);
 
   @override
   void dispose() {
@@ -10,21 +21,25 @@ class RaylibAudioD extends RaylibModule {
     AudioCallbackD.disposeRegistry();
   }
 
+  @override
   void InitAudioDevice() => run(
     () => 'InitAudioDevice()',
     () => rl.Audio.InitAudioDevice(),
   );
 
+  @override
   void CloseAudioDevice() => run(
     () => 'CloseAudioDevice()',
     () => rl.Audio.CloseAudioDevice(),
   );
   
+  @override
   bool IsAudioDeviceReady() => run(
     () => 'IsAudioDeviceReady()',
     () => rl.Audio.IsAudioDeviceReady(),
   );
 
+  @override
   void SetMasterVolume(
     num volume,
   ) => run(
@@ -34,11 +49,13 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   double GetMasterVolume() => run(
     () => 'GetMasterVolume()',
     () => rl.Audio.GetMasterVolume(),
   );
 
+  @override
   WaveD LoadWave(
     String fileName,
   ) => run(
@@ -51,6 +68,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   WaveD LoadWaveFromMemory(
     String fileType,
     List<int> fileData,
@@ -66,6 +84,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsWaveValid(
     WaveD wave,
   ) => run(
@@ -75,6 +94,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   SoundD LoadSound(
     String fileName,
   ) => run(
@@ -87,6 +107,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   SoundD LoadSoundFromWave(
     WaveD wave,
   ) => run(
@@ -99,6 +120,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   SoundD LoadSoundAlias(
     SoundD source,
   ) => run(
@@ -111,6 +133,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsSoundValid(
     SoundD sound,
   ) => run(
@@ -120,6 +143,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UpdateSound(
     SoundD sound,
     List<int> data,
@@ -135,6 +159,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadWave(
     WaveD wave,
   ) => run(
@@ -144,6 +169,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadSound(
     SoundD sound,
   ) => run(
@@ -153,6 +179,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadSoundAlias(
     SoundD alias,
   ) => run(
@@ -162,6 +189,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool ExportWave(
     WaveD wave,
     String fileName,
@@ -173,6 +201,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool ExportWaveAsCode(
     WaveD wave,
     String fileName,
@@ -184,6 +213,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PlaySound(
     SoundD sound,
   ) => run(
@@ -193,6 +223,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void StopSound(
     SoundD sound,
   ) => run(
@@ -202,6 +233,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PauseSound(
     SoundD sound,
   ) => run(
@@ -211,6 +243,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void ResumeSound(
     SoundD sound,
   ) => run(
@@ -220,6 +253,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsSoundPlaying(
     SoundD sound,
   ) => run(
@@ -229,6 +263,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetSoundVolume(
     SoundD sound,
     num volume,
@@ -240,6 +275,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetSoundPitch(
     SoundD sound,
     num pitch,
@@ -251,6 +287,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetSoundPan(
     SoundD sound,
     num pan,
@@ -262,6 +299,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   WaveD WaveCopy(
     WaveD wave,
   ) => run(
@@ -269,11 +307,12 @@ class RaylibAudioD extends RaylibModule {
     () => rl.Temp.Wave$.RefCapture(
       'WaveCopy_${wave.internalId}',
       rl.Audio.WaveCopy(
-        rl.Temp.Wave$.Ref2(wave).ref,
+        rl.Temp.Wave$.Ref1(wave).ref,
       ),
     ),
   );
 
+  @override
   void WaveCrop(
     WaveD wave,
     num initFrame,
@@ -289,6 +328,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void WaveFormat(
     WaveD wave,
     num sampleRate,
@@ -306,13 +346,14 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   List<double> LoadWaveSamples(
-    WaveD wave
+    WaveD wave,
   ) => run(
     () => 'LoadWaveSamples($wave)',
     () {
       final samples = rl.Audio.LoadWaveSamples(
-        rl.Temp.Wave$.Ref1(wave).ref
+        rl.Temp.Wave$.Ref1(wave).ref,
       );
       try {
         return .generate(wave.dataLength, (i) => samples[i]);
@@ -322,6 +363,7 @@ class RaylibAudioD extends RaylibModule {
     },
   );
 
+  @override
   MusicD LoadMusicStream(
     String fileName,
   ) => run(
@@ -334,6 +376,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   MusicD LoadMusicStreamFromMemory(
     String fileType,
     List<int> data,
@@ -349,6 +392,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsMusicValid(
     MusicD music,
   ) => run(
@@ -358,6 +402,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadMusicStream(
     MusicD music,
   ) => run(
@@ -367,6 +412,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PlayMusicStream(
     MusicD music,
   ) => run(
@@ -376,6 +422,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsMusicStreamPlaying(
     MusicD music,
   ) => run(
@@ -385,6 +432,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UpdateMusicStream(
     MusicD music,
   ) => run(
@@ -394,6 +442,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void StopMusicStream(
     MusicD music,
   ) => run(
@@ -403,6 +452,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PauseMusicStream(
     MusicD music,
   ) => run(
@@ -412,6 +462,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void ResumeMusicStream(
     MusicD music,
   ) => run(
@@ -421,6 +472,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SeekMusicStream(
     MusicD music,
     num position,
@@ -432,6 +484,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetMusicVolume(
     MusicD music,
     num volume,
@@ -443,6 +496,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetMusicPitch(
     MusicD music,
     num pitch,
@@ -454,6 +508,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetMusicPan(
     MusicD music,
     num pan,
@@ -465,6 +520,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   double GetMusicTimeLength(
     MusicD music,
   ) => run(
@@ -474,6 +530,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   double GetMusicTimePlayed(
     MusicD music,
   ) => run(
@@ -483,6 +540,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   AudioStreamD LoadAudioStream(
     num sampleRate,
     num sampleSize,
@@ -499,6 +557,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsAudioStreamValid(
     AudioStreamD stream,
   ) => run(
@@ -508,6 +567,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadAudioStream(
     AudioStreamD stream,
   ) => run(
@@ -517,6 +577,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void UpdateAudioStream(
     AudioStreamD stream,
     List<int> data,
@@ -531,6 +592,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsAudioStreamProcessed(
     AudioStreamD stream,
   ) => run(
@@ -540,6 +602,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PlayAudioStream(
     AudioStreamD stream,
   ) => run(
@@ -549,6 +612,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void PauseAudioStream(
     AudioStreamD stream,
   ) => run(
@@ -558,6 +622,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void ResumeAudioStream(
     AudioStreamD stream,
   ) => run(
@@ -567,6 +632,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsAudioStreamPlaying(
     AudioStreamD stream,
   ) => run(
@@ -576,6 +642,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void StopAudioStream(
     AudioStreamD stream,
   ) => run(
@@ -585,6 +652,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetAudioStreamVolume(
     AudioStreamD stream,
     num volume,
@@ -596,6 +664,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetAudioStreamPitch(
     AudioStreamD stream,
     num pitch,
@@ -607,6 +676,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetAudioStreamPan(
     AudioStreamD stream,
     num pan,
@@ -618,6 +688,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetAudioStreamBufferSizeDefault(
     num size,
   ) => run(
@@ -627,6 +698,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void SetAudioStreamCallback(
     AudioStreamD stream,
     AudioCallbackD callback,
@@ -638,6 +710,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void AttachAudioStreamProcessor(
     AudioStreamD stream,
     AudioCallbackD callback,
@@ -649,6 +722,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void DetachAudioStreamProcessor(
     AudioStreamD stream,
     AudioCallbackD callback,
@@ -661,6 +735,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void AttachAudioMixedProcessor(
     AudioCallbackD callback,
   ) => run(
@@ -670,6 +745,7 @@ class RaylibAudioD extends RaylibModule {
     ),
   );
 
+  @override
   void DetachAudioMixedProcessor(
     AudioCallbackD callback,
     {bool keepAlive = false}

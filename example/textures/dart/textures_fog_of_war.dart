@@ -34,8 +34,8 @@ void main()
   final map = ExampleMap();
   map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
   map.tilesY = screenHeight ~/ MAP_TILE_SIZE;
-  map.tileIds = List.filled(map.tilesX*map.tilesY, 0);
-  map.tileFog = List.filled(map.tilesX*map.tilesY, 0);
+  map.tileIds = .filled(map.tilesX*map.tilesY, 0);
+  map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
   final Vector2D playerPosition = .zero();
   int playerTileX = 0;

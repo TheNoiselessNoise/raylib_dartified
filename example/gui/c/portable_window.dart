@@ -57,7 +57,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       exitWindow = rl.Gui.GuiWindowBox(
         rl.Temp.rect1(0, 0, screenWidth, screenHeight),
@@ -66,11 +66,11 @@ void main()
 
       rl.Core.DrawText(
         "Mouse Position: ${mousePosition.format()}".toC,
-        10, 40, 10, rl.C.DARKGRAY
+        10, 40, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Window Position: ${windowPosition.format()}".toC,
-        10, 60, 10, rl.C.DARKGRAY
+        10, 60, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

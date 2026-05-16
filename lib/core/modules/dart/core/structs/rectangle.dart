@@ -53,11 +53,9 @@ extension RectangleCEx on RectangleC {
   );
 }
 
-class RectangleD extends StructDLiteral<RectangleD, RectangleC> {
-  double x;
-  double y;
-  double width;
-  double height;
+class RectangleD extends StructDLiteral<RectangleD, RectangleC> with RectangleBase {
+  @override
+  double x, y, width, height;
 
   RectangleD({
     super.originalPointer,
@@ -99,15 +97,10 @@ class RectangleD extends StructDLiteral<RectangleD, RectangleC> {
   }
 
   @override
-  Pointer<RectangleC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Rectangle$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Rectangle$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<RectangleC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(RectangleC p) {
+  void nativeWriteInto(RectangleC p) {
     p.x = x;
     p.y = y;
     p.width = width;

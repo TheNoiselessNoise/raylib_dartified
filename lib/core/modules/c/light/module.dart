@@ -12,7 +12,7 @@ class RaylibLight extends RaylibModule {
   final Pointer<Float> _lightFloat3ValuePtr = calloc<Float>(3);
   final Pointer<Float> _lightFloat4ValuePtr = calloc<Float>(4);
   
-  RaylibLight(super.lib);
+  RaylibLight(super.rl);
 
   @override
   void dispose() {

@@ -29,18 +29,18 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawTexture(
         texture,
         (screenWidth/2 - texture.width/2).toInt(),
         (screenHeight/2 - texture.height/2).toInt(),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawText(
         "this IS a texture loaded from an image!".toC,
-        300, 370, 10, rl.C.GRAY
+        300, 370, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

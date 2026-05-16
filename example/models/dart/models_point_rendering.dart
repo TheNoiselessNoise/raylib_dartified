@@ -17,7 +17,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(3, 3, 3),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -30,27 +30,27 @@ void main()
   bool numPointsChanged = false;
   int numPoints = 1000;
   
-  MeshD mesh = GenMeshPoints(rl, .new(), numPoints);
+  MeshD mesh = GenMeshPoints(rl, numPoints);
   var model = rl.CoreD.LoadModelFromMesh(mesh);
 
   while (!rl.CoreD.WindowShouldClose())
   {
     rl.CoreD.UpdateCamera(camera, .CAMERA_ORBITAL);
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (rl.CoreD.IsKeyPressed(.KEY_SPACE))
       useDrawModelPoints = !useDrawModelPoints;
     
     var newPoints = numPoints;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_UP.value))
+    if (rl.CoreD.IsKeyPressed(.KEY_UP))
       newPoints = (numPoints*10 > MAX_POINTS) ? MAX_POINTS : numPoints*10;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_DOWN.value))
+    if (rl.CoreD.IsKeyPressed(.KEY_DOWN))
       newPoints = (numPoints/10 < MIN_POINTS) ? MIN_POINTS : numPoints~/10;
     numPointsChanged = newPoints != numPoints;
     numPoints = newPoints;
 
     if (numPointsChanged) {
       rl.CoreD.UnloadModel(model);
-      mesh = GenMeshPoints(rl, .new(), numPoints);
+      mesh = GenMeshPoints(rl, numPoints);
       model = rl.CoreD.LoadModelFromMesh(mesh);
       numPointsChanged = false;
     }
@@ -128,8 +128,9 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-MeshD GenMeshPoints(Raylib rl, MeshD sourceMesh, int numPoints)
+MeshD GenMeshPoints(Raylib rl, int numPoints)
 {
+  final MeshD sourceMesh = .new();
   final vertices = <double>[];
   final colors = <int>[];
 
@@ -147,7 +148,7 @@ MeshD GenMeshPoints(Raylib rl, MeshD sourceMesh, int numPoints)
     ]);
     
     final color = rl.CoreD.ColorFromHSV(r*360.0, 1.0, 1.0);
-    colors.addAll([color.r, color.g, color.b, color.a]);
+    colors.addAll(color.toArray());
   }
 
   sourceMesh.triangleCount = 1;

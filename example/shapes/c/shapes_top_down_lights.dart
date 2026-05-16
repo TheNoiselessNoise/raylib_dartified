@@ -80,7 +80,7 @@ void main()
     ),
   });
 
-  final img = rl.Core.GenImageChecked(64, 64, 32, 32, rl.C.DARKBROWN, rl.C.DARKGRAY);
+  final img = rl.Core.GenImageChecked(64, 64, 32, 32, rl.Color.DARKBROWN, rl.Color.DARKGRAY);
   final backgroundTexture = rl.Core.LoadTextureFromImage(img);
   rl.Core.UnloadImage(img);
 
@@ -117,7 +117,7 @@ void main()
     {
       rl.Core.BeginTextureMode(lightMask);
 
-        rl.Core.ClearBackground(rl.C.BLACK);
+        rl.Core.ClearBackground(rl.Color.BLACK);
 
         rl.Rlgl.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
         rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
@@ -128,7 +128,7 @@ void main()
             lights[i].mask.ref.texture,
             rl.Temp.rect1(0, 0, w, -h),
             rl.Temp.vec21(0, 0),
-            rl.C.WHITE,
+            rl.Color.WHITE,
           );
         }
 
@@ -141,20 +141,20 @@ void main()
       
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.DrawTextureRec(
         backgroundTexture,
         rl.Temp.rect1(0, 0, w, h),
         rl.Temp.vec21(0, 0),
-        rl.C.WHITE,
+        rl.Color.WHITE,
       );
       
       rl.Core.DrawTextureRec(
         lightMask.texture,
         rl.Temp.rect1(0, 0, w, -h),
         rl.Temp.vec21(0, 0),
-        rl.Core.ColorAlpha(rl.C.WHITE, showLines ? 0.75 : 1.0),
+        rl.Core.ColorAlpha(rl.Color.WHITE, showLines ? 0.75 : 1.0),
       );
 
       for (int i = 0; i < MAX_LIGHTS; i++)
@@ -162,7 +162,7 @@ void main()
         if (lights[i].active) rl.Core.DrawCircle(
           lights[i].position.ref.x.toInt(),
           lights[i].position.ref.y.toInt(),
-          10, (i == 0) ? rl.C.YELLOW : rl.C.WHITE,
+          10, (i == 0) ? rl.Color.YELLOW : rl.Color.WHITE,
         );
       }
 
@@ -170,37 +170,37 @@ void main()
       {
         for (int s = 0; s < lights[0].shadowCount; s++)
         {
-          rl.Core.DrawTriangleFan(lights[0].shadows[s].vertices, 4, rl.C.DARKPURPLE);
+          rl.Core.DrawTriangleFan(lights[0].shadows[s].vertices, 4, rl.Color.DARKPURPLE);
         }
 
         for (int b = 0; b < MAX_BOXES; b++)
         {
           if (rl.Core.CheckCollisionRecs(boxes[b], lights[0].bounds.ref))
-            rl.Core.DrawRectangleRec(boxes[b], rl.C.PURPLE);
+            rl.Core.DrawRectangleRec(boxes[b], rl.Color.PURPLE);
 
           rl.Core.DrawRectangleLines(
             boxes[b].x.toInt(), boxes[b].y.toInt(),
             boxes[b].width.toInt(), boxes[b].height.toInt(),
-            rl.C.DARKBLUE
+            rl.Color.DARKBLUE
           );
         }
 
         rl.Core.DrawText(
           "(F1) Hide Shadow Volumes".toC,
-          10, 50, 10, rl.C.GREEN
+          10, 50, 10, rl.Color.GREEN
         );
       }
       else
       {
         rl.Core.DrawText(
           "(F1) Show Shadow Volumes".toC,
-          10, 50, 10, rl.C.GREEN
+          10, 50, 10, rl.Color.GREEN
         );
       }
 
       rl.Core.DrawFPS(screenWidth - 80, 10);
-      rl.Core.DrawText("Drag to move light #1".toC, 10, 10, 10, rl.C.DARKGREEN);
-      rl.Core.DrawText("Right click to add new light".toC, 10, 30, 10, rl.C.DARKGREEN);
+      rl.Core.DrawText("Drag to move light #1".toC, 10, 10, 10, rl.Color.DARKGREEN);
+      rl.Core.DrawText("Right click to add new light".toC, 10, 30, 10, rl.Color.DARKGREEN);
 
     rl.Core.EndDrawing();
   }
@@ -249,7 +249,7 @@ void DrawLightMask(Raylib rl, int slot)
 {
   rl.Core.BeginTextureMode(lights[slot].mask.ref);
 
-    rl.Core.ClearBackground(rl.C.WHITE);
+    rl.Core.ClearBackground(rl.Color.WHITE);
 
     rl.Rlgl.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
     rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
@@ -257,8 +257,8 @@ void DrawLightMask(Raylib rl, int slot)
     if (lights[slot].valid) rl.Core.DrawCircleGradient(
       lights[slot].position.ref.x.toInt(), lights[slot].position.ref.y.toInt(),
       lights[slot].outerRadius,
-      rl.Core.ColorAlpha(rl.C.WHITE, 0),
-      rl.C.WHITE
+      rl.Core.ColorAlpha(rl.Color.WHITE, 0),
+      rl.Color.WHITE
     );
     
     rl.Rlgl.rlDrawRenderBatchActive();
@@ -269,7 +269,7 @@ void DrawLightMask(Raylib rl, int slot)
 
     for (int i = 0; i < lights[slot].shadowCount; i++)
     {
-      rl.Core.DrawTriangleFan(lights[slot].shadows[i].vertices, 4, rl.C.WHITE);
+      rl.Core.DrawTriangleFan(lights[slot].shadows[i].vertices, 4, rl.Color.WHITE);
     }
 
     rl.Rlgl.rlDrawRenderBatchActive();

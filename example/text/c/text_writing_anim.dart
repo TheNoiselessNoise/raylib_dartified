@@ -29,23 +29,23 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       int length = math.min((framesCounter/10).toInt(), message.length);
 
       rl.Core.DrawText(
         message.substring(0, length).toC,
-        210, 160, 20, rl.C.MAROON
+        210, 160, 20, rl.Color.MAROON
       );
 
       rl.Core.DrawText(
         "PRESS [ENTER] to RESTART!".toC,
-        240, 260, 20, rl.C.LIGHTGRAY
+        240, 260, 20, rl.Color.LIGHTGRAY
       );
       
       rl.Core.DrawText(
         "HOLD [SPACE] to SPEED UP!".toC,
-        239, 300, 20, rl.C.LIGHTGRAY
+        239, 300, 20, rl.Color.LIGHTGRAY
       );
 
     rl.Core.EndDrawing();

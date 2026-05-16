@@ -6,6 +6,7 @@ import 'dart:ffi';
 import 'dart:math' as math;
 import '../../base.dart';
 
+const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const double LETTER_BOUNDRY_SIZE = 0.25;
@@ -33,7 +34,7 @@ class WaveTextConfig {
 void main()
 {
   final rl = loadBaseRaylib();
-  LETTER_BOUNDRY_COLOR = rl.C.VIOLET;
+  LETTER_BOUNDRY_COLOR = rl.Color.VIOLET;
 
   rl.Core.SetConfigFlags(
     ConfigFlags.FLAG_MSAA_4X_HINT.value |
@@ -78,12 +79,12 @@ void main()
 
   double time = 0.0;
 
-  var light = rl.Temp.Color$.At('light').setC(rl.C.MAROON);
-  var dark = rl.Temp.Color$.At('dart').setC(rl.C.RED);
+  var light = rl.Temp.Color$.At('light').setC(rl.Color.MAROON);
+  var dark = rl.Temp.Color$.At('dart').setC(rl.Color.RED);
 
   final alphaDiscard = rl.Core.LoadShader(
     nullptr,
-    "../resources/shaders/glsl330/alpha_discard.fs".toC,
+    "../resources/shaders/glsl$GLSL_VERSION/alpha_discard.fs".toC,
   );
 
   final multi = rl.Temp.Color$.At('multi', TEXT_MAX_LAYERS);
@@ -213,7 +214,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
         rl.Core.DrawCubeV(cubePosition.ref, cubeSize.ref, dark.ref);
@@ -252,84 +253,84 @@ void main()
             quads += opt.length;
             var m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             Vector3D pos = .vec3(-m.x/2.0, 0.01, 2.0);
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.BLUE);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.BLUE);
             pos.z += 0.5 + m.z;
 
             opt = "< SPACING: ${fontSpacing.f1} >";
             quads += opt.length;
             m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             pos.x = -m.x/2.0;
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.BLUE);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.BLUE);
             pos.z += 0.5 + m.z;
 
             opt = "< LINE: ${lineSpacing.f1} >";
             quads += opt.length;
             m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             pos.x = -m.x/2.0;
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.BLUE);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.BLUE);
             pos.z += 1.0 + m.z;
 
             opt = "< LBOX: ${slb ? "ON" : "OFF"} >";
             quads += opt.length;
             m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             pos.x = -m.x/2.0;
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.RED);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.RED);
             pos.z += 0.5 + m.z;
 
             opt = "< TBOX: ${SHOW_TEXT_BOUNDRY ? "ON" : "OFF"} >";
             quads += opt.length;
             m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             pos.x = -m.x/2.0;
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.RED);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.RED);
             pos.z += 0.5 + m.z;
 
             opt = "< LAYER DISTANCE: ${layerDistance.f3} >";
             quads += opt.length;
             m = MeasureText3D(rl, font, opt, 8.0, 1.0, 0.0);
             pos.x = -m.x/2.0;
-            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.C.DARKPURPLE);
+            DrawText3D(rl, font, opt, pos, 8.0, 1.0, 0.0, false, rl.Color.DARKPURPLE);
           rl.Rlgl.rlPopMatrix();
 
           opt = "All the text displayed here is in 3D";
           quads += 36;
           m = MeasureText3D(rl, font, opt, 10.0, 0.5, 0.0);
           pos.set(-m.x/2.0, 0.01, 2.0);
-          DrawText3D(rl, font, opt, pos, 10.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 10.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
           pos.z += 1.5 + m.z;
 
           opt = "press [Left]/[Right] to change the font size";
           quads += 44;
           m = MeasureText3D(rl, font, opt, 6.0, 0.5, 0.0);
           pos.x = -m.x/2.0;
-          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
           pos.z += 0.5 + m.z;
 
           opt = "press [Up]/[Down] to change the font spacing";
           quads += 44;
           m = MeasureText3D(rl, font, opt, 6.0, 0.5, 0.0);
           pos.x = -m.x/2.0;
-          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
           pos.z += 0.5 + m.z;
 
           opt = "press [PgUp]/[PgDown] to change the line spacing";
           quads += 48;
           m = MeasureText3D(rl, font, opt, 6.0, 0.5, 0.0);
           pos.x = -m.x/2.0;
-          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
           pos.z += 0.5 + m.z;
 
           opt = "press [F1] to toggle the letter boundry";
           quads += 39;
           m = MeasureText3D(rl, font, opt, 6.0, 0.5, 0.0);
           pos.x = -m.x/2.0;
-          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
           pos.z += 0.5 + m.z;
 
           opt = "press [F2] to toggle the text boundry";
           quads += 37;
           m = MeasureText3D(rl, font, opt, 6.0, 0.5, 0.0);
           pos.x = -m.x/2.0;
-          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.C.DARKBLUE);
+          DrawText3D(rl, font, opt, pos, 6.0, 0.5, 0.0, false, rl.Color.DARKBLUE);
 
           SHOW_LETTER_BOUNDRY = slb;
 
@@ -340,29 +341,29 @@ void main()
       rl.Core.DrawText(
         "Drag & drop a font file to change the font!\nType something, see what happens!\n\n"
         "Press [F3] to toggle the camera".toC,
-        10, 35, 10, rl.C.BLACK
+        10, 35, 10, rl.Color.BLACK
       );
 
       quads += text.length*2*layers;
       String tmp = "$layers layer(s) | ${spin ? "ORBITAL" : "FREE"} camera | $quads quads (${quads*4} verts)";
       int width = rl.Core.MeasureText(tmp.toC, 10);
-      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 10, 10, rl.C.DARKGREEN);
+      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 10, 10, rl.Color.DARKGREEN);
 
       tmp = "[Home]/[End] to add/remove 3D text layers";
       width = rl.Core.MeasureText(tmp.toC, 10);
-      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 25, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 25, 10, rl.Color.DARKGRAY);
 
       tmp = "[Insert]/[Delete] to increase/decrease distance between layers";
       width = rl.Core.MeasureText(tmp.toC, 10);
-      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 40, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 40, 10, rl.Color.DARKGRAY);
 
       tmp = "click the [CUBE] for a random color";
       width = rl.Core.MeasureText(tmp.toC, 10);
-      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 55, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 55, 10, rl.Color.DARKGRAY);
 
       tmp = "[Tab] to toggle multicolor mode";
       width = rl.Core.MeasureText(tmp.toC, 10);
-      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 70, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText(tmp.toC, screenWidth - 20 - width, 70, 10, rl.Color.DARKGRAY);
 
       rl.Core.DrawFPS(10, 10);
 
@@ -370,7 +371,7 @@ void main()
         (rl.Core.GetScreenWidth() / 2).toInt(),
         (rl.Core.GetScreenHeight() / 2).toInt(),
         2,
-        rl.C.BLACK
+        rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();

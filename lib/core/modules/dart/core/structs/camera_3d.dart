@@ -43,11 +43,20 @@ extension Camera3DCEx on Camera3DC {
   );
 }
 
-class Camera3DD extends StructDLiteral<Camera3DD, Camera3DC> {
+class Camera3DD extends StructDLiteral<Camera3DD, Camera3DC> with Camera3DBase {
+  @override
   Vector3D position;
+  
+  @override
   Vector3D target;
+  
+  @override
   Vector3D up;
+  
+  @override
   double fovy;
+  
+  @override
   CameraProjection projection;
 
   Camera3DD({
@@ -86,18 +95,13 @@ class Camera3DD extends StructDLiteral<Camera3DD, Camera3DC> {
   }
 
   @override
-  Pointer<Camera3DC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Camera3D$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Camera3D$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<Camera3DC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(Camera3DC p) {
-    position.writeInto(p.position);
-    target.writeInto(p.target);
-    up.writeInto(p.up);
+  void nativeWriteInto(Camera3DC p) {
+    position.nativeWriteInto(p.position);
+    target.nativeWriteInto(p.target);
+    up.nativeWriteInto(p.up);
     p.fovy = fovy;
     p.projection = projection.value;
   }

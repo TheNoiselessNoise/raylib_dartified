@@ -42,17 +42,17 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, mapPosition, 1.0, rl.C.RED);
+        rl.Core.DrawModel(model, mapPosition, 1.0, rl.Color.RED);
         rl.Core.DrawGrid(20, 1.0);
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawTexture(texture, screenWidth - texture.width - 20, 20, rl.C.WHITE);
-      rl.Core.DrawRectangleLines(screenWidth - texture.width - 20, 20, texture.width, texture.height, rl.C.GREEN);
+      rl.Core.DrawTexture(texture, screenWidth - texture.width - 20, 20, rl.Color.WHITE);
+      rl.Core.DrawRectangleLines(screenWidth - texture.width - 20, 20, texture.width, texture.height, rl.Color.GREEN);
 
       rl.Core.DrawFPS(10, 10);
 

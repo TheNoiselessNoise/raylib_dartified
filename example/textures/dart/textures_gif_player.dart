@@ -17,7 +17,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final (imScarfyAnim, frameCount) = rl.CoreD.LoadImageAnim("../resources/scarfy_run.gif");
+  final imScarfyAnim = rl.CoreD.LoadImageAnim("../resources/scarfy_run.gif");
   final texScarfyAnim = rl.CoreD.LoadTextureFromImage(imScarfyAnim);
 
   int nextFrameDataOffset = 0;
@@ -32,7 +32,7 @@ void main()
     if (frameCounter >= frameDelay)
     {
       currentAnimFrame++;
-      if (currentAnimFrame >= frameCount) currentAnimFrame = 0;
+      if (currentAnimFrame >= imScarfyAnim.frameCount) currentAnimFrame = 0;
 
       final frameSize = imScarfyAnim.frameSize;
       final nextFrameDataOffset = frameSize * currentAnimFrame;
@@ -56,7 +56,7 @@ void main()
       rl.CoreD.ClearBackground(.RAYWHITE);
 
       rl.CoreD.DrawText(
-        "TOTAL GIF FRAMES: $frameCount",
+        "TOTAL GIF FRAMES: ${imScarfyAnim.frameCount}",
         50, 30, 20, .LIGHTGRAY
       );
       rl.CoreD.DrawText(

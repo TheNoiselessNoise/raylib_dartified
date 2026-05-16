@@ -49,83 +49,83 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
         
       if (!angleMode)
       {
         rl.Core.DrawText(
           "MODE 0: Angle between V1 and V2".toC,
-          10, 10, 20, rl.C.BLACK
+          10, 10, 20, rl.Color.BLACK
         );
         rl.Core.DrawText(
           "Right Click to Move V2".toC,
-          10, 30, 20, rl.C.DARKGRAY
+          10, 30, 20, rl.Color.DARKGRAY
         );
         
-        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v1), 2.0, rl.C.BLACK);
-        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v2), 2.0, rl.C.RED);
+        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v1), 2.0, rl.Color.BLACK);
+        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v2), 2.0, rl.Color.RED);
 
         rl.Core.DrawCircleSector(
           rl.Temp.vec21D(v0), 40.0,
           startAngle, startAngle + angle, 32,
-          rl.Core.Fade(rl.C.GREEN, 0.6)
+          rl.Core.Fade(rl.Color.GREEN, 0.6)
         );
       }
       else if (angleMode)
       {
         rl.Core.DrawText(
           "MODE 1: Angle formed by line V1 to V2".toC,
-          10, 10, 20, rl.C.BLACK
+          10, 10, 20, rl.Color.BLACK
         );
         
         rl.Core.DrawLine(
           0, screenHeight~/2,
           screenWidth, screenHeight~/2,
-          rl.C.LIGHTGRAY
+          rl.Color.LIGHTGRAY
         );
 
-        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v2), 2.0, rl.C.RED);
+        rl.Core.DrawLineEx(rl.Temp.vec21D(v0), rl.Temp.vec22D(v2), 2.0, rl.Color.RED);
 
         rl.Core.DrawCircleSector(
           rl.Temp.vec21D(v0), 40.0,
           startAngle, startAngle - angle, 32,
-          rl.Core.Fade(rl.C.GREEN, 0.6)
+          rl.Core.Fade(rl.Color.GREEN, 0.6)
         );
       }
         
       rl.Core.DrawText(
         "v0".toC,
-        v0.x.toInt(), v0.y.toInt(), 10, rl.C.DARKGRAY
+        v0.x.toInt(), v0.y.toInt(), 10, rl.Color.DARKGRAY
       );
 
       if (!angleMode && v0.sub(v1).y > 0.0) rl.Core.DrawText(
         "v1".toC,
-        v1.x.toInt(), (v1.y-10).toInt(), 10, rl.C.DARKGRAY
+        v1.x.toInt(), (v1.y-10).toInt(), 10, rl.Color.DARKGRAY
       );
       
       if (!angleMode && v0.sub(v1).y < 0.0) rl.Core.DrawText(
         "v1".toC,
-        v1.x.toInt(), v1.y.toInt(), 10, rl.C.DARKGRAY
+        v1.x.toInt(), v1.y.toInt(), 10, rl.Color.DARKGRAY
       );
 
       if (angleMode) rl.Core.DrawText(
         "v1".toC,
-        (v0.x + 40.0).toInt(), v0.y.toInt(), 10, rl.C.DARKGRAY
+        (v0.x + 40.0).toInt(), v0.y.toInt(), 10, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         "v2".toC,
-        (v2.x-10.0).toInt(), (v2.y-10.0).toInt(), 10, rl.C.DARKGRAY
+        (v2.x-10.0).toInt(), (v2.y-10.0).toInt(), 10, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         "Press SPACE to change MODE".toC,
-        460, 10, 20, rl.C.DARKGRAY
+        460, 10, 20, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         "ANGLE: ${angle.f2}".toC,
-        10, 70, 20, rl.C.LIME
+        10, 70, 20, rl.Color.LIME
       );
         
     rl.Core.EndDrawing();

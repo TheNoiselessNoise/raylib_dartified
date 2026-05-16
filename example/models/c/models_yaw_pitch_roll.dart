@@ -61,33 +61,33 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, rl.Temp.vec31(0, -8, 0), 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(model, rl.Temp.vec31(0, -8, 0), 1.0, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 10.0);
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawRectangle(30, 370, 260, 70, rl.Core.Fade(rl.C.GREEN, 0.5));
-      rl.Core.DrawRectangleLines(30, 370, 260, 70, rl.Core.Fade(rl.C.DARKGREEN, 0.5));
+      rl.Core.DrawRectangle(30, 370, 260, 70, rl.Core.Fade(rl.Color.GREEN, 0.5));
+      rl.Core.DrawRectangleLines(30, 370, 260, 70, rl.Core.Fade(rl.Color.DARKGREEN, 0.5));
 
       rl.Core.DrawText(
         "Pitch controlled with: KEY_UP / KEY_DOWN".toC,
-        40, 380, 10, rl.C.DARKGRAY
+        40, 380, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Roll controlled with: KEY_LEFT / KEY_RIGHT".toC,
-        40, 400, 10, rl.C.DARKGRAY
+        40, 400, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Yaw controlled with: KEY_A / KEY_S".toC,
-        40, 420, 10, rl.C.DARKGRAY
+        40, 420, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "(c) WWI Plane Model created by GiaHanLam".toC,
-        screenWidth - 240, screenHeight - 20, 10, rl.C.DARKGRAY
+        screenWidth - 240, screenHeight - 20, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

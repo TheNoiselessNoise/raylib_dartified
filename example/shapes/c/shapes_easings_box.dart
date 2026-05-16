@@ -109,7 +109,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
       
       rl.Core.DrawRectanglePro(
         rec.ref,
@@ -118,14 +118,14 @@ void main()
           rec.ref.height / 2
         ),
         rotation,
-        rl.Core.Fade(rl.C.BLACK, alpha),
+        rl.Core.Fade(rl.Color.BLACK, alpha),
       );
 
       rl.Core.DrawText(
         "PRESS [SPACE] TO RESET BOX ANIMATION!".toC,
         10,
         rl.Core.GetScreenHeight() - 25, 20,
-        rl.C.LIGHTGRAY
+        rl.Color.LIGHTGRAY
       );
 
     rl.Core.EndDrawing();

@@ -46,18 +46,18 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawTexture(
         textures[currentTexture],
         (screenWidth/2 - textures[currentTexture].width/2).toInt(),
         (screenHeight/2 - textures[currentTexture].height/2).toInt(),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawText(
         "Press LEFT MOUSE BUTTON to rotate the image clockwise".toC,
-        250, 420, 10, rl.C.DARKGRAY
+        250, 420, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

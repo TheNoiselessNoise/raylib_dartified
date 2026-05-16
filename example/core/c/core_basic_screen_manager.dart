@@ -61,51 +61,51 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       switch(currentScreen)
       {
         case .logo:
           rl.Core.DrawText(
             "LOGO SCREEN".toC,
-            20, 20, 40, rl.C.LIGHTGRAY
+            20, 20, 40, rl.Color.LIGHTGRAY
           );
           rl.Core.DrawText(
             "WAIT for 2 SECONDS...".toC,
-            290, 220, 20, rl.C.GRAY
+            290, 220, 20, rl.Color.GRAY
           );
           break;
         case .title:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.GREEN);
+          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.GREEN);
           rl.Core.DrawText(
             "TITLE SCREEN".toC,
-            20, 20, 40, rl.C.DARKGREEN
+            20, 20, 40, rl.Color.DARKGREEN
           );
           rl.Core.DrawText(
             "PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN".toC,
-            120, 220, 20, rl.C.DARKGREEN
+            120, 220, 20, rl.Color.DARKGREEN
           );
           break;
         case .gameplay:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.PURPLE);
+          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.PURPLE);
           rl.Core.DrawText(
             "GAMEPLAY SCREEN".toC,
-            20, 20, 40, rl.C.MAROON
+            20, 20, 40, rl.Color.MAROON
           );
           rl.Core.DrawText(
             "PRESS ENTER or TAP to JUMP to ENDING SCREEN".toC,
-            130, 220, 20, rl.C.MAROON
+            130, 220, 20, rl.Color.MAROON
           );
           break;
         case .ending:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.BLUE);
+          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.BLUE);
           rl.Core.DrawText(
             "ENDING SCREEN".toC,
-            20, 20, 40, rl.C.DARKBLUE
+            20, 20, 40, rl.Color.DARKBLUE
           );
           rl.Core.DrawText(
             "PRESS ENTER or TAP to RETURN to TITLE SCREEN".toC,
-            120, 220, 20, rl.C.DARKBLUE
+            120, 220, 20, rl.Color.DARKBLUE
           );
           break;
       }

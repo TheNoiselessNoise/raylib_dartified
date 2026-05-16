@@ -16,10 +16,10 @@ void main() {
   while (!rl.Core.WindowShouldClose()) {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
       rl.Core.DrawText(
         "Congrats! You created your first window!".toC,
-        190, 200, 20, rl.C.LIGHTGRAY
+        190, 200, 20, rl.Color.LIGHTGRAY
       );
 
     rl.Core.EndDrawing();

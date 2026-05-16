@@ -18,7 +18,7 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(1, 1, 1),
     target: .vec3(4, 1, 4),
     up: .vec3(0, 1, 0),
@@ -155,9 +155,9 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-TextureCubemapD GenTextureCubemap(Raylib rl, ShaderD shader, Texture2DD panorama, int size, PixelFormat format)
+TextureD GenTextureCubemap(Raylib rl, ShaderD shader, TextureD panorama, int size, PixelFormat format)
 {
-  final cubemap = TextureCubemapD();
+  final cubemap = TextureD();
 
   rl.RlglD.rlDisableBackfaceCulling();
 
@@ -165,8 +165,7 @@ TextureCubemapD GenTextureCubemap(Raylib rl, ShaderD shader, Texture2DD panorama
   //------------------------------------------------------------------------------------------
   int rbo = rl.RlglD.rlLoadTextureDepth(size, size, true);
 
-  final rlFormat = RlPixelFormat.fromValue(format.value);
-  cubemap.id = rl.RlglD.rlLoadTextureCubemap(null, size, rlFormat, 1);
+  cubemap.id = rl.RlglD.rlLoadTextureCubemap(null, size, format, 1);
 
   int fbo = rl.RlglD.rlLoadFramebuffer();
   rl.RlglD.rlFramebufferAttach(
@@ -222,7 +221,7 @@ TextureCubemapD GenTextureCubemap(Raylib rl, ShaderD shader, Texture2DD panorama
       fbo,
       cubemap.id,
       .RL_ATTACHMENT_COLOR_CHANNEL0,
-      RlFramebufferAttachTextureType.fromValue(
+      .fromValue(
         RlFramebufferAttachTextureType.RL_ATTACHMENT_CUBEMAP_POSITIVE_X.value + i,
       ),
       0

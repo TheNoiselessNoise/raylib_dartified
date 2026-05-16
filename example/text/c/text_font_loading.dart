@@ -32,11 +32,11 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "Hold SPACE to use TTF generated font".toC,
-        20, 20, 20, rl.C.LIGHTGRAY
+        20, 20, 20, rl.Color.LIGHTGRAY
       );
 
       if (!useTtf)
@@ -45,12 +45,12 @@ void main()
           fontBm,
           msg.toC,
           rl.Temp.vec21(20.0, 100.0),
-          fontBm.baseSize.toDouble(), 2, rl.C.MAROON
+          fontBm.baseSize.toDouble(), 2, rl.Color.MAROON
         );
 
         rl.Core.DrawText(
           "Using BMFont (Angelcode) imported".toC,
-          20, rl.Core.GetScreenHeight() - 30, 20, rl.C.GRAY
+          20, rl.Core.GetScreenHeight() - 30, 20, rl.Color.GRAY
         );
       }
       else
@@ -59,12 +59,12 @@ void main()
           fontTtf,
           msg.toC,
           rl.Temp.vec21(20.0, 100.0),
-          fontTtf.baseSize.toDouble(), 2, rl.C.LIME
+          fontTtf.baseSize.toDouble(), 2, rl.Color.LIME
         );
         
         rl.Core.DrawText(
           "Using TTF font generated".toC,
-          20, rl.Core.GetScreenHeight() - 30, 20, rl.C.GRAY
+          20, rl.Core.GetScreenHeight() - 30, 20, rl.Color.GRAY
         );
       }
 

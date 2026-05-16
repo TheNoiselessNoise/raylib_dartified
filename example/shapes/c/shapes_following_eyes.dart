@@ -74,15 +74,15 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawCircleV(scleraLeftPosition.ref, scleraRadius, rl.C.LIGHTGRAY);
-      rl.Core.DrawCircleV(irisLeftPosition.ref, irisRadius, rl.C.BROWN);
-      rl.Core.DrawCircleV(irisLeftPosition.ref, 10, rl.C.BLACK);
+      rl.Core.DrawCircleV(scleraLeftPosition.ref, scleraRadius, rl.Color.LIGHTGRAY);
+      rl.Core.DrawCircleV(irisLeftPosition.ref, irisRadius, rl.Color.BROWN);
+      rl.Core.DrawCircleV(irisLeftPosition.ref, 10, rl.Color.BLACK);
 
-      rl.Core.DrawCircleV(scleraRightPosition.ref, scleraRadius, rl.C.LIGHTGRAY);
-      rl.Core.DrawCircleV(irisRightPosition.ref, irisRadius, rl.C.DARKGREEN);
-      rl.Core.DrawCircleV(irisRightPosition.ref, 10, rl.C.BLACK);
+      rl.Core.DrawCircleV(scleraRightPosition.ref, scleraRadius, rl.Color.LIGHTGRAY);
+      rl.Core.DrawCircleV(irisRightPosition.ref, irisRadius, rl.Color.DARKGREEN);
+      rl.Core.DrawCircleV(irisRightPosition.ref, 10, rl.Color.BLACK);
 
       rl.Core.DrawFPS(10, 10);
 

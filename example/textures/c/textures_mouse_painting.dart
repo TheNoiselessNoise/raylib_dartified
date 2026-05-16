@@ -16,12 +16,12 @@ void main()
   final image = rl.Temp.Image$.At('image');
 
   List<ColorC> colors = [
-    rl.C.RAYWHITE, rl.C.YELLOW, rl.C.GOLD, rl.C.ORANGE,
-    rl.C.PINK, rl.C.RED, rl.C.MAROON, rl.C.GREEN,
-    rl.C.LIME, rl.C.DARKGREEN, rl.C.SKYBLUE, rl.C.BLUE,
-    rl.C.DARKBLUE, rl.C.PURPLE, rl.C.VIOLET, rl.C.DARKPURPLE,
-    rl.C.BEIGE, rl.C.BROWN, rl.C.DARKBROWN, rl.C.LIGHTGRAY,
-    rl.C.GRAY, rl.C.DARKGRAY, rl.C.BLACK,
+    rl.Color.RAYWHITE, rl.Color.YELLOW, rl.Color.GOLD, rl.Color.ORANGE,
+    rl.Color.PINK, rl.Color.RED, rl.Color.MAROON, rl.Color.GREEN,
+    rl.Color.LIME, rl.Color.DARKGREEN, rl.Color.SKYBLUE, rl.Color.BLUE,
+    rl.Color.DARKBLUE, rl.Color.PURPLE, rl.Color.VIOLET, rl.Color.DARKPURPLE,
+    rl.Color.BEIGE, rl.Color.BROWN, rl.Color.DARKBROWN, rl.Color.LIGHTGRAY,
+    rl.Color.GRAY, rl.Color.DARKGRAY, rl.Color.BLACK,
   ];
   assert(colors.length == MAX_COLORS_COUNT);
 
@@ -48,7 +48,7 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(120);
 
-  RenderTexture2DC target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
+  final target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
 
   rl.Core.BeginTextureMode(target);
   rl.Core.ClearBackground(colors[0]);
@@ -139,7 +139,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawTextureRec(
         target.texture,
@@ -148,28 +148,28 @@ void main()
           target.texture.width, -target.texture.height,
         ),
         texturePos.ref,
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       if (mousePos.y > 50)
       {
         if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
-          rl.Core.DrawCircleLines(mousePos.x.toInt(), mousePos.y.toInt(), brushSize, rl.C.GRAY);
+          rl.Core.DrawCircleLines(mousePos.x.toInt(), mousePos.y.toInt(), brushSize, rl.Color.GRAY);
         } else {
           rl.Core.DrawCircle(rl.Core.GetMouseX(), rl.Core.GetMouseY(), brushSize, colors[colorSelected]);
         }
       }
 
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), 50, rl.C.RAYWHITE);
-      rl.Core.DrawLine(0, 50, rl.Core.GetScreenWidth(), 50, rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), 50, rl.Color.RAYWHITE);
+      rl.Core.DrawLine(0, 50, rl.Core.GetScreenWidth(), 50, rl.Color.LIGHTGRAY);
 
       for (int i = 0; i < MAX_COLORS_COUNT; i++) {
         rl.Core.DrawRectangleRec(colorsRecs[i], colors[i]);
       }
-      rl.Core.DrawRectangleLines(10, 10, 30, 30, rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangleLines(10, 10, 30, 30, rl.Color.LIGHTGRAY);
 
       if (colorMouseHover >= 0) {
-        rl.Core.DrawRectangleRec(colorsRecs[colorMouseHover], rl.Core.Fade(rl.C.WHITE, 0.6));
+        rl.Core.DrawRectangleRec(colorsRecs[colorMouseHover], rl.Core.Fade(rl.Color.WHITE, 0.6));
       }
 
       rl.Core.DrawRectangleLinesEx(
@@ -180,17 +180,17 @@ void main()
           colorsRecs[colorSelected].height + 4
         ),
         2,
-        rl.C.BLACK
+        rl.Color.BLACK
       );
 
-      rl.Core.DrawRectangleLinesEx(btnSaveRec.ref, 2, btnSaveMouseHover ? rl.C.RED : rl.C.BLACK);
-      rl.Core.DrawText("SAVE!".toC, 755, 20, 10, btnSaveMouseHover ? rl.C.RED : rl.C.BLACK);
+      rl.Core.DrawRectangleLinesEx(btnSaveRec.ref, 2, btnSaveMouseHover ? rl.Color.RED : rl.Color.BLACK);
+      rl.Core.DrawText("SAVE!".toC, 755, 20, 10, btnSaveMouseHover ? rl.Color.RED : rl.Color.BLACK);
 
       if (showSaveMessage)
       {
-        rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.Core.Fade(rl.C.RAYWHITE, 0.8));
-        rl.Core.DrawRectangle(0, 150, rl.Core.GetScreenWidth(), 80, rl.C.BLACK);
-        rl.Core.DrawText("IMAGE SAVED!".toC, 150, 180, 20, rl.C.RAYWHITE);
+        rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.Core.Fade(rl.Color.RAYWHITE, 0.8));
+        rl.Core.DrawRectangle(0, 150, rl.Core.GetScreenWidth(), 80, rl.Color.BLACK);
+        rl.Core.DrawText("IMAGE SAVED!".toC, 150, 180, 20, rl.Color.RAYWHITE);
       }
 
     rl.Core.EndDrawing();

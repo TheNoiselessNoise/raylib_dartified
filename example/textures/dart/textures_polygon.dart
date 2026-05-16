@@ -29,7 +29,7 @@ void main()
     .vec2(0.75, 0.0),
   ];
 
-  final List<Vector2D> points = List.generate(texcoords.length, (i) => .vec2(
+  final List<Vector2D> points = .generate(texcoords.length, (i) => .vec2(
     (texcoords[i].x - 0.5)*256.0,
     (texcoords[i].y - 0.5)*256.0,
   ));

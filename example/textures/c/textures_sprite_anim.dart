@@ -49,46 +49,46 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawTexture(scarfy, 15, 40, rl.C.WHITE);
-      rl.Core.DrawRectangleLines(15, 40, scarfy.width, scarfy.height, rl.C.LIME);
+      rl.Core.DrawTexture(scarfy, 15, 40, rl.Color.WHITE);
+      rl.Core.DrawRectangleLines(15, 40, scarfy.width, scarfy.height, rl.Color.LIME);
       rl.Core.DrawRectangleLines(
         15 + frameRec.ref.x.toInt(),
         40 + frameRec.ref.y.toInt(),
         frameRec.ref.width.toInt(),
         frameRec.ref.height.toInt(),
-        rl.C.RED
+        rl.Color.RED
       );
 
       rl.Core.DrawText(
         "FRAME SPEED: ".toC,
-        165, 210, 10, rl.C.DARKGRAY
+        165, 210, 10, rl.Color.DARKGRAY
       );
       
       rl.Core.DrawText(
         "$framesSpeed FPS".toC,
-        575, 210, 10, rl.C.DARKGRAY
+        575, 210, 10, rl.Color.DARKGRAY
       );
       
       rl.Core.DrawText(
         "PRESS RIGHT/LEFT KEYS to CHANGE SPEED!".toC,
-        290, 240, 10, rl.C.DARKGRAY
+        290, 240, 10, rl.Color.DARKGRAY
       );
 
       for (int i = 0; i < MAX_FRAME_SPEED; i++)
       {
         if (i < framesSpeed) {
-          rl.Core.DrawRectangle(250 + 21*i, 205, 20, 20, rl.C.RED);
+          rl.Core.DrawRectangle(250 + 21*i, 205, 20, 20, rl.Color.RED);
         }
-        rl.Core.DrawRectangleLines(250 + 21*i, 205, 20, 20, rl.C.MAROON);
+        rl.Core.DrawRectangleLines(250 + 21*i, 205, 20, 20, rl.Color.MAROON);
       }
 
-      rl.Core.DrawTextureRec(scarfy, frameRec.ref, position.ref, rl.C.WHITE);
+      rl.Core.DrawTextureRec(scarfy, frameRec.ref, position.ref, rl.Color.WHITE);
 
       rl.Core.DrawText(
         "(c) Scarfy sprite by Eiden Marsal".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

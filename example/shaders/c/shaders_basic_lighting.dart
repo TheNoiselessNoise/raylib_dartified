@@ -43,22 +43,22 @@ void main()
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, -2), rl.Temp.vec3Zero, rl.C.YELLOW, shader
+    rl.Temp.vec31(-2, 1, -2), rl.Temp.vec3Zero, rl.Color.YELLOW, shader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, 2), rl.Temp.vec3Zero, rl.C.RED, shader
+    rl.Temp.vec31(2, 1, 2), rl.Temp.vec3Zero, rl.Color.RED, shader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, 2), rl.Temp.vec3Zero, rl.C.GREEN, shader
+    rl.Temp.vec31(-2, 1, 2), rl.Temp.vec3Zero, rl.Color.GREEN, shader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, -2), rl.Temp.vec3Zero, rl.C.BLUE, shader
+    rl.Temp.vec31(2, 1, -2), rl.Temp.vec3Zero, rl.Color.BLUE, shader
   ));
 
   while (!rl.Core.WindowShouldClose())
@@ -82,14 +82,14 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
         rl.Core.BeginShaderMode(shader);
 
-          rl.Core.DrawPlane(rl.Temp.vec3Zero, rl.Temp.vec21(10, 10), rl.C.WHITE);
-          rl.Core.DrawCube(rl.Temp.vec3Zero, 2, 4, 2, rl.C.WHITE);
+          rl.Core.DrawPlane(rl.Temp.vec3Zero, rl.Temp.vec21(10, 10), rl.Color.WHITE);
+          rl.Core.DrawCube(rl.Temp.vec3Zero, 2, 4, 2, rl.Color.WHITE);
 
         rl.Core.EndShaderMode();
 
@@ -110,7 +110,7 @@ void main()
 
       rl.Core.DrawText(
         "Use keys [Y][R][G][B] to toggle lights".toC,
-        10, 40, 20, rl.C.DARKGRAY
+        10, 40, 20, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

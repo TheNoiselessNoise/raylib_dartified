@@ -150,7 +150,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       // NOTE: not part of the original example
       if (tail.length >= 2) {
@@ -159,34 +159,34 @@ void main()
             rl.Temp.vec21D(tail[i - 1]),
             rl.Temp.vec22D(tail[i]),
             1,
-            rl.C.RED
+            rl.Color.RED
           );
         }
       }
       // ---------
 
-      rl.Core.DrawText("Easing x: ${easingX.name}".toC, 20, FONT_SIZE, FONT_SIZE, rl.C.LIGHTGRAY);
-      rl.Core.DrawText("Easing y: ${easingY.name}".toC, 20, FONT_SIZE*2, FONT_SIZE, rl.C.LIGHTGRAY);
-      rl.Core.DrawText("t (${boundedT == true ? 'b' : 'u'}) = ${t.f2} d = ${d.f2}".toC, 20, FONT_SIZE*3, FONT_SIZE, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("Easing x: ${easingX.name}".toC, 20, FONT_SIZE, FONT_SIZE, rl.Color.LIGHTGRAY);
+      rl.Core.DrawText("Easing y: ${easingY.name}".toC, 20, FONT_SIZE*2, FONT_SIZE, rl.Color.LIGHTGRAY);
+      rl.Core.DrawText("t (${boundedT == true ? 'b' : 'u'}) = ${t.f2} d = ${d.f2}".toC, 20, FONT_SIZE*3, FONT_SIZE, rl.Color.LIGHTGRAY);
 
       rl.Core.DrawText(
         "Use ENTER to play or pause movement, use SPACE to restart".toC,
-        20, rl.Core.GetScreenHeight() - FONT_SIZE*2, FONT_SIZE, rl.C.LIGHTGRAY
+        20, rl.Core.GetScreenHeight() - FONT_SIZE*2, FONT_SIZE, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "Use Q and W or A and S keys to change duration".toC,
-        20, rl.Core.GetScreenHeight() - FONT_SIZE*3, FONT_SIZE, rl.C.LIGHTGRAY
+        20, rl.Core.GetScreenHeight() - FONT_SIZE*3, FONT_SIZE, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "Use LEFT or RIGHT keys to choose easing for the x axis".toC,
-        20, rl.Core.GetScreenHeight() - FONT_SIZE*4, FONT_SIZE, rl.C.LIGHTGRAY
+        20, rl.Core.GetScreenHeight() - FONT_SIZE*4, FONT_SIZE, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "Use UP or DOWN keys to choose easing for the y axis".toC,
-        20, rl.Core.GetScreenHeight() - FONT_SIZE*5, FONT_SIZE, rl.C.LIGHTGRAY
+        20, rl.Core.GetScreenHeight() - FONT_SIZE*5, FONT_SIZE, rl.Color.LIGHTGRAY
       );
 
-      rl.Core.DrawCircleV(ballPosition.ref, 16.0, rl.C.MAROON);
+      rl.Core.DrawCircleV(ballPosition.ref, 16.0, rl.Color.MAROON);
 
     rl.Core.EndDrawing();
   }

@@ -43,11 +43,20 @@ extension TextureCEx on TextureC {
   );
 }
 
-class TextureD extends StructDLiteral<TextureD, TextureC> {
+class TextureD extends StructD<TextureD, TextureC> with TextureBase {
+  @override
   int id;
+  
+  @override
   int width;
+  
+  @override
   int height;
+  
+  @override
   int mipmaps;
+  
+  @override
   PixelFormat format;
 
   TextureD({
@@ -83,15 +92,10 @@ class TextureD extends StructDLiteral<TextureD, TextureC> {
   }
 
   @override
-  Pointer<TextureC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Texture$.At('${key}_$id', count);
+  nativeAllocator(RaylibTemp temp) => temp.Texture$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<TextureC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(TextureC p) {
+  void nativeWriteInto(TextureC p) {
     p.id = id;
     p.width = width;
     p.height = height;

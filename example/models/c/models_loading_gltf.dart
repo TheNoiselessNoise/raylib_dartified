@@ -46,20 +46,20 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, position.ref, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(model, position.ref, 1.0, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 1.0);
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "Use the LEFT/RIGHT mouse buttons to switch animation".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Animation: ${anim.nameString}".toC,
-        10, rl.Core.GetScreenHeight() - 20, 10, rl.C.DARKGRAY
+        10, rl.Core.GetScreenHeight() - 20, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

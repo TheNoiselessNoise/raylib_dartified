@@ -29,14 +29,14 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        DrawCubeTexture(rl, texture, .vec3(-2.0, 2.0, 0.0), 2.0, 4.0, 2.0, rl.C.WHITE);
+        DrawCubeTexture(rl, texture, .vec3(-2.0, 2.0, 0.0), 2.0, 4.0, 2.0, rl.Color.WHITE);
 
         DrawCubeTextureRec(rl, texture, .rect(0.0, texture.height/2.0, texture.width/2.0, texture.height/2.0), 
-          .vec3(2.0, 1.0, 0.0), 2.0, 2.0, 2.0, rl.C.WHITE);
+          .vec3(2.0, 1.0, 0.0), 2.0, 2.0, 2.0, rl.Color.WHITE);
 
         rl.Core.DrawGrid(10, 1.0);
 
@@ -54,7 +54,7 @@ void main()
 
 void DrawCubeTexture(
   Raylib rl,
-  Texture2DC texture,
+  TextureC texture,
   Vector3D position,
   double width,
   double height,
@@ -112,7 +112,7 @@ void DrawCubeTexture(
 
 void DrawCubeTextureRec(
   Raylib rl,
-  Texture2DC texture,
+  TextureC texture,
   RectangleD source,
   Vector3D position,
   double width,

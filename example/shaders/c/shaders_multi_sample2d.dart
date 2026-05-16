@@ -50,19 +50,19 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
 
         rl.Core.SetShaderValueTexture(shader, texBlueLoc, texBlue);
 
-        rl.Core.DrawTexture(texRed, 0, 0, rl.C.WHITE);
+        rl.Core.DrawTexture(texRed, 0, 0, rl.Color.WHITE);
 
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "Use KEY_LEFT/KEY_RIGHT to move texture mixing in shader!".toC,
-        80, rl.Core.GetScreenHeight() - 40, 20, rl.C.RAYWHITE
+        80, rl.Core.GetScreenHeight() - 40, 20, rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();

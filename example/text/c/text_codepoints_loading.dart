@@ -45,33 +45,33 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), 70, rl.C.BLACK);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), 70, rl.Color.BLACK);
       rl.Core.DrawText(
         "Total codepoints contained in provided text: ${codepointCount.value}".toC,
-        10, 10, 20, rl.C.GREEN
+        10, 10, 20, rl.Color.GREEN
       );
       rl.Core.DrawText(
         "Total codepoints required for font atlas (duplicates excluded): ${codepointsNoDupsCount.value}".toC,
-        10, 40, 20, rl.C.GREEN
+        10, 40, 20, rl.Color.GREEN
       );
 
       if (showFontAtlas) {
-        rl.Core.DrawTexture(font.texture, 150, 100, rl.C.BLACK);
-        rl.Core.DrawRectangleLines(150, 100, font.texture.width, font.texture.height, rl.C.BLACK);
+        rl.Core.DrawTexture(font.texture, 150, 100, rl.Color.BLACK);
+        rl.Core.DrawRectangleLines(150, 100, font.texture.width, font.texture.height, rl.Color.BLACK);
       } else {
         rl.Core.DrawTextEx(
           font,
           text.toC,
           rl.Temp.vec21(160, 110),
-          48, 5, rl.C.BLACK
+          48, 5, rl.Color.BLACK
         );
       }
 
       rl.Core.DrawText(
         "Press SPACE to toggle font atlas view!".toC,
-        10, rl.Core.GetScreenHeight() - 30, 20, rl.C.GRAY
+        10, rl.Core.GetScreenHeight() - 30, 20, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

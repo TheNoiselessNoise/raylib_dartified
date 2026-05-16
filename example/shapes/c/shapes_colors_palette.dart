@@ -16,12 +16,12 @@ void main()
   rl.Core.SetTargetFPS(60);
   
   final colors = <String, ColorC>{
-    'DARKGRAY': rl.C.DARKGRAY, 'MAROON': rl.C.MAROON, 'ORANGE': rl.C.ORANGE,
-    'DARKGREEN': rl.C.DARKGREEN, 'DARKBLUE': rl.C.DARKBLUE, 'DARKPURPLE': rl.C.DARKPURPLE,
-    'DARKBROWN': rl.C.DARKBROWN, 'GRAY': rl.C.GRAY, 'RED': rl.C.RED, 'GOLD': rl.C.GOLD,
-    'LIME': rl.C.LIME, 'BLUE': rl.C.BLUE, 'VIOLET': rl.C.VIOLET, 'BROWN': rl.C.BROWN,
-    'LIGHTGRAY': rl.C.LIGHTGRAY, 'PINK': rl.C.PINK, 'YELLOW': rl.C.YELLOW, 
-    'GREEN': rl.C.GREEN, 'SKYBLUE': rl.C.SKYBLUE, 'PURPLE': rl.C.PURPLE, 'BEIGE': rl.C.BEIGE
+    'DARKGRAY': rl.Color.DARKGRAY, 'MAROON': rl.Color.MAROON, 'ORANGE': rl.Color.ORANGE,
+    'DARKGREEN': rl.Color.DARKGREEN, 'DARKBLUE': rl.Color.DARKBLUE, 'DARKPURPLE': rl.Color.DARKPURPLE,
+    'DARKBROWN': rl.Color.DARKBROWN, 'GRAY': rl.Color.GRAY, 'RED': rl.Color.RED, 'GOLD': rl.Color.GOLD,
+    'LIME': rl.Color.LIME, 'BLUE': rl.Color.BLUE, 'VIOLET': rl.Color.VIOLET, 'BROWN': rl.Color.BROWN,
+    'LIGHTGRAY': rl.Color.LIGHTGRAY, 'PINK': rl.Color.PINK, 'YELLOW': rl.Color.YELLOW, 
+    'GREEN': rl.Color.GREEN, 'SKYBLUE': rl.Color.SKYBLUE, 'PURPLE': rl.Color.PURPLE, 'BEIGE': rl.Color.BEIGE
   };
 
   final colorsRecs = rl.Temp.Rectangle$.At('colorsRecs', colors.length);
@@ -50,16 +50,16 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "raylib colors palette".toC,
-        28, 42, 20, rl.C.BLACK
+        28, 42, 20, rl.Color.BLACK
       );
 
       rl.Core.DrawText(
         "press SPACE to see all colors".toC,
-        rl.Core.GetScreenWidth() - 180, rl.Core.GetScreenHeight() - 40, 10, rl.C.GRAY
+        rl.Core.GetScreenWidth() - 180, rl.Core.GetScreenHeight() - 40, 10, rl.Color.GRAY
       );
 
       for (int i = 0; i < colors.length; i++)
@@ -71,8 +71,8 @@ void main()
 
         if (rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value) || state)
         {
-          rl.Core.DrawRectangle(rect.x.toInt(), (rect.y + rect.height - 26).toInt(), rect.width.toInt(), 20, rl.C.BLACK);
-          rl.Core.DrawRectangleLinesEx(rect, 6, rl.Core.Fade(rl.C.BLACK, 0.3));
+          rl.Core.DrawRectangle(rect.x.toInt(), (rect.y + rect.height - 26).toInt(), rect.width.toInt(), 20, rl.Color.BLACK);
+          rl.Core.DrawRectangleLinesEx(rect, 6, rl.Core.Fade(rl.Color.BLACK, 0.3));
           rl.Core.DrawText(
             name.toC,
             (rect.x + rect.width - rl.Core.MeasureText(name.toC, 10) - 12).toInt(),

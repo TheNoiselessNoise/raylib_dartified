@@ -34,36 +34,36 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawLine(
         500, 0,
         500, rl.Core.GetScreenHeight(),
-        rl.Core.Fade(rl.C.LIGHTGRAY, 0.6)
+        rl.Core.Fade(rl.Color.LIGHTGRAY, 0.6)
       );
       
       rl.Core.DrawRectangle(
         500, 0,
         rl.Core.GetScreenWidth() - 500, rl.Core.GetScreenHeight(),
-        rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+        rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
       );
 
       if (drawRing.value) rl.Core.DrawRing(
         center.ref, innerRadius.value, outerRadius.value,
         startAngle.value, endAngle.value, segments.value.toInt(),
-        rl.Core.Fade(rl.C.MAROON, 0.3)
+        rl.Core.Fade(rl.Color.MAROON, 0.3)
       );
 
       if (drawRingLines.value) rl.Core.DrawRingLines(
         center.ref, innerRadius.value, outerRadius.value,
         startAngle.value, endAngle.value, segments.value.toInt(),
-        rl.Core.Fade(rl.C.BLACK, 0.4)
+        rl.Core.Fade(rl.Color.BLACK, 0.4)
       );
 
       if (drawCircleLines.value) rl.Core.DrawCircleSectorLines(
         center.ref, outerRadius.value,
         startAngle.value, endAngle.value, segments.value.toInt(),
-        rl.Core.Fade(rl.C.BLACK, 0.4)
+        rl.Core.Fade(rl.Color.BLACK, 0.4)
       );
 
       rl.Gui.GuiSliderBar(
@@ -122,7 +122,7 @@ void main()
       int minSegments = ((endAngle.value - startAngle.value)/90).ceil();
       rl.Core.DrawText(
         "MODE: ${segments.value >= minSegments ? "MANUAL" : "AUTO"}".toC,
-        600, 270, 10, (segments.value >= minSegments) ? rl.C.MAROON : rl.C.DARKGRAY
+        600, 270, 10, (segments.value >= minSegments) ? rl.Color.MAROON : rl.Color.DARKGRAY
       );
 
       rl.Core.DrawFPS(10, 10);

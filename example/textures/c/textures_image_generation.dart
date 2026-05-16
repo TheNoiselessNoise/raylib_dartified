@@ -14,12 +14,12 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  final verticalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 0, rl.C.RED, rl.C.BLUE);
-  final horizontalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 90, rl.C.RED, rl.C.BLUE);
-  final diagonalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 45, rl.C.RED, rl.C.BLUE);
-  final radialGradient = rl.Core.GenImageGradientRadial(screenWidth, screenHeight, 0.0, rl.C.WHITE, rl.C.BLACK);
-  final squareGradient = rl.Core.GenImageGradientSquare(screenWidth, screenHeight, 0.0, rl.C.WHITE, rl.C.BLACK);
-  final checked = rl.Core.GenImageChecked(screenWidth, screenHeight, 32, 32, rl.C.RED, rl.C.BLUE);
+  final verticalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 0, rl.Color.RED, rl.Color.BLUE);
+  final horizontalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 90, rl.Color.RED, rl.Color.BLUE);
+  final diagonalGradient = rl.Core.GenImageGradientLinear(screenWidth, screenHeight, 45, rl.Color.RED, rl.Color.BLUE);
+  final radialGradient = rl.Core.GenImageGradientRadial(screenWidth, screenHeight, 0.0, rl.Color.WHITE, rl.Color.BLACK);
+  final squareGradient = rl.Core.GenImageGradientSquare(screenWidth, screenHeight, 0.0, rl.Color.WHITE, rl.Color.BLACK);
+  final checked = rl.Core.GenImageChecked(screenWidth, screenHeight, 32, 32, rl.Color.RED, rl.Color.BLUE);
   final whiteNoise = rl.Core.GenImageWhiteNoise(screenWidth, screenHeight, 0.5);
   final perlinNoise = rl.Core.GenImagePerlinNoise(screenWidth, screenHeight, 50, 50, 4.0);
   final cellular = rl.Core.GenImageCellular(screenWidth, screenHeight, 32);
@@ -59,28 +59,28 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawTexture(textures[currentTexture], 0, 0, rl.C.WHITE);
+      rl.Core.DrawTexture(textures[currentTexture], 0, 0, rl.Color.WHITE);
 
-      rl.Core.DrawRectangle(30, 400, 325, 30, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(30, 400, 325, 30, rl.Core.Fade(rl.C.WHITE, 0.5));
+      rl.Core.DrawRectangle(30, 400, 325, 30, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(30, 400, 325, 30, rl.Core.Fade(rl.Color.WHITE, 0.5));
       rl.Core.DrawText(
         "MOUSE LEFT BUTTON to CYCLE PROCEDURAL TEXTURES".toC,
-        40, 410, 10, rl.C.WHITE
+        40, 410, 10, rl.Color.WHITE
       );
 
       switch(currentTexture)
       {
-        case 0: rl.Core.DrawText("VERTICAL GRADIENT".toC, 20, 10, 20, rl.C.RAYWHITE); break;
-        case 1: rl.Core.DrawText("HORIZONTAL GRADIENT".toC, 20, 10, 20, rl.C.RAYWHITE); break;
-        case 2: rl.Core.DrawText("DIAGONAL GRADIENT".toC, 20, 10, 20, rl.C.RAYWHITE); break;
-        case 3: rl.Core.DrawText("RADIAL GRADIENT".toC, 20, 10, 20, rl.C.LIGHTGRAY); break;
-        case 4: rl.Core.DrawText("SQUARE GRADIENT".toC, 20, 10, 20, rl.C.LIGHTGRAY); break;
-        case 5: rl.Core.DrawText("CHECKED".toC, 20, 10, 20, rl.C.RAYWHITE); break;
-        case 6: rl.Core.DrawText("WHITE NOISE".toC, 20, 10, 20, rl.C.RED); break;
-        case 7: rl.Core.DrawText("PERLIN NOISE".toC, 20, 10, 20, rl.C.RED); break;
-        case 8: rl.Core.DrawText("CELLULAR".toC, 20, 10, 20, rl.C.RAYWHITE); break;
+        case 0: rl.Core.DrawText("VERTICAL GRADIENT".toC, 20, 10, 20, rl.Color.RAYWHITE); break;
+        case 1: rl.Core.DrawText("HORIZONTAL GRADIENT".toC, 20, 10, 20, rl.Color.RAYWHITE); break;
+        case 2: rl.Core.DrawText("DIAGONAL GRADIENT".toC, 20, 10, 20, rl.Color.RAYWHITE); break;
+        case 3: rl.Core.DrawText("RADIAL GRADIENT".toC, 20, 10, 20, rl.Color.LIGHTGRAY); break;
+        case 4: rl.Core.DrawText("SQUARE GRADIENT".toC, 20, 10, 20, rl.Color.LIGHTGRAY); break;
+        case 5: rl.Core.DrawText("CHECKED".toC, 20, 10, 20, rl.Color.RAYWHITE); break;
+        case 6: rl.Core.DrawText("WHITE NOISE".toC, 20, 10, 20, rl.Color.RED); break;
+        case 7: rl.Core.DrawText("PERLIN NOISE".toC, 20, 10, 20, rl.Color.RED); break;
+        case 8: rl.Core.DrawText("CELLULAR".toC, 20, 10, 20, rl.Color.RAYWHITE); break;
         default: break;
       }
 

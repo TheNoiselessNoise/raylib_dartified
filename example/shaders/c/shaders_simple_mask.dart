@@ -75,26 +75,26 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.DARKBLUE);
+      rl.Core.ClearBackground(rl.Color.DARKBLUE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model1, rl.Temp.vec31(0.5, 0.0, 0.0), 1, rl.C.WHITE);
+        rl.Core.DrawModel(model1, rl.Temp.vec31(0.5, 0.0, 0.0), 1, rl.Color.WHITE);
         rl.Core.DrawModelEx(model2,
           rl.Temp.vec31(-0.5, 0.0, 0.0),
           rl.Temp.vec32(1.0, 1.0, 0.0),
           50,
           rl.Temp.vec33(1.0, 1.0, 1.0),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
-        rl.Core.DrawModel(model3, rl.Temp.vec31(0.0, 0.0, -1.5), 1, rl.C.WHITE);
+        rl.Core.DrawModel(model3, rl.Temp.vec31(0.0, 0.0, -1.5), 1, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 1.0);
 
       rl.Core.EndMode3D();
 
       final text = "Frame: $framesCounter".toC;
-      rl.Core.DrawRectangle(16, 698, rl.Core.MeasureText(text, 20) + 8, 42, rl.C.BLUE);
-      rl.Core.DrawText(text, 20, 700, 20, rl.C.WHITE);
+      rl.Core.DrawRectangle(16, 698, rl.Core.MeasureText(text, 20) + 8, 42, rl.Color.BLUE);
+      rl.Core.DrawText(text, 20, 700, 20, rl.Color.WHITE);
 
       rl.Core.DrawFPS(10, 10);
 

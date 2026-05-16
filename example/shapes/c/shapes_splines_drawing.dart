@@ -51,7 +51,7 @@ void main()
   Pointer<Vector2C> selectedControlPoint = nullptr;
   Pointer<Vector2C> focusedControlPoint = nullptr;
   
-  List<ControlPoint> control = List.generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
+  List<ControlPoint> control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
     start: rl.Temp.Vector2$.At('control_start_$i').set(points[i].x + 50, points[i].y),
     end: rl.Temp.Vector2$.At('control_end_$i').set(points[i + 1].x - 50, points[i + 1].y),
   ));
@@ -125,15 +125,15 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (splineTypeActive == .SPLINE_LINEAR)
       {
-        rl.Core.DrawSplineLinear(points, pointCount, splineThickness.value, rl.C.RED);
+        rl.Core.DrawSplineLinear(points, pointCount, splineThickness.value, rl.Color.RED);
       }
       else if (splineTypeActive == .SPLINE_BASIS)
       {
-        rl.Core.DrawSplineBasis(points, pointCount, splineThickness.value, rl.C.RED);
+        rl.Core.DrawSplineBasis(points, pointCount, splineThickness.value, rl.Color.RED);
 
         /*
         for (int i = 0; i < (pointCount - 3); i++)
@@ -148,7 +148,7 @@ void main()
       }
       else if (splineTypeActive == .SPLINE_CATMULLROM)
       {
-        rl.Core.DrawSplineCatmullRom(points, pointCount, splineThickness.value, rl.C.RED);
+        rl.Core.DrawSplineCatmullRom(points, pointCount, splineThickness.value, rl.Color.RED);
         
         /*
         for (int i = 0; i < (pointCount - 3); i++)
@@ -172,7 +172,7 @@ void main()
         
         pointsInterleaved[3*(pointCount - 1)] = points[pointCount - 1];
 
-        rl.Core.DrawSplineBezierCubic(pointsInterleaved, 3*(pointCount - 1) + 1, splineThickness.value, rl.C.RED);
+        rl.Core.DrawSplineBezierCubic(pointsInterleaved, 3*(pointCount - 1) + 1, splineThickness.value, rl.Color.RED);
         
         /*
         for (int i = 0; i < 3*(pointCount - 1); i += 3)
@@ -189,16 +189,16 @@ void main()
         {
           final p = control[i];
 
-          rl.Core.DrawCircleV(p.start.ref, 6, rl.C.GOLD);
-          rl.Core.DrawCircleV(p.end.ref, 6, rl.C.GOLD);
-          if (focusedControlPoint == p.start) rl.Core.DrawCircleV(p.start.ref, 8, rl.C.GREEN);
-          else if (focusedControlPoint == p.end) rl.Core.DrawCircleV(p.end.ref, 8, rl.C.GREEN);
-          rl.Core.DrawLineEx(points[i], p.start.ref, 1.0, rl.C.LIGHTGRAY);
-          rl.Core.DrawLineEx(points[i + 1], p.end.ref, 1.0, rl.C.LIGHTGRAY);
+          rl.Core.DrawCircleV(p.start.ref, 6, rl.Color.GOLD);
+          rl.Core.DrawCircleV(p.end.ref, 6, rl.Color.GOLD);
+          if (focusedControlPoint == p.start) rl.Core.DrawCircleV(p.start.ref, 8, rl.Color.GREEN);
+          else if (focusedControlPoint == p.end) rl.Core.DrawCircleV(p.end.ref, 8, rl.Color.GREEN);
+          rl.Core.DrawLineEx(points[i], p.start.ref, 1.0, rl.Color.LIGHTGRAY);
+          rl.Core.DrawLineEx(points[i + 1], p.end.ref, 1.0, rl.Color.LIGHTGRAY);
       
-          rl.Core.DrawLineV(points[i], p.start.ref, rl.C.GRAY);
+          rl.Core.DrawLineV(points[i], p.start.ref, rl.Color.GRAY);
           // rl.Core.DrawLineV(p.start.ref, p.end.ref, rl.C.LIGHTGRAY);
-          rl.Core.DrawLineV(p.end.ref, points[i + 1], rl.C.GRAY);
+          rl.Core.DrawLineV(p.end.ref, points[i + 1], rl.Color.GRAY);
         }
       }
 
@@ -206,16 +206,16 @@ void main()
       {
         for (int i = 0; i < pointCount; i++)
         {
-          rl.Core.DrawCircleLinesV(points[i], (focusedPoint == i) ? 12.0 : 8.0, (focusedPoint == i) ? rl.C.BLUE : rl.C.DARKBLUE);
+          rl.Core.DrawCircleLinesV(points[i], (focusedPoint == i) ? 12.0 : 8.0, (focusedPoint == i) ? rl.Color.BLUE : rl.Color.DARKBLUE);
           if (
             (splineTypeActive != .SPLINE_LINEAR) &&
             (splineTypeActive != .SPLINE_BEZIER) &&
             (i < pointCount - 1)
-          ) rl.Core.DrawLineV(points[i], points[i + 1], rl.C.GRAY);
+          ) rl.Core.DrawLineV(points[i], points[i + 1], rl.Color.GRAY);
 
           rl.Core.DrawText(
             "[${points[i].x.toInt()}, ${points[i].y.toInt()}]".toC,
-            points[i].x.toInt(), (points[i].y + 10).toInt(), 10, rl.C.BLACK
+            points[i].x.toInt(), (points[i].y + 10).toInt(), 10, rl.Color.BLACK
           );
         }
       }

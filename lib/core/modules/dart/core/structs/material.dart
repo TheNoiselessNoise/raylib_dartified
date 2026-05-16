@@ -5,11 +5,6 @@ extension MaterialCLike on MaterialC {
   int get mapCount => Raylib.instance.MAX_MATERIAL_MAPS;
 }
 
-extension MaterialDLike on MaterialD {
-  int get paramCount => 4;
-  int get mapCount => Raylib.instance.MAX_MATERIAL_MAPS;
-}
-
 extension MaterialCPEx on Pointer<MaterialC> {
   Pointer<MaterialC> setC(MaterialC o) {
     ref.setC(o);
@@ -36,7 +31,7 @@ extension MaterialCEx on MaterialC {
 
   MaterialC setD(MaterialD o) {
     shader.setD(o.shader);
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       maps = p.ref.maps;
     });
     if (maps.address != 0) {
@@ -60,9 +55,14 @@ extension MaterialCEx on MaterialC {
   );
 }
 
-class MaterialD extends StructD<MaterialD, MaterialC> {
+class MaterialD extends StructD<MaterialD, MaterialC> with MaterialBase {
+  @override
   ShaderD shader;
+  
+  @override
   List<MaterialMapD> maps;
+  
+  @override
   late List<double> params;
 
   MaterialD({
@@ -81,7 +81,7 @@ class MaterialD extends StructD<MaterialD, MaterialC> {
 
   @override
   MaterialD setC(MaterialC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.maps = o.maps;
     });
     shader.setC(o.shader);
@@ -100,32 +100,21 @@ class MaterialD extends StructD<MaterialD, MaterialC> {
   }
 
   @override
-  Pointer<MaterialC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Material$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Material$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<MaterialC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
-    p.ref.shader.setD(shader);
-
+  void nativeAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
     p.ref.maps = temp.MaterialMap$.Array(maps, key: '${key}_maps');
-
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.params[i] = params[i];
-    }
   }
 
   @override
-  void writeInto(MaterialC p) {
-    shader.writeInto(p.shader);
+  void nativeWriteInto(MaterialC p) {
+    shader.nativeWriteInto(p.shader);
     
     if (p.maps.address != 0) {
       if (maps.isNotEmpty) {
         for (int i = 0; i < maps.length; i++) {
-          maps[i].writeInto((p.maps + i).ref);
+          maps[i].nativeWriteInto((p.maps + i).ref);
         }
       } else {
         p.maps = nullptr;

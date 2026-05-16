@@ -84,19 +84,19 @@ void main()
   final lights = <LightC>[
     rl.Light.CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(-20, 20, -20), rl.Temp.vec3Zero, rl.C.GRAY, shader
+      rl.Temp.vec31(-20, 20, -20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
     ),
     rl.Light.CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(20, -20, 20), rl.Temp.vec3Zero, rl.C.GRAY, shader
+      rl.Temp.vec31(20, -20, 20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
     ),
     rl.Light.CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(-20, 20, 20), rl.Temp.vec3Zero, rl.C.GRAY, shader
+      rl.Temp.vec31(-20, 20, 20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
     ),
     rl.Light.CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(20, -20, -20), rl.Temp.vec3Zero, rl.C.GRAY, shader
+      rl.Temp.vec31(20, -20, -20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
     ),
   ];
 
@@ -145,11 +145,11 @@ void main()
 
 		rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-      rl.Core.DrawModel(models[currentModel], modelpos.ref, 1.0, rl.C.WHITE);
+      rl.Core.DrawModel(models[currentModel], modelpos.ref, 1.0, rl.Color.WHITE);
       rl.Core.DrawGrid(10, 1.0);
 
       for (int i = 0; i < lights.length; i++)
@@ -165,23 +165,23 @@ void main()
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawRectangle(10, 400, 340, 60, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(10, 400, 340, 60, rl.Core.Fade(rl.C.DARKBLUE, 0.5));
+      rl.Core.DrawRectangle(10, 400, 340, 60, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(10, 400, 340, 60, rl.Core.Fade(rl.Color.DARKBLUE, 0.5));
       rl.Core.DrawText(
         "MOUSE LEFT BUTTON to CYCLE VOX MODELS".toC,
-        40, 410, 10, rl.C.BLUE
+        40, 410, 10, rl.Color.BLUE
       );
       rl.Core.DrawText(
         "MOUSE MIDDLE BUTTON to ZOOM OR ROTATE CAMERA".toC,
-        40, 420, 10, rl.C.BLUE
+        40, 420, 10, rl.Color.BLUE
       );
       rl.Core.DrawText(
         "UP-DOWN-LEFT-RIGHT KEYS to MOVE CAMERA".toC,
-        40, 430, 10, rl.C.BLUE
+        40, 430, 10, rl.Color.BLUE
       );
       rl.Core.DrawText(
         "File: ${rl.Core.GetFileName(voxFileNames[currentModel].toC).toD}".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
 
 		rl.Core.EndDrawing();

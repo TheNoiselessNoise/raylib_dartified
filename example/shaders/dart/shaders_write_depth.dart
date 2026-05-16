@@ -16,7 +16,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(2.0, 2.0, 3.0),
     target: .vec3(0, 0.5, 0),
     up: .vec3(0, 1, 0),
@@ -68,9 +68,9 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-RenderTexture2DD LoadRenderTextureDepthTex(Raylib rl, int width, int height)
+RenderTextureD LoadRenderTextureDepthTex(Raylib rl, int width, int height)
 {
-  final RenderTexture2DD target = .new();
+  final RenderTextureD target = .new();
 
   target.id = rl.RlglD.rlLoadFramebuffer();
 
@@ -80,7 +80,7 @@ RenderTexture2DD LoadRenderTextureDepthTex(Raylib rl, int width, int height)
 
     final format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
 
-    target.texture.id = rl.RlglD.rlLoadTexture(null, width, height, RlPixelFormat.fromValue(format.value), 1);
+    target.texture.id = rl.RlglD.rlLoadTexture(null, width, height, .fromValue(format.value), 1);
     target.texture.width = width;
     target.texture.height = height;
     target.texture.format = format;
@@ -89,7 +89,7 @@ RenderTexture2DD LoadRenderTextureDepthTex(Raylib rl, int width, int height)
     target.depth.id = rl.RlglD.rlLoadTextureDepth(width, height, false);
     target.depth.width = width;
     target.depth.height = height;
-    target.depth.format = PixelFormat.fromValue(19);
+    target.depth.format = .fromValue(19);
     target.depth.mipmaps = 1;
 
     rl.RlglD.rlFramebufferAttach(
@@ -120,7 +120,7 @@ RenderTexture2DD LoadRenderTextureDepthTex(Raylib rl, int width, int height)
   return target;
 }
 
-void UnloadRenderTextureDepthTex(Raylib rl, RenderTexture2DD target)
+void UnloadRenderTextureDepthTex(Raylib rl, RenderTextureD target)
 {
   if (target.id > 0)
   {

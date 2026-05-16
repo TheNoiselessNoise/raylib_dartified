@@ -101,7 +101,8 @@ extension Vector2CEx on Vector2C {
   }
 }
 
-class Vector2D extends StructDLiteral<Vector2D, Vector2C> {
+class Vector2D extends StructDLiteral<Vector2D, Vector2C> with Vector2Base {
+  @override
   double x, y;
 
   Vector2D({
@@ -137,15 +138,10 @@ class Vector2D extends StructDLiteral<Vector2D, Vector2C> {
   }
 
   @override
-  Pointer<Vector2C> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Vector2$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Vector2$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<Vector2C> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(Vector2C p) {
+  void nativeWriteInto(Vector2C p) {
     p.x = x;
     p.y = y;
   }

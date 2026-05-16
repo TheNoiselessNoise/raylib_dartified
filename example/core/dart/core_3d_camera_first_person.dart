@@ -10,7 +10,7 @@ const int screenHeight = 450;
 void main() {
   final rl = loadBaseRaylib();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(0, 2, 4),
     target: .vec3(0, 2, 0),
     up: .vec3(0, 1, 0),
@@ -73,8 +73,8 @@ void main() {
         camera.up.set(0, 1, 0);
         camera.projection = .CAMERA_ORTHOGRAPHIC;
         camera.fovy = 20;
-        rl.CamD.CameraYaw(camera, -135*rl.DEG2RAD, true);
-        rl.CamD.CameraPitch(camera, -45*rl.DEG2RAD, true, true, false);
+        rl.CameraD.CameraYaw(camera, -135*rl.DEG2RAD, true);
+        rl.CameraD.CameraPitch(camera, -45*rl.DEG2RAD, true, true, false);
       } else if (camera.projection == .CAMERA_ORTHOGRAPHIC) {
         cameraMode = .CAMERA_THIRD_PERSON;
         camera.position.set(0, 2, 10);

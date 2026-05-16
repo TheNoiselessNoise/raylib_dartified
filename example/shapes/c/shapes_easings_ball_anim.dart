@@ -71,14 +71,14 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      if (state >= 2) rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.GREEN);
-      rl.Core.DrawCircle(ballPositionX, 200, ballRadius.toDouble(), rl.Core.Fade(rl.C.RED, 1.0 - ballAlpha));
+      if (state >= 2) rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.GREEN);
+      rl.Core.DrawCircle(ballPositionX, 200, ballRadius.toDouble(), rl.Core.Fade(rl.Color.RED, 1.0 - ballAlpha));
 
       if (state == 3) rl.Core.DrawText(
         "PRESS [ENTER] TO PLAY AGAIN!".toC,
-        240, 200, 20, rl.C.BLACK
+        240, 200, 20, rl.Color.BLACK
       );
 
       rl.Core.DrawFPS(10, 10);

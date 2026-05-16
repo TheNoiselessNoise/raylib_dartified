@@ -20,7 +20,7 @@ void main()
   bool drawLines = true;
 
   final stars = <Vector3D>[];
-  List<Vector2D> starsScreenPos = List.generate(STAR_COUNT, (_) => .zero());
+  List<Vector2D> starsScreenPos = .generate(STAR_COUNT, (_) => .zero());
 
   for (int i = 0; i < STAR_COUNT; i++) {
     stars.add(.vec3(

@@ -34,7 +34,7 @@ void main()
   double lineThick = 20, trailThick = 2;
   double fateAlpha = 0.01;
 
-  RenderTexture2DC target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
+  final target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
   rl.Core.SetTextureFilter(target.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
   while (!rl.Core.WindowShouldClose())
@@ -74,13 +74,13 @@ void main()
     currentPosition.y += screenHeight/2 - 100;
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Core.Fade(rl.C.BLACK, fateAlpha));
+      rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Core.Fade(rl.Color.BLACK, fateAlpha));
 
-      rl.Core.DrawCircleV(rl.Temp.vec21Ptr.setD(previousPosition).ref, trailThick, rl.C.RED);
+      rl.Core.DrawCircleV(rl.Temp.vec21Ptr.setD(previousPosition).ref, trailThick, rl.Color.RED);
       rl.Core.DrawLineEx(
         rl.Temp.vec21Ptr.setD(previousPosition).ref,
         rl.Temp.vec22Ptr.setD(currentPosition).ref,
-        trailThick*2, rl.C.RED
+        trailThick*2, rl.Color.RED
       );
     rl.Core.EndTextureMode();
 
@@ -88,20 +88,20 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.DrawTextureRec(
         target.texture,
         rl.Temp.rect1(0, 0, target.texture.width.toDouble(), -target.texture.height.toDouble()),
         rl.Temp.vec21(0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawRectanglePro(
         rl.Temp.rect1(screenWidth/2.0, screenHeight/2.0 - 100, 10*l1, lineThick),
         rl.Temp.vec21(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta1,
-        rl.C.RAYWHITE
+        rl.Color.RAYWHITE
       );
 
       final endpoint1 = CalculatePendulumEndPoint(l1, theta1);
@@ -109,7 +109,7 @@ void main()
         rl.Temp.rect1(screenWidth/2.0 + endpoint1.x, screenHeight/2.0 - 100 + endpoint1.y, 10*l2, lineThick),
         rl.Temp.vec21(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta2,
-        rl.C.RAYWHITE
+        rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();

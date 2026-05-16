@@ -26,7 +26,7 @@ void main()
 
   final center = rl.Temp.Vector2$.At('center').set(screenWidth/2.0, screenHeight/2.0);
   final circlePosition = rl.Temp.Vector2$.At('circlePos').setC(center.ref);
-  final color = rl.Temp.Color$.At('color').setC(rl.C.WHITE);
+  final color = rl.Temp.Color$.At('color').setC(rl.Color.WHITE);
 
   bool sliderClicked = false;
   bool settingColor = false;
@@ -141,7 +141,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
     rl.Rlgl.rlBegin(renderType);
     for (int i = 0; i < triangleCount; i++)
@@ -175,7 +175,7 @@ void main()
       {
         rl.Rlgl.rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
         rl.Rlgl.rlVertex2f(position.x, position.y);
-        rl.Rlgl.rlColor4ub(rl.C.WHITE.r, rl.C.WHITE.g, rl.C.WHITE.b, rl.C.WHITE.a);
+        rl.Rlgl.rlColor4ub(rl.Color.WHITE.r, rl.Color.WHITE.g, rl.Color.WHITE.b, rl.Color.WHITE.a);
         rl.Rlgl.rlVertex2f(center.ref.x, center.ref.y);
 
         rl.Rlgl.rlVertex2f(center.ref.x, center.ref.y);
@@ -189,11 +189,11 @@ void main()
     }
     rl.Rlgl.rlEnd();
 
-    ColorC handleColor = rl.C.BLACK;
+    ColorC handleColor = rl.Color.BLACK;
 
     if (center.distance(circlePosition)/pointScale <= 0.5 && value.value <= 0.5)
     {
-      handleColor = rl.C.DARKGRAY;
+      handleColor = rl.Color.DARKGRAY;
     }
 
     rl.Core.DrawCircleLinesV(circlePosition.ref, 4.0, handleColor);
@@ -207,7 +207,7 @@ void main()
     rl.Core.DrawRectangleLinesEx(
       rl.Temp.rect1(8, 8, 64, 64),
       2,
-      rl.Core.ColorLerp(color.ref, rl.C.BLACK, 0.5),
+      rl.Core.ColorLerp(color.ref, rl.Color.BLACK, 0.5),
     );
 
     StringBuffer sb = StringBuffer('#');
@@ -218,13 +218,13 @@ void main()
     sb.write([color.ref.r, color.ref.g, color.ref.b].join(', '));
     sb.write(')');
 
-    rl.Core.DrawText(sb.toString().toC, 8, 8 + 64 + 8, 20, rl.C.DARKGRAY);
+    rl.Core.DrawText(sb.toString().toC, 8, 8 + 64 + 8, 20, rl.Color.DARKGRAY);
 
-    ColorC copyColor = rl.C.DARKGRAY;
+    ColorC copyColor = rl.Color.DARKGRAY;
     int offset = 0;
     if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) && rl.Core.IsKeyDown(KeyboardKey.KEY_C.value))
     {
-      copyColor = rl.C.DARKGREEN;
+      copyColor = rl.Color.DARKGREEN;
       offset = 4;
     }
 
@@ -235,7 +235,7 @@ void main()
 
     rl.Core.DrawText(
       "triangle count: $triangleCount".toC,
-      8, 395, 20, rl.C.DARKGRAY
+      8, 395, 20, rl.Color.DARKGRAY
     );
 
     rl.Gui.GuiSliderBar(

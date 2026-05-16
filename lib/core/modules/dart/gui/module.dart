@@ -1,33 +1,48 @@
 part of '../../../raylib.dart';
 
-class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
-  RaylibGuiD(super.lib);
+class RaylibGuiD extends RaylibModule with RaylibGuiModuleExtras implements RaylibGuiModuleBase<
+  // types
+  ColorD,
+  FontD,
+  RectangleD,
+  Vector2D,
+  Vector3D
 
+> {
+  
+  RaylibGuiD(super.rl);
+
+  @override
   void GuiEnable() => run(
     () => 'GuiEnable()',
     () => rl.Gui.GuiEnable(),
   );
 
+  @override
   void GuiDisable() => run(
     () => 'GuiDisable()',
     () => rl.Gui.GuiDisable(),
   );
 
+  @override
   void GuiLock() => run(
     () => 'GuiLock()',
     () => rl.Gui.GuiLock(),
   );
 
+  @override
   void GuiUnlock() => run(
     () => 'GuiUnlock()',
     () => rl.Gui.GuiUnlock(),
   );
 
+  @override
   bool GuiIsLocked() => run(
     () => 'GuiIsLocked()',
     () => rl.Gui.GuiIsLocked(),
   );
 
+  @override
   void GuiSetAlpha(
     num alpha,
   ) => run(
@@ -35,6 +50,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     () => rl.Gui.GuiSetAlpha(alpha.toDouble()),
   );
 
+  @override
   void GuiSetState(
     GuiState state,
   ) => run(
@@ -42,11 +58,13 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     () => rl.Gui.GuiSetState(state.value),
   );
 
+  @override
   int GuiGetState() => run(
     () => 'GuiGetState()',
     () => rl.Gui.GuiGetState(),
   );
 
+  @override
   void GuiSetFont(
     FontD font,
   ) => run(
@@ -56,6 +74,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   FontD GuiGetFont() => run(
     () => 'GuiGetFont()',
     () => rl.Temp.Font$.RefCapture(
@@ -64,6 +83,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   void GuiSetStyle(
     GuiControl control,
     GuiProperty property,
@@ -77,6 +97,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiGetStyle(
     GuiControl control,
     GuiProperty property,
@@ -88,6 +109,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   void GuiLoadStyle(
     String fileName,
   ) => run(
@@ -97,21 +119,25 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   void GuiLoadStyleDefault() => run(
     () => 'GuiLoadStyleDefault()',
     () => rl.Gui.GuiLoadStyleDefault(),
   );
 
+  @override
   void GuiEnableTooltip() => run(
     () => 'GuiEnableTooltip()',
     () => rl.Gui.GuiEnableTooltip(),
   );
 
+  @override
   void GuiDisableTooltip() => run(
     () => 'GuiDisableTooltip()',
     () => rl.Gui.GuiDisableTooltip(),
   );
 
+  @override
   void GuiSetTooltip(
     String? tooltip,
   ) => run(
@@ -121,6 +147,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   String GuiIconText(
     GuiIconName iconId,
     String? text,
@@ -132,6 +159,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ).toD,
   );
 
+  @override
   void GuiSetIconScale(
     num scale,
   ) => run(
@@ -139,6 +167,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     () => rl.Gui.GuiSetIconScale(scale.toInt()),
   );
 
+  @override
   List<int> GuiGetIcons() => run(
     () => 'GuiGetIcons()',
     () {
@@ -147,6 +176,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   List<String> GuiLoadIcons(
     String fileName,
     bool loadIconsName,
@@ -173,6 +203,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   void GuiDrawIcon(
     GuiIconName iconId,
     num posX,
@@ -190,6 +221,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiGetTextWidth(
     String? text,
   ) => run(
@@ -199,6 +231,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiWindowBox(
     RectangleD bounds,
     String? title,
@@ -210,6 +243,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiGroupBox(
     RectangleD bounds,
     String? text,
@@ -221,6 +255,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiLine(
     RectangleD bounds,
     String? text,
@@ -232,6 +267,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiPanel(
     RectangleD bounds,
     String? text,
@@ -243,6 +279,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   (int tab, int active) GuiTabBar(
     RectangleD bounds,
     List<String> text,
@@ -260,6 +297,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   int GuiScrollPanel(
     RectangleD bounds,
     String? text,
@@ -281,6 +319,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiLabel(
     RectangleD bounds,
     String? text,
@@ -292,6 +331,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiButton(
     RectangleD bounds,
     String? text,
@@ -303,6 +343,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiLabelButton(
     RectangleD bounds,
     String? text,
@@ -314,6 +355,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   (int result, bool active) GuiToggle(
     RectangleD bounds,
     String? text,
@@ -331,6 +373,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int active) GuiToggleGroup(
     RectangleD bounds,
     String? text,
@@ -348,6 +391,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int active) GuiToggleSlider(
     RectangleD bounds,
     String? text,
@@ -365,6 +409,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, bool checked) GuiCheckBox(
     RectangleD bounds,
     String? text,
@@ -382,6 +427,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int active) GuiComboBox(
     RectangleD bounds,
     String? text,
@@ -399,6 +445,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int active) GuiDropdownBox(
     RectangleD bounds,
     String? text,
@@ -418,6 +465,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int value) GuiSpinner(
     RectangleD bounds,
     String? text,
@@ -441,6 +489,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int value) GuiValueBox(
     RectangleD bounds,
     String? text,
@@ -464,6 +513,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double value) GuiValueBoxFloat(
     RectangleD bounds,
     String? text,
@@ -485,6 +535,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, String value) GuiTextBox(
     RectangleD bounds,
     String? text,
@@ -504,6 +555,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double value) GuiSlider(
     RectangleD bounds,
     String? textLeft,
@@ -527,6 +579,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double value) GuiSliderBar(
     RectangleD bounds,
     String? textLeft,
@@ -550,6 +603,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double value) GuiProgressBar(
     RectangleD bounds,
     String? textLeft,
@@ -573,6 +627,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   int GuiStatusBar(
     RectangleD bounds,
     String? text,
@@ -584,6 +639,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiDummyRec(
     RectangleD bounds,
     String? text,
@@ -595,6 +651,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   int GuiGrid(
     RectangleD bounds,
     num spacing,
@@ -613,6 +670,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   (int result, int scrollIndex, int active) GuiListView(
     RectangleD bounds,
     String? text, {
@@ -634,6 +692,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, int scrollIndex, int active, int focus) GuiListViewEx(
     RectangleD bounds,
     List<String> text, {
@@ -659,6 +718,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   int GuiMessageBox(
     RectangleD bounds,
     String? title,
@@ -674,6 +734,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     ),
   );
 
+  @override
   (int result, String value) GuiTextInputBox(
     RectangleD bounds,
     String? title,
@@ -700,6 +761,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, ColorD color) GuiColorPicker(
     RectangleD bounds,
     ColorD? color,
@@ -716,6 +778,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, ColorD color) GuiColorPanel(
     RectangleD bounds,
     ColorD color,
@@ -732,6 +795,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double alpha) GuiColorBarAlpha(
     RectangleD bounds,
     num alpha,
@@ -748,6 +812,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, double value) GuiColorBarHue(
     RectangleD bounds,
     num value,
@@ -764,6 +829,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, Vector3D hsv) GuiColorPickerHSV(
     RectangleD bounds,
     [Vector3D? colorHsv]
@@ -780,6 +846,7 @@ class RaylibGuiD extends RaylibModule with RaylibGuiExtras {
     },
   );
 
+  @override
   (int result, Vector3D hsv) GuiColorPanelHSV(
     RectangleD bounds,
     [Vector3D? colorHsv]

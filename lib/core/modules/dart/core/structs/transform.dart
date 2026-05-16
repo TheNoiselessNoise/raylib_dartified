@@ -37,9 +37,14 @@ extension TransformCEx on TransformC {
   );
 }
 
-class TransformD extends StructDLiteral<TransformD, TransformC> {
+class TransformD extends StructDLiteral<TransformD, TransformC> with TransformBase {
+  @override
   Vector3D translation;
+  
+  @override
   QuaternionD rotation;
+  
+  @override
   Vector3D scale;
 
   TransformD({
@@ -72,18 +77,13 @@ class TransformD extends StructDLiteral<TransformD, TransformC> {
   }
 
   @override
-  Pointer<TransformC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Transform$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Transform$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<TransformC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(TransformC p) {
-    translation.writeInto(p.translation);
-    rotation.writeInto(p.rotation);
-    scale.writeInto(p.scale);
+  void nativeWriteInto(TransformC p) {
+    translation.nativeWriteInto(p.translation);
+    rotation.nativeWriteInto(p.rotation);
+    scale.nativeWriteInto(p.scale);
   }
 
   @override

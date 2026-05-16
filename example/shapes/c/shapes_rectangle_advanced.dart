@@ -29,21 +29,21 @@ void main()
     );
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      DrawRectangleRoundedGradientH(rl, rec.ref, 0.8, 0.8, 36, rl.C.BLUE, rl.C.RED);
-
-      rec.ref.y += rec.ref.height + 1;
-      DrawRectangleRoundedGradientH(rl, rec.ref, 0.5, 1.0, 36, rl.C.RED, rl.C.PINK);
+      DrawRectangleRoundedGradientH(rl, rec.ref, 0.8, 0.8, 36, rl.Color.BLUE, rl.Color.RED);
 
       rec.ref.y += rec.ref.height + 1;
-      DrawRectangleRoundedGradientH(rl, rec.ref, 1.0, 0.5, 36, rl.C.RED, rl.C.BLUE);
+      DrawRectangleRoundedGradientH(rl, rec.ref, 0.5, 1.0, 36, rl.Color.RED, rl.Color.PINK);
 
       rec.ref.y += rec.ref.height + 1;
-      DrawRectangleRoundedGradientH(rl, rec.ref, 0.0, 1.0, 36, rl.C.BLUE, rl.C.BLACK);
+      DrawRectangleRoundedGradientH(rl, rec.ref, 1.0, 0.5, 36, rl.Color.RED, rl.Color.BLUE);
 
       rec.ref.y += rec.ref.height + 1;
-      DrawRectangleRoundedGradientH(rl, rec.ref, 1.0, 0.0, 36, rl.C.BLUE, rl.C.PINK);
+      DrawRectangleRoundedGradientH(rl, rec.ref, 0.0, 1.0, 36, rl.Color.BLUE, rl.Color.BLACK);
+
+      rec.ref.y += rec.ref.height + 1;
+      DrawRectangleRoundedGradientH(rl, rec.ref, 1.0, 0.0, 36, rl.Color.BLUE, rl.Color.PINK);
     rl.Core.EndDrawing();
   }
 

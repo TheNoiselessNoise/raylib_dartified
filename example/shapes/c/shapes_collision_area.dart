@@ -56,33 +56,33 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawRectangle(0, 0, screenWidth, screenUpperLimit, collision ? rl.C.RED : rl.C.BLACK);
+      rl.Core.DrawRectangle(0, 0, screenWidth, screenUpperLimit, collision ? rl.Color.RED : rl.Color.BLACK);
 
-      rl.Core.DrawRectangleRec(boxA.ref, rl.C.GOLD);
-      rl.Core.DrawRectangleRec(boxB.ref, rl.C.BLUE);
+      rl.Core.DrawRectangleRec(boxA.ref, rl.Color.GOLD);
+      rl.Core.DrawRectangleRec(boxB.ref, rl.Color.BLUE);
 
       if (collision)
       {
-        rl.Core.DrawRectangleRec(boxCollision.ref, rl.C.LIME);
+        rl.Core.DrawRectangleRec(boxCollision.ref, rl.Color.LIME);
 
         rl.Core.DrawText(
           "COLLISION!".toC,
           (w/2 - rl.Core.MeasureText("COLLISION!".toC, 20)/2).toInt(),
           (screenUpperLimit/2 - 10).toInt(),
-          20, rl.C.BLACK
+          20, rl.Color.BLACK
         );
 
         rl.Core.DrawText(
           "Collision Area: ${boxCollision.ref.width*boxCollision.ref.height}".toC,
-          (w/2 - 100).toInt(), screenUpperLimit + 10, 20, rl.C.BLACK
+          (w/2 - 100).toInt(), screenUpperLimit + 10, 20, rl.Color.BLACK
         );
       }
 
       rl.Core.DrawText(
         "Press SPACE to PAUSE/RESUME".toC,
-        20, screenHeight - 35, 20, rl.C.LIGHTGRAY
+        20, screenHeight - 35, 20, rl.Color.LIGHTGRAY
       );
 
       rl.Core.DrawFPS(10, 10);

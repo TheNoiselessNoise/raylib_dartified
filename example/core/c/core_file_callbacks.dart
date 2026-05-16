@@ -66,7 +66,7 @@ bool SaveFileDataFunction(
   sfdResult.assertIt(fileName.toD == 'SaveFileData');
   _savedDataSize = dataSize;
   final bytes = data.cast<UnsignedChar>();
-  _savedDataBytes = List.generate(dataSize, (i) => bytes[i]);
+  _savedDataBytes = .generate(dataSize, (i) => bytes[i]);
   return true;
 }
 
@@ -157,7 +157,7 @@ void main() {
 
   while (!rl.Core.WindowShouldClose()) {
     rl.Core.BeginDrawing();
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
     DrawTestResults(allPassed);
 
@@ -175,17 +175,17 @@ void DrawTestResults(bool allPassed) {
   const int fontSize = 18;
   const int smallFont = 13;
 
-  final headerColor = allPassed ? rl.C.DARKGREEN : rl.C.MAROON;
+  final headerColor = allPassed ? rl.Color.DARKGREEN : rl.Color.MAROON;
   final headerText  = allPassed ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
   rl.Core.DrawText(headerText.toC, padX, padY, 24, headerColor);
 
-  rl.Core.DrawLine(padX, padY + 34, screenWidth - padX, padY + 34, rl.C.LIGHTGRAY);
+  rl.Core.DrawLine(padX, padY + 34, screenWidth - padX, padY + 34, rl.Color.LIGHTGRAY);
 
   for (int i = 0; i < results.length; i++) {
     final r   = results[i];
     final y   = padY + 44 + i * rowH;
     final bg  = r.passed ? rl.Temp.color1(220, 255, 220, 255) : rl.Temp.color1(255, 220, 220, 255);
-    final dot = r.passed ? rl.C.GREEN : rl.C.RED;
+    final dot = r.passed ? rl.Color.GREEN : rl.Color.RED;
 
     rl.Core.DrawRectangle(padX, y, screenWidth - padX * 2, rowH - 4, bg);
     rl.Core.DrawRectangleLines(padX, y, screenWidth - padX * 2, rowH - 4, dot);
@@ -197,15 +197,15 @@ void DrawTestResults(bool allPassed) {
     final signY = y + (rowH - 4) ~/ 2 - signSize ~/ 2;
 
     if (r.passed) {
-      DrawCheckmark(signX, signY, signSize, rl.C.WHITE);
+      DrawCheckmark(signX, signY, signSize, rl.Color.WHITE);
     } else {
-      DrawXSign(signX, signY, signSize, rl.C.WHITE);
+      DrawXSign(signX, signY, signSize, rl.Color.WHITE);
     }
 
-    rl.Core.DrawText(r.name.toC, padX + iconW + 10, y + 7, fontSize, rl.C.BLACK);
+    rl.Core.DrawText(r.name.toC, padX + iconW + 10, y + 7, fontSize, rl.Color.BLACK);
 
     final detail = r.detail.length > 72 ? '${r.detail.substring(0, 69)}...' : r.detail;
-    rl.Core.DrawText(detail.toC, padX + iconW + 10, y + 28, smallFont, rl.C.DARKGRAY);
+    rl.Core.DrawText(detail.toC, padX + iconW + 10, y + 28, smallFont, rl.Color.DARKGRAY);
   }
 }
 

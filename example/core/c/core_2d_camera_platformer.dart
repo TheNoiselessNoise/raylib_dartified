@@ -55,11 +55,11 @@ void main() {
   );
 
   List<EnvItem> envItems = [
-    EnvItem(rect: .rect(0, 0, 1000, 400), blocking: false, color: rl.C.LIGHTGRAY),
-    EnvItem(rect: .rect(0, 400, 1000, 200), blocking: true, color: rl.C.GRAY),
-    EnvItem(rect: .rect(300, 200, 400, 10), blocking: true, color: rl.C.GRAY),
-    EnvItem(rect: .rect(250, 300, 100, 10), blocking: true, color: rl.C.GRAY),
-    EnvItem(rect: .rect(650, 300, 100, 10), blocking: true, color: rl.C.GRAY)
+    EnvItem(rect: .rect(0, 0, 1000, 400), blocking: false, color: rl.Color.LIGHTGRAY),
+    EnvItem(rect: .rect(0, 400, 1000, 200), blocking: true, color: rl.Color.GRAY),
+    EnvItem(rect: .rect(300, 200, 400, 10), blocking: true, color: rl.Color.GRAY),
+    EnvItem(rect: .rect(250, 300, 100, 10), blocking: true, color: rl.Color.GRAY),
+    EnvItem(rect: .rect(650, 300, 100, 10), blocking: true, color: rl.Color.GRAY)
   ];
 
   List<void Function(Raylib, Pointer<Camera2DC>, Player, List<EnvItem>, double)> cameraUpdaters = [
@@ -109,7 +109,7 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode2D(camera.ref);
 
@@ -122,20 +122,20 @@ void main() {
 
         rl.Core.DrawRectangleRec(
           rl.Temp.rect1(player.position.x - 20, player.position.y - 40, 40, 40),
-          rl.C.RED
+          rl.Color.RED
         );
 
-        rl.Core.DrawCircleV(rl.Temp.vec21D(player.position), 5, rl.C.GOLD);
+        rl.Core.DrawCircleV(rl.Temp.vec21D(player.position), 5, rl.Color.GOLD);
 
       rl.Core.EndMode2D();
 
-      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.C.BLACK);
-      rl.Core.DrawText("- Right/Left to move".toC, 40, 40, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("- Space to jump".toC, 40, 60, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom".toC, 40, 80, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("- C to change camera mode".toC, 40, 100, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("Current camera mode:".toC, 20, 120, 10, rl.C.BLACK);
-      rl.Core.DrawText(cameraDescriptions[cameraOption].toC, 40, 140, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Right/Left to move".toC, 40, 40, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("- Space to jump".toC, 40, 60, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom".toC, 40, 80, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("- C to change camera mode".toC, 40, 100, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("Current camera mode:".toC, 20, 120, 10, rl.Color.BLACK);
+      rl.Core.DrawText(cameraDescriptions[cameraOption].toC, 40, 140, 10, rl.Color.DARKGRAY);
 
     rl.Core.EndDrawing();
   }

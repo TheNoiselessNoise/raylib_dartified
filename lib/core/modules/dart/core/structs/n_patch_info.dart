@@ -73,12 +73,23 @@ extension NPatchInfoCEx on NPatchInfoC {
   );
 }
 
-class NPatchInfoD extends StructD<NPatchInfoD, NPatchInfoC> {
+class NPatchInfoD extends StructDLiteral<NPatchInfoD, NPatchInfoC> with NPatchInfoBase {
+  @override
   RectangleD source;
+  
+  @override
   int left;
+  
+  @override
   int top;
+  
+  @override
   int right;
+  
+  @override
   int bottom;
+  
+  @override
   NPatchLayout layout;
 
   NPatchInfoD({
@@ -93,36 +104,6 @@ class NPatchInfoD extends StructD<NPatchInfoD, NPatchInfoC> {
     source = source ?? .new();
 
   factory NPatchInfoD.zero() => .new();
-
-  factory NPatchInfoD.nPatchInfo(
-    RectangleD source,
-    num left,
-    num top,
-    num right,
-    num bottom,
-    NPatchLayout layout,
-  ) => NPatchInfoD(
-    source: source,
-    left: left.toInt(),
-    top: top.toInt(),
-    right: right.toInt(),
-    bottom: bottom.toInt(),
-    layout: layout,
-  );
-
-  NPatchInfoD set(
-    RectangleD source,
-    num left, num top, num right, num bottom,
-    NPatchLayout layout,
-  ) {
-    this.source = source;
-    this.left = left.toInt();
-    this.top = top.toInt();
-    this.right = right.toInt();
-    this.bottom = bottom.toInt();
-    this.layout = layout;
-    return this;
-  }
 
   @override
   NPatchInfoD setC(NPatchInfoC o) {
@@ -148,16 +129,11 @@ class NPatchInfoD extends StructD<NPatchInfoD, NPatchInfoC> {
   }
 
   @override
-  Pointer<NPatchInfoC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.NPatchInfo$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.NPatchInfo$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<NPatchInfoC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(NPatchInfoC p) {
-    source.writeInto(p.source);
+  void nativeWriteInto(NPatchInfoC p) {
+    source.nativeWriteInto(p.source);
     p.left = left;
     p.top = top;
     p.right = right;

@@ -61,9 +61,6 @@ void main()
 {
   final rl = loadBaseRaylib();
 
-  rl.Temp.debug(true);
-  rl.Temp.debugFree(true);
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer");
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
@@ -92,10 +89,10 @@ void main()
   int fftHistoryLen = (FFT_HISTORICAL_SMOOTHING_DUR/WINDOW_TIME).ceil() + 1;
 
   FFTData fft = FFTData(
-    spectrum: List.generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    workBuffer: List.generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    prevMagnitudes: List.filled(BUFFER_SIZE, 0),
-    fftHistory: List.generate(fftHistoryLen, (_) => List.filled(BUFFER_SIZE, 0)),
+    spectrum: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
+    workBuffer: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
+    prevMagnitudes: .filled(BUFFER_SIZE, 0),
+    fftHistory: .generate(fftHistoryLen, (_) => .filled(BUFFER_SIZE, 0)),
     fftHistoryLen: fftHistoryLen,
     historyPos: 0,
     lastFftTime: 0,
@@ -105,8 +102,8 @@ void main()
   int wavCursor = 0;
   final wavPCM16 = wave.data;
 
-  final List<int> chunkSamples = List.filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
-  final List<double> audioSamples = List.filled(FFT_WINDOW_SIZE, 0);
+  final List<int> chunkSamples = .filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
+  final List<double> audioSamples = .filled(FFT_WINDOW_SIZE, 0);
 
   while (!rl.CoreD.WindowShouldClose())
   {
@@ -210,9 +207,9 @@ void CaptureFrame(Raylib rl, FFTData fftData, List<double> audioSamples) {
   }
 
   CooleyTukeyFFTSlow(rl, fftData.workBuffer, FFT_WINDOW_SIZE);
-  fftData.spectrum = List.from(fftData.workBuffer);
+  fftData.spectrum = .from(fftData.workBuffer);
 
-  List<double> smoothedSpectrum = List.filled(BUFFER_SIZE, 0);
+  List<double> smoothedSpectrum = .filled(BUFFER_SIZE, 0);
 
   for (int bin = 0; bin < BUFFER_SIZE; bin++) {
     double re = fftData.workBuffer[bin].real;
@@ -228,7 +225,7 @@ void CaptureFrame(Raylib rl, FFTData fftData, List<double> audioSamples) {
   }
 
   fftData.lastFftTime = rl.CoreD.GetTime();
-  fftData.fftHistory[fftData.historyPos] = List.from(smoothedSpectrum);
+  fftData.fftHistory[fftData.historyPos] = .from(smoothedSpectrum);
   fftData.historyPos = (fftData.historyPos + 1) % fftData.fftHistoryLen;
 }
 

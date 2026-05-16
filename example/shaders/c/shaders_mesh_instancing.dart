@@ -69,15 +69,15 @@ void main()
 
   rl.Light.CreateLight(
     LightType.LIGHT_DIRECTIONAL.value,
-    rl.Temp.vec31(50, 50, 0), rl.Temp.vec3Zero, rl.C.WHITE, shader
+    rl.Temp.vec31(50, 50, 0), rl.Temp.vec3Zero, rl.Color.WHITE, shader
   );
 
   final matInstances = rl.Core.LoadMaterialDefault();
   matInstances.shader = shader;
-  matInstances.maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.C.RED;
+  matInstances.maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.Color.RED;
 
   final matDefault = rl.Core.LoadMaterialDefault();
-  matDefault.maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.C.BLUE;
+  matDefault.maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.Color.BLUE;
   
   while (!rl.Core.WindowShouldClose())
   {
@@ -91,7 +91,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 

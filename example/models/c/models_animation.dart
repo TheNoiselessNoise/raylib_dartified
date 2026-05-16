@@ -48,7 +48,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -58,12 +58,12 @@ void main()
           rl.Temp.vec31(1.0, 0.0, 0.0),
           -90.0,
           rl.Temp.vec32(1.0, 1.0, 1.0),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
 
         for (int i = 0; i < model.boneCount; i++)
         {
-          rl.Core.DrawCube(anims[0].framePoses[animFrameCounter][i].translation, 0.2, 0.2, 0.2, rl.C.RED);
+          rl.Core.DrawCube(anims[0].framePoses[animFrameCounter][i].translation, 0.2, 0.2, 0.2, rl.Color.RED);
         }
 
         rl.Core.DrawGrid(10, 1.0);
@@ -72,11 +72,11 @@ void main()
 
       rl.Core.DrawText(
         "PRESS SPACE to PLAY MODEL ANIMATION".toC,
-        10, 10, 20, rl.C.MAROON
+        10, 10, 20, rl.Color.MAROON
       );
       rl.Core.DrawText(
         "(c) Guy IQM 3D model by @culacant".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

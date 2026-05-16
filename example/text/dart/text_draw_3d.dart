@@ -5,6 +5,7 @@
 import 'dart:math' as math;
 import '../../base.dart';
 
+const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const double LETTER_BOUNDRY_SIZE = 0.25;
@@ -39,7 +40,7 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(-10.0, 15.0, -10.0),
     target: .vec3(0.0, 0.0, 0.0),
     up: .vec3(0.0, 1.0, 0.0),
@@ -79,10 +80,10 @@ void main()
 
   final alphaDiscard = rl.CoreD.LoadShader(
     null,
-    "../resources/shaders/glsl330/alpha_discard.fs",
+    "../resources/shaders/glsl$GLSL_VERSION/alpha_discard.fs",
   );
 
-  final List<ColorD> multi = List.generate(TEXT_MAX_LAYERS, (_) => .WHITE);
+  final List<ColorD> multi = .generate(TEXT_MAX_LAYERS, (_) => .WHITE);
 
   while (!rl.CoreD.WindowShouldClose())
   {

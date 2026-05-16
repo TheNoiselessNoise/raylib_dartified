@@ -190,10 +190,15 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
   /// The caller is responsible for freeing this pointer.
   Pointer<T> Raw([int count = 1]) => allocatorFunc(count);
 
+  /// Allocates an unslotted array.
+  ///
+  /// The caller is responsible for freeing the returned pointer.
+  Pointer<T> RawArray(List<X> array) => Raw(array.length);
+
   /// Allocates an unslotted array and populates it from [array].
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawArray(List<X> array) {
+  Pointer<T> RawArrayPopulated(List<X> array) {
     final p = Raw(array.length);
     for (int i = 0; i < array.length; i++) indexSetterFunc(p, i, array[i]);
     return p;
@@ -455,7 +460,7 @@ class RTempLitPtrAlloc<X, T extends NativeType> extends RTempAlloc<Pointer<T>> {
   }
 
   /// Writes each sub-array in [arrays] into a tracked slot via [rawArrayFunc]
-  /// and returns the outer `Pointer<Pointer<T>>]`
+  /// and returns the outer `Pointer<Pointer<T>>`
   Pointer<Pointer<T>> Fill(List<List<X>> arrays, {String? key}) {
     final pp = At(_slotKey(key), arrays.length);
     for (int i = 0; i < arrays.length; i++) pp[i] = rawArrayFunc(arrays[i]);
@@ -815,7 +820,7 @@ class RTempStructPtrAlloc<T extends Struct, X extends StructD<X, T>> extends RTe
   }
 
   /// Writes each sub-array in [arrays] into a tracked slot and returns the
-  /// outer `Pointer<Pointer<T>>]`
+  /// outer `Pointer<Pointer<T>>`
   Pointer<Pointer<T>> Fill(List<List<X>> arrays, {String? key}) {
     final p = At(_slotKey(key), arrays.length);
     for (int i = 0; i < arrays.length; i++) p[i] = rawArrayFunc(arrays[i]);
@@ -1211,7 +1216,7 @@ class RaylibTemp extends RaylibModule {
     _vec4ZeroPtr = calloc<Vector4C>();
     _matZeroPtr = calloc<MatrixC>();
     _matIdentityPtr = calloc<MatrixC>().setD(.identity());
-    _quatIdentityPtr = calloc<QuaternionC>().setD(.qIdentity());
+    _quatIdentityPtr = calloc<QuaternionC>().setD(.identity());
   }
 
   void _dePreAllocate() {

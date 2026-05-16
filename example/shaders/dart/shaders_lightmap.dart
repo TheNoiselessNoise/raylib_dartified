@@ -19,7 +19,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(4, 6, 8),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -29,7 +29,7 @@ void main()
 
   final mesh = rl.CoreD.GenMeshPlane(MAP_SIZE, MAP_SIZE, 1, 1);
 
-  mesh.texcoords2 = List.generate(mesh.vertexCount*2, (_) => 0.0);
+  mesh.texcoords2 = .generate(mesh.vertexCount*2, (_) => 0.0);
 
   mesh.texcoords2[0] = 0.0; mesh.texcoords2[1] = 0.0;
   mesh.texcoords2[2] = 1.0; mesh.texcoords2[3] = 0.0;

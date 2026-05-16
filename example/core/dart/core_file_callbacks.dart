@@ -56,7 +56,7 @@ TestResult testSaveFileData() {
     sfdResult.assertIt(fileName.toD == 'SaveFileData');
     _savedDataSize = dataSize;
     final bytes = data.cast<UnsignedChar>();
-    _savedDataBytes = List.generate(dataSize, (i) => bytes[i]);
+    _savedDataBytes = .generate(dataSize, (i) => bytes[i]);
     return true;
   },));
 

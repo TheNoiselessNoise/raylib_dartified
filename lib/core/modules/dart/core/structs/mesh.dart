@@ -13,21 +13,7 @@ extension MeshCLike on MeshC {
   int get boneIdsCount => vertexCount > 0 ? vertexCount * 4 : 0;
   int get boneWeightsCount => vertexCount > 0 ? vertexCount * 4 : 0;
   int get boneMatricesCount => boneCount;
-}
-
-extension MeshDLike on MeshD {
-  int get verticesCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get texcoordsCount => vertexCount > 0 ? vertexCount * 2 : 0;
-  int get texcoords2Count => vertexCount > 0 ? vertexCount * 2 : 0;
-  int get normalsCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get tangentsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get colorsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get indicesCount => triangleCount > 0 ? triangleCount * 3 : 0;
-  int get animVerticesCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get animNormalsCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get boneIdsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get boneWeightsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get boneMatricesCount => boneCount;
+  int get vboIdCount => 9;
 }
 
 extension MeshCPEx on Pointer<MeshC> {
@@ -67,7 +53,7 @@ extension MeshCEx on MeshC {
   }
 
   MeshC setD(MeshD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       vertexCount = p.ref.vertexCount;
       triangleCount = p.ref.triangleCount;
       vertices = p.ref.vertices;
@@ -107,27 +93,60 @@ extension MeshCEx on MeshC {
     boneWeights: boneWeights.address != 0 ? .generate(boneWeightsCount, (i) => (boneWeights + i).value) : [],
     boneMatrices: boneMatrices.address != 0 ? .generate(boneMatricesCount, (i) => (boneMatrices + i).toD()) : [],
     vaoId: vaoId,
-    vboId: vboId.address != 0 ? .generate(9, (i) => (vboId + i).value) : [],
+    vboId: vboId.address != 0 ? .generate(vboIdCount, (i) => (vboId + i).value) : [],
   );
 }
 
-class MeshD extends StructD<MeshD, MeshC> {
+class MeshD extends StructD<MeshD, MeshC> with MeshBase {
+  @override
   int vertexCount;
+  
+  @override
   int triangleCount;
+  
+  @override
   int boneCount;
+  
+  @override
   List<double> vertices;
+  
+  @override
   List<double> texcoords;
+  
+  @override
   List<double> texcoords2;
+  
+  @override
   List<double> normals;
+  
+  @override
   List<double> tangents;
+  
+  @override
   List<int> colors;
+  
+  @override
   List<int> indices;
+  
+  @override
   List<double> animVertices;
+  
+  @override
   List<double> animNormals;
+  
+  @override
   List<int> boneIds;
+  
+  @override
   List<double> boneWeights;
+  
+  @override
   List<MatrixD> boneMatrices;
+  
+  @override
   int vaoId;
+  
+  @override
   List<int> vboId;
 
   MeshD({
@@ -168,7 +187,7 @@ class MeshD extends StructD<MeshD, MeshC> {
 
   @override
   MeshD setC(MeshC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.vertexCount = o.vertexCount;
       p.ref.triangleCount = o.triangleCount;
       p.ref.boneCount = o.boneCount;
@@ -202,7 +221,7 @@ class MeshD extends StructD<MeshD, MeshC> {
     boneWeights = vertexCount > 0 && o.boneWeights.address != 0 ? .generate(boneWeightsCount, (i) => (o.boneWeights + i).value) : [];
     boneMatrices = o.boneMatrices.address != 0 ? .generate(boneMatricesCount, (i) => (o.boneMatrices + i).toD()) : [];
     vaoId = o.vaoId;
-    vboId = .generate(9, (i) => (o.vboId + i).value);
+    vboId = .generate(vboIdCount, (i) => (o.vboId + i).value);
     return this;
   }
 
@@ -230,20 +249,10 @@ class MeshD extends StructD<MeshD, MeshC> {
   }
 
   @override
-  Pointer<MeshC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Mesh$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Mesh$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<MeshC> p, String key)
-    => writeInto(p.ref);
-  
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
-    p.ref.vertexCount = vertexCount;
-    p.ref.triangleCount = triangleCount;
-    p.ref.boneCount = boneCount;
-    p.ref.vaoId = vaoId;
-
+  void nativeAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
     p.ref.vertices = vertices.isNotEmpty ? temp.Float$.RawArray(vertices) : nullptr;
     p.ref.texcoords = texcoords.isNotEmpty ? temp.Float$.RawArray(texcoords) : nullptr;
     p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float$.RawArray(texcoords2) : nullptr;
@@ -260,14 +269,14 @@ class MeshD extends StructD<MeshD, MeshC> {
   }
 
   @override
-  void writeInto(MeshC p) {
+  void nativeWriteInto(MeshC p) {
     p.vertexCount = vertexCount;
     p.triangleCount = triangleCount;
     p.triangleCount = triangleCount;
     p.boneCount = boneCount;
     p.vaoId = vaoId;
 
-    onOriginalPointer((o) {
+    nativeOnOriginalPointer((o) {
       p.vertexCount = o.ref.vertexCount;
       p.triangleCount = o.ref.triangleCount;
       p.triangleCount = o.ref.triangleCount;
@@ -357,7 +366,7 @@ class MeshD extends StructD<MeshD, MeshC> {
 
     if (p.boneMatrices.address != 0) {
       for (int i = 0; i < boneMatrices.length; i++) {
-        boneMatrices[i].writeInto((p.boneMatrices + i).ref);
+        boneMatrices[i].nativeWriteInto((p.boneMatrices + i).ref);
       }
     }
 

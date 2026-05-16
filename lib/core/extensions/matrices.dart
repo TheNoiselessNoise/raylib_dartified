@@ -1,7 +1,7 @@
 part of '../raylib.dart';
 
 class RaylibMatrices extends RaylibModule {
-  RaylibMatrices(super.lib);
+  RaylibMatrices(super.rl);
 
   double MatrixDeterminant(MatrixD mat) => mat.determinant();
 

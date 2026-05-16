@@ -12,16 +12,22 @@ extension FilePathListCEx on FilePathListC {
   FilePathListD toD(Pointer<FilePathListC> ptr) => .new(ptr);
 }
 
-class FilePathListD extends StructDView<FilePathListD, FilePathListC> {
+class FilePathListD extends StructDView<FilePathListD, FilePathListC> with FilePathListBase {
   FilePathListD(super.originalPointer);
 
   int? _cachedCount;
   List<String> _cachedPaths = [];
 
+  @override
   int get capacity => ref.capacity;
+  
+  @override
   int get count => ref.count;
+  
+  @override
   List<String> get paths {
     if (_cachedCount != count) {
+      _cachedCount = count;
       _cachedPaths = .generate(count, (i) => (ref.paths + i).value.toD);
     }
     return _cachedPaths;

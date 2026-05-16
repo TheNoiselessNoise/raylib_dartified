@@ -21,10 +21,10 @@ void main()
 
   final sliceValues = [ 300.0, 100.0, 450.0, 350.0, 600.0, 380.0, 750.0 ];
   assert(sliceValues.length == MAX_PIE_SLICES);
-  var values = List.generate(MAX_PIE_SLICES, (i) => sliceValues[i]);
+  final values = List.generate(MAX_PIE_SLICES, (i) => sliceValues[i]);
 
-  List<String> labels = List.generate(MAX_PIE_SLICES, (i) => "Slice $i");
-  List<bool> editingLabel = List.generate(MAX_PIE_SLICES, (_) => false);
+  List<String> labels = .generate(MAX_PIE_SLICES, (i) => "Slice $i");
+  List<bool> editingLabel = .generate(MAX_PIE_SLICES, (_) => false);
 
   var showValues = true;
   var showPercentages = false;

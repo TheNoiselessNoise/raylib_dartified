@@ -52,13 +52,13 @@ void main()
   final cube = rl.Core.LoadModelFromMesh(rl.Core.GenMeshCube(2.0, 2.0, 2.0));
 
   final gbufferShader = rl.Core.LoadShader(
-    "../resources/shaders/glsl330/gbuffer.vs".toC,
-    "../resources/shaders/glsl330/gbuffer.fs".toC,
+    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.vs".toC,
+    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.fs".toC,
   );
 
   final deferredShader = rl.Core.LoadShader(
-    "../resources/shaders/glsl330/deferred_shading.vs".toC,
-    "../resources/shaders/glsl330/deferred_shading.fs".toC,
+    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.vs".toC,
+    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.fs".toC,
   );
 
   deferredShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
@@ -80,13 +80,13 @@ void main()
   rl.Rlgl.rlEnableFramebuffer(gBuffer.ref.framebuffer);
 
   gBuffer.ref.positionTexture = rl.Rlgl.rlLoadTexture(
-    nullptr, screenWidth, screenHeight, RlPixelFormat.RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32.value, 1
+    nullptr, screenWidth, screenHeight, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R32G32B32.value, 1
   );
   gBuffer.ref.normalTexture = rl.Rlgl.rlLoadTexture(
-    nullptr, screenWidth, screenHeight, RlPixelFormat.RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32.value, 1
+    nullptr, screenWidth, screenHeight, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R32G32B32.value, 1
   );
   gBuffer.ref.albedoSpecTexture = rl.Rlgl.rlLoadTexture(
-    nullptr, screenWidth, screenHeight, RlPixelFormat.RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value, 1
+    nullptr, screenWidth, screenHeight, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value, 1
   );
 
   rl.Rlgl.rlActiveDrawBuffers(3);
@@ -144,22 +144,22 @@ void main()
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, -2), rl.Temp.vec3Zero, rl.C.YELLOW, deferredShader
+    rl.Temp.vec31(-2, 1, -2), rl.Temp.vec3Zero, rl.Color.YELLOW, deferredShader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, 2), rl.Temp.vec3Zero, rl.C.RED, deferredShader
+    rl.Temp.vec31(2, 1, 2), rl.Temp.vec3Zero, rl.Color.RED, deferredShader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, 2), rl.Temp.vec3Zero, rl.C.GREEN, deferredShader
+    rl.Temp.vec31(-2, 1, 2), rl.Temp.vec3Zero, rl.Color.GREEN, deferredShader
   ));
 
   lights.add(rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, -2), rl.Temp.vec3Zero, rl.C.BLUE, deferredShader
+    rl.Temp.vec31(2, 1, -2), rl.Temp.vec3Zero, rl.Color.BLUE, deferredShader
   ));
 
   const double CUBE_SCALE = 0.25;
@@ -208,7 +208,7 @@ void main()
 
     rl.Core.BeginDrawing();
         
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
   
       rl.Rlgl.rlEnableFramebuffer(gBuffer.ref.framebuffer);
       rl.Rlgl.rlClearScreenBuffers();
@@ -216,8 +216,8 @@ void main()
       rl.Rlgl.rlDisableColorBlend();
       rl.Core.BeginMode3D(camera.ref);
         rl.Rlgl.rlEnableShader(gbufferShader.id);
-          rl.Core.DrawModel(model, rl.Temp.vec31(0.0, 0.0, 0.0), 1.0, rl.C.WHITE);
-          rl.Core.DrawModel(cube, rl.Temp.vec31(0.0, 1.0, 0.0), 1.0, rl.C.WHITE);
+          rl.Core.DrawModel(model, rl.Temp.vec31(0.0, 0.0, 0.0), 1.0, rl.Color.WHITE);
+          rl.Core.DrawModel(cube, rl.Temp.vec31(0.0, 1.0, 0.0), 1.0, rl.Color.WHITE);
 
           for (int i = 0; i < MAX_CUBES; i++)
           {
@@ -228,7 +228,7 @@ void main()
               rl.Temp.vec31(1, 1, 1),
               cubeRotations[i],
               rl.Temp.vec32(CUBE_SCALE, CUBE_SCALE, CUBE_SCALE),
-              rl.C.WHITE
+              rl.Color.WHITE
             );
           }
 
@@ -279,7 +279,7 @@ void main()
           
           rl.Core.DrawText(
             "FINAL RESULT".toC,
-            10, screenHeight - 30, 20, rl.C.DARKGREEN
+            10, screenHeight - 30, 20, rl.Color.DARKGREEN
           );
         } break;
         case .DEFERRED_POSITION:
@@ -292,12 +292,12 @@ void main()
             texture.ref,
             rl.Temp.rect1(0, 0, screenWidth, -screenHeight),
             rl.Temp.vec2Zero,
-            rl.C.RAYWHITE
+            rl.Color.RAYWHITE
           );
           
           rl.Core.DrawText(
             "POSITION TEXTURE".toC,
-            10, screenHeight - 30, 20, rl.C.DARKGREEN
+            10, screenHeight - 30, 20, rl.Color.DARKGREEN
           );
         } break;
         case .DEFERRED_NORMAL:
@@ -310,12 +310,12 @@ void main()
             texture.ref,
             rl.Temp.rect1(0, 0, screenWidth, -screenHeight),
             rl.Temp.vec2Zero,
-            rl.C.RAYWHITE
+            rl.Color.RAYWHITE
           );
           
           rl.Core.DrawText(
             "NORMAL TEXTURE".toC,
-            10, screenHeight - 30, 20, rl.C.DARKGREEN
+            10, screenHeight - 30, 20, rl.Color.DARKGREEN
           );
         } break;
         case .DEFERRED_ALBEDO:
@@ -328,23 +328,23 @@ void main()
             texture.ref,
             rl.Temp.rect1(0, 0, screenWidth, -screenHeight),
             rl.Temp.vec2Zero,
-            rl.C.RAYWHITE
+            rl.Color.RAYWHITE
           );
 
           rl.Core.DrawText(
             "ALBEDO TEXTURE".toC,
-            10, screenHeight - 30, 20, rl.C.DARKGREEN
+            10, screenHeight - 30, 20, rl.Color.DARKGREEN
           );
         } break;
       }
 
       rl.Core.DrawText(
         "Toggle lights keys: [Y][R][G][B]".toC,
-        10, 40, 20, rl.C.DARKGRAY
+        10, 40, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Switch G-buffer textures: [1][2][3][4]".toC,
-        10, 70, 20, rl.C.DARKGRAY
+        10, 70, 20, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawFPS(10, 10);

@@ -10,7 +10,7 @@ typedef LoadFileDataCallbackFunctionD = Pointer<UnsignedChar> Function(
 abstract class LoadFileDataCallbackD extends CallbackD<
   LoadFileDataCallbackFunctionC,
   LoadFileDataCallbackFunctionD
-> {
+> with LoadFileDataCallbackBase {
   LoadFileDataCallbackD([super.name]);
 
   static final List<LoadFileDataCallbackD> _registry = [];
@@ -47,7 +47,7 @@ typedef SaveFileDataCallbackFunctionD = bool Function(
 abstract class SaveFileDataCallbackD extends CallbackD<
   SaveFileDataCallbackFunctionC,
   SaveFileDataCallbackFunctionD
-> {
+> with SaveFileDataCallbackBase {
   SaveFileDataCallbackD([super.name]);
 
   static final List<SaveFileDataCallbackD> _registry = [];
@@ -80,7 +80,7 @@ typedef LoadFileTextCallbackFunctionD = Pointer<Char> Function(Pointer<Char> fil
 abstract class LoadFileTextCallbackD extends CallbackD<
   LoadFileTextCallbackFunctionC,
   LoadFileTextCallbackFunctionD
-> {
+> with LoadFileTextCallbackBase {
   LoadFileTextCallbackD([super.name]);
 
   static final List<LoadFileTextCallbackD> _registry = [];
@@ -116,7 +116,7 @@ typedef SaveFileTextCallbackFunctionD = bool Function(
 abstract class SaveFileTextCallbackD extends CallbackD<
   SaveFileTextCallbackFunctionC,
   SaveFileTextCallbackFunctionD
-> {
+> with SaveFileTextCallbackBase {
   SaveFileTextCallbackD([super.name]);
 
   static final List<SaveFileTextCallbackD> _registry = [];

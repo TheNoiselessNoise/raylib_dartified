@@ -40,10 +40,17 @@ extension Camera2DCEx on Camera2DC {
   );
 }
 
-class Camera2DD extends StructDLiteral<Camera2DD, Camera2DC> {
+class Camera2DD extends StructDLiteral<Camera2DD, Camera2DC> with Camera2DBase {
+  @override
   Vector2D offset;
+  
+  @override
   Vector2D target;
+  
+  @override
   double rotation;
+  
+  @override
   double zoom;
 
   Camera2DD({
@@ -78,17 +85,12 @@ class Camera2DD extends StructDLiteral<Camera2DD, Camera2DC> {
   }
 
   @override
-  Pointer<Camera2DC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Camera2D$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Camera2D$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<Camera2DC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(Camera2DC p) {
-    offset.writeInto(p.offset);
-    target.writeInto(p.target);
+  void nativeWriteInto(Camera2DC p) {
+    offset.nativeWriteInto(p.offset);
+    target.nativeWriteInto(p.target);
     p.rotation = rotation;
     p.zoom = zoom;
   }

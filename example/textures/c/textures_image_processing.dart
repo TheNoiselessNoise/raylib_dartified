@@ -87,7 +87,7 @@ void main()
       switch (currentProcess)
       {
         case .COLOR_GRAYSCALE: rl.Core.ImageColorGrayscale(imCopy); break;
-        case .COLOR_TINT: rl.Core.ImageColorTint(imCopy, rl.C.GREEN); break;
+        case .COLOR_TINT: rl.Core.ImageColorTint(imCopy, rl.Color.GREEN); break;
         case .COLOR_INVERT: rl.Core.ImageColorInvert(imCopy); break;
         case .COLOR_CONTRAST: rl.Core.ImageColorContrast(imCopy, -40); break;
         case .COLOR_BRIGHTNESS: rl.Core.ImageColorBrightness(imCopy, -80); break;
@@ -106,18 +106,18 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "IMAGE PROCESSING:".toC,
-        40, 30, 10, rl.C.DARKGRAY
+        40, 30, 10, rl.Color.DARKGRAY
       );
 
       for (final (i, process) in ImageProcess.values.indexed)
       {
         rl.Core.DrawRectangleRec(
           toggleRecs[i],
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.C.SKYBLUE : rl.C.LIGHTGRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.SKYBLUE : rl.Color.LIGHTGRAY
         );
         
         rl.Core.DrawRectangleLines(
@@ -125,7 +125,7 @@ void main()
           toggleRecs[i].y.toInt(),
           toggleRecs[i].width.toInt(),
           toggleRecs[i].height.toInt(),
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.C.BLUE : rl.C.GRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.BLUE : rl.Color.GRAY
         );
 
         final processText = ImageProcess.values[i].name.toC;
@@ -134,7 +134,7 @@ void main()
           (toggleRecs[i].x + toggleRecs[i].width/2 - rl.Core.MeasureText(processText, 10)/2).toInt(),
           (toggleRecs[i].y + 11).toInt(),
           10,
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.C.DARKBLUE : rl.C.DARKGRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.DARKBLUE : rl.Color.DARKGRAY
         );
       }
 
@@ -142,7 +142,7 @@ void main()
         texture,
         screenWidth - texture.width - 60,
         (screenHeight/2 - texture.height/2).toInt(),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
       
       rl.Core.DrawRectangleLines(
@@ -150,7 +150,7 @@ void main()
         (screenHeight/2 - texture.height/2).toInt(),
         texture.width,
         texture.height,
-        rl.C.BLACK
+        rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();

@@ -59,23 +59,23 @@ void main()
     
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "Scale rectangle dragging from bottom-right corner!".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
 
-      rl.Core.DrawRectangleRec(rec.ref, rl.Core.Fade(rl.C.GREEN, 0.5));
+      rl.Core.DrawRectangleRec(rec.ref, rl.Core.Fade(rl.Color.GREEN, 0.5));
 
       if (mouseScaleReady)
       {
-        rl.Core.DrawRectangleLinesEx(rec.ref, 1, rl.C.RED);
+        rl.Core.DrawRectangleLinesEx(rec.ref, 1, rl.Color.RED);
         rl.Core.DrawTriangle(
           rl.Temp.vec21(rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE, rec.ref.y + rec.ref.height),
           rl.Temp.vec22(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height),
           rl.Temp.vec23(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE),
-          rl.C.RED
+          rl.Color.RED
         );
       }
 

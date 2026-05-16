@@ -1,7 +1,47 @@
 part of '../../../raylib.dart';
 
-class RaylibCoreD extends RaylibModule {
-  RaylibCoreD(super.lib);
+class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
+  // pointers
+  Pointer<UnsignedChar>,
+
+  // types
+  AutomationEventListD,
+  AutomationEventD,
+  BoundingBoxD,
+  Camera2DD,
+  Camera3DD,
+  ColorD,
+  FilePathListD,
+  FontD,
+  GlyphInfoD,
+  ImageD,
+  MaterialD,
+  MatrixD,
+  MeshD,
+  ModelD,
+  ModelAnimationD,
+  NPatchInfoD,
+  RayD,
+  RayCollisionD,
+  RectangleD,
+  RenderTextureD,
+  ShaderD,
+  TextureD,
+  Vector2D,
+  Vector3D,
+  Vector4D,
+  VrDeviceInfoD,
+  VrStereoConfigD,
+
+  // callbacks
+  LoadFileDataCallbackD,
+  SaveFileDataCallbackD,
+  LoadFileTextCallbackD,
+  SaveFileTextCallbackD
+  
+> {
+
+  RaylibCoreD(super.rl);
   
   @override
   void dispose() {
@@ -12,6 +52,7 @@ class RaylibCoreD extends RaylibModule {
     SaveFileTextCallbackD.disposeRegistry();
   }
 
+  @override
   void InitWindow(
     num width,
     num height,
@@ -25,51 +66,61 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void CloseWindow() => run(
     () => 'CloseWindow()',
     () => rl.Core.CloseWindow(),
   );
 
+  @override
   bool WindowShouldClose() => run(
     () => 'WindowShouldClose()',
     () => rl.Core.WindowShouldClose(),
   );
 
+  @override
   bool IsWindowReady() => run(
     () => 'IsWindowReady()',
     () => rl.Core.IsWindowReady(),
   );
 
+  @override
   bool IsWindowFullscreen() => run(
     () => 'IsWindowFullscreen()',
     () => rl.Core.IsWindowFullscreen(),
   );
 
+  @override
   bool IsWindowHidden() => run(
     () => 'IsWindowHidden()',
     () => rl.Core.IsWindowHidden(),
   );
     
+  @override
   bool IsWindowMinimized() => run(
     () => 'IsWindowMinimized()',
     () => rl.Core.IsWindowMinimized(),
   );
     
+  @override
   bool IsWindowMaximized() => run(
     () => 'IsWindowMaximized()',
     () => rl.Core.IsWindowMaximized(),
   );
     
+  @override
   bool IsWindowFocused() => run(
     () => 'IsWindowFocused()',
     () => rl.Core.IsWindowFocused(),
   );
     
+  @override
   bool IsWindowResized() => run(
     () => 'IsWindowResized()',
     () => rl.Core.IsWindowResized(),
   );
     
+  @override
   bool IsWindowState(
     ConfigFlags flag,
   ) => run(
@@ -77,45 +128,53 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsWindowState(flag.value),
   );
     
+  @override
   void SetWindowState(
     Iterable<ConfigFlags> flags,
   ) => run(
     () => 'SetWindowState(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.SetWindowState(flags.or),
+    () => rl.Core.SetWindowState(rl.Utils.EnumAsFlagsOr(flags)),
   );
     
+  @override
   void ClearWindowState(
     Iterable<ConfigFlags> flags,
   ) => run(
     () => 'ClearWindowState(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.ClearWindowState(flags.or),
+    () => rl.Core.ClearWindowState(rl.Utils.EnumAsFlagsOr(flags)),
   );
     
+  @override
   void ToggleFullscreen() => run(
     () => 'ToggleFullscreen()',
     () => rl.Core.ToggleFullscreen(),
   );
     
+  @override
   void ToggleBorderlessWindowed() => run(
     () => 'ToggleBorderlessWindowed()',
     () => rl.Core.ToggleBorderlessWindowed(),
   );
     
+  @override
   void MaximizeWindow() => run(
     () => 'MaximizeWindow()',
     () => rl.Core.MaximizeWindow(),
   );
     
+  @override
   void MinimizeWindow() => run(
     () => 'MinimizeWindow()',
     () => rl.Core.MinimizeWindow(),
   );
     
+  @override
   void RestoreWindow() => run(
     () => 'RestoreWindow()',
     () => rl.Core.RestoreWindow(),
   );
     
+  @override
   void SetWindowIcon(
     ImageD image,
   ) => run(
@@ -125,6 +184,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetWindowIcons(
     List<ImageD> images,
   ) => run(
@@ -135,6 +195,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetWindowTitle(
     String title,
   ) => run(
@@ -144,6 +205,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetWindowPosition(
     num x,
     num y,
@@ -155,6 +217,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetWindowMonitor(
     num monitor,
   ) => run(
@@ -162,6 +225,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetWindowMonitor(monitor.toInt()),
   );
     
+  @override
   void SetWindowMinSize(
     num width,
     num height,
@@ -173,6 +237,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetWindowMaxSize(
     num width,
     num height,
@@ -184,6 +249,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetWindowSize(
     num width,
     num height,
@@ -195,6 +261,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetWindowOpacity(
     num opacity,
   ) => run(
@@ -202,41 +269,49 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetWindowOpacity(opacity.toDouble()),
   );
     
+  @override
   void SetWindowFocused() => run(
     () => 'SetWindowFocused()',
     () => rl.Core.SetWindowFocused(),
   );
 
+  @override
   int GetScreenWidth() => run(
     () => 'GetScreenWidth()',
     () => rl.Core.GetScreenWidth(),
   );
     
+  @override
   int GetScreenHeight() => run(
     () => 'GetScreenHeight()',
     () => rl.Core.GetScreenHeight(),
   );
     
+  @override
   int GetRenderWidth() => run(
     () => 'GetRenderWidth()',
     () => rl.Core.GetRenderWidth(),
   );
     
+  @override
   int GetRenderHeight() => run(
     () => 'GetRenderHeight()',
     () => rl.Core.GetRenderHeight(),
   );
     
+  @override
   int GetMonitorCount() => run(
     () => 'GetMonitorCount()',
     () => rl.Core.GetMonitorCount(),
   );
     
+  @override
   int GetCurrentMonitor() => run(
     () => 'GetCurrentMonitor()',
     () => rl.Core.GetCurrentMonitor(),
   );
     
+  @override
   Vector2D GetMonitorPosition(
     num monitor,
   ) => run(
@@ -244,6 +319,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorPosition(monitor.toInt()).toD(),
   );
     
+  @override
   int GetMonitorWidth(
     num monitor,
   ) => run(
@@ -251,6 +327,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorWidth(monitor.toInt()),
   );
     
+  @override
   int GetMonitorHeight(
     num monitor,
   ) => run(
@@ -258,6 +335,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorHeight(monitor.toInt()),
   );
     
+  @override
   int GetMonitorPhysicalWidth(
     num monitor,
   ) => run(
@@ -265,6 +343,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorPhysicalWidth(monitor.toInt()),
   );
     
+  @override
   int GetMonitorPhysicalHeight(
     num monitor,
   ) => run(
@@ -272,6 +351,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorPhysicalHeight(monitor.toInt()),
   );
     
+  @override
   int GetMonitorRefreshRate(
     num monitor,
   ) => run(
@@ -279,16 +359,19 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorRefreshRate(monitor.toInt()),
   );
     
+  @override
   Vector2D GetWindowPosition() => run(
     () => 'GetWindowPosition()',
     () => rl.Core.GetWindowPosition().toD(),
   );
     
+  @override
   Vector2D GetWindowScaleDPI() => run(
     () => 'GetWindowScaleDPI()',
     () => rl.Core.GetWindowScaleDPI().toD(),
   );
     
+  @override
   String GetMonitorName(
     num monitor,
   ) => run(
@@ -296,6 +379,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetMonitorName(monitor.toInt()).toD,
   );
     
+  @override
   void SetClipboardText(
     String text,
   ) => run(
@@ -305,11 +389,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   String GetClipboardText() => run(
     () => 'GetClipboardText()',
     () => rl.Core.GetClipboardText().toD,
   );
     
+  @override
   ImageD GetClipboardImage() => run(
     () => 'GetClipboardImage()',
     () => rl.Temp.Image$.RefCapture(
@@ -318,46 +404,55 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EnableEventWaiting() => run(
     () => 'EnableEventWaiting()',
     () => rl.Core.EnableEventWaiting(),
   );
     
+  @override
   void DisableEventWaiting() => run(
     () => 'DisableEventWaiting()',
     () => rl.Core.DisableEventWaiting(),
   );
     
+  @override
   void ShowCursor() => run(
     () => 'ShowCursor()',
     () => rl.Core.ShowCursor(),
   );
     
+  @override
   void HideCursor() => run(
     () => 'HideCursor()',
     () => rl.Core.HideCursor(),
   );
     
+  @override
   bool IsCursorHidden() => run(
     () => 'IsCursorHidden()',
     () => rl.Core.IsCursorHidden(),
   );
     
+  @override
   void EnableCursor() => run(
     () => 'EnableCursor()',
     () => rl.Core.EnableCursor(),
   );
     
+  @override
   void DisableCursor() => run(
     () => 'DisableCursor()',
     () => rl.Core.DisableCursor(),
   );
     
+  @override
   bool IsCursorOnScreen() => run(
     () => 'IsCursorOnScreen()',
     () => rl.Core.IsCursorOnScreen(),
   );
     
+  @override
   void ClearBackground(
     ColorD color,
   ) => run(
@@ -367,16 +462,19 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void BeginDrawing() => run(
     () => 'BeginDrawing()',
     () => rl.Core.BeginDrawing(),
   );
     
+  @override
   void EndDrawing() => run(
     () => 'EndDrawing()',
     () => rl.Core.EndDrawing(),
   );
     
+  @override
   void BeginMode2D(
     Camera2DD camera,
   ) => run(
@@ -386,11 +484,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EndMode2D() => run(
     () => 'EndMode2D()',
     () => rl.Core.EndMode2D(),
   );
     
+  @override
   void BeginMode3D(
     Camera3DD camera,
   ) => run(
@@ -400,13 +500,15 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EndMode3D() => run(
     () => 'EndMode3D()',
     () => rl.Core.EndMode3D(),
   );
     
+  @override
   void BeginTextureMode(
-    RenderTexture2DD target,
+    RenderTextureD target,
   ) => run(
     () => 'BeginTextureMode($target)',
     () => rl.Core.BeginTextureMode(
@@ -414,11 +516,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EndTextureMode() => run(
     () => 'EndTextureMode()',
     () => rl.Core.EndTextureMode(),
   );
     
+  @override
   void BeginShaderMode(
     ShaderD shader,
   ) => run(
@@ -428,11 +532,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EndShaderMode() => run(
     () => 'EndShaderMode()',
     () => rl.Core.EndShaderMode(),
   );
     
+  @override
   void BeginBlendMode(
     BlendMode mode,
   ) => run(
@@ -440,11 +546,13 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.BeginBlendMode(mode.value),
   );
     
+  @override
   void EndBlendMode() => run(
     () => 'EndBlendMode()',
     () => rl.Core.EndBlendMode(),
   );
     
+  @override
   void BeginScissorMode(
     num x,
     num y,
@@ -460,12 +568,14 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void EndScissorMode() => run(
     () => 'EndScissorMode()',
     () => rl.Core.EndScissorMode(),
   );
     
   // TODO: untested, no VR hardware
+  @override
   void BeginVrStereoMode(
     VrStereoConfigD config,
   ) => run(
@@ -476,12 +586,14 @@ class RaylibCoreD extends RaylibModule {
   );
     
   // TODO: untested, no VR hardware
+  @override
   void EndVrStereoMode() => run(
     () => 'EndVrStereoMode()',
     () => rl.Core.EndVrStereoMode(),
   );
     
   // TODO: untested, no VR hardware
+  @override
   VrStereoConfigD LoadVrStereoConfig(
     VrDeviceInfoD device,
   ) => run(
@@ -495,13 +607,17 @@ class RaylibCoreD extends RaylibModule {
   );
     
   // TODO: untested, no VR hardware
+  @override
   void UnloadVrStereoConfig(
     VrStereoConfigD config,
   ) => run(
     () => 'UnloadVrStereoConfig($config)',
-    () => rl.Core.UnloadVrStereoConfig(config.getOriginalPointerAndDispose().ref),
+    () => rl.Core.UnloadVrStereoConfig(
+      config.getOriginalPointerAndDispose().ref,
+    ),
   );
     
+  @override
   ShaderD LoadShader(
     String? vsFileName,
     String? fsFileName,
@@ -516,6 +632,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   ShaderD LoadShaderFromMemory(
     String? vsCode,
     String? fsCode,
@@ -530,6 +647,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool IsShaderValid(
     ShaderD shader,
   ) => run(
@@ -539,6 +657,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   int GetShaderLocation(
     ShaderD shader,
     String uniformName,
@@ -550,6 +669,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   int GetShaderLocationAttrib(
     ShaderD shader,
     String attribName,
@@ -560,8 +680,8 @@ class RaylibCoreD extends RaylibModule {
       rl.Temp.String$.ValueOrNull(attribName),
     ),
   );
-  
-  @DoNotValidate()
+
+  @override
   void SetShaderValue(
     ShaderD shader,
     num locIndex,
@@ -575,6 +695,7 @@ class RaylibCoreD extends RaylibModule {
     1,
   );
 
+  @override
   void SetShaderValueV(
     ShaderD shader,
     num locIndex,
@@ -608,6 +729,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
     
+  @override
   void SetShaderValueMatrix(
     ShaderD shader,
     num locIndex,
@@ -621,10 +743,11 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetShaderValueTexture(
     ShaderD shader,
     num locIndex,
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'SetShaderValueTexture($shader, $locIndex, $texture)',
     () => rl.Core.SetShaderValueTexture(
@@ -634,16 +757,20 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadShader(
     ShaderD shader,
   ) => run(
     () => 'UnloadShader($shader)',
-    () => rl.Core.UnloadShader(shader.getOriginalPointerAndDispose().ref),
+    () => rl.Core.UnloadShader(
+      shader.getOriginalPointerAndDispose().ref,
+    ),
   );
     
+  @override
   RayD GetScreenToWorldRay(
     Vector2D position,
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetScreenToWorldRay($position, $camera)',
     () => rl.Core.GetScreenToWorldRay(
@@ -652,9 +779,10 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   RayD GetScreenToWorldRayEx(
     Vector2D position,
-    CameraD camera,
+    Camera3DD camera,
     num width,
     num height,
   ) => run(
@@ -667,9 +795,10 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetWorldToScreen(
     Vector3D position,
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetWorldToScreen($position, $camera)',
     () => rl.Core.GetWorldToScreen(
@@ -678,9 +807,10 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetWorldToScreenEx(
     Vector3D position,
-    CameraD camera,
+    Camera3DD camera,
     num width,
     num height,
   ) => run(
@@ -693,6 +823,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetWorldToScreen2D(
     Vector2D position,
     Camera2DD camera,
@@ -704,6 +835,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetScreenToWorld2D(
     Vector2D position,
     Camera2DD camera,
@@ -715,8 +847,9 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   MatrixD GetCameraMatrix(
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetCameraMatrix($camera)',
     () => rl.Core.GetCameraMatrix(
@@ -724,6 +857,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   MatrixD GetCameraMatrix2D(
     Camera2DD camera,
   ) => run(
@@ -733,6 +867,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   void SetTargetFPS(
     num fps,
   ) => run(
@@ -740,31 +875,37 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetTargetFPS(fps.toInt()),
   );
 
+  @override
   double GetFrameTime() => run(
     () => 'GetFrameTime()',
     () => rl.Core.GetFrameTime(),
   );
 
+  @override
   double GetTime() => run(
     () => 'GetTime()',
     () => rl.Core.GetTime(),
   );
 
+  @override
   int GetFPS() => run(
     () => 'GetFPS()',
     () => rl.Core.GetFPS(),
   );
 
+  @override
   void SwapScreenBuffer() => run(
     () => 'SwapScreenBuffer()',
     () => rl.Core.SwapScreenBuffer(),
   );
 
+  @override
   void PollInputEvents() => run(
     () => 'PollInputEvents()',
     () => rl.Core.PollInputEvents(),
   );
 
+  @override
   void WaitTime(
     num seconds,
   ) => run(
@@ -772,6 +913,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.WaitTime(seconds.toDouble()),
   );
 
+  @override
   void SetRandomSeed(
     num seed,
   ) => run(
@@ -779,14 +921,19 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetRandomSeed(seed.toInt()),
   );
 
+  @override
   int GetRandomValue(
     num min,
     num max,
   ) => run(
     () => 'GetRandomValue($min, $max)',
-    () => rl.Core.GetRandomValue(min.toInt(), max.toInt()),
+    () => rl.Core.GetRandomValue(
+      min.toInt(),
+      max.toInt(),
+    ),
   );
   
+  @override
   List<int> LoadRandomSequence(
     int count,
     int min,
@@ -800,6 +947,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
     
+  @override
   void TakeScreenshot(
     String fileName,
   ) => run(
@@ -809,13 +957,15 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetConfigFlags(
     Iterable<ConfigFlags> flags,
   ) => run(
     () => 'SetConfigFlags(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.SetConfigFlags(flags.or),
+    () => rl.Core.SetConfigFlags(rl.Utils.EnumAsFlagsOr(flags)),
   );
 
+  @override
   void OpenURL(
     String url,
   ) => run(
@@ -825,6 +975,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void TraceLog(
     TraceLogLevel logLevel,
     String text,
@@ -836,6 +987,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetTraceLogLevel(
     TraceLogLevel logLevel,
   ) => run(
@@ -843,6 +995,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetTraceLogLevel(logLevel.value),
   );
     
+  @override
   void SetLoadFileDataCallback(
     LoadFileDataCallbackD? callback
   ) => run(
@@ -850,6 +1003,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetLoadFileDataCallback(callback?.attach() ?? nullptr),
   );
     
+  @override
   void SetSaveFileDataCallback(
     SaveFileDataCallbackD? callback
   ) => run(
@@ -857,6 +1011,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetSaveFileDataCallback(callback?.attach() ?? nullptr),
   );
     
+  @override
   void SetLoadFileTextCallback(
     LoadFileTextCallbackD? callback
   ) => run(
@@ -864,6 +1019,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetLoadFileTextCallback(callback?.attach() ?? nullptr),
   );
     
+  @override
   void SetSaveFileTextCallback(
     SaveFileTextCallbackD? callback
   ) => run(
@@ -871,6 +1027,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetSaveFileTextCallback(callback?.attach() ?? nullptr),
   );
     
+  @override
   List<int> LoadFileData(
     String fileName,
   ) => run(
@@ -883,10 +1040,11 @@ class RaylibCoreD extends RaylibModule {
       );
       final listData = rl.Temp.UnsignedChar$.asDartList(data, fileSize.value);
       rl.Core.UnloadFileData(data);
-      return listData.cast();
+      return listData;
     },
   );
 
+  @override
   bool SaveFileData(
     String fileName,
     List<int> data,
@@ -899,6 +1057,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool ExportDataAsCode(
     List<int> data,
     String fileName,
@@ -911,6 +1070,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   String LoadFileText(
     String fileName,
   ) => run(
@@ -925,6 +1085,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   bool SaveFileText(
     String fileName,
     String text,
@@ -936,6 +1097,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool FileExists(
     String fileName,
   ) => run(
@@ -945,6 +1107,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool DirectoryExists(
     String dirPath,
   ) => run(
@@ -954,6 +1117,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsFileExtension(
     String fileName,
     String ext,
@@ -965,6 +1129,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   int GetFileLength(
     String fileName,
   ) => run(
@@ -974,6 +1139,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   String GetFileExtension(
     String fileName,
   ) => run(
@@ -983,6 +1149,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD,
   );
 
+  @override
   String GetFileName(
     String filePath,
   ) => run(
@@ -992,6 +1159,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD,
   );
 
+  @override
   String GetFileNameWithoutExt(
     String filePath,
   ) => run(
@@ -1001,6 +1169,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD,
   );
 
+  @override
   String GetDirectoryPath(
     String filePath,
   ) => run(
@@ -1010,6 +1179,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD,
   );
 
+  @override
   String GetPrevDirectoryPath(
     String dirPath,
   ) => run(
@@ -1019,16 +1189,19 @@ class RaylibCoreD extends RaylibModule {
     ).toD,
   );
 
+  @override
   String GetWorkingDirectory() => run(
     () => 'GetWorkingDirectory()',
     () => rl.Core.GetWorkingDirectory().toD,
   );
 
+  @override
   String GetApplicationDirectory() => run(
     () => 'GetApplicationDirectory()',
     () => rl.Core.GetApplicationDirectory().toD,
   );
 
+  @override
   int MakeDirectory(
     String dirPath,
   ) => run(
@@ -1038,6 +1211,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool ChangeDirectory(
     String dir,
   ) => run(
@@ -1047,6 +1221,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsPathFile(
     String path,
   ) => run(
@@ -1056,6 +1231,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsFileNameValid(
     String fileName,
   ) => run(
@@ -1065,6 +1241,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   FilePathListD LoadDirectoryFiles(
     String dirPath,
   ) => run(
@@ -1077,6 +1254,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   FilePathListD LoadDirectoryFilesEx(
     String basePath,
     String filter,
@@ -1093,11 +1271,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool IsFileDropped() => run(
     () => 'IsFileDropped()',
     () => rl.Core.IsFileDropped(),
   );
     
+  @override
   FilePathListD LoadDroppedFiles() => run(
     () => 'LoadDroppedFiles()',
     () => rl.Temp.FilePathList$.RefCapture(
@@ -1106,13 +1286,17 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadDroppedFiles(
     FilePathListD files,
   ) => run(
     () => 'UnloadDroppedFiles($files)',
-    () => rl.Core.UnloadDroppedFiles(files.getOriginalPointerAndDispose().ref),
+    () => rl.Core.UnloadDroppedFiles(
+      files.getOriginalPointerAndDispose().ref,
+    ),
   );
 
+  @override
   int GetFileModTime(
     String fileName,
   ) => run(
@@ -1122,6 +1306,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   List<int> CompressData(
     List<int> data,
   ) => run(
@@ -1133,10 +1318,11 @@ class RaylibCoreD extends RaylibModule {
         data.length,
         compDataSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(compData, compDataSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(compData, compDataSize.value);
     },
   );
 
+  @override
   List<int> DecompressData(
     List<int> compData,
   ) => run(
@@ -1148,10 +1334,11 @@ class RaylibCoreD extends RaylibModule {
         compData.length,
         dataSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(data, dataSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(data, dataSize.value);
     },
   );
 
+  @override
   List<int> EncodeDataBase64(
     List<int> data,
   ) => run(
@@ -1163,10 +1350,11 @@ class RaylibCoreD extends RaylibModule {
         data.length,
         outputSize,
       );
-      return rl.Temp.Char$.asDartList(outputData, outputSize.value).cast();
+      return rl.Temp.Char$.asDartList(outputData, outputSize.value);
     },
   );
 
+  @override
   List<int> DecodeDataBase64(
     List<int> data,
   ) => run(
@@ -1175,22 +1363,24 @@ class RaylibCoreD extends RaylibModule {
       final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.DecodeDataBase64(
         rl.Temp.Uint8$.Array(data).cast(),
-        outputSize
+        outputSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(outputData, outputSize.value).cast();
+      return rl.Temp.UnsignedChar$.asDartList(outputData, outputSize.value);
     },
   );
 
+  @override
   int ComputeCRC32(
     List<int> data,
   ) => run(
     () => 'ComputeCRC32(data: ${data.length})',
     () => rl.Core.ComputeCRC32(
       rl.Temp.Uint8$.Array(data).cast(),
-      data.length
+      data.length,
     ),
   );
 
+  @override
   List<int> ComputeMD5(
     List<int> data,
   ) => run(
@@ -1200,13 +1390,14 @@ class RaylibCoreD extends RaylibModule {
 
       final md5 = rl.Core.ComputeMD5(
         rl.Temp.Uint8$.Array(data).cast(),
-        data.length
+        data.length,
       );
 
       return rl.Temp.UnsignedInt$.ToLEBytes(md5, hashLength);
     },
   );
 
+  @override
   List<int> ComputeSHA1(
     List<int> data,
   ) => run(
@@ -1216,13 +1407,14 @@ class RaylibCoreD extends RaylibModule {
 
       final sha1 = rl.Core.ComputeSHA1(
         rl.Temp.Uint8$.Array(data).cast(),
-        data.length
+        data.length,
       );
 
       return rl.Temp.UnsignedInt$.ToBEBytes(sha1, hashLength);
     },
   );
     
+  @override
   AutomationEventListD LoadAutomationEventList(
     String? fileName,
   ) => run(
@@ -1235,13 +1427,17 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadAutomationEventList(
     AutomationEventListD list,
   ) => run(
     () => 'UnloadAutomationEventList($list)',
-    () => rl.Core.UnloadAutomationEventList(list.getOriginalPointerAndDispose().ref),
+    () => rl.Core.UnloadAutomationEventList(
+      list.getOriginalPointerAndDispose().ref,
+    ),
   );
     
+  @override
   bool ExportAutomationEventList(
     AutomationEventListD list,
     String fileName,
@@ -1253,6 +1449,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetAutomationEventList(
     AutomationEventListD list,
   ) => run(
@@ -1262,6 +1459,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetAutomationEventBaseFrame(
     int frame,
   ) => run(
@@ -1269,16 +1467,19 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetAutomationEventBaseFrame(frame),
   );
     
+  @override
   void StartAutomationEventRecording() => run(
     () => 'StartAutomationEventRecording()',
     () => rl.Core.StartAutomationEventRecording(),
   );
 
+  @override
   void StopAutomationEventRecording() => run(
     () => 'StopAutomationEventRecording()',
     () => rl.Core.StopAutomationEventRecording(),
   );
     
+  @override
   void PlayAutomationEvent(
     AutomationEventD event,
   ) => run(
@@ -1288,6 +1489,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsKeyPressed(
     KeyboardKey key,
   ) => run(
@@ -1295,6 +1497,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsKeyPressed(key.value),
   );
 
+  @override
   bool IsKeyPressedRepeat(
     KeyboardKey key,
   ) => run(
@@ -1302,6 +1505,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsKeyPressedRepeat(key.value),
   );
 
+  @override
   bool IsKeyDown(
     KeyboardKey key,
   ) => run(
@@ -1309,6 +1513,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsKeyDown(key.value),
   );
 
+  @override
   bool IsKeyReleased(
     KeyboardKey key,
   ) => run(
@@ -1316,6 +1521,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsKeyReleased(key.value),
   );
 
+  @override
   bool IsKeyUp(
     KeyboardKey key,
   ) => run(
@@ -1323,16 +1529,19 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsKeyUp(key.value),
   );
 
+  @override
   int GetKeyPressed() => run(
     () => 'GetKeyPressed()',
     () => rl.Core.GetKeyPressed(),
   );
 
+  @override
   int GetCharPressed() => run(
     () => 'GetCharPressed()',
     () => rl.Core.GetCharPressed(),
   );
 
+  @override
   void SetExitKey(
     KeyboardKey key,
   ) => run(
@@ -1340,6 +1549,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetExitKey(key.value),
   );
 
+  @override
   bool IsGamepadAvailable(
     num gamepad,
   ) => run(
@@ -1347,6 +1557,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsGamepadAvailable(gamepad.toInt()),
   );
 
+  @override
   String GetGamepadName(
     num gamepad,
   ) => run(
@@ -1354,6 +1565,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetGamepadName(gamepad.toInt()).toD,
   );
 
+  @override
   bool IsGamepadButtonPressed(
     num gamepad,
     GamepadButton button,
@@ -1365,6 +1577,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsGamepadButtonDown(
     num gamepad,
     GamepadButton button,
@@ -1376,6 +1589,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsGamepadButtonReleased(
     num gamepad,
     GamepadButton button,
@@ -1387,6 +1601,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsGamepadButtonUp(
     num gamepad,
     GamepadButton button,
@@ -1398,11 +1613,13 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   GamepadButton GetGamepadButtonPressed() => run(
     () => 'GetGamepadButtonPressed()',
-    () => GamepadButton.fromValue(rl.Core.GetGamepadButtonPressed()),
+    () => .fromValue(rl.Core.GetGamepadButtonPressed()),
   );
 
+  @override
   int GetGamepadAxisCount(
     num gamepad,
   ) => run(
@@ -1410,6 +1627,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetGamepadAxisCount(gamepad.toInt()),
   );
 
+  @override
   double GetGamepadAxisMovement(
     num gamepad,
     GamepadAxis axis,
@@ -1421,6 +1639,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   int SetGamepadMappings(
     String mappings,
   ) => run(
@@ -1430,6 +1649,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void SetGamepadVibration(
     num gamepad,
     num leftMotor,
@@ -1445,6 +1665,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsMouseButtonPressed(
     MouseButton button,
   ) => run(
@@ -1452,6 +1673,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsMouseButtonPressed(button.value),
   );
 
+  @override
   bool IsMouseButtonDown(
     MouseButton button,
   ) => run(
@@ -1459,6 +1681,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsMouseButtonDown(button.value),
   );
 
+  @override
   bool IsMouseButtonReleased(
     MouseButton button,
   ) => run(
@@ -1466,6 +1689,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsMouseButtonReleased(button.value),
   );
 
+  @override
   bool IsMouseButtonUp(
     MouseButton button,
   ) => run(
@@ -1473,26 +1697,31 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsMouseButtonUp(button.value),
   );
 
+  @override
   int GetMouseX() => run(
     () => 'GetMouseX()',
     () => rl.Core.GetMouseX(),
   );
 
+  @override
   int GetMouseY() => run(
     () => 'GetMouseY()',
     () => rl.Core.GetMouseY(),
   );
 
+  @override
   Vector2D GetMousePosition() => run(
     () => 'GetMousePosition()',
     () => rl.Core.GetMousePosition().toD(),
   );
 
+  @override
   Vector2D GetMouseDelta() => run(
     () => 'GetMouseDelta()',
     () => rl.Core.GetMouseDelta().toD(),
   );
 
+  @override
   void SetMousePosition(
     num x,
     num y,
@@ -1504,6 +1733,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetMouseOffset(
     num offsetX,
     num offsetY,
@@ -1515,6 +1745,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetMouseScale(
     num scaleX,
     num scaleY,
@@ -1526,16 +1757,19 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   double GetMouseWheelMove() => run(
     () => 'GetMouseWheelMove()',
     () => rl.Core.GetMouseWheelMove(),
   );
 
+  @override
   Vector2D GetMouseWheelMoveV() => run(
     () => 'GetMouseWheelMoveV()',
     () => rl.Core.GetMouseWheelMoveV().toD(),
   );
 
+  @override
   void SetMouseCursor(
     MouseCursor cursor,
   ) => run(
@@ -1543,16 +1777,19 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetMouseCursor(cursor.value),
   );
 
+  @override
   int GetTouchX() => run(
     () => 'GetTouchX()',
     () => rl.Core.GetTouchX(),
   );
 
+  @override
   int GetTouchY() => run(
     () => 'GetTouchY()',
     () => rl.Core.GetTouchY(),
   );
 
+  @override
   Vector2D GetTouchPosition(
     num index,
   ) => run(
@@ -1560,6 +1797,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetTouchPosition(index.toInt()).toD(),
   );
 
+  @override
   int GetTouchPointId(
     num index,
   ) => run(
@@ -1567,18 +1805,21 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetTouchPointId(index.toInt()),
   );
 
+  @override
   int GetTouchPointCount() => run(
     () => 'GetTouchPointCount()',
     () => rl.Core.GetTouchPointCount(),
   );
 
+  @override
   void SetGesturesEnabled(
     Iterable<Gesture> flags,
   ) => run(
     () => 'SetGesturesEnabled($flags)',
-    () => rl.Core.SetGesturesEnabled(flags.or),
+    () => rl.Core.SetGesturesEnabled(rl.Utils.EnumAsFlagsOr(flags)),
   );
 
+  @override
   bool IsGestureDetected(
     Gesture gesture,
   ) => run(
@@ -1586,38 +1827,45 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.IsGestureDetected(gesture.value),
   );
 
+  @override
   Gesture GetGestureDetected() => run(
     () => 'GetGestureDetected()',
-    () => Gesture.fromValue(rl.Core.GetGestureDetected()),
+    () => .fromValue(rl.Core.GetGestureDetected()),
   );
 
+  @override
   double GetGestureHoldDuration() => run(
     () => 'GetGestureHoldDuration()',
     () => rl.Core.GetGestureHoldDuration(),
   );
 
+  @override
   Vector2D GetGestureDragVector() => run(
     () => 'GetGestureDragVector()',
     () => rl.Core.GetGestureDragVector().toD(),
   );
 
+  @override
   double GetGestureDragAngle() => run(
     () => 'GetGestureDragAngle()',
     () => rl.Core.GetGestureDragAngle(),
   );
 
+  @override
   Vector2D GetGesturePinchVector() => run(
     () => 'GetGesturePinchVector()',
     () => rl.Core.GetGesturePinchVector().toD(),
   );
 
+  @override
   double GetGesturePinchAngle() => run(
     () => 'GetGesturePinchAngle()',
     () => rl.Core.GetGesturePinchAngle(),
   );
     
+  @override
   void UpdateCamera(
-    CameraD camera,
+    Camera3DD camera,
     CameraMode mode,
   ) => run(
     () => 'UpdateCamera($camera, $mode)',
@@ -1626,8 +1874,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UpdateCameraPro(
-    CameraD camera,
+    Camera3DD camera,
     Vector3D movement,
     Vector3D rotation,
     num zoom,
@@ -1643,8 +1892,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetShapesTexture(
-    Texture2DD texture,
+    TextureD texture,
     RectangleD source,
   ) => run(
     () => 'SetShapesTexture($texture, $source)',
@@ -1654,16 +1904,19 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  Texture2DD GetShapesTexture() => run(
+  @override
+  TextureD GetShapesTexture() => run(
     () => 'GetShapesTexture()',
     () => rl.Core.GetShapesTexture().toD(),
   );
 
+  @override
   RectangleD GetShapesTextureRectangle() => run(
     () => 'GetShapesTextureRectangle()',
     () => rl.Core.GetShapesTextureRectangle().toD(),
   );
 
+  @override
   void DrawPixel(
     num posX,
     num posY,
@@ -1677,6 +1930,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawPixelV(
     Vector2D position,
     ColorD color,
@@ -1688,6 +1942,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawLine(
     num startPosX,
     num startPosY,
@@ -1705,6 +1960,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawLineV(
     Vector2D startPos,
     Vector2D endPos,
@@ -1718,6 +1974,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawLineEx(
     Vector2D startPos,
     Vector2D endPos,
@@ -1733,6 +1990,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawLineStrip(
     List<Vector2D> points,
     ColorD color,
@@ -1741,10 +1999,11 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.DrawLineStrip(
       rl.Temp.Vector2$.Array(points),
       points.length,
-      rl.Temp.Color$.Ref1(color).ref
+      rl.Temp.Color$.Ref1(color).ref,
     ),
   );
 
+  @override
   void DrawLineBezier(
     Vector2D startPos,
     Vector2D endPos,
@@ -1760,6 +2019,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircle(
     num centerX,
     num centerY,
@@ -1775,6 +2035,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleSector(
     Vector2D center,
     num radius,
@@ -1794,6 +2055,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleSectorLines(
     Vector2D center,
     num radius,
@@ -1813,6 +2075,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleGradient(
     num centerX,
     num centerY,
@@ -1830,6 +2093,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleV(
     Vector2D center,
     num radius,
@@ -1843,6 +2107,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleLines(
     num centerX,
     num centerY,
@@ -1858,6 +2123,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawCircleLinesV(
     Vector2D center,
     num radius,
@@ -1871,6 +2137,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawEllipse(
     num centerX,
     num centerY,
@@ -1888,6 +2155,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawEllipseLines(
     num centerX,
     num centerY,
@@ -1905,6 +2173,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRing(
     Vector2D center,
     num innerRadius,
@@ -1926,6 +2195,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRingLines(
     Vector2D center,
     num innerRadius,
@@ -1947,6 +2217,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangle(
     num posX,
     num posY,
@@ -1964,6 +2235,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleV(
     Vector2D position,
     Vector2D size,
@@ -1977,6 +2249,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleRec(
     RectangleD rec,
     ColorD color,
@@ -1988,6 +2261,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawRectanglePro(
     RectangleD rec,
     Vector2D origin,
@@ -2003,6 +2277,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleGradientV(
     num posX,
     num posY,
@@ -2022,6 +2297,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleGradientH(
     num posX,
     num posY,
@@ -2041,6 +2317,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleGradientEx(
     RectangleD rec,
     ColorD topLeft,
@@ -2058,6 +2335,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleLines(
     num posX,
     num posY,
@@ -2075,6 +2353,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleLinesEx(
     RectangleD rec,
     num lineThick,
@@ -2088,6 +2367,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleRounded(
     RectangleD rec,
     num roundness,
@@ -2103,6 +2383,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleRoundedLines(
     RectangleD rec,
     num roundness,
@@ -2118,6 +2399,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawRectangleRoundedLinesEx(
     RectangleD rec,
     num roundness,
@@ -2135,6 +2417,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawTriangle(
     Vector2D v1,
     Vector2D v2,
@@ -2150,6 +2433,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTriangleLines(
     Vector2D v1,
     Vector2D v2,
@@ -2165,6 +2449,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTriangleFan(
     List<Vector2D> points,
     ColorD color,
@@ -2177,6 +2462,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTriangleStrip(
     List<Vector2D> points,
     ColorD color,
@@ -2189,6 +2475,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawPoly(
     Vector2D center,
     num sides,
@@ -2206,6 +2493,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawPolyLines(
     Vector2D center,
     num sides,
@@ -2223,6 +2511,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawPolyLinesEx(
     Vector2D center,
     num sides,
@@ -2242,6 +2531,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineLinear(
     List<Vector2D> points,
     num thick,
@@ -2256,6 +2546,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineBasis(
     List<Vector2D> points,
     num thick,
@@ -2270,6 +2561,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineCatmullRom(
     List<Vector2D> points,
     num thick,
@@ -2284,6 +2576,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineBezierQuadratic(
     List<Vector2D> points,
     num thick,
@@ -2298,6 +2591,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineBezierCubic(
     List<Vector2D> points,
     num thick,
@@ -2312,6 +2606,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawSplineSegmentLinear(
     Vector2D p1,
     Vector2D p2,
@@ -2327,6 +2622,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineSegmentBasis(
     Vector2D p1,
     Vector2D p2,
@@ -2346,6 +2642,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineSegmentCatmullRom(
     Vector2D p1,
     Vector2D p2,
@@ -2365,6 +2662,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineSegmentBezierQuadratic(
     Vector2D p1,
     Vector2D c2,
@@ -2382,6 +2680,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawSplineSegmentBezierCubic(
     Vector2D p1,
     Vector2D c2,
@@ -2401,6 +2700,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   Vector2D GetSplinePointLinear(
     Vector2D startPos,
     Vector2D endPos,
@@ -2414,6 +2714,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetSplinePointBasis(
     Vector2D p1,
     Vector2D p2,
@@ -2431,6 +2732,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   Vector2D GetSplinePointCatmullRom(
     Vector2D p1,
     Vector2D p2,
@@ -2448,6 +2750,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetSplinePointBezierQuad(
     Vector2D p1,
     Vector2D c2,
@@ -2463,6 +2766,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector2D GetSplinePointBezierCubic(
     Vector2D p1,
     Vector2D c2,
@@ -2480,6 +2784,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   bool CheckCollisionRecs(
     RectangleD rec1,
     RectangleD rec2,
@@ -2491,6 +2796,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionCircles(
     Vector2D center1,
     num radius1,
@@ -2506,6 +2812,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionCircleRec(
     Vector2D center,
     num radius,
@@ -2519,6 +2826,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionCircleLine(
     Vector2D center,
     num radius,
@@ -2534,6 +2842,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionPointRec(
     Vector2D point,
     RectangleD rec,
@@ -2545,6 +2854,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool CheckCollisionPointCircle(
     Vector2D point,
     Vector2D center,
@@ -2558,6 +2868,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionPointTriangle(
     Vector2D point,
     Vector2D p1,
@@ -2573,6 +2884,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionPointLine(
     Vector2D point,
     Vector2D p1,
@@ -2588,6 +2900,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool CheckCollisionPointPoly(
     Vector2D point,
     List<Vector2D> points,
@@ -2600,6 +2913,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   (bool result, Vector2D collisionPoint) CheckCollisionLines(
     Vector2D startPos1,
     Vector2D endPos1,
@@ -2620,6 +2934,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   RectangleD GetCollisionRec(
     RectangleD rec1,
     RectangleD rec2,
@@ -2631,6 +2946,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ImageD LoadImage(
     String fileName,
   ) => run(
@@ -2643,6 +2959,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   ImageD LoadImageRaw(
     String fileName,
     num width,
@@ -2663,7 +2980,8 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  (ImageD image, int frameCount) LoadImageAnim(
+  @override
+  ImageD LoadImageAnim(
     String fileName,
   ) => run(
     () => 'LoadImageAnim($fileName)',
@@ -2676,12 +2994,13 @@ class RaylibCoreD extends RaylibModule {
           frames,
         ),
       );
-      image._updateFrameCount(frames.value);
-      return (image, frames.value);
+      image.nativeUpdateFrameCount(frames.value);
+      return image;
     },
   );
 
-  (ImageD image, int frameCount) LoadImageAnimFromMemory(
+  @override
+  ImageD LoadImageAnimFromMemory(
     String fileType,
     List<int> fileData,
   ) => run(
@@ -2697,10 +3016,12 @@ class RaylibCoreD extends RaylibModule {
           frames,
         ),
       );
-      return (image, frames.value);
+      image.nativeUpdateFrameCount(frames.value);
+      return image;
     },
   );
 
+  @override
   ImageD LoadImageFromMemory(
     String fileType,
     List<int> fileData,
@@ -2716,8 +3037,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD LoadImageFromTexture(
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'LoadImageFromTexture($texture)',
     () => rl.Temp.Image$.RefCapture(
@@ -2728,6 +3050,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD LoadImageFromScreen() => run(
     () => 'LoadImageFromScreen()',
     () => rl.Temp.Image$.RefCapture(
@@ -2736,6 +3059,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsImageValid(
     ImageD image,
   ) => run(
@@ -2745,6 +3069,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadImage(
     ImageD image,
   ) => run(
@@ -2754,6 +3079,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool ExportImage(
     ImageD image,
     String fileName,
@@ -2765,22 +3091,24 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
-  List<int> ExportImageToMemory(
+  @override
+  (Pointer<UnsignedChar> dataPtr, int dataSize) ExportImageToMemory(
     ImageD image,
     String fileType,
   ) => run(
     () => 'ExportImageToMemory($image, $fileType)',
     () {
-      final fileSize = rl.Temp.Int$.Ref1();
-      final data = rl.Core.ExportImageToMemory(
+      final dataSize = rl.Temp.Int$.Ref1();
+      final dataPtr = rl.Core.ExportImageToMemory(
         rl.Temp.Image$.Ref1(image).ref,
         rl.Temp.String$.ValueOrNull(fileType),
-        fileSize,
+        dataSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(data, fileSize.value).cast();
+      return (dataPtr, dataSize.value);
     },
   );
 
+  @override
   bool ExportImageAsCode(
     ImageD image,
     String fileName,
@@ -2792,6 +3120,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageColor(
     num width,
     num height,
@@ -2808,6 +3137,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageGradientLinear(
     num width,
     num height,
@@ -2828,6 +3158,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageGradientRadial(
     num width,
     num height,
@@ -2848,6 +3179,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageGradientSquare(
     num width,
     num height,
@@ -2868,6 +3200,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageChecked(
     num width,
     num height,
@@ -2890,6 +3223,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageWhiteNoise(
     num width,
     num height,
@@ -2906,6 +3240,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImagePerlinNoise(
     num width,
     num height,
@@ -2926,6 +3261,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   ImageD GenImageCellular(
     num width,
     num height,
@@ -2942,6 +3278,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD GenImageText(
     num width,
     num height,
@@ -2958,6 +3295,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD ImageCopy(
     ImageD image,
   ) => run(
@@ -2970,6 +3308,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD ImageFromImage(
     ImageD image,
     RectangleD rec,
@@ -2984,6 +3323,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD ImageFromChannel(
     ImageD image,
     num selectedChannel,
@@ -2998,6 +3338,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD ImageText(
     String text,
     num fontSize,
@@ -3014,6 +3355,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ImageD ImageTextEx(
     FontD font,
     String text,
@@ -3034,6 +3376,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageFormat(
     ImageD image,
     PixelFormat newFormat,
@@ -3047,6 +3390,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageToPOT(
     ImageD image,
     ColorD fill,
@@ -3060,6 +3404,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageCrop(
     ImageD image,
     RectangleD crop,
@@ -3073,6 +3418,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageAlphaCrop(
     ImageD image,
     num threshold,
@@ -3086,6 +3432,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageAlphaClear(
     ImageD image,
     ColorD color,
@@ -3101,6 +3448,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageAlphaMask(
     ImageD image,
     ImageD alphaMask,
@@ -3114,6 +3462,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageAlphaPremultiply(
     ImageD image,
   ) => run(
@@ -3123,6 +3472,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageBlurGaussian(
     ImageD image,
     num blurSize,
@@ -3136,6 +3486,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageKernelConvolution(
     ImageD image,
     List<double> kernel,
@@ -3150,6 +3501,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageResize(
     ImageD image,
     num newWidth,
@@ -3165,6 +3517,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageResizeNN(
     ImageD image,
     num newWidth,
@@ -3180,6 +3533,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageResizeCanvas(
     ImageD image,
     num newWidth,
@@ -3201,6 +3555,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageMipmaps(
     ImageD image,
   ) => run(
@@ -3210,6 +3565,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDither(
     ImageD image,
     num rBpp,
@@ -3229,6 +3585,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageFlipVertical(
     ImageD image,
   ) => run(
@@ -3238,6 +3595,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageFlipHorizontal(
     ImageD image,
   ) => run(
@@ -3247,6 +3605,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageRotate(
     ImageD image,
     num degrees,
@@ -3260,6 +3619,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageRotateCW(
     ImageD image,
   ) => run(
@@ -3269,6 +3629,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageRotateCCW(
     ImageD image,
   ) => run(
@@ -3278,6 +3639,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageColorTint(
     ImageD image,
     ColorD color,
@@ -3291,6 +3653,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageColorInvert(
     ImageD image,
   ) => run(
@@ -3300,6 +3663,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageColorGrayscale(
     ImageD image,
   ) => run(
@@ -3309,6 +3673,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageColorContrast(
     ImageD image,
     num contrast,
@@ -3322,6 +3687,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageColorBrightness(
     ImageD image,
     num brightness,
@@ -3335,6 +3701,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageColorReplace(
     ImageD image,
     ColorD color,
@@ -3350,6 +3717,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   List<ColorD> LoadImageColors(
     ImageD image,
   ) => run(
@@ -3360,13 +3728,14 @@ class RaylibCoreD extends RaylibModule {
       );
       final count = image.width * image.height;
       try {
-        return List.generate(count, (i) => colors[i].toD());
+        return .generate(count, (i) => colors[i].toD());
       } finally {
         rl.Core.UnloadImageColors(colors);
       }
     },
   );
     
+  @override
   List<ColorD> LoadImagePalette(
     ImageD image,
     num maxPaletteSize,
@@ -3380,13 +3749,14 @@ class RaylibCoreD extends RaylibModule {
         colorCount,
       );
       try {
-        return List.generate(colorCount.value, (i) => colors[i].toD());
+        return .generate(colorCount.value, (i) => colors[i].toD());
       } finally {
         rl.Core.UnloadImagePalette(colors);
       }
     },
   );
 
+  @override
   RectangleD GetImageAlphaBorder(
     ImageD image,
     num threshold,
@@ -3398,6 +3768,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD GetImageColor(
     ImageD image,
     num x,
@@ -3411,6 +3782,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   void ImageClearBackground(
     ImageD dst,
     ColorD color,
@@ -3424,6 +3796,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawPixel(
     ImageD dst,
     num posX,
@@ -3441,6 +3814,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawPixelV(
     ImageD dst,
     Vector2D position,
@@ -3456,6 +3830,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageDrawLine(
     ImageD dst,
     num startPosX,
@@ -3477,6 +3852,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawLineV(
     ImageD dst,
     Vector2D start,
@@ -3494,6 +3870,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawLineEx(
     ImageD dst,
     Vector2D start,
@@ -3513,6 +3890,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawCircle(
     ImageD dst,
     num centerX,
@@ -3532,6 +3910,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawCircleV(
     ImageD dst,
     Vector2D center,
@@ -3549,6 +3928,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawCircleLines(
     ImageD dst,
     num centerX,
@@ -3568,6 +3948,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawCircleLinesV(
     ImageD dst,
     Vector2D center,
@@ -3585,6 +3966,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawRectangle(
     ImageD dst,
     num posX,
@@ -3606,6 +3988,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageDrawRectangleV(
     ImageD dst,
     Vector2D position,
@@ -3623,6 +4006,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawRectangleRec(
     ImageD dst,
     RectangleD rec,
@@ -3638,6 +4022,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawRectangleLines(
     ImageD dst,
     RectangleD rec,
@@ -3655,6 +4040,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawTriangle(
     ImageD dst,
     Vector2D v1,
@@ -3674,6 +4060,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawTriangleEx(
     ImageD dst,
     Vector2D v1,
@@ -3697,6 +4084,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawTriangleLines(
     ImageD dst,
     Vector2D v1,
@@ -3716,6 +4104,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void ImageDrawTriangleFan(
     ImageD dst,
     List<Vector2D> points,
@@ -3732,6 +4121,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawTriangleStrip(
     ImageD dst,
     List<Vector2D> points,
@@ -3748,6 +4138,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDraw(
     ImageD dst,
     ImageD src,
@@ -3767,6 +4158,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawText(
     ImageD dst,
     String text,
@@ -3788,6 +4180,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void ImageDrawTextEx(
     ImageD dst,
     FontD font,
@@ -3811,7 +4204,8 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  Texture2DD LoadTexture(
+  @override
+  TextureD LoadTexture(
     String fileName,
   ) => run(
     () => 'LoadTexture($fileName)',
@@ -3823,7 +4217,8 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  Texture2DD LoadTextureFromImage(
+  @override
+  TextureD LoadTextureFromImage(
     ImageD image,
   ) => run(
     () => 'LoadTextureFromImage($image)',
@@ -3835,7 +4230,8 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  TextureCubemapD LoadTextureCubemap(
+  @override
+  TextureD LoadTextureCubemap(
     ImageD image,
     CubemapLayout layout,
   ) => run(
@@ -3849,7 +4245,8 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
-  RenderTexture2DD LoadRenderTexture(
+  @override
+  RenderTextureD LoadRenderTexture(
     num width,
     num height,
   ) => run(
@@ -3863,8 +4260,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsTextureValid(
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'IsTextureValid($texture)',
     () => rl.Core.IsTextureValid(
@@ -3872,15 +4270,19 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadTexture(
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'UnloadTexture($texture)',
-    () => rl.Core.UnloadTexture(texture.getOriginalPointerAndDispose().ref),
+    () => rl.Core.UnloadTexture(
+      texture.getOriginalPointerAndDispose().ref,
+    ),
   );
 
+  @override
   bool IsRenderTextureValid(
-    RenderTexture2DD target,
+    RenderTextureD target,
   ) => run(
     () => 'IsRenderTextureValid($target)',
     () => rl.Core.IsRenderTextureValid(
@@ -3888,8 +4290,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UnloadRenderTexture(
-    RenderTexture2DD target,
+    RenderTextureD target,
   ) => run(
     () => 'UnloadRenderTexture($target)',
     () => rl.Core.UnloadRenderTexture(
@@ -3897,8 +4300,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void UpdateTexture(
-    Texture2DD texture,
+    TextureD texture,
     List<int> pixels,
   ) => run(
     () => 'UpdateTexture($texture, pixels: ${pixels.length})',
@@ -3910,8 +4314,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UpdateTextureRec(
-    Texture2DD texture,
+    TextureD texture,
     RectangleD rec,
     List<int> pixels,
   ) => run(
@@ -3925,8 +4330,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void GenTextureMipmaps(
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'GenTextureMipmaps($texture)',
     () => rl.Temp.Texture$.RefUpdate1(texture,
@@ -3934,8 +4340,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetTextureFilter(
-    Texture2DD texture,
+    TextureD texture,
     TextureFilter filter,
   ) => run(
     () => 'SetTextureFilter($texture, $filter)',
@@ -3947,8 +4354,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetTextureWrap(
-    Texture2DD texture,
+    TextureD texture,
     TextureWrap wrap,
   ) => run(
     () => 'SetTextureWrap($texture, $wrap)',
@@ -3960,8 +4368,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTexture(
-    Texture2DD texture,
+    TextureD texture,
     num posX,
     num posY,
     ColorD tint,
@@ -3975,8 +4384,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTextureV(
-    Texture2DD texture,
+    TextureD texture,
     Vector2D position,
     ColorD tint,
   ) => run(
@@ -3988,8 +4398,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawTextureEx(
-    Texture2DD texture,
+    TextureD texture,
     Vector2D position,
     num rotation,
     num scale,
@@ -4005,8 +4416,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTextureRec(
-    Texture2DD texture,
+    TextureD texture,
     RectangleD source,
     Vector2D position,
     ColorD tint,
@@ -4020,8 +4432,9 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTexturePro(
-    Texture2DD texture,
+    TextureD texture,
     RectangleD source,
     RectangleD dest,
     Vector2D origin,
@@ -4030,7 +4443,6 @@ class RaylibCoreD extends RaylibModule {
   ) => run(
     () => 'DrawTexturePro($texture, $source, $dest, $origin, $rotation, $tint)',
     () {
-      if (identical(source, dest)) throw StateError("You cant blah blah blah");
       rl.Core.DrawTexturePro(
         rl.Temp.Texture$.Ref1(texture).ref,
         rl.Temp.Rectangle$.Ref1(source).ref,
@@ -4042,8 +4454,9 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   void DrawTextureNPatch(
-    Texture2DD texture,
+    TextureD texture,
     NPatchInfoD nPatchInfo,
     RectangleD dest,
     Vector2D origin,
@@ -4061,6 +4474,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool ColorIsEqual(
     ColorD col1,
     ColorD col2,
@@ -4072,6 +4486,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   ColorD Fade(
     ColorD color,
     num alpha,
@@ -4083,6 +4498,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   int ColorToInt(
     ColorD color,
   ) => run(
@@ -4092,6 +4508,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   Vector4D ColorNormalize(
     ColorD color,
   ) => run(
@@ -4101,6 +4518,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorFromNormalized(
     Vector4D normalized,
   ) => run(
@@ -4110,6 +4528,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   Vector3D ColorToHSV(
     ColorD color,
   ) => run(
@@ -4119,6 +4538,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorFromHSV(
     num hue,
     num saturation,
@@ -4132,6 +4552,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorTint(
     ColorD color,
     ColorD tint,
@@ -4143,6 +4564,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorBrightness(
     ColorD color,
     num factor,
@@ -4154,6 +4576,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorContrast(
     ColorD color,
     num contrast,
@@ -4165,6 +4588,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorAlpha(
     ColorD color,
     num alpha,
@@ -4176,6 +4600,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorAlphaBlend(
     ColorD dst,
     ColorD src,
@@ -4189,6 +4614,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD ColorLerp(
     ColorD color1,
     ColorD color2,
@@ -4202,6 +4628,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   ColorD GetColor(
     num hexValue,
   ) => run(
@@ -4209,6 +4636,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.GetColor(hexValue.toInt()).toD(),
   );
 
+  @override
   int GetPixelDataSize(
     num width,
     num height,
@@ -4222,6 +4650,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   FontD GetFontDefault() => run(
     () => 'GetFontDefault()',
     () => rl.Temp.Font$.RefCapture(
@@ -4230,6 +4659,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   FontD LoadFont(
     String fileName,
   ) => run(
@@ -4242,6 +4672,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   FontD LoadFontEx(
     String fileName,
     num fontSize, [
@@ -4261,6 +4692,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   FontD LoadFontFromImage(
     ImageD image,
     ColorD key,
@@ -4277,6 +4709,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   FontD LoadFontFromMemory(
     String fileType,
     List<int> fileData,
@@ -4297,6 +4730,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool IsFontValid(
     FontD font,
   ) => run(
@@ -4307,6 +4741,7 @@ class RaylibCoreD extends RaylibModule {
   );
 
   // TODO: ON NEW RAYLIB RELEASE - add glyphCount, now it defaults to 95
+  @override
   List<GlyphInfoD> LoadFontData(
     List<int> fileData,
     num fontSize,
@@ -4330,10 +4765,11 @@ class RaylibCoreD extends RaylibModule {
         // ? codepoints?.length ?? glyphCount.value 
         ? codepoints?.length ?? 95 
         : codepointCount.toInt();
-      return List.generate(requestedCount, (i) => (glyphs + i).toD());
+      return .generate(requestedCount, (i) => (glyphs + i).toD());
     },
   );
 
+  @override
   (ImageD image, List<RectangleD> glyphRecs) GenImageFontAtlas(
     List<GlyphInfoD> glyphs,
     num fontSize,
@@ -4368,6 +4804,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   void UnloadFontData(
     List<GlyphInfoD> glyphs,
   ) => run(
@@ -4378,6 +4815,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadFont(
     FontD font,
   ) => run(
@@ -4387,6 +4825,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   bool ExportFontAsCode(
     FontD font,
     String fileName,
@@ -4398,6 +4837,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawFPS(
     num posX,
     num posY,
@@ -4409,6 +4849,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawText(
     String text,
     num posX,
@@ -4426,6 +4867,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTextEx(
     FontD font,
     String text,
@@ -4445,6 +4887,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTextPro(
     FontD font,
     String text,
@@ -4468,6 +4911,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawTextCodepoint(
     FontD font,
     num codepoint,
@@ -4485,6 +4929,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawTextCodepoints(
     FontD font,
     List<int> codepoints,
@@ -4505,6 +4950,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void SetTextLineSpacing(
     num spacing,
   ) => run(
@@ -4512,6 +4958,7 @@ class RaylibCoreD extends RaylibModule {
     () => rl.Core.SetTextLineSpacing(spacing.toInt()),
   );
 
+  @override
   int MeasureText(
     String text,
     num fontSize,
@@ -4523,6 +4970,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   Vector2D MeasureTextEx(
     FontD font,
     String text,
@@ -4540,6 +4988,7 @@ class RaylibCoreD extends RaylibModule {
 
   // NOTE: REALLY HEAVY, example `text_draw_3d`, syncing the font for each character
   //       So we skip the sync, possible undefined behavior may happen?
+  @override
   int GetGlyphIndex(
     FontD font,
     num codepoint,
@@ -4552,6 +5001,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   GlyphInfoD GetGlyphInfo(
     FontD font,
     num codepoint,
@@ -4563,6 +5013,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   RectangleD GetGlyphAtlasRec(
     FontD font,
     num codepoint,
@@ -4574,6 +5025,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   String LoadUTF8(
     List<int> codepoints,
   ) => run(
@@ -4591,6 +5043,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   List<int> LoadCodepoints(
     String text,
   ) => run(
@@ -4602,13 +5055,14 @@ class RaylibCoreD extends RaylibModule {
         count,
       );
       try {
-        return List.generate(count.value, (i) => result[i]);
+        return .generate(count.value, (i) => result[i]);
       } finally {
         rl.Core.UnloadCodepoints(result);
       }
     },
   );
 
+  @override
   int GetCodepointCount(
     String text,
   ) => run(
@@ -4618,6 +5072,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   (int codepoint, int codepointSize) GetCodepoint(
     String text,
   ) => run(
@@ -4632,6 +5087,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   (int codepoint, int codepointSize) GetCodepointNext(
     String text,
   ) => run(
@@ -4646,6 +5102,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   (int codepoint, int codepointSize) GetCodepointPrevious(
     String text,
   ) => run(
@@ -4660,6 +5117,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
 
+  @override
   (String text, int size) CodepointToUTF8(
     num codepoint,
   ) => run(
@@ -4674,6 +5132,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
     
+  @override
   void DrawLine3D(
     Vector3D startPos,
     Vector3D endPos,
@@ -4687,6 +5146,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawPoint3D(
     Vector3D position,
     ColorD color,
@@ -4698,6 +5158,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCircle3D(
     Vector3D center,
     num radius,
@@ -4715,6 +5176,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawTriangle3D(
     Vector3D v1,
     Vector3D v2,
@@ -4730,6 +5192,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawTriangleStrip3D(
     List<Vector3D> points,
     ColorD color,
@@ -4742,6 +5205,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCube(
     Vector3D position,
     num width,
@@ -4759,6 +5223,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCubeV(
     Vector3D position,
     Vector3D size,
@@ -4772,6 +5237,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCubeWires(
     Vector3D position,
     num width,
@@ -4789,6 +5255,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCubeWiresV(
     Vector3D position,
     Vector3D size,
@@ -4802,6 +5269,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawSphere(
     Vector3D centerPos,
     num radius,
@@ -4815,6 +5283,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawSphereEx(
     Vector3D centerPos,
     num radius,
@@ -4832,6 +5301,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawSphereWires(
     Vector3D centerPos,
     num radius,
@@ -4849,6 +5319,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCylinder(
     Vector3D position,
     num radiusTop,
@@ -4868,6 +5339,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCylinderEx(
     Vector3D startPos,
     Vector3D endPos,
@@ -4887,6 +5359,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCylinderWires(
     Vector3D position,
     num radiusTop,
@@ -4906,6 +5379,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCylinderWiresEx(
     Vector3D startPos,
     Vector3D endPos,
@@ -4925,6 +5399,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCapsule(
     Vector3D startPos,
     Vector3D endPos,
@@ -4944,6 +5419,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawCapsuleWires(
     Vector3D startPos,
     Vector3D endPos,
@@ -4963,6 +5439,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawPlane(
     Vector3D centerPos,
     Vector2D size,
@@ -4976,6 +5453,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawRay(
     RayD ray,
     ColorD color,
@@ -4987,6 +5465,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawGrid(
     num slices,
     num spacing,
@@ -4998,6 +5477,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   ModelD LoadModel(
     String fileName,
   ) => run(
@@ -5010,6 +5490,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   ModelD LoadModelFromMesh(
     MeshD mesh,
   ) => run(
@@ -5022,6 +5503,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool IsModelValid(
     ModelD model,
   ) => run(
@@ -5031,14 +5513,17 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadModel(
     ModelD model,
   ) => run(
     () => 'UnloadModel($model)',
-    () => rl.Core.UnloadModel(model.getOriginalPointerAndDispose().ref),
-    // () => rl.Core.UnloadModel(_model1(model).ref),
+    () => rl.Core.UnloadModel(
+      model.getOriginalPointerAndDispose().ref,
+    ),
   );
     
+  @override
   BoundingBoxD GetModelBoundingBox(
     ModelD model,
   ) => run(
@@ -5048,6 +5533,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   void DrawModel(
     ModelD model,
     Vector3D position,
@@ -5063,6 +5549,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawModelEx(
     ModelD model,
     Vector3D position,
@@ -5082,6 +5569,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawModelWires(
     ModelD model,
     Vector3D position,
@@ -5097,6 +5585,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawModelWiresEx(
     ModelD model,
     Vector3D position,
@@ -5116,6 +5605,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawModelPoints(
     ModelD model,
     Vector3D position,
@@ -5131,6 +5621,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawModelPointsEx(
     ModelD model,
     Vector3D position,
@@ -5150,6 +5641,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawBoundingBox(
     BoundingBoxD box,
     ColorD color,
@@ -5161,9 +5653,10 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawBillboard(
-    CameraD camera,
-    Texture2DD texture,
+    Camera3DD camera,
+    TextureD texture,
     Vector3D position,
     num scale,
     ColorD tint,
@@ -5178,9 +5671,10 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawBillboardRec(
-    CameraD camera,
-    Texture2DD texture,
+    Camera3DD camera,
+    TextureD texture,
     RectangleD source,
     Vector3D position,
     Vector2D size,
@@ -5197,9 +5691,10 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
 
+  @override
   void DrawBillboardPro(
-    CameraD camera,
-    Texture2DD texture,
+    Camera3DD camera,
+    TextureD texture,
     RectangleD source,
     Vector3D position,
     Vector3D up,
@@ -5222,6 +5717,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
   
+  @override
   void UploadMesh(
     MeshD mesh,
     bool dynamic,
@@ -5232,6 +5728,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UpdateMeshBuffer(
     MeshD mesh,
     num index,
@@ -5248,6 +5745,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadMesh(
     MeshD mesh,
   ) => run(
@@ -5257,6 +5755,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawMesh(
     MeshD mesh,
     MaterialD material,
@@ -5270,6 +5769,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void DrawMeshInstanced(
     MeshD mesh,
     MaterialD material,
@@ -5284,6 +5784,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   BoundingBoxD GetMeshBoundingBox(
     MeshD mesh,
   ) => run(
@@ -5293,6 +5794,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   void GenMeshTangents(
     MeshD mesh,
   ) => run(
@@ -5302,6 +5804,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool ExportMesh(
     MeshD mesh,
     String fileName,
@@ -5313,6 +5816,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool ExportMeshAsCode(
     MeshD mesh,
     String fileName,
@@ -5324,6 +5828,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshPoly(
     num sides,
     num radius,
@@ -5338,6 +5843,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshPlane(
     num width,
     num length,
@@ -5356,6 +5862,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshCube(
     num width,
     num height,
@@ -5372,6 +5879,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshSphere(
     num radius,
     num rings,
@@ -5388,6 +5896,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshHemiSphere(
     num radius,
     num rings,
@@ -5404,6 +5913,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshCylinder(
     num radius,
     num height,
@@ -5420,6 +5930,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshCone(
     num radius,
     num height,
@@ -5436,6 +5947,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshTorus(
     num radius,
     num size,
@@ -5454,6 +5966,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshKnot(
     num radius,
     num size,
@@ -5472,6 +5985,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshHeightmap(
     ImageD heightmap,
     Vector3D size,
@@ -5486,6 +6000,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   MeshD GenMeshCubicmap(
     ImageD cubicmap,
     Vector3D cubeSize,
@@ -5500,6 +6015,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   List<MaterialD> LoadMaterials(
     String fileName,
   ) => run(
@@ -5510,10 +6026,11 @@ class RaylibCoreD extends RaylibModule {
         rl.Temp.String$.ValueOrNull(fileName),
         materialCount,
       );
-      return List.generate(materialCount.value, (i) => materials[i].toD());
+      return .generate(materialCount.value, (i) => materials[i].toD());
     },
   );
     
+  @override
   MaterialD LoadMaterialDefault() => run(
     () => 'LoadMaterialDefault()',
     () => rl.Temp.Material$.RefCapture(
@@ -5522,6 +6039,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool IsMaterialValid(
     MaterialD material,
   ) => run(
@@ -5531,25 +6049,27 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadMaterial(
     MaterialD material,
   ) => run(
     () => 'UnloadMaterial($material)',
-    // () => rl.Core.UnloadMaterial(material.getOriginalPointerAndDispose().ref),
     () => rl.Core.UnloadMaterial(
       rl.Temp.Material$.Ref1(material).ref,
     ),
   );
     
+  @override
   void SetMaterialTexture(
     MaterialD material,
     MaterialMapIndex mapType,
-    Texture2DD texture,
+    TextureD texture,
   ) => run(
     () => 'SetMaterialTexture($material, ${mapType.name}, $texture)',
     () => material.maps[mapType.value].texture = texture,
   );
     
+  @override
   void SetModelMeshMaterial(
     ModelD model,
     num meshId,
@@ -5569,6 +6089,7 @@ class RaylibCoreD extends RaylibModule {
     },
   );
     
+  @override
   List<ModelAnimationD> LoadModelAnimations(
     String fileName,
   ) => run(
@@ -5579,10 +6100,11 @@ class RaylibCoreD extends RaylibModule {
         rl.Temp.String$.ValueOrNull(fileName),
         animCount,
       );
-      return List.generate(animCount.value, (i) => (anims + i).toD());
+      return .generate(animCount.value, (i) => (anims + i).toD());
     },
   );
     
+  @override
   void UpdateModelAnimation(
     ModelD model,
     ModelAnimationD anim,
@@ -5600,6 +6122,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UpdateModelAnimationBones(
     ModelD model,
     ModelAnimationD anim,
@@ -5617,6 +6140,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadModelAnimation(
     ModelAnimationD anim,
   ) => run(
@@ -5626,6 +6150,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   void UnloadModelAnimations(
     List<ModelAnimationD> animations,
   ) => run(
@@ -5633,6 +6158,7 @@ class RaylibCoreD extends RaylibModule {
     () => animations.forEach(UnloadModelAnimation),
   );
     
+  @override
   bool IsModelAnimationValid(
     ModelD model,
     ModelAnimationD anim,
@@ -5644,6 +6170,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool CheckCollisionSpheres(
     Vector3D center1,
     num radius1,
@@ -5659,6 +6186,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool CheckCollisionBoxes(
     BoundingBoxD box1,
     BoundingBoxD box2,
@@ -5670,6 +6198,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   bool CheckCollisionBoxSphere(
     BoundingBoxD box,
     Vector3D center,
@@ -5683,6 +6212,7 @@ class RaylibCoreD extends RaylibModule {
     ),
   );
     
+  @override
   RayCollisionD GetRayCollisionSphere(
     RayD ray,
     Vector3D center,
@@ -5696,6 +6226,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   RayCollisionD GetRayCollisionBox(
     RayD ray,
     BoundingBoxD box,
@@ -5707,6 +6238,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   RayCollisionD GetRayCollisionMesh(
     RayD ray,
     MeshD mesh,
@@ -5720,6 +6252,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   RayCollisionD GetRayCollisionTriangle(
     RayD ray,
     Vector3D p1,
@@ -5735,6 +6268,7 @@ class RaylibCoreD extends RaylibModule {
     ).toD(),
   );
     
+  @override
   RayCollisionD GetRayCollisionQuad(
     RayD ray,
     Vector3D p1,

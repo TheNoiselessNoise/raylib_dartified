@@ -60,7 +60,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -71,12 +71,12 @@ void main()
 
       rl.Core.DrawText(
         "Use the T/G to switch animation".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "Current animation: $animIndex [Frame: $animCurrentFrame]".toC,
-        10, 30, 20, rl.C.GRAY
+        10, 30, 20, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

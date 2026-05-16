@@ -59,7 +59,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -76,7 +76,7 @@ void main()
 
       rl.Core.DrawText(
         "Vertex displacement".toC,
-        10, 10, 20, rl.C.DARKGRAY
+        10, 10, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawFPS(10, 40);
 

@@ -64,83 +64,83 @@ void main() {
     }
 
     rl.Core.BeginTextureMode(screenPlayer1);
-      rl.Core.ClearBackground(rl.C.SKYBLUE);
+      rl.Core.ClearBackground(rl.Color.SKYBLUE);
       
       rl.Core.BeginMode3D(cameraPlayer1.ref);
       
         rl.Core.DrawPlane(
           rl.Temp.vec31(0, 0, 0),
           rl.Temp.vec21(50, 50),
-          rl.C.BEIGE
+          rl.Color.BEIGE
         );
 
         for (double x = -count*spacing; x <= count*spacing; x += spacing)
         {
           for (double z = -count*spacing; z <= count*spacing; z += spacing)
           {
-            rl.Core.DrawCube(rl.Temp.vec31(x, 1.5, z), 1, 1, 1, rl.C.LIME);
-            rl.Core.DrawCube(rl.Temp.vec31(x, 0.5, z), 0.25, 1, 0.25, rl.C.BROWN);
+            rl.Core.DrawCube(rl.Temp.vec31(x, 1.5, z), 1, 1, 1, rl.Color.LIME);
+            rl.Core.DrawCube(rl.Temp.vec31(x, 0.5, z), 0.25, 1, 0.25, rl.Color.BROWN);
           }
         }
 
-        rl.Core.DrawCube(cameraPlayer1.ref.position, 1, 1, 1, rl.C.RED);
-        rl.Core.DrawCube(cameraPlayer2.ref.position, 1, 1, 1, rl.C.BLUE);
+        rl.Core.DrawCube(cameraPlayer1.ref.position, 1, 1, 1, rl.Color.RED);
+        rl.Core.DrawCube(cameraPlayer2.ref.position, 1, 1, 1, rl.Color.BLUE);
           
       rl.Core.EndMode3D();
       
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 40, rl.Core.Fade(rl.C.RAYWHITE, 0.8));
-      rl.Core.DrawText("PLAYER1: W/S to move".toC, 10, 10, 20, rl.C.MAROON);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 40, rl.Core.Fade(rl.Color.RAYWHITE, 0.8));
+      rl.Core.DrawText("PLAYER1: W/S to move".toC, 10, 10, 20, rl.Color.MAROON);
         
     rl.Core.EndTextureMode();
 
     rl.Core.BeginTextureMode(screenPlayer2);
-      rl.Core.ClearBackground(rl.C.SKYBLUE);
+      rl.Core.ClearBackground(rl.Color.SKYBLUE);
       
       rl.Core.BeginMode3D(cameraPlayer2.ref);
 
         rl.Core.DrawPlane(
           rl.Temp.vec31(0, 0, 0),
           rl.Temp.vec21(50, 50),
-          rl.C.BEIGE
+          rl.Color.BEIGE
         );
       
         for (double x = -count*spacing; x <= count*spacing; x += spacing)
         {
           for (double z = -count*spacing; z <= count*spacing; z += spacing)
           {
-            rl.Core.DrawCube(rl.Temp.vec31(x, 1.5, z), 1, 1, 1, rl.C.LIME);
-            rl.Core.DrawCube(rl.Temp.vec31(x, 0.5, z), 0.25, 1, 0.25, rl.C.BROWN);
+            rl.Core.DrawCube(rl.Temp.vec31(x, 1.5, z), 1, 1, 1, rl.Color.LIME);
+            rl.Core.DrawCube(rl.Temp.vec31(x, 0.5, z), 0.25, 1, 0.25, rl.Color.BROWN);
           }
         }
 
-        rl.Core.DrawCube(cameraPlayer1.ref.position, 1, 1, 1, rl.C.RED);
-        rl.Core.DrawCube(cameraPlayer2.ref.position, 1, 1, 1, rl.C.BLUE);
+        rl.Core.DrawCube(cameraPlayer1.ref.position, 1, 1, 1, rl.Color.RED);
+        rl.Core.DrawCube(cameraPlayer2.ref.position, 1, 1, 1, rl.Color.BLUE);
           
       rl.Core.EndMode3D();
       
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 40, rl.Core.Fade(rl.C.RAYWHITE, 0.8));
-      rl.Core.DrawText("PLAYER2: UP/DOWN to move".toC, 10, 10, 20, rl.C.DARKBLUE);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 40, rl.Core.Fade(rl.Color.RAYWHITE, 0.8));
+      rl.Core.DrawText("PLAYER2: UP/DOWN to move".toC, 10, 10, 20, rl.Color.DARKBLUE);
         
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
       
       rl.Core.DrawTextureRec(
         screenPlayer1.texture,
         splitScreenRect.ref,
         rl.Temp.vec21(0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawTextureRec(
         screenPlayer2.texture,
         splitScreenRect.ref,
         rl.Temp.vec21(screenWidth/2.0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
       
-      rl.Core.DrawRectangle(rl.Core.GetScreenWidth()~/2 - 2, 0, 4, rl.Core.GetScreenHeight(), rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangle(rl.Core.GetScreenWidth()~/2 - 2, 0, 4, rl.Core.GetScreenHeight(), rl.Color.LIGHTGRAY);
     rl.Core.EndDrawing();
   }
 

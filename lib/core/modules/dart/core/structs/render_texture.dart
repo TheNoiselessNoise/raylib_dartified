@@ -37,9 +37,14 @@ extension RenderTextureCEx on RenderTextureC {
   );
 }
 
-class RenderTextureD extends StructDLiteral<RenderTextureD, RenderTextureC> {
+class RenderTextureD extends StructDLiteral<RenderTextureD, RenderTextureC> with RenderTextureBase {
+  @override
   int id;
+  
+  @override
   TextureD texture;
+  
+  @override
   TextureD depth;
 
   RenderTextureD({
@@ -71,18 +76,13 @@ class RenderTextureD extends StructDLiteral<RenderTextureD, RenderTextureC> {
   }
 
   @override
-  Pointer<RenderTextureC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.RenderTexture$.At('${key}_$id', count);
+  nativeAllocator(RaylibTemp temp) => temp.RenderTexture$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<RenderTextureC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(RenderTextureC p) {
+  void nativeWriteInto(RenderTextureC p) {
     p.id = id;
-    texture.writeInto(p.texture);
-    depth.writeInto(p.depth);
+    texture.nativeWriteInto(p.texture);
+    depth.nativeWriteInto(p.depth);
   }
 
   @override

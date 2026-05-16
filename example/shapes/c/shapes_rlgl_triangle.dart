@@ -74,7 +74,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (linesMode) {
         rl.Rlgl.rlBegin(RlDrawMode.RL_LINES.value);
@@ -111,32 +111,32 @@ void main()
           rl.Core.DrawCircleV(
             trianglePositions[i],
             handleRadius,
-            rl.Core.ColorAlpha(rl.C.DARKGRAY, 0.5)
+            rl.Core.ColorAlpha(rl.Color.DARKGRAY, 0.5)
           );
         }
 
         if (i == triangleIndex) {
-          rl.Core.DrawCircleV(trianglePositions[i], handleRadius, rl.C.DARKGRAY);
+          rl.Core.DrawCircleV(trianglePositions[i], handleRadius, rl.Color.DARKGRAY);
         }
 
-        rl.Core.DrawCircleLinesV(trianglePositions[i], handleRadius, rl.C.BLACK);
+        rl.Core.DrawCircleLinesV(trianglePositions[i], handleRadius, rl.Color.BLACK);
       }
 
       rl.Core.DrawText(
         "SPACE: Toggle lines mode".toC,
-        10, 10, 20, rl.C.DARKGRAY
+        10, 10, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "LEFT-RIGHT: Toggle backface culling".toC,
-        10, 40, 20, rl.C.DARKGRAY
+        10, 40, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "MOUSE: Click and drag vertex points".toC,
-        10, 70, 20, rl.C.DARKGRAY
+        10, 70, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "R: Reset triangle to start positions".toC,
-        10, 100, 20, rl.C.DARKGRAY
+        10, 100, 20, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

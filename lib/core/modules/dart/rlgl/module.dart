@@ -1,8 +1,15 @@
 part of '../../../raylib.dart';
 
-class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
-  RaylibRlglD(super.lib);
+class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements RaylibRlglModuleBase<
+  // types
+  MatrixD,
+  RlRenderBatchD
+  
+> {
+  
+  RaylibRlglD(super.rl);
 
+  @override
   void rlMatrixMode(
     RlMatrixMode mode,
   ) => run(
@@ -10,21 +17,25 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlMatrixMode(mode.value),
   );
 
+  @override
   void rlPushMatrix() => run(
     () => 'rlPushMatrix()',
     () => rl.Rlgl.rlPushMatrix(),
   );
 
+  @override
   void rlPopMatrix() => run(
     () => 'rlPopMatrix()',
     () => rl.Rlgl.rlPopMatrix(),
   );
 
+  @override
   void rlLoadIdentity() => run(
     () => 'rlLoadIdentity()',
     () => rl.Rlgl.rlLoadIdentity(),
   );
 
+  @override
   void rlTranslatef(
     num x,
     num y,
@@ -38,6 +49,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlRotatef(
     num angle,
     num x,
@@ -53,6 +65,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlScalef(
     num x,
     num y,
@@ -66,6 +79,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlMultMatrixf(
     List<double> matf,
   ) => run(
@@ -75,6 +89,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlFrustum(
     num left,
     num right,
@@ -94,6 +109,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlOrtho(
     num left,
     num right,
@@ -113,6 +129,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlViewport(
     num x,
     num y,
@@ -128,6 +145,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetClipPlanes(
     num nearPlane,
     num farPlane,
@@ -139,16 +157,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   double rlGetCullDistanceNear() => run(
     () => 'rlGetCullDistanceNear()',
     () => rl.Rlgl.rlGetCullDistanceNear(),
   );
 
+  @override
   double rlGetCullDistanceFar() => run(
     () => 'rlGetCullDistanceFar()',
     () => rl.Rlgl.rlGetCullDistanceFar(),
   );
 
+  @override
   void rlBegin(
     RlDrawMode mode,
   ) => run(
@@ -156,11 +177,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlBegin(mode.value),
   );
 
+  @override
   void rlEnd() => run(
     () => 'rlEnd()',
     () => rl.Rlgl.rlEnd(),
   );
 
+  @override
   void rlVertex2i(
     num x,
     num y,
@@ -172,6 +195,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlVertex2f(
     num x,
     num y,
@@ -183,6 +207,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlVertex3f(
     num x,
     num y,
@@ -196,6 +221,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlTexCoord2f(
     num x,
     num y,
@@ -207,6 +233,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlNormal3f(
     num x,
     num y,
@@ -220,6 +247,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlColor4ub(
     num r,
     num g,
@@ -235,18 +263,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
-  void rlColor(
-    ColorD color,
-  ) => run(
-    () => 'rlColor($color)',
-    () => rl.Rlgl.rlColor4ub(
-      color.r,
-      color.g,
-      color.b,
-      color.a,
-    ),
-  );
-
+  @override
   void rlColor3f(
     num x,
     num y,
@@ -260,6 +277,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlColor4f(
     num x,
     num y,
@@ -275,6 +293,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   bool rlEnableVertexArray(
     num vaoId,
   ) => run(
@@ -282,11 +301,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableVertexArray(vaoId.toInt()),
   );
 
+  @override
   void rlDisableVertexArray() => run(
     () => 'rlDisableVertexArray()',
     () => rl.Rlgl.rlDisableVertexArray(),
   );
 
+  @override
   void rlEnableVertexBuffer(
     num id,
   ) => run(
@@ -294,11 +315,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableVertexBuffer(id.toInt()),
   );
 
+  @override
   void rlDisableVertexBuffer() => run(
     () => 'rlDisableVertexBuffer()',
     () => rl.Rlgl.rlDisableVertexBuffer(),
   );
 
+  @override
   void rlEnableVertexBufferElement(
     num id,
   ) => run(
@@ -306,11 +329,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableVertexBufferElement(id.toInt()),
   );
 
+  @override
   void rlDisableVertexBufferElement() => run(
     () => 'rlDisableVertexBufferElement()',
     () => rl.Rlgl.rlDisableVertexBufferElement(),
   );
 
+  @override
   void rlEnableVertexAttribute(
     num index,
   ) => run(
@@ -318,6 +343,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableVertexAttribute(index.toInt()),
   );
 
+  @override
   void rlDisableVertexAttribute(
     num index,
   ) => run(
@@ -325,6 +351,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlDisableVertexAttribute(index.toInt()),
   );
 
+  @override
   void rlActiveTextureSlot(
     num slot,
   ) => run(
@@ -332,6 +359,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlActiveTextureSlot(slot.toInt()),
   );
 
+  @override
   void rlEnableTexture(
     num id,
   ) => run(
@@ -339,11 +367,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableTexture(id.toInt()),
   );
 
+  @override
   void rlDisableTexture() => run(
     () => 'rlDisableTexture()',
     () => rl.Rlgl.rlDisableTexture(),
   );
 
+  @override
   void rlEnableTextureCubemap(
     num id,
   ) => run(
@@ -351,11 +381,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableTextureCubemap(id.toInt()),
   );
 
+  @override
   void rlDisableTextureCubemap() => run(
     () => 'rlDisableTextureCubemap()',
     () => rl.Rlgl.rlDisableTextureCubemap(),
   );
 
+  @override
   void rlTextureParameters(
     num id,
     num param,
@@ -369,6 +401,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlCubemapParameters(
     num id,
     num param,
@@ -382,6 +415,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlEnableShader(
     num id,
   ) => run(
@@ -389,11 +423,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableShader(id.toInt()),
   );
 
+  @override
   void rlDisableShader() => run(
     () => 'rlDisableShader()',
     () => rl.Rlgl.rlDisableShader(),
   );
 
+  @override
   void rlEnableFramebuffer(
     num id,
   ) => run(
@@ -401,16 +437,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlEnableFramebuffer(id.toInt()),
   );
 
+  @override
   void rlDisableFramebuffer() => run(
     () => 'rlDisableFramebuffer()',
     () => rl.Rlgl.rlDisableFramebuffer(),
   );
 
+  @override
   int rlGetActiveFramebuffer() => run(
     () => 'rlGetActiveFramebuffer()',
     () => rl.Rlgl.rlGetActiveFramebuffer(),
   );
 
+  @override
   void rlActiveDrawBuffers(
     num count,
   ) => run(
@@ -418,6 +457,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlActiveDrawBuffers(count.toInt()),
   );
 
+  @override
   void rlBlitFramebuffer(
     num srcX,
     num srcY,
@@ -443,6 +483,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlBindFramebuffer(
     num target,
     num framebuffer,
@@ -454,46 +495,55 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlEnableColorBlend() => run(
     () => 'rlEnableColorBlend()',
     () => rl.Rlgl.rlEnableColorBlend(),
   );
 
+  @override
   void rlDisableColorBlend() => run(
     () => 'rlDisableColorBlend()',
     () => rl.Rlgl.rlDisableColorBlend(),
   );
 
+  @override
   void rlEnableDepthTest() => run(
     () => 'rlEnableDepthTest()',
     () => rl.Rlgl.rlEnableDepthTest(),
   );
 
+  @override
   void rlDisableDepthTest() => run(
     () => 'rlDisableDepthTest()',
     () => rl.Rlgl.rlDisableDepthTest(),
   );
 
+  @override
   void rlEnableDepthMask() => run(
     () => 'rlEnableDepthMask()',
     () => rl.Rlgl.rlEnableDepthMask(),
   );
 
+  @override
   void rlDisableDepthMask() => run(
     () => 'rlDisableDepthMask()',
     () => rl.Rlgl.rlDisableDepthMask(),
   );
 
+  @override
   void rlEnableBackfaceCulling() => run(
     () => 'rlEnableBackfaceCulling()',
     () => rl.Rlgl.rlEnableBackfaceCulling(),
   );
 
+  @override
   void rlDisableBackfaceCulling() => run(
     () => 'rlDisableBackfaceCulling()',
     () => rl.Rlgl.rlDisableBackfaceCulling(),
   );
 
+  @override
   void rlColorMask(
     bool r,
     bool g,
@@ -504,6 +554,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlColorMask(r, g, b, a),
   );
 
+  @override
   void rlSetCullFace(
     RlCullMode mode,
   ) => run(
@@ -511,16 +562,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlSetCullFace(mode.value),
   );
 
+  @override
   void rlEnableScissorTest() => run(
     () => 'rlEnableScissorTest()',
     () => rl.Rlgl.rlEnableScissorTest(),
   );
 
+  @override
   void rlDisableScissorTest() => run(
     () => 'rlDisableScissorTest()',
     () => rl.Rlgl.rlDisableScissorTest(),
   );
 
+  @override
   void rlScissor(
     num x,
     num y,
@@ -536,21 +590,25 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlEnableWireMode() => run(
     () => 'rlEnableWireMode()',
     () => rl.Rlgl.rlEnableWireMode(),
   );
 
+  @override
   void rlEnablePointMode() => run(
     () => 'rlEnablePointMode()',
     () => rl.Rlgl.rlEnablePointMode(),
   );
 
+  @override
   void rlDisableWireMode() => run(
     () => 'rlDisableWireMode()',
     () => rl.Rlgl.rlDisableWireMode(),
   );
 
+  @override
   void rlSetLineWidth(
     num width,
   ) => run(
@@ -558,36 +616,43 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlSetLineWidth(width.toDouble()),
   );
 
+  @override
   double rlGetLineWidth() => run(
     () => 'rlGetLineWidth()',
     () => rl.Rlgl.rlGetLineWidth(),
   );
 
+  @override
   void rlEnableSmoothLines() => run(
     () => 'rlEnableSmoothLines()',
     () => rl.Rlgl.rlEnableSmoothLines(),
   );
 
+  @override
   void rlDisableSmoothLines() => run(
     () => 'rlDisableSmoothLines()',
     () => rl.Rlgl.rlDisableSmoothLines(),
   );
 
+  @override
   void rlEnableStereoRender() => run(
     () => 'rlEnableStereoRender()',
     () => rl.Rlgl.rlEnableStereoRender(),
   );
 
+  @override
   void rlDisableStereoRender() => run(
     () => 'rlDisableStereoRender()',
     () => rl.Rlgl.rlDisableStereoRender(),
   );
 
+  @override
   bool rlIsStereoRenderEnabled() => run(
     () => 'rlIsStereoRenderEnabled()',
     () => rl.Rlgl.rlIsStereoRenderEnabled(),
   );
 
+  @override
   void rlClearColor(
     num r,
     num g,
@@ -603,23 +668,27 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlClearScreenBuffers() => run(
     () => 'rlClearScreenBuffers()',
     () => rl.Rlgl.rlClearScreenBuffers(),
   );
 
+  @override
   void rlCheckErrors() => run(
     () => 'rlCheckErrors()',
     () => rl.Rlgl.rlCheckErrors(),
   );
 
+  @override
   void rlSetBlendMode(
-    RlBlendMode mode,
+    BlendMode mode,
   ) => run(
     () => 'rlSetBlendMode(${mode.name})',
     () => rl.Rlgl.rlSetBlendMode(mode.value),
   );
 
+  @override
   void rlSetBlendFactors(
     num glSrcFactor,
     num glDstFactor,
@@ -633,6 +702,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetBlendFactorsSeparate(
     num glSrcRGB,
     num glDstRGB,
@@ -652,6 +722,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlglInit(
     num width,
     num height,
@@ -663,6 +734,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlglClose() => run(
     () => 'rlglClose()',
     () => rl.Rlgl.rlglClose(),
@@ -670,11 +742,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
 
   // NOTE: rlLoadExtensions is not implemented, use it in raw FFI layer if you really need it
 
+  @override
   int rlGetVersion() => run(
     () => 'rlGetVersion()',
     () => rl.Rlgl.rlGetVersion(),
   );
 
+  @override
   void rlSetFramebufferWidth(
     num width,
   ) => run(
@@ -682,11 +756,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlSetFramebufferWidth(width.toInt()),
   );
 
+  @override
   int rlGetFramebufferWidth() => run(
     () => 'rlGetFramebufferWidth()',
     () => rl.Rlgl.rlGetFramebufferWidth(),
   );
 
+  @override
   void rlSetFramebufferHeight(
     num height,
   ) => run(
@@ -694,29 +770,34 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlSetFramebufferHeight(height.toInt()),
   );
 
+  @override
   int rlGetFramebufferHeight() => run(
     () => 'rlGetFramebufferHeight()',
     () => rl.Rlgl.rlGetFramebufferHeight(),
   );
 
+  @override
   int rlGetTextureIdDefault() => run(
     () => 'rlGetTextureIdDefault()',
     () => rl.Rlgl.rlGetTextureIdDefault(),
   );
 
+  @override
   int rlGetShaderIdDefault() => run(
     () => 'rlGetShaderIdDefault()',
     () => rl.Rlgl.rlGetShaderIdDefault(),
   );
 
+  @override
   List<int> rlGetShaderLocsDefault() => run(
     () => 'rlGetShaderLocsDefault()',
     () {
       final locs = rl.Rlgl.rlGetShaderLocsDefault();
-      return List.generate(RL_MAX_SHADER_LOCATIONS, (i) => locs[i]);
+      return .generate(RL_MAX_SHADER_LOCATIONS, (i) => locs[i]);
     },
   );
 
+  @override
   RlRenderBatchD rlLoadRenderBatch(
     num numBuffers,
     num bufferElements,
@@ -731,6 +812,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlUnloadRenderBatch(
     RlRenderBatchD batch,
   ) => run(
@@ -740,6 +822,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawRenderBatch(
     RlRenderBatchD batch,
   ) => run(
@@ -749,6 +832,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetRenderBatchActive(
     RlRenderBatchD batch,
   ) => run(
@@ -758,11 +842,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawRenderBatchActive() => run(
     () => 'rlDrawRenderBatchActive()',
     () => rl.Rlgl.rlDrawRenderBatchActive(),
   );
 
+  @override
   bool rlCheckRenderBatchLimit(
     num vCount,
   ) => run(
@@ -770,6 +856,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlCheckRenderBatchLimit(vCount.toInt()),
   );
 
+  @override
   void rlSetTexture(
     num id,
   ) => run(
@@ -777,11 +864,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlSetTexture(id.toInt()),
   );
 
+  @override
   int rlLoadVertexArray() => run(
     () => 'rlLoadVertexArray()',
     () => rl.Rlgl.rlLoadVertexArray(),
   );
 
+  @override
   int rlLoadVertexBuffer(
     TypedData buffer,
     bool dynamic,
@@ -797,6 +886,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   int rlLoadVertexBufferElement(
     TypedData buffer,
     bool dynamic,
@@ -812,6 +902,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlUpdateVertexBuffer(
     num bufferId,
     TypedData data,
@@ -829,6 +920,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlUpdateVertexBufferElements(
     num id,
     TypedData data,
@@ -846,6 +938,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlUnloadVertexArray(
     num vaoId,
   ) => run(
@@ -853,6 +946,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadVertexArray(vaoId.toInt()),
   );
 
+  @override
   void rlUnloadVertexBuffer(
     num vboId,
   ) => run(
@@ -860,6 +954,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadVertexBuffer(vboId.toInt()),
   );
 
+  @override
   void rlSetVertexAttribute(
     num index,
     num compSize,
@@ -879,6 +974,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetVertexAttributeDivisor(
     num index,
     num divisor,
@@ -890,6 +986,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetVertexAttributeDefault(
     num locIndex,
     Float32List value,
@@ -904,6 +1001,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawVertexArray(
     num offset,
     num count,
@@ -915,6 +1013,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawVertexArrayElements(
     num offset,
     num count,
@@ -928,6 +1027,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawVertexArrayInstanced(
     num offset,
     num count,
@@ -941,6 +1041,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlDrawVertexArrayElementsInstanced(
     num offset,
     num count,
@@ -956,11 +1057,12 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadTexture(
     Uint8List? data,
     num width,
     num height,
-    RlPixelFormat format,
+    PixelFormat format,
     num mipmapCount,
   ) => run(
     () => 'rlLoadTexture(${data?.length}, $width, $height, $format, $mipmapCount)',
@@ -973,6 +1075,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadTextureDepth(
     num width,
     num height,
@@ -986,10 +1089,11 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadTextureCubemap(
     Uint8List? data,
     num size,
-    RlPixelFormat format,
+    PixelFormat format,
     num mipmapCount,
   ) => run(
     () => 'rlLoadTextureCubemap(${data?.length}, $size, ${format.name}, $mipmapCount)',
@@ -1001,13 +1105,14 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlUpdateTexture(
     num id,
     num offsetX,
     num offsetY,
     num width,
     num height,
-    RlPixelFormat format,
+    PixelFormat format,
     Uint8List data,
   ) => run(
     () => 'rlUpdateTexture($id, $offsetX, $offsetY, $width, $height, ${format.name}, ${data.length})',
@@ -1022,8 +1127,9 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   (int glInternalFormat, int glFormat, int glType) rlGetGlTextureFormats(
-    RlPixelFormat format,
+    PixelFormat format,
   ) => run(
     () => 'rlGetGlTextureFormats(${format.name})',
     () {
@@ -1040,8 +1146,9 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   String rlGetPixelFormatName(
-    RlPixelFormat format,
+    PixelFormat format,
   ) => run(
     () => 'rlGetPixelFormatName(${format.name})',
     () => rl.Rlgl.rlGetPixelFormatName(
@@ -1049,6 +1156,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ).toD,
   );
 
+  @override
   void rlUnloadTexture(
     num id,
   ) => run(
@@ -1056,11 +1164,12 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadTexture(id.toInt()),
   );
 
+  @override
   int rlGenTextureMipmaps(
     num id,
     num width,
     num height,
-    RlPixelFormat format,
+    PixelFormat format,
   ) => run(
     () => 'rlGenTextureMipmaps($id, $width, $height, ${format.name})',
     () {
@@ -1076,15 +1185,16 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   Uint8List rlReadTexturePixels(
     num id,
     num width,
     num height,
-    RlPixelFormat format,
+    PixelFormat format,
   ) => run(
     () => 'rlReadTexturePixels($id, $width, $height, ${format.name})',
     () {
-      final size = rlGetPixelDataSize(
+      final size = rl.Utils.GetPixelDataSize(
         width.toInt(),
         height.toInt(),
         format,
@@ -1099,58 +1209,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
-  @DoNotValidate()
-  int rlGetPixelDataSize(int width, int height, RlPixelFormat format)
-  {
-    int sizeInBytes = 0;
-    int bpp = 0;
-
-    switch (format)
-    {
-      case .RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE: bpp = 8; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA:
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5:
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1:
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4: bpp = 16; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8: bpp = 32; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8: bpp = 24; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R32: bpp = 32; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32: bpp = 32*3; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32: bpp = 32*4; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R16: bpp = 16; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16: bpp = 16*3; break;
-      case .RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16: bpp = 16*4; break;
-      case .RL_PIXELFORMAT_COMPRESSED_DXT1_RGB:
-      case .RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA:
-      case .RL_PIXELFORMAT_COMPRESSED_ETC1_RGB:
-      case .RL_PIXELFORMAT_COMPRESSED_ETC2_RGB:
-      case .RL_PIXELFORMAT_COMPRESSED_PVRT_RGB:
-      case .RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA: bpp = 4; break;
-      case .RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA:
-      case .RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA:
-      case .RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA:
-      case .RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA: bpp = 8; break;
-      case .RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA: bpp = 2; break;
-    }
-
-    num bytesPerPixel = bpp/8.0;
-    sizeInBytes = (bytesPerPixel*width*height).toInt();
-
-    if ((width < 4) && (height < 4))
-    {
-      if (
-        format.gte(RlPixelFormat.RL_PIXELFORMAT_COMPRESSED_DXT1_RGB) &&
-        format.lt(RlPixelFormat.RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA)
-      ) sizeInBytes = 8;
-      else if (
-        format.gte(RlPixelFormat.RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA) &&
-        format.lt(RlPixelFormat.RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA)
-      ) sizeInBytes = 16;
-    }
-
-    return sizeInBytes;
-  }
-
+  @override
   List<int> rlReadScreenPixels(
     num width,
     num height,
@@ -1167,11 +1226,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   int rlLoadFramebuffer() => run(
     () => 'rlLoadFramebuffer()',
     () => rl.Rlgl.rlLoadFramebuffer(),
   );
 
+  @override
   void rlFramebufferAttach(
     num fboId,
     num texId,
@@ -1189,6 +1250,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   bool rlFramebufferComplete(
     num id,
   ) => run(
@@ -1196,6 +1258,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlFramebufferComplete(id.toInt()),
   );
 
+  @override
   void rlUnloadFramebuffer(
     num id,
   ) => run(
@@ -1203,6 +1266,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadFramebuffer(id.toInt()),
   );
 
+  @override
   int rlLoadShaderCode(
     String? vsCode,
     String? fsCode,
@@ -1214,6 +1278,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlCompileShader(
     String shaderCode,
     RlShaderType type,
@@ -1225,6 +1290,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadShaderProgram(
     num vShaderId,
     num fShaderId,
@@ -1236,6 +1302,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlUnloadShaderProgram(
     num id,
   ) => run(
@@ -1243,6 +1310,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadShaderProgram(id.toInt()),
   );
 
+  @override
   int rlGetLocationUniform(
     num shaderId,
     String uniformName,
@@ -1254,6 +1322,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlGetLocationAttrib(
     num shaderId,
     String attribName,
@@ -1265,6 +1334,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetUniform(
     num locIndex,
     TypedData value,
@@ -1301,6 +1371,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlSetUniformMatrix(
     num locIndex,
     MatrixD mat,
@@ -1312,6 +1383,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetUniformMatrices(
     num locIndex,
     List<MatrixD> mat,
@@ -1324,6 +1396,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetUniformSampler(
     num locIndex,
     num textureId,
@@ -1335,6 +1408,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetShader(
     num id,
     List<int> locs,
@@ -1346,6 +1420,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadComputeShaderProgram(
     num shaderId,
   ) => run(
@@ -1353,6 +1428,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlLoadComputeShaderProgram(shaderId.toInt()),
   );
 
+  @override
   void rlComputeShaderDispatch(
     num groupX,
     num groupY,
@@ -1366,6 +1442,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlLoadShaderBuffer(
     num size,
     TypedData? data,
@@ -1379,6 +1456,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlUnloadShaderBuffer(
     num ssboId,
   ) => run(
@@ -1386,6 +1464,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlUnloadShaderBuffer(ssboId.toInt()),
   );
 
+  @override
   void rlUpdateShaderBuffer(
     num id,
     TypedData data,
@@ -1403,6 +1482,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlBindShaderBuffer(
     num id,
     num index,
@@ -1414,6 +1494,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   Uint8List rlReadShaderBuffer(
     num id,
     num count,
@@ -1432,6 +1513,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     },
   );
 
+  @override
   void rlCopyShaderBuffer(
     num destId,
     num srcId,
@@ -1449,6 +1531,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   int rlGetShaderBufferSize(
     num id,
   ) => run(
@@ -1456,10 +1539,11 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlGetShaderBufferSize(id.toInt()),
   );
 
+  @override
   void rlBindImageTexture(
     num id,
     num index,
-    RlPixelFormat format,
+    PixelFormat format,
     bool readonly,
   ) => run(
     () => 'rlBindImageTexture($id, $index, ${format.name}, $readonly)',
@@ -1471,21 +1555,25 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   MatrixD rlGetMatrixModelview() => run(
     () => 'rlGetMatrixModelview()',
     () => rl.Rlgl.rlGetMatrixModelview().toD(),
   );
 
+  @override
   MatrixD rlGetMatrixProjection() => run(
     () => 'rlGetMatrixProjection()',
     () => rl.Rlgl.rlGetMatrixProjection().toD(),
   );
 
+  @override
   MatrixD rlGetMatrixTransform() => run(
     () => 'rlGetMatrixTransform()',
     () => rl.Rlgl.rlGetMatrixTransform().toD(),
   );
 
+  @override
   MatrixD rlGetMatrixProjectionStereo(
     num eye,
   ) => run(
@@ -1493,6 +1581,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlGetMatrixProjectionStereo(eye.toInt()).toD(),
   );
 
+  @override
   MatrixD rlGetMatrixViewOffsetStereo(
     num eye,
   ) => run(
@@ -1500,6 +1589,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     () => rl.Rlgl.rlGetMatrixViewOffsetStereo(eye.toInt()).toD(),
   );
 
+  @override
   void rlSetMatrixProjection(
     MatrixD proj,
   ) => run(
@@ -1509,6 +1599,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetMatrixModelview(
     MatrixD view,
   ) => run(
@@ -1518,6 +1609,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetMatrixProjectionStereo(
     MatrixD right,
     MatrixD left,
@@ -1529,6 +1621,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlSetMatrixViewOffsetStereo(
     MatrixD right,
     MatrixD left,
@@ -1540,11 +1633,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglExtras {
     ),
   );
 
+  @override
   void rlLoadDrawCube() => run(
     () => 'rlLoadDrawCube()',
     () => rl.Rlgl.rlLoadDrawCube(),
   );
 
+  @override
   void rlLoadDrawQuad() => run(
     () => 'rlLoadDrawQuad()',
     () => rl.Rlgl.rlLoadDrawQuad(),

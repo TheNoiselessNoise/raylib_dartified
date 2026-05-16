@@ -47,11 +47,11 @@ void main() {
   player.ref.canJump = false;
   
   final envElements = calloc<EnvElement>(MAX_ENVIRONMENT_ELEMENTS);
-  envElements[0].set(  0,   0, 1000, 400, false, rl.C.LIGHTGRAY);
-  envElements[1].set(  0, 400, 1000, 200,  true, rl.C.GRAY);
-  envElements[2].set(300, 200,  400,  10,  true, rl.C.GRAY);
-  envElements[3].set(250, 300,  100,  10,  true, rl.C.GRAY);
-  envElements[4].set(650, 300,  100,  10,  true, rl.C.GRAY);
+  envElements[0].set(  0,   0, 1000, 400, false, rl.Color.LIGHTGRAY);
+  envElements[1].set(  0, 400, 1000, 200,  true, rl.Color.GRAY);
+  envElements[2].set(300, 200,  400,  10,  true, rl.Color.GRAY);
+  envElements[3].set(250, 300,  100,  10,  true, rl.Color.GRAY);
+  envElements[4].set(650, 300,  100,  10,  true, rl.Color.GRAY);
 
   final camera = rl.Temp.Camera2D$.At('camera');
   camera.ref.target = player.ref.position;
@@ -243,7 +243,7 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.LIGHTGRAY);
+      rl.Core.ClearBackground(rl.Color.LIGHTGRAY);
 
       rl.Core.BeginMode2D(camera.ref);
 
@@ -252,46 +252,46 @@ void main() {
           rl.Core.DrawRectangleRec(envElements[i].rect, envElements[i].color);
         }
 
-        rl.Core.DrawRectangleRec(rl.Temp.rect1(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), rl.C.RED);
+        rl.Core.DrawRectangleRec(rl.Temp.rect1(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), rl.Color.RED);
 
       rl.Core.EndMode2D();
       
-      rl.Core.DrawRectangle(10, 10, 290, 145, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(10, 10, 290, 145, rl.Core.Fade(rl.C.BLUE, 0.8));
+      rl.Core.DrawRectangle(10, 10, 290, 145, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(10, 10, 290, 145, rl.Core.Fade(rl.Color.BLUE, 0.8));
 
-      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.C.BLACK);
-      rl.Core.DrawText("- RIGHT | LEFT: Player movement".toC, 30, 40, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("- SPACE: Player jump".toC, 30, 60, 10, rl.C.DARKGRAY);
-      rl.Core.DrawText("- R: Reset game state".toC, 30, 80, 10, rl.C.DARKGRAY);
+      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- RIGHT | LEFT: Player movement".toC, 30, 40, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("- SPACE: Player jump".toC, 30, 60, 10, rl.Color.DARKGRAY);
+      rl.Core.DrawText("- R: Reset game state".toC, 30, 80, 10, rl.Color.DARKGRAY);
 
-      rl.Core.DrawText("- S: START/STOP RECORDING INPUT EVENTS".toC, 30, 110, 10, rl.C.BLACK);
-      rl.Core.DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS".toC, 30, 130, 10, rl.C.BLACK);
+      rl.Core.DrawText("- S: START/STOP RECORDING INPUT EVENTS".toC, 30, 110, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS".toC, 30, 130, 10, rl.Color.BLACK);
 
       if (eventRecording)
       {
-        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.C.RED, 0.3));
-        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.C.MAROON, 0.8));
-        rl.Core.DrawCircle(30, 175, 10, rl.C.MAROON);
+        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.Color.RED, 0.3));
+        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.Color.MAROON, 0.8));
+        rl.Core.DrawCircle(30, 175, 10, rl.Color.MAROON);
 
         if (((frameCounter/15)%2) == 1) rl.Core.DrawText(
           "RECORDING EVENTS... [${aelist.ref.count}]".toC,
-          50, 170, 10, rl.C.MAROON
+          50, 170, 10, rl.Color.MAROON
         );
       }
       else if (eventPlaying)
       {
-        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.C.LIME, 0.3));
-        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.C.DARKGREEN, 0.8));
+        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.Color.LIME, 0.3));
+        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.Color.DARKGREEN, 0.8));
         rl.Core.DrawTriangle(
           rl.Temp.vec21(20, 155 + 10),
           rl.Temp.vec22(20, 155 + 30),
           rl.Temp.vec23(40, 155 + 20),
-          rl.C.DARKGREEN
+          rl.Color.DARKGREEN
         );
 
         if (((frameCounter/15)%2) == 1) rl.Core.DrawText(
           "PLAYING RECORDED EVENTS... [$currentPlayFrame]".toC,
-          50, 170, 10, rl.C.DARKGREEN
+          50, 170, 10, rl.Color.DARKGREEN
         );
       }
 

@@ -25,24 +25,28 @@ void main()
   final RectangleD dstRecH = .rect(160.0, 93.0, 32.0, 32.0);
   final RectangleD dstRecV = .rect(92.0, 160.0, 32.0, 32.0);
 
-  final NPatchInfoD ninePatchInfo1 = .nPatchInfo(
-    .rect(0.0, 0.0, 64.0, 64.0),
-    12, 40, 12, 12, .NPATCH_NINE_PATCH
+  final NPatchInfoD ninePatchInfo1 = .new(
+    source: .rect(0.0, 0.0, 64.0, 64.0),
+    left: 12, top: 40, right: 12, bottom: 12,
+    layout: .NPATCH_NINE_PATCH
   );
 
-  final NPatchInfoD ninePatchInfo2 = .nPatchInfo(
-    .rect(0.0, 128.0, 64.0, 64.0),
-    16, 16, 16, 16, .NPATCH_NINE_PATCH
+  final NPatchInfoD ninePatchInfo2 = .new(
+    source: .rect(0.0, 128.0, 64.0, 64.0),
+    left: 16, top: 16, right: 16, bottom: 16,
+    layout: .NPATCH_NINE_PATCH
   );
 
-  final NPatchInfoD h3PatchInfo = .nPatchInfo(
-    .rect(0.0,  64.0, 64.0, 64.0),
-    8, 8, 8, 8, .NPATCH_THREE_PATCH_HORIZONTAL
+  final NPatchInfoD h3PatchInfo = .new(
+    source: .rect(0.0,  64.0, 64.0, 64.0),
+    left: 8, top: 8, right: 8, bottom: 8,
+    layout: .NPATCH_THREE_PATCH_HORIZONTAL
   );
 
-  final NPatchInfoD v3PatchInfo = .nPatchInfo(
-    .rect(0.0, 192.0, 64.0, 64.0),
-    6, 6, 6, 6, .NPATCH_THREE_PATCH_VERTICAL
+  final NPatchInfoD v3PatchInfo = .new(
+    source: .rect(0.0, 192.0, 64.0, 64.0),
+    left: 6, top: 6, right: 6, bottom: 6,
+    layout: .NPATCH_THREE_PATCH_VERTICAL
   );
 
   while (!rl.CoreD.WindowShouldClose())

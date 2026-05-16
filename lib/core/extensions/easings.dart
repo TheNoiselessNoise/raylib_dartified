@@ -4,7 +4,7 @@
 part of '../raylib.dart';
 
 class RaylibEasings extends RaylibModule {
-  RaylibEasings(super.lib);
+  RaylibEasings(super.rl);
 
   // Ease: Linear
   double EaseLinearNone(num t, num b, num c, num d) => c*t/d + b;

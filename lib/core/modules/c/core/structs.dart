@@ -1,10 +1,5 @@
 part of '../../../raylib.dart';
 
-typedef QuaternionC = Vector4C;
-typedef Texture2DC = TextureC;
-typedef TextureCubemapC = TextureC;
-typedef RenderTexture2DC = RenderTextureC;
-typedef CameraC = Camera3DC;
 // NOTE: va_list is unsolved computer science problem
 // typedef TraceLogCallbackFunction =
 //     Void Function(
@@ -92,6 +87,20 @@ final class Vector3C extends Struct {
 }
 
 final class Vector4C extends Struct {
+  @Float()
+  external double x;
+
+  @Float()
+  external double y;
+
+  @Float()
+  external double z;
+
+  @Float()
+  external double w;
+}
+
+final class QuaternionC extends Struct {
   @Float()
   external double x;
 
@@ -266,7 +275,7 @@ final class FontC extends Struct {
   @Int()
   external int glyphPadding;
 
-  external Texture2DC texture;
+  external TextureC texture;
 
   external Pointer<RectangleC> recs;
 
@@ -347,7 +356,7 @@ final class ShaderC extends Struct {
 }
 
 final class MaterialMapC extends Struct {
-  external Texture2DC texture;
+  external TextureC texture;
 
   external ColorC color;
 

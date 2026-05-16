@@ -75,7 +75,7 @@ void main()
   final texturePosition = rl.Temp.Vector2$.At('texturePosition');
 
   final fftImagePtr = rl.Temp.Image$.At('fftImage');
-  fftImagePtr.ref = rl.Core.GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, rl.C.WHITE);
+  fftImagePtr.ref = rl.Core.GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, rl.Color.WHITE);
   final fftTexture = rl.Core.LoadTextureFromImage(fftImagePtr.ref);
   final bufferA = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
   final iResolution = rl.Temp.Vector2$.At('iResolution').set(screenWidth, screenHeight);
@@ -112,10 +112,10 @@ void main()
   int fftHistoryLen = (FFT_HISTORICAL_SMOOTHING_DUR/WINDOW_TIME).ceil() + 1;
 
   final fft = FFTData(
-    spectrum: List.generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    workBuffer: List.generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    prevMagnitudes: List.filled(BUFFER_SIZE, 0),
-    fftHistory: List.generate(fftHistoryLen, (_) => List.filled(BUFFER_SIZE, 0)),
+    spectrum: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
+    workBuffer: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
+    prevMagnitudes: .filled(BUFFER_SIZE, 0),
+    fftHistory: .generate(fftHistoryLen, (_) => .filled(BUFFER_SIZE, 0)),
     fftHistoryLen: fftHistoryLen,
     historyPos: 0,
     lastFftTime: 0,
@@ -156,13 +156,13 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
         rl.Core.SetShaderValueTexture(shader, iChannel0Location, fftTexture);
 
         textureSource.set(0, 0, screenWidth, -screenHeight);
-        rl.Core.DrawTextureRec(bufferA.texture, textureSource.ref, texturePosition.ref, rl.C.WHITE);
+        rl.Core.DrawTextureRec(bufferA.texture, textureSource.ref, texturePosition.ref, rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
     rl.Core.EndDrawing();
@@ -230,9 +230,9 @@ void CaptureFrame(Raylib rl, FFTData fftData, Pointer<Float> audioSamples) {
   }
 
   CooleyTukeyFFTSlow(rl, fftData.workBuffer, FFT_WINDOW_SIZE);
-  fftData.spectrum = List.from(fftData.workBuffer);
+  fftData.spectrum = .from(fftData.workBuffer);
 
-  List<double> smoothedSpectrum = List.filled(BUFFER_SIZE, 0);
+  List<double> smoothedSpectrum = .filled(BUFFER_SIZE, 0);
 
   for (int bin = 0; bin < BUFFER_SIZE; bin++) {
     double re = fftData.workBuffer[bin].real;
@@ -248,7 +248,7 @@ void CaptureFrame(Raylib rl, FFTData fftData, Pointer<Float> audioSamples) {
   }
 
   fftData.lastFftTime = rl.Core.GetTime();
-  fftData.fftHistory[fftData.historyPos] = List.from(smoothedSpectrum);
+  fftData.fftHistory[fftData.historyPos] = .from(smoothedSpectrum);
   fftData.historyPos = (fftData.historyPos + 1) % fftData.fftHistoryLen;
 }
 

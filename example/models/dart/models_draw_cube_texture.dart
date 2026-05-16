@@ -15,7 +15,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(0, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -54,7 +54,7 @@ void main()
 
 void DrawCubeTexture(
   Raylib rl,
-  Texture2DD texture,
+  TextureD texture,
   Vector3D position,
   double width,
   double height,
@@ -112,7 +112,7 @@ void DrawCubeTexture(
 
 void DrawCubeTextureRec(
   Raylib rl,
-  Texture2DD texture,
+  TextureD texture,
   RectangleD source,
   Vector3D position,
   double width,

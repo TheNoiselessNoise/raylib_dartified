@@ -29,7 +29,7 @@ void main()
     parrots, cat.ref,
     rl.Temp.rect1(0, 0, cat.ref.width, cat.ref.height),
     rl.Temp.rect2(30, 40, cat.ref.width*1.5, cat.ref.height*1.5),
-    rl.C.WHITE
+    rl.Color.WHITE
   );
 
   rl.Core.ImageCrop(
@@ -37,9 +37,9 @@ void main()
     rl.Temp.rect1(0, 50, parrots.ref.width, parrots.ref.height - 100),
   );
 
-  rl.Core.ImageDrawPixel(parrots, 10, 10, rl.C.RAYWHITE);
-  rl.Core.ImageDrawCircleLines(parrots, 10, 10, 5, rl.C.RAYWHITE);
-  rl.Core.ImageDrawRectangle(parrots, 5, 20, 10, 10, rl.C.RAYWHITE);
+  rl.Core.ImageDrawPixel(parrots, 10, 10, rl.Color.RAYWHITE);
+  rl.Core.ImageDrawCircleLines(parrots, 10, 10, 5, rl.Color.RAYWHITE);
+  rl.Core.ImageDrawRectangle(parrots, 5, 20, 10, 10, rl.Color.RAYWHITE);
 
   rl.Core.UnloadImage(cat.ref);
 
@@ -51,7 +51,7 @@ void main()
     rl.Temp.vec21(300, 230),
     font.baseSize.toDouble(),
     -2,
-    rl.C.WHITE
+    rl.Color.WHITE
   );
 
   rl.Core.UnloadFont(font);
@@ -63,21 +63,21 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       int x = (screenWidth/2 - texture.width/2).toInt();
       int y = (screenHeight/2 - texture.height/2 - 40).toInt();
 
-      rl.Core.DrawTexture(texture, x, y, rl.C.WHITE);
-      rl.Core.DrawRectangleLines(x, y, texture.width, texture.height, rl.C.DARKGRAY);
+      rl.Core.DrawTexture(texture, x, y, rl.Color.WHITE);
+      rl.Core.DrawRectangleLines(x, y, texture.width, texture.height, rl.Color.DARKGRAY);
 
       rl.Core.DrawText(
         "We are drawing only one texture from various images composed!".toC,
-        240, 350, 10, rl.C.DARKGRAY
+        240, 350, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Source images have been cropped, scaled, flipped and copied one over the other.".toC,
-        190, 370, 10, rl.C.DARKGRAY
+        190, 370, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

@@ -43,11 +43,11 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, rl.Temp.vec3Zero, 0.2, rl.C.WHITE);
+        rl.Core.DrawModel(model, rl.Temp.vec3Zero, 0.2, rl.Color.WHITE);
 
         rl.Core.DrawGrid(10, 1.0);
 
@@ -55,7 +55,7 @@ void main()
 
       rl.Core.DrawText(
         "(c) Watermill 3D model by Alberto Cano".toC,
-        screenWidth - 210, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 210, screenHeight - 20, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

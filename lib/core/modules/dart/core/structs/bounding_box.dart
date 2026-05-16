@@ -34,8 +34,11 @@ extension BoundingBoxCEx on BoundingBoxC {
   );
 }
 
-class BoundingBoxD extends StructDLiteral<BoundingBoxD, BoundingBoxC> {
+class BoundingBoxD extends StructDLiteral<BoundingBoxD, BoundingBoxC> with BoundingBoxBase {
+  @override
   Vector3D min;
+  
+  @override
   Vector3D max;
 
   BoundingBoxD({
@@ -69,17 +72,12 @@ class BoundingBoxD extends StructDLiteral<BoundingBoxD, BoundingBoxC> {
   }
 
   @override
-  Pointer<BoundingBoxC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.BoundingBox$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.BoundingBox$;
   
   @override
-  void allocateInto(RaylibTemp temp, Pointer<BoundingBoxC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(BoundingBoxC p) {
-    min.writeInto(p.min);
-    max.writeInto(p.max);
+  void nativeWriteInto(BoundingBoxC p) {
+    min.nativeWriteInto(p.min);
+    max.nativeWriteInto(p.max);
   }
 
   @override

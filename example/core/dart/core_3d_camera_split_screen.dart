@@ -13,7 +13,7 @@ void main() {
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final cameraPlayer1 = CameraD();
+  final cameraPlayer1 = Camera3DD();
   cameraPlayer1.fovy = 45.0;
   cameraPlayer1.up.y = 1.0;
   cameraPlayer1.target.y = 1.0;
@@ -22,7 +22,7 @@ void main() {
 
   final screenPlayer1 = rl.CoreD.LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final cameraPlayer2 = CameraD();
+  final cameraPlayer2 = Camera3DD();
   cameraPlayer2.fovy = 45.0;
   cameraPlayer2.up.y = 1.0;
   cameraPlayer2.target.y = 3.0;

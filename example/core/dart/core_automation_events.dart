@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_automation_events.c
 // Run it: dart run core_automation_events.dart
-import 'dart:ffi';
 import 'dart:math' as math;
 import '../../base.dart';
 
@@ -211,8 +210,6 @@ void main() {
     }
     else if (rl.CoreD.IsKeyPressed(.KEY_A))
     {
-      print('A pressed, aelist.count: ${aelist.count}');
-      print('A pressed, aelist.orig.count: ${aelist.originalPointer?.ref.count}');
       if (!eventRecording && (aelist.count > 0))
       {
         eventPlaying = true;

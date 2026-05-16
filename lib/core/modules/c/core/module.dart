@@ -1,7 +1,7 @@
 part of '../../../raylib.dart';
 
 class RaylibCore extends RaylibModule {
-  RaylibCore(super.lib);
+  RaylibCore(super.rl);
 
   void InitWindow(int width, int height, Pointer<Char> title) {
     return _InitWindow(width, height, title);
@@ -571,16 +571,16 @@ class RaylibCore extends RaylibModule {
   );
   late final _EndMode3D = _EndMode3DPtr.asFunction<void Function()>();
 
-  void BeginTextureMode(RenderTexture2DC target) {
+  void BeginTextureMode(RenderTextureC target) {
     return _BeginTextureMode(target);
   }
 
   late final _BeginTextureModePtr = rl
-      .coreLookup<NativeFunction<Void Function(RenderTexture2DC)>>(
+      .coreLookup<NativeFunction<Void Function(RenderTextureC)>>(
         'BeginTextureMode',
       );
   late final _BeginTextureMode =
-      _BeginTextureModePtr.asFunction<void Function(RenderTexture2DC)>();
+      _BeginTextureModePtr.asFunction<void Function(RenderTextureC)>();
 
   void EndTextureMode() {
     return _EndTextureMode();
@@ -798,17 +798,17 @@ class RaylibCore extends RaylibModule {
         void Function(ShaderC, int, MatrixC)
       >();
 
-  void SetShaderValueTexture(ShaderC shader, int locIndex, Texture2DC texture) {
+  void SetShaderValueTexture(ShaderC shader, int locIndex, TextureC texture) {
     return _SetShaderValueTexture(shader, locIndex, texture);
   }
 
   late final _SetShaderValueTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(ShaderC, Int, Texture2DC)>>(
+      .coreLookup<NativeFunction<Void Function(ShaderC, Int, TextureC)>>(
         'SetShaderValueTexture',
       );
   late final _SetShaderValueTexture =
       _SetShaderValueTexturePtr.asFunction<
-        void Function(ShaderC, int, Texture2DC)
+        void Function(ShaderC, int, TextureC)
       >();
 
   void UnloadShader(ShaderC shader) {
@@ -820,20 +820,20 @@ class RaylibCore extends RaylibModule {
   late final _UnloadShader =
       _UnloadShaderPtr.asFunction<void Function(ShaderC)>();
 
-  RayC GetScreenToWorldRay(Vector2C position, CameraC camera) {
+  RayC GetScreenToWorldRay(Vector2C position, Camera3DC camera) {
     return _GetScreenToWorldRay(position, camera);
   }
 
   late final _GetScreenToWorldRayPtr = rl
-      .coreLookup<NativeFunction<RayC Function(Vector2C, CameraC)>>(
+      .coreLookup<NativeFunction<RayC Function(Vector2C, Camera3DC)>>(
         'GetScreenToWorldRay',
       );
   late final _GetScreenToWorldRay =
-      _GetScreenToWorldRayPtr.asFunction<RayC Function(Vector2C, CameraC)>();
+      _GetScreenToWorldRayPtr.asFunction<RayC Function(Vector2C, Camera3DC)>();
 
   RayC GetScreenToWorldRayEx(
     Vector2C position,
-    CameraC camera,
+    Camera3DC camera,
     int width,
     int height,
   ) {
@@ -841,28 +841,28 @@ class RaylibCore extends RaylibModule {
   }
 
   late final _GetScreenToWorldRayExPtr = rl
-      .coreLookup<NativeFunction<RayC Function(Vector2C, CameraC, Int, Int)>>(
+      .coreLookup<NativeFunction<RayC Function(Vector2C, Camera3DC, Int, Int)>>(
         'GetScreenToWorldRayEx',
       );
   late final _GetScreenToWorldRayEx =
       _GetScreenToWorldRayExPtr.asFunction<
-        RayC Function(Vector2C, CameraC, int, int)
+        RayC Function(Vector2C, Camera3DC, int, int)
       >();
 
-  Vector2C GetWorldToScreen(Vector3C position, CameraC camera) {
+  Vector2C GetWorldToScreen(Vector3C position, Camera3DC camera) {
     return _GetWorldToScreen(position, camera);
   }
 
   late final _GetWorldToScreenPtr = rl
-      .coreLookup<NativeFunction<Vector2C Function(Vector3C, CameraC)>>(
+      .coreLookup<NativeFunction<Vector2C Function(Vector3C, Camera3DC)>>(
         'GetWorldToScreen',
       );
   late final _GetWorldToScreen =
-      _GetWorldToScreenPtr.asFunction<Vector2C Function(Vector3C, CameraC)>();
+      _GetWorldToScreenPtr.asFunction<Vector2C Function(Vector3C, Camera3DC)>();
 
   Vector2C GetWorldToScreenEx(
     Vector3C position,
-    CameraC camera,
+    Camera3DC camera,
     int width,
     int height,
   ) {
@@ -871,11 +871,11 @@ class RaylibCore extends RaylibModule {
 
   late final _GetWorldToScreenExPtr = rl
       .coreLookup<
-        NativeFunction<Vector2C Function(Vector3C, CameraC, Int, Int)>
+        NativeFunction<Vector2C Function(Vector3C, Camera3DC, Int, Int)>
       >('GetWorldToScreenEx');
   late final _GetWorldToScreenEx =
       _GetWorldToScreenExPtr.asFunction<
-        Vector2C Function(Vector3C, CameraC, int, int)
+        Vector2C Function(Vector3C, Camera3DC, int, int)
       >();
 
   Vector2C GetWorldToScreen2D(Vector2C position, Camera2DC camera) {
@@ -904,14 +904,14 @@ class RaylibCore extends RaylibModule {
         Vector2C Function(Vector2C, Camera2DC)
       >();
 
-  MatrixC GetCameraMatrix(CameraC camera) {
+  MatrixC GetCameraMatrix(Camera3DC camera) {
     return _GetCameraMatrix(camera);
   }
 
   late final _GetCameraMatrixPtr = rl
-      .coreLookup<NativeFunction<MatrixC Function(CameraC)>>('GetCameraMatrix');
+      .coreLookup<NativeFunction<MatrixC Function(Camera3DC)>>('GetCameraMatrix');
   late final _GetCameraMatrix =
-      _GetCameraMatrixPtr.asFunction<MatrixC Function(CameraC)>();
+      _GetCameraMatrixPtr.asFunction<MatrixC Function(Camera3DC)>();
 
   MatrixC GetCameraMatrix2D(Camera2DC camera) {
     return _GetCameraMatrix2D(camera);
@@ -2136,19 +2136,19 @@ class RaylibCore extends RaylibModule {
   late final _GetGesturePinchAngle =
       _GetGesturePinchAnglePtr.asFunction<double Function()>();
 
-  void UpdateCamera(Pointer<CameraC> camera, int mode) {
+  void UpdateCamera(Pointer<Camera3DC> camera, int mode) {
     return _UpdateCamera(camera, mode);
   }
 
   late final _UpdateCameraPtr = rl
-      .coreLookup<NativeFunction<Void Function(Pointer<CameraC>, Int)>>(
+      .coreLookup<NativeFunction<Void Function(Pointer<Camera3DC>, Int)>>(
         'UpdateCamera',
       );
   late final _UpdateCamera =
-      _UpdateCameraPtr.asFunction<void Function(Pointer<CameraC>, int)>();
+      _UpdateCameraPtr.asFunction<void Function(Pointer<Camera3DC>, int)>();
 
   void UpdateCameraPro(
-    Pointer<CameraC> camera,
+    Pointer<Camera3DC> camera,
     Vector3C movement,
     Vector3C rotation,
     double zoom,
@@ -2159,33 +2159,33 @@ class RaylibCore extends RaylibModule {
   late final _UpdateCameraProPtr = rl
       .coreLookup<
         NativeFunction<
-          Void Function(Pointer<CameraC>, Vector3C, Vector3C, Float)
+          Void Function(Pointer<Camera3DC>, Vector3C, Vector3C, Float)
         >
       >('UpdateCameraPro');
   late final _UpdateCameraPro =
       _UpdateCameraProPtr.asFunction<
-        void Function(Pointer<CameraC>, Vector3C, Vector3C, double)
+        void Function(Pointer<Camera3DC>, Vector3C, Vector3C, double)
       >();
 
-  void SetShapesTexture(Texture2DC texture, RectangleC source) {
+  void SetShapesTexture(TextureC texture, RectangleC source) {
     return _SetShapesTexture(texture, source);
   }
 
   late final _SetShapesTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, RectangleC)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, RectangleC)>>(
         'SetShapesTexture',
       );
   late final _SetShapesTexture =
-      _SetShapesTexturePtr.asFunction<void Function(Texture2DC, RectangleC)>();
+      _SetShapesTexturePtr.asFunction<void Function(TextureC, RectangleC)>();
 
-  Texture2DC GetShapesTexture() {
+  TextureC GetShapesTexture() {
     return _GetShapesTexture();
   }
 
   late final _GetShapesTexturePtr = rl
-      .coreLookup<NativeFunction<Texture2DC Function()>>('GetShapesTexture');
+      .coreLookup<NativeFunction<TextureC Function()>>('GetShapesTexture');
   late final _GetShapesTexture =
-      _GetShapesTexturePtr.asFunction<Texture2DC Function()>();
+      _GetShapesTexturePtr.asFunction<TextureC Function()>();
 
   RectangleC GetShapesTextureRectangle() {
     return _GetShapesTextureRectangle();
@@ -3412,16 +3412,16 @@ class RaylibCore extends RaylibModule {
         ImageC Function(Pointer<Char>, Pointer<UnsignedChar>, int)
       >();
 
-  ImageC LoadImageFromTexture(Texture2DC texture) {
+  ImageC LoadImageFromTexture(TextureC texture) {
     return _LoadImageFromTexture(texture);
   }
 
   late final _LoadImageFromTexturePtr = rl
-      .coreLookup<NativeFunction<ImageC Function(Texture2DC)>>(
+      .coreLookup<NativeFunction<ImageC Function(TextureC)>>(
         'LoadImageFromTexture',
       );
   late final _LoadImageFromTexture =
-      _LoadImageFromTexturePtr.asFunction<ImageC Function(Texture2DC)>();
+      _LoadImageFromTexturePtr.asFunction<ImageC Function(TextureC)>();
 
   ImageC LoadImageFromScreen() {
     return _LoadImageFromScreen();
@@ -4529,103 +4529,103 @@ class RaylibCore extends RaylibModule {
         )
       >();
 
-  Texture2DC LoadTexture(Pointer<Char> fileName) {
+  TextureC LoadTexture(Pointer<Char> fileName) {
     return _LoadTexture(fileName);
   }
 
   late final _LoadTexturePtr = rl
-      .coreLookup<NativeFunction<Texture2DC Function(Pointer<Char>)>>(
+      .coreLookup<NativeFunction<TextureC Function(Pointer<Char>)>>(
         'LoadTexture',
       );
   late final _LoadTexture =
-      _LoadTexturePtr.asFunction<Texture2DC Function(Pointer<Char>)>();
+      _LoadTexturePtr.asFunction<TextureC Function(Pointer<Char>)>();
 
-  Texture2DC LoadTextureFromImage(ImageC image) {
+  TextureC LoadTextureFromImage(ImageC image) {
     return _LoadTextureFromImage(image);
   }
 
   late final _LoadTextureFromImagePtr = rl
-      .coreLookup<NativeFunction<Texture2DC Function(ImageC)>>(
+      .coreLookup<NativeFunction<TextureC Function(ImageC)>>(
         'LoadTextureFromImage',
       );
   late final _LoadTextureFromImage =
-      _LoadTextureFromImagePtr.asFunction<Texture2DC Function(ImageC)>();
+      _LoadTextureFromImagePtr.asFunction<TextureC Function(ImageC)>();
 
-  TextureCubemapC LoadTextureCubemap(ImageC image, int layout) {
+  TextureC LoadTextureCubemap(ImageC image, int layout) {
     return _LoadTextureCubemap(image, layout);
   }
 
   late final _LoadTextureCubemapPtr = rl
-      .coreLookup<NativeFunction<TextureCubemapC Function(ImageC, Int)>>(
+      .coreLookup<NativeFunction<TextureC Function(ImageC, Int)>>(
         'LoadTextureCubemap',
       );
   late final _LoadTextureCubemap =
-      _LoadTextureCubemapPtr.asFunction<TextureCubemapC Function(ImageC, int)>();
+      _LoadTextureCubemapPtr.asFunction<TextureC Function(ImageC, int)>();
 
-  RenderTexture2DC LoadRenderTexture(int width, int height) {
+  RenderTextureC LoadRenderTexture(int width, int height) {
     return _LoadRenderTexture(width, height);
   }
 
   late final _LoadRenderTexturePtr = rl
-      .coreLookup<NativeFunction<RenderTexture2DC Function(Int, Int)>>(
+      .coreLookup<NativeFunction<RenderTextureC Function(Int, Int)>>(
         'LoadRenderTexture',
       );
   late final _LoadRenderTexture =
-      _LoadRenderTexturePtr.asFunction<RenderTexture2DC Function(int, int)>();
+      _LoadRenderTexturePtr.asFunction<RenderTextureC Function(int, int)>();
 
-  bool IsTextureValid(Texture2DC texture) {
+  bool IsTextureValid(TextureC texture) {
     return _IsTextureValid(texture);
   }
 
   late final _IsTextureValidPtr = rl
-      .coreLookup<NativeFunction<Bool Function(Texture2DC)>>('IsTextureValid');
+      .coreLookup<NativeFunction<Bool Function(TextureC)>>('IsTextureValid');
   late final _IsTextureValid =
-      _IsTextureValidPtr.asFunction<bool Function(Texture2DC)>();
+      _IsTextureValidPtr.asFunction<bool Function(TextureC)>();
 
-  void UnloadTexture(Texture2DC texture) {
+  void UnloadTexture(TextureC texture) {
     return _UnloadTexture(texture);
   }
 
   late final _UnloadTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC)>>('UnloadTexture');
+      .coreLookup<NativeFunction<Void Function(TextureC)>>('UnloadTexture');
   late final _UnloadTexture =
-      _UnloadTexturePtr.asFunction<void Function(Texture2DC)>();
+      _UnloadTexturePtr.asFunction<void Function(TextureC)>();
 
-  bool IsRenderTextureValid(RenderTexture2DC target) {
+  bool IsRenderTextureValid(RenderTextureC target) {
     return _IsRenderTextureValid(target);
   }
 
   late final _IsRenderTextureValidPtr = rl
-      .coreLookup<NativeFunction<Bool Function(RenderTexture2DC)>>(
+      .coreLookup<NativeFunction<Bool Function(RenderTextureC)>>(
         'IsRenderTextureValid',
       );
   late final _IsRenderTextureValid =
-      _IsRenderTextureValidPtr.asFunction<bool Function(RenderTexture2DC)>();
+      _IsRenderTextureValidPtr.asFunction<bool Function(RenderTextureC)>();
 
-  void UnloadRenderTexture(RenderTexture2DC target) {
+  void UnloadRenderTexture(RenderTextureC target) {
     return _UnloadRenderTexture(target);
   }
 
   late final _UnloadRenderTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(RenderTexture2DC)>>(
+      .coreLookup<NativeFunction<Void Function(RenderTextureC)>>(
         'UnloadRenderTexture',
       );
   late final _UnloadRenderTexture =
-      _UnloadRenderTexturePtr.asFunction<void Function(RenderTexture2DC)>();
+      _UnloadRenderTexturePtr.asFunction<void Function(RenderTextureC)>();
 
-  void UpdateTexture(Texture2DC texture, Pointer<Void> pixels) {
+  void UpdateTexture(TextureC texture, Pointer<Void> pixels) {
     return _UpdateTexture(texture, pixels);
   }
 
   late final _UpdateTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, Pointer<Void>)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, Pointer<Void>)>>(
         'UpdateTexture',
       );
   late final _UpdateTexture =
-      _UpdateTexturePtr.asFunction<void Function(Texture2DC, Pointer<Void>)>();
+      _UpdateTexturePtr.asFunction<void Function(TextureC, Pointer<Void>)>();
 
   void UpdateTextureRec(
-    Texture2DC texture,
+    TextureC texture,
     RectangleC rec,
     Pointer<Void> pixels,
   ) {
@@ -4634,70 +4634,70 @@ class RaylibCore extends RaylibModule {
 
   late final _UpdateTextureRecPtr = rl
       .coreLookup<
-        NativeFunction<Void Function(Texture2DC, RectangleC, Pointer<Void>)>
+        NativeFunction<Void Function(TextureC, RectangleC, Pointer<Void>)>
       >('UpdateTextureRec');
   late final _UpdateTextureRec =
       _UpdateTextureRecPtr.asFunction<
-        void Function(Texture2DC, RectangleC, Pointer<Void>)
+        void Function(TextureC, RectangleC, Pointer<Void>)
       >();
 
-  void GenTextureMipmaps(Pointer<Texture2DC> texture) {
+  void GenTextureMipmaps(Pointer<TextureC> texture) {
     return _GenTextureMipmaps(texture);
   }
 
   late final _GenTextureMipmapsPtr = rl
-      .coreLookup<NativeFunction<Void Function(Pointer<Texture2DC>)>>(
+      .coreLookup<NativeFunction<Void Function(Pointer<TextureC>)>>(
         'GenTextureMipmaps',
       );
   late final _GenTextureMipmaps =
-      _GenTextureMipmapsPtr.asFunction<void Function(Pointer<Texture2DC>)>();
+      _GenTextureMipmapsPtr.asFunction<void Function(Pointer<TextureC>)>();
 
-  void SetTextureFilter(Texture2DC texture, int filter) {
+  void SetTextureFilter(TextureC texture, int filter) {
     return _SetTextureFilter(texture, filter);
   }
 
   late final _SetTextureFilterPtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, Int)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, Int)>>(
         'SetTextureFilter',
       );
   late final _SetTextureFilter =
-      _SetTextureFilterPtr.asFunction<void Function(Texture2DC, int)>();
+      _SetTextureFilterPtr.asFunction<void Function(TextureC, int)>();
 
-  void SetTextureWrap(Texture2DC texture, int wrap) {
+  void SetTextureWrap(TextureC texture, int wrap) {
     return _SetTextureWrap(texture, wrap);
   }
 
   late final _SetTextureWrapPtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, Int)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, Int)>>(
         'SetTextureWrap',
       );
   late final _SetTextureWrap =
-      _SetTextureWrapPtr.asFunction<void Function(Texture2DC, int)>();
+      _SetTextureWrapPtr.asFunction<void Function(TextureC, int)>();
 
-  void DrawTexture(Texture2DC texture, int posX, int posY, ColorC tint) {
+  void DrawTexture(TextureC texture, int posX, int posY, ColorC tint) {
     return _DrawTexture(texture, posX, posY, tint);
   }
 
   late final _DrawTexturePtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, Int, Int, ColorC)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, Int, Int, ColorC)>>(
         'DrawTexture',
       );
   late final _DrawTexture =
-      _DrawTexturePtr.asFunction<void Function(Texture2DC, int, int, ColorC)>();
+      _DrawTexturePtr.asFunction<void Function(TextureC, int, int, ColorC)>();
 
-  void DrawTextureV(Texture2DC texture, Vector2C position, ColorC tint) {
+  void DrawTextureV(TextureC texture, Vector2C position, ColorC tint) {
     return _DrawTextureV(texture, position, tint);
   }
 
   late final _DrawTextureVPtr = rl
-      .coreLookup<NativeFunction<Void Function(Texture2DC, Vector2C, ColorC)>>(
+      .coreLookup<NativeFunction<Void Function(TextureC, Vector2C, ColorC)>>(
         'DrawTextureV',
       );
   late final _DrawTextureV =
-      _DrawTextureVPtr.asFunction<void Function(Texture2DC, Vector2C, ColorC)>();
+      _DrawTextureVPtr.asFunction<void Function(TextureC, Vector2C, ColorC)>();
 
   void DrawTextureEx(
-    Texture2DC texture,
+    TextureC texture,
     Vector2C position,
     double rotation,
     double scale,
@@ -4708,15 +4708,15 @@ class RaylibCore extends RaylibModule {
 
   late final _DrawTextureExPtr = rl
       .coreLookup<
-        NativeFunction<Void Function(Texture2DC, Vector2C, Float, Float, ColorC)>
+        NativeFunction<Void Function(TextureC, Vector2C, Float, Float, ColorC)>
       >('DrawTextureEx');
   late final _DrawTextureEx =
       _DrawTextureExPtr.asFunction<
-        void Function(Texture2DC, Vector2C, double, double, ColorC)
+        void Function(TextureC, Vector2C, double, double, ColorC)
       >();
 
   void DrawTextureRec(
-    Texture2DC texture,
+    TextureC texture,
     RectangleC source,
     Vector2C position,
     ColorC tint,
@@ -4726,15 +4726,15 @@ class RaylibCore extends RaylibModule {
 
   late final _DrawTextureRecPtr = rl
       .coreLookup<
-        NativeFunction<Void Function(Texture2DC, RectangleC, Vector2C, ColorC)>
+        NativeFunction<Void Function(TextureC, RectangleC, Vector2C, ColorC)>
       >('DrawTextureRec');
   late final _DrawTextureRec =
       _DrawTextureRecPtr.asFunction<
-        void Function(Texture2DC, RectangleC, Vector2C, ColorC)
+        void Function(TextureC, RectangleC, Vector2C, ColorC)
       >();
 
   void DrawTexturePro(
-    Texture2DC texture,
+    TextureC texture,
     RectangleC source,
     RectangleC dest,
     Vector2C origin,
@@ -4748,7 +4748,7 @@ class RaylibCore extends RaylibModule {
       .coreLookup<
         NativeFunction<
           Void Function(
-            Texture2DC,
+            TextureC,
             RectangleC,
             RectangleC,
             Vector2C,
@@ -4760,7 +4760,7 @@ class RaylibCore extends RaylibModule {
   late final _DrawTexturePro =
       _DrawTextureProPtr.asFunction<
         void Function(
-          Texture2DC,
+          TextureC,
           RectangleC,
           RectangleC,
           Vector2C,
@@ -4770,7 +4770,7 @@ class RaylibCore extends RaylibModule {
       >();
 
   void DrawTextureNPatch(
-    Texture2DC texture,
+    TextureC texture,
     NPatchInfoC nPatchInfo,
     RectangleC dest,
     Vector2C origin,
@@ -4791,7 +4791,7 @@ class RaylibCore extends RaylibModule {
       .coreLookup<
         NativeFunction<
           Void Function(
-            Texture2DC,
+            TextureC,
             NPatchInfoC,
             RectangleC,
             Vector2C,
@@ -4803,7 +4803,7 @@ class RaylibCore extends RaylibModule {
   late final _DrawTextureNPatch =
       _DrawTextureNPatchPtr.asFunction<
         void Function(
-          Texture2DC,
+          TextureC,
           NPatchInfoC,
           RectangleC,
           Vector2C,
@@ -6325,8 +6325,8 @@ class RaylibCore extends RaylibModule {
       _DrawBoundingBoxPtr.asFunction<void Function(BoundingBoxC, ColorC)>();
 
   void DrawBillboard(
-    CameraC camera,
-    Texture2DC texture,
+    Camera3DC camera,
+    TextureC texture,
     Vector3C position,
     double scale,
     ColorC tint,
@@ -6337,17 +6337,17 @@ class RaylibCore extends RaylibModule {
   late final _DrawBillboardPtr = rl
       .coreLookup<
         NativeFunction<
-          Void Function(CameraC, Texture2DC, Vector3C, Float, ColorC)
+          Void Function(Camera3DC, TextureC, Vector3C, Float, ColorC)
         >
       >('DrawBillboard');
   late final _DrawBillboard =
       _DrawBillboardPtr.asFunction<
-        void Function(CameraC, Texture2DC, Vector3C, double, ColorC)
+        void Function(Camera3DC, TextureC, Vector3C, double, ColorC)
       >();
 
   void DrawBillboardRec(
-    CameraC camera,
-    Texture2DC texture,
+    Camera3DC camera,
+    TextureC texture,
     RectangleC source,
     Vector3C position,
     Vector2C size,
@@ -6360,8 +6360,8 @@ class RaylibCore extends RaylibModule {
       .coreLookup<
         NativeFunction<
           Void Function(
-            CameraC,
-            Texture2DC,
+            Camera3DC,
+            TextureC,
             RectangleC,
             Vector3C,
             Vector2C,
@@ -6371,12 +6371,12 @@ class RaylibCore extends RaylibModule {
       >('DrawBillboardRec');
   late final _DrawBillboardRec =
       _DrawBillboardRecPtr.asFunction<
-        void Function(CameraC, Texture2DC, RectangleC, Vector3C, Vector2C, ColorC)
+        void Function(Camera3DC, TextureC, RectangleC, Vector3C, Vector2C, ColorC)
       >();
 
   void DrawBillboardPro(
-    CameraC camera,
-    Texture2DC texture,
+    Camera3DC camera,
+    TextureC texture,
     RectangleC source,
     Vector3C position,
     Vector3C up,
@@ -6402,8 +6402,8 @@ class RaylibCore extends RaylibModule {
       .coreLookup<
         NativeFunction<
           Void Function(
-            CameraC,
-            Texture2DC,
+            Camera3DC,
+            TextureC,
             RectangleC,
             Vector3C,
             Vector3C,
@@ -6417,8 +6417,8 @@ class RaylibCore extends RaylibModule {
   late final _DrawBillboardPro =
       _DrawBillboardProPtr.asFunction<
         void Function(
-          CameraC,
-          Texture2DC,
+          Camera3DC,
+          TextureC,
           RectangleC,
           Vector3C,
           Vector3C,
@@ -6705,18 +6705,18 @@ class RaylibCore extends RaylibModule {
   void SetMaterialTexture(
     Pointer<MaterialC> material,
     int mapType,
-    Texture2DC texture,
+    TextureC texture,
   ) {
     return _SetMaterialTexture(material, mapType, texture);
   }
 
   late final _SetMaterialTexturePtr = rl
       .coreLookup<
-        NativeFunction<Void Function(Pointer<MaterialC>, Int, Texture2DC)>
+        NativeFunction<Void Function(Pointer<MaterialC>, Int, TextureC)>
       >('SetMaterialTexture');
   late final _SetMaterialTexture =
       _SetMaterialTexturePtr.asFunction<
-        void Function(Pointer<MaterialC>, int, Texture2DC)
+        void Function(Pointer<MaterialC>, int, TextureC)
       >();
 
   void SetModelMeshMaterial(Pointer<ModelC> model, int meshId, int materialId) {

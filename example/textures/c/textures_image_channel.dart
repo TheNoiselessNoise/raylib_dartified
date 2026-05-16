@@ -37,7 +37,7 @@ void main()
   final backgroundImage = rl.Core.GenImageChecked(
     screenWidth, screenHeight,
     (screenWidth/20).toInt(), (screenHeight/20).toInt(),
-    rl.C.ORANGE, rl.C.YELLOW
+    rl.Color.ORANGE, rl.Color.YELLOW
   );
 
   final fudesumiTexture = rl.Core.LoadTextureFromImage(fudesumiImage);
@@ -76,13 +76,13 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.DrawTexture(backgroundTexture, 0, 0, rl.C.WHITE);
-      rl.Core.DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, rl.Temp.vec2Zero, 0, rl.C.WHITE);
+      rl.Core.DrawTexture(backgroundTexture, 0, 0, rl.Color.WHITE);
+      rl.Core.DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, rl.Temp.vec2Zero, 0, rl.Color.WHITE);
 
-      rl.Core.DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, rl.Temp.vec2Zero, 0, rl.C.RED);
-      rl.Core.DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, rl.Temp.vec2Zero, 0, rl.C.GREEN);
-      rl.Core.DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, rl.Temp.vec2Zero, 0, rl.C.BLUE);
-      rl.Core.DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, rl.Temp.vec2Zero, 0, rl.C.WHITE);
+      rl.Core.DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, rl.Temp.vec2Zero, 0, rl.Color.RED);
+      rl.Core.DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, rl.Temp.vec2Zero, 0, rl.Color.GREEN);
+      rl.Core.DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, rl.Temp.vec2Zero, 0, rl.Color.BLUE);
+      rl.Core.DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, rl.Temp.vec2Zero, 0, rl.Color.WHITE);
 
     rl.Core.EndDrawing();
   }

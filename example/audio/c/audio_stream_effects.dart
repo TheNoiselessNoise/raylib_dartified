@@ -77,19 +77,19 @@ void main() async {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 245, 150, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 245, 150, 20, rl.Color.LIGHTGRAY);
 
-      rl.Core.DrawRectangle(200, 180, 400, 12, rl.C.LIGHTGRAY);
-      rl.Core.DrawRectangle(200, 180, (timePlayed*400.0).toInt(), 12, rl.C.MAROON);
-      rl.Core.DrawRectangleLines(200, 180, 400, 12, rl.C.GRAY);
+      rl.Core.DrawRectangle(200, 180, 400, 12, rl.Color.LIGHTGRAY);
+      rl.Core.DrawRectangle(200, 180, (timePlayed*400.0).toInt(), 12, rl.Color.MAROON);
+      rl.Core.DrawRectangleLines(200, 180, 400, 12, rl.Color.GRAY);
 
-      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 215, 230, 20, rl.C.LIGHTGRAY);
-      rl.Core.DrawText("PRESS P TO PAUSE/RESUME MUSIC".toC, 208, 260, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 215, 230, 20, rl.Color.LIGHTGRAY);
+      rl.Core.DrawText("PRESS P TO PAUSE/RESUME MUSIC".toC, 208, 260, 20, rl.Color.LIGHTGRAY);
       
-      rl.Core.DrawText("PRESS F TO TOGGLE LPF EFFECT: ${enableEffectLPF ? "ON" : "OFF"}".toC, 200, 320, 20, rl.C.GRAY);
-      rl.Core.DrawText("PRESS D TO TOGGLE DELAY EFFECT: ${enableEffectDelay ? "ON" : "OFF"}".toC, 180, 350, 20, rl.C.GRAY);
+      rl.Core.DrawText("PRESS F TO TOGGLE LPF EFFECT: ${enableEffectLPF ? "ON" : "OFF"}".toC, 200, 320, 20, rl.Color.GRAY);
+      rl.Core.DrawText("PRESS D TO TOGGLE DELAY EFFECT: ${enableEffectDelay ? "ON" : "OFF"}".toC, 180, 350, 20, rl.Color.GRAY);
 
     rl.Core.EndDrawing();
 

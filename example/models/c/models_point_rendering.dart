@@ -57,13 +57,13 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.BeginMode3D(camera.ref);
 
         if (useDrawModelPoints)
         {
-          rl.Core.DrawModelPoints(model, position.ref, 1.0, rl.C.WHITE);
+          rl.Core.DrawModelPoints(model, position.ref, 1.0, rl.Color.WHITE);
         }
         else
         {
@@ -85,36 +85,36 @@ void main()
           }
         }
 
-        rl.Core.DrawSphereWires(position.ref, 1.0, 10, 10, rl.C.YELLOW);
+        rl.Core.DrawSphereWires(position.ref, 1.0, 10, 10, rl.Color.YELLOW);
           
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "Point Count: $numPoints".toC,
-        20, screenHeight - 50, 40, rl.C.WHITE
+        20, screenHeight - 50, 40, rl.Color.WHITE
       );
       rl.Core.DrawText(
         "Up - increase points".toC,
-        20, 70, 20, rl.C.WHITE
+        20, 70, 20, rl.Color.WHITE
       );
       rl.Core.DrawText(
         "Down - decrease points".toC,
-        20, 100, 20, rl.C.WHITE
+        20, 100, 20, rl.Color.WHITE
       );
       rl.Core.DrawText(
         "Space - drawing function".toC,
-        20, 130, 20, rl.C.WHITE
+        20, 130, 20, rl.Color.WHITE
       );
       
       if (useDrawModelPoints) {
         rl.Core.DrawText(
           "Using: DrawModelPoints()".toC,
-          20, 160, 20, rl.C.GREEN
+          20, 160, 20, rl.Color.GREEN
         );
       } else {
         rl.Core.DrawText(
           "Using: DrawPoint3D()".toC,
-          20, 160, 20, rl.C.RED
+          20, 160, 20, rl.Color.RED
         );
       }
       
@@ -158,8 +158,8 @@ MeshC GenMeshPoints(Raylib rl, int numPoints)
   final mesh = rl.Temp.Mesh$.At('mesh'); 
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = numPoints;
-  mesh.ref.vertices = rl.Temp.Float$.RawArray(vertices);
-  mesh.ref.colors = rl.Temp.UnsignedChar$.RawArray(colors);
+  mesh.ref.vertices = rl.Temp.Float$.RawArrayPopulated(vertices);
+  mesh.ref.colors = rl.Temp.UnsignedChar$.RawArrayPopulated(colors);
 
   rl.Core.UploadMesh(mesh, false);
 

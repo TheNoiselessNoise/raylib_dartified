@@ -70,11 +70,11 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        if (drawMesh) rl.Core.DrawModel(model, position.ref, 1.0, rl.C.WHITE);
+        if (drawMesh) rl.Core.DrawModel(model, position.ref, 1.0, rl.Color.WHITE);
 
         if (drawSkeleton)
         {
@@ -82,27 +82,27 @@ void main()
           {
             if (!animPlaying || !animsCount.value.toBool())
             {
-              rl.Core.DrawCube(model.bindPose[i].translation, 0.04, 0.04, 0.04, rl.C.RED);
+              rl.Core.DrawCube(model.bindPose[i].translation, 0.04, 0.04, 0.04, rl.Color.RED);
 
               if (model.bones[i].parent >= 0)
               {
                 rl.Core.DrawLine3D(
                   model.bindPose[i].translation,
                   model.bindPose[model.bones[i].parent].translation,
-                  rl.C.RED
+                  rl.Color.RED
                 );
               }
             }
             else
             {
-              rl.Core.DrawCube(anims[animId].framePoses[animFrameCounter][i].translation, 0.05, 0.05, 0.05, rl.C.RED);
+              rl.Core.DrawCube(anims[animId].framePoses[animFrameCounter][i].translation, 0.05, 0.05, 0.05, rl.Color.RED);
 
               if (anims[animId].bones[i].parent >= 0)
               {
                 rl.Core.DrawLine3D(
                   anims[animId].framePoses[animFrameCounter][i].translation,
                   anims[animId].framePoses[animFrameCounter][anims[animId].bones[i].parent].translation,
-                  rl.C.RED
+                  rl.Color.RED
                 );
               }
             }
@@ -115,23 +115,23 @@ void main()
 
       rl.Core.DrawText(
         "PRESS SPACE to PLAY MODEL ANIMATION".toC,
-        10, rl.Core.GetScreenHeight() - 80, 10, rl.C.MAROON
+        10, rl.Core.GetScreenHeight() - 80, 10, rl.Color.MAROON
       );
       rl.Core.DrawText(
         "PRESS N to STEP ONE ANIMATION FRAME".toC,
-        10, rl.Core.GetScreenHeight() - 60, 10, rl.C.DARKGRAY
+        10, rl.Core.GetScreenHeight() - 60, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "PRESS C to CYCLE THROUGH ANIMATIONS".toC,
-        10, rl.Core.GetScreenHeight() - 40, 10, rl.C.DARKGRAY
+        10, rl.Core.GetScreenHeight() - 40, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "PRESS M to toggle MESH, B to toggle SKELETON DRAWING".toC,
-        10, rl.Core.GetScreenHeight() - 20, 10, rl.C.DARKGRAY
+        10, rl.Core.GetScreenHeight() - 20, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "(c) CesiumMan model by KhronosGroup".toC,
-        rl.Core.GetScreenWidth() - 210, rl.Core.GetScreenHeight() - 20, 10, rl.C.GRAY
+        rl.Core.GetScreenWidth() - 210, rl.Core.GetScreenHeight() - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

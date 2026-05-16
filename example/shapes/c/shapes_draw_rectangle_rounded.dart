@@ -36,21 +36,21 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawLine(560, 0, 560, h, rl.Core.Fade(rl.C.LIGHTGRAY, 0.6));
-      rl.Core.DrawRectangle(560, 0, w - 500, h, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3));
+      rl.Core.DrawLine(560, 0, 560, h, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.6));
+      rl.Core.DrawRectangle(560, 0, w - 500, h, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3));
 
       if (drawRect.value) rl.Core.DrawRectangleRec(
         rec.ref,
-        rl.Core.Fade(rl.C.GOLD, 0.6)
+        rl.Core.Fade(rl.Color.GOLD, 0.6)
       );
       
       if (drawRoundedRect.value) rl.Core.DrawRectangleRounded(
         rec.ref,
         roundness.value,
         segments.value.toInt(),
-        rl.Core.Fade(rl.C.MAROON, 0.2)
+        rl.Core.Fade(rl.Color.MAROON, 0.2)
       );
       
       if (drawRoundedLines.value) rl.Core.DrawRectangleRoundedLinesEx(
@@ -58,7 +58,7 @@ void main()
         roundness.value,
         segments.value.toInt(),
         lineThick.value,
-        rl.Core.Fade(rl.C.MAROON, 0.4)
+        rl.Core.Fade(rl.Color.MAROON, 0.4)
       );
 
       rl.Gui.GuiSliderBar(
@@ -117,7 +117,7 @@ void main()
 
       rl.Core.DrawText(
         "MODE: ${(segments.value >= 4) ? "MANUAL" : "AUTO"}".toC,
-        640, 280, 10, (segments.value >= 4) ? rl.C.MAROON : rl.C.DARKGRAY
+        640, 280, 10, (segments.value >= 4) ? rl.Color.MAROON : rl.Color.DARKGRAY
       );
 
       rl.Core.DrawFPS(10, 10);

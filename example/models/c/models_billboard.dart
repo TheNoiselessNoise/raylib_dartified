@@ -49,7 +49,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -62,7 +62,7 @@ void main()
             bill,
             rl.Temp.vec31D(billPositionStatic),
             2.0,
-            rl.C.WHITE
+            rl.Color.WHITE
           );
           rl.Core.DrawBillboardPro(
             camera.ref,
@@ -73,7 +73,7 @@ void main()
             rl.Temp.vec21D(size),
             rl.Temp.vec22D(origin),
             rotation,
-            rl.C.WHITE
+            rl.Color.WHITE
           );
         } 
         else
@@ -87,14 +87,14 @@ void main()
             rl.Temp.vec21D(size),
             rl.Temp.vec22D(origin),
             rotation,
-            rl.C.WHITE
+            rl.Color.WHITE
           );
           rl.Core.DrawBillboard(
             camera.ref,
             bill,
             rl.Temp.vec31D(billPositionStatic),
             2.0,
-            rl.C.WHITE
+            rl.Color.WHITE
           );
         }
 

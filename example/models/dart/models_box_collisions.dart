@@ -14,7 +14,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(0, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -70,7 +70,6 @@ void main()
 
     if (rl.CoreD.CheckCollisionBoxes(playerBBox, enemyBBox)) collision = true;
 
-    // Check collisions player vs enemy-sphere
     if (rl.CoreD.CheckCollisionBoxSphere(playerBBox, enemySpherePos, enemySphereSize)) collision = true;
 
     if (collision) playerColor = .RED;

@@ -74,43 +74,43 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (currentFont == 1)
       {
         rl.Core.BeginShaderMode(shader);
-          rl.Core.DrawTextEx(fontSDF.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.C.BLACK);
+          rl.Core.DrawTextEx(fontSDF.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.Color.BLACK);
         rl.Core.EndShaderMode();
 
-        rl.Core.DrawTexture(fontSDF.ref.texture, 10, 10, rl.C.BLACK);
+        rl.Core.DrawTexture(fontSDF.ref.texture, 10, 10, rl.Color.BLACK);
       }
       else
       {
-        rl.Core.DrawTextEx(fontDefault.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.C.BLACK);
-        rl.Core.DrawTexture(fontDefault.ref.texture, 10, 10, rl.C.BLACK);
+        rl.Core.DrawTextEx(fontDefault.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.Color.BLACK);
+        rl.Core.DrawTexture(fontDefault.ref.texture, 10, 10, rl.Color.BLACK);
       }
 
-      if (currentFont == 1) rl.Core.DrawText("SDF!".toC, 320, 20, 80, rl.C.RED);
-      else rl.Core.DrawText("default font".toC, 315, 40, 30, rl.C.GRAY);
+      if (currentFont == 1) rl.Core.DrawText("SDF!".toC, 320, 20, 80, rl.Color.RED);
+      else rl.Core.DrawText("default font".toC, 315, 40, 30, rl.Color.GRAY);
 
       rl.Core.DrawText(
         "FONT SIZE: 16.0".toC,
-        rl.Core.GetScreenWidth() - 240, 20, 20, rl.C.DARKGRAY
+        rl.Core.GetScreenWidth() - 240, 20, 20, rl.Color.DARKGRAY
       );
       
       rl.Core.DrawText(
         "RENDER SIZE: ${fontSize.f2}".toC,
-        rl.Core.GetScreenWidth() - 240, 50, 20, rl.C.DARKGRAY
+        rl.Core.GetScreenWidth() - 240, 50, 20, rl.Color.DARKGRAY
       );
       
       rl.Core.DrawText(
         "Use MOUSE WHEEL to SCALE TEXT!".toC,
-        rl.Core.GetScreenWidth() - 240, 90, 10, rl.C.DARKGRAY
+        rl.Core.GetScreenWidth() - 240, 90, 10, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         "HOLD SPACE to USE SDF FONT VERSION!".toC,
-        340, rl.Core.GetScreenHeight() - 30, 20, rl.C.MAROON
+        340, rl.Core.GetScreenHeight() - 30, 20, rl.Color.MAROON
       );
 
     rl.Core.EndDrawing();

@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, camel_case_extensions
-
 part of '../../../../raylib.dart';
 
 extension RlRenderBatchCPEx on Pointer<RlRenderBatchC> {
@@ -30,7 +28,7 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   RlRenderBatchC setD(RlRenderBatchD o) {
     bufferCount = o.bufferCount;
     currentBuffer = o.currentBuffer;
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       vertexBuffer = p.ref.vertexBuffer;
       draws = p.ref.draws;
     });
@@ -64,12 +62,23 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   );
 }
 
-class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> {
+class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> with RlRenderBatchBase {
+  @override
   int bufferCount;
+  
+  @override
   int currentBuffer;
+  
+  @override
   List<RlVertexBufferD> vertexBuffers;
+  
+  @override
   List<RlDrawCallD> draws;
+  
+  @override
   int drawCounter;
+  
+  @override
   double currentDepth;
 
   RlRenderBatchD({
@@ -88,7 +97,7 @@ class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> {
 
   @override
   RlRenderBatchD setC(RlRenderBatchC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.vertexBuffer = o.vertexBuffer;
       p.ref.draws = o.draws;
     });
@@ -118,35 +127,25 @@ class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> {
   }
 
   @override
-  Pointer<RlRenderBatchC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.RlRenderBatch$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.RlRenderBatch$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
-    p.ref.bufferCount = bufferCount;
-    p.ref.currentBuffer = currentBuffer;
-    p.ref.drawCounter = drawCounter;
-    p.ref.currentDepth = currentDepth;
-
+  void nativeAllocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
     p.ref.vertexBuffer = temp.RlVertexBuffer$.Array(vertexBuffers, key: '${key}_vbufs');
     p.ref.draws = temp.RlDrawCall$.Array(draws, key: '${key}_draws');
   }
 
   @override
-  void writeInto(RlRenderBatchC p) {
+  void nativeWriteInto(RlRenderBatchC p) {
     p.bufferCount = bufferCount;
     p.currentBuffer = currentBuffer;
     p.drawCounter = drawCounter;
     p.currentDepth = currentDepth;
     for (var i = 0; i < vertexBuffers.length; i++) {
-      vertexBuffers[i].writeInto((p.vertexBuffer + i).ref);
+      vertexBuffers[i].nativeWriteInto((p.vertexBuffer + i).ref);
     }
     for (var i = 0; i < draws.length; i++) {
-      draws[i].writeInto((p.draws + i).ref);
+      draws[i].nativeWriteInto((p.draws + i).ref);
     }
   }
 

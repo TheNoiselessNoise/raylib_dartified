@@ -10,7 +10,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 double exponent = 1;
-final List<double> averageVolume = List.filled(400, 0.0);
+final List<double> averageVolume = .filled(400, 0.0);
 
 void main() async {
   final rl = loadBaseRaylib();

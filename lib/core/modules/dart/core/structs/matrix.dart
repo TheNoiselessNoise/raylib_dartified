@@ -13,16 +13,6 @@ extension MatrixCLike on MatrixC {
     ].join('\n')} ]';
 }
 
-extension MatrixDLike on MatrixD {
-  String format([int x0 = 0])
-    => '[ ${[
-      [m0, m1, m2, m3].map((x) => x.toStringAsFixed(x0)).join(', '),
-      [m4, m5, m6, m7].map((x) => x.toStringAsFixed(x0)).join(', '),
-      [m8, m9, m10, m11].map((x) => x.toStringAsFixed(x0)).join(', '),
-      [m12, m13, m14, m15].map((x) => x.toStringAsFixed(x0)).join(', '),
-    ].join('\n')} ]';
-}
-
 extension MatrixCPEx on Pointer<MatrixC> {
   Pointer<MatrixC> setC(MatrixC o) {
     ref.setC(o);
@@ -131,7 +121,8 @@ extension MatrixCEx on MatrixC {
   MatrixC translateVector(Vector3C v) => translate(v.x, v.y, v.z);
 }
 
-class MatrixD extends StructDLiteral<MatrixD, MatrixC> {
+class MatrixD extends StructDLiteral<MatrixD, MatrixC> with MatrixBase {
+  @override
   double
     m0, m1, m2, m3,
     m4, m5, m6, m7,
@@ -289,15 +280,10 @@ class MatrixD extends StructDLiteral<MatrixD, MatrixC> {
   }
 
   @override
-  Pointer<MatrixC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Matrix$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Matrix$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<MatrixC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(MatrixC p) {
+  void nativeWriteInto(MatrixC p) {
     p.m0 = m0; p.m1 = m1; p.m2 = m2; p.m3 = m3;
     p.m4 = m4; p.m5 = m5; p.m6 = m6; p.m7 = m7;
     p.m8 = m8; p.m9 = m9; p.m10 = m10; p.m11 = m11;
@@ -393,10 +379,10 @@ class MatrixD extends StructDLiteral<MatrixD, MatrixC> {
       clone.m10 /= s.z;
 
       // Extract rotation
-      rotation = .qFromMatrix(clone);
+      rotation = .fromMatrix(clone);
     } else {
       // Set to identity if close to zero
-      rotation = .qIdentity();
+      rotation = .identity();
     }
 
     return (translation, rotation, scale);

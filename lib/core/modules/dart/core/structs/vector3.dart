@@ -134,7 +134,8 @@ extension Vector3CEx on Vector3C {
   );
 }
 
-class Vector3D extends StructDLiteral<Vector3D, Vector3C> {
+class Vector3D extends StructDLiteral<Vector3D, Vector3C> with Vector3Base {
+  @override
   double x, y, z;
 
   Vector3D({
@@ -184,15 +185,10 @@ class Vector3D extends StructDLiteral<Vector3D, Vector3C> {
   }
 
   @override
-  Pointer<Vector3C> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Vector3$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Vector3$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<Vector3C> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(Vector3C p) {
+  void nativeWriteInto(Vector3C p) {
     p.x = x;
     p.y = y;
     p.z = z;
@@ -384,7 +380,7 @@ class Vector3D extends StructDLiteral<Vector3D, Vector3C> {
 
   Vector3D unproject(MatrixD projection, MatrixD view) {
     MatrixD matViewProj = view.mul(projection).invert();
-    QuaternionD qtransformed = .quat(x, y, z, 1.0).qTransform(matViewProj);
+    QuaternionD qtransformed = .quat(x, y, z, 1.0).transform(matViewProj);
     return .vec3(
       qtransformed.x/qtransformed.w,
       qtransformed.y/qtransformed.w,

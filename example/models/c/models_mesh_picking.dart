@@ -62,7 +62,7 @@ void main()
     String hitObjectName = "None";
     collision.ref.distance = double.maxFinite;
     collision.ref.hit = false;
-    ColorC cursorColor = rl.C.WHITE;
+    ColorC cursorColor = rl.Color.WHITE;
 
     // Get ray and test against objects
     ray.ref = rl.Core.GetScreenToWorldRay(rl.Core.GetMousePosition(), camera.ref);
@@ -73,7 +73,7 @@ void main()
     if ((groundHitInfo.hit) && (groundHitInfo.distance < collision.ref.distance))
     {
       collision.ref = groundHitInfo;
-      cursorColor = rl.C.GREEN;
+      cursorColor = rl.Color.GREEN;
       hitObjectName = "Ground";
     }
 
@@ -83,10 +83,10 @@ void main()
     if ((triHitInfo.hit) && (triHitInfo.distance < collision.ref.distance))
     {
       collision.ref = triHitInfo;
-      cursorColor = rl.C.PURPLE;
+      cursorColor = rl.Color.PURPLE;
       hitObjectName = "Triangle";
 
-      bary.setD(rl.Vec.Vector3Barycenter(collision.ref.point.toD(), ta.toD(), tb.toD(), tc.toD()));
+      bary.setD(rl.Vector.Vector3Barycenter(collision.ref.point.toD(), ta.toD(), tb.toD(), tc.toD()));
     }
 
     // Check ray collision against test sphere
@@ -95,7 +95,7 @@ void main()
     if ((sphereHitInfo.hit) && (sphereHitInfo.distance < collision.ref.distance))
     {
       collision.ref = sphereHitInfo;
-      cursorColor = rl.C.ORANGE;
+      cursorColor = rl.Color.ORANGE;
       hitObjectName = "Sphere";
     }
 
@@ -105,7 +105,7 @@ void main()
     if ((boxHitInfo.hit) && (boxHitInfo.distance < collision.ref.distance))
     {
       collision.ref = boxHitInfo;
-      cursorColor = rl.C.ORANGE;
+      cursorColor = rl.Color.ORANGE;
       hitObjectName = "Box";
 
       // Check ray collision against model meshes
@@ -128,41 +128,41 @@ void main()
       if (meshHitInfo.ref.hit)
       {
         collision.ref = meshHitInfo.ref;
-        cursorColor = rl.C.ORANGE;
+        cursorColor = rl.Color.ORANGE;
         hitObjectName = "Mesh";
       }
     }
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(tower, towerPos.ref, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(tower, towerPos.ref, 1.0, rl.Color.WHITE);
 
-        rl.Core.DrawLine3D(ta.ref, tb.ref, rl.C.PURPLE);
-        rl.Core.DrawLine3D(tb.ref, tc.ref, rl.C.PURPLE);
-        rl.Core.DrawLine3D(tc.ref, ta.ref, rl.C.PURPLE);
+        rl.Core.DrawLine3D(ta.ref, tb.ref, rl.Color.PURPLE);
+        rl.Core.DrawLine3D(tb.ref, tc.ref, rl.Color.PURPLE);
+        rl.Core.DrawLine3D(tc.ref, ta.ref, rl.Color.PURPLE);
 
-        rl.Core.DrawSphereWires(sp.ref, sr, 8, 8, rl.C.PURPLE);
+        rl.Core.DrawSphereWires(sp.ref, sr, 8, 8, rl.Color.PURPLE);
 
-        if (boxHitInfo.hit) rl.Core.DrawBoundingBox(towerBBox, rl.C.LIME);
+        if (boxHitInfo.hit) rl.Core.DrawBoundingBox(towerBBox, rl.Color.LIME);
 
         if (collision.ref.hit)
         {
           rl.Core.DrawCube(collision.ref.point, 0.3, 0.3, 0.3, cursorColor);
-          rl.Core.DrawCubeWires(collision.ref.point, 0.3, 0.3, 0.3, rl.C.RED);
+          rl.Core.DrawCubeWires(collision.ref.point, 0.3, 0.3, 0.3, rl.Color.RED);
 
           final normalEnd = rl.Temp.Vector3$.At('normalEnd');
           normalEnd.ref.x = collision.ref.point.x + collision.ref.normal.x;
           normalEnd.ref.y = collision.ref.point.y + collision.ref.normal.y;
           normalEnd.ref.z = collision.ref.point.z + collision.ref.normal.z;
 
-          rl.Core.DrawLine3D(collision.ref.point, normalEnd.ref, rl.C.RED);
+          rl.Core.DrawLine3D(collision.ref.point, normalEnd.ref, rl.Color.RED);
         }
 
-        rl.Core.DrawRay(ray.ref, rl.C.MAROON);
+        rl.Core.DrawRay(ray.ref, rl.Color.MAROON);
 
         rl.Core.DrawGrid(10, 10.0);
 
@@ -170,7 +170,7 @@ void main()
 
       rl.Core.DrawText(
         "Hit Object: $hitObjectName".toC,
-        10, 50, 10, rl.C.BLACK
+        10, 50, 10, rl.Color.BLACK
       );
 
       if (collision.ref.hit)
@@ -179,34 +179,34 @@ void main()
 
         rl.Core.DrawText(
           "Distance: ${collision.ref.distance.f2}".toC,
-          10, ypos, 10, rl.C.BLACK
+          10, ypos, 10, rl.Color.BLACK
         );
 
         rl.Core.DrawText(
           "Hit Pos: ${collision.ref.point.x.f2} ${collision.ref.point.y.f2} ${collision.ref.point.z.f2}".toC,
-          10, ypos + 15, 10, rl.C.BLACK
+          10, ypos + 15, 10, rl.Color.BLACK
         );
 
         rl.Core.DrawText(
           "Hit Norm: ${collision.ref.normal.x.f2} ${collision.ref.normal.y.f2} ${collision.ref.normal.z.f2}".toC,
-          10, ypos + 30, 10, rl.C.BLACK
+          10, ypos + 30, 10, rl.Color.BLACK
         );
 
         if (triHitInfo.hit && hitObjectName == "Triangle")
           rl.Core.DrawText(
             "Barycenter: ${bary.ref.x.f2} ${bary.ref.y.f2} ${bary.ref.z.f2}".toC,
-            10, ypos + 45, 10, rl.C.BLACK
+            10, ypos + 45, 10, rl.Color.BLACK
           );
       }
 
       rl.Core.DrawText(
         "Right click mouse to toggle camera controls".toC,
-        10, 430, 10, rl.C.GRAY
+        10, 430, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "(c) Turret 3D model by Alberto Cano".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

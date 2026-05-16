@@ -32,7 +32,7 @@ void main()
     if (rl.CoreD.IsKeyPressed(.KEY_SPACE))
     {
       if (blendMode.value >= (blendCountMax - 1)) blendMode = .BLEND_ALPHA;
-      else blendMode = BlendMode.fromValue(blendMode.value + 1);
+      else blendMode = .fromValue(blendMode.value + 1);
     }
 
     rl.CoreD.BeginDrawing();

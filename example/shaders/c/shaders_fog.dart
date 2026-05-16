@@ -65,7 +65,7 @@ void main()
 
   rl.Light.CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(0, 2, 6), rl.Temp.vec3Zero, rl.C.WHITE, shader
+    rl.Temp.vec31(0, 2, 6), rl.Temp.vec3Zero, rl.Color.WHITE, shader
   );
 
   while (!rl.Core.WindowShouldClose())
@@ -97,26 +97,26 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.GRAY);
+      rl.Core.ClearBackground(rl.Color.GRAY);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(modelA, rl.Temp.vec3Zero, 1.0, rl.C.WHITE);
-        rl.Core.DrawModel(modelB, rl.Temp.vec31(-2.6, 0, 0), 1.0, rl.C.WHITE);
-        rl.Core.DrawModel(modelC, rl.Temp.vec31(2.6, 0, 0), 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(modelA, rl.Temp.vec3Zero, 1.0, rl.Color.WHITE);
+        rl.Core.DrawModel(modelB, rl.Temp.vec31(-2.6, 0, 0), 1.0, rl.Color.WHITE);
+        rl.Core.DrawModel(modelC, rl.Temp.vec31(2.6, 0, 0), 1.0, rl.Color.WHITE);
 
         for (int i = -20; i < 20; i += 2) rl.Core.DrawModel(
           modelA,
           rl.Temp.vec31(i, 0, 2),
           1.0,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
 
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "Use KEY_UP/KEY_DOWN to change fog density [${fogDensity.f2}]".toC,
-        10, 10, 20, rl.C.RAYWHITE
+        10, 10, 20, rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();

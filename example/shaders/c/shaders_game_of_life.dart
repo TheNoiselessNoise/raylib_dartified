@@ -78,7 +78,7 @@ void main()
   final world2 = rl.Core.LoadRenderTexture(worldWidth, worldHeight);
 
   rl.Core.BeginTextureMode(world2);
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
   rl.Core.EndTextureMode();
 
   final rect1 = rl.Temp.Rectangle$.At('1');
@@ -94,8 +94,8 @@ void main()
   );
   rl.Core.UnloadImage(startPattern);
 
-  RenderTexture2DC currentWorld = world2;
-  RenderTexture2DC previousWorld = world1;
+  var currentWorld = world2;
+  var previousWorld = world1;
 
   final imageToDraw = rl.Temp.Image$.At('imageToDraw');
   final pattern = rl.Temp.Image$.At('pattern');
@@ -158,7 +158,7 @@ void main()
             ).ref,
             v21.set(0, 0).ref,
             0.0,
-            rl.C.WHITE
+            rl.Color.WHITE
           );
         rl.Core.EndTextureMode();
 
@@ -179,7 +179,7 @@ void main()
         }
         final prevColor = (rl.Core.GetImageColor(imageToDraw.ref, mouseX, mouseY).r < 5)? 0 : 1;
         
-        rl.Core.ImageDrawPixel(imageToDraw, mouseX, mouseY, (firstColor != 0) ? rl.C.BLACK : rl.C.RAYWHITE);
+        rl.Core.ImageDrawPixel(imageToDraw, mouseX, mouseY, (firstColor != 0) ? rl.Color.BLACK : rl.Color.RAYWHITE);
         
         if (prevColor != firstColor) rl.Core.UpdateTextureRec(
           currentWorld.texture,
@@ -211,7 +211,7 @@ void main()
           default: throw UnimplementedError();
         }
         rl.Core.BeginTextureMode(currentWorld);
-          rl.Core.ClearBackground(rl.C.RAYWHITE);
+          rl.Core.ClearBackground(rl.Color.RAYWHITE);
         rl.Core.EndTextureMode();
         
         rl.Core.UpdateTextureRec(
@@ -225,18 +225,18 @@ void main()
           pattern.ref.data
         );
       } else {
-        pattern.ref = rl.Core.GenImageColor(worldWidth~/randomTiles, worldHeight~/randomTiles, rl.C.RAYWHITE);
+        pattern.ref = rl.Core.GenImageColor(worldWidth~/randomTiles, worldHeight~/randomTiles, rl.Color.RAYWHITE);
 
         for (int i = 0; i < randomTiles; i++)
         {
           for (int j = 0; j < randomTiles; j++)
           {
-            rl.Core.ImageClearBackground(pattern, rl.C.RAYWHITE);
+            rl.Core.ImageClearBackground(pattern, rl.Color.RAYWHITE);
             for (int x = 0; x < pattern.ref.width; x++)
             {
               for (int y = 0; y < pattern.ref.height; y++)
               {
-                if (rl.Core.GetRandomValue(0, 100) < 15) rl.Core.ImageDrawPixel(pattern, x, y, rl.C.BLACK);
+                if (rl.Core.GetRandomValue(0, 100) < 15) rl.Core.ImageDrawPixel(pattern, x, y, rl.Color.BLACK);
               }
             }
             rl.Core.UpdateTextureRec(
@@ -277,7 +277,7 @@ void main()
             worldRectDest.ref,
             v21.set(0, 0).ref,
             0.0,
-            rl.C.RAYWHITE
+            rl.Color.RAYWHITE
           );
         rl.Core.EndShaderMode();
       rl.Core.EndTextureMode();
@@ -291,18 +291,18 @@ void main()
         textureOnScreen.ref,
         v21.set(0, 0).ref,
         0.0,
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawLine(windowWidth, 0, windowWidth, screenHeight, col1.set(218, 218, 218, 255).ref);
       rl.Core.DrawRectangle(windowWidth, 0, screenWidth - windowWidth, screenHeight, col1.set(232, 232, 232, 255).ref);
 
-      rl.Core.DrawText("Conway's".toC, 704, 4, 20, rl.C.DARKBLUE);
-      rl.Core.DrawText(" game of".toC, 704, 19, 20, rl.C.DARKBLUE);
-      rl.Core.DrawText("  life".toC, 708, 34, 20, rl.C.DARKBLUE);
-      rl.Core.DrawText("in raylib".toC, 757, 42, 6, rl.C.BLACK);
+      rl.Core.DrawText("Conway's".toC, 704, 4, 20, rl.Color.DARKBLUE);
+      rl.Core.DrawText(" game of".toC, 704, 19, 20, rl.Color.DARKBLUE);
+      rl.Core.DrawText("  life".toC, 708, 34, 20, rl.Color.DARKBLUE);
+      rl.Core.DrawText("in raylib".toC, 757, 42, 6, rl.Color.BLACK);
 
-      rl.Core.DrawText("Presets".toC, 710, 58, 8, rl.C.GRAY);
+      rl.Core.DrawText("Presets".toC, 710, 58, 8, rl.Color.GRAY);
       preset = -1;
       for (int i = 0; i < presetPatterns.length; i++)
         if (rl.Gui.GuiButton(rect1.set(710.0, 70.0 + 18*i, 80.0, 16.0).ref, presetPatterns[i].name.toC).toBool())
@@ -312,14 +312,14 @@ void main()
 
       rl.Core.DrawText(
         "Zoom: $zoom".toC,
-        710, 316, 8, rl.C.GRAY
+        710, 316, 8, rl.Color.GRAY
       );
       buttonZoomIn = rl.Gui.GuiButton(rect1.set(710, 328, 80, 16).ref, "Zoom in".toC).toBool();
       buttonZomOut = rl.Gui.GuiButton(rect1.set(710, 346, 80, 16).ref, "Zoom out".toC).toBool();
 
       rl.Core.DrawText(
         "Speed: $framesPerStep frame${(framesPerStep > 1)? "s" : ""}".toC,
-        710, 370, 8, rl.C.GRAY
+        710, 370, 8, rl.Color.GRAY
       );
       buttonFaster = rl.Gui.GuiButton(rect1.set(710, 382, 80, 16).ref, "Faster".toC).toBool();
       buttonSlower = rl.Gui.GuiButton(rect1.set(710, 400, 80, 16).ref, "Slower".toC).toBool();

@@ -25,7 +25,7 @@ extension AudioStreamCEx on AudioStreamC {
   }
 
   AudioStreamC setD(AudioStreamD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       buffer = p.ref.buffer;
       processor = p.ref.processor;
     });
@@ -43,9 +43,14 @@ extension AudioStreamCEx on AudioStreamC {
   );
 }
 
-class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> {
+class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> with AudioStreamBase {
+  @override
   int sampleRate;
+  
+  @override
   int sampleSize;
+  
+  @override
   int channels;
 
   AudioStreamD({
@@ -57,7 +62,7 @@ class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> {
 
   @override
   AudioStreamD setC(AudioStreamC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.buffer = o.buffer;
       p.ref.processor = o.processor;
     });
@@ -77,19 +82,19 @@ class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> {
   }
 
   @override
-  Pointer<AudioStreamC> allocatePointer(RaylibTemp temp, String key, [int count = 1]) =>
-      throw UnsupportedError('FAudioStreamD: is raylib-owned; cannot allocate externally.');
+  nativeAllocator(RaylibTemp temp)
+    => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) {} // NOTE: do nothing
+  void nativeSyncInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) {} // NOTE: do nothing
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) =>
-      throw UnsupportedError('FAudioStreamD: is raylib-owned; cannot allocate externally.');
+  void nativeAllocateInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key)
+    => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void writeInto(AudioStreamC p) =>
-      throw UnsupportedError('FAudioStreamD: is raylib-owned; cannot write externally.');
+  void nativeWriteInto(AudioStreamC p)
+    => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot write externally.');
 
   @override
   String signature() => '$structName(sampleRate: $sampleRate, sampleSize: $sampleSize, channels: $channels)';

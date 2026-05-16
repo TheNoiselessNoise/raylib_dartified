@@ -1,6 +1,6 @@
 part of 'raylib.dart';
 
-class Raylib {
+class Raylib with RaylibBase {
   static Raylib? _instance;
   static Raylib get instance {
     if (_instance == null) throw StateError('Raylib not initialized.');
@@ -13,10 +13,10 @@ class Raylib {
 
   late RaylibTemp Temp;
 
-  late RaylibQuaternions Q;
+  late RaylibQuaternions Quat;
   late RaylibMatrices Matrix;
-  late RaylibVectors Vec;
-  late RaylibColors C;
+  late RaylibVectors Vector;
+  late RaylibColors Color;
   late RaylibEasings Ease;
 
   late RaylibCore Core;
@@ -25,8 +25,8 @@ class Raylib {
   late RaylibAudioD AudioD;
   late RaylibRlgl Rlgl;
   late RaylibRlglD RlglD;
-  late RaylibCamera Cam;
-  late RaylibCameraD CamD;
+  late RaylibCamera Camera;
+  late RaylibCameraD CameraD;
   late RaylibLight Light;
   late RaylibLightD LightD;
 
@@ -36,6 +36,8 @@ class Raylib {
   //       That's expected behavior!
   late RaylibGui Gui;
   late RaylibGuiD GuiD;
+
+  late RaylibUtils Utils;
 
   late final DynamicLibrary _dynCore;
   late final DynamicLibrary? _dynGui;
@@ -59,7 +61,9 @@ class Raylib {
     }
 
     if (this.tempOptions.stringCount < 4) {
-      throw StateError("Raylib expects at least 4 preallocated String slots, got ${this.tempOptions.stringCount}");
+      throw StateError(
+        "Raylib expects at least 4 preallocated String slots, got ${this.tempOptions.stringCount}",
+      );
     }
 
     _instance = this;
@@ -72,11 +76,10 @@ class Raylib {
 
   List<Function()> get _moduleLoaders => [
     // NOTE: no Temp
-
-    () => _loadModule(RaylibQuaternions.new, (m) => Q = m),
+    () => _loadModule(RaylibQuaternions.new, (m) => Quat = m),
     () => _loadModule(RaylibMatrices.new, (m) => Matrix = m),
-    () => _loadModule(RaylibVectors.new, (m) => Vec = m),
-    () => _loadModule(RaylibColors.new, (m) => C = m),
+    () => _loadModule(RaylibVectors.new, (m) => Vector = m),
+    () => _loadModule(RaylibColors.new, (m) => Color = m),
     () => _loadModule(RaylibEasings.new, (m) => Ease = m),
 
     () => _loadModule(RaylibCore.new, (m) => Core = m),
@@ -85,8 +88,8 @@ class Raylib {
     () => _loadModule(RaylibAudioD.new, (m) => AudioD = m),
     () => _loadModule(RaylibRlgl.new, (m) => Rlgl = m),
     () => _loadModule(RaylibRlglD.new, (m) => RlglD = m),
-    () => _loadModule(RaylibCamera.new, (m) => Cam = m),
-    () => _loadModule(RaylibCameraD.new, (m) => CamD = m),
+    () => _loadModule(RaylibCamera.new, (m) => Camera = m),
+    () => _loadModule(RaylibCameraD.new, (m) => CameraD = m),
     () => _loadModule(RaylibLight.new, (m) => Light = m),
     () => _loadModule(RaylibLightD.new, (m) => LightD = m),
 
@@ -94,30 +97,39 @@ class Raylib {
       () => _loadModule(RaylibGui.new, (m) => Gui = m),
       () => _loadModule(RaylibGuiD.new, (m) => GuiD = m),
     ],
+
+    () => _loadModule(RaylibUtils.new, (m) => Utils = m),
   ];
 
-  List<BaseRaylibModule> get _allModules => [
+  List<RaylibModule> get _allModules => [
     Temp,
 
-    Q, Matrix, Vec, C, Ease,
+    Quat,
+    Matrix,
+    Vector,
+    Color,
+    Ease,
 
-    Core,  CoreD,
-    Audio, AudioD,
-    Rlgl,  RlglD,
-    Cam,   CamD,
-    Light, LightD,
+    Core,
+    CoreD,
+    Audio,
+    AudioD,
+    Rlgl,
+    RlglD,
+    Camera,
+    CameraD,
+    Light,
+    LightD,
 
-    if (_dynGui != null) ...[
-      Gui, GuiD,
-    ],
+    if (_dynGui != null) ...[Gui, GuiD],
 
     ..._customModules.values,
   ];
 
   // Custom modules
 
-  final Map<Type, BaseRaylibModule> _customModules = {};
-  T registerModule<T extends BaseRaylibModule>(T module) {
+  final Map<Type, RaylibModule> _customModules = {};
+  T registerModule<T extends RaylibModule>(T module) {
     logInfo('Registering $T');
     final key = module.runtimeType;
     if (_customModules.containsKey(key)) {
@@ -128,8 +140,8 @@ class Raylib {
     return module;
   }
 
-  T module<T extends BaseRaylibModule>()
-    => _customModules.values.whereType<T>().first;
+  T module<T extends RaylibModule>() =>
+      _customModules.values.whereType<T>().first;
 
   void debugEverything(bool debug) {
     _allModules.forEach((d) => d.debug(debug));
@@ -139,16 +151,17 @@ class Raylib {
 
   // Custom dynamic libraries
   final Map<Type, DynamicLibrary> _customDynLibs = {};
-  (T, DynamicLibrary) registerDynLib<T extends RaylibModule>(T module, DynamicLibrary dynLib) {
+  (T, DynamicLibrary) registerDynLib<T extends RaylibModule>(
+    T module,
+    DynamicLibrary dynLib,
+  ) {
     logInfo('Registering DynamicLibrary for $T');
 
     final key = module.runtimeType;
     if (_customDynLibs.containsKey(key)) {
-      throw StateError(
-        "A DynamicLibrary for $key is already registered."
-      );
+      throw StateError("A DynamicLibrary for $key is already registered.");
     }
-    
+
     _customDynLibs[key] = dynLib;
     return (registerModule(module), dynLib);
   }
@@ -156,14 +169,12 @@ class Raylib {
   DynamicLibrary dynLib<T extends RaylibModule>() {
     final lib = _customDynLibs[T];
     if (lib == null) {
-      throw StateError(
-        "No DynamicLibrary registered for $T."
-      );
+      throw StateError("No DynamicLibrary registered for $T.");
     }
     return lib;
   }
 
-  void _loadModule<T extends BaseRaylibModule>(
+  void _loadModule<T extends RaylibModule>(
     RaylibModuleConstructor<T> constructor,
     void Function(T) loader,
   ) {
@@ -173,7 +184,7 @@ class Raylib {
     module._doLoad();
   }
 
-  void _disposeModule(BaseRaylibModule module) {
+  void _disposeModule(RaylibModule module) {
     logInfo('Disposing ${module.runtimeType}');
     module.dispose();
   }
@@ -209,20 +220,35 @@ class Raylib {
     if (result > max) result = max;
     return result.toDouble();
   }
+
   double Lerp(num start, num end, num amount) {
-    return (start + amount*(end - start)).toDouble();
+    return (start + amount * (end - start)).toDouble();
   }
+
   double Normalize(num value, num start, num end) {
-    return (value - start)/(end - start);
+    return (value - start) / (end - start);
   }
-  double Remap(num value, num inputStart, num inputEnd, num outputStart, num outputEnd) {
-    return (value - inputStart)/(inputEnd - inputStart)*(outputEnd - outputStart) + outputStart;
+
+  double Remap(
+    num value,
+    num inputStart,
+    num inputEnd,
+    num outputStart,
+    num outputEnd,
+  ) {
+    return (value - inputStart) /
+            (inputEnd - inputStart) *
+            (outputEnd - outputStart) +
+        outputStart;
   }
+
   double Wrap(num value, num min, num max) {
-    return value - (max - min)*((value - min)/(max - min)).floorToDouble();
+    return value - (max - min) * ((value - min) / (max - min)).floorToDouble();
   }
+
   bool FloatEquals(double x, double y) {
-    return ((x - y).abs()) <= (EPSILON*math.max(1.0, math.max(x.abs(), y.abs())));
+    return ((x - y).abs()) <=
+        (EPSILON * math.max(1.0, math.max(x.abs(), y.abs())));
   }
 
   // Constants
@@ -287,11 +313,11 @@ String? _platformLibPath(String directory, String name) {
 
 Directory? findDirectory(String folder) {
   var dir = Directory.current;
-  
+
   while (true) {
     final current = Directory(path.join(dir.path, folder));
     if (current.existsSync()) return current;
-    
+
     final parent = dir.parent;
     if (parent.path == dir.path) return null;
     dir = parent;
@@ -300,10 +326,10 @@ Directory? findDirectory(String folder) {
 
 Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
   var dir = Directory.current;
-  
+
   while (true) {
     final raylibPath = path.join(dir.path, folder);
-    
+
     if (Directory(raylibPath).existsSync()) {
       final corePath = _platformLibPath(raylibPath, 'raylib');
 
@@ -317,7 +343,7 @@ Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
         tempOptions: tempOptions,
       );
     }
-    
+
     final parent = dir.parent;
     if (parent.path == dir.path) {
       throw Exception('Could not find $folder directory');

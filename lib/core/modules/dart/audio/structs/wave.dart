@@ -43,7 +43,7 @@ extension WaveCEx on WaveC {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       data = p.ref.data;
     });
     if (data.address != 0) {
@@ -66,11 +66,20 @@ extension WaveCEx on WaveC {
   );
 }
 
-class WaveD extends StructD<WaveD, WaveC> {
+class WaveD extends StructD<WaveD, WaveC> with WaveBase {
+  @override
   int frameCount;
+  
+  @override
   int sampleRate;
+  
+  @override
   int sampleSize;
+  
+  @override
   int channels;
+  
+  @override
   List<int> data;
 
   WaveD({
@@ -84,7 +93,7 @@ class WaveD extends StructD<WaveD, WaveC> {
 
   @override
   WaveD setC(WaveC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.data = o.data;
     });
     frameCount = o.frameCount;
@@ -107,24 +116,15 @@ class WaveD extends StructD<WaveD, WaveC> {
   }
 
   @override
-  Pointer<WaveC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Wave$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Wave$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<WaveC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
-    p.ref.frameCount = frameCount;
-    p.ref.sampleRate = sampleRate;
-    p.ref.sampleSize = sampleSize;
-    p.ref.channels = channels;
+  void nativeAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
     p.ref.data = temp.Short$.Array(data, key: '${key}_data').cast();
   }
 
   @override
-  void writeInto(WaveC p) {
+  void nativeWriteInto(WaveC p) {
     p.frameCount = frameCount;
     p.sampleRate = sampleRate;
     p.sampleSize = sampleSize;

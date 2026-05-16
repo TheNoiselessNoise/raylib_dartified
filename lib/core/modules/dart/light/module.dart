@@ -1,8 +1,17 @@
 part of '../../../raylib.dart';
 
-class RaylibLightD extends RaylibModule {
-  RaylibLightD(super.lib);
+class RaylibLightD extends RaylibModule implements RaylibLightModuleBase<
+  // types
+  ColorD,
+  LightD,
+  ShaderD,
+  Vector3D
 
+> {
+  
+  RaylibLightD(super.rl);
+
+  @override
   LightD CreateLight(
     LightType type,
     Vector3D position,
@@ -20,6 +29,7 @@ class RaylibLightD extends RaylibModule {
     ).toD(),
   );
 
+  @override
   void UpdateLightValues(
     ShaderD shader,
     LightD light,

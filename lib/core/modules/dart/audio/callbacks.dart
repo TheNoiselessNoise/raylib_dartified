@@ -7,7 +7,7 @@ typedef AudioCallbackFunctionD = void Function(Pointer<Void> bufferData, int fra
 abstract class AudioCallbackD extends CallbackD<
   AudioCallbackFunctionC,
   AudioCallbackFunctionD
-> {
+> with AudioCallbackBase {
   AudioCallbackD([super.name]);
 
   static final List<AudioCallbackD> _registry = [];

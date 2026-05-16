@@ -101,47 +101,47 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (state == 0)
       {
         if ((framesCounter/15)%2 == 0) rl.Core.DrawRectangle(
-          logoPositionX, logoPositionY, 16, 16, rl.C.BLACK
+          logoPositionX, logoPositionY, 16, 16, rl.Color.BLACK
         );
       }
       else if (state == 1)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.C.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.C.BLACK);
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Color.BLACK);
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.Color.BLACK);
       }
       else if (state == 2)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.C.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.C.BLACK);
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Color.BLACK);
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.Color.BLACK);
 
-        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, rl.C.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.C.BLACK);
+        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, rl.Color.BLACK);
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.Color.BLACK);
       }
       else if (state == 3)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Core.Fade(rl.C.BLACK, alpha));
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, rl.Core.Fade(rl.C.BLACK, alpha));
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Core.Fade(rl.Color.BLACK, alpha));
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, rl.Core.Fade(rl.Color.BLACK, alpha));
 
-        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, rl.Core.Fade(rl.C.BLACK, alpha));
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.Core.Fade(rl.C.BLACK, alpha));
+        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, rl.Core.Fade(rl.Color.BLACK, alpha));
+        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.Core.Fade(rl.Color.BLACK, alpha));
 
-        rl.Core.DrawRectangle(w~/2 - 112, h~/2 - 112, 224, 224, rl.Core.Fade(rl.C.RAYWHITE, alpha));
+        rl.Core.DrawRectangle(w~/2 - 112, h~/2 - 112, 224, 224, rl.Core.Fade(rl.Color.RAYWHITE, alpha));
 
         rl.Core.DrawText(
           text.substring(0, lettersCount).toC,
-          w~/2 - 44, h~/2 + 48, 50, rl.Core.Fade(rl.C.BLACK, alpha)
+          w~/2 - 44, h~/2 + 48, 50, rl.Core.Fade(rl.Color.BLACK, alpha)
         );
       }
       else if (state == 4)
       {
         rl.Core.DrawText(
           "[R] REPLAY".toC,
-          340, 200, 20, rl.C.GRAY
+          340, 200, 20, rl.Color.GRAY
         );
       }
 

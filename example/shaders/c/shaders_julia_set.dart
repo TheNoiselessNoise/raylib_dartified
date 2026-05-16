@@ -129,19 +129,19 @@ void main()
     updateShaderC();
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.C.BLACK);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.Color.BLACK);
     rl.Core.EndTextureMode();
         
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.BeginShaderMode(shader);
         rl.Core.DrawTextureEx(
           target.texture,
           rl.Temp.vec2Zero,
-          0.0, 1.0, rl.C.WHITE
+          0.0, 1.0, rl.Color.WHITE
         );
       rl.Core.EndShaderMode();
 
@@ -149,27 +149,27 @@ void main()
       {
         rl.Core.DrawText(
           "Press Mouse buttons right/left to zoom in/out and move".toC,
-          10, 15, 10, rl.C.RAYWHITE
+          10, 15, 10, rl.Color.RAYWHITE
         );
         rl.Core.DrawText(
           "Press KEY_F1 to toggle these controls".toC,
-          10, 30, 10, rl.C.RAYWHITE
+          10, 30, 10, rl.Color.RAYWHITE
         );
         rl.Core.DrawText(
           "Press KEYS [1 - 6] to change point of interest".toC,
-          10, 45, 10, rl.C.RAYWHITE
+          10, 45, 10, rl.Color.RAYWHITE
         );
         rl.Core.DrawText(
           "Press KEY_LEFT | KEY_RIGHT to change speed".toC,
-          10, 60, 10, rl.C.RAYWHITE
+          10, 60, 10, rl.Color.RAYWHITE
         );
         rl.Core.DrawText(
           "Press KEY_SPACE to stop movement animation".toC,
-          10, 75, 10, rl.C.RAYWHITE
+          10, 75, 10, rl.Color.RAYWHITE
         );
         rl.Core.DrawText(
           "Press KEY_R to recenter the camera".toC,
-          10, 90, 10, rl.C.RAYWHITE
+          10, 90, 10, rl.Color.RAYWHITE
         );
       }
     rl.Core.EndDrawing();

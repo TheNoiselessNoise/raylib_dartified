@@ -25,7 +25,7 @@ void main()
   int width = 960;
   int height = 480;
 
-  final List<ColorD> pixels = List.generate(width*height, (_) => .BLACK);
+  final List<ColorD> pixels = .generate(width*height, (_) => .BLACK);
 
   for (int y = 0; y < height; y++)
   {

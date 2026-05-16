@@ -75,7 +75,7 @@ void main()
 
   final transfertBuffer = calloc<GolUpdateSSBO>();
 
-  final whiteImage = rl.Core.GenImageColor(GOL_WIDTH, GOL_WIDTH, rl.C.WHITE);
+  final whiteImage = rl.Core.GenImageColor(GOL_WIDTH, GOL_WIDTH, rl.Color.WHITE);
   final whiteTex = rl.Core.LoadTextureFromImage(whiteImage);
   rl.Core.UnloadImage(whiteImage);
 
@@ -129,21 +129,21 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.BLANK);
+      rl.Core.ClearBackground(rl.Color.BLANK);
 
       rl.Core.BeginShaderMode(golRenderShader);
-          rl.Core.DrawTexture(whiteTex, 0, 0, rl.C.WHITE);
+          rl.Core.DrawTexture(whiteTex, 0, 0, rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
       rl.Core.DrawRectangleLines(
         rl.Core.GetMouseX() - brushSize~/2,
         rl.Core.GetMouseY() - brushSize~/2,
-        brushSize, brushSize, rl.C.RED
+        brushSize, brushSize, rl.Color.RED
       );
 
       rl.Core.DrawText(
         "Use Mouse wheel to increase/decrease brush size".toC,
-        10, 10, 20, rl.C.WHITE
+        10, 10, 20, rl.Color.WHITE
       );
       rl.Core.DrawFPS(rl.Core.GetScreenWidth() - 100, 10);
 

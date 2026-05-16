@@ -65,7 +65,7 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -73,40 +73,40 @@ void main() {
         {
           rl.Core.DrawCube(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.C.RED
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.RED
           );
           
           rl.Core.DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.C.MAROON
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.MAROON
           );
 
           rl.Core.DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x + 0.2, cubeSize.ref.y + 0.2, cubeSize.ref.z + 0.2, rl.C.GREEN
+            cubeSize.ref.x + 0.2, cubeSize.ref.y + 0.2, cubeSize.ref.z + 0.2, rl.Color.GREEN
           );
         }
         else
         {
           rl.Core.DrawCube(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.C.GRAY
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.GRAY
           );
           
           rl.Core.DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.C.DARKGRAY
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.DARKGRAY
           );
         }
 
-        rl.Core.DrawRay(ray.ref, rl.C.MAROON);
+        rl.Core.DrawRay(ray.ref, rl.Color.MAROON);
         rl.Core.DrawGrid(10, 1.0);
 
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "Try clicking on the box with your mouse!".toC,
-        240, 10, 20, rl.C.DARKGRAY
+        240, 10, 20, rl.Color.DARKGRAY
       );
 
       if (collision.ref.hit) {
@@ -116,13 +116,13 @@ void main() {
           (screenWidth - rl.Core.MeasureText(boxSelected, 30))~/2,
           (screenHeight*0.1).toInt(),
           30,
-          rl.C.GREEN
+          rl.Color.GREEN
         );
       }
 
       rl.Core.DrawText(
         "Right click mouse to toggle camera controls".toC,
-        10, 430, 10, rl.C.GRAY
+        10, 430, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

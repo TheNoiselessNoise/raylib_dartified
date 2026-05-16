@@ -16,12 +16,12 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  ColorC bgColor = rl.Core.ColorLerp(rl.C.DARKBLUE, rl.C.BLACK, 0.69);
+  ColorC bgColor = rl.Core.ColorLerp(rl.Color.DARKBLUE, rl.Color.BLACK, 0.69);
   double speed = 10.0/9.0;
   bool drawLines = true;
 
-  List<Vector3D> stars = List.generate(STAR_COUNT, (_) => Vector3D.zero());
-  List<Vector2D> starsScreenPos = List.generate(STAR_COUNT, (_) => Vector2D.zero());
+  List<Vector3D> stars = .generate(STAR_COUNT, (_) => Vector3D.zero());
+  List<Vector2D> starsScreenPos = .generate(STAR_COUNT, (_) => Vector2D.zero());
 
   for (int i = 0; i < STAR_COUNT; i++) {
     stars[i].x = rl.Core.GetRandomValue((-screenWidth / 2).toInt(), (screenWidth / 2).toInt()).toDouble();
@@ -74,25 +74,25 @@ void main()
               screenHeight*0.5 + stars[i].y/t,
             );
 
-            rl.Core.DrawLineV(startPos.ref, starScreenPos.ref, rl.C.RAYWHITE);
+            rl.Core.DrawLineV(startPos.ref, starScreenPos.ref, rl.Color.RAYWHITE);
           }
         }
         else
         {
           final radius = rl.Lerp(stars[i].z, 1.0, 5.0);
 
-          rl.Core.DrawCircleV(starScreenPos.ref, radius, rl.C.RAYWHITE);
+          rl.Core.DrawCircleV(starScreenPos.ref, radius, rl.Color.RAYWHITE);
         }
       }
 
       rl.Core.DrawText(
         "[MOUSE WHEEL] Current Speed: ${9.0*speed/2.0}".toC,
-        10, 40, 20, rl.C.RAYWHITE
+        10, 40, 20, rl.Color.RAYWHITE
       );
 
       rl.Core.DrawText(
         "[SPACE] Current draw mode: ${drawLines ? "Lines" : "Circles"}".toC,
-        10, 70, 20, rl.C.RAYWHITE
+        10, 70, 20, rl.Color.RAYWHITE
       );
 
       rl.Core.DrawFPS(10, 10);

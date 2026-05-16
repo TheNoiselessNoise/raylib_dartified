@@ -57,6 +57,7 @@ void main() {
       .raylibStruct('ModelAnimation'),
       .raylibStruct('Music'),
       .raylibStruct('NPatchInfo'),
+      .raylibStruct('Quaternion'),
       .raylibStruct('Rectangle'),
       .raylibStruct('RlDrawCall'),
       .raylibStruct('RlRenderBatch'),

@@ -51,25 +51,25 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "MOVE START-END POINTS WITH MOUSE".toC,
-        15, 20, 20, rl.C.GRAY
+        15, 20, 20, rl.Color.GRAY
       );
 
-      rl.Core.DrawLineBezier(startPoint.ref, endPoint.ref, 4.0, rl.C.BLUE);
+      rl.Core.DrawLineBezier(startPoint.ref, endPoint.ref, 4.0, rl.Color.BLUE);
       
       rl.Core.DrawCircleV(
         startPoint.ref,
         rl.Core.CheckCollisionPointCircle(mouse, startPoint.ref, 10.0) ? 14.0 : 8.0,
-        moveStartPoint ? rl.C.RED : rl.C.BLUE
+        moveStartPoint ? rl.Color.RED : rl.Color.BLUE
       );
 
       rl.Core.DrawCircleV(
         endPoint.ref,
         rl.Core.CheckCollisionPointCircle(mouse, endPoint.ref, 10.0) ? 14.0 : 8.0,
-        moveEndPoint ? rl.C.RED : rl.C.BLUE
+        moveEndPoint ? rl.Color.RED : rl.Color.BLUE
       );
 
     rl.Core.EndDrawing();

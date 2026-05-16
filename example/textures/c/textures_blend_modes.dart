@@ -32,18 +32,18 @@ void main()
     if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
       if (blendMode.value >= (blendCountMax - 1)) blendMode = .BLEND_ALPHA;
-      else blendMode = BlendMode.fromValue(blendMode.value + 1);
+      else blendMode = .fromValue(blendMode.value + 1);
     }
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawTexture(
         bgTexture,
         (screenWidth/2 - bgTexture.width/2).toInt(),
         (screenHeight/2 - bgTexture.height/2).toInt(),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       // Apply the blend mode and then draw the foreground texture
@@ -52,23 +52,23 @@ void main()
           fgTexture,
           (screenWidth/2 - fgTexture.width/2).toInt(),
           (screenHeight/2 - fgTexture.height/2).toInt(),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       rl.Core.EndBlendMode();
 
       rl.Core.DrawText(
         "Press SPACE to change blend modes.".toC,
-        310, 350, 10, rl.C.GRAY
+        310, 350, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "Current: ${blendMode.name}".toC,
-        (screenWidth / 2 - 60).toInt(), 370, 10, rl.C.GRAY
+        (screenWidth / 2 - 60).toInt(), 370, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)".toC,
-        screenWidth - 330, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 330, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

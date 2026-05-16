@@ -20,7 +20,7 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(5.0, 5.0, 5.0),
     target: .vec3(0, 2, 0),
     up: .vec3(0, 1, 0),
@@ -105,7 +105,7 @@ void main()
           final inRotation = characterModel.bindPose[boneSocketIndex[i]].rotation;
           final outRotation = transform.rotation;
           
-          final rotate = outRotation.mul(inRotation.qInvert());
+          final rotate = outRotation.mul(inRotation.invert());
           final MatrixD matrixTransform = .fromQuaternion(rotate)
             .mul(.translateVector3(transform.translation))
             .mul(characterModel.transform);

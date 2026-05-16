@@ -332,8 +332,8 @@ class TempGenTypeWriter extends Writable {
         pad3ln('ptrToDFunc:           (ptr)         => ptr.toD(),');
         pad3ln('printerFunc:          (ptr)         => ptr.toD().signature(),');
         pad3ln('indexerFunc:          (ptr, i)      => ptr[i],');
-        pad3ln('writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),');
-        pad3ln('writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),');
+        pad3ln('writeIntoFunc:        (ptr, v)      => v.nativeWriteInto(ptr.ref),');
+        pad3ln('writeIntoIndexedFunc: (ptr, i, v)   => v.nativeWriteInto((ptr + i).ref),');
         pad3ln('setCFunc:             (ptr, i, v)   => ptr[i].setC(v),');
         pad3ln('indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,');
       }

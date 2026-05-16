@@ -42,11 +42,11 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawTextEx(font1, msg1.toC, fontPosition1, font1.baseSize.toDouble(), -3, rl.C.WHITE);
-      rl.Core.DrawTextEx(font2, msg2.toC, fontPosition2, font2.baseSize.toDouble(), -2, rl.C.WHITE);
-      rl.Core.DrawTextEx(font3, msg3.toC, fontPosition3, font3.baseSize.toDouble(), 2, rl.C.WHITE);
+      rl.Core.DrawTextEx(font1, msg1.toC, fontPosition1, font1.baseSize.toDouble(), -3, rl.Color.WHITE);
+      rl.Core.DrawTextEx(font2, msg2.toC, fontPosition2, font2.baseSize.toDouble(), -2, rl.Color.WHITE);
+      rl.Core.DrawTextEx(font3, msg3.toC, fontPosition3, font3.baseSize.toDouble(), 2, rl.Color.WHITE);
 
     rl.Core.EndDrawing();
   }

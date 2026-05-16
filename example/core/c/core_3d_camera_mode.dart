@@ -27,12 +27,12 @@ void main() {
 
   while (!rl.Core.WindowShouldClose()) {
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawCube(cubePosition, 2.0, 2.0, 2.0, rl.C.RED);
-        rl.Core.DrawCubeWires(cubePosition, 2.0, 2.0, 2.0, rl.C.MAROON);
+        rl.Core.DrawCube(cubePosition, 2.0, 2.0, 2.0, rl.Color.RED);
+        rl.Core.DrawCubeWires(cubePosition, 2.0, 2.0, 2.0, rl.Color.MAROON);
 
         rl.Core.DrawGrid(10, 1.0);
 
@@ -40,7 +40,7 @@ void main() {
 
       rl.Core.DrawText(
         "Welcome to the third dimension!".toC,
-        10, 40, 20, rl.C.DARKGRAY
+        10, 40, 20, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawFPS(10, 10);

@@ -25,7 +25,7 @@ extension MusicCEx on MusicC {
   }
 
   MusicC setD(MusicD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       stream.setC(p.ref.stream);
       ctxData = p.ref.ctxData;
     });
@@ -44,10 +44,17 @@ extension MusicCEx on MusicC {
   );
 }
 
-class MusicD extends StructD<MusicD, MusicC> {
+class MusicD extends StructD<MusicD, MusicC> with MusicBase {
+  @override
   AudioStreamD stream;
+  
+  @override
   int frameCount;
+  
+  @override
   bool looping;
+  
+  @override
   MusicContextType ctxType;
 
   MusicD({
@@ -60,7 +67,7 @@ class MusicD extends StructD<MusicD, MusicC> {
 
   @override
   MusicD setC(MusicC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.stream.setC(o.stream);
       p.ref.ctxData = o.ctxData;
     });
@@ -82,19 +89,19 @@ class MusicD extends StructD<MusicD, MusicC> {
   }
 
   @override
-  Pointer<MusicC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => throw UnsupportedError('FMusicD: is raylib-owned; cannot allocate externally.');
+  nativeAllocator(RaylibTemp temp)
+    => throw UnsupportedError('MusicD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<MusicC> p, String key) {} // NOTE: do nothing
+  void nativeSyncInto(RaylibTemp temp, Pointer<MusicC> p, String key) {} // NOTE: do nothing
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<MusicC> p, String key)
-    => throw UnsupportedError('FMusicD: is raylib-owned; cannot allocate externally.');
+  void nativeAllocateInto(RaylibTemp temp, Pointer<MusicC> p, String key)
+    => throw UnsupportedError('MusicD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void writeInto(MusicC p)
-    => throw UnsupportedError('FMusicD: is raylib-owned; cannot write externally.');
+  void nativeWriteInto(MusicC p)
+    => throw UnsupportedError('MusicD: is raylib-owned; cannot write externally.');
 
   @override
   String signature() => '$structName(stream: $stream, frameCount: $frameCount, looping: $looping, ctxType: $ctxType)';

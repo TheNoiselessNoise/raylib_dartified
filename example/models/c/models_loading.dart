@@ -78,27 +78,27 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, position.ref, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(model, position.ref, 1.0, rl.Color.WHITE);
         rl.Core.DrawGrid(20, 10.0);
         if (selected) {
-          rl.Core.DrawBoundingBox(bounds, rl.C.GREEN);
+          rl.Core.DrawBoundingBox(bounds, rl.Color.GREEN);
         }
 
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "Drag & drop model to load mesh/texture.".toC,
-        10, screenHeight - 20, 10, rl.C.DARKGRAY
+        10, screenHeight - 20, 10, rl.Color.DARKGRAY
       );
 
       if (selected) {
         rl.Core.DrawText(
           "MODEL SELECTED".toC,
-          screenWidth - 110, 10, 10, rl.C.GREEN
+          screenWidth - 110, 10, 10, rl.Color.GREEN
         );
       }
 

@@ -33,7 +33,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final List<Vector2D> points = List.generate(MAX_SPLINE_POINTS, (i) => switch(i) {
+  final List<Vector2D> points = .generate(MAX_SPLINE_POINTS, (i) => switch(i) {
     0 => .vec2( 50.0, 400.0),
     1 => .vec2(160.0, 220.0),
     2 => .vec2(340.0, 380.0),
@@ -42,7 +42,7 @@ void main()
     _ => .zero(),
   });
   
-  final List<Vector2D> pointsInterleaved = List.generate(
+  final List<Vector2D> pointsInterleaved = .generate(
     3*(MAX_SPLINE_POINTS - 1) + 1, (_) => .zero()
   );
   
@@ -52,7 +52,7 @@ void main()
   Vector2D? selectedControlPoint;
   Vector2D? focusedControlPoint;
   
-  List<ControlPoint> control = List.generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
+  List<ControlPoint> control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
     start: .vec2(points[i].x + 50, points[i].y),
     end: .vec2(points[i + 1].x - 50, points[i + 1].y),
   ));

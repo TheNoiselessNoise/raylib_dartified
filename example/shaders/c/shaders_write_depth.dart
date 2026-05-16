@@ -36,27 +36,27 @@ void main()
     rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.WHITE);
+      rl.Core.ClearBackground(rl.Color.WHITE);
       
       rl.Core.BeginMode3D(camera.ref);
         rl.Core.BeginShaderMode(shader);
-          rl.Core.DrawCubeWiresV(rl.Temp.vec31(0.0, 0.5, 1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.C.RED);
-          rl.Core.DrawCubeV(rl.Temp.vec31(0.0, 0.5, 1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.C.PURPLE);
-          rl.Core.DrawCubeWiresV(rl.Temp.vec31(0.0, 0.5, -1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.C.DARKGREEN);
-          rl.Core.DrawCubeV(rl.Temp.vec31(0.0, 0.5, -1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.C.YELLOW);
+          rl.Core.DrawCubeWiresV(rl.Temp.vec31(0.0, 0.5, 1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.Color.RED);
+          rl.Core.DrawCubeV(rl.Temp.vec31(0.0, 0.5, 1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.Color.PURPLE);
+          rl.Core.DrawCubeWiresV(rl.Temp.vec31(0.0, 0.5, -1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.Color.DARKGREEN);
+          rl.Core.DrawCubeV(rl.Temp.vec31(0.0, 0.5, -1.0), rl.Temp.vec32(1.0, 1.0, 1.0), rl.Color.YELLOW);
           rl.Core.DrawGrid(10, 1.0);
         rl.Core.EndShaderMode();
       rl.Core.EndMode3D();
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
   
       rl.Core.DrawTextureRec(
         target.texture,
         rl.Temp.rect1(0, 0, screenWidth, -screenHeight),
         rl.Temp.vec21(0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
       rl.Core.DrawFPS(10, 10);
     rl.Core.EndDrawing();
@@ -68,7 +68,7 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-RenderTexture2DC LoadRenderTextureDepthTex(Raylib rl, int width, int height)
+RenderTextureC LoadRenderTextureDepthTex(Raylib rl, int width, int height)
 {
   final target = rl.Temp.RenderTexture$.At('${width}_$height');
 
@@ -78,7 +78,7 @@ RenderTexture2DC LoadRenderTextureDepthTex(Raylib rl, int width, int height)
   {
     rl.Rlgl.rlEnableFramebuffer(target.ref.id);
 
-    final format = RlPixelFormat.RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value;
+    final format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value;
 
     target.ref.texture.id = rl.Rlgl.rlLoadTexture(nullptr, width, height, format, 1);
     target.ref.texture.width = width;
@@ -122,7 +122,7 @@ RenderTexture2DC LoadRenderTextureDepthTex(Raylib rl, int width, int height)
   return target.ref;
 }
 
-void UnloadRenderTextureDepthTex(Raylib rl, RenderTexture2DC target)
+void UnloadRenderTextureDepthTex(Raylib rl, RenderTextureC target)
 {
   if (target.id > 0)
   {

@@ -15,7 +15,7 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(5, 5, 5),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -113,9 +113,9 @@ MeshD GenMeshCustom(Raylib rl) {
   mesh.triangleCount = 1;
   mesh.vertexCount = mesh.triangleCount*3;
 
-  mesh.vertices = List.filled(mesh.vertexCount*3, 0);
-  mesh.texcoords = List.filled(mesh.vertexCount*2, 0);
-  mesh.normals = List.filled(mesh.vertexCount*3, 0);
+  mesh.vertices = .filled(mesh.vertexCount*3, 0);
+  mesh.texcoords = .filled(mesh.vertexCount*2, 0);
+  mesh.normals = .filled(mesh.vertexCount*3, 0);
 
   // Vertex at (0, 0, 0)
   mesh.vertices[0] = 0;

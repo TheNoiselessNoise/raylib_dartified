@@ -32,14 +32,14 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
       rl.Core.DrawText(
         "Press SPACE to PLAY the WAV sound!".toC,
-        200, 180, 20, rl.C.LIGHTGRAY
+        200, 180, 20, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "Press ENTER to PLAY the OGG sound!".toC,
-        200, 220, 20, rl.C.LIGHTGRAY
+        200, 220, 20, rl.Color.LIGHTGRAY
       );
 
     rl.Core.EndDrawing();

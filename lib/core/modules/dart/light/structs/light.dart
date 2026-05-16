@@ -64,18 +64,41 @@ extension LightCEx on LightC {
   );
 }
 
-class LightD extends StructD<LightD, LightC> {
+class LightD extends StructD<LightD, LightC> implements LightBase {
+  @override
   LightType type;
+  
+  @override
   bool enabled;
+  
+  @override
   Vector3D position;
+  
+  @override
   Vector3D target;
+  
+  @override
   ColorD color;
+  
+  @override
   double attenuation;
+  
+  @override
   int enabledLoc;
+  
+  @override
   int typeLoc;
+  
+  @override
   int positionLoc;
+  
+  @override
   int targetLoc;
+  
+  @override
   int colorLoc;
+  
+  @override
   int attenuationLoc;
 
   LightD({
@@ -135,20 +158,15 @@ class LightD extends StructD<LightD, LightC> {
   }
 
   @override
-  Pointer<LightC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Light$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Light$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<LightC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(LightC p) {
+  void nativeWriteInto(LightC p) {
     p.type = type.value;
     p.enabled = enabled;
-    position.writeInto(p.position);
-    target.writeInto(p.target);
-    color.writeInto(p.color);
+    position.nativeWriteInto(p.position);
+    target.nativeWriteInto(p.target);
+    color.nativeWriteInto(p.color);
     p.attenuation = attenuation;
     p.enabledLoc = enabledLoc;
     p.typeLoc = typeLoc;

@@ -16,11 +16,10 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  // temp
   final Vector3D mapPosition = .vec3(-16.0, 0.0, -8.0);
   final Vector3D oldCamPos = .zero();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(0.2, 0.4, 0.2),
     target: .vec3(0.185, 0.4, 0.0),
     up: .vec3(0, 1, 0),

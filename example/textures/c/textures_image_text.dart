@@ -28,7 +28,7 @@ void main()
     rl.Temp.vec21(20.0, 20.0),
     font.baseSize.toDouble(),
     0.0,
-    rl.C.RED
+    rl.Color.RED
   );
 
   final texture = rl.Core.LoadTextureFromImage(parrots.ref);
@@ -47,11 +47,11 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (!showFont)
       {
-        rl.Core.DrawTextureV(texture, position.ref, rl.C.WHITE);
+        rl.Core.DrawTextureV(texture, position.ref, rl.Color.WHITE);
 
         rl.Core.DrawTextEx(
           font,
@@ -59,19 +59,19 @@ void main()
           rl.Temp.vec21(position.ref.x + 20, position.ref.y + 20 + 280),
           font.baseSize.toDouble(),
           0.0,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       }
       else rl.Core.DrawTexture(
         font.texture,
         (screenWidth/2 - font.texture.width/2).toInt(),
         50,
-        rl.C.BLACK
+        rl.Color.BLACK
       );
 
       rl.Core.DrawText(
         "PRESS SPACE to SHOW FONT ATLAS USED".toC,
-        290, 420, 10, rl.C.DARKGRAY
+        290, 420, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

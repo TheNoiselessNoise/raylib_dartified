@@ -90,7 +90,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
         final QuaternionD characterRotate = .fromAxisAngle(.vec3(0.0, 1.0, 0.0), angle*rl.DEG2RAD);
@@ -115,7 +115,7 @@ void main()
           final inRotation = characterModel.bindPose[boneSocketIndex[i]].rotation.toD();
           final outRotation = transform.rotation.toD();
 
-          final rotate = outRotation.mul(inRotation.qInvert());
+          final rotate = outRotation.mul(inRotation.invert());
           final MatrixD matrixTransform = .fromQuaternion(rotate)
             .mul(.translateVector3(transform.translation.toD()))
             .mul(characterTransform);
@@ -132,15 +132,15 @@ void main()
 
       rl.Core.DrawText(
         "Use the T/G to switch animation".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Use the F/H to rotate character left/right".toC,
-        10, 35, 20, rl.C.GRAY
+        10, 35, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Use the 1,2,3 to toggle shown of hat, sword and shield".toC,
-        10, 60, 20, rl.C.GRAY
+        10, 60, 20, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

@@ -37,9 +37,14 @@ extension MaterialMapCEx on MaterialMapC {
   );
 }
 
-class MaterialMapD extends StructDLiteral<MaterialMapD, MaterialMapC> {
+class MaterialMapD extends StructDLiteral<MaterialMapD, MaterialMapC> with MaterialMapBase {
+  @override
   TextureD texture;
+  
+  @override
   ColorD color;
+  
+  @override
   double value;
 
   MaterialMapD({
@@ -71,17 +76,12 @@ class MaterialMapD extends StructDLiteral<MaterialMapD, MaterialMapC> {
   }
 
   @override
-  Pointer<MaterialMapC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.MaterialMap$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.MaterialMap$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<MaterialMapC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(MaterialMapC p) {
-    texture.writeInto(p.texture);
-    color.writeInto(p.color);
+  void nativeWriteInto(MaterialMapC p) {
+    texture.nativeWriteInto(p.texture);
+    color.nativeWriteInto(p.color);
     p.value = value;
   }
 

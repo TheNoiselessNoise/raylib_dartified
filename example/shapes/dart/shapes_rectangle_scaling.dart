@@ -40,20 +40,20 @@ void main()
 
     if (mouseScaleMode)
     {
-        mouseScaleReady = true;
+      mouseScaleReady = true;
 
-        rec.width = mousePosition.x - rec.x;
-        rec.height = mousePosition.y - rec.y;
+      rec.width = mousePosition.x - rec.x;
+      rec.height = mousePosition.y - rec.y;
 
-        if (rec.width < MOUSE_SCALE_MARK_SIZE) rec.width = MOUSE_SCALE_MARK_SIZE;
-        if (rec.height < MOUSE_SCALE_MARK_SIZE) rec.height = MOUSE_SCALE_MARK_SIZE;
-        
-        if (rec.width > (rl.CoreD.GetScreenWidth() - rec.x))
-          rec.width = rl.CoreD.GetScreenWidth() - rec.x;
-        if (rec.height > (rl.CoreD.GetScreenHeight() - rec.y))
-          rec.height = rl.CoreD.GetScreenHeight() - rec.y;
+      if (rec.width < MOUSE_SCALE_MARK_SIZE) rec.width = MOUSE_SCALE_MARK_SIZE;
+      if (rec.height < MOUSE_SCALE_MARK_SIZE) rec.height = MOUSE_SCALE_MARK_SIZE;
+      
+      if (rec.width > (rl.CoreD.GetScreenWidth() - rec.x))
+        rec.width = rl.CoreD.GetScreenWidth() - rec.x;
+      if (rec.height > (rl.CoreD.GetScreenHeight() - rec.y))
+        rec.height = rl.CoreD.GetScreenHeight() - rec.y;
 
-        if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) mouseScaleMode = false;
+      if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) mouseScaleMode = false;
     }
     
     rl.CoreD.BeginDrawing();

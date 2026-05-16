@@ -12,14 +12,12 @@ void main()
 {
   final rl = loadBaseRaylib();
 
-  rl.debugEverything(true);
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, "models_animation");
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),

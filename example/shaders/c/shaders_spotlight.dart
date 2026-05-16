@@ -59,7 +59,7 @@ void main()
 
   final texRay = rl.Core.LoadTexture("../resources/raysan.png".toC);
 
-  List<Star> stars = List.generate(MAX_STARS, (_) => .new());
+  List<Star> stars = .generate(MAX_STARS, (_) => .new());
 
   stars.forEach((s) => ResetStar(rl, s));
 
@@ -75,7 +75,7 @@ void main()
     "../resources/shaders/glsl$GLSL_VERSION/spotlight.fs".toC,
   );
 
-  List<Spot> spots = List.generate(MAX_SPOTS, (_) => .new());
+  List<Spot> spots = .generate(MAX_SPOTS, (_) => .new());
 
   for (int i = 0; i < MAX_SPOTS; i++)
   {
@@ -156,14 +156,14 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.DARKBLUE);
+      rl.Core.ClearBackground(rl.Color.DARKBLUE);
 
       for (int n = 0; n < MAX_STARS; n++)
       {
         rl.Core.DrawRectangle(
           stars[n].position.x.toInt(),
           stars[n].position.y.toInt(),
-          2, 2, rl.C.WHITE
+          2, 2, rl.Color.WHITE
         );
       }
 
@@ -173,27 +173,27 @@ void main()
           texRay,
           ((screenWidth/2.0) + math.cos((frameCounter + i*8)/51.45)*(screenWidth/2.2) - 32).toInt(),
           ((screenHeight/2.0) + math.sin((frameCounter + i*8)/17.87)*(screenHeight/4.2)).toInt(),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       }
 
       rl.Core.BeginShaderMode(shdrSpot);
-        rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.WHITE);
+        rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
       rl.Core.DrawFPS(10, 10);
 
       rl.Core.DrawText(
         "Move the mouse!".toC,
-        10, 30, 20, rl.C.GREEN
+        10, 30, 20, rl.Color.GREEN
       );
       rl.Core.DrawText(
         "Pitch Black".toC,
-        (screenWidth*0.2).toInt(), screenHeight~/2, 20, rl.C.GREEN
+        (screenWidth*0.2).toInt(), screenHeight~/2, 20, rl.Color.GREEN
       );
       rl.Core.DrawText(
         "Dark".toC,
-        (screenWidth*.66).toInt(), screenHeight~/2, 20, rl.C.GREEN
+        (screenWidth*.66).toInt(), screenHeight~/2, 20, rl.Color.GREEN
       );
 
     rl.Core.EndDrawing();

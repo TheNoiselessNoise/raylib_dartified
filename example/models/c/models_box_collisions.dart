@@ -24,7 +24,7 @@ void main()
 
   final playerPosition = rl.Temp.Vector3$.At('playerPosition').set(0, 1, 2);
   final playerSize = rl.Temp.Vector3$.At('playerSize').set(1, 2, 1);
-  ColorC playerColor = rl.C.GREEN;
+  ColorC playerColor = rl.Color.GREEN;
 
   final enemyBoxPos = rl.Temp.Vector3$.At('enemyBoxPos').set(-4, 1, 0);
   final enemyBoxSize = rl.Temp.Vector3$.At('enemyBoxSize').set(2, 2, 2);
@@ -71,23 +71,22 @@ void main()
 
     if (rl.Core.CheckCollisionBoxes(playerBBox.ref, enemyBBox.ref)) collision = true;
 
-    // Check collisions player vs enemy-sphere
     if (rl.Core.CheckCollisionBoxSphere(playerBBox.ref, enemySpherePos.ref, enemySphereSize)) collision = true;
 
-    if (collision) playerColor = rl.C.RED;
-    else playerColor = rl.C.GREEN;
+    if (collision) playerColor = rl.Color.RED;
+    else playerColor = rl.Color.GREEN;
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawCube(enemyBoxPos.ref, enemyBoxSize.ref.x, enemyBoxSize.ref.y, enemyBoxSize.ref.z, rl.C.GRAY);
-        rl.Core.DrawCubeWires(enemyBoxPos.ref, enemyBoxSize.ref.x, enemyBoxSize.ref.y, enemyBoxSize.ref.z, rl.C.DARKGRAY);
+        rl.Core.DrawCube(enemyBoxPos.ref, enemyBoxSize.ref.x, enemyBoxSize.ref.y, enemyBoxSize.ref.z, rl.Color.GRAY);
+        rl.Core.DrawCubeWires(enemyBoxPos.ref, enemyBoxSize.ref.x, enemyBoxSize.ref.y, enemyBoxSize.ref.z, rl.Color.DARKGRAY);
 
-        rl.Core.DrawSphere(enemySpherePos.ref, enemySphereSize, rl.C.GRAY);
-        rl.Core.DrawSphereWires(enemySpherePos.ref, enemySphereSize, 16, 16, rl.C.DARKGRAY);
+        rl.Core.DrawSphere(enemySpherePos.ref, enemySphereSize, rl.Color.GRAY);
+        rl.Core.DrawSphereWires(enemySpherePos.ref, enemySphereSize, 16, 16, rl.Color.DARKGRAY);
 
         rl.Core.DrawCubeV(playerPosition.ref, playerSize.ref, playerColor);
 
@@ -97,7 +96,7 @@ void main()
 
       rl.Core.DrawText(
         "Move player with arrow keys to collide".toC,
-        220, 40, 20, rl.C.GRAY
+        220, 40, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

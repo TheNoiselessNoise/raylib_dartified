@@ -80,25 +80,25 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
-        rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.C.WHITE);
+        rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "PRESS [A] to TOGGLE SHADER AUTOLOADING: ${shaderAutoReloading ? "AUTO" : "MANUAL"}".toC,
-        10, 10, 10, shaderAutoReloading ? rl.C.RED : rl.C.BLACK
+        10, 10, 10, shaderAutoReloading ? rl.Color.RED : rl.Color.BLACK
       );
       if (!shaderAutoReloading) rl.Core.DrawText(
         "MOUSE CLICK to SHADER RE-LOADING".toC,
-        10, 30, 10, rl.C.BLACK
+        10, 30, 10, rl.Color.BLACK
       );
 
       final date = DateTime.fromMillisecondsSinceEpoch(fragShaderFileModTime * 1000);
       rl.Core.DrawText(
         "Shader last modification: $date".toC,
-        10, 430, 10, rl.C.BLACK
+        10, 430, 10, rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();

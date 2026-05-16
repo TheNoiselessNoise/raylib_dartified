@@ -5,10 +5,6 @@ extension ModelAnimationCLike on ModelAnimationC {
   String get nameString => name.toDartString(nameLength);
 }
 
-extension ModelAnimationDLike on ModelAnimationD {
-  int get nameLength => 32;
-}
-
 extension ModelAnimationCPEx on Pointer<ModelAnimationC> {
   Pointer<ModelAnimationC> setC(ModelAnimationC o) {
     ref.setC(o);
@@ -34,7 +30,7 @@ extension ModelAnimationCEx on ModelAnimationC {
   }
 
   ModelAnimationC setD(ModelAnimationD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       boneCount = p.ref.boneCount;
       frameCount = p.ref.frameCount;
       bones = p.ref.bones;
@@ -54,12 +50,15 @@ extension ModelAnimationCEx on ModelAnimationC {
   );
 }
 
-class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
+class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> with ModelAnimationBase {
+  @override
   List<BoneInfoD> bones;
+  
+  @override
   List<List<TransformD>> framePoses;
+  
+  @override
   String name;
-
-  int get frameCount => framePoses.length;
 
   ModelAnimationD({
     super.originalPointer,
@@ -74,7 +73,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
 
   @override
   ModelAnimationD setC(ModelAnimationC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.bones = o.bones;
       p.ref.framePoses = o.framePoses;
       p.ref.name = o.name;
@@ -97,18 +96,10 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
   }
 
   @override
-  Pointer<ModelAnimationC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.ModelAnimation$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.ModelAnimation$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
-    p.ref.boneCount = bones.length;
-    p.ref.frameCount = framePoses.length;
-    
+  void nativeAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
     p.ref.bones = temp.BoneInfo$.Array(bones, key: '${key}_bones');
 
     p.ref.framePoses = temp.Ptr$Transform$.FillRaw(
@@ -121,19 +112,19 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> {
   }
 
   @override
-  void writeInto(ModelAnimationC p) {
+  void nativeWriteInto(ModelAnimationC p) {
     p.boneCount = bones.length;
     p.frameCount = framePoses.length;
 
     for (int i = 0; i < bones.length; i++) {
-      bones[i].writeInto((p.bones + i).ref);
+      bones[i].nativeWriteInto((p.bones + i).ref);
     }
 
     for (int i = 0; i < framePoses.length; i++) {
       final innerPtr = (p.framePoses + i).value;
 
       for (int j = 0; j < framePoses[i].length; j++) {
-        framePoses[i][j].writeInto((innerPtr + j).ref);
+        framePoses[i][j].nativeWriteInto((innerPtr + j).ref);
       }
     }
 

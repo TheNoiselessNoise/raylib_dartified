@@ -26,10 +26,10 @@ void main()
 
   final cubeMesh = rl.Core.GenMeshCube(1, 1, 1);
   final cubeModel = rl.Core.LoadModelFromMesh(cubeMesh);
-  cubeModel.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.C.BEIGE;
+  cubeModel.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].color = rl.Color.BEIGE;
 
-  final voxels = List.generate(WORLD_SIZE, (_) {
-    return List.generate(WORLD_SIZE, (_) => List.filled(WORLD_SIZE, true));
+  final List<List<List<bool>>> voxels = .generate(WORLD_SIZE, (_) {
+    return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
   });
 
   final screenCenter = rl.Temp.Vector2$.At('screenCenter')
@@ -74,7 +74,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -87,8 +87,8 @@ void main()
 
               modelPosition.set(x.toDouble(), y.toDouble(), z.toDouble());
 
-              rl.Core.DrawModel(cubeModel, modelPosition.ref, 1.0, rl.C.BEIGE);
-              rl.Core.DrawCubeWires(modelPosition.ref, 1.0, 1.0, 1.0, rl.C.BLACK);
+              rl.Core.DrawModel(cubeModel, modelPosition.ref, 1.0, rl.Color.BEIGE);
+              rl.Core.DrawCubeWires(modelPosition.ref, 1.0, 1.0, 1.0, rl.Color.BLACK);
             }
           }
         }
@@ -97,11 +97,11 @@ void main()
 
       rl.Core.DrawText(
         "Left-click a voxel to remove it!".toC,
-        10, 10, 20, rl.C.DARKGRAY
+        10, 10, 20, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "WASD to move, mouse to look around".toC,
-        10, 35, 10, rl.C.GRAY
+        10, 35, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

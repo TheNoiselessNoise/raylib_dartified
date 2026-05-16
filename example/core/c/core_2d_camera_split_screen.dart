@@ -51,7 +51,7 @@ void main() {
     camera2.ref.target.set(player2.ref.x, player2.ref.y);
 
     rl.Core.BeginTextureMode(screenCamera1);
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
       
       rl.Core.BeginMode2D(camera1.ref);
       
@@ -60,7 +60,7 @@ void main() {
           rl.Core.DrawLineV(
             rl.Temp.vec21(PLAYER_SIZE*i, 0),
             rl.Temp.vec22(PLAYER_SIZE*i, screenHeight),
-            rl.C.LIGHTGRAY
+            rl.Color.LIGHTGRAY
           );
         }
 
@@ -69,7 +69,7 @@ void main() {
           rl.Core.DrawLineV(
             rl.Temp.vec21(0, PLAYER_SIZE*i),
             rl.Temp.vec22(screenWidth, PLAYER_SIZE*i),
-            rl.C.LIGHTGRAY
+            rl.Color.LIGHTGRAY
           );
         }
 
@@ -80,22 +80,22 @@ void main() {
             rl.Core.DrawText(
               "[$i,$j]".toC,
               10 + PLAYER_SIZE*i, 15 + PLAYER_SIZE*j,
-              10, rl.C.LIGHTGRAY
+              10, rl.Color.LIGHTGRAY
             );
           }
         }
 
-        rl.Core.DrawRectangleRec(player1.ref, rl.C.RED);
-        rl.Core.DrawRectangleRec(player2.ref, rl.C.BLUE);
+        rl.Core.DrawRectangleRec(player1.ref, rl.Color.RED);
+        rl.Core.DrawRectangleRec(player2.ref, rl.Color.BLUE);
       rl.Core.EndMode2D();
       
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 30, rl.Core.Fade(rl.C.RAYWHITE, 0.6));
-      rl.Core.DrawText("PLAYER1: W/S/A/D to move".toC, 10, 10, 10, rl.C.MAROON);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 30, rl.Core.Fade(rl.Color.RAYWHITE, 0.6));
+      rl.Core.DrawText("PLAYER1: W/S/A/D to move".toC, 10, 10, 10, rl.Color.MAROON);
         
     rl.Core.EndTextureMode();
 
     rl.Core.BeginTextureMode(screenCamera2);
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
       
       rl.Core.BeginMode2D(camera2.ref);
       
@@ -104,7 +104,7 @@ void main() {
           rl.Core.DrawLineV(
             rl.Temp.vec21(PLAYER_SIZE*i, 0),
             rl.Temp.vec22(PLAYER_SIZE*i, screenHeight),
-            rl.C.LIGHTGRAY
+            rl.Color.LIGHTGRAY
           );
         }
 
@@ -113,7 +113,7 @@ void main() {
           rl.Core.DrawLineV(
             rl.Temp.vec21(0, PLAYER_SIZE*i),
             rl.Temp.vec22(screenWidth, PLAYER_SIZE*i),
-            rl.C.LIGHTGRAY
+            rl.Color.LIGHTGRAY
           );
         }
 
@@ -124,39 +124,39 @@ void main() {
             rl.Core.DrawText(
               "[$i,$j]".toC,
               10 + PLAYER_SIZE*i, 15 + PLAYER_SIZE*j,
-              10, rl.C.LIGHTGRAY
+              10, rl.Color.LIGHTGRAY
             );
           }
         }
 
-        rl.Core.DrawRectangleRec(player1.ref, rl.C.RED);
-        rl.Core.DrawRectangleRec(player2.ref, rl.C.BLUE);
+        rl.Core.DrawRectangleRec(player1.ref, rl.Color.RED);
+        rl.Core.DrawRectangleRec(player2.ref, rl.Color.BLUE);
           
       rl.Core.EndMode2D();
       
-      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 30, rl.Core.Fade(rl.C.RAYWHITE, 0.6));
-      rl.Core.DrawText("PLAYER2: UP/DOWN/LEFT/RIGHT to move".toC, 10, 10, 10, rl.C.DARKBLUE);
+      rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth()~/2, 30, rl.Core.Fade(rl.Color.RAYWHITE, 0.6));
+      rl.Core.DrawText("PLAYER2: UP/DOWN/LEFT/RIGHT to move".toC, 10, 10, 10, rl.Color.DARKBLUE);
         
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
       
       rl.Core.DrawTextureRec(
         screenCamera1.texture,
         splitScreenRect.ref,
         rl.Temp.vec21(0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawTextureRec(
         screenCamera2.texture,
         splitScreenRect.ref,
         rl.Temp.vec21(screenWidth/2.0, 0),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
       
-      rl.Core.DrawRectangle(rl.Core.GetScreenWidth()~/2 - 2, 0, 4, rl.Core.GetScreenHeight(), rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangle(rl.Core.GetScreenWidth()~/2 - 2, 0, 4, rl.Core.GetScreenHeight(), rl.Color.LIGHTGRAY);
     rl.Core.EndDrawing();
   }
 

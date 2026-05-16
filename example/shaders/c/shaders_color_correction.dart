@@ -17,7 +17,7 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  List<Texture2DC> textures = [
+  List<TextureC> textures = [
     rl.Core.LoadTexture("../resources/parrots.png".toC),
     rl.Core.LoadTexture("../resources/cat.png".toC),
     rl.Core.LoadTexture("../resources/mandrill.png".toC),
@@ -82,7 +82,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
 
@@ -90,7 +90,7 @@ void main()
           textures[imageIndex.value],
           (580/2 - textures[imageIndex.value].width/2).toInt(),
           (screenHeight/2 - textures[imageIndex.value].height/2).toInt(),
-          rl.C.WHITE
+          rl.Color.WHITE
         );
 
       rl.Core.EndShaderMode();
@@ -100,20 +100,20 @@ void main()
 
       rl.Core.DrawText(
         "Color Correction".toC,
-        585, 40, 20, rl.C.GRAY
+        585, 40, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "Picture".toC,
-        602, 75, 10, rl.C.GRAY
+        602, 75, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Press [1] - [4] to Change Picture".toC,
-        600, 230, 8, rl.C.GRAY
+        600, 230, 8, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Press [R] to Reset Values".toC,
-        600, 250, 8, rl.C.GRAY
+        600, 250, 8, rl.Color.GRAY
       );
 
       rl.Gui.GuiToggleGroup(

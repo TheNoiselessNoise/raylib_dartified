@@ -58,7 +58,7 @@ void main()
       radius: 40,
       friction: 0.99,
       elasticity: 0.9,
-      color: rl.C.BLUE.toD(),
+      color: rl.Color.BLUE.toD(),
       grabbed: false,
     )
   ];
@@ -174,38 +174,38 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       for (final ball in balls) {
         ballPosition.setD(ball.pos);
         ballColor.setD(ball.color);
         rl.Core.DrawCircleV(ballPosition.ref, ball.radius, ballColor.ref);
-        rl.Core.DrawCircleLinesV(ballPosition.ref, ball.radius, rl.C.BLACK);
+        rl.Core.DrawCircleLinesV(ballPosition.ref, ball.radius, rl.Color.BLACK);
       }
 
       rl.Core.DrawText(
         "grab a ball by pressing with the mouse and throw it by releasing".toC,
-        10, 10, 10, rl.C.DARKGRAY
+        10, 10, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "right click to create new balls (keep left control pressed to create a lot)".toC,
-        10, 30, 10, rl.C.DARKGRAY
+        10, 30, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "use mouse wheel to change gravity".toC,
-        10, 50, 10, rl.C.DARKGRAY
+        10, 50, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "middle click to shake".toC,
-        10, 70, 10, rl.C.DARKGRAY
+        10, 70, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "BALL COUNT: ${balls.length}".toC,
-        10, rl.Core.GetScreenHeight() - 70, 20, rl.C.BLACK
+        10, rl.Core.GetScreenHeight() - 70, 20, rl.Color.BLACK
       );
       rl.Core.DrawText(
         "GRAVITY: ${gravity.f2}".toC,
-        10, rl.Core.GetScreenHeight() - 40, 20, rl.C.BLACK
+        10, rl.Core.GetScreenHeight() - 40, 20, rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();

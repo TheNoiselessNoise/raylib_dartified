@@ -38,7 +38,7 @@ void main()
   final maxHeight = screenHeight - 160.0;
 
   final lastMouse = rl.Temp.Vector2$.At('lastMouse');
-  ColorC borderColor = rl.C.MAROON;
+  ColorC borderColor = rl.Color.MAROON;
   final font = rl.Core.GetFontDefault();
 
   while (!rl.Core.WindowShouldClose())
@@ -49,9 +49,9 @@ void main()
     final mouse = rl.Core.GetMousePosition();
 
     if (rl.Core.CheckCollisionPointRec(mouse, container.ref))
-      borderColor = rl.Core.Fade(rl.C.MAROON, 0.4);
+      borderColor = rl.Core.Fade(rl.Color.MAROON, 0.4);
     else if (!resizing)
-      borderColor = rl.C.MAROON;
+      borderColor = rl.Color.MAROON;
 
     if (resizing)
     {
@@ -79,7 +79,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawRectangleLinesEx(container.ref, 3, borderColor);
 
@@ -89,35 +89,35 @@ void main()
         container.ref.x + 4, container.ref.y + 4,
         container.ref.width - 4, container.ref.height - 4
       );
-      DrawTextBoxed(rl, font, text, rect.ref, 20.0, 2.0, wordWrap, rl.C.GRAY);
+      DrawTextBoxed(rl, font, text, rect.ref, 20.0, 2.0, wordWrap, rl.Color.GRAY);
 
       rl.Core.DrawRectangleRec(resizer.ref, borderColor);
 
-      rl.Core.DrawRectangle(0, screenHeight - 54, screenWidth, 54, rl.C.GRAY);
+      rl.Core.DrawRectangle(0, screenHeight - 54, screenWidth, 54, rl.Color.GRAY);
 
       rl.Core.DrawRectangleRec(
         rect.set(382.0, screenHeight - 34.0, 12.0, 12.0).ref,
-        rl.C.MAROON
+        rl.Color.MAROON
       );
 
       rl.Core.DrawText(
         "Word Wrap: ".toC,
-        313, screenHeight-115, 20, rl.C.BLACK
+        313, screenHeight-115, 20, rl.Color.BLACK
       );
       
       rl.Core.DrawText(
         (wordWrap ? "ON" : "OFF").toC,
-        447, screenHeight - 115, 20, rl.C.RED
+        447, screenHeight - 115, 20, rl.Color.RED
       );
 
       rl.Core.DrawText(
         "Press [SPACE] to toggle word wrap".toC,
-        218, screenHeight - 86, 20, rl.C.GRAY
+        218, screenHeight - 86, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "Click hold & drag the    to resize the container".toC,
-        155, screenHeight - 38, 20, rl.C.RAYWHITE
+        155, screenHeight - 38, 20, rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();
@@ -137,7 +137,7 @@ void DrawTextBoxed(
   ColorC tint,
 ) => DrawTextBoxedSelectable(
   rl, font, text, rec, fontSize, spacing,
-  wordWrap, tint, 0, 0, rl.C.WHITE, rl.C.WHITE
+  wordWrap, tint, 0, 0, rl.Color.WHITE, rl.Color.WHITE
 );
 
 enum State { MEASURE_STATE, DRAW_STATE }

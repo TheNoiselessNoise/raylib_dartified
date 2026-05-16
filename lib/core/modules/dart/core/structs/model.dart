@@ -29,7 +29,7 @@ extension ModelCEx on ModelC {
   }
 
   ModelC setD(ModelD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       meshCount = p.ref.meshCount;
       materialCount = p.ref.materialCount;
       meshes = p.ref.meshes;
@@ -54,17 +54,24 @@ extension ModelCEx on ModelC {
   );
 }
 
-class ModelD extends StructD<ModelD, ModelC> {
+class ModelD extends StructD<ModelD, ModelC> with ModelBase {
+  @override
   MatrixD transform;
+  
+  @override
   List<MeshD> meshes;
+  
+  @override
   List<MaterialD> materials;
+  
+  @override
   List<int> meshMaterial;
+  
+  @override
   List<BoneInfoD> bones;
+  
+  @override
   List<TransformD> bindPose;
-
-  int get meshCount => meshes.length;
-  int get boneCount => bones.length;
-  int get materialCount => materials.length;
 
   ModelD({
     super.originalPointer,
@@ -86,7 +93,7 @@ class ModelD extends StructD<ModelD, ModelC> {
 
   @override
   ModelD setC(ModelC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.meshes = o.meshes;
       p.ref.materials = o.materials;
       p.ref.meshMaterial = o.meshMaterial;
@@ -115,20 +122,10 @@ class ModelD extends StructD<ModelD, ModelC> {
   }
 
   @override
-  Pointer<ModelC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Model$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Model$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<ModelC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
-    transform.writeInto(p.ref.transform);
-    p.ref.meshCount = meshes.length;
-    p.ref.materialCount = materials.length;
-    p.ref.boneCount = bones.length;
-    
+  void nativeAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
     p.ref.meshes = temp.Mesh$.Array(meshes, key: '${key}_meshes');
     p.ref.materials = temp.Material$.Array(materials, key: '${key}_materials');
     p.ref.meshMaterial = temp.Int$.Array(meshMaterial, key: '${key}_meshMaterial');
@@ -137,21 +134,21 @@ class ModelD extends StructD<ModelD, ModelC> {
   }
 
   @override
-  void writeInto(ModelC p) {
-    transform.writeInto(p.transform);
+  void nativeWriteInto(ModelC p) {
+    transform.nativeWriteInto(p.transform);
     p.meshCount = meshes.length;
     p.materialCount = materials.length;
     p.boneCount = bones.length;
 
     if (p.meshes.address != 0) {
       for (int i = 0; i < meshes.length; i++) {
-        meshes[i].writeInto((p.meshes + i).ref);
+        meshes[i].nativeWriteInto((p.meshes + i).ref);
       }
     }
 
     if (p.materials.address != 0) {
       for (int i = 0; i < materials.length; i++) {
-        materials[i].writeInto((p.materials + i).ref);
+        materials[i].nativeWriteInto((p.materials + i).ref);
       }
     }
 
@@ -163,13 +160,13 @@ class ModelD extends StructD<ModelD, ModelC> {
 
     if (p.bones.address != 0) {
       for (int i = 0; i < bones.length; i++) {
-        bones[i].writeInto((p.bones + i).ref);
+        bones[i].nativeWriteInto((p.bones + i).ref);
       }
     }
 
     if (p.bindPose.address != 0) {
       for (int i = 0; i < bindPose.length; i++) {
-        bindPose[i].writeInto((p.bindPose + i).ref);
+        bindPose[i].nativeWriteInto((p.bindPose + i).ref);
       }
     }
   }

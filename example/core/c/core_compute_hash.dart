@@ -59,7 +59,7 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
     rl.Gui.GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, 20);
     rl.Gui.GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SPACING.value, 2);

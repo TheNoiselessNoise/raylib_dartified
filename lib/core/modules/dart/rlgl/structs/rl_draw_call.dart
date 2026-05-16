@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, camel_case_extensions
-
 part of '../../../../raylib.dart';
 
 extension RlDrawCallCPEx on Pointer<RlDrawCallC> {
@@ -42,10 +40,17 @@ extension RlDrawCallCEx on RlDrawCallC {
   );
 }
 
-class RlDrawCallD extends StructD<RlDrawCallD, RlDrawCallC> {
+class RlDrawCallD extends StructD<RlDrawCallD, RlDrawCallC> with RlDrawCallBase {
+  @override
   int mode;
+  
+  @override
   int vertexCount;
+  
+  @override
   int vertexAlignment;
+  
+  @override
   int textureId;
 
   RlDrawCallD({
@@ -78,19 +83,10 @@ class RlDrawCallD extends StructD<RlDrawCallD, RlDrawCallC> {
   }
 
   @override
-  Pointer<RlDrawCallC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.RlDrawCall$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.RlDrawCall$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<RlDrawCallC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<RlDrawCallC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(RlDrawCallC p) {
+  void nativeWriteInto(RlDrawCallC p) {
     p.mode = mode;
     p.vertexCount = vertexCount;
     p.vertexAlignment = vertexAlignment;

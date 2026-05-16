@@ -1,7 +1,7 @@
 part of '../../../raylib.dart';
 
 class RaylibAudio extends RaylibModule {
-  RaylibAudio(super.lib);
+  RaylibAudio(super.rl);
 
   void InitAudioDevice() {
     return _InitAudioDevice();

@@ -17,7 +17,7 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  final imBlank = rl.Core.GenImageColor(1024, 1024, rl.C.BLANK);
+  final imBlank = rl.Core.GenImageColor(1024, 1024, rl.Color.BLANK);
   final texture = rl.Core.LoadTextureFromImage(imBlank);
   rl.Core.UnloadImage(imBlank);
 
@@ -43,15 +43,15 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
-        rl.Core.DrawTexture(texture, 0, 0, rl.C.WHITE);
+        rl.Core.DrawTexture(texture, 0, 0, rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "BACKGROUND is PAINTED and ANIMATED on SHADER!".toC,
-        10, 10, 20, rl.C.MAROON
+        10, 10, 20, rl.Color.MAROON
       );
 
     rl.Core.EndDrawing();

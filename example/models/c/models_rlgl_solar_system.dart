@@ -46,13 +46,13 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
         rl.Rlgl.rlPushMatrix();
           rl.Rlgl.rlScalef(sunRadius, sunRadius, sunRadius);
-          DrawSphereBasic(rl, rl.C.GOLD);
+          DrawSphereBasic(rl, rl.Color.GOLD);
         rl.Rlgl.rlPopMatrix();
 
         rl.Rlgl.rlPushMatrix();
@@ -63,7 +63,7 @@ void main()
             rl.Rlgl.rlRotatef(earthRotation, 0.25, 1.0, 0.0);
             rl.Rlgl.rlScalef(earthRadius, earthRadius, earthRadius);
 
-            DrawSphereBasic(rl, rl.C.BLUE);
+            DrawSphereBasic(rl, rl.Color.BLUE);
           rl.Rlgl.rlPopMatrix();
 
           rl.Rlgl.rlRotatef(moonOrbitRotation, 0.0, 1.0, 0.0);
@@ -71,7 +71,7 @@ void main()
           rl.Rlgl.rlRotatef(moonRotation, 0.0, 1.0, 0.0);
           rl.Rlgl.rlScalef(moonRadius, moonRadius, moonRadius);
 
-          DrawSphereBasic(rl, rl.C.LIGHTGRAY);
+          DrawSphereBasic(rl, rl.Color.LIGHTGRAY);
         rl.Rlgl.rlPopMatrix();
 
         rl.Core.DrawCircle3D(
@@ -79,7 +79,7 @@ void main()
           earthOrbitRadius,
           rl.Temp.vec31(1, 0, 0),
           90.0,
-          rl.Core.Fade(rl.C.RED, 0.5)
+          rl.Core.Fade(rl.Color.RED, 0.5)
         );
         rl.Core.DrawGrid(20, 1.0);
 
@@ -87,7 +87,7 @@ void main()
 
       rl.Core.DrawText(
         "EARTH ORBITING AROUND THE SUN!".toC,
-        400, 10, 20, rl.C.MAROON
+        400, 10, 20, rl.Color.MAROON
       );
       rl.Core.DrawFPS(10, 10);
 

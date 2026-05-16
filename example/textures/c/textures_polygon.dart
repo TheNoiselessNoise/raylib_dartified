@@ -52,11 +52,11 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "textured polygon".toC,
-        20, 20, 20, rl.C.DARKGRAY
+        20, 20, 20, rl.Color.DARKGRAY
       );
 
       DrawTexturePoly(
@@ -69,7 +69,7 @@ void main()
         positions,
         texcoords,
         MAX_POINTS,
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
     rl.Core.EndDrawing();

@@ -17,27 +17,14 @@ extension ImageCLike on ImageC {
     _ => throw UnsupportedError('Compressed formats have no simple bpp: $format'),
   };
 
-  int get dataLength {
-    if (width == 0 || height == 0) return 0;
-    return width * height * bytesPerPixel;
-  }
-}
+  // NOTE: assuming normal image (not a GIF)
+  int get frameCount => 1;
 
-extension ImageDLike on ImageD {
-  int get bytesPerPixel => switch (format) {
-    .PIXELFORMAT_UNCOMPRESSED_GRAYSCALE => 1,
-    .PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R5G6B5 => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R8G8B8 => 3,
-    .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 => 4,
-    .PIXELFORMAT_UNCOMPRESSED_R32 => 4,
-    .PIXELFORMAT_UNCOMPRESSED_R32G32B32 => 12,
-    .PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 => 16,
-    .PIXELFORMAT_UNCOMPRESSED_R16 => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R16G16B16 => 6,
-    .PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 => 8,
-    _ => throw UnsupportedError('Compressed formats have no simple bpp: $format'),
-  };
+  int get dataLength {
+    final frameSize = this.frameSize;
+    if (frameSize == 0) return 0;
+    return frameSize * frameCount;
+  }
 
   int get frameSize {
     if (width == 0 || height == 0) return 0;
@@ -70,7 +57,7 @@ extension ImageCEx on ImageC {
   }
 
   ImageC setD(ImageD o) {
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       data = p.ref.data;
     });
     width = o.width;
@@ -90,14 +77,24 @@ extension ImageCEx on ImageC {
   );
 }
 
-class ImageD extends StructD<ImageD, ImageC> {
+class ImageD extends StructD<ImageD, ImageC> with ImageBase {
+  @override
   int width;
+
+  @override
   int height;
+
+  @override
   int mipmaps;
+
+  @override
   PixelFormat format;
+
+  @override
   List<int> data;
 
-  int _frameCount = 1; // normal image has only 1 frame
+  @override
+  int frameCount = 1; // normal image has only 1 frame
 
   ImageD({
     super.originalPointer,
@@ -112,9 +109,9 @@ class ImageD extends StructD<ImageD, ImageC> {
   factory ImageD.zero() => .new();
 
   // NOTE: for GIFs
-  void _updateFrameCount(int frameCount) => onOriginalPointer((p) {
-    if (_frameCount != frameCount) {
-      _frameCount = frameCount;
+  void nativeUpdateFrameCount(int frameCount) => nativeOnOriginalPointer((p) {
+    if (this.frameCount != frameCount) {
+      this.frameCount = frameCount;
       data = p.ref.data.address != 0 ?
         p.ref.data.cast<Uint8>().asTypedList(frameSize * frameCount).toList() :
         [];
@@ -123,7 +120,7 @@ class ImageD extends StructD<ImageD, ImageC> {
 
   @override
   ImageD setC(ImageC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.data = o.data;
       p.ref.format = o.format;
     });
@@ -131,7 +128,7 @@ class ImageD extends StructD<ImageD, ImageC> {
     height = o.height;
     mipmaps = o.mipmaps;
     format = .fromValue(o.format);
-    data = o.data.address != 0 ? o.data.cast<Uint8>().asTypedList(frameSize).toList() : [];
+    data = o.data.address != 0 ? o.data.cast<Uint8>().asTypedList(frameSize * frameCount).toList() : [];
     return this;
   }
 
@@ -147,20 +144,15 @@ class ImageD extends StructD<ImageD, ImageC> {
   }
 
   @override
-  Pointer<ImageC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Image$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Image$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
-    p.ref.width = width;
-    p.ref.height = height;
-    p.ref.mipmaps = mipmaps;
-    p.ref.format = format.value;
+  void nativeAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
     p.ref.data = temp.Uint8$.RawArray(data).cast();
   }
 
   @override
-  void writeInto(ImageC p) {
+  void nativeWriteInto(ImageC p) {
     p.width = width;
     p.height = height;
     p.mipmaps = mipmaps;

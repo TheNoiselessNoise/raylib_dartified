@@ -23,7 +23,7 @@ void main()
     'GREEN': .GREEN, 'SKYBLUE': .SKYBLUE, 'PURPLE': .PURPLE, 'BEIGE': .BEIGE
   };
 
-  final List<RectangleD> colorsRecs = List.generate(colors.length, (i) => .new(
+  final List<RectangleD> colorsRecs = .generate(colors.length, (i) => .new(
     x: 20.0 + 100.0 * (i%7) + 10.0 * (i%7),
     y: 80.0 + 100.0 * (i~/7) + 10.0 * (i~/7),
     width: 100.0,

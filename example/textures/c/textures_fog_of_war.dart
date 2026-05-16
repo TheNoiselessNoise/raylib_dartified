@@ -35,8 +35,8 @@ void main()
   final map = ExampleMap();
   map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
   map.tilesY = screenHeight ~/ MAP_TILE_SIZE;
-  map.tileIds = List.filled(map.tilesX*map.tilesY, 0);
-  map.tileFog = List.filled(map.tilesX*map.tilesY, 0);
+  map.tileIds = .filled(map.tilesX*map.tilesY, 0);
+  map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
   final textureSrc = rl.Temp.Rectangle$.At('textureSrc');
   final textureDst = rl.Temp.Rectangle$.At('textureDst');
@@ -45,7 +45,7 @@ void main()
   int playerTileX = 0;
   int playerTileY = 0;
 
-  RenderTexture2DC fogOfWar = rl.Core.LoadRenderTexture(map.tilesX, map.tilesY);
+  final fogOfWar = rl.Core.LoadRenderTexture(map.tilesX, map.tilesY);
   rl.Core.SetTextureFilter(fogOfWar.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
   while (!rl.Core.WindowShouldClose())
@@ -90,14 +90,14 @@ void main()
     }
 
     rl.Core.BeginTextureMode(fogOfWar);
-      rl.Core.ClearBackground(rl.C.BLANK);
+      rl.Core.ClearBackground(rl.Color.BLANK);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
           if (map.tileFog[y*map.tilesX+x] == 0) {
-            rl.Core.DrawRectangle(x, y, 1, 1, rl.C.BLACK);
+            rl.Core.DrawRectangle(x, y, 1, 1, rl.Color.BLACK);
           } else if (map.tileFog[y*map.tilesX+x] == 2) {
-            rl.Core.DrawRectangle(x, y, 1, 1, rl.Core.Fade(rl.C.BLACK, 0.8));
+            rl.Core.DrawRectangle(x, y, 1, 1, rl.Core.Fade(rl.Color.BLACK, 0.8));
           }
         }
       }
@@ -105,19 +105,19 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
           rl.Core.DrawRectangle(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            map.tileIds[y*map.tilesX+x] == 0 ? rl.C.BLUE : rl.Core.Fade(rl.C.BLUE, 0.9),
+            map.tileIds[y*map.tilesX+x] == 0 ? rl.Color.BLUE : rl.Core.Fade(rl.Color.BLUE, 0.9),
           );
           rl.Core.DrawRectangleLines(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            rl.Core.Fade(rl.C.DARKBLUE, 0.5),
+            rl.Core.Fade(rl.Color.DARKBLUE, 0.5),
           );
         }
       }
@@ -125,7 +125,7 @@ void main()
       rl.Core.DrawRectangleV(
         playerPosition.ref,
         rl.Temp.vec21(PLAYER_SIZE, PLAYER_SIZE),
-        rl.C.RED
+        rl.Color.RED
       );
 
       textureSrc.set(
@@ -144,17 +144,17 @@ void main()
         textureDst.ref,
         rl.Temp.vec21(0, 0),
         0,
-        rl.C.WHITE,
+        rl.Color.WHITE,
       );
 
       rl.Core.DrawText(
         "Current tile: [$playerTileX, $playerTileY]".toC,
-        10, 10, 20, rl.C.RAYWHITE
+        10, 10, 20, rl.Color.RAYWHITE
       );
       
       rl.Core.DrawText(
         "ARROW KEYS to move".toC,
-        10, screenHeight-25, 20, rl.C.RAYWHITE
+        10, screenHeight-25, 20, rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();

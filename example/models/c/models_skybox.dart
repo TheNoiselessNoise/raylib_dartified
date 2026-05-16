@@ -123,13 +123,13 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
         rl.Rlgl.rlDisableBackfaceCulling();
         rl.Rlgl.rlDisableDepthMask();
-          rl.Core.DrawModel(skybox, rl.Temp.vec3Zero, 1.0, rl.C.WHITE);
+          rl.Core.DrawModel(skybox, rl.Temp.vec3Zero, 1.0, rl.Color.WHITE);
         rl.Rlgl.rlEnableBackfaceCulling();
         rl.Rlgl.rlEnableDepthMask();
 
@@ -141,12 +141,12 @@ void main()
       if (useHDR) {
         rl.Core.DrawText(
           "Panorama image from hdrihaven.com: $fileName".toC,
-          10, rl.Core.GetScreenHeight() - 20, 10, rl.C.BLACK
+          10, rl.Core.GetScreenHeight() - 20, 10, rl.Color.BLACK
         );
       } else {
         rl.Core.DrawText(
           ": $fileName".toC,
-          10, rl.Core.GetScreenHeight() - 20, 10, rl.C.BLACK
+          10, rl.Core.GetScreenHeight() - 20, 10, rl.Color.BLACK
         );
       }
 
@@ -162,7 +162,7 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-TextureCubemapC GenTextureCubemap(Raylib rl, ShaderC shader, Texture2DC panorama, int size, PixelFormat format)
+TextureC GenTextureCubemap(Raylib rl, ShaderC shader, TextureC panorama, int size, PixelFormat format)
 {
   final cubemap = rl.Temp.Texture$.At('cubemap').ref;
 

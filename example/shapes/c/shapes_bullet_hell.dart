@@ -35,7 +35,7 @@ void main()
   int bulletRadius = 10;
   double bulletSpeed = 3.0;
   int bulletRows = 6;
-  List<ColorC> bulletColor = [ rl.C.RED, rl.C.BLUE ];
+  List<ColorC> bulletColor = [ rl.Color.RED, rl.Color.BLUE ];
 
   double baseDirection = 0;
   int angleIncrement = 5;
@@ -47,8 +47,8 @@ void main()
   RenderTextureC bulletTexture = rl.Core.LoadRenderTexture(24, 24);
 
   rl.Core.BeginTextureMode(bulletTexture);
-    rl.Core.DrawCircle(12, 12, bulletRadius.toDouble(), rl.C.WHITE);
-    rl.Core.DrawCircleLines(12, 12, bulletRadius.toDouble(), rl.C.BLACK);
+    rl.Core.DrawCircle(12, 12, bulletRadius.toDouble(), rl.Color.WHITE);
+    rl.Core.DrawCircleLines(12, 12, bulletRadius.toDouble(), rl.Color.BLACK);
   rl.Core.EndTextureMode();
 
   bool drawInPerformanceMode = true;
@@ -126,26 +126,26 @@ void main()
     }
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       magicCircleRotation++;
       rl.Core.DrawRectanglePro(
         rl.Temp.rect1(screenWidth/2, screenHeight/2, 120, 120),
         rl.Temp.vec21(60.0, 60.0),
         magicCircleRotation,
-        rl.C.PURPLE
+        rl.Color.PURPLE
       );  
 
       rl.Core.DrawRectanglePro(
         rl.Temp.rect1(screenWidth/2, screenHeight/2, 120, 120),
         rl.Temp.vec21(60.0, 60.0),
         magicCircleRotation + 45,
-        rl.C.PURPLE
+        rl.Color.PURPLE
       );
 
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 70, rl.C.BLACK);
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 50, rl.C.BLACK);
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 30, rl.C.BLACK);
+      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 70, rl.Color.BLACK);
+      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 50, rl.Color.BLACK);
+      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 30, rl.Color.BLACK);
 
       if (drawInPerformanceMode)
       {
@@ -176,7 +176,7 @@ void main()
             rl.Core.DrawCircleLinesV(
               rl.Temp.vec21D(bullets[i].position),
               bulletRadius.toDouble(),
-              rl.C.BLACK
+              rl.Color.BLACK
             );
           }
         }
@@ -186,31 +186,31 @@ void main()
       
       rl.Core.DrawText(
         "Controls:".toC,
-        20, 20, 10, rl.C.LIGHTGRAY
+        20, 20, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- Right/Left or A/D: Change rows number".toC,
-        40, 40, 10, rl.C.LIGHTGRAY
+        40, 40, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- Up/Down or W/S: Change bullet speed".toC,
-        40, 60, 10, rl.C.LIGHTGRAY
+        40, 60, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- Z or X: Change spawn cooldown".toC,
-        40, 80, 10, rl.C.LIGHTGRAY
+        40, 80, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- Space (Hold): Change the angle increment".toC,
-        40, 100, 10, rl.C.LIGHTGRAY
+        40, 100, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- Enter: Switch draw method (Performance)".toC,
-        40, 120, 10, rl.C.LIGHTGRAY
+        40, 120, 10, rl.Color.LIGHTGRAY
       );
       rl.Core.DrawText(
         "- C: Clear bullets".toC,
-        40, 140, 10, rl.C.LIGHTGRAY
+        40, 140, 10, rl.Color.LIGHTGRAY
       );
 
       rl.Core.DrawRectangle(610, 10, 170, 30, color);
@@ -218,19 +218,19 @@ void main()
       if (drawInPerformanceMode) {
         rl.Core.DrawText(
           "Draw method: DrawTexture(*)".toC,
-          620, 20, 10, rl.C.GREEN
+          620, 20, 10, rl.Color.GREEN
         );
       } else {
         rl.Core.DrawText(
           "Draw method: DrawCircle(*)".toC,
-          620, 20, 10, rl.C.RED
+          620, 20, 10, rl.Color.RED
         );
       }
 
       rl.Core.DrawRectangle(135, 410, 530, 30, color);
       rl.Core.DrawText(
         "[ FPS: ${rl.Core.GetFPS()}, Bullets: ${bullets.length - bulletDisabledCount}, Rows: $bulletRows, Bullet speed: ${bulletSpeed.f2}, Angle increment per frame: $angleIncrement, Cooldown: ${spawnCooldown.f0} ]".toC,
-        155, 420, 10, rl.C.GREEN
+        155, 420, 10, rl.Color.GREEN
       );
 
     rl.Core.EndDrawing();

@@ -40,8 +40,8 @@ void main()
   final rl = loadBaseRaylib();
 
   final List<ColorC> colors = [
-    rl.C.MAROON, rl.C.ORANGE, rl.C.DARKGREEN, rl.C.DARKBLUE,
-    rl.C.DARKPURPLE, rl.C.LIME, rl.C.GOLD, rl.C.RED
+    rl.Color.MAROON, rl.Color.ORANGE, rl.Color.DARKGREEN, rl.Color.DARKBLUE,
+    rl.Color.DARKPURPLE, rl.Color.LIME, rl.Color.GOLD, rl.Color.RED
   ];
   assert(fontPaths.length == colors.length);
 
@@ -74,13 +74,13 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "free sprite fonts included with raylib".toC,
-        220, 20, 20, rl.C.DARKGRAY
+        220, 20, 20, rl.Color.DARKGRAY
       );
-      rl.Core.DrawLine(220, 50, 600, 50, rl.C.DARKGRAY);
+      rl.Core.DrawLine(220, 50, 600, 50, rl.Color.DARKGRAY);
 
       for (int i = 0; i < fontPaths.length; i++)
       {

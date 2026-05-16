@@ -74,26 +74,26 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, rl.Color.LIGHTGRAY);
 
-      rl.Core.DrawText("LEFT-RIGHT for PAN CONTROL".toC, 320, 74, 10, rl.C.DARKBLUE);
-      rl.Core.DrawRectangle(300, 100, 200, 12, rl.C.LIGHTGRAY);
-      rl.Core.DrawRectangleLines(300, 100, 200, 12, rl.C.GRAY);
-      rl.Core.DrawRectangle(rl.Remap(pan, 0, 1, 300, 500).toInt(), 92, 10, 28, rl.C.DARKGRAY);
+      rl.Core.DrawText("LEFT-RIGHT for PAN CONTROL".toC, 320, 74, 10, rl.Color.DARKBLUE);
+      rl.Core.DrawRectangle(300, 100, 200, 12, rl.Color.LIGHTGRAY);
+      rl.Core.DrawRectangleLines(300, 100, 200, 12, rl.Color.GRAY);
+      rl.Core.DrawRectangle(rl.Remap(pan, 0, 1, 300, 500).toInt(), 92, 10, 28, rl.Color.DARKGRAY);
 
-      rl.Core.DrawRectangle(200, 200, 400, 12, rl.C.LIGHTGRAY);
-      rl.Core.DrawRectangle(200, 200, (timePlayed*400.0).toInt(), 12, rl.C.MAROON);
-      rl.Core.DrawRectangleLines(200, 200, 400, 12, rl.C.GRAY);
+      rl.Core.DrawRectangle(200, 200, 400, 12, rl.Color.LIGHTGRAY);
+      rl.Core.DrawRectangle(200, 200, (timePlayed*400.0).toInt(), 12, rl.Color.MAROON);
+      rl.Core.DrawRectangleLines(200, 200, 400, 12, rl.Color.GRAY);
 
-      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 215, 250, 20, rl.C.LIGHTGRAY);
-      rl.Core.DrawText("PRESS P TO PAUSE/RESUME MUSIC".toC, 208, 280, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 215, 250, 20, rl.Color.LIGHTGRAY);
+      rl.Core.DrawText("PRESS P TO PAUSE/RESUME MUSIC".toC, 208, 280, 20, rl.Color.LIGHTGRAY);
 
-      rl.Core.DrawText("UP-DOWN for VOLUME CONTROL".toC, 320, 334, 10, rl.C.DARKGREEN);
-      rl.Core.DrawRectangle(300, 360, 200, 12, rl.C.LIGHTGRAY);
-      rl.Core.DrawRectangleLines(300, 360, 200, 12, rl.C.GRAY);
-      rl.Core.DrawRectangle((300 + volume*200 - 5).toInt(), 352, 10, 28, rl.C.DARKGRAY);
+      rl.Core.DrawText("UP-DOWN for VOLUME CONTROL".toC, 320, 334, 10, rl.Color.DARKGREEN);
+      rl.Core.DrawRectangle(300, 360, 200, 12, rl.Color.LIGHTGRAY);
+      rl.Core.DrawRectangleLines(300, 360, 200, 12, rl.Color.GRAY);
+      rl.Core.DrawRectangle((300 + volume*200 - 5).toInt(), 352, 10, 28, rl.Color.DARKGRAY);
 
     rl.Core.EndDrawing();
   }

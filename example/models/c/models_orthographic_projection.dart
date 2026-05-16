@@ -42,23 +42,23 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawCube(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.C.RED);
-        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.C.GOLD);
-        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, rl.C.MAROON);
+        rl.Core.DrawCube(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.Color.RED);
+        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.Color.GOLD);
+        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, rl.Color.MAROON);
 
-        rl.Core.DrawSphere(rl.Temp.vec31(-1.0, 0.0, -2.0), 1.0, rl.C.GREEN);
-        rl.Core.DrawSphereWires(rl.Temp.vec31(1.0, 0.0, 2.0), 2.0, 16, 16, rl.C.LIME);
+        rl.Core.DrawSphere(rl.Temp.vec31(-1.0, 0.0, -2.0), 1.0, rl.Color.GREEN);
+        rl.Core.DrawSphereWires(rl.Temp.vec31(1.0, 0.0, 2.0), 2.0, 16, 16, rl.Color.LIME);
 
-        rl.Core.DrawCylinder(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.C.SKYBLUE);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.C.DARKBLUE);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, rl.C.BROWN);
+        rl.Core.DrawCylinder(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.Color.SKYBLUE);
+        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.Color.DARKBLUE);
+        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, rl.Color.BROWN);
 
-        rl.Core.DrawCylinder(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.C.GOLD);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.C.PINK);
+        rl.Core.DrawCylinder(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.Color.GOLD);
+        rl.Core.DrawCylinderWires(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.Color.PINK);
 
         rl.Core.DrawGrid(10, 1.0);
 
@@ -66,13 +66,13 @@ void main()
 
       rl.Core.DrawText(
         "Press Spacebar to switch camera type".toC,
-        10, rl.Core.GetScreenHeight() - 30, 20, rl.C.DARKGRAY
+        10, rl.Core.GetScreenHeight() - 30, 20, rl.Color.DARKGRAY
       );
 
       if (camera.ref.projection == CameraProjection.CAMERA_ORTHOGRAPHIC.value)
-        rl.Core.DrawText("ORTHOGRAPHIC".toC, 10, 40, 20, rl.C.BLACK);
+        rl.Core.DrawText("ORTHOGRAPHIC".toC, 10, 40, 20, rl.Color.BLACK);
       else if (camera.ref.projection == CameraProjection.CAMERA_PERSPECTIVE.value)
-        rl.Core.DrawText("PERSPECTIVE".toC, 10, 40, 20, rl.C.BLACK);
+        rl.Core.DrawText("PERSPECTIVE".toC, 10, 40, 20, rl.Color.BLACK);
 
       rl.Core.DrawFPS(10, 10);
 

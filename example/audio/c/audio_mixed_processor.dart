@@ -45,21 +45,21 @@ void main() async {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, rl.Color.LIGHTGRAY);
 
-      rl.Core.DrawText("EXPONENT = ${exponent.f2}".toC, 215, 180, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("EXPONENT = ${exponent.f2}".toC, 215, 180, 20, rl.Color.LIGHTGRAY);
 
-      rl.Core.DrawRectangle(199, 199, 402, 34, rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangle(199, 199, 402, 34, rl.Color.LIGHTGRAY);
       for (int i = 0; i < 400; i++)
       {
-        rl.Core.DrawLine(201 + i, 232 - (averageVolume[i] * 32).toInt(), 201 + i, 232, rl.C.MAROON);
+        rl.Core.DrawLine(201 + i, 232 - (averageVolume[i] * 32).toInt(), 201 + i, 232, rl.Color.MAROON);
       }
-      rl.Core.DrawRectangleLines(199, 199, 402, 34, rl.C.GRAY);
+      rl.Core.DrawRectangleLines(199, 199, 402, 34, rl.Color.GRAY);
 
-      rl.Core.DrawText("PRESS SPACE TO PLAY OTHER SOUND".toC, 200, 250, 20, rl.C.LIGHTGRAY);
-      rl.Core.DrawText("USE LEFT AND RIGHT ARROWS TO ALTER DISTORTION".toC, 140, 280, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("PRESS SPACE TO PLAY OTHER SOUND".toC, 200, 250, 20, rl.Color.LIGHTGRAY);
+      rl.Core.DrawText("USE LEFT AND RIGHT ARROWS TO ALTER DISTORTION".toC, 140, 280, 20, rl.Color.LIGHTGRAY);
 
     rl.Core.EndDrawing();
 

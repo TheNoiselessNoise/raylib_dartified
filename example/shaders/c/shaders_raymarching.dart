@@ -77,15 +77,15 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
-        rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.C.WHITE);
+        rl.Core.DrawRectangle(0, 0, rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(), rl.Color.WHITE);
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "(c) Raymarching shader by Iñigo Quilez. MIT License.".toC,
-        rl.Core.GetScreenWidth() - 280, rl.Core.GetScreenHeight() - 20, 10, rl.C.BLACK
+        rl.Core.GetScreenWidth() - 280, rl.Core.GetScreenHeight() - 20, 10, rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();

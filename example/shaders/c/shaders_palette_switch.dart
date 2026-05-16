@@ -79,7 +79,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
 
@@ -90,9 +90,9 @@ void main()
 
       rl.Core.EndShaderMode();
 
-      rl.Core.DrawText("< >".toC, 10, 10, 30, rl.C.DARKBLUE);
-      rl.Core.DrawText("CURRENT PALETTE:".toC, 60, 15, 20, rl.C.RAYWHITE);
-      rl.Core.DrawText(palettes.keys.elementAt(currentPalette).toC, 300, 15, 20, rl.C.RED);
+      rl.Core.DrawText("< >".toC, 10, 10, 30, rl.Color.DARKBLUE);
+      rl.Core.DrawText("CURRENT PALETTE:".toC, 60, 15, 20, rl.Color.RAYWHITE);
+      rl.Core.DrawText(palettes.keys.elementAt(currentPalette).toC, 300, 15, 20, rl.Color.RED);
 
       rl.Core.DrawFPS(700, 15);
 

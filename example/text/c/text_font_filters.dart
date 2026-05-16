@@ -74,55 +74,55 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "Use mouse wheel to change font size".toC,
-        20, 20, 10, rl.C.GRAY
+        20, 20, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Use KEY_RIGHT and KEY_LEFT to move text".toC,
-        20, 40, 10, rl.C.GRAY
+        20, 40, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Use 1, 2, 3 to change texture filter".toC,
-        20, 60, 10, rl.C.GRAY
+        20, 60, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Drop a new TTF font for dynamic loading".toC,
-        20, 80, 10, rl.C.DARKGRAY
+        20, 80, 10, rl.Color.DARKGRAY
       );
 
-      rl.Core.DrawTextEx(font.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.C.BLACK);
+      rl.Core.DrawTextEx(font.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.Color.BLACK);
 
-      rl.Core.DrawRectangle(0, screenHeight - 80, screenWidth, 80, rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangle(0, screenHeight - 80, screenWidth, 80, rl.Color.LIGHTGRAY);
       rl.Core.DrawText(
         "Font size: ${fontSize.f2}".toC,
-        20, screenHeight - 50, 10, rl.C.DARKGRAY
+        20, screenHeight - 50, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Text size: ${textSize.format(2)}".toC,
-        20, screenHeight - 30, 10, rl.C.DARKGRAY
+        20, screenHeight - 30, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "CURRENT TEXTURE FILTER:".toC,
-        250, 400, 20, rl.C.GRAY
+        250, 400, 20, rl.Color.GRAY
       );
 
       if (currentFontFilter == TextureFilter.TEXTURE_FILTER_POINT.value) {
         rl.Core.DrawText(
           "POINT".toC,
-          570, 400, 20, rl.C.BLACK
+          570, 400, 20, rl.Color.BLACK
         );
       } else if (currentFontFilter == TextureFilter.TEXTURE_FILTER_BILINEAR.value) {
         rl.Core.DrawText(
           "BILINEAR".toC,
-          570, 400, 20, rl.C.BLACK
+          570, 400, 20, rl.Color.BLACK
         );
       } else if (currentFontFilter == TextureFilter.TEXTURE_FILTER_TRILINEAR.value) {
         rl.Core.DrawText(
           "TRILINEAR".toC,
-          570, 400, 20, rl.C.BLACK
+          570, 400, 20, rl.Color.BLACK
         );
       }
 

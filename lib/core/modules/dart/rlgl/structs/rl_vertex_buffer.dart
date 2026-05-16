@@ -1,17 +1,6 @@
-// ignore_for_file: camel_case_types, camel_case_extensions
-
 part of '../../../../raylib.dart';
 
 extension RlVertexBufferCLike on RlVertexBufferC {
-  int get vboIdCount => 5;
-  int get verticesCount => elementCount > 0 ? elementCount * 3 : 0;
-  int get texcoordsCount => elementCount > 0 ? elementCount * 2 : 0;
-  int get normalsCount => elementCount > 0 ? elementCount * 3 : 0;
-  int get colorsCount => elementCount > 0 ? elementCount * 4 : 0;
-  int get indicesCount => elementCount;
-}
-
-extension RlVertexBufferDLike on RlVertexBufferD {
   int get vboIdCount => 5;
   int get verticesCount => elementCount > 0 ? elementCount * 3 : 0;
   int get texcoordsCount => elementCount > 0 ? elementCount * 2 : 0;
@@ -51,7 +40,7 @@ extension RlVertexBufferCEx on RlVertexBufferC {
 
   RlVertexBufferC setD(RlVertexBufferD o) {
     elementCount = o.elementCount;
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       vertices = p.ref.vertices;
       texcoords = p.ref.texcoords;
       normals = p.ref.normals;
@@ -113,14 +102,29 @@ extension RlVertexBufferCEx on RlVertexBufferC {
   );
 }
 
-class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> {
+class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> with RlVertexBufferBase {
+  @override
   int elementCount;
+
+  @override
   List<double> vertices;
+
+  @override
   List<double> texcoords;
+
+  @override
   List<double> normals;
+
+  @override
   List<int> colors;
+
+  @override
   List<int> indices;
+
+  @override
   int vaoId;
+
+  @override
   List<int> vboId;
 
   RlVertexBufferD({
@@ -145,7 +149,7 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> {
 
   @override
   RlVertexBufferD setC(RlVertexBufferC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.vertices = o.vertices;
       p.ref.texcoords = o.texcoords;
       p.ref.normals = o.normals;
@@ -188,21 +192,10 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> {
   }
 
   @override
-  Pointer<RlVertexBufferC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.RlVertexBuffer$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.RlVertexBuffer$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
-    p.ref.elementCount = elementCount;
-    p.ref.vaoId = vaoId;
-    for (var i = 0; i < vboIdCount; i++) {
-      p.ref.vboId[i] = vboId[i];
-    }
-
+  void nativeAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
     p.ref.vertices = temp.Float$.Array(vertices, key: '${key}_vertices');
     p.ref.texcoords = temp.Float$.Array(texcoords, key: '${key}_texcoords');
     p.ref.normals = temp.Float$.Array(normals, key: '${key}_normals');
@@ -211,7 +204,7 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> {
   }
 
   @override
-  void writeInto(RlVertexBufferC p) {
+  void nativeWriteInto(RlVertexBufferC p) {
     p.elementCount = elementCount;
     p.vaoId = vaoId;
     for (var i = 0; i < vboIdCount; i++) p.vboId[i] = vboId[i];

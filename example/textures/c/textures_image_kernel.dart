@@ -75,12 +75,12 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawTexture(catSharpendTexture, 0, 0, rl.C.WHITE);
-      rl.Core.DrawTexture(catSobelTexture, 200, 0, rl.C.WHITE);
-      rl.Core.DrawTexture(catGaussianTexture, 400, 0, rl.C.WHITE);
-      rl.Core.DrawTexture(texture, 600, 0, rl.C.WHITE);
+      rl.Core.DrawTexture(catSharpendTexture, 0, 0, rl.Color.WHITE);
+      rl.Core.DrawTexture(catSobelTexture, 200, 0, rl.Color.WHITE);
+      rl.Core.DrawTexture(catGaussianTexture, 400, 0, rl.Color.WHITE);
+      rl.Core.DrawTexture(texture, 600, 0, rl.Color.WHITE);
 
     rl.Core.EndDrawing();
   }

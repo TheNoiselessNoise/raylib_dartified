@@ -32,35 +32,35 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawCube(cubePosition.ref, 2.0, 2.0, 2.0, rl.C.RED);
-        rl.Core.DrawCubeWires(cubePosition.ref, 2.0, 2.0, 2.0, rl.C.MAROON);
+        rl.Core.DrawCube(cubePosition.ref, 2.0, 2.0, 2.0, rl.Color.RED);
+        rl.Core.DrawCubeWires(cubePosition.ref, 2.0, 2.0, 2.0, rl.Color.MAROON);
 
         rl.Core.DrawGrid(10, 1.0);
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawRectangle(10, 10, 320, 93, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(10, 10, 320, 93, rl.C.BLUE);
+      rl.Core.DrawRectangle(10, 10, 320, 93, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(10, 10, 320, 93, rl.Color.BLUE);
 
       rl.Core.DrawText(
         "Free camera default controls:".toC,
-        20, 20, 10, rl.C.BLACK
+        20, 20, 10, rl.Color.BLACK
       );
       rl.Core.DrawText(
         "- Mouse Wheel to Zoom in-out".toC,
-        40, 40, 10, rl.C.DARKGRAY
+        40, 40, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "- Mouse Wheel Pressed to Pan".toC,
-        40, 60, 10, rl.C.DARKGRAY
+        40, 60, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "- Z to zoom to (0, 0, 0)".toC,
-        40, 80, 10, rl.C.DARKGRAY
+        40, 80, 10, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

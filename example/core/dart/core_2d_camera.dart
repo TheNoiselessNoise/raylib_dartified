@@ -11,6 +11,10 @@ const int MAX_BUILDINGS = 100;
 void main() {
   final rl = loadBaseRaylib();
 
+  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera');
+  rl.CoreD.SetWindowMonitor(0);
+  rl.CoreD.SetTargetFPS(60);
+
   final RectangleD player = .rect(400, 280, 40, 40);
   final buildings = <RectangleD>[];
   final colors = <ColorD>[];
@@ -40,10 +44,6 @@ void main() {
     rotation: 0,
     zoom: 1,
   );
-
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
 
   while (!rl.CoreD.WindowShouldClose()) {
     if (rl.CoreD.IsKeyDown(.KEY_RIGHT)) {

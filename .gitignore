@@ -47,3 +47,6 @@ utils/resources/mylib/output/*.dart
 raylib-5.5*/
 # Markdown is better
 CHEATSHEET*html
+# something
+COMMIT
+TODO

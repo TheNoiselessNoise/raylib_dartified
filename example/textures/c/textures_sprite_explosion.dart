@@ -77,10 +77,10 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (active)
-        rl.Core.DrawTextureRec(explosion, frameRec.ref, position.ref, rl.C.WHITE);
+        rl.Core.DrawTextureRec(explosion, frameRec.ref, position.ref, rl.Color.WHITE);
 
     rl.Core.EndDrawing();
   }

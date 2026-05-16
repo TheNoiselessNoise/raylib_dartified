@@ -41,11 +41,11 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawCube(cubePosition.ref, 2, 2, 2, rl.C.RED);
-        rl.Core.DrawCubeWires(cubePosition.ref, 2, 2, 2, rl.C.MAROON);
+        rl.Core.DrawCube(cubePosition.ref, 2, 2, 2, rl.Color.RED);
+        rl.Core.DrawCubeWires(cubePosition.ref, 2, 2, 2, rl.Color.MAROON);
 
         rl.Core.DrawGrid(10, 1);
       rl.Core.EndMode3D();
@@ -58,17 +58,17 @@ void main() {
         cubeX - rl.Core.MeasureText(enemyString, 20) ~/ 2,
         cubeY,
         20,
-        rl.C.BLACK,
+        rl.Color.BLACK,
       );
 
       rl.Core.DrawText(
         "Cube position in screen space coordinates: [$cubeX, $cubeY]".toC,
-        10, 10, 20, rl.C.LIME,
+        10, 10, 20, rl.Color.LIME,
       );
 
       rl.Core.DrawText(
         "Text 2d should be always on top of the cube".toC,
-        10, 40, 20, rl.C.GRAY,
+        10, 40, 20, rl.Color.GRAY,
       );
 
     rl.Core.EndDrawing();

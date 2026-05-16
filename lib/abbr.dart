@@ -1,13 +1,13 @@
 import 'dart:ffi';
-
 import 'core/raylib.dart';
+import 'package:raylib_dartified_base/raylib_dartified_base.dart' show MaterialMapIndex;
 
 RaylibTemp get Temp => Raylib.instance.Temp;
 
-RaylibQuaternions get Q => Raylib.instance.Q;
+RaylibQuaternions get Quat => Raylib.instance.Quat;
 RaylibMatrices get Matrix => Raylib.instance.Matrix;
-RaylibVectors get Vec => Raylib.instance.Vec;
-RaylibColors get Color => Raylib.instance.C;
+RaylibVectors get Vector => Raylib.instance.Vector;
+RaylibColors get Color => Raylib.instance.Color;
 RaylibEasings get Ease => Raylib.instance.Ease;
 
 RaylibCore get Core => Raylib.instance.Core;
@@ -16,8 +16,8 @@ RaylibAudio get Audio => Raylib.instance.Audio;
 RaylibAudioD get AudioD => Raylib.instance.AudioD;
 RaylibRlgl get Rlgl => Raylib.instance.Rlgl;
 RaylibRlglD get RlglD => Raylib.instance.RlglD;
-RaylibCamera get Cam => Raylib.instance.Cam;
-RaylibCameraD get CamD => Raylib.instance.CamD;
+RaylibCamera get Camera => Raylib.instance.Camera;
+RaylibCameraD get CameraD => Raylib.instance.CameraD;
 RaylibLight get Light => Raylib.instance.Light;
 RaylibLightD get LightD => Raylib.instance.LightD;
 

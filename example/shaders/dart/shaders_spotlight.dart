@@ -58,7 +58,7 @@ void main()
 
   final texRay = rl.CoreD.LoadTexture("../resources/raysan.png");
 
-  List<Star> stars = List.generate(MAX_STARS, (_) => .new());
+  List<Star> stars = .generate(MAX_STARS, (_) => .new());
 
   stars.forEach((s) => ResetStar(rl, s));
 
@@ -74,7 +74,7 @@ void main()
     "../resources/shaders/glsl$GLSL_VERSION/spotlight.fs",
   );
 
-  List<Spot> spots = List.generate(MAX_SPOTS, (_) => .new());
+  List<Spot> spots = .generate(MAX_SPOTS, (_) => .new());
 
   for (int i = 0; i < MAX_SPOTS; i++)
   {

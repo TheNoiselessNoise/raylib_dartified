@@ -84,7 +84,8 @@ extension Vector4CEx on Vector4C {
   Vector4C div(Vector4C o) => set(x / o.x, y / o.y, z / o.z, w / o.w);
 }
 
-class Vector4D extends StructDLiteral<Vector4D, Vector4C> {
+class Vector4D extends StructDLiteral<Vector4D, Vector4C> with Vector4Base {
+  @override
   double x, y, z, w;
 
   Vector4D({
@@ -128,15 +129,10 @@ class Vector4D extends StructDLiteral<Vector4D, Vector4C> {
   }
 
   @override
-  Pointer<Vector4C> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Vector4$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Vector4$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<Vector4C> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(Vector4C p) {
+  void nativeWriteInto(Vector4C p) {
     p.x = x;
     p.y = y;
     p.z = z;
@@ -219,7 +215,7 @@ class Vector4D extends StructDLiteral<Vector4D, Vector4C> {
 
   factory Vector4D.fromAxisAngle(Vector3D axis, double angle)
   {
-    QuaternionD result = .vec4(0, 0, 0, 1);
+    Vector4D result = .vec4(0, 0, 0, 1);
 
     if (axis.length != 0.0)
     {
@@ -255,277 +251,11 @@ class Vector4D extends StructDLiteral<Vector4D, Vector4C> {
     w: w,
   );
 
-  // Quaternion related stuff which can't be in an extension
-  factory Vector4D.quat(
-    num x,
-    num y,
-    num z,
-    num w,
-  ) => .new(
-    x: x.toDouble(),
-    y: y.toDouble(),
-    z: z.toDouble(),
-    w: w.toDouble(),
-  );
-
-  factory Vector4D.qIdentity() => .vec4(0.0, 0.0, 0.0, 1.0);
-
-  factory Vector4D.qFromVector3ToVector3(Vector3D from, Vector3D to) {
-    final cross = from.crossProduct(to);
-    return .vec4(
-      cross.x,
-      cross.y,
-      cross.z,
-      1.0 + from.dotProduct(to),
-    ).normalize();
-  }
-
-  factory Vector4D.qFromMatrix(MatrixD mat) {
-    final fourWSquaredMinus1 = mat.m0  + mat.m5 + mat.m10;
-    final fourXSquaredMinus1 = mat.m0  - mat.m5 - mat.m10;
-    final fourYSquaredMinus1 = mat.m5  - mat.m0 - mat.m10;
-    final fourZSquaredMinus1 = mat.m10 - mat.m0 - mat.m5;
-
-    int biggestIndex = 0;
-    double fourBiggestSquaredMinus1 = fourWSquaredMinus1;
-    if (fourXSquaredMinus1 > fourBiggestSquaredMinus1) {
-      fourBiggestSquaredMinus1 = fourXSquaredMinus1;
-      biggestIndex = 1;
-    }
-
-    if (fourYSquaredMinus1 > fourBiggestSquaredMinus1) {
-      fourBiggestSquaredMinus1 = fourYSquaredMinus1;
-      biggestIndex = 2;
-    }
-
-    if (fourZSquaredMinus1 > fourBiggestSquaredMinus1) {
-      fourBiggestSquaredMinus1 = fourZSquaredMinus1;
-      biggestIndex = 3;
-    }
-
-    final biggestVal = math.sqrt(fourBiggestSquaredMinus1 + 1.0)*0.5;
-    final mult = 0.25/biggestVal;
-
-    return switch (biggestIndex) {
-      0 => .vec4(
-        biggestVal,
-        (mat.m6 - mat.m9)*mult,
-        (mat.m8 - mat.m2)*mult,
-        (mat.m1 - mat.m4)*mult,
-      ),
-      1 => .vec4(
-        biggestVal,
-        (mat.m6 - mat.m9)*mult,
-        (mat.m1 + mat.m4)*mult,
-        (mat.m8 + mat.m2)*mult,
-      ),
-      2 => .vec4(
-        biggestVal,
-        (mat.m8 - mat.m2)*mult,
-        (mat.m1 + mat.m4)*mult,
-        (mat.m6 + mat.m9)*mult,
-      ),
-      3 => .vec4(
-        biggestVal,
-        (mat.m1 - mat.m4)*mult,
-        (mat.m8 + mat.m2)*mult,
-        (mat.m6 + mat.m9)*mult,
-      ),
-      _ => .zero(),
-    };
-  }
-
-  factory Vector4D.qFromEuler(double pitch, double yaw, double roll) {
-    final x0 = math.cos(pitch*0.5);
-    final x1 = math.sin(pitch*0.5);
-    final y0 = math.cos(yaw*0.5);
-    final y1 = math.sin(yaw*0.5);
-    final z0 = math.cos(roll*0.5);
-    final z1 = math.sin(roll*0.5);
-
-    return .vec4(
-      x1*y0*z0 - x0*y1*z1,
-      x0*y1*z0 + x1*y0*z1,
-      x0*y0*z1 - x1*y1*z0,
-      x0*y0*z0 + x1*y1*z1,
-    );
-  }
-}
-
-extension Vector4DAsQuaternion on Vector4D {
-  QuaternionD qInvert() {
-    final lengthSq = x*x + y*y + z*z + w*w;
-
-    if (lengthSq != 0.0) {
-      final invLength = 1.0/lengthSq;
-
-      return .vec4(
-        x * -invLength,
-        y * -invLength,
-        z * -invLength,
-        w * invLength,
-      );
-    }
-
-    return this;
-  }
-
-  QuaternionD qMul(QuaternionD o) => .vec4(
-    x*o.w + w*o.x + y*o.z - z*o.y,
-    y*o.w + w*o.y + z*o.x - x*o.z,
-    z*o.w + w*o.z + x*o.y - y*o.x,
-    w*o.w - x*o.x - y*o.y - z*o.z,
-  );
-
-  QuaternionD qNlerp(QuaternionD o, double amount)
-    => lerp(o, amount).normalize();
-
-  QuaternionD qSlerp(QuaternionD o, double amount) {
-    double cosHalfTheta = x*o.x + y*o.y + z*o.z + w*o.w;
-
-    if (cosHalfTheta < 0)
-    {
-      o = .vec4(-o.x, -o.y, -o.z, -o.w);
-      cosHalfTheta = -cosHalfTheta;
-    }
-
-    if (cosHalfTheta.abs() >= 1.0) return this;
-    else if (cosHalfTheta > 0.95) return qNlerp(o, amount);
-    else
-    {
-      final halfTheta = math.acos(cosHalfTheta);
-      final sinHalfTheta = math.sqrt(1.0 - cosHalfTheta*cosHalfTheta);
-
-      if (sinHalfTheta.abs() < Raylib.instance.EPSILON)
-      {
-        return .vec4(
-          x*0.5 + o.x*0.5,
-          y*0.5 + o.y*0.5,
-          z*0.5 + o.z*0.5,
-          w*0.5 + o.w*0.5,
-        );
-      }
-      else
-      {
-        final ratioA = math.sin((1 - amount)*halfTheta)/sinHalfTheta;
-        final ratioB = math.sin(amount*halfTheta)/sinHalfTheta;
-
-        return .vec4(
-          x*ratioA + o.x*ratioB,
-          y*ratioA + o.y*ratioB,
-          z*ratioA + o.z*ratioB,
-          w*ratioA + o.w*ratioB,
-        );
-      }
-    }
-  }
-
-  QuaternionD qCubicHermiteSpline(
-    QuaternionD outTangent1,
-    QuaternionD q2,
-    QuaternionD inTangent2,
-    double t,
-  ) {
-    final t2 = t*t;
-    final t3 = t2*t;
-    final h00 = 2*t3 - 3*t2 + 1;
-    final h10 = t3 - 2*t2 + t;
-    final h01 = -2*t3 + 3*t2;
-    final h11 = t3 - t2;
-
-    QuaternionD p0 = scale(h00);
-    QuaternionD m0 = outTangent1.scale(h10);
-    QuaternionD p1 = q2.scale(h01);
-    QuaternionD m1 = inTangent2.scale(h11);
-
-    return p0.add(m0).add(p1).add(m1).normalize();
-  }
-
-  MatrixD qToMatrix() {
-    MatrixD result = .identity();
-
-    final a2 = x*x;
-    final b2 = y*y;
-    final c2 = z*z;
-    final ac = x*z;
-    final ab = x*y;
-    final bc = y*z;
-    final ad = w*x;
-    final bd = w*y;
-    final cd = w*z;
-
-    result.m0 = 1 - 2*(b2 + c2);
-    result.m1 = 2*(ab + cd);
-    result.m2 = 2*(ac - bd);
-
-    result.m4 = 2*(ab - cd);
-    result.m5 = 1 - 2*(a2 + c2);
-    result.m6 = 2*(bc + ad);
-
-    result.m8 = 2*(ac + bd);
-    result.m9 = 2*(bc - ad);
-    result.m10 = 1 - 2*(a2 + b2);
-
-    return result;
-  }
-
-  (Vector3D outAxis, double outAngle) qToAxisAngle() {
-    final q = w.abs() > 1.0 ? normalize() : this;
-
-    Vector3D resAxis = .zero();
-    final resAngle = 2.0*math.acos(q.w);
-    final den = math.sqrt(1.0 - q.w*q.w);
-
-    if (den > Raylib.instance.EPSILON) {
-      resAxis.x = q.x/den;
-      resAxis.y = q.y/den;
-      resAxis.z = q.z/den;
-    } else {
-      // This occurs when the angle is zero.
-      // Not a problem: just set an arbitrary normalized axis.
-      resAxis.x = 1.0;
-    }
-
-    return (resAxis, resAngle);
-  }
-
-  Vector3D qToEuler() {
-    // Roll (x-axis rotation)
-    final x0 = 2.0*(w*x + y*z);
-    final x1 = 1.0 - 2.0*(x*x + y*y);
-
-    // Pitch (y-axis rotation)
-    double y0 = 2.0*(w*y - z*x);
-    y0 = y0 > 1.0 ? 1.0 : y0;
-    y0 = y0 < -1.0 ? -1.0 : y0;
-
-    // Yaw (z-axis rotation)
-    final z0 = 2.0*(w*z + x*y);
-    final z1 = 1.0 - 2.0*(y*y + z*z);
-
-    return .vec3(
-      math.atan2(x0, x1),
-      math.asin(y0),
-      math.atan2(z0, z1),
-    );
-  }
-
-  QuaternionD qTransform(MatrixD mat) => .vec4(
-    mat.m0*x + mat.m4*y + mat.m8*z + mat.m12*w,
-    mat.m1*x + mat.m5*y + mat.m9*z + mat.m13*w,
-    mat.m2*x + mat.m6*y + mat.m10*z + mat.m14*w,
-    mat.m3*x + mat.m7*y + mat.m11*z + mat.m15*w,
-  );
-
-  bool qEquals(QuaternionD o) => (
-    (((x - o.x).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((x).abs(), (o.x).abs())))) &&
-    (((y - o.y).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((y).abs(), (o.y).abs())))) &&
-    (((z - o.z).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((z).abs(), (o.z).abs())))) &&
-    (((w - o.w).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((w).abs(), (o.w).abs()))))
-  ) || (
-    (((x + o.x).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((x).abs(), (o.x).abs())))) &&
-    (((y + o.y).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((y).abs(), (o.y).abs())))) &&
-    (((z + o.z).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((z).abs(), (o.z).abs())))) &&
-    (((w + o.w).abs()) <= (Raylib.instance.EPSILON*math.max(1.0, math.max((w).abs(), (o.w).abs()))))
+  QuaternionD toQuaternion() => .fromVector4(this);
+  factory Vector4D.fromQuaternion(QuaternionD q) => .new(
+    x: q.x,
+    y: q.y,
+    z: q.z,
+    w: q.w,
   );
 }

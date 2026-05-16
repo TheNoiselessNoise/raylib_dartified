@@ -15,7 +15,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(16, 16, 16),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -52,7 +52,7 @@ void main()
 
         rl.RlglD.rlPushMatrix();
           rl.RlglD.rlScalef(sunRadius, sunRadius, sunRadius);
-          DrawSphereBasic(rl, rl.C.GOLD);
+          DrawSphereBasic(rl, .GOLD);
         rl.RlglD.rlPopMatrix();
 
         rl.RlglD.rlPushMatrix();
@@ -63,7 +63,7 @@ void main()
             rl.RlglD.rlRotatef(earthRotation, 0.25, 1.0, 0.0);
             rl.RlglD.rlScalef(earthRadius, earthRadius, earthRadius);
 
-            DrawSphereBasic(rl, rl.C.BLUE);
+            DrawSphereBasic(rl, .BLUE);
           rl.RlglD.rlPopMatrix();
 
           rl.RlglD.rlRotatef(moonOrbitRotation, 0.0, 1.0, 0.0);
@@ -71,7 +71,7 @@ void main()
           rl.RlglD.rlRotatef(moonRotation, 0.0, 1.0, 0.0);
           rl.RlglD.rlScalef(moonRadius, moonRadius, moonRadius);
 
-          DrawSphereBasic(rl, rl.C.LIGHTGRAY);
+          DrawSphereBasic(rl, .LIGHTGRAY);
         rl.RlglD.rlPopMatrix();
 
         rl.CoreD.DrawCircle3D(
@@ -97,7 +97,7 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-void DrawSphereBasic(Raylib rl, ColorC color) {
+void DrawSphereBasic(Raylib rl, ColorD color) {
   int rings = 16;
   int slices = 16;
 

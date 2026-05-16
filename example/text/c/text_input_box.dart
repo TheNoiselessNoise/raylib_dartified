@@ -58,28 +58,28 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "PLACE MOUSE OVER INPUT BOX!".toC,
-        240, 140, 20, rl.C.GRAY
+        240, 140, 20, rl.Color.GRAY
       );
 
-      rl.Core.DrawRectangleRec(textBox.ref, rl.C.LIGHTGRAY);
+      rl.Core.DrawRectangleRec(textBox.ref, rl.Color.LIGHTGRAY);
       rl.Core.DrawRectangleLines(
         textBox.ref.x.toInt(), textBox.ref.y.toInt(),
         textBox.ref.width.toInt(), textBox.ref.height.toInt(),
-        mouseOnText ? rl.C.RED : rl.C.DARKGRAY
+        mouseOnText ? rl.Color.RED : rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         name.toC,
-        (textBox.ref.x + 5).toInt(), (textBox.ref.y + 8).toInt(), 40, rl.C.MAROON
+        (textBox.ref.x + 5).toInt(), (textBox.ref.y + 8).toInt(), 40, rl.Color.MAROON
       );
 
       rl.Core.DrawText(
         "INPUT CHARS: ${name.length}/$MAX_INPUT_CHARS".toC,
-        315, 250, 20, rl.C.DARKGRAY
+        315, 250, 20, rl.Color.DARKGRAY
       );
 
       if (mouseOnText)
@@ -88,12 +88,12 @@ void main()
         {
           if (((framesCounter/20)%2) == 0) rl.Core.DrawText(
             "_".toC,
-            (textBox.ref.x + 8 + rl.Core.MeasureText(name.toC, 40)).toInt(), (textBox.ref.y + 12).toInt(), 40, rl.C.MAROON
+            (textBox.ref.x + 8 + rl.Core.MeasureText(name.toC, 40)).toInt(), (textBox.ref.y + 12).toInt(), 40, rl.Color.MAROON
           );
         }
         else rl.Core.DrawText(
           "Press BACKSPACE to delete chars...".toC,
-          230, 300, 20, rl.C.GRAY
+          230, 300, 20, rl.Color.GRAY
         );
       }
 

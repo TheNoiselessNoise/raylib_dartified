@@ -257,15 +257,14 @@ class MyIntD extends StructDLiteral<MyIntD, MyIntC> {
   }
 
   @override
-  Pointer<MyIntC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.alloc<MyIntC, MyIntD>('MyInt\$').At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.alloc<MyIntC, MyIntD>('MyInt\$');
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<MyIntC> p, String key)
+  void nativeAllocateInto(RaylibTemp temp, Pointer<MyIntC> p, String key)
     => writeInto(p.ref);
 
   @override
-  void writeInto(MyIntC p) { p.value = value; }
+  void nativeWriteInto(MyIntC p) { p.value = value; }
 
   @override
   String signature() => 'MyInt(value: $value)';

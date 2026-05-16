@@ -86,7 +86,7 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
     rl.Gui.GuiLabel(
       rl.Temp.rect1(50, 20, 700, 36),
@@ -95,7 +95,7 @@ void main() {
 
     rl.Core.DrawText(
       "[CTRL+X] - CUT | [CTRL+C] COPY | [CTRL+V] | PASTE".toC,
-      50, 60, 20, rl.C.MAROON,
+      50, 60, 20, rl.Color.MAROON,
     );
 
     if (rl.Gui.GuiTextBox(

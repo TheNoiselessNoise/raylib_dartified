@@ -59,29 +59,29 @@ void main() {
     screenSpaceCamera.ref.target.y *= virtualRatio;
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode2D(worldSpaceCamera.ref);
-        rl.Core.DrawRectanglePro(rec01.ref, origin.ref, rotation, rl.C.BLACK);
-        rl.Core.DrawRectanglePro(rec02.ref, origin.ref, -rotation, rl.C.RED);
-        rl.Core.DrawRectanglePro(rec03.ref, origin.ref, rotation + 45.0, rl.C.BLUE);
+        rl.Core.DrawRectanglePro(rec01.ref, origin.ref, rotation, rl.Color.BLACK);
+        rl.Core.DrawRectanglePro(rec02.ref, origin.ref, -rotation, rl.Color.RED);
+        rl.Core.DrawRectanglePro(rec03.ref, origin.ref, rotation + 45.0, rl.Color.BLUE);
       rl.Core.EndMode2D();
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RED);
+      rl.Core.ClearBackground(rl.Color.RED);
 
       rl.Core.BeginMode2D(screenSpaceCamera.ref);
-        rl.Core.DrawTexturePro(target.texture, sourceRec.ref, destRec.ref, origin.ref, 0.0, rl.C.WHITE);
+        rl.Core.DrawTexturePro(target.texture, sourceRec.ref, destRec.ref, origin.ref, 0.0, rl.Color.WHITE);
       rl.Core.EndMode2D();
 
       rl.Core.DrawText(
         "Screen resolution: ${screenWidth}x$screenHeight".toC,
-        10, 10, 20, rl.C.DARKBLUE
+        10, 10, 20, rl.Color.DARKBLUE
       );
       rl.Core.DrawText(
         "World resolution: ${virtualScreenWidth}x$virtualScreenHeight".toC,
-        10, 40, 20, rl.C.DARKGREEN
+        10, 40, 20, rl.Color.DARKGREEN
       );
       rl.Core.DrawFPS(rl.Core.GetScreenWidth() - 95, 10);
     rl.Core.EndDrawing();

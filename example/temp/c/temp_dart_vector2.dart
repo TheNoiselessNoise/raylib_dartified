@@ -31,8 +31,8 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
-      rl.Core.DrawRectangleV(pos.ref, rl.Temp.vec21(50, 50), rl.C.BLUE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      rl.Core.DrawRectangleV(pos.ref, rl.Temp.vec21(50, 50), rl.Color.BLUE);
 
     rl.Core.EndDrawing();
   }

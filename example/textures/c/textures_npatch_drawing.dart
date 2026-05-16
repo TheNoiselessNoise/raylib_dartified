@@ -60,23 +60,23 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo2.ref, dstRec2.ref, origin.ref, 0.0, rl.C.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo1.ref, dstRec1.ref, origin.ref, 0.0, rl.C.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, h3PatchInfo.ref, dstRecH.ref, origin.ref, 0.0, rl.C.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, v3PatchInfo.ref, dstRecV.ref, origin.ref, 0.0, rl.C.WHITE);
+      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo2.ref, dstRec2.ref, origin.ref, 0.0, rl.Color.WHITE);
+      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo1.ref, dstRec1.ref, origin.ref, 0.0, rl.Color.WHITE);
+      rl.Core.DrawTextureNPatch(nPatchTexture, h3PatchInfo.ref, dstRecH.ref, origin.ref, 0.0, rl.Color.WHITE);
+      rl.Core.DrawTextureNPatch(nPatchTexture, v3PatchInfo.ref, dstRecV.ref, origin.ref, 0.0, rl.Color.WHITE);
 
-      rl.Core.DrawRectangleLines(5, 88, 74, 266, rl.C.BLUE);
-      rl.Core.DrawTexture(nPatchTexture, 10, 93, rl.C.WHITE);
+      rl.Core.DrawRectangleLines(5, 88, 74, 266, rl.Color.BLUE);
+      rl.Core.DrawTexture(nPatchTexture, 10, 93, rl.Color.WHITE);
       rl.Core.DrawText(
         "TEXTURE".toC,
-        15, 360, 10, rl.C.DARKGRAY
+        15, 360, 10, rl.Color.DARKGRAY
       );
 
       rl.Core.DrawText(
         "Move the mouse to stretch or shrink the n-patches".toC,
-        10, 20, 20, rl.C.DARKGRAY
+        10, 20, 20, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

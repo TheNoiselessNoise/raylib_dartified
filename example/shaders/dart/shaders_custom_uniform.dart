@@ -17,7 +17,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(8, 8, 8),
     target: .vec3(0, 1.5, 0),
     up: .vec3(0, 1, 0),

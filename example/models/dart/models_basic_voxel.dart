@@ -16,7 +16,7 @@ void main()
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(-2, 0, -2),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -28,8 +28,8 @@ void main()
   final cubeModel = rl.CoreD.LoadModelFromMesh(cubeMesh);
   cubeModel.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].color = .BEIGE;
 
-  List<List<List<bool>>> voxels = List.generate(WORLD_SIZE, (_) {
-    return List.generate(WORLD_SIZE, (_) => List.filled(WORLD_SIZE, true));
+  final List<List<List<bool>>> voxels = .generate(WORLD_SIZE, (_) {
+    return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
   });
 
   final Vector2D screenCenter = .vec2(screenWidth/2, screenHeight/2);

@@ -24,7 +24,7 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       // per-frame strings (we are inside while loop), you must use rl.Temp.str or rl.Temp.strAt
       // don't use .toUnsafeC() here, you will leak memory
@@ -35,30 +35,30 @@ void main()
       // CORRECT!!!
       rl.Core.DrawText(
         rl.Temp.str("rl.Temp.str: I am not leaking any memory!"),
-        50, 100, 20, rl.C.BLACK
+        50, 100, 20, rl.Color.BLACK
       );
 
       // CORRECT!!!
       rl.Core.DrawText(
         rl.Temp.strAt("perFrameInGameText", "perFrameInGameText: I am also not leaking any memory!"),
-        50, 150, 20, rl.C.BLACK
+        50, 150, 20, rl.Color.BLACK
       );
       // NOTE: we can reference rl.Temp.strAt("perFrameInGameText") later
 
       // CORRECT!!!
-      rl.Core.DrawText(inGameText, 50, 200, 20, rl.C.BLACK);
+      rl.Core.DrawText(inGameText, 50, 200, 20, rl.Color.BLACK);
 
       // CORRECT!!!
-      rl.Core.DrawText(rl.Temp.strAt('inGameText2'), 50, 250, 20, rl.C.BLACK);
+      rl.Core.DrawText(rl.Temp.strAt('inGameText2'), 50, 250, 20, rl.Color.BLACK);
 
       // NOTE: Raylib examples (only) comes with String.toC getter which relies on loaded Raylib instance
       // NOTE: It is used throughout the examples to save some typing :)
       // CORRECT!!!
-      rl.Core.DrawText('String.toC getter: I am also not leaking any memory!'.toC, 50, 300, 20, rl.C.BLACK);
+      rl.Core.DrawText('String.toC getter: I am also not leaking any memory!'.toC, 50, 300, 20, rl.Color.BLACK);
 
       final stringArray = rl.Temp.String$.Array(['i: 1', 'i: 2', 'i: 3']);//, key: 'myArray');
       for (int i = 0; i < 3; i++) {
-        rl.Core.DrawText(stringArray[i], 100*i + 50, 350, 20, rl.C.BLACK);
+        rl.Core.DrawText(stringArray[i], 100*i + 50, 350, 20, rl.Color.BLACK);
       }
 
     rl.Core.EndDrawing();

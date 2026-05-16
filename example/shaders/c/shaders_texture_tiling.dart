@@ -51,12 +51,12 @@ void main()
 
     rl.Core.BeginDrawing();
     
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
       
         rl.Core.BeginShaderMode(shader);
-          rl.Core.DrawModel(model, rl.Temp.vec3Zero, 2.0, rl.C.WHITE);
+          rl.Core.DrawModel(model, rl.Temp.vec3Zero, 2.0, rl.Color.WHITE);
         rl.Core.EndShaderMode();
 
         rl.Core.DrawGrid(10, 1.0);
@@ -65,7 +65,7 @@ void main()
 
       rl.Core.DrawText(
         "Use mouse to rotate the camera".toC,
-        10, 10, 20, rl.C.DARKGRAY
+        10, 10, 20, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();

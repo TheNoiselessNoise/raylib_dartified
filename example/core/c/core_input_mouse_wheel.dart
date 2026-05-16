@@ -20,17 +20,17 @@ void main() {
     boxPositionY -= (rl.Core.GetMouseWheelMove()*scrollSpeed).toInt();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawRectangle(screenWidth~/2 - 40, boxPositionY, 80, 80, rl.C.MAROON);
+      rl.Core.DrawRectangle(screenWidth~/2 - 40, boxPositionY, 80, 80, rl.Color.MAROON);
 
       rl.Core.DrawText(
         "Use mouse wheel to move the cube up and down!".toC,
-        10, 10, 20, rl.C.GRAY
+        10, 10, 20, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Box position Y: ${boxPositionY.pad(3)}".toC,
-        10, 40, 20, rl.C.LIGHTGRAY
+        10, 40, 20, rl.Color.LIGHTGRAY
       );
     rl.Core.EndDrawing();
   }

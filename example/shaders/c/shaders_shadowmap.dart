@@ -139,7 +139,7 @@ void main()
       MatrixC lightProj;
       
       rl.Core.BeginTextureMode(shadowMap);
-        rl.Core.ClearBackground(rl.C.WHITE);
+        rl.Core.ClearBackground(rl.Color.WHITE);
         rl.Core.BeginMode3D(lightCam.ref);
           lightView = rl.Rlgl.rlGetMatrixModelview();
           lightProj = rl.Rlgl.rlGetMatrixProjection();
@@ -149,7 +149,7 @@ void main()
       
       final lightViewProj = lightView.mul(lightProj);
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.SetShaderValueMatrix(shadowShader, lightVPLoc, lightViewProj);
 
@@ -172,11 +172,11 @@ void main()
 
       rl.Core.DrawText(
         "Shadows in raylib using the shadowmapping algorithm!".toC,
-        screenWidth - 320, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 320, screenHeight - 20, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "Use the arrow keys to rotate the light!".toC,
-        10, 10, 30, rl.C.RED
+        10, 10, 30, rl.Color.RED
       );
 
     rl.Core.EndDrawing();
@@ -196,7 +196,7 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-RenderTexture2DC LoadShadowmapRenderTexture(
+RenderTextureC LoadShadowmapRenderTexture(
   Raylib rl,
   int width,
   int height,
@@ -242,7 +242,7 @@ RenderTexture2DC LoadShadowmapRenderTexture(
   return target.ref;
 }
 
-void UnloadShadowmapRenderTexture(Raylib rl, RenderTexture2DC target)
+void UnloadShadowmapRenderTexture(Raylib rl, RenderTextureC target)
 {
   if (target.id > 0)
   {
@@ -258,7 +258,7 @@ void DrawScene(Raylib rl, ModelC cube, ModelC robot)
     rl.Temp.vec32(0.0, 1.0, 0.0),
     0.0,
     rl.Temp.vec33(10.0, 1.0, 10.0),
-    rl.C.BLUE
+    rl.Color.BLUE
   );
 
   rl.Core.DrawModelEx(
@@ -267,7 +267,7 @@ void DrawScene(Raylib rl, ModelC cube, ModelC robot)
     rl.Temp.vec32(0.0, 1.0, 0.0),
     0.0,
     rl.Temp.vec33(1.0, 1.0, 1.0),
-    rl.C.WHITE
+    rl.Color.WHITE
   );
   rl.Core.DrawModelEx(
     robot,
@@ -275,6 +275,6 @@ void DrawScene(Raylib rl, ModelC cube, ModelC robot)
     rl.Temp.vec32(0.0, 1.0, 0.0),
     0.0,
     rl.Temp.vec33(1.0, 1.0, 1.0),
-    rl.C.RED
+    rl.Color.RED
   );
 }

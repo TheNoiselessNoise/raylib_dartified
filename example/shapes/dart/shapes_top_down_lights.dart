@@ -57,8 +57,6 @@ void main()
 {
   final rl = loadBaseRaylib();
 
-  rl.debugEverything(true);
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_top_down_lights");
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
@@ -119,7 +117,7 @@ void main()
         rl.CoreD.ClearBackground(.BLACK);
 
         rl.RlglD.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
-        rl.RlglD.rlSetBlendMode(.RL_BLEND_CUSTOM);
+        rl.RlglD.rlSetBlendMode(.BLEND_CUSTOM);
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
@@ -133,7 +131,7 @@ void main()
 
         rl.RlglD.rlDrawRenderBatchActive();
 
-        rl.RlglD.rlSetBlendMode(.RL_BLEND_ALPHA);
+        rl.RlglD.rlSetBlendMode(.BLEND_ALPHA);
 
       rl.CoreD.EndTextureMode();
     }
@@ -251,7 +249,7 @@ void DrawLightMask(Raylib rl, int slot)
     rl.CoreD.ClearBackground(.WHITE);
 
     rl.RlglD.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
-    rl.RlglD.rlSetBlendMode(.RL_BLEND_CUSTOM);
+    rl.RlglD.rlSetBlendMode(.BLEND_CUSTOM);
 
     if (lights[slot].valid) rl.CoreD.DrawCircleGradient(
       lights[slot].position.x, lights[slot].position.y,
@@ -262,9 +260,9 @@ void DrawLightMask(Raylib rl, int slot)
     
     rl.RlglD.rlDrawRenderBatchActive();
 
-    rl.RlglD.rlSetBlendMode(.RL_BLEND_ALPHA);
+    rl.RlglD.rlSetBlendMode(.BLEND_ALPHA);
     rl.RlglD.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MAX);
-    rl.RlglD.rlSetBlendMode(.RL_BLEND_CUSTOM);
+    rl.RlglD.rlSetBlendMode(.BLEND_CUSTOM);
 
     for (int i = 0; i < lights[slot].shadowCount; i++)
     {
@@ -273,7 +271,7 @@ void DrawLightMask(Raylib rl, int slot)
 
     rl.RlglD.rlDrawRenderBatchActive();
     
-    rl.RlglD.rlSetBlendMode(.RL_BLEND_ALPHA);
+    rl.RlglD.rlSetBlendMode(.BLEND_ALPHA);
 
   rl.CoreD.EndTextureMode();
 }

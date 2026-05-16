@@ -29,7 +29,7 @@ extension FontCEx on FontC {
     baseSize = o.baseSize;
     glyphCount = o.glyphCount;
     glyphPadding = o.glyphPadding;
-    o.onOriginalPointer((p) {
+    o.nativeOnOriginalPointer((p) {
       texture = p.ref.texture;
       recs = p.ref.recs;
       glyphs = p.ref.glyphs;
@@ -48,12 +48,23 @@ extension FontCEx on FontC {
   );
 }
 
-class FontD extends StructD<FontD, FontC> {
+class FontD extends StructD<FontD, FontC> with FontBase {
+  @override
   int baseSize;
+  
+  @override
   int glyphCount;
+  
+  @override
   int glyphPadding;
+  
+  @override
   TextureD texture;
+  
+  @override
   List<RectangleD> recs;
+  
+  @override
   List<GlyphInfoD> glyphs;
 
   FontD({
@@ -73,7 +84,7 @@ class FontD extends StructD<FontD, FontC> {
 
   @override
   FontD setC(FontC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.recs = o.recs;
       p.ref.glyphs = o.glyphs;
     });
@@ -99,44 +110,27 @@ class FontD extends StructD<FontD, FontC> {
   }
 
   @override
-  Pointer<FontC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Font$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Font$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<FontC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
-    p.ref.baseSize = baseSize;
-    p.ref.glyphCount = glyphCount;
-    p.ref.glyphPadding = glyphPadding;
-    p.ref.texture.setD(texture);
-
+  void nativeAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
     p.ref.recs = temp.Rectangle$.RawArray(recs);
-    
-    p.ref.glyphs = temp.GlyphInfo$.RawFillInto(glyphs.length, (i, g) {
-      g.value = glyphs[i].value;
-      g.offsetX = glyphs[i].offsetX;
-      g.offsetY = glyphs[i].offsetY;
-      g.advanceX = glyphs[i].advanceX;
-      g.image.setD(glyphs[i].image);
-    });
+    p.ref.glyphs = temp.GlyphInfo$.RawArray(glyphs);
   }
 
   @override
-  void writeInto(FontC p) {
+  void nativeWriteInto(FontC p) {
     p.baseSize = baseSize;
     p.glyphCount = glyphCount;
     p.glyphPadding = glyphPadding;
-    texture.writeInto(p.texture);
+    texture.nativeWriteInto(p.texture);
 
     for (int i = 0; i < recs.length; i++) {
-      recs[i].writeInto((p.recs + i).ref);
+      recs[i].nativeWriteInto((p.recs + i).ref);
     }
     
     for (int i = 0; i < glyphs.length; i++) {
-      glyphs[i].writeInto((p.glyphs + i).ref);
+      glyphs[i].nativeWriteInto((p.glyphs + i).ref);
     }
   }
 

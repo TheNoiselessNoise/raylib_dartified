@@ -12,11 +12,16 @@ extension AutomationEventListCEx on AutomationEventListC {
   AutomationEventListD toD(Pointer<AutomationEventListC> ptr) => .new(ptr);
 }
 
-class AutomationEventListD extends StructDView<AutomationEventListD, AutomationEventListC> {
+class AutomationEventListD extends StructDView<AutomationEventListD, AutomationEventListC> with AutomationEventListBase {
   AutomationEventListD(super.originalPointer);
 
+  @override
   int get capacity => ref.capacity;
+  
+  @override
   int get count => ref.count;
+  
+  @override
   List<AutomationEventD> get events => .generate(count, (i) => (ref.events + i).toD());
 
   @override

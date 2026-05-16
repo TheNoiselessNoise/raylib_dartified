@@ -65,7 +65,7 @@ void main()
   material.maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].texture = lightmap.texture;
 
   rl.Core.BeginTextureMode(lightmap);
-    rl.Core.ClearBackground(rl.C.BLACK);
+    rl.Core.ClearBackground(rl.Color.BLACK);
 
     rl.Core.BeginBlendMode(BlendMode.BLEND_ADDITIVE.value);
       rl.Core.DrawTexturePro(
@@ -74,7 +74,7 @@ void main()
         rl.Temp.rect2(0, 0, 20, 20),
         rl.Temp.vec21(10.0, 10.0),
         0.0,
-        rl.C.RED
+        rl.Color.RED
       );
       rl.Core.DrawTexturePro(
         light,
@@ -82,7 +82,7 @@ void main()
         rl.Temp.rect2(8, 4, 20, 20),
         rl.Temp.vec21(10.0, 10.0),
         0.0,
-        rl.C.BLUE
+        rl.Color.BLUE
       );
       rl.Core.DrawTexturePro(
         light,
@@ -90,7 +90,7 @@ void main()
         rl.Temp.rect2(8, 8, 10, 10),
         rl.Temp.vec21(5.0, 5.0),
         0.0,
-        rl.C.GREEN
+        rl.Color.GREEN
       );
     rl.Core.BeginBlendMode(BlendMode.BLEND_ALPHA.value);
   rl.Core.EndTextureMode();
@@ -100,7 +100,7 @@ void main()
     rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
         rl.Core.DrawMesh(mesh, material, rl.Temp.matIdentity);
@@ -114,16 +114,16 @@ void main()
         rl.Temp.rect2(rl.Core.GetRenderWidth() - MAP_SIZE*8 - 10, 10, MAP_SIZE*8, MAP_SIZE*8),
         rl.Temp.vec21(0.0, 0.0),
         0.0,
-        rl.C.WHITE
+        rl.Color.WHITE
       );
           
       rl.Core.DrawText(
         "lightmap".toC,
-        rl.Core.GetRenderWidth() - 66, 16 + MAP_SIZE*8, 10, rl.C.GRAY
+        rl.Core.GetRenderWidth() - 66, 16 + MAP_SIZE*8, 10, rl.Color.GRAY
       );
       rl.Core.DrawText(
         "10x10 pixels".toC,
-        rl.Core.GetRenderWidth() - 76, 30 + MAP_SIZE*8, 10, rl.C.GRAY
+        rl.Core.GetRenderWidth() - 76, 30 + MAP_SIZE*8, 10, rl.Color.GRAY
       );
             
     rl.Core.EndDrawing();

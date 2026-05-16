@@ -27,18 +27,18 @@ void main()
   while (!rl.Core.WindowShouldClose())
   {
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.DrawRectangle(
         0, 0,
         rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight(),
-        rl.C.BLACK
+        rl.Color.BLACK
       );
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
         rl.Core.DrawTextureRec(
@@ -48,7 +48,7 @@ void main()
             target.texture.width, -target.texture.height
           ),
           rl.Temp.vec2Zero,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       rl.Core.EndShaderMode();
 

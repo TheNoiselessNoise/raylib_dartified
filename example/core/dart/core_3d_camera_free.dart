@@ -14,7 +14,7 @@ void main() {
   rl.CoreD.SetTargetFPS(60);
   rl.CoreD.DisableCursor();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),

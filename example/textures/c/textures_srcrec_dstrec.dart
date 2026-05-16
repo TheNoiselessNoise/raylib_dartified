@@ -41,30 +41,30 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawTexturePro(
         scarfy,
         sourceRec.ref, destRec.ref, origin.ref,
         rotation.toDouble(),
-        rl.C.WHITE
+        rl.Color.WHITE
       );
 
       rl.Core.DrawLine(
         destRec.ref.x.toInt(), 0,
         destRec.ref.x.toInt(), screenHeight,
-        rl.C.GRAY
+        rl.Color.GRAY
       );
       
       rl.Core.DrawLine(
         0, destRec.ref.y.toInt(),
         screenWidth, destRec.ref.y.toInt(),
-        rl.C.GRAY
+        rl.Color.GRAY
       );
 
       rl.Core.DrawText(
         "(c) Scarfy sprite by Eiden Marsal".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

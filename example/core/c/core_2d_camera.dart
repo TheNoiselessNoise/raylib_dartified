@@ -82,23 +82,23 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-    rl.Core.ClearBackground(rl.C.RAYWHITE);
+    rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode2D(camera.ref);
-        rl.Core.DrawRectangle(-6000, 320, 13000, 8000, rl.C.DARKGRAY);
+        rl.Core.DrawRectangle(-6000, 320, 13000, 8000, rl.Color.DARKGRAY);
 
         for (int i = 0; i < MAX_BUILDINGS; i++) {
           rl.Core.DrawRectangleRec(buildings[i], colors[i]);
         }
 
-        rl.Core.DrawRectangleRec(player.ref, rl.C.RED);
+        rl.Core.DrawRectangleRec(player.ref, rl.Color.RED);
 
         rl.Core.DrawLine(
           camera.ref.target.x.toInt(),
           -screenHeight*10,
           camera.ref.target.x.toInt(),
           screenHeight*10,
-          rl.C.GREEN,
+          rl.Color.GREEN,
         );
 
         rl.Core.DrawLine(
@@ -106,26 +106,26 @@ void main() {
           camera.ref.target.y.toInt(),
           screenWidth*10,
           camera.ref.target.y.toInt(),
-          rl.C.GREEN,
+          rl.Color.GREEN,
         );
 
       rl.Core.EndMode2D();
 
-    rl.Core.DrawText("SCREEN AREA".toC, 640, 10, 20, rl.C.RED);
+    rl.Core.DrawText("SCREEN AREA".toC, 640, 10, 20, rl.Color.RED);
 
-    rl.Core.DrawRectangle(0, 0, screenWidth, 5, rl.C.RED);
-    rl.Core.DrawRectangle(0, 5, 5, screenHeight - 10, rl.C.RED);
-    rl.Core.DrawRectangle(screenWidth - 5, 5, 5, screenHeight - 10, rl.C.RED);
-    rl.Core.DrawRectangle(0, screenHeight - 5, screenWidth, 5, rl.C.RED);
+    rl.Core.DrawRectangle(0, 0, screenWidth, 5, rl.Color.RED);
+    rl.Core.DrawRectangle(0, 5, 5, screenHeight - 10, rl.Color.RED);
+    rl.Core.DrawRectangle(screenWidth - 5, 5, 5, screenHeight - 10, rl.Color.RED);
+    rl.Core.DrawRectangle(0, screenHeight - 5, screenWidth, 5, rl.Color.RED);
 
-    rl.Core.DrawRectangle(10, 10, 250, 113, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-    rl.Core.DrawRectangleLines(10, 10, 250, 113, rl.C.BLUE);
+    rl.Core.DrawRectangle(10, 10, 250, 113, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+    rl.Core.DrawRectangleLines(10, 10, 250, 113, rl.Color.BLUE);
 
-    rl.Core.DrawText("Free 2D camera controls:".toC, 20, 20, 10, rl.C.BLACK);
-    rl.Core.DrawText("- Right/Left to move player".toC, 40, 40, 10, rl.C.DARKGRAY);
-    rl.Core.DrawText("- Mouse Wheel to Zoom in-out".toC, 40, 60, 10, rl.C.DARKGRAY);
-    rl.Core.DrawText("- A / S to Rotate".toC, 40, 80, 10, rl.C.DARKGRAY);
-    rl.Core.DrawText("- R to reset Zoom and Rotation".toC, 40, 100, 10, rl.C.DARKGRAY);
+    rl.Core.DrawText("Free 2D camera controls:".toC, 20, 20, 10, rl.Color.BLACK);
+    rl.Core.DrawText("- Right/Left to move player".toC, 40, 40, 10, rl.Color.DARKGRAY);
+    rl.Core.DrawText("- Mouse Wheel to Zoom in-out".toC, 40, 60, 10, rl.Color.DARKGRAY);
+    rl.Core.DrawText("- A / S to Rotate".toC, 40, 80, 10, rl.Color.DARKGRAY);
+    rl.Core.DrawText("- R to reset Zoom and Rotation".toC, 40, 100, 10, rl.Color.DARKGRAY);
 
     rl.Core.EndDrawing();
   }

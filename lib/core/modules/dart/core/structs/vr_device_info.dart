@@ -4,10 +4,6 @@ extension VrDeviceInfoCLike on VrDeviceInfoC {
   int get paramCount => 4;
 }
 
-extension VrDeviceInfoDLike on VrDeviceInfoD {
-  int get paramCount => 4;
-}
-
 extension VrDeviceInfoCPEx on Pointer<VrDeviceInfoC> {
   Pointer<VrDeviceInfoC> setC(VrDeviceInfoC o) {
     ref.setC(o);
@@ -73,15 +69,32 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
   );
 }
 
-class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> {
+class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> with VrDeviceInfoBase {
+  @override
   int hResolution;
+  
+  @override
   int vResolution;
+  
+  @override
   double hScreenSize;
+  
+  @override
   double vScreenSize;
+  
+  @override
   double eyeToScreenDistance;
+  
+  @override
   double lensSeparationDistance;
+  
+  @override
   double interpupillaryDistance;
+  
+  @override
   late List<double> lensDistortionValues;
+  
+  @override
   late List<double> chromaAbCorrection;
 
   VrDeviceInfoD({
@@ -104,7 +117,7 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> {
 
   @override
   VrDeviceInfoD setC(VrDeviceInfoC o) {
-    onOriginalPointer((p) {
+    nativeOnOriginalPointer((p) {
       p.ref.lensDistortionValues = o.lensDistortionValues;
       p.ref.chromaAbCorrection = o.chromaAbCorrection;
     });
@@ -136,34 +149,10 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> {
   }
 
   @override
-  Pointer<VrDeviceInfoC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.VrDeviceInfo$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.VrDeviceInfo$;
 
   @override
-  void syncInto(RaylibTemp temp, Pointer<VrDeviceInfoC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void allocateInto(RaylibTemp temp, Pointer<VrDeviceInfoC> p, String key) {
-    p.ref.hResolution = hResolution;
-    p.ref.vResolution = vResolution;
-    p.ref.hScreenSize = hScreenSize;
-    p.ref.vScreenSize = vScreenSize;
-    p.ref.eyeToScreenDistance = eyeToScreenDistance;
-    p.ref.lensSeparationDistance = lensSeparationDistance;
-    p.ref.interpupillaryDistance = interpupillaryDistance;
-
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.lensDistortionValues[i] = lensDistortionValues[i];
-    }
-
-    for (int i = 0; i < paramCount; i++) {
-      p.ref.chromaAbCorrection[i] = chromaAbCorrection[i];
-    }
-  }
-
-  @override
-  void writeInto(VrDeviceInfoC p) {
+  void nativeWriteInto(VrDeviceInfoC p) {
     p.hResolution = hResolution;
     p.vResolution = vResolution;
     p.hScreenSize = hScreenSize;

@@ -33,7 +33,7 @@ void main()
   final mesh = rl.Core.GenMeshCubicmap(imMap, rl.Temp.vec31(1.0, 1.0, 1.0));
   final model = rl.Core.LoadModelFromMesh(mesh); 
 
-  Texture2DC texture = rl.Core.LoadTexture("../resources/cubicmap_atlas.png".toC);
+  final texture = rl.Core.LoadTexture("../resources/cubicmap_atlas.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
   final mapPixels = rl.Core.LoadImageColors(imMap);
@@ -79,27 +79,27 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, mapPosition.ref, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(model, mapPosition.ref, 1.0, rl.Color.WHITE);
       rl.Core.EndMode3D();
 
       rl.Core.DrawTextureEx(
         cubicmap,
         rl.Temp.vec21(rl.Core.GetScreenWidth() - cubicmap.width*4.0 - 20, 20.0),
-        0.0, 4.0, rl.C.WHITE
+        0.0, 4.0, rl.Color.WHITE
       );
       rl.Core.DrawRectangleLines(
         rl.Core.GetScreenWidth() - cubicmap.width*4 - 20, 20, cubicmap.width*4,
         cubicmap.height*4,
-        rl.C.GREEN
+        rl.Color.GREEN
       );
 
       rl.Core.DrawRectangle(
         rl.Core.GetScreenWidth() - cubicmap.width*4 - 20 + playerCellX*4,
         20 + playerCellY*4, 4, 4,
-        rl.C.RED
+        rl.Color.RED
       );
 
       rl.Core.DrawFPS(10, 10);

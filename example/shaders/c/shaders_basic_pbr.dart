@@ -115,7 +115,7 @@ void main()
 
   car.materials[0].shader = shader;
 
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = rl.C.WHITE;
+  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = rl.Color.WHITE;
   car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
   car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
   car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
@@ -134,11 +134,11 @@ void main()
 
   floor.materials[0].shader = shader;
   
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = rl.C.WHITE;
+  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = rl.Color.WHITE;
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color = rl.C.BLACK;
+  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color = rl.Color.BLACK;
 
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].texture =
     rl.Core.LoadTexture("../resources/road_a.png".toC);
@@ -174,19 +174,19 @@ void main()
   );
 
   lights.add(CreateLight(rl,
-    .LIGHT_POINT, rl.Temp.vec31(-1, 1, -2), rl.Temp.vec3Zero, rl.C.YELLOW, 4.0, shader
+    .LIGHT_POINT, rl.Temp.vec31(-1, 1, -2), rl.Temp.vec3Zero, rl.Color.YELLOW, 4.0, shader
   ));
 
   lights.add(CreateLight(rl,
-    .LIGHT_POINT, rl.Temp.vec31(2, 1, 1), rl.Temp.vec3Zero, rl.C.RED, 3.3, shader
+    .LIGHT_POINT, rl.Temp.vec31(2, 1, 1), rl.Temp.vec3Zero, rl.Color.RED, 3.3, shader
   ));
 
   lights.add(CreateLight(rl,
-    .LIGHT_POINT, rl.Temp.vec31(-2, 1, 1), rl.Temp.vec3Zero, rl.C.GREEN, 8.3, shader
+    .LIGHT_POINT, rl.Temp.vec31(-2, 1, 1), rl.Temp.vec3Zero, rl.Color.GREEN, 8.3, shader
   ));
 
   lights.add(CreateLight(rl,
-    .LIGHT_POINT, rl.Temp.vec31(1, 1, -2), rl.Temp.vec3Zero, rl.C.BLUE, 2.0, shader
+    .LIGHT_POINT, rl.Temp.vec31(1, 1, -2), rl.Temp.vec3Zero, rl.Color.BLUE, 2.0, shader
   ));
 
   while (!rl.Core.WindowShouldClose())
@@ -210,7 +210,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.BLACK);
+      rl.Core.ClearBackground(rl.Color.BLACK);
 
       rl.Core.BeginMode3D(camera.ref);
 
@@ -232,7 +232,7 @@ void main()
           floor,
           rl.Temp.vec3Zero,
           5.0,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
 
         rl.Core.SetShaderValue(shader, textureTilingLoc,
@@ -253,7 +253,7 @@ void main()
           ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
         );
         
-        rl.Core.DrawModel(car, rl.Temp.vec3Zero, 0.25, rl.C.WHITE);
+        rl.Core.DrawModel(car, rl.Temp.vec3Zero, 0.25, rl.Color.WHITE);
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
@@ -276,12 +276,12 @@ void main()
 
       rl.Core.DrawText(
         "Toggle lights: [1][2][3][4]".toC,
-        10, 40, 20, rl.C.LIGHTGRAY
+        10, 40, 20, rl.Color.LIGHTGRAY
       );
 
       rl.Core.DrawText(
         "(c) Old Rusty Car model by Renafox (https://skfb.ly/LxRy)".toC,
-        screenWidth - 320, screenHeight - 20, 10, rl.C.LIGHTGRAY
+        screenWidth - 320, screenHeight - 20, 10, rl.Color.LIGHTGRAY
       );
       
       rl.Core.DrawFPS(10, 10);

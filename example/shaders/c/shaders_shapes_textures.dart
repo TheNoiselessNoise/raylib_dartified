@@ -28,60 +28,60 @@ void main()
   {
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.DrawText(
         "USING DEFAULT SHADER".toC,
-        20, 40, 10, rl.C.RED
+        20, 40, 10, rl.Color.RED
       );
 
-      rl.Core.DrawCircle(80, 120, 35, rl.C.DARKBLUE);
-      rl.Core.DrawCircleGradient(80, 220, 60, rl.C.GREEN, rl.C.SKYBLUE);
-      rl.Core.DrawCircleLines(80, 340, 80, rl.C.DARKBLUE);
+      rl.Core.DrawCircle(80, 120, 35, rl.Color.DARKBLUE);
+      rl.Core.DrawCircleGradient(80, 220, 60, rl.Color.GREEN, rl.Color.SKYBLUE);
+      rl.Core.DrawCircleLines(80, 340, 80, rl.Color.DARKBLUE);
 
       rl.Core.BeginShaderMode(shader);
 
         rl.Core.DrawText(
           "USING CUSTOM SHADER".toC,
-          190, 40, 10, rl.C.RED
+          190, 40, 10, rl.Color.RED
         );
 
-        rl.Core.DrawRectangle(250 - 60, 90, 120, 60, rl.C.RED);
-        rl.Core.DrawRectangleGradientH(250 - 90, 170, 180, 130, rl.C.MAROON, rl.C.GOLD);
-        rl.Core.DrawRectangleLines(250 - 40, 320, 80, 60, rl.C.ORANGE);
+        rl.Core.DrawRectangle(250 - 60, 90, 120, 60, rl.Color.RED);
+        rl.Core.DrawRectangleGradientH(250 - 90, 170, 180, 130, rl.Color.MAROON, rl.Color.GOLD);
+        rl.Core.DrawRectangleLines(250 - 40, 320, 80, 60, rl.Color.ORANGE);
 
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "USING DEFAULT SHADER".toC,
-        370, 40, 10, rl.C.RED
+        370, 40, 10, rl.Color.RED
       );
 
       rl.Core.DrawTriangle(
         rl.Temp.vec21(430, 80),
         rl.Temp.vec22(430 - 60, 150),
         rl.Temp.vec23(430 + 60, 150),
-        rl.C.VIOLET
+        rl.Color.VIOLET
       );
 
       rl.Core.DrawTriangleLines(
         rl.Temp.vec21(430, 160),
         rl.Temp.vec22(430 - 20, 230),
         rl.Temp.vec23(430 + 20, 230),
-        rl.C.DARKBLUE
+        rl.Color.DARKBLUE
       );
 
-      rl.Core.DrawPoly(rl.Temp.vec21(430, 320), 6, 80, 0, rl.C.BROWN);
+      rl.Core.DrawPoly(rl.Temp.vec21(430, 320), 6, 80, 0, rl.Color.BROWN);
 
       rl.Core.BeginShaderMode(shader);
 
-        rl.Core.DrawTexture(fudesumi, 500, -30, rl.C.WHITE);
+        rl.Core.DrawTexture(fudesumi, 500, -30, rl.Color.WHITE);
 
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "(c) Fudesumi sprite by Eiden Marsal".toC,
-        380, screenHeight - 20, 10, rl.C.GRAY
+        380, screenHeight - 20, 10, rl.Color.GRAY
       );
 
     rl.Core.EndDrawing();

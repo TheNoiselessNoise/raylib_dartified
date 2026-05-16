@@ -40,10 +40,17 @@ extension RayCollisionCEx on RayCollisionC {
   );
 }
 
-class RayCollisionD extends StructDLiteral<RayCollisionD, RayCollisionC> {
+class RayCollisionD extends StructDLiteral<RayCollisionD, RayCollisionC> with RayCollisionBase {
+  @override
   bool hit;
+
+  @override
   double distance;
+
+  @override
   Vector3D point;
+
+  @override
   Vector3D normal;
 
   RayCollisionD({
@@ -78,19 +85,14 @@ class RayCollisionD extends StructDLiteral<RayCollisionD, RayCollisionC> {
   }
 
   @override
-  Pointer<RayCollisionC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.RayCollision$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.RayCollision$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<RayCollisionC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(RayCollisionC p) {
+  void nativeWriteInto(RayCollisionC p) {
     p.hit = hit;
     p.distance = distance;
-    point.writeInto(p.point);
-    normal.writeInto(p.normal);
+    point.nativeWriteInto(p.point);
+    normal.nativeWriteInto(p.normal);
   }
 
   @override

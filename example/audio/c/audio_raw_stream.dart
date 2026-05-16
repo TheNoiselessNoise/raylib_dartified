@@ -77,17 +77,17 @@ void main() async {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawText("sine frequency: ${frequency.toInt()}".toC, rl.Core.GetScreenWidth() - 220, 10, 20, rl.C.RED);
-      rl.Core.DrawText("click mouse button to change frequency or pan".toC, 10, 10, 20, rl.C.DARKGRAY);
+      rl.Core.DrawText("sine frequency: ${frequency.toInt()}".toC, rl.Core.GetScreenWidth() - 220, 10, 20, rl.Color.RED);
+      rl.Core.DrawText("click mouse button to change frequency or pan".toC, 10, 10, 20, rl.Color.DARKGRAY);
 
       for (int i = 0; i < screenWidth; i++)
       {
         position.ref.x = i.toDouble();
         position.ref.y = 250 + 50*data[i*MAX_SAMPLES~/screenWidth]/32000.0;
 
-        rl.Core.DrawPixelV(position.ref, rl.C.RED);
+        rl.Core.DrawPixelV(position.ref, rl.Color.RED);
       }
 
     rl.Core.EndDrawing();

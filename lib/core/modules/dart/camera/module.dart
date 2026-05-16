@@ -1,43 +1,54 @@
 part of '../../../raylib.dart';
 
-class RaylibCameraD extends RaylibModule {
-  RaylibCameraD(super.lib);
+class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
+  // types
+  Camera3DD,
+  MatrixD,
+  Vector3D
+  
+> {
 
+  RaylibCameraD(super.rl);
+
+  @override
   Vector3D GetCameraForward(
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetCameraForward($camera)',
-    () => rl.Cam.GetCameraForward(
+    () => rl.Camera.GetCameraForward(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
+  @override
   Vector3D GetCameraUp(
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetCameraUp($camera)',
-    () => rl.Cam.GetCameraUp(
+    () => rl.Camera.GetCameraUp(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
+  @override
   Vector3D GetCameraRight(
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetCameraRight($camera)',
-    () => rl.Cam.GetCameraRight(
+    () => rl.Camera.GetCameraRight(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
+  @override
   void CameraMoveForward(
-    CameraD camera,
+    Camera3DD camera,
     num distance,
     bool moveInWorldPlane,
   ) => run(
     () => 'CameraMoveForward($camera, $distance, $moveInWorldPlane)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraMoveForward(
+      (pc) => rl.Camera.CameraMoveForward(
         pc,
         distance.toDouble(),
         moveInWorldPlane,
@@ -45,27 +56,29 @@ class RaylibCameraD extends RaylibModule {
     ),
   );
 
+  @override
   void CameraMoveUp(
-    CameraD camera,
+    Camera3DD camera,
     num distance,
   ) => run(
     () => 'CameraMoveUp($camera, $distance)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraMoveUp(
+      (pc) => rl.Camera.CameraMoveUp(
         pc,
         distance.toDouble(),
       ),
     ),
   );
 
+  @override
   void CameraMoveRight(
-    CameraD camera,
+    Camera3DD camera,
     num distance,
     bool moveInWorldPlane,
   ) => run(
     () => 'CameraMoveRight($camera, $distance, $moveInWorldPlane)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraMoveRight(
+      (pc) => rl.Camera.CameraMoveRight(
         pc,
         distance.toDouble(),
         moveInWorldPlane,
@@ -73,27 +86,29 @@ class RaylibCameraD extends RaylibModule {
     ),
   );
 
+  @override
   void CameraMoveToTarget(
-    CameraD camera,
+    Camera3DD camera,
     num delta,
   ) => run(
     () => 'CameraMoveToTarget($camera, $delta)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraMoveToTarget(
+      (pc) => rl.Camera.CameraMoveToTarget(
         pc,
         delta.toDouble(),
       ),
     ),
   );
 
+  @override
   void CameraYaw(
-    CameraD camera,
+    Camera3DD camera,
     num angle,
     bool rotateAroundTarget,
   ) => run(
     () => 'CameraYaw($camera, $angle, $rotateAroundTarget)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraYaw(
+      (pc) => rl.Camera.CameraYaw(
         pc,
         angle.toDouble(),
         rotateAroundTarget,
@@ -101,8 +116,9 @@ class RaylibCameraD extends RaylibModule {
     ),
   );
 
+  @override
   void CameraPitch(
-    CameraD camera,
+    Camera3DD camera,
     num angle,
     bool lockView,
     bool rotateAroundTarget,
@@ -110,7 +126,7 @@ class RaylibCameraD extends RaylibModule {
   ) => run(
     () => 'CameraPitch($camera, $angle, $lockView, $rotateAroundTarget, $rotateUp)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraPitch(
+      (pc) => rl.Camera.CameraPitch(
         pc,
         angle.toDouble(),
         lockView,
@@ -120,34 +136,37 @@ class RaylibCameraD extends RaylibModule {
     ),
   );
 
+  @override
   void CameraRoll(
-    CameraD camera,
+    Camera3DD camera,
     num angle,
   ) => run(
     () => 'CameraRoll($camera, $angle)',
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
-      (pc) => rl.Cam.CameraRoll(
+      (pc) => rl.Camera.CameraRoll(
         pc,
         angle.toDouble(),
       ),
     ),
   );
 
+  @override
   MatrixD GetCameraViewMatrix(
-    CameraD camera,
+    Camera3DD camera,
   ) => run(
     () => 'GetCameraViewMatrix($camera)',
-    () => rl.Cam.GetCameraViewMatrix(
+    () => rl.Camera.GetCameraViewMatrix(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
   );
 
+  @override
   MatrixD GetCameraProjectionMatrix(
-    CameraD camera,
+    Camera3DD camera,
     num aspect,
   ) => run(
     () => 'GetCameraProjectionMatrix($camera)',
-    () => rl.Cam.GetCameraProjectionMatrix(
+    () => rl.Camera.GetCameraProjectionMatrix(
       rl.Temp.Camera3D$.Ref1(camera),
       aspect.toDouble(),
     ).toD(),

@@ -50,7 +50,7 @@ const int screenHeight = 450;
 void main() {
   final rl = loadBaseRaylib();
 
-  final camera = CameraD(
+  final camera = Camera3DD(
     position: .vec3(
       player.position.x,
       player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -130,7 +130,7 @@ void main() {
   rl.CloseWindowAndDispose();
 }
 
-void UpdateCameraFPS(Raylib rl, CameraD camera)
+void UpdateCameraFPS(Raylib rl, Camera3DD camera)
 {
   final Vector3D up = .vec3(0.0, 1.0, 0.0);
   final Vector3D targetOffset = .vec3(0.0, 0.0, -1.0);

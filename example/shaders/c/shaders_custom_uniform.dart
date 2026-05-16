@@ -57,21 +57,21 @@ void main()
     );
 
     rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, position.ref, 0.5, rl.C.WHITE);
+        rl.Core.DrawModel(model, position.ref, 0.5, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 1.0);
       rl.Core.EndMode3D();
 
       rl.Core.DrawText(
         "TEXT DRAWN IN RENDER TEXTURE".toC,
-        200, 10, 30, rl.C.RED
+        200, 10, 30, rl.Color.RED
       );
     rl.Core.EndTextureMode();
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginShaderMode(shader);
         rl.Core.DrawTextureRec(
@@ -81,13 +81,13 @@ void main()
             target.texture.width, -target.texture.height
           ),
           rl.Temp.vec2Zero,
-          rl.C.WHITE
+          rl.Color.WHITE
         );
       rl.Core.EndShaderMode();
 
       rl.Core.DrawText(
         "(c) Barracks 3D model by Alberto Cano".toC,
-        screenWidth - 220, screenHeight - 20, 10, rl.C.GRAY
+        screenWidth - 220, screenHeight - 20, 10, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

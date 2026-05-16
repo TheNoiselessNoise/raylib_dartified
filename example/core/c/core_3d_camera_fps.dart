@@ -108,21 +108,21 @@ void main() {
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
         DrawLevel(rl);
       rl.Core.EndMode3D();
 
-      rl.Core.DrawRectangle(5, 5, 330, 75, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(5, 5, 330, 75, rl.C.BLUE);
+      rl.Core.DrawRectangle(5, 5, 330, 75, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(5, 5, 330, 75, rl.Color.BLUE);
 
-      rl.Core.DrawText("Camera controls:".toC, 15, 15, 10, rl.C.BLACK);
-      rl.Core.DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl".toC, 15, 30, 10, rl.C.BLACK);
-      rl.Core.DrawText("- Look around: arrow keys or mouse".toC, 15, 45, 10, rl.C.BLACK);
+      rl.Core.DrawText("Camera controls:".toC, 15, 15, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl".toC, 15, 30, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Look around: arrow keys or mouse".toC, 15, 45, 10, rl.Color.BLACK);
 
       double velLen = Vector2D.vec2(player.velocity.x, player.velocity.z).length;
-      rl.Core.DrawText("- Velocity Len: (${velLen.f3})".toC, 15, 60, 10, rl.C.BLACK);
+      rl.Core.DrawText("- Velocity Len: (${velLen.f3})".toC, 15, 60, 10, rl.Color.BLACK);
 
     rl.Core.EndDrawing();
   }
@@ -130,7 +130,7 @@ void main() {
   rl.CloseWindowAndDispose();
 }
 
-void UpdateCameraFPS(Raylib rl, Pointer<CameraC> camera)
+void UpdateCameraFPS(Raylib rl, Pointer<Camera3DC> camera)
 {
   final Vector3D up = .vec3(0.0, 1.0, 0.0);
   final Vector3D targetOffset = .vec3(0.0, 0.0, -1.0);
@@ -256,7 +256,7 @@ void DrawLevel(Raylib rl)
         rl.Core.DrawPlane(
           rl.Temp.vec31(x*tileSize, 0.0, y*tileSize),
           rl.Temp.vec21(tileSize, tileSize),
-          rl.C.LIGHTGRAY
+          rl.Color.LIGHTGRAY
         );
       }
     }
@@ -266,19 +266,19 @@ void DrawLevel(Raylib rl)
   final towerPos = rl.Temp.vec32(16.0, 16.0, 16.0);
 
   rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.C.DARKBLUE);
+  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
 
   towerPos.x *= -1;
   rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.C.DARKBLUE);
+  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
 
   towerPos.z *= -1;
   rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.C.DARKBLUE);
+  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
 
   towerPos.x *= -1;
   rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.C.DARKBLUE);
+  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
 
   towerPos.set(300.0, 300.0, 0.0);
   towerColor.set(255, 0, 0, 255);

@@ -37,9 +37,9 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.DrawText("Press SPACE to PLAY a WAV sound!".toC, 200, 180, 20, rl.C.LIGHTGRAY);
+      rl.Core.DrawText("Press SPACE to PLAY a WAV sound!".toC, 200, 180, 20, rl.Color.LIGHTGRAY);
 
     rl.Core.EndDrawing();
   }

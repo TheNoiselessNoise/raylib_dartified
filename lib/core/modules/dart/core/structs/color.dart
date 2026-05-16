@@ -51,11 +51,9 @@ extension ColorCEx on ColorC {
   );
 }
 
-class ColorD extends StructDLiteral<ColorD, ColorC> {
-  int r;
-  int g;
-  int b;
-  int a;
+class ColorD extends StructDLiteral<ColorD, ColorC> with ColorBase {
+  @override
+  int r, g, b, a;
 
   ColorD({
     super.originalPointer,
@@ -227,15 +225,10 @@ class ColorD extends StructDLiteral<ColorD, ColorC> {
   }
 
   @override
-  Pointer<ColorC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Color$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Color$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<ColorC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(ColorC p) {
+  void nativeWriteInto(ColorC p) {
     p.r = r;
     p.g = g;
     p.b = b;

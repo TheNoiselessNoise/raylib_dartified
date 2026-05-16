@@ -74,7 +74,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       DrawTexturedCurve(rl);
       
@@ -84,40 +84,40 @@ void main()
         curveStartPositionTangent.ref,
         curveEndPositionTangent.ref,
         2,
-        rl.C.BLUE
+        rl.Color.BLUE
       );
 
-      rl.Core.DrawLineV(curveStartPosition.ref, curveStartPositionTangent.ref, rl.C.SKYBLUE);
-      rl.Core.DrawLineV(curveStartPositionTangent.ref, curveEndPositionTangent.ref, rl.Core.Fade(rl.C.LIGHTGRAY, 0.4));
-      rl.Core.DrawLineV(curveEndPosition.ref, curveEndPositionTangent.ref, rl.C.PURPLE);
+      rl.Core.DrawLineV(curveStartPosition.ref, curveStartPositionTangent.ref, rl.Color.SKYBLUE);
+      rl.Core.DrawLineV(curveStartPositionTangent.ref, curveEndPositionTangent.ref, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.4));
+      rl.Core.DrawLineV(curveEndPosition.ref, curveEndPositionTangent.ref, rl.Color.PURPLE);
       
       if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPosition.ref, 6))
-        rl.Core.DrawCircleV(curveStartPosition.ref, 7, rl.C.YELLOW);
-      rl.Core.DrawCircleV(curveStartPosition.ref, 5, rl.C.RED);
+        rl.Core.DrawCircleV(curveStartPosition.ref, 7, rl.Color.YELLOW);
+      rl.Core.DrawCircleV(curveStartPosition.ref, 5, rl.Color.RED);
 
       if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPositionTangent.ref, 6))
-        rl.Core.DrawCircleV(curveStartPositionTangent.ref, 7, rl.C.YELLOW);
-      rl.Core.DrawCircleV(curveStartPositionTangent.ref, 5, rl.C.MAROON);
+        rl.Core.DrawCircleV(curveStartPositionTangent.ref, 7, rl.Color.YELLOW);
+      rl.Core.DrawCircleV(curveStartPositionTangent.ref, 5, rl.Color.MAROON);
 
       if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPosition.ref, 6))
-        rl.Core.DrawCircleV(curveEndPosition.ref, 7, rl.C.YELLOW);
-      rl.Core.DrawCircleV(curveEndPosition.ref, 5, rl.C.GREEN);
+        rl.Core.DrawCircleV(curveEndPosition.ref, 7, rl.Color.YELLOW);
+      rl.Core.DrawCircleV(curveEndPosition.ref, 5, rl.Color.GREEN);
 
       if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPositionTangent.ref, 6))
-        rl.Core.DrawCircleV(curveEndPositionTangent.ref, 7, rl.C.YELLOW);
-      rl.Core.DrawCircleV(curveEndPositionTangent.ref, 5, rl.C.DARKGREEN);
+        rl.Core.DrawCircleV(curveEndPositionTangent.ref, 7, rl.Color.YELLOW);
+      rl.Core.DrawCircleV(curveEndPositionTangent.ref, 5, rl.Color.DARKGREEN);
 
       rl.Core.DrawText(
         "Drag points to move curve, press SPACE to show/hide base curve".toC,
-        10, 10, 10, rl.C.DARKGRAY
+        10, 10, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Curve width: $curveWidth (Use + and - to adjust)".toC,
-        10, 30, 10, rl.C.DARKGRAY
+        10, 30, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
         "Curve segments: $curveSegments (Use LEFT and RIGHT to adjust)".toC,
-        10, 50, 10, rl.C.DARKGRAY
+        10, 50, 10, rl.Color.DARKGRAY
       );
         
     rl.Core.EndDrawing();

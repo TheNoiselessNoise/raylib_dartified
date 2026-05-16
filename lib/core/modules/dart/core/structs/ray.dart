@@ -34,8 +34,11 @@ extension RayCEx on RayC {
   );
 }
 
-class RayD extends StructDLiteral<RayD, RayC> {
+class RayD extends StructDLiteral<RayD, RayC> with RayBase {
+  @override
   Vector3D position;
+
+  @override
   Vector3D direction;
 
   RayD({
@@ -64,17 +67,12 @@ class RayD extends StructDLiteral<RayD, RayC> {
   }
 
   @override
-  Pointer<RayC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.Ray$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.Ray$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<RayC> p, String key)
-    => writeInto(p.ref);
-  
-  @override
-  void writeInto(RayC p) {
-    position.writeInto(p.position);
-    direction.writeInto(p.direction);
+  void nativeWriteInto(RayC p) {
+    position.nativeWriteInto(p.position);
+    direction.nativeWriteInto(p.direction);
   }
 
   @override

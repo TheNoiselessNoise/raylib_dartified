@@ -94,7 +94,7 @@ void main()
     
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.DARKGRAY);
+      rl.Core.ClearBackground(rl.Color.DARKGRAY);
 
       rl.Core.BeginBlendMode(blending);
 
@@ -125,20 +125,20 @@ void main()
 
       rl.Core.DrawText(
         "PRESS SPACE to CHANGE BLENDING MODE".toC,
-        180, 20, 20, rl.C.BLACK
+        180, 20, 20, rl.Color.BLACK
       );
 
       if (blending == BlendMode.BLEND_ALPHA.value) {
         rl.Core.DrawText(
           "ALPHA BLENDING".toC,
-          290, screenHeight - 40, 20, rl.C.BLACK
+          290, screenHeight - 40, 20, rl.Color.BLACK
         );
       }
       else
       {
         rl.Core.DrawText(
           "ADDITIVE BLENDING".toC,
-          280, screenHeight - 40, 20, rl.C.RAYWHITE
+          280, screenHeight - 40, 20, rl.Color.RAYWHITE
         );
       }
 

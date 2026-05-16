@@ -43,11 +43,20 @@ extension GlyphInfoCEx on GlyphInfoC {
   );
 }
 
-class GlyphInfoD extends StructD<GlyphInfoD, GlyphInfoC> {
+class GlyphInfoD extends StructD<GlyphInfoD, GlyphInfoC> with GlyphInfoBase {
+  @override
   int value;
+  
+  @override
   int offsetX;
+  
+  @override
   int offsetY;
+  
+  @override
   int advanceX;
+  
+  @override
   ImageD image;
 
   GlyphInfoD({
@@ -84,20 +93,15 @@ class GlyphInfoD extends StructD<GlyphInfoD, GlyphInfoC> {
   }
 
   @override
-  Pointer<GlyphInfoC> allocatePointer(RaylibTemp temp, String key, [int count = 1])
-    => temp.GlyphInfo$.At(key, count);
+  nativeAllocator(RaylibTemp temp) => temp.GlyphInfo$;
 
   @override
-  void allocateInto(RaylibTemp temp, Pointer<GlyphInfoC> p, String key)
-    => writeInto(p.ref);
-
-  @override
-  void writeInto(GlyphInfoC p) {
+  void nativeWriteInto(GlyphInfoC p) {
     p.value = value;
     p.offsetX = offsetX;
     p.offsetY = offsetY;
     p.advanceX = advanceX;
-    image.writeInto(p.image);
+    image.nativeWriteInto(p.image);
   }
 
   @override

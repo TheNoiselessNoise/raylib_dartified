@@ -259,5 +259,5 @@ extension RaylibVector4 on RaylibVectors {
 }
 
 class RaylibVectors extends RaylibModule {
-  RaylibVectors(super.lib);
+  RaylibVectors(super.rl);
 }

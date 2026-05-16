@@ -42,7 +42,7 @@ void main()
   bool textureReload = false;
   int mouseHoverRec = -1;
 
-  final List<RectangleD> toggleRecs = List.generate(ImageProcess.values.length,
+  final List<RectangleD> toggleRecs = .generate(ImageProcess.values.length,
     (i) => .rect(40.0, 50 + 32*i, 150.0, 30.0),
   );
 

@@ -40,9 +40,6 @@ Vector2D maxVec = .zero();
 void main() {
   final rl = loadBaseRaylib();
 
-  rl.Temp.debugFree(true);
-  rl.Temp.debug(true);
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera_platformer');
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);

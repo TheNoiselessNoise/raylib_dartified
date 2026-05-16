@@ -62,19 +62,19 @@ void main()
       angle: 45,
       length: 140,
       thickness: 3,
-      color: rl.C.MAROON,
+      color: rl.Color.MAROON,
     ),
     minute: ClockHand(
       angle: 10,
       length: 130,
       thickness: 7,
-      color: rl.C.DARKGRAY,
+      color: rl.Color.DARKGRAY,
     ),
     hour: ClockHand(
       angle: 0,
       length: 100,
       thickness: 7,
-      color: rl.C.BLACK,
+      color: rl.Color.BLACK,
     ),
   );
 
@@ -90,7 +90,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (clockMode == CLOCK_ANALOG) DrawClockAnalog(rl, clock, .vec2(400, 240));
       else if (clockMode == CLOCK_DIGITAL)
@@ -102,13 +102,13 @@ void main()
           clockTime,
           rl.Core.GetScreenWidth()~/2 - rl.Core.MeasureText(clockTime, 150)~/2,
           300, 150,
-          rl.C.BLACK
+          rl.Color.BLACK
         );
       }
 
       rl.Core.DrawText(
         "Press [SPACE] to switch clock mode: ${(clockMode == CLOCK_DIGITAL)? "DIGITAL CLOCK" : "ANALOGUE CLOCK"}".toC,
-        10, 10, 20, rl.C.DARKGRAY
+        10, 10, 20, rl.Color.DARKGRAY
       );
 
     rl.Core.EndDrawing();
@@ -141,8 +141,8 @@ void DrawClockAnalog(Raylib rl, Clock clock, Vector2D position)
 {
   final v2pos = rl.Temp.vec21Ptr.setD(position);
 
-  rl.Core.DrawCircleV(v2pos.ref, clock.second.length + 40.0, rl.C.LIGHTGRAY);
-  rl.Core.DrawCircleV(v2pos.ref, 12.0, rl.C.GRAY);
+  rl.Core.DrawCircleV(v2pos.ref, clock.second.length + 40.0, rl.Color.LIGHTGRAY);
+  rl.Core.DrawCircleV(v2pos.ref, 12.0, rl.Color.GRAY);
 
   for (int i = 0; i < 60; i++)
   {
@@ -156,7 +156,7 @@ void DrawClockAnalog(Raylib rl, Clock clock, Vector2D position)
       position.y + (clock.second.length + 20)*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
     );
 
-    rl.Core.DrawLineEx(v1, v2, ((i%5>1)? 1.0 : 3.0), rl.C.DARKGRAY);
+    rl.Core.DrawLineEx(v1, v2, ((i%5>1)? 1.0 : 3.0), rl.Color.DARKGRAY);
   }
 
   // hand seconds
@@ -198,47 +198,47 @@ void DrawClockDigital(Raylib rl, Clock clock, Vector2D position)
   // Draw clock using custom 7-segments display (made of shapes)
   DrawDisplayValue(rl,
     .vec2(position.x, position.y), clock.hour.value~/10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
   DrawDisplayValue(rl,
     .vec2(position.x + 120, position.y), clock.hour.value%10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
 
   rl.Core.DrawCircle(
     (position.x + 240).toInt(), (position.y + 70).toInt(), 12,
-    (clock.second.value%2)>0? rl.C.RED : rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    (clock.second.value%2)>0? rl.Color.RED : rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
   rl.Core.DrawCircle(
     (position.x + 240).toInt(), (position.y + 150).toInt(), 12,
-    (clock.second.value%2)>0? rl.C.RED : rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    (clock.second.value%2)>0? rl.Color.RED : rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
 
   DrawDisplayValue(rl,
     .vec2(position.x + 260, position.y), clock.minute.value~/10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
   DrawDisplayValue(rl,
     .vec2(position.x + 380, position.y), clock.minute.value%10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
 
   rl.Core.DrawCircle(
     (position.x + 500).toInt(), (position.y + 70).toInt(), 12,
-    (clock.second.value%2)>0? rl.C.RED : rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    (clock.second.value%2)>0? rl.Color.RED : rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
   rl.Core.DrawCircle(
     (position.x + 500).toInt(), (position.y + 150).toInt(), 12,
-    (clock.second.value%2)>0? rl.C.RED : rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    (clock.second.value%2)>0? rl.Color.RED : rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
 
   DrawDisplayValue(rl,
     .vec2(position.x + 520, position.y), clock.second.value~/10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
   DrawDisplayValue(rl,
     .vec2(position.x + 640, position.y), clock.second.value%10,
-    rl.C.RED, rl.Core.Fade(rl.C.LIGHTGRAY, 0.3)
+    rl.Color.RED, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.3)
   );
 }
 

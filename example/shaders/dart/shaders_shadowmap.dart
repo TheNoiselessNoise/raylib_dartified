@@ -19,7 +19,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final cam = CameraD(
+  final cam = Camera3DD(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -79,7 +79,7 @@ void main()
 
   final shadowMap = LoadShadowmapRenderTexture(rl, SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
 
-  final lightCam = CameraD(
+  final lightCam = Camera3DD(
     position: lightDir.scale(-15.0),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -194,12 +194,12 @@ void main()
   rl.CloseWindowAndDispose();
 }
 
-RenderTexture2DD LoadShadowmapRenderTexture(
+RenderTextureD LoadShadowmapRenderTexture(
   Raylib rl,
   int width,
   int height,
 ) {
-  final RenderTexture2DD target = .new();
+  final RenderTextureD target = .new();
 
   target.id = rl.RlglD.rlLoadFramebuffer();
   target.texture.width = width;
@@ -212,7 +212,7 @@ RenderTexture2DD LoadShadowmapRenderTexture(
     target.depth.id = rl.RlglD.rlLoadTextureDepth(width, height, false);
     target.depth.width = width;
     target.depth.height = height;
-    target.depth.format = PixelFormat.fromValue(19);
+    target.depth.format = .fromValue(19);
     target.depth.mipmaps = 1;
 
     rl.RlglD.rlFramebufferAttach(
@@ -238,7 +238,7 @@ RenderTexture2DD LoadShadowmapRenderTexture(
   return target;
 }
 
-void UnloadShadowmapRenderTexture(Raylib rl, RenderTexture2DD target)
+void UnloadShadowmapRenderTexture(Raylib rl, RenderTextureD target)
 {
   if (target.id > 0)
   {

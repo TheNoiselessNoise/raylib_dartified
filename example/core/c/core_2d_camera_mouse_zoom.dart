@@ -57,7 +57,7 @@ void main() {
     }
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode2D(camera.ref);
         rl.Rlgl.rlPushMatrix();
@@ -66,10 +66,10 @@ void main() {
           rl.Core.DrawGrid(100, 50);
         rl.Rlgl.rlPopMatrix();
 
-        rl.Core.DrawCircle(rl.Core.GetScreenWidth()~/2, rl.Core.GetScreenHeight()~/2, 50, rl.C.MAROON);
+        rl.Core.DrawCircle(rl.Core.GetScreenWidth()~/2, rl.Core.GetScreenHeight()~/2, 50, rl.Color.MAROON);
       rl.Core.EndMode2D();
 
-      rl.Core.DrawCircleV(rl.Core.GetMousePosition(), 4, rl.C.DARKGRAY);
+      rl.Core.DrawCircleV(rl.Core.GetMousePosition(), 4, rl.Color.DARKGRAY);
 
       final textPos = rl.Core.GetMousePosition().toD().add(.vec2(-44, -24));
 
@@ -77,23 +77,23 @@ void main() {
         rl.Core.GetFontDefault(),
         "[${rl.Core.GetMouseX()}, ${rl.Core.GetMouseY()}]".toC,
         rl.Temp.vec21D(textPos),
-        20, 2, rl.C.BLACK,
+        20, 2, rl.Color.BLACK,
       );
 
       rl.Core.DrawText(
         "[1][2] Select mouse zoom mode (Wheel or Move)".toC,
-        20, 20, 20, rl.C.DARKGRAY
+        20, 20, 20, rl.Color.DARKGRAY
       );
 
       if (zoomMode == 0) {
         rl.Core.DrawText(
           "Mouse left button drag to move, mouse wheel to zoom".toC,
-          20, 50, 20, rl.C.DARKGRAY
+          20, 50, 20, rl.Color.DARKGRAY
         );
       } else {
         rl.Core.DrawText(
           "Mouse left button drag to move, mouse press and move to zoom".toC,
-          20, 50, 20, rl.C.DARKGRAY
+          20, 50, 20, rl.Color.DARKGRAY
         ); 
       }
 

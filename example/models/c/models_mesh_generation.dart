@@ -23,7 +23,7 @@ void main()
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final checked = rl.Core.GenImageChecked(2, 2, 1, 1, rl.C.RED, rl.C.GREEN);
+  final checked = rl.Core.GenImageChecked(2, 2, 1, 1, rl.Color.RED, rl.Color.GREEN);
   final texture = rl.Core.LoadTextureFromImage(checked);
   rl.Core.UnloadImage(checked);
 
@@ -76,33 +76,33 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(models[currentModel], rl.Temp.vec3Zero, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(models[currentModel], rl.Temp.vec3Zero, 1.0, rl.Color.WHITE);
         rl.Core.DrawGrid(10, 1.0);
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawRectangle(30, 400, 310, 30, rl.Core.Fade(rl.C.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(30, 400, 310, 30, rl.Core.Fade(rl.C.DARKBLUE, 0.5));
+      rl.Core.DrawRectangle(30, 400, 310, 30, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
+      rl.Core.DrawRectangleLines(30, 400, 310, 30, rl.Core.Fade(rl.Color.DARKBLUE, 0.5));
       rl.Core.DrawText(
         "MOUSE LEFT BUTTON to CYCLE PROCEDURAL MODELS".toC,
-        40, 410, 10, rl.C.BLUE
+        40, 410, 10, rl.Color.BLUE
       );
 
       switch(currentModel)
       {
-        case 0: rl.Core.DrawText("PLANE".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 1: rl.Core.DrawText("CUBE".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 2: rl.Core.DrawText("SPHERE".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 3: rl.Core.DrawText("HEMISPHERE".toC, 640, 10, 20, rl.C.DARKBLUE); break;
-        case 4: rl.Core.DrawText("CYLINDER".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 5: rl.Core.DrawText("TORUS".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 6: rl.Core.DrawText("KNOT".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 7: rl.Core.DrawText("POLY".toC, 680, 10, 20, rl.C.DARKBLUE); break;
-        case 8: rl.Core.DrawText("Custom (triangle)".toC, 580, 10, 20, rl.C.DARKBLUE); break;
+        case 0: rl.Core.DrawText("PLANE".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 1: rl.Core.DrawText("CUBE".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 2: rl.Core.DrawText("SPHERE".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 3: rl.Core.DrawText("HEMISPHERE".toC, 640, 10, 20, rl.Color.DARKBLUE); break;
+        case 4: rl.Core.DrawText("CYLINDER".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 5: rl.Core.DrawText("TORUS".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 6: rl.Core.DrawText("KNOT".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 7: rl.Core.DrawText("POLY".toC, 680, 10, 20, rl.Color.DARKBLUE); break;
+        case 8: rl.Core.DrawText("Custom (triangle)".toC, 580, 10, 20, rl.Color.DARKBLUE); break;
         default: break;
       }
 

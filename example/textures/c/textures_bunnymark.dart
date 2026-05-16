@@ -70,7 +70,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       for (int i = 0; i < bunnies.length; i++)
       {
@@ -83,14 +83,14 @@ void main()
         );
       }
 
-      rl.Core.DrawRectangle(0, 0, screenWidth, 40, rl.C.BLACK);
+      rl.Core.DrawRectangle(0, 0, screenWidth, 40, rl.Color.BLACK);
       rl.Core.DrawText(
         "bunnies: ${bunnies.length}".toC,
-        120, 10, 20, rl.C.GREEN
+        120, 10, 20, rl.Color.GREEN
       );
       rl.Core.DrawText(
         "batched draw calls: ${1 + bunnies.length/MAX_BATCH_ELEMENTS}".toC,
-        320, 10, 20, rl.C.MAROON
+        320, 10, 20, rl.Color.MAROON
       );
 
       rl.Core.DrawFPS(10, 10);

@@ -1,7 +1,7 @@
 part of '../raylib.dart';
 
 class RaylibQuaternions extends RaylibModule {
-  RaylibQuaternions(super.lib);
+  RaylibQuaternions(super.rl);
 
   QuaternionD QuaternionAdd(QuaternionD q1, QuaternionD q2)
     => q1.add(q2);
@@ -16,7 +16,7 @@ class RaylibQuaternions extends RaylibModule {
     => q.subValue(sub);
 
   QuaternionD QuaternionIdentity()
-    => .qIdentity();
+    => .identity();
 
   double QuaternionLength(QuaternionD q)
     => q.length;
@@ -25,10 +25,10 @@ class RaylibQuaternions extends RaylibModule {
     => q.normalize();
 
   QuaternionD QuaternionInvert(QuaternionD q)
-    => q.qInvert();
+    => q.invert();
 
   QuaternionD QuaternionMultiply(QuaternionD q1, QuaternionD q2)
-    => q1.qMul(q2);
+    => q1.mul(q2);
 
   QuaternionD QuaternionScale(QuaternionD q, double mul)
     => q.scale(mul);
@@ -40,38 +40,38 @@ class RaylibQuaternions extends RaylibModule {
     => q1.lerp(q2, amount);
 
   QuaternionD QuaternionNlerp(QuaternionD q1, QuaternionD q2, double amount)
-    => q1.qNlerp(q2, amount);
+    => q1.nLerp(q2, amount);
 
   QuaternionD QuaternionSlerp(QuaternionD q1, QuaternionD q2, double amount)
-    => q1.qSlerp(q2, amount);
+    => q1.sLerp(q2, amount);
 
   QuaternionD QuaternionCubicHermiteSpline(QuaternionD q1, QuaternionD outTangent1, QuaternionD q2, QuaternionD inTangent2, double t)
-    => q1.qCubicHermiteSpline(outTangent1, q2, inTangent2, t);
+    => q1.cubicHermiteSpline(outTangent1, q2, inTangent2, t);
 
   QuaternionD QuaternionFromVector3ToVector3(Vector3D from, Vector3D to)
-    => .qFromVector3ToVector3(from, to);
+    => .fromVector3ToVector3(from, to);
 
   QuaternionD QuaternionFromMatrix(MatrixD mat)
-    => .qFromMatrix(mat);
+    => .fromMatrix(mat);
 
   MatrixD QuaternionToMatrix(QuaternionD q)
-    => q.qToMatrix();
+    => q.toMatrix();
 
   QuaternionD QuaternionFromAxisAngle(Vector3D axis, double angle)
     => .fromAxisAngle(axis, angle);
 
   (Vector3D outAxis, double outAngle) QuaternionToAxisAngle(QuaternionD q)
-    => q.qToAxisAngle();
+    => q.toAxisAngle();
 
   QuaternionD QuaternionFromEuler(double pitch, double yaw, double roll)
-    => .qFromEuler(pitch, yaw, roll);
+    => .fromEuler(pitch, yaw, roll);
 
   Vector3D QuaternionToEuler(QuaternionD q)
-    => q.qToEuler();
+    => q.toEuler();
 
   QuaternionD QuaternionTransform(QuaternionD q, MatrixD mat)
-    => q.qTransform(mat);
+    => q.transform(mat);
 
   bool QuaternionEquals(QuaternionD p, QuaternionD q)
-    => p.qEquals(q);
+    => p.equals(q);
 }

@@ -46,19 +46,19 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       rl.Core.BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, mapPosition.ref, 1.0, rl.C.WHITE);
+        rl.Core.DrawModel(model, mapPosition.ref, 1.0, rl.Color.WHITE);
 
       rl.Core.EndMode3D();
 
-      rl.Core.DrawTextureEx(cubicmap, rl.Temp.vec21(screenWidth - cubicmap.width*4.0 - 20, 20.0), 0.0, 4.0, rl.C.WHITE);
-      rl.Core.DrawRectangleLines(screenWidth - cubicmap.width*4 - 20, 20, cubicmap.width*4, cubicmap.height*4, rl.C.GREEN);
+      rl.Core.DrawTextureEx(cubicmap, rl.Temp.vec21(screenWidth - cubicmap.width*4.0 - 20, 20.0), 0.0, 4.0, rl.Color.WHITE);
+      rl.Core.DrawRectangleLines(screenWidth - cubicmap.width*4 - 20, 20, cubicmap.width*4, cubicmap.height*4, rl.Color.GREEN);
 
-      rl.Core.DrawText("cubicmap image used to".toC, 658, 90, 10, rl.C.GRAY);
-      rl.Core.DrawText("generate map 3d model".toC, 658, 104, 10, rl.C.GRAY);
+      rl.Core.DrawText("cubicmap image used to".toC, 658, 90, 10, rl.Color.GRAY);
+      rl.Core.DrawText("generate map 3d model".toC, 658, 104, 10, rl.Color.GRAY);
 
       rl.Core.DrawFPS(10, 10);
 

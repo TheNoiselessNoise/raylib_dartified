@@ -42,24 +42,24 @@ void main()
 
       // Draw background image twice
       // NOTE: Texture is scaled twice its size
-      rl.Core.DrawTextureEx(background, rl.Temp.vec21(scrollingBack, 20), 0.0, 2.0, rl.C.WHITE);
-      rl.Core.DrawTextureEx(background, rl.Temp.vec21(background.width*2 + scrollingBack, 20), 0.0, 2.0, rl.C.WHITE);
+      rl.Core.DrawTextureEx(background, rl.Temp.vec21(scrollingBack, 20), 0.0, 2.0, rl.Color.WHITE);
+      rl.Core.DrawTextureEx(background, rl.Temp.vec21(background.width*2 + scrollingBack, 20), 0.0, 2.0, rl.Color.WHITE);
 
       // Draw midground image twice
-      rl.Core.DrawTextureEx(midground, rl.Temp.vec21(scrollingMid, 20), 0.0, 2.0, rl.C.WHITE);
-      rl.Core.DrawTextureEx(midground, rl.Temp.vec21(midground.width*2 + scrollingMid, 20), 0.0, 2.0, rl.C.WHITE);
+      rl.Core.DrawTextureEx(midground, rl.Temp.vec21(scrollingMid, 20), 0.0, 2.0, rl.Color.WHITE);
+      rl.Core.DrawTextureEx(midground, rl.Temp.vec21(midground.width*2 + scrollingMid, 20), 0.0, 2.0, rl.Color.WHITE);
 
       // Draw foreground image twice
-      rl.Core.DrawTextureEx(foreground, rl.Temp.vec21(scrollingFore, 70), 0.0, 2.0, rl.C.WHITE);
-      rl.Core.DrawTextureEx(foreground, rl.Temp.vec21(foreground.width*2 + scrollingFore, 70), 0.0, 2.0, rl.C.WHITE);
+      rl.Core.DrawTextureEx(foreground, rl.Temp.vec21(scrollingFore, 70), 0.0, 2.0, rl.Color.WHITE);
+      rl.Core.DrawTextureEx(foreground, rl.Temp.vec21(foreground.width*2 + scrollingFore, 70), 0.0, 2.0, rl.Color.WHITE);
 
       rl.Core.DrawText(
         "BACKGROUND SCROLLING & PARALLAX".toC,
-        10, 10, 20, rl.C.RED
+        10, 10, 20, rl.Color.RED
       );
       rl.Core.DrawText(
         "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)".toC,
-        screenWidth - 330, screenHeight - 20, 10, rl.C.RAYWHITE
+        screenWidth - 330, screenHeight - 20, 10, rl.Color.RAYWHITE
       );
 
     rl.Core.EndDrawing();

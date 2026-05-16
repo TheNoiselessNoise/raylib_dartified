@@ -35,8 +35,8 @@ void main()
   });
 
   final colors = <ColorC>[
-    rl.C.BLACK, rl.C.MAROON, rl.C.ORANGE, rl.C.BLUE, rl.C.PURPLE,
-    rl.C.BEIGE, rl.C.LIME, rl.C.RED, rl.C.DARKGRAY, rl.C.SKYBLUE
+    rl.Color.BLACK, rl.Color.MAROON, rl.Color.ORANGE, rl.Color.BLUE, rl.Color.PURPLE,
+    rl.Color.BEIGE, rl.Color.LIME, rl.Color.RED, rl.Color.DARKGRAY, rl.Color.SKYBLUE
   ];
 
   final colorRec = rl.Temp.Rectangle$.At('colorRec', colors.length);
@@ -100,7 +100,7 @@ void main()
     if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) { rotation = 0.0; scale = 1.0; }
 
     rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       DrawTextureTiled(
         rl,
@@ -123,61 +123,61 @@ void main()
         MARGIN_SIZE,
         OPT_WIDTH - MARGIN_SIZE,
         rl.Core.GetScreenHeight() - 2*MARGIN_SIZE,
-        rl.Core.ColorAlpha(rl.C.LIGHTGRAY, 0.5)
+        rl.Core.ColorAlpha(rl.Color.LIGHTGRAY, 0.5)
       );
 
       rl.Core.DrawText(
         "Select Pattern".toC,
-        2 + MARGIN_SIZE, 30 + MARGIN_SIZE, 10, rl.C.BLACK
+        2 + MARGIN_SIZE, 30 + MARGIN_SIZE, 10, rl.Color.BLACK
       );
       
-      rl.Core.DrawTexture(texPattern, 2 + MARGIN_SIZE, 40 + MARGIN_SIZE, rl.C.BLACK);
+      rl.Core.DrawTexture(texPattern, 2 + MARGIN_SIZE, 40 + MARGIN_SIZE, rl.Color.BLACK);
       
       rl.Core.DrawRectangle(
         (2 + MARGIN_SIZE + recPattern[activePattern].x).toInt(),
         (40 + MARGIN_SIZE + recPattern[activePattern].y).toInt(),
         recPattern[activePattern].width.toInt(),
         recPattern[activePattern].height.toInt(),
-        rl.Core.ColorAlpha(rl.C.DARKBLUE, 0.3)
+        rl.Core.ColorAlpha(rl.Color.DARKBLUE, 0.3)
       );
 
       rl.Core.DrawText(
         "Select Color".toC,
-        2+MARGIN_SIZE, 10+256+MARGIN_SIZE, 10, rl.C.BLACK
+        2+MARGIN_SIZE, 10+256+MARGIN_SIZE, 10, rl.Color.BLACK
       );
 
       for (int i = 0; i < colors.length; i++)
       {
         rl.Core.DrawRectangleRec(colorRec[i], colors[i]);
-        if (activeCol == i) rl.Core.DrawRectangleLinesEx(colorRec[i], 3, rl.Core.ColorAlpha(rl.C.WHITE, 0.5));
+        if (activeCol == i) rl.Core.DrawRectangleLinesEx(colorRec[i], 3, rl.Core.ColorAlpha(rl.Color.WHITE, 0.5));
       }
 
       rl.Core.DrawText(
         "Scale (UP/DOWN to change)".toC,
-        2 + MARGIN_SIZE, 80 + 256 + MARGIN_SIZE, 10, rl.C.BLACK  
+        2 + MARGIN_SIZE, 80 + 256 + MARGIN_SIZE, 10, rl.Color.BLACK  
       );
       rl.Core.DrawText(
         scale.f2.toC,
-        2 + MARGIN_SIZE, 92 + 256 + MARGIN_SIZE, 20, rl.C.BLACK
+        2 + MARGIN_SIZE, 92 + 256 + MARGIN_SIZE, 20, rl.Color.BLACK
       );
 
       rl.Core.DrawText(
         "Rotation (LEFT/RIGHT to change)".toC,
-        2 + MARGIN_SIZE, 122 + 256 + MARGIN_SIZE, 10, rl.C.BLACK
+        2 + MARGIN_SIZE, 122 + 256 + MARGIN_SIZE, 10, rl.Color.BLACK
       );
       rl.Core.DrawText(
         "${rotation.f0} degrees".toC,
-        2 + MARGIN_SIZE, 134 + 256 + MARGIN_SIZE, 20, rl.C.BLACK
+        2 + MARGIN_SIZE, 134 + 256 + MARGIN_SIZE, 20, rl.Color.BLACK
       );
 
       rl.Core.DrawText(
         "Press [SPACE] to reset".toC,
-        2 + MARGIN_SIZE, 164 + 256 + MARGIN_SIZE, 10, rl.C.DARKBLUE
+        2 + MARGIN_SIZE, 164 + 256 + MARGIN_SIZE, 10, rl.Color.DARKBLUE
       );
 
       rl.Core.DrawText(
         "${rl.Core.GetFPS()} FPS".toC,
-        2 + MARGIN_SIZE, 2 + MARGIN_SIZE, 20, rl.C.BLACK
+        2 + MARGIN_SIZE, 2 + MARGIN_SIZE, 20, rl.Color.BLACK
       );
 
     rl.Core.EndDrawing();
@@ -190,7 +190,7 @@ void main()
 
 void DrawTextureTiled(
   Raylib rl,
-  Texture2DC texture,
+  TextureC texture,
   RectangleC source,
   RectangleC dest,
   Vector2C origin,

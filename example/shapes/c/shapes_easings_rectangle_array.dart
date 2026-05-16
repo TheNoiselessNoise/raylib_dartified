@@ -71,7 +71,7 @@ void main()
 
     rl.Core.BeginDrawing();
 
-      rl.Core.ClearBackground(rl.C.RAYWHITE);
+      rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
       if (state == 0)
       {
@@ -80,13 +80,13 @@ void main()
           rl.Core.DrawRectanglePro(
             recs[i],
             rl.Temp.vec21(recs[i].width/2, recs[i].height/2),
-            rotation, rl.C.RED
+            rotation, rl.Color.RED
           );
         }
       }
       else if (state == 1) rl.Core.DrawText(
         "PRESS [SPACE] TO PLAY AGAIN!".toC,
-        240, 200, 20, rl.C.GRAY
+        240, 200, 20, rl.Color.GRAY
       );
 
       rl.Core.DrawFPS(10, 10);

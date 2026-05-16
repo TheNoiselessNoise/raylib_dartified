@@ -3,10 +3,11 @@ part of 'raylib.dart';
 typedef RaylibLookup = Pointer<T> Function<T extends NativeType>(String symbolName);
 typedef RaylibModuleConstructor<T> = T Function(Raylib);
 
-abstract class BaseRaylibModule {
+abstract class RaylibModule with RaylibModuleBase {
+  @override
   final Raylib rl;
   
-  BaseRaylibModule(this.rl);
+  RaylibModule(this.rl);
 
   bool _isLoaded = false;
   void _doLoad() {
@@ -57,15 +58,12 @@ abstract class BaseRaylibModule {
   final List<void Function()> _onDisposeFns = [];
   void onDispose(void Function() fn) => _onDisposeFns.add(fn);
 
+  @override
   @mustCallSuper
   void dispose() {
     _onDisposeFns.forEach((f) => f());
     _onDisposeFns.clear();
   }
-}
-
-abstract class RaylibModule extends BaseRaylibModule {
-  RaylibModule(super.rl);
 }
 
 /// A Dart-side wrapper around a [NativeCallable<C>], bridging a Dart function
@@ -86,7 +84,7 @@ abstract class RaylibModule extends BaseRaylibModule {
 /// // ...
 /// rl.Audio.DetachAudioMixedProcessor(cb); // calls detach() internally, disposes cb
 /// ```
-abstract class CallbackD<C extends Function, D extends Function> {
+abstract class CallbackD<C extends Function, D extends Function> with RaylibCallbackBase {
 
   /// The underlying [NativeCallable] wrapping [function].
   ///
@@ -103,6 +101,7 @@ abstract class CallbackD<C extends Function, D extends Function> {
   /// A human-readable name for this callback, used in [toString] and logging.
   ///
   /// Defaults to `runtimeType.toString()` if not provided.
+  @override
   late String name;
 
   CallbackD([String? name]) {
@@ -211,7 +210,7 @@ abstract class CallbackD<C extends Function, D extends Function> {
 /// [NativeType]. Every C struct that crosses the FFI boundary has a
 /// paired `StructD` subclass that owns the Dart-visible fields and knows
 /// how to read/write itself from/into native memory.
-abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
+abstract class StructD<D extends StructD<D, C>, C extends Struct> {
   /// The C-owned or RaylibTemp-owned native pointer for this struct, if any.
   ///
   /// Set automatically by [toC] on first allocation.
@@ -291,35 +290,36 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
   /// value-type structs (subclasses of [StructDLiteral]).
   bool get _requiresOriginalPointer => true;
 
-  /// Allocates a native slot of [count] elements in [temp] under [key] and
-  /// returns the resulting pointer.
+  /// Returns the [RTempStructAlloc] for this struct type from [temp].
   ///
-  /// Implementations should simply delegate to the appropriate
-  /// `temp.<Type>(key, count)` call. The returned memory is zeroed (or reused) but not
-  /// yet populated, call [allocateInto] or [writeInto] to fill it.
-  Pointer<C> allocatePointer(RaylibTemp temp, String key, [int count = 1]);
+  /// Implementations delegate to the matching allocator field on [temp],
+  /// e.g. `temp.<Type>`. Use the returned allocator to reserve and populate
+  /// native memory slots.
+  RTempStructAlloc<C, D> nativeAllocator(RaylibTemp temp);
 
   /// Syncs Dart-side fields into the already-allocated native pointer [p].
   ///
   /// Called by [toC] when [originalPointer] is set. The default implementation
-  /// delegates to [allocateInto]; override only when sync and full allocation
+  /// delegates to [nativeWriteInto]; override only when sync and full allocation
   /// differ (e.g. to skip re-allocating nested pointers).
-  void syncInto(RaylibTemp temp, Pointer<C> p, String key) => allocateInto(temp, p, key);
+  void nativeSyncInto(RaylibTemp temp, Pointer<C> p, String key)
+    => nativeWriteInto(nativeAllocator(temp).refFunc(p));
 
   /// Writes all fields into the native struct at [p], allocating nested pointers
   /// into [temp] under [key] as needed.
   ///
   /// Called after [allocatePointer] to populate the zeroed memory (or reuse). For structs
   /// with no nested pointers this is typically equivalent to `writeInto(p.ref)`.
-  void allocateInto(RaylibTemp temp, Pointer<C> p, String key);
+  void nativeAllocateInto(RaylibTemp temp, Pointer<C> p, String key)
+    => nativeWriteInto(nativeAllocator(temp).refFunc(p));
   
   /// Writes all fields directly into the native struct reference [p].
   /// For nested structs, use `writeInto` as well.
-  void writeInto(C p);
+  void nativeWriteInto(C p);
 
   bool _isDisposed = false;
 
-  /// Whether [markDisposed] has been called on this instance.
+  /// Whether [nativeMarkDisposed] has been called on this instance.
   bool get isDisposed => _isDisposed;
 
   /// Marks this instance as disposed and clears [originalPointer].
@@ -327,7 +327,7 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
   /// Called internally after the native resource is unloaded. Accessing
   /// [getOriginalPointer] after disposal will throw.
   @nonVirtual
-  void markDisposed() {
+  void nativeMarkDisposed() {
     _isDisposed = true;
     originalPointer = null;
   }
@@ -361,14 +361,14 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
     return originalPointer!;
   }
 
-  /// Returns [originalPointer] and immediately calls [markDisposed].
+  /// Returns [originalPointer] and immediately calls [nativeMarkDisposed].
   ///
   /// The canonical way to hand the pointer back to C and `unload`.
   /// Gets the pointer, then ensures this instance can no longer be used.
   @nonVirtual
   Pointer<C> getOriginalPointerAndDispose() {
     final pointer = getOriginalPointer();
-    markDisposed();
+    nativeMarkDisposed();
     return pointer;
   }
 
@@ -389,7 +389,7 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
 
   /// Calls [callback] with [originalPointer] if it is set, otherwise no-ops.
   @nonVirtual
-  void onOriginalPointer(void Function(Pointer<C> p) callback) {
+  void nativeOnOriginalPointer(void Function(Pointer<C> p) callback) {
     if (originalPointer != null) callback(originalPointer!);
   }
 
@@ -399,12 +399,12 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
   /// The behavior depends on the struct type and state:
   ///
   /// - **Value-type** ([StructDLiteral]): always allocates a
-  ///   fresh slot (or reuse) in [temp] and writes into it via [allocateInto].
+  ///   fresh slot (or reuse) in [temp] and writes into it via [nativeAllocateInto].
   /// - **Pointer-owning, with [originalPointer]**: syncs Dart fields back into
-  ///   the existing native pointer via [syncInto] and returns it directly.
+  ///   the existing native pointer via [nativeSyncInto] and returns it directly.
   ///   Skipped entirely if the instance [isDisposed] or `temp.doSync` is false.
   /// - **Pointer-owning, without [originalPointer]**: allocates a new slot,
-  ///   populates it via [allocateInto], and stores the result as [originalPointer].
+  ///   populates it via [nativeAllocateInto], and stores the result as [originalPointer].
   ///
   /// [key] is incorporated into the slot key to allow the same instance to
   /// occupy distinct slots within the same frame (see [setTag]).
@@ -414,8 +414,10 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
 
     if (!_requiresOriginalPointer) {
       _allocKey = baseKey;
-      final p = allocatePointer(temp, baseKey);
-      allocateInto(temp, p, baseKey);
+      final alloc = nativeAllocator(temp);
+      final p = alloc.At(baseKey);
+      nativeAllocateInto(temp, p, baseKey);
+      nativeSyncInto(temp, p, baseKey);
       return p;
     }
 
@@ -429,14 +431,16 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
       if (isDisposed) return originalPointer!;
       if (!temp.doSync) return originalPointer!;
       
-      syncInto(temp, originalPointer!, baseKey);
+      nativeSyncInto(temp, originalPointer!, baseKey);
       return originalPointer!;
     }
 
-    temp.debugSyncInfo('[SYNC] $structName.allocatePointer($baseKey)');
+    temp.debugSyncInfo('[SYNC] $structName.allocate($baseKey)');
     _allocKey = baseKey;
-    final p = allocatePointer(temp, baseKey);
-    allocateInto(temp, p, baseKey);
+    final alloc = nativeAllocator(temp);
+    final p = alloc.At(baseKey);
+    nativeAllocateInto(temp, p, baseKey);
+    nativeSyncInto(temp, p, baseKey);
     originalPointer = p;
     return originalPointer!;
   }
@@ -452,8 +456,8 @@ abstract class StructD<D extends StructD<D, C>, C extends NativeType> {
 /// `Color`, `Rectangle`: small flat structs that raylib accepts and returns
 /// by value rather than by pointer.
 ///
-/// Implementations of [allocateInto] should simply redirect to `writeInto(p.ref)`.
-abstract class StructDLiteral<D extends StructD<D, C>, C extends NativeType> extends StructD<D, C> {
+/// Implementations of [nativeAllocateInto] should simply redirect to `writeInto(p.ref)`.
+abstract class StructDLiteral<D extends StructD<D, C>, C extends Struct> extends StructD<D, C> {
   StructDLiteral({
     super.originalPointer,
   });
@@ -467,11 +471,11 @@ abstract class StructDLiteral<D extends StructD<D, C>, C extends NativeType> ext
 /// Constructed directly from a `Pointer<C>` (e.g. when iterating over a native
 /// array), a `StructDView` exposes the live native memory through [ref] but
 /// refuses all write operations. Attempting to call [setC], [setD],
-/// [allocatePointer], [allocateInto], or [writeInto] throws [UnsupportedError].
+/// [nativeAllocator], [nativeAllocateInto], or [nativeWriteInto] throws [UnsupportedError].
 ///
-/// [syncInto] is a deliberate no-op, views never push changes back into native
+/// [nativeSyncInto] is a deliberate no-op, views never push changes back into native
 /// memory.
-abstract class StructDView<D extends StructD<D, C>, C extends NativeType> extends StructD<D, C> {
+abstract class StructDView<D extends StructD<D, C>, C extends Struct> extends StructD<D, C> {
   StructDView(Pointer<C> originalPointer) : super(
     originalPointer: originalPointer,
   );
@@ -498,20 +502,20 @@ abstract class StructDView<D extends StructD<D, C>, C extends NativeType> extend
 
   @override
   @nonVirtual
-  Pointer<C> allocatePointer(RaylibTemp temp, String key, [int count = 1])
+  nativeAllocator(RaylibTemp temp)
     => throw UnsupportedError('$runtimeType: is just a view; cannot allocate it externally.');
 
   @override
   @nonVirtual
-  void syncInto(RaylibTemp temp, Pointer<C> p, String key) {} // NOTE: do nothing
+  void nativeSyncInto(RaylibTemp temp, Pointer<C> p, String key) {} // NOTE: do nothing
 
   @override
   @nonVirtual
-  void allocateInto(RaylibTemp temp, Pointer<C> p, String key)
+  void nativeAllocateInto(RaylibTemp temp, Pointer<C> p, String key)
     => throw UnsupportedError('$runtimeType: is just a view; cannot allocate externally.');
 
   @override
   @nonVirtual
-  void writeInto(C p)
+  void nativeWriteInto(C p)
     => throw UnsupportedError('$runtimeType: is just a view; cannot write externally.');
 }

@@ -19,7 +19,7 @@ void main()
   rl.CoreD.SetWindowMonitor(0);
   rl.CoreD.SetTargetFPS(60);
 
-  final List<RectangleD> recs = List.generate(MAX_RECS_X*MAX_RECS_Y, (_) => .zero());
+  final List<RectangleD> recs = .generate(MAX_RECS_X*MAX_RECS_Y, (_) => .zero());
 
   for (int y = 0; y < MAX_RECS_Y; y++)
   {
