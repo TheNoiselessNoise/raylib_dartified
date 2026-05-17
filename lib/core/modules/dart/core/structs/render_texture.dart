@@ -37,7 +37,7 @@ extension RenderTextureCEx on RenderTextureC {
   );
 }
 
-class RenderTextureD extends StructDLiteral<RenderTextureD, RenderTextureC> with RenderTextureBase {
+class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with RenderTextureBase {
   @override
   int id;
   

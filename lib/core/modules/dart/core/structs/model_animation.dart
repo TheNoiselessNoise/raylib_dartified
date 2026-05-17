@@ -30,7 +30,7 @@ extension ModelAnimationCEx on ModelAnimationC {
   }
 
   ModelAnimationC setD(ModelAnimationD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       boneCount = p.ref.boneCount;
       frameCount = p.ref.frameCount;
       bones = p.ref.bones;
@@ -50,7 +50,7 @@ extension ModelAnimationCEx on ModelAnimationC {
   );
 }
 
-class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> with ModelAnimationBase {
+class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with ModelAnimationBase {
   @override
   List<BoneInfoD> bones;
   
@@ -73,7 +73,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> with Mod
 
   @override
   ModelAnimationD setC(ModelAnimationC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.bones = o.bones;
       p.ref.framePoses = o.framePoses;
       p.ref.name = o.name;
@@ -99,7 +99,7 @@ class ModelAnimationD extends StructD<ModelAnimationD, ModelAnimationC> with Mod
   nativeAllocator(RaylibTemp temp) => temp.ModelAnimation$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
     p.ref.bones = temp.BoneInfo$.Array(bones, key: '${key}_bones');
 
     p.ref.framePoses = temp.Ptr$Transform$.FillRaw(

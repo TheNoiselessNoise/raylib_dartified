@@ -37,7 +37,7 @@ extension TransformCEx on TransformC {
   );
 }
 
-class TransformD extends StructDLiteral<TransformD, TransformC> with TransformBase {
+class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBase {
   @override
   Vector3D translation;
   

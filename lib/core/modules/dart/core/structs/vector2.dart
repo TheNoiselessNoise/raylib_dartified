@@ -101,7 +101,7 @@ extension Vector2CEx on Vector2C {
   }
 }
 
-class Vector2D extends StructDLiteral<Vector2D, Vector2C> with Vector2Base {
+class Vector2D extends StructDLiteral<Vector2C, Vector2D> with Vector2Base {
   @override
   double x, y;
 

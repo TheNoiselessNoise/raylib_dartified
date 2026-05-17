@@ -53,7 +53,7 @@ extension MeshCEx on MeshC {
   }
 
   MeshC setD(MeshD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       vertexCount = p.ref.vertexCount;
       triangleCount = p.ref.triangleCount;
       vertices = p.ref.vertices;
@@ -97,7 +97,7 @@ extension MeshCEx on MeshC {
   );
 }
 
-class MeshD extends StructD<MeshD, MeshC> with MeshBase {
+class MeshD extends StructD<MeshC, MeshD> with MeshBase {
   @override
   int vertexCount;
   
@@ -187,7 +187,7 @@ class MeshD extends StructD<MeshD, MeshC> with MeshBase {
 
   @override
   MeshD setC(MeshC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.vertexCount = o.vertexCount;
       p.ref.triangleCount = o.triangleCount;
       p.ref.boneCount = o.boneCount;
@@ -252,7 +252,7 @@ class MeshD extends StructD<MeshD, MeshC> with MeshBase {
   nativeAllocator(RaylibTemp temp) => temp.Mesh$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
     p.ref.vertices = vertices.isNotEmpty ? temp.Float$.RawArray(vertices) : nullptr;
     p.ref.texcoords = texcoords.isNotEmpty ? temp.Float$.RawArray(texcoords) : nullptr;
     p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float$.RawArray(texcoords2) : nullptr;
@@ -276,7 +276,7 @@ class MeshD extends StructD<MeshD, MeshC> with MeshBase {
     p.boneCount = boneCount;
     p.vaoId = vaoId;
 
-    nativeOnOriginalPointer((o) {
+    structOnOriginalPointer((o) {
       p.vertexCount = o.ref.vertexCount;
       p.triangleCount = o.ref.triangleCount;
       p.triangleCount = o.ref.triangleCount;

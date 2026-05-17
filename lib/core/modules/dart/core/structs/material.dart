@@ -31,7 +31,7 @@ extension MaterialCEx on MaterialC {
 
   MaterialC setD(MaterialD o) {
     shader.setD(o.shader);
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       maps = p.ref.maps;
     });
     if (maps.address != 0) {
@@ -55,7 +55,7 @@ extension MaterialCEx on MaterialC {
   );
 }
 
-class MaterialD extends StructD<MaterialD, MaterialC> with MaterialBase {
+class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase {
   @override
   ShaderD shader;
   
@@ -81,7 +81,7 @@ class MaterialD extends StructD<MaterialD, MaterialC> with MaterialBase {
 
   @override
   MaterialD setC(MaterialC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.maps = o.maps;
     });
     shader.setC(o.shader);
@@ -103,7 +103,7 @@ class MaterialD extends StructD<MaterialD, MaterialC> with MaterialBase {
   nativeAllocator(RaylibTemp temp) => temp.Material$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
     p.ref.maps = temp.MaterialMap$.Array(maps, key: '${key}_maps');
   }
 

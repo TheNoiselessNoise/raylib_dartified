@@ -53,7 +53,7 @@ extension RectangleCEx on RectangleC {
   );
 }
 
-class RectangleD extends StructDLiteral<RectangleD, RectangleC> with RectangleBase {
+class RectangleD extends StructDLiteral<RectangleC, RectangleD> with RectangleBase {
   @override
   double x, y, width, height;
 

@@ -40,7 +40,7 @@ extension RlVertexBufferCEx on RlVertexBufferC {
 
   RlVertexBufferC setD(RlVertexBufferD o) {
     elementCount = o.elementCount;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       vertices = p.ref.vertices;
       texcoords = p.ref.texcoords;
       normals = p.ref.normals;
@@ -102,7 +102,7 @@ extension RlVertexBufferCEx on RlVertexBufferC {
   );
 }
 
-class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> with RlVertexBufferBase {
+class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlVertexBufferBase {
   @override
   int elementCount;
 
@@ -149,7 +149,7 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> with RlV
 
   @override
   RlVertexBufferD setC(RlVertexBufferC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.vertices = o.vertices;
       p.ref.texcoords = o.texcoords;
       p.ref.normals = o.normals;
@@ -195,7 +195,7 @@ class RlVertexBufferD extends StructD<RlVertexBufferD, RlVertexBufferC> with RlV
   nativeAllocator(RaylibTemp temp) => temp.RlVertexBuffer$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
     p.ref.vertices = temp.Float$.Array(vertices, key: '${key}_vertices');
     p.ref.texcoords = temp.Float$.Array(texcoords, key: '${key}_texcoords');
     p.ref.normals = temp.Float$.Array(normals, key: '${key}_normals');

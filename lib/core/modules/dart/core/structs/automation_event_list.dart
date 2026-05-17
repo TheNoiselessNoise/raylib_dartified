@@ -12,7 +12,7 @@ extension AutomationEventListCEx on AutomationEventListC {
   AutomationEventListD toD(Pointer<AutomationEventListC> ptr) => .new(ptr);
 }
 
-class AutomationEventListD extends StructDView<AutomationEventListD, AutomationEventListC> with AutomationEventListBase {
+class AutomationEventListD extends StructDView<AutomationEventListC, AutomationEventListD> with AutomationEventListBase {
   AutomationEventListD(super.originalPointer);
 
   @override

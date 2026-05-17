@@ -134,7 +134,7 @@ extension Vector3CEx on Vector3C {
   );
 }
 
-class Vector3D extends StructDLiteral<Vector3D, Vector3C> with Vector3Base {
+class Vector3D extends StructDLiteral<Vector3C, Vector3D> with Vector3Base {
   @override
   double x, y, z;
 

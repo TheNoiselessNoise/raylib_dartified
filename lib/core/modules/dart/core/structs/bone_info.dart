@@ -28,7 +28,7 @@ extension BoneInfoCEx on BoneInfoC {
 
   BoneInfoC setD(BoneInfoD o) {
     parent = o.parent;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       name = p.ref.name;
     });
     return this;
@@ -41,7 +41,7 @@ extension BoneInfoCEx on BoneInfoC {
   );
 }
 
-class BoneInfoD extends StructDLiteral<BoneInfoD, BoneInfoC> with BoneInfoBase {
+class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase {
   @override
   String name;
 
@@ -58,7 +58,7 @@ class BoneInfoD extends StructDLiteral<BoneInfoD, BoneInfoC> with BoneInfoBase {
 
   @override
   BoneInfoD setC(BoneInfoC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.name = o.name;
     });
     parent = o.parent;

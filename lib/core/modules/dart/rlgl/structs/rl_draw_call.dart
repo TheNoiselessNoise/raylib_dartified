@@ -40,7 +40,7 @@ extension RlDrawCallCEx on RlDrawCallC {
   );
 }
 
-class RlDrawCallD extends StructD<RlDrawCallD, RlDrawCallC> with RlDrawCallBase {
+class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase {
   @override
   int mode;
   

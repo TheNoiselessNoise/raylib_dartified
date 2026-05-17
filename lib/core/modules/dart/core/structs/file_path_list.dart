@@ -12,7 +12,7 @@ extension FilePathListCEx on FilePathListC {
   FilePathListD toD(Pointer<FilePathListC> ptr) => .new(ptr);
 }
 
-class FilePathListD extends StructDView<FilePathListD, FilePathListC> with FilePathListBase {
+class FilePathListD extends StructDView<FilePathListC, FilePathListD> with FilePathListBase {
   FilePathListD(super.originalPointer);
 
   int? _cachedCount;

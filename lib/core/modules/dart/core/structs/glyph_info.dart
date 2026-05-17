@@ -43,7 +43,7 @@ extension GlyphInfoCEx on GlyphInfoC {
   );
 }
 
-class GlyphInfoD extends StructD<GlyphInfoD, GlyphInfoC> with GlyphInfoBase {
+class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase {
   @override
   int value;
   

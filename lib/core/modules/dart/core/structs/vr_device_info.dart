@@ -69,7 +69,7 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
   );
 }
 
-class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> with VrDeviceInfoBase {
+class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceInfoBase {
   @override
   int hResolution;
   
@@ -117,7 +117,7 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoD, VrDeviceInfoC> with VrDeviceI
 
   @override
   VrDeviceInfoD setC(VrDeviceInfoC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.lensDistortionValues = o.lensDistortionValues;
       p.ref.chromaAbCorrection = o.chromaAbCorrection;
     });

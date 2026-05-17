@@ -84,7 +84,7 @@ extension QuaternionCEx on QuaternionC {
   QuaternionC div(QuaternionC o) => set(x / o.x, y / o.y, z / o.z, w / o.w);
 }
 
-class QuaternionD extends StructDLiteral<QuaternionD, QuaternionC> with QuaternionBase {
+class QuaternionD extends StructDLiteral<QuaternionC, QuaternionD> with QuaternionBase {
   @override
   double x, y, z, w;
 

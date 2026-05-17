@@ -23,7 +23,7 @@ extension ShaderCEx on ShaderC {
 
   ShaderC setD(ShaderD o) {
     id = o.id;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       locs = p.ref.locs;
     });
     if (locs.address != 0) {
@@ -43,7 +43,7 @@ extension ShaderCEx on ShaderC {
   );
 }
 
-class ShaderD extends StructD<ShaderD, ShaderC> with ShaderBase {
+class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase {
   @override
   int id;
   
@@ -61,7 +61,7 @@ class ShaderD extends StructD<ShaderD, ShaderC> with ShaderBase {
 
   @override
   ShaderD setC(ShaderC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.locs = o.locs;
     });
     id = o.id;
@@ -83,7 +83,7 @@ class ShaderD extends StructD<ShaderD, ShaderC> with ShaderBase {
   nativeAllocator(RaylibTemp temp) => temp.Shader$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<ShaderC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<ShaderC> p, String key) {
     p.ref.locs = temp.Int$.Array(locs, key: '${key}_locs');
   }
 
@@ -91,7 +91,7 @@ class ShaderD extends StructD<ShaderD, ShaderC> with ShaderBase {
   void nativeWriteInto(ShaderC p) {
     p.id = id;
 
-    nativeOnOriginalPointer((o) {
+    structOnOriginalPointer((o) {
       p.locs = o.ref.locs;
     });
 

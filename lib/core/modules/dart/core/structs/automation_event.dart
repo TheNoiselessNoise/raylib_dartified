@@ -45,7 +45,7 @@ extension AutomationEventCEx on AutomationEventC {
   );
 }
 
-class AutomationEventD extends StructD<AutomationEventD, AutomationEventC> with AutomationEventBase {
+class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with AutomationEventBase {
   @override
   int frame;
 
@@ -88,10 +88,10 @@ class AutomationEventD extends StructD<AutomationEventD, AutomationEventC> with 
     => throw UnsupportedError('AutomationEventD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void nativeSyncInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key) {} // NOTE: do nothing
+  void structSyncInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key) {} // NOTE: do nothing
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key)
+  void structAllocateInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key)
     => throw UnsupportedError('AutomationEventD: is raylib-owned; cannot allocate externally.');
 
   @override

@@ -40,7 +40,7 @@ extension Camera2DCEx on Camera2DC {
   );
 }
 
-class Camera2DD extends StructDLiteral<Camera2DD, Camera2DC> with Camera2DBase {
+class Camera2DD extends StructDLiteral<Camera2DC, Camera2DD> with Camera2DBase {
   @override
   Vector2D offset;
   

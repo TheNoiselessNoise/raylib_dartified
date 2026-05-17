@@ -51,7 +51,7 @@ extension ColorCEx on ColorC {
   );
 }
 
-class ColorD extends StructDLiteral<ColorD, ColorC> with ColorBase {
+class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase {
   @override
   int r, g, b, a;
 

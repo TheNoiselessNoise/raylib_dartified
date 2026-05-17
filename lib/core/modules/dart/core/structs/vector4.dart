@@ -84,7 +84,7 @@ extension Vector4CEx on Vector4C {
   Vector4C div(Vector4C o) => set(x / o.x, y / o.y, z / o.z, w / o.w);
 }
 
-class Vector4D extends StructDLiteral<Vector4D, Vector4C> with Vector4Base {
+class Vector4D extends StructDLiteral<Vector4C, Vector4D> with Vector4Base {
   @override
   double x, y, z, w;
 

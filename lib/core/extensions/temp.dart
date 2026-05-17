@@ -24,44 +24,44 @@ class RaylibTempOptions {
   });
 }
 
-/// A slot-based temporary memory allocator for a single native type [T].
+/// A slot-based temporary memory allocator for a single native type [C].
 ///
-/// Manages a named collection of `Pointer<T>` slots identified by string keys.
+/// Manages a named collection of `Pointer<C>` slots identified by string keys.
 /// Each slot owns its allocation; slots are freed either manually via [Free]
 /// or automatically when [_dispose] is called.
 ///
 /// Subclasses specialise this for literal values, structs, strings, etc.
-abstract class RTempAlloc<T extends NativeType> {
+abstract class RTempAlloc<C extends NativeType> {
 
   /// The parent [RaylibTemp] context that owns this allocator.
-  final RaylibTemp _temp;
+  final RaylibTemp temp;
   
   /// Human-readable name for this allocator, used in debug/log messages.
   final String name;
   
   /// Low-level allocation function. Called with an element [count] and
-  /// returns a freshly allocated `Pointer<T>`.
-  Pointer<T> Function([int count]) allocatorFunc;
+  /// returns a freshly allocated `Pointer<C>`.
+  Pointer<C> Function([int count]) allocatorFunc;
   
-  /// Debug printer: converts a `Pointer<T>` to a human-readable string.
-  String Function(Pointer<T> ptr) printerFunc;
+  /// Debug printer: converts a `Pointer<C>` to a human-readable string.
+  String Function(Pointer<C> ptr) printerFunc;
 
-  RTempAlloc(RaylibTemp temp, this.name, {
+  RTempAlloc(this.temp, this.name, {
     required this.allocatorFunc,
     required this.printerFunc,
-  }) : _temp = temp;
+  });
 
-  final Map<String, (Pointer<T>, int)> _Slots = {};
+  final Map<String, (Pointer<C>, int)> _Slots = {};
 
   /// Returns a string that identifies the concrete type of this allocator,
-  /// including its type parameters (e.g. `"RTempAlloc<Float>"`).
-  String signature() => '$runtimeType<$T>';
+  /// including its type parameters.
+  String signature() => runtimeType.toString();
 
   /// Returns the canonical slot key for [key], falling back to `'default'`
   /// when [key] is `null`.
-  String _slotKey([String? key]) => key ?? 'default';
+  String slotKey([String? key]) => key ?? 'default';
 
-  /// Returns the `Pointer<T>` stored in [key], allocating (or reallocating)
+  /// Returns the `Pointer<C>` stored in [key], allocating (or reallocating)
   /// if necessary.
   ///
   /// If the slot already exists and its current capacity is >= [count], the
@@ -70,20 +70,20 @@ abstract class RTempAlloc<T extends NativeType> {
   ///
   /// [key]   – slot identifier (must not be null).
   /// [count] – minimum element capacity required (default: 1).
-  Pointer<T> At(String key, [int count = 1]) {
+  Pointer<C> At(String key, [int count = 1]) {
     final existing = _Slots[key];
     if (existing != null) {
       final (ptr, currentCount) = existing;
 
       if (count <= currentCount) {
-        // _temp.logInfo('[TEMP] Reusing slot for $T at $key with $count');
+        // temp.logInfo('[TEMP] Reusing slot for $T at $key with $count');
         _Slots[key] = (ptr, count);
         return ptr;
       }
       
       calloc.free(ptr);
     }
-    // _temp.logInfo('[TEMP] Creating slot for $T at $key with $count');
+    // temp.logInfo('[TEMP] Creating slot for $T at $key with $count');
     final ptr = allocatorFunc(count);
     _Slots[key] = (ptr, count);
     return ptr;
@@ -97,14 +97,14 @@ abstract class RTempAlloc<T extends NativeType> {
   ///
   /// Useful when the same allocation site may be called multiple times within
   /// a single scope and each call must get its own independent buffer.
-  Pointer<T> AtUnique(String key, [int count = 1]) => At('${_temp.nextId()}_$key', count);
+  Pointer<C> AtUnique(String key, [int count = 1]) => At('${temp.nextId()}_$key', count);
 
   /// Returns the pointer stored under [key], or `null` if the slot does not
   /// exist. Does **not** allocate.
-  Pointer<T>? Slot(String key) => _Slots[_slotKey(key)]?.$1;
+  Pointer<C>? Slot(String key) => _Slots[slotKey(key)]?.$1;
 
   /// Returns `true` if a slot with the given [key] exists.
-  bool Has(String key) => _Slots.containsKey(_slotKey(key));
+  bool Has(String key) => _Slots.containsKey(slotKey(key));
 
   /// Frees the native memory owned by slot [key] and removes it from the
   /// table.
@@ -122,16 +122,16 @@ abstract class RTempAlloc<T extends NativeType> {
   /// underlying memory.
   ///
   /// Use when ownership of the pointer has been transferred elsewhere.
-  void Unslot(String key) => _Slots.remove(_slotKey(key));
+  void Unslot(String key) => _Slots.remove(slotKey(key));
 
   /// Frees all currently tracked slots and clears the slot table.
   ///
   /// Called automatically by the owning [RaylibTemp] during disposal.
   void _dispose() {
     if (_Slots.isNotEmpty) {
-      _temp.debugFreeInfo('Freeing user-defined ${_Slots.length} $name slots');
+      temp.debugFreeInfo('Freeing user-defined ${_Slots.length} $name slots');
       _Slots.entries.forEach((x) {
-        _temp.debugFreeInfo('[FREE] ${x.key}');
+        temp.debugFreeInfo('[FREE] ${x.key}');
         calloc.free(x.value.$1);
       });
       _Slots.clear();
@@ -140,23 +140,23 @@ abstract class RTempAlloc<T extends NativeType> {
 }
 
 /// A [RTempAlloc] that also knows how to write Dart values of type [X] into
-/// native [T] memory, and supports typed-list array operations.
+/// native [C] memory, and supports typed-list array operations.
 ///
 /// [X] is the Dart-side value type (e.g. `int`, `double`).
-/// [T] is the corresponding [NativeType] (e.g. `Int32`, `Float`).
-class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
+/// [C] is the corresponding [NativeType] (e.g. `Int32`, `Float`).
+class RTempLitAlloc<X, C extends NativeType> extends RTempAlloc<C> {
   
-  /// Casts an untyped [Pointer] to `Pointer<T>`.
-  Pointer<T> Function(Pointer ptr) castFunc;
+  /// Casts an untyped [Pointer] to `Pointer<C>`.
+  Pointer<C> Function(Pointer ptr) castFunc;
   
-  /// Returns the size in bytes of a single [T] element.
+  /// Returns the size in bytes of a single [C] element.
   int Function() sizeOfFunc;
   
   /// Writes a single Dart value [value] into the memory pointed to by [ptr].
-  void Function(Pointer<T> ptr, X value) literalSetterFunc;
+  void Function(Pointer<C> ptr, X value) literalSetterFunc;
   
   /// Writes [value] into the [i]-th element of the array at [ptr].
-  void Function(Pointer<T> ptr, int i, X value) indexSetterFunc;
+  void Function(Pointer<C> ptr, int i, X value) indexSetterFunc;
 
   RTempLitAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -167,26 +167,23 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
     required this.indexSetterFunc,
   });
   
-  @override
-  String signature() => '$runtimeType<$X, $T>';
-
   /// Returns the total byte size for [count] elements.
   int Size([int count = 1]) => count*sizeOfFunc();
 
   /// Allocates a fresh (unslotted) block of [count] elements and returns it.
   ///
   /// The caller is responsible for freeing this pointer.
-  Pointer<T> Raw([int count = 1]) => allocatorFunc(count);
+  Pointer<C> Raw([int count = 1]) => allocatorFunc(count);
 
   /// Allocates an unslotted array.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawArray(List<X> array) => Raw(array.length);
+  Pointer<C> RawArray(List<X> array) => Raw(array.length);
 
   /// Allocates an unslotted array and populates it from [array].
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawArrayPopulated(List<X> array) {
+  Pointer<C> RawArrayPopulated(List<X> array) {
     final p = Raw(array.length);
     for (int i = 0; i < array.length; i++) indexSetterFunc(p, i, array[i]);
     return p;
@@ -196,8 +193,8 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
   /// writing [value] into it when provided.
   ///
   /// Allocates the slot on first use.
-  Pointer<T> Value([X? value, String? key]) {
-    final p = At(_slotKey(key));
+  Pointer<C> Value([X? value, String? key]) {
+    final p = At(slotKey(key));
     if (value != null) literalSetterFunc(p, value);
     return p;
   }
@@ -206,16 +203,16 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
   ///
   /// [key] defaults to `'default'`. The slot is grown automatically if the
   /// current capacity is smaller than `array.length`.
-  Pointer<T> Array(List<X> array, {String? key}) {
-    final p = At(_slotKey(key), array.length);
+  Pointer<C> Array(List<X> array, {String? key}) {
+    final p = At(slotKey(key), array.length);
     for (int i = 0; i < array.length; i++) indexSetterFunc(p, i, array[i]);
     return p;
   }
 
   /// Allocates (or reuses) a slot of [count] elements, populating each index
   /// [i] with the value returned by `init(i)`.
-  Pointer<T> Fill(int count, X Function(int) init, {String? key}) {
-    final p = At(_slotKey(key), count);
+  Pointer<C> Fill(int count, X Function(int) init, {String? key}) {
+    final p = At(slotKey(key), count);
     for (int i = 0; i < count; i++) indexSetterFunc(p, i, init(i));
     return p;
   }
@@ -224,65 +221,65 @@ class RTempLitAlloc<X, T extends NativeType> extends RTempAlloc<T> {
   ///
   /// Shorthand for `Value(o, '1')`. Use [RefOrNull1] if [o] may be `null`
   /// and the callee expects [nullptr] in that case.
-  Pointer<T> Ref1([X? o]) => Value(o, '1');
+  Pointer<C> Ref1([X? o]) => Value(o, '1');
 
   /// Writes [o] into slot `'2'` and returns its pointer.
   ///
   /// Shorthand for `Value(o, '2')`. Use [RefOrNull2] if [o] may be `null`
   /// and the callee expects [nullptr] in that case..
-  Pointer<T> Ref2([X? o]) => Value(o, '2');
+  Pointer<C> Ref2([X? o]) => Value(o, '2');
 
   /// Writes [o] into slot `'3'` and returns its pointer.
   ///
   /// Shorthand for `Value(o, '3')`. Use [RefOrNull3] if [o] may be `null`
   /// and the callee expects [nullptr] in that case..
-  Pointer<T> Ref3([X? o]) => Value(o, '3');
+  Pointer<C> Ref3([X? o]) => Value(o, '3');
 
   /// Writes [o] into slot `'4'` and returns its pointer.
   ///
   /// Shorthand for `Value(o, '4')`. Use [RefOrNull4] if [o] may be `null`
   /// and the callee expects [nullptr] in that case..
-  Pointer<T> Ref4([X? o]) => Value(o, '4');
+  Pointer<C> Ref4([X? o]) => Value(o, '4');
 
   /// Writes [o] into slot `'1'` and returns its pointer, or returns [nullptr]
   /// if [o] is `null`.
   ///
   /// Use this instead of [Ref1] when the C API uses a null pointer to signal "no value".
-  Pointer<T> RefOrNull1(X? o) => o == null ? nullptr : Ref1(o);
+  Pointer<C> RefOrNull1(X? o) => o == null ? nullptr : Ref1(o);
 
   /// Writes [o] into slot `'2'` and returns its pointer, or returns [nullptr]
   /// if [o] is `null`.
   ///
   /// Use this instead of [Ref2] when the C API uses a null pointer to signal "no value".
-  Pointer<T> RefOrNull2(X? o) => o == null ? nullptr : Ref2(o);
+  Pointer<C> RefOrNull2(X? o) => o == null ? nullptr : Ref2(o);
 
   /// Writes [o] into slot `'3'` and returns its pointer, or returns [nullptr]
   /// if [o] is `null`.
   ///
   /// Use this instead of [Ref3] when the C API uses a null pointer to signal "no value".
-  Pointer<T> RefOrNull3(X? o) => o == null ? nullptr : Ref3(o);
+  Pointer<C> RefOrNull3(X? o) => o == null ? nullptr : Ref3(o);
 
   /// Writes [o] into slot `'4'` and returns its pointer, or returns [nullptr]
   /// if [o] is `null`.
   ///
   /// Use this instead of [Ref4] when the C API uses a null pointer to signal "no value".
-  Pointer<T> RefOrNull4(X? o) => o == null ? nullptr : Ref4(o);
+  Pointer<C> RefOrNull4(X? o) => o == null ? nullptr : Ref4(o);
 }
 
 /// Extends [RTempLitAlloc] with typed-list bulk copy support.
 ///
 /// [asTypedList] bridges between the native pointer and a Dart [TypedDataList],
 /// enabling zero-copy bulk memory operations.
-abstract class RTempLitTypedListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitAlloc<X, T> {
+abstract class RTempLitTypedListAlloc<X, C extends NativeType, L extends TypedDataList> extends RTempLitAlloc<X, C> {
 
   /// Returns a Dart [List<X>] view of [length] integer elements at [ptr].
-  List<int> Function(Pointer<T> ptr, int length) asDartList;
+  List<int> Function(Pointer<C> ptr, int length) asDartList;
 
   /// Wraps [ptr] as a Dart [TypedDataList] of [length] elements.
   ///
   /// The list is a **view** into native memory, so mutations are reflected
   /// immediately in the native buffer.
-  TypedDataList Function(Pointer<T> ptr, int length) asTypedList;
+  TypedDataList Function(Pointer<C> ptr, int length) asTypedList;
 
   /// Wraps a region of [buffer] as a Dart [L] list without copying.
   ///
@@ -307,15 +304,12 @@ abstract class RTempLitTypedListAlloc<X, T extends NativeType, L extends TypedDa
     required this.fromBuffer,
   });
 
-  @override
-  String signature() => '$runtimeType<$X, $T, $L>';
-
   /// Copies [length] elements from [src] into a slot and returns the pointer.
   ///
   /// Uses [asTypedList] for the bulk copy, which avoids an element-by-element
   /// loop. [key] defaults to `'default'`.
-  Pointer<T> Copy(Pointer<T> src, int length, {String? key}) {
-    final p = At(_slotKey(key), length);
+  Pointer<C> Copy(Pointer<C> src, int length, {String? key}) {
+    final p = At(slotKey(key), length);
     final srcList = asTypedList(castFunc(src), length);
     asTypedList(castFunc(p), length).setAll(0, srcList);
     return p;
@@ -326,17 +320,17 @@ abstract class RTempLitTypedListAlloc<X, T extends NativeType, L extends TypedDa
   ///
   /// Unlike [Array] or [Fill], the contents are left uninitialized, useful when
   /// the buffer will be populated by a C call rather than from Dart.
-  /// [key] defaults to `'Sized<T>'`.
-  Pointer<T> Sized(int length, {String? key}) => At(key ?? 'Sized$T', length);
+  /// [key] defaults to `'Sized<C>'`.
+  Pointer<C> Sized(int length, {String? key}) => At(key ?? 'Sized$C', length);
 
   /// Copies [length] elements from a typed list [list] into a slot.
-  Pointer<T> FromTypedList(L list, {String? key}) {
+  Pointer<C> FromTypedList(L list, {String? key}) {
     final p = Sized(list.length, key: key);
     asTypedList(castFunc(p), list.length).setAll(0, list);
     return p;
   }
 
-  Pointer<T> FromTypedData(TypedData data, {String? key}) {
+  Pointer<C> FromTypedData(TypedData data, {String? key}) {
     final elemSize = sizeOfFunc();
     final byteCount = data.lengthInBytes;
     assert(byteCount % elemSize == 0);
@@ -352,7 +346,7 @@ abstract class RTempLitTypedListAlloc<X, T extends NativeType, L extends TypedDa
 ///
 /// Adds byte-serialisation helpers that convert the native integer array to
 /// big-endian or little-endian byte lists, useful for hashing and I/O.
-class RTempLitTypedIntListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, T, L> {
+class RTempLitTypedIntListAlloc<X, C extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, C, L> {
 
   RTempLitTypedIntListAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -366,13 +360,10 @@ class RTempLitTypedIntListAlloc<X, T extends NativeType, L extends TypedDataList
     required super.fromBuffer,
   });
 
-  @override
-  String signature() => '$runtimeType<$X, $T>';
-
   /// Serialises [length] words starting at [ptr] to a flat big-endian byte list.
   ///
-  /// Each word is split into `sizeOf<T>()` bytes, most-significant byte first.
-  List<int> ToBEBytes(Pointer<T> ptr, int length) {
+  /// Each word is split into `sizeOf<C>()` bytes, most-significant byte first.
+  List<int> ToBEBytes(Pointer<C> ptr, int length) {
     final wordSize = sizeOfFunc();
     return asDartList(ptr, length).expand((word) =>
       .generate(wordSize, (i) => (word >> ((wordSize - 1 - i) * 8)) & 0xFF)
@@ -381,8 +372,8 @@ class RTempLitTypedIntListAlloc<X, T extends NativeType, L extends TypedDataList
 
   /// Serialises [length] words starting at [ptr] to a flat little-endian byte list.
   ///
-  /// Each word is split into `sizeOf<T>()` bytes, least-significant byte first.
-  List<int> ToLEBytes(Pointer<T> ptr, int length) {
+  /// Each word is split into `sizeOf<C>()` bytes, least-significant byte first.
+  List<int> ToLEBytes(Pointer<C> ptr, int length) {
     final wordSize = sizeOfFunc();
     return asDartList(ptr, length).expand((word) =>
       .generate(wordSize, (i) => (word >> (i * 8)) & 0xFF)
@@ -391,7 +382,7 @@ class RTempLitTypedIntListAlloc<X, T extends NativeType, L extends TypedDataList
 }
 
 /// A typed-list allocator for floating-point native types (e.g. `Float`, `Double`).
-class RTempLitTypedFloatListAlloc<X, T extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, T, L> {
+class RTempLitTypedFloatListAlloc<X, C extends NativeType, L extends TypedDataList> extends RTempLitTypedListAlloc<X, C, L> {
 
   RTempLitTypedFloatListAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -404,21 +395,18 @@ class RTempLitTypedFloatListAlloc<X, T extends NativeType, L extends TypedDataLi
     required super.asTypedList,
     required super.fromBuffer,
   });
-
-  @override
-  String signature() => '$runtimeType<$X, $T>';
 }
 
 /// A slot-based allocator for arrays of **pointers** to literal elements.
 ///
-/// Manages `Pointer<Pointer<T>>` slots; each inner pointer is produced by
+/// Manages `Pointer<Pointer<C>>` slots; each inner pointer is produced by
 /// [rawArrayFunc] from a `List<X>`.
-class RTempLitPtrAlloc<X, T extends NativeType> extends RTempAlloc<Pointer<T>> {
+class RTempLitPtrAlloc<X, C extends NativeType> extends RTempAlloc<Pointer<C>> {
 
-  /// Converts a flat `List<X>` into an allocated `Pointer<T>` array.
+  /// Converts a flat `List<X>` into an allocated `Pointer<C>` array.
   ///
   /// The caller is responsible for the lifetime of the inner pointers.
-  Pointer<T> Function(List<X> array) rawArrayFunc;
+  Pointer<C> Function(List<X> array) rawArrayFunc;
 
   RTempLitPtrAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -426,20 +414,17 @@ class RTempLitPtrAlloc<X, T extends NativeType> extends RTempAlloc<Pointer<T>> {
     required this.rawArrayFunc,
   });
 
-  @override
-  String signature() => '$runtimeType<$X, $T>';
-
-  /// Allocates an unslotted `Pointer<Pointer<T>>` of [count] elements.
+  /// Allocates an unslotted `Pointer<Pointer<C>>` of [count] elements.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<Pointer<T>> Raw([int count = 1]) => allocatorFunc(count);
+  Pointer<Pointer<C>> Raw([int count = 1]) => allocatorFunc(count);
 
   /// Allocates an unslotted pointer-of-pointers from a list of value arrays.
   ///
   /// Each `arrays[i]` is converted via [rawArrayFunc].
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<Pointer<T>> RawArray(List<List<X>> arrays) {
+  Pointer<Pointer<C>> RawArray(List<List<X>> arrays) {
     final pp = Raw(arrays.length);
     for (int i = 0; i < arrays.length; i++) {
       pp[i] = rawArrayFunc(arrays[i]);
@@ -448,66 +433,66 @@ class RTempLitPtrAlloc<X, T extends NativeType> extends RTempAlloc<Pointer<T>> {
   }
 
   /// Writes each sub-array in [arrays] into a tracked slot via [rawArrayFunc]
-  /// and returns the outer `Pointer<Pointer<T>>`
-  Pointer<Pointer<T>> Fill(List<List<X>> arrays, {String? key}) {
-    final pp = At(_slotKey(key), arrays.length);
+  /// and returns the outer `Pointer<Pointer<C>>`
+  Pointer<Pointer<C>> Fill(List<List<X>> arrays, {String? key}) {
+    final pp = At(slotKey(key), arrays.length);
     for (int i = 0; i < arrays.length; i++) pp[i] = rawArrayFunc(arrays[i]);
     return pp;
   }
 
   /// Fills a tracked slot of [count] pointers by calling `init(i)` for each
   /// index and storing the result.
-  Pointer<Pointer<T>> FillRaw(int count, Pointer<T> Function(int) init, {String? key}) {
-    final pp = At(_slotKey(key), count);
+  Pointer<Pointer<C>> FillRaw(int count, Pointer<C> Function(int) init, {String? key}) {
+    final pp = At(slotKey(key), count);
     for (int i = 0; i < count; i++) pp[i] = init(i);
     return pp;
   }
 }
 
-/// A slot-based allocator for native structs of type [T], accepting Dart-side
-/// [StructD] wrappers of type [X].
+/// A slot-based allocator for native structs of type [C], accepting Dart-side
+/// [StructD] wrappers of type [D].
 ///
-/// Bridges between the ergonomic Dart [StructD] layer and raw `Pointer<T>`
+/// Bridges between the ergonomic Dart [StructD] layer and raw `Pointer<C>`
 /// memory, supporting both single-value and array slots.
-class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempAlloc<T> {
+class RTempStructAlloc<C extends Struct, D extends StructD<C, D>> extends RTempAlloc<C> with RaylibTempStructAllocatorBase<RaylibTemp, Pointer<C>, D> {
 
-  /// Casts an untyped [Pointer] to `Pointer<T>`.
-  Pointer<T> Function(Pointer ptr) castFunc;
+  /// Casts an untyped [Pointer] to `Pointer<C>`.
+  Pointer<C> Function(Pointer ptr) castFunc;
 
-  /// Returns the [T] struct value referenced by [ptr].
+  /// Returns the [C] struct value referenced by [ptr].
   ///
   /// Equivalent to `ptr.ref`, provided as a function because Dart's type system
-  /// does not allow calling `.ref` directly on a generic `Pointer<T>`.
-  T Function(Pointer<T> ptr) refFunc;
+  /// does not allow calling `.ref` directly on a generic `Pointer<C>`.
+  C Function(Pointer<C> ptr) refFunc;
 
   /// Assigns [value] to the struct referenced by [ptr].
   ///
   /// Equivalent to `ptr.ref = value`, provided as a function for the same
   /// reason as [refFunc]: Dart's type system does not permit assignment
-  /// through `.ref` on a generic `Pointer<T>`.
-  Pointer<T> Function(Pointer<T> ptr, T value) setRefFunc;
+  /// through `.ref` on a generic `Pointer<C>`.
+  Pointer<C> Function(Pointer<C> ptr, C value) setRefFunc;
 
-  /// Returns the size in bytes of a single [T] struct.
+  /// Returns the size in bytes of a single [C] struct.
   int Function() sizeOfFunc;
   
   /// Writes the Dart value [value] into the [i]-th element of the array at [ptr].
-  void Function(Pointer<T> ptr, int i, X value) writeIntoIndexedFunc;
+  void Function(Pointer<C> ptr, int i, D value) writeIntoIndexedFunc;
   
   /// Writes the Dart value [value] into the struct at [ptr].
-  void Function(Pointer<T> ptr, X value) writeIntoFunc;
+  void Function(Pointer<C> ptr, D value) writeIntoFunc;
   
   /// Copies the raw C struct [value] into the [i]-th element of the array at [ptr].
-  void Function(Pointer<T> ptr, int i, T value) setCFunc;
+  void Function(Pointer<C> ptr, int i, C value) setCFunc;
   
-  /// Returns the [T] struct at index [i] of the array at [ptr].
-  T Function(Pointer<T> ptr, int i) indexerFunc;
+  /// Returns the [C] struct at index [i] of the array at [ptr].
+  C Function(Pointer<C> ptr, int i) indexerFunc;
   
   /// Overwrites the [i]-th element of the array at [ptr] with [value].
-  void Function(Pointer<T> ptr, int i, T value) indexSetterFunc;
+  void Function(Pointer<C> ptr, int i, C value) indexSetterFunc;
 
-  /// Converts a `Pointer<T>` to its Dart-side [X] wrapper, referencing the
+  /// Converts a `Pointer<C>` to its Dart-side [D] wrapper, referencing the
   /// memory at that pointer.
-  X Function(Pointer<T> ptr) ptrToDFunc;
+  D Function(Pointer<C> ptr) ptrToDFunc;
 
   RTempStructAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -525,7 +510,7 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   });
 
   @override
-  String signature() => '$runtimeType<$T, $X>';
+  Pointer<C> keyToPointer(String key) => At(key);
 
   /// Returns the total byte size for [count] structs.
   int Size([int count = 1]) => count*sizeOfFunc();
@@ -533,12 +518,12 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// Allocates an unslotted block of [count] structs.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> Raw([int count = 1]) => allocatorFunc(count);
+  Pointer<C> Raw([int count = 1]) => allocatorFunc(count);
 
   /// Allocates an unslotted array and writes each [X] value from [array] into it.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawArray(List<X> array) {
+  Pointer<C> RawArray(List<D> array) {
     final p = Raw(array.length);
     for (int i = 0; i < array.length; i++) writeIntoIndexedFunc(p, i, array[i]);
     return p;
@@ -548,25 +533,25 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// `init(i, struct)` which writes directly into the native memory.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawFillInto(int count, void Function(int, T) init) {
+  Pointer<C> RawFillInto(int count, void Function(int, C) init) {
     final p = Raw(count);
     for (int i = 0; i < count; i++) init(i, indexerFunc(p, i));
     return p;
   }
 
   /// Allocates an unslotted array of [count] structs, setting each element to
-  /// the [T] returned by `init(ptr, i)`.
+  /// the [C] returned by `init(ptr, i)`.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<T> RawFillWith(int count, T Function(Pointer<T>, int) init) {
+  Pointer<C> RawFillWith(int count, C Function(Pointer<C>, int) init) {
     final p = Raw(count);
     for (int i = 0; i < count; i++) indexSetterFunc(p, i, init(p, i));
     return p;
   }
 
   /// Copies [length] structs from [src] into a tracked slot using [setCFunc].
-  Pointer<T> Copy(Pointer<T> src, int length, {String? key}) {
-    final p = At(_slotKey(key), length);
+  Pointer<C> Copy(Pointer<C> src, int length, {String? key}) {
+    final p = At(slotKey(key), length);
     for (int i = 0; i < length; i++) setCFunc(p, i, indexerFunc(src, i));
     return p;
   }
@@ -574,106 +559,96 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// Returns the pointer for slot [key], optionally writing [value] into it.
   ///
   /// Allocates the slot on first use.
-  Pointer<T> Value([X? value, String? key]) {
-    final p = At(_slotKey(key));
+  Pointer<C> Value([D? value, String? key]) {
+    final p = At(slotKey(key));
     if (value != null) writeIntoFunc(p, value);
     return p;
   }
 
   /// Writes [array] into a tracked slot of sufficient capacity.
-  Pointer<T> Array(List<X> array, {String? key}) {
-    final p = At(_slotKey(key), array.length);
+  Pointer<C> Array(List<D> array, {String? key}) {
+    final p = At(slotKey(key), array.length);
     for (int i = 0; i < array.length; i++) writeIntoIndexedFunc(p, i, array[i]);
     return p;
   }
 
   /// Fills a tracked slot of [count] structs, producing each element via
   /// `init(i)` and writing it through [writeIntoIndexedFunc].
-  Pointer<T> Fill(int count, X Function(int) init, {String? key}) {
-    final p = At(_slotKey(key), count);
+  Pointer<C> Fill(int count, D Function(int) init, {String? key}) {
+    final p = At(slotKey(key), count);
     for (int i = 0; i < count; i++) writeIntoIndexedFunc(p, i, init(i));
     return p;
   }
 
   /// Fills a tracked slot of [count] structs by calling `init(i, struct)`
   /// which writes directly into the native struct fields.
-  Pointer<T> FillInto(int count, void Function(int, T) init, {String? key}) {
-    final p = At(_slotKey(key), count);
+  Pointer<C> FillInto(int count, void Function(int, C) init, {String? key}) {
+    final p = At(slotKey(key), count);
     for (int i = 0; i < count; i++) init(i, indexerFunc(p, i));
     return p;
   }
 
   /// Fills a tracked slot of [count] structs by setting each element to the
-  /// [T] returned by `init(ptr, i)`.
-  Pointer<T> FillWith(int count, T Function(Pointer<T>, int) init, {String? key}) {
-    final p = At(_slotKey(key), count);
+  /// [C] returned by `init(ptr, i)`.
+  Pointer<C> FillWith(int count, C Function(Pointer<C>, int) init, {String? key}) {
+    final p = At(slotKey(key), count);
     for (int i = 0; i < count; i++) indexSetterFunc(p, i, init(p, i));
     return p;
   }
 
-  /// Converts [value] to its C representation into a tracked slot, or returns
-  /// an existing slot if [value] is `null`.
-  ///
-  /// The slot key defaults to `'default'`. Equivalent to calling
-  /// `value.toC(temp, key)` directly.
-  Pointer<T> ToC([X? value, String? key]) {
-    key = _slotKey(key);
-    return value?.toC(_temp, key) ?? At(key);
-  }
-
-  /// Returns a `Pointer<T>` for the given [X] value, using [nullptr] when [x] is `null`.
+  /// Returns a `Pointer<C>` for the given [D] value, using [nullptr] when [x] is `null`.
   ///
   /// Allocates into a numbered slot (1–8) via the corresponding [ToC] call,
   /// so the lifetime is tied to the owning [RaylibTemp].
-  Pointer<T> _Ref(X? x, String key) => x == null ? nullptr : ToC(x, key);
+  Pointer<C> _Ref(D? x, String key) => x == null ? nullptr : PointerTo(x, key);
 
   /// Allocates [o] into slot `'1'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate1] if the callee may write back into the pointer.
-  Pointer<T> Ref1([X? o]) => _Ref(o, '1');
+  Pointer<C> Ref1([D? o]) => _Ref(o, '1');
 
   /// Allocates [o] into slot `'2'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate2] if the callee may write back into the pointer.
-  Pointer<T> Ref2([X? o]) => _Ref(o, '2');
+  Pointer<C> Ref2([D? o]) => _Ref(o, '2');
 
   /// Allocates [o] into slot `'3'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate3] if the callee may write back into the pointer.
-  Pointer<T> Ref3([X? o]) => _Ref(o, '3');
+  Pointer<C> Ref3([D? o]) => _Ref(o, '3');
 
   /// Allocates [o] into slot `'4'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate4] if the callee may write back into the pointer.
-  Pointer<T> Ref4([X? o]) => _Ref(o, '4');
+  Pointer<C> Ref4([D? o]) => _Ref(o, '4');
 
   /// Allocates [o] into slot `'5'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate5] if the callee may write back into the pointer.
-  Pointer<T> Ref5([X? o]) => _Ref(o, '5');
+  Pointer<C> Ref5([D? o]) => _Ref(o, '5');
 
   /// Allocates [o] into slot `'6'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate6] if the callee may write back into the pointer.
-  Pointer<T> Ref6([X? o]) => _Ref(o, '6');
+  Pointer<C> Ref6([D? o]) => _Ref(o, '6');
 
   /// Allocates [o] into slot `'7'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate7] if the callee may write back into the pointer.
-  Pointer<T> Ref7([X? o]) => _Ref(o, '7');
+  Pointer<C> Ref7([D? o]) => _Ref(o, '7');
 
   /// Allocates [o] into slot `'8'`, or returns [nullptr] if [o] is `null`.
   ///
   /// Intended as a short-lived scratch reference within a single C call.
   /// Use [RefUpdate8] if the callee may write back into the pointer.
-  Pointer<T> Ref8([X? o]) => _Ref(o, '8');
+  Pointer<C> Ref8([D? o]) => _Ref(o, '8');
 
   /// Allocates [o] into a numbered slot, invokes [fn] with the resulting
   /// pointer, then syncs any mutations back from native memory into [o] via
@@ -684,9 +659,9 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// the common pattern of passing a mutable struct pointer to a C function that
   /// may write into it.
   V _RefUpdate<V>(
-    X? o,
-    V Function(Pointer<T> p) fn,
-    Pointer<T> Function(X) alloc,
+    D? o,
+    V Function(Pointer<C> p) fn,
+    Pointer<C> Function(D) alloc,
   ) {
     final p = o != null ? alloc(o) : nullptr;
     final result = fn(p);
@@ -699,56 +674,56 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   ///
   /// Use this instead of [Ref1] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate1<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref1);
+  V RefUpdate1<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref1);
 
   /// Allocates [o] into slot `'2'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref2] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate2<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref2);
+  V RefUpdate2<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref2);
 
   /// Allocates [o] into slot `'3'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref3] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate3<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref3);
+  V RefUpdate3<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref3);
 
   /// Allocates [o] into slot `'4'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref4] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate4<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref4);
+  V RefUpdate4<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref4);
 
   /// Allocates [o] into slot `'5'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref5] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate5<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref5);
+  V RefUpdate5<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref5);
 
   /// Allocates [o] into slot `'6'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref6] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate6<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref6);
+  V RefUpdate6<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref6);
 
   /// Allocates [o] into slot `'7'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref7] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate7<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref7);
+  V RefUpdate7<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref7);
 
   /// Allocates [o] into slot `'8'`, calls [fn] with the pointer, then
   /// syncs native memory back into [o] via [setCFunc].
   ///
   /// Use this instead of [Ref8] when the C function writes into the struct and
   /// you want the mutations reflected in [o] after the call.
-  V RefUpdate8<V>(X? o, V Function(Pointer<T> p) fn) => _RefUpdate(o, fn, Ref8);
+  V RefUpdate8<V>(D? o, V Function(Pointer<C> p) fn) => _RefUpdate(o, fn, Ref8);
 
   /// Copies the native struct [o] into a uniquely-keyed tracked slot and
   /// returns its Dart-side [X] wrapper via [ptrToDFunc].
@@ -756,23 +731,23 @@ class RTempStructAlloc<T extends Struct, X extends StructD<X, T>> extends RTempA
   /// Unique key of the form `'<id>_<key>'` is generated from the allocator's
   /// ID counter. The returned [X] holds a live reference into temp-managed
   /// memory.
-  X RefCapture(String key, T o) => ptrToDFunc(setRefFunc(AtUnique(key), o));
+  D RefCapture(String key, C o) => ptrToDFunc(setRefFunc(AtUnique(key), o));
 }
 
-/// A slot-based allocator for arrays of **pointers** to native structs of type [T].
+/// A slot-based allocator for arrays of **pointers** to native structs of type [C].
 ///
-/// Manages `Pointer<Pointer<T>>` slots where each inner `Pointer<T>` is
-/// produced from a `List<X>` via [rawArrayFunc].
-class RTempStructPtrAlloc<T extends Struct, X extends StructD<X, T>> extends RTempAlloc<Pointer<T>> {
+/// Manages `Pointer<Pointer<C>>` slots where each inner `Pointer<C>` is
+/// produced from a `List<D>` via [rawArrayFunc].
+class RTempStructPtrAlloc<C extends Struct, D extends StructD<C, D>> extends RTempAlloc<Pointer<C>> {
 
-  /// Converts an `X` of Dart struct wrapper into an allocated `Pointer<T>` pointer.
-  Pointer<T> Function([X?, String?]) valueFunc;
+  /// Converts an `D` of Dart struct wrapper into an allocated `Pointer<C>` pointer.
+  Pointer<C> Function([D?, String?]) valueFunc;
 
-  /// Converts a `List<X>` of Dart struct wrappers into an allocated `Pointer<T>` array.
-  Pointer<T> Function(List<X> array) rawArrayFunc;
+  /// Converts a `List<D>` of Dart struct wrappers into an allocated `Pointer<C>` array.
+  Pointer<C> Function(List<D> array) rawArrayFunc;
 
   /// Overwrites the [i]-th element of the array at [ptr] with [value].
-  void Function(Pointer<Pointer<T>> ptr, int i, Pointer<T> value) indexSetterFunc;
+  void Function(Pointer<Pointer<C>> ptr, int i, Pointer<C> value) indexSetterFunc;
 
   RTempStructPtrAlloc(super.temp, super.name, {
     required super.allocatorFunc,
@@ -782,42 +757,39 @@ class RTempStructPtrAlloc<T extends Struct, X extends StructD<X, T>> extends RTe
     required this.indexSetterFunc,
   });
 
-  @override
-  String signature() => '$runtimeType<$T, $X>';
-
-  /// Allocates an unslotted `Pointer<Pointer<T>>` of [count] elements.
+  /// Allocates an unslotted `Pointer<Pointer<C>>` of [count] elements.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<Pointer<T>> Raw([int count = 1]) => allocatorFunc(count);
+  Pointer<Pointer<C>> Raw([int count = 1]) => allocatorFunc(count);
 
   /// Allocates an unslotted pointer-of-pointers from a list of struct arrays.
   ///
   /// The caller is responsible for freeing the returned pointer.
-  Pointer<Pointer<T>> RawArray(List<List<X>> arrays) {
+  Pointer<Pointer<C>> RawArray(List<List<D>> arrays) {
     final p = Raw(arrays.length);
     for (int i = 0; i < arrays.length; i++) p[i] = rawArrayFunc(arrays[i]);
     return p;
   }
 
   /// Writes [array] into a tracked slot of sufficient capacity.
-  Pointer<Pointer<T>> Array(List<X> array, {String? key}) {
-    final slotKey = _slotKey(key);
-    final p = At(slotKey, array.length);
-    for (int i = 0; i < array.length; i++) indexSetterFunc(p, i, valueFunc(array[i], '${slotKey}_$i'));
+  Pointer<Pointer<C>> Array(List<D> array, {String? key}) {
+    key ??= slotKey(key);
+    final p = At(key, array.length);
+    for (int i = 0; i < array.length; i++) indexSetterFunc(p, i, valueFunc(array[i], '${key}_$i'));
     return p;
   }
 
   /// Writes each sub-array in [arrays] into a tracked slot and returns the
-  /// outer `Pointer<Pointer<T>>`
-  Pointer<Pointer<T>> Fill(List<List<X>> arrays, {String? key}) {
-    final p = At(_slotKey(key), arrays.length);
+  /// outer `Pointer<Pointer<C>>`
+  Pointer<Pointer<C>> Fill(List<List<D>> arrays, {String? key}) {
+    final p = At(slotKey(key), arrays.length);
     for (int i = 0; i < arrays.length; i++) p[i] = rawArrayFunc(arrays[i]);
     return p;
   }
 
   /// Fills a tracked slot of [count] pointers by calling `init(i)` for each index.
-  Pointer<Pointer<T>> FillRaw(int count, Pointer<T> Function(int) init, {String? key}) {
-    final pp = At(_slotKey(key), count);
+  Pointer<Pointer<C>> FillRaw(int count, Pointer<C> Function(int) init, {String? key}) {
+    final pp = At(slotKey(key), count);
     for (int i = 0; i < count; i++) pp[i] = init(i);
     return pp;
   }
@@ -871,7 +843,7 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
   /// Sub-slot keys follow the pattern `'<key>_<i>'`. [key] defaults to
   /// `'default'`.
   Pointer<Pointer<Char>> Array(List<String> array, {String? key}) {
-    final arrayKey = _slotKey(key);
+    final arrayKey = slotKey(key);
     final pp = At(arrayKey, array.length);
     for (int i = 0; i < array.length; i++) pp[i] = ValueAt('${arrayKey}_$i', array[i]);
     return pp;
@@ -880,7 +852,7 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
   /// Fills a tracked [Pointer<Pointer<Char>>] of [count] elements by calling
   /// [init](i) for each index.
   Pointer<Pointer<Char>> Fill(int count, Pointer<Char> Function(int) init, {String? key}) {
-    final pp = At(_slotKey(key), count);
+    final pp = At(slotKey(key), count);
     for (int i = 0; i < count; i++) pp[i] = init(i);
     return pp;
   }
@@ -987,11 +959,11 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
   void _dispose() {
     if (_StringSlots.isNotEmpty) {
       final nonNulls = _StringSlots.where((e) => e != nullptr);
-      _temp.debugFreeInfo('Freeing preallocated $slotCount $name slots (used ${nonNulls.length})');
+      temp.debugFreeInfo('Freeing preallocated $slotCount $name slots (used ${nonNulls.length})');
       nonNulls.forEach(calloc.free);
     }
     if (_StringSlotsKeyed.isNotEmpty) {
-      _temp.debugFreeInfo('Freeing user-defined ${_StringSlotsKeyed.length} $name slots');
+      temp.debugFreeInfo('Freeing user-defined ${_StringSlotsKeyed.length} $name slots');
     }
     _reset();
   }
@@ -1045,7 +1017,7 @@ final class RTempStringAlloc extends RTempAlloc<Pointer<Char>> {
   Pointer<Char> RefOrNull4(String? o) => o == null ? nullptr : Ref4(o);
 }
 
-class RaylibTemp extends RaylibModule {
+class RaylibTemp extends RaylibModule with RaylibTempBase {
   final RaylibTempOptions options;
 
   RaylibTemp(super.lib, {
@@ -1212,23 +1184,23 @@ class RaylibTemp extends RaylibModule {
 
   T alloc<T extends RTempAlloc>(String key) => _customAllocators[key] as T;
 
-  RTempLitAlloc<X, T> allocLit<X, T extends NativeType>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitAlloc<X, T>;
+  RTempLitAlloc<X, C> allocLit<X, C extends NativeType>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitAlloc<X, C>;
 
-  RTempLitTypedIntListAlloc<X, T, L> allocIntList<X, T extends NativeType, L extends TypedDataList>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitTypedIntListAlloc<X, T, L>;
+  RTempLitTypedIntListAlloc<X, C, L> allocIntList<X, C extends NativeType, L extends TypedDataList>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitTypedIntListAlloc<X, C, L>;
 
-  RTempLitTypedFloatListAlloc<X, T, L> allocFloatList<X, T extends NativeType, L extends TypedDataList>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitTypedFloatListAlloc<X, T, L>;
+  RTempLitTypedFloatListAlloc<X, C, L> allocFloatList<X, C extends NativeType, L extends TypedDataList>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitTypedFloatListAlloc<X, C, L>;
 
-  RTempLitPtrAlloc<X, T> allocLitPtr<X, T extends NativeType>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempLitPtrAlloc<X, T>;
+  RTempLitPtrAlloc<X, C> allocLitPtr<X, C extends NativeType>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempLitPtrAlloc<X, C>;
 
-  RTempStructAlloc<T, X> allocStruct<T extends Struct, X extends StructD<X, T>>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempStructAlloc<T, X>;
+  RTempStructAlloc<C, D> allocStruct<C extends Struct, D extends StructD<C, D>>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempStructAlloc<C, D>;
 
-  RTempStructPtrAlloc<T, X> allocStructPtr<T extends Struct, X extends StructD<X, T>>(String key) =>
-    _getCustomAllocatorOrThrow(key) as RTempStructPtrAlloc<T, X>;
+  RTempStructPtrAlloc<C, D> allocStructPtr<C extends Struct, D extends StructD<C, D>>(String key) =>
+    _getCustomAllocatorOrThrow(key) as RTempStructPtrAlloc<C, D>;
 
   /// ============================
   /// ====== INITIALIZATION ======

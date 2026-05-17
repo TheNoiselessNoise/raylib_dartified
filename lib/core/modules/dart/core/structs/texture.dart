@@ -43,7 +43,7 @@ extension TextureCEx on TextureC {
   );
 }
 
-class TextureD extends StructD<TextureD, TextureC> with TextureBase {
+class TextureD extends StructD<TextureC, TextureD> with TextureBase {
   @override
   int id;
   

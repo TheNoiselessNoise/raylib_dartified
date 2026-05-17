@@ -90,7 +90,7 @@ extension VrStereoConfigCEx on VrStereoConfigC {
   );
 }
 
-class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> with VrStereoConfigBase {
+class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrStereoConfigBase {
   @override
   late List<MatrixD> projection;
   
@@ -140,7 +140,7 @@ class VrStereoConfigD extends StructD<VrStereoConfigD, VrStereoConfigC> with VrS
 
   @override
   VrStereoConfigD setC(VrStereoConfigC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.projection = o.projection;
       p.ref.viewOffset = o.viewOffset;
       p.ref.leftLensCenter = o.leftLensCenter;

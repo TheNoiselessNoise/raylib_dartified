@@ -29,7 +29,7 @@ extension FontCEx on FontC {
     baseSize = o.baseSize;
     glyphCount = o.glyphCount;
     glyphPadding = o.glyphPadding;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       texture = p.ref.texture;
       recs = p.ref.recs;
       glyphs = p.ref.glyphs;
@@ -48,7 +48,7 @@ extension FontCEx on FontC {
   );
 }
 
-class FontD extends StructD<FontD, FontC> with FontBase {
+class FontD extends StructD<FontC, FontD> with FontBase {
   @override
   int baseSize;
   
@@ -84,7 +84,7 @@ class FontD extends StructD<FontD, FontC> with FontBase {
 
   @override
   FontD setC(FontC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.recs = o.recs;
       p.ref.glyphs = o.glyphs;
     });
@@ -113,7 +113,7 @@ class FontD extends StructD<FontD, FontC> with FontBase {
   nativeAllocator(RaylibTemp temp) => temp.Font$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
     p.ref.recs = temp.Rectangle$.RawArray(recs);
     p.ref.glyphs = temp.GlyphInfo$.RawArray(glyphs);
   }

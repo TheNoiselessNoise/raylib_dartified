@@ -34,7 +34,7 @@ extension RayCEx on RayC {
   );
 }
 
-class RayD extends StructDLiteral<RayD, RayC> with RayBase {
+class RayD extends StructDLiteral<RayC, RayD> with RayBase {
   @override
   Vector3D position;
 

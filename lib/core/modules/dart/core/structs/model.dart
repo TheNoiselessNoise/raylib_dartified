@@ -29,7 +29,7 @@ extension ModelCEx on ModelC {
   }
 
   ModelC setD(ModelD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       meshCount = p.ref.meshCount;
       materialCount = p.ref.materialCount;
       meshes = p.ref.meshes;
@@ -54,7 +54,7 @@ extension ModelCEx on ModelC {
   );
 }
 
-class ModelD extends StructD<ModelD, ModelC> with ModelBase {
+class ModelD extends StructD<ModelC, ModelD> with ModelBase {
   @override
   MatrixD transform;
   
@@ -93,7 +93,7 @@ class ModelD extends StructD<ModelD, ModelC> with ModelBase {
 
   @override
   ModelD setC(ModelC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.meshes = o.meshes;
       p.ref.materials = o.materials;
       p.ref.meshMaterial = o.meshMaterial;
@@ -125,7 +125,7 @@ class ModelD extends StructD<ModelD, ModelC> with ModelBase {
   nativeAllocator(RaylibTemp temp) => temp.Model$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
     p.ref.meshes = temp.Mesh$.Array(meshes, key: '${key}_meshes');
     p.ref.materials = temp.Material$.Array(materials, key: '${key}_materials');
     p.ref.meshMaterial = temp.Int$.Array(meshMaterial, key: '${key}_meshMaterial');

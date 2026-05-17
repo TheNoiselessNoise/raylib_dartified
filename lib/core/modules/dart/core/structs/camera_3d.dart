@@ -43,7 +43,7 @@ extension Camera3DCEx on Camera3DC {
   );
 }
 
-class Camera3DD extends StructDLiteral<Camera3DD, Camera3DC> with Camera3DBase {
+class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase {
   @override
   Vector3D position;
   

@@ -28,7 +28,7 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   RlRenderBatchC setD(RlRenderBatchD o) {
     bufferCount = o.bufferCount;
     currentBuffer = o.currentBuffer;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       vertexBuffer = p.ref.vertexBuffer;
       draws = p.ref.draws;
     });
@@ -62,7 +62,7 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   );
 }
 
-class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> with RlRenderBatchBase {
+class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRenderBatchBase {
   @override
   int bufferCount;
   
@@ -97,7 +97,7 @@ class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> with RlRend
 
   @override
   RlRenderBatchD setC(RlRenderBatchC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.vertexBuffer = o.vertexBuffer;
       p.ref.draws = o.draws;
     });
@@ -130,7 +130,7 @@ class RlRenderBatchD extends StructD<RlRenderBatchD, RlRenderBatchC> with RlRend
   nativeAllocator(RaylibTemp temp) => temp.RlRenderBatch$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
     p.ref.vertexBuffer = temp.RlVertexBuffer$.Array(vertexBuffers, key: '${key}_vbufs');
     p.ref.draws = temp.RlDrawCall$.Array(draws, key: '${key}_draws');
   }

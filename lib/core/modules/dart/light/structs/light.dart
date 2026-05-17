@@ -64,7 +64,7 @@ extension LightCEx on LightC {
   );
 }
 
-class LightD extends StructD<LightD, LightC> implements LightBase {
+class LightD extends StructD<LightC, LightD> implements LightBase {
   @override
   LightType type;
   

@@ -25,7 +25,7 @@ extension MusicCEx on MusicC {
   }
 
   MusicC setD(MusicD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       stream.setC(p.ref.stream);
       ctxData = p.ref.ctxData;
     });
@@ -44,7 +44,7 @@ extension MusicCEx on MusicC {
   );
 }
 
-class MusicD extends StructD<MusicD, MusicC> with MusicBase {
+class MusicD extends StructD<MusicC, MusicD> with MusicBase {
   @override
   AudioStreamD stream;
   
@@ -67,7 +67,7 @@ class MusicD extends StructD<MusicD, MusicC> with MusicBase {
 
   @override
   MusicD setC(MusicC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.stream.setC(o.stream);
       p.ref.ctxData = o.ctxData;
     });
@@ -93,10 +93,10 @@ class MusicD extends StructD<MusicD, MusicC> with MusicBase {
     => throw UnsupportedError('MusicD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void nativeSyncInto(RaylibTemp temp, Pointer<MusicC> p, String key) {} // NOTE: do nothing
+  void structSyncInto(RaylibTemp temp, Pointer<MusicC> p, String key) {} // NOTE: do nothing
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<MusicC> p, String key)
+  void structAllocateInto(RaylibTemp temp, Pointer<MusicC> p, String key)
     => throw UnsupportedError('MusicD: is raylib-owned; cannot allocate externally.');
 
   @override

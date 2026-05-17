@@ -188,7 +188,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowIcons(
     List<ImageD> images,
   ) => run(
-    () => 'SetWindowIcons(${images.map((i) => i.internalId).join(', ')})',
+    () => 'SetWindowIcons(${images.map((i) => i.$state.internalId).join(', ')})',
     () => rl.Core.SetWindowIcons(
       rl.Temp.Image$.Array(images),
       images.length,
@@ -599,7 +599,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'LoadVrStereoConfig($device)',
     () => rl.Temp.VrStereoConfig$.RefCapture(
-      'LoadVrStereoConfig_${device.internalId}',
+      'LoadVrStereoConfig_${device.$state.internalId}',
       rl.Core.LoadVrStereoConfig(
         rl.Temp.VrDeviceInfo$.Ref1(device).ref,
       ),
@@ -3301,7 +3301,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'ImageCopy($image)',
     () => rl.Temp.Image$.RefCapture(
-      'ImageCopy_${image.internalId}',
+      'ImageCopy_${image.$state.internalId}',
       rl.Core.ImageCopy(
         rl.Temp.Image$.Ref1(image).ref,
       ),
@@ -3315,7 +3315,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'ImageFromImage($image, $rec)',
     () => rl.Temp.Image$.RefCapture(
-      'ImageFromImage_${image.internalId}',
+      'ImageFromImage_${image.$state.internalId}',
       rl.Core.ImageFromImage(
         rl.Temp.Image$.Ref1(image).ref,
         rl.Temp.Rectangle$.Ref1(rec).ref,
@@ -3330,7 +3330,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'ImageFromChannel($image, $selectedChannel)',
     () => rl.Temp.Image$.RefCapture(
-      'ImageFromChannel_${image.internalId}',
+      'ImageFromChannel_${image.$state.internalId}',
       rl.Core.ImageFromChannel(
         rl.Temp.Image$.Ref1(image).ref,
         selectedChannel.toInt(),
@@ -3365,7 +3365,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'ImageTextEx($font, $text, $fontSize, $spacing, $tint)',
     () => rl.Temp.Image$.RefCapture(
-      'ImageTextEx_${font.internalId}',
+      'ImageTextEx_${font.$state.internalId}',
       rl.Core.ImageTextEx(
         rl.Temp.Font$.Ref1(font).ref,
         rl.Temp.String$.ValueOrNull(text),
@@ -4223,7 +4223,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'LoadTextureFromImage($image)',
     () => rl.Temp.Texture$.RefCapture(
-      'LoadTextureFromImage_${image.internalId}',
+      'LoadTextureFromImage_${image.$state.internalId}',
       rl.Core.LoadTextureFromImage(
         rl.Temp.Image$.Ref1(image).ref,
       ),
@@ -4237,7 +4237,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'LoadTextureCubemap($image, $layout)',
     () => rl.Temp.Texture$.RefCapture(
-      'LoadTextureCubemap_${image.internalId}',
+      'LoadTextureCubemap_${image.$state.internalId}',
       rl.Core.LoadTextureCubemap(
         rl.Temp.Image$.Ref1(image).ref,
         layout.value,
@@ -4700,7 +4700,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'LoadFontFromImage($image, $key, $firstChar)',
     () => rl.Temp.Font$.RefCapture(
-      'LoadFontFromImage_${image.internalId}',
+      'LoadFontFromImage_${image.$state.internalId}',
       rl.Core.LoadFontFromImage(
         rl.Temp.Image$.Ref1(image).ref,
         rl.Temp.Color$.Ref1(key).ref,
@@ -5496,7 +5496,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'LoadModelFromMesh($mesh)',
     () => rl.Temp.Model$.RefCapture(
-      'LoadModelFromMesh_${mesh.internalId}',
+      'LoadModelFromMesh_${mesh.$state.internalId}',
       rl.Core.LoadModelFromMesh(
         rl.Temp.Mesh$.Ref1(mesh).ref,
       ),
@@ -5992,7 +5992,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'GenMeshHeightmap($heightmap, $size)',
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshHeightmap_${heightmap.internalId}',
+      'GenMeshHeightmap_${heightmap.$state.internalId}',
       rl.Core.GenMeshHeightmap(
         rl.Temp.Image$.Ref1(heightmap).ref,
         rl.Temp.Vector3$.Ref1(size).ref,
@@ -6007,7 +6007,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ) => run(
     () => 'GenMeshCubicmap($cubicmap, $cubeSize)',
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshCubicmap_${cubicmap.internalId}',
+      'GenMeshCubicmap_${cubicmap.$state.internalId}',
       rl.Core.GenMeshCubicmap(
         rl.Temp.Image$.Ref1(cubicmap).ref,
         rl.Temp.Vector3$.Ref1(cubeSize).ref,

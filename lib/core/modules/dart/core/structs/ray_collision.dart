@@ -40,7 +40,7 @@ extension RayCollisionCEx on RayCollisionC {
   );
 }
 
-class RayCollisionD extends StructDLiteral<RayCollisionD, RayCollisionC> with RayCollisionBase {
+class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with RayCollisionBase {
   @override
   bool hit;
 

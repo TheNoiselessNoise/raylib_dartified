@@ -73,7 +73,7 @@ extension NPatchInfoCEx on NPatchInfoC {
   );
 }
 
-class NPatchInfoD extends StructDLiteral<NPatchInfoD, NPatchInfoC> with NPatchInfoBase {
+class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchInfoBase {
   @override
   RectangleD source;
   

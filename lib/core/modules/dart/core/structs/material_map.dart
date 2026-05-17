@@ -37,7 +37,7 @@ extension MaterialMapCEx on MaterialMapC {
   );
 }
 
-class MaterialMapD extends StructDLiteral<MaterialMapD, MaterialMapC> with MaterialMapBase {
+class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with MaterialMapBase {
   @override
   TextureD texture;
   

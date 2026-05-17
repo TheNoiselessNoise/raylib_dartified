@@ -34,7 +34,7 @@ extension BoundingBoxCEx on BoundingBoxC {
   );
 }
 
-class BoundingBoxD extends StructDLiteral<BoundingBoxD, BoundingBoxC> with BoundingBoxBase {
+class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with BoundingBoxBase {
   @override
   Vector3D min;
   

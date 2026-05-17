@@ -121,7 +121,7 @@ extension MatrixCEx on MatrixC {
   MatrixC translateVector(Vector3C v) => translate(v.x, v.y, v.z);
 }
 
-class MatrixD extends StructDLiteral<MatrixD, MatrixC> with MatrixBase {
+class MatrixD extends StructDLiteral<MatrixC, MatrixD> with MatrixBase {
   @override
   double
     m0, m1, m2, m3,

@@ -25,7 +25,7 @@ extension AudioStreamCEx on AudioStreamC {
   }
 
   AudioStreamC setD(AudioStreamD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       buffer = p.ref.buffer;
       processor = p.ref.processor;
     });
@@ -43,7 +43,7 @@ extension AudioStreamCEx on AudioStreamC {
   );
 }
 
-class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> with AudioStreamBase {
+class AudioStreamD extends StructD<AudioStreamC, AudioStreamD> with AudioStreamBase {
   @override
   int sampleRate;
   
@@ -62,7 +62,7 @@ class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> with AudioStreamB
 
   @override
   AudioStreamD setC(AudioStreamC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.buffer = o.buffer;
       p.ref.processor = o.processor;
     });
@@ -86,10 +86,10 @@ class AudioStreamD extends StructD<AudioStreamD, AudioStreamC> with AudioStreamB
     => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot allocate externally.');
 
   @override
-  void nativeSyncInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) {} // NOTE: do nothing
+  void structSyncInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) {} // NOTE: do nothing
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key)
+  void structAllocateInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key)
     => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot allocate externally.');
 
   @override

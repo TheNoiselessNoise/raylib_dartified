@@ -57,7 +57,7 @@ extension ImageCEx on ImageC {
   }
 
   ImageC setD(ImageD o) {
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       data = p.ref.data;
     });
     width = o.width;
@@ -77,7 +77,7 @@ extension ImageCEx on ImageC {
   );
 }
 
-class ImageD extends StructD<ImageD, ImageC> with ImageBase {
+class ImageD extends StructD<ImageC, ImageD> with ImageBase {
   @override
   int width;
 
@@ -109,7 +109,7 @@ class ImageD extends StructD<ImageD, ImageC> with ImageBase {
   factory ImageD.zero() => .new();
 
   // NOTE: for GIFs
-  void nativeUpdateFrameCount(int frameCount) => nativeOnOriginalPointer((p) {
+  void nativeUpdateFrameCount(int frameCount) => structOnOriginalPointer((p) {
     if (this.frameCount != frameCount) {
       this.frameCount = frameCount;
       data = p.ref.data.address != 0 ?
@@ -120,7 +120,7 @@ class ImageD extends StructD<ImageD, ImageC> with ImageBase {
 
   @override
   ImageD setC(ImageC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.data = o.data;
       p.ref.format = o.format;
     });
@@ -147,7 +147,7 @@ class ImageD extends StructD<ImageD, ImageC> with ImageBase {
   nativeAllocator(RaylibTemp temp) => temp.Image$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
     p.ref.data = temp.Uint8$.RawArray(data).cast();
   }
 

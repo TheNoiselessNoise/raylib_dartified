@@ -43,7 +43,7 @@ extension WaveCEx on WaveC {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    o.nativeOnOriginalPointer((p) {
+    o.structOnOriginalPointer((p) {
       data = p.ref.data;
     });
     if (data.address != 0) {
@@ -66,7 +66,7 @@ extension WaveCEx on WaveC {
   );
 }
 
-class WaveD extends StructD<WaveD, WaveC> with WaveBase {
+class WaveD extends StructD<WaveC, WaveD> with WaveBase {
   @override
   int frameCount;
   
@@ -93,7 +93,7 @@ class WaveD extends StructD<WaveD, WaveC> with WaveBase {
 
   @override
   WaveD setC(WaveC o) {
-    nativeOnOriginalPointer((p) {
+    structOnOriginalPointer((p) {
       p.ref.data = o.data;
     });
     frameCount = o.frameCount;
@@ -119,7 +119,7 @@ class WaveD extends StructD<WaveD, WaveC> with WaveBase {
   nativeAllocator(RaylibTemp temp) => temp.Wave$;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
+  void structAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
     p.ref.data = temp.Short$.Array(data, key: '${key}_data').cast();
   }
 

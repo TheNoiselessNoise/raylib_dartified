@@ -113,7 +113,7 @@ class RaylibAudioD extends RaylibModule implements RaylibAudioModuleBase<
   ) => run(
     () => 'LoadSoundFromWave($wave)',
     () => rl.Temp.Sound$.RefCapture(
-      'LoadSoundFromWave_${wave.internalId}',
+      'LoadSoundFromWave_${wave.$state.internalId}',
       rl.Audio.LoadSoundFromWave(
         rl.Temp.Wave$.Ref1(wave).ref,
       ),
@@ -126,7 +126,7 @@ class RaylibAudioD extends RaylibModule implements RaylibAudioModuleBase<
   ) => run(
     () => 'LoadSoundAlias($source)',
     () => rl.Temp.Sound$.RefCapture(
-      'LoadSoundAlias_${source.internalId}',
+      'LoadSoundAlias_${source.$state.internalId}',
       rl.Audio.LoadSoundAlias(
         rl.Temp.Sound$.Ref1(source).ref,
       ),
@@ -305,7 +305,7 @@ class RaylibAudioD extends RaylibModule implements RaylibAudioModuleBase<
   ) => run(
     () => 'WaveCopy($wave)',
     () => rl.Temp.Wave$.RefCapture(
-      'WaveCopy_${wave.internalId}',
+      'WaveCopy_${wave.$state.internalId}',
       rl.Audio.WaveCopy(
         rl.Temp.Wave$.Ref1(wave).ref,
       ),
