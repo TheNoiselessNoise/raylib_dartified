@@ -50,7 +50,7 @@ class Star {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_spotlight".toC);
   rl.Core.SetWindowMonitor(0);
@@ -90,7 +90,7 @@ void main()
 
   rl.Core.SetShaderValue(shdrSpot,
     rl.Core.GetShaderLocation(shdrSpot, "screenWidth".toC),
-    rl.Temp.Float$.Value(rl.Core.GetScreenWidth()).cast(),
+    rl.Temp.Float32$.Value(rl.Core.GetScreenWidth()).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
 
@@ -114,11 +114,11 @@ void main()
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
     rl.Core.SetShaderValue(shdrSpot, spots[i].innerLoc,
-      rl.Temp.Float$.Value(spots[i].inner).cast(),
+      rl.Temp.Float32$.Value(spots[i].inner).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
     rl.Core.SetShaderValue(shdrSpot, spots[i].radiusLoc,
-      rl.Temp.Float$.Value(spots[i].radius).cast(),
+      rl.Temp.Float32$.Value(spots[i].radius).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   }

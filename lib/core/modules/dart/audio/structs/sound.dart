@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension SoundCPEx on Pointer<SoundC> {
-  Pointer<SoundC> setC(SoundC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<SoundC> setD(SoundD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<SoundC> setC(SoundC o) { ref.setC(o); return this; }
+  Pointer<SoundC> setD(SoundD o) { ref.setD(o); return this; }
   SoundD toD() => ref.toD(this);
 }
 
@@ -36,7 +28,10 @@ extension SoundCEx on SoundC {
   );
 }
 
-class SoundD extends StructD<SoundC, SoundD> with SoundBase {
+class SoundD extends StructD<SoundC, SoundD> with SoundBase<
+  SoundD,
+  AudioStreamD
+> {
   @override
   AudioStreamD stream;
   
@@ -61,29 +56,20 @@ class SoundD extends StructD<SoundC, SoundD> with SoundBase {
 
   @override
   SoundD setD(SoundD o) {
-    originalPointer ??= o.originalPointer;
     stream.setD(o.stream);
     frameCount = o.frameCount;
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp)
-    => throw UnsupportedError('SoundD: is raylib-owned; cannot allocate externally.');
+  getReference(Pointer<SoundC> p) => p.ref;
 
   @override
   void structSyncInto(RaylibTemp temp, Pointer<SoundC> p, String key) {} // NOTE: do nothing
 
   @override
-  void structAllocateInto(RaylibTemp temp, Pointer<SoundC> p, String key)
-    => throw UnsupportedError('SoundD: is raylib-owned; cannot allocate externally.');
-
-  @override
   void nativeWriteInto(SoundC p)
     => throw UnsupportedError('SoundD: is raylib-owned; cannot write externally.');
-
-  @override
-  String signature() => '$structName(stream: $stream, frameCount: $frameCount)';
 
   @override
   SoundD clone() => .new(

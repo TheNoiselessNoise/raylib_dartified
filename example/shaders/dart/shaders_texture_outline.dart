@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_texture_outline");
   rl.CoreD.SetWindowMonitor(0);

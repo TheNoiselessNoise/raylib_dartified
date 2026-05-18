@@ -1,5 +1,5 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibUtils extends RaylibModule with RaylibUtilsModuleBase {
+class RaylibUtils extends RaylibUtilsModuleBase<Raylib> {
   RaylibUtils(super.rl);
 }

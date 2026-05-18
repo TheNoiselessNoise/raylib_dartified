@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_color_correction".toC);
   rl.Core.SetWindowMonitor(0);
@@ -32,9 +32,9 @@ void main()
   final imageIndex = rl.Temp.Int$.At('imageIndex');
   int resetButtonClicked = 0;
 
-  final contrast = rl.Temp.Float$.At('contrast');
-  final saturation = rl.Temp.Float$.At('saturation');
-  final brightness = rl.Temp.Float$.At('brightness');
+  final contrast = rl.Temp.Float32$.At('contrast');
+  final saturation = rl.Temp.Float32$.At('saturation');
+  final brightness = rl.Temp.Float32$.At('brightness');
 
   int contrastLoc = rl.Core.GetShaderLocation(shader, "contrast".toC);
   int saturationLoc = rl.Core.GetShaderLocation(shader, "saturation".toC);
@@ -42,17 +42,17 @@ void main()
 
   void updateShaderValues() {
     rl.Core.SetShaderValue(shader, contrastLoc,
-      rl.Temp.Float$.Value(contrast.value).cast(),
+      rl.Temp.Float32$.Value(contrast.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
     rl.Core.SetShaderValue(shader, saturationLoc,
-      rl.Temp.Float$.Value(saturation.value).cast(),
+      rl.Temp.Float32$.Value(saturation.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
     rl.Core.SetShaderValue(shader, brightnessLoc,
-      rl.Temp.Float$.Value(brightness.value).cast(),
+      rl.Temp.Float32$.Value(brightness.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   }

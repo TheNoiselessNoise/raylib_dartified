@@ -1,25 +1,15 @@
-part of '../../../../raylib.dart';
-
-extension BoneInfoCLike on BoneInfoC {
-  int get nameLength => 32;
-  String get nameString => name.toDartString(nameLength);
-}
+part of '../../../../raylib_dartified.dart';
 
 extension BoneInfoCPEx on Pointer<BoneInfoC> {
-  Pointer<BoneInfoC> setC(BoneInfoC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<BoneInfoC> setD(BoneInfoD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<BoneInfoC> setC(BoneInfoC o) { ref.setC(o); return this; }
+  Pointer<BoneInfoC> setD(BoneInfoD o) { ref.setD(o); return this; }
   BoneInfoD toD() => ref.toD(this);
 }
 
 extension BoneInfoCEx on BoneInfoC {
+  int get nameLength => BoneInfoBase.BASE_nameLength;
+  String get nameString => name.toDartString(nameLength);
+
   BoneInfoC setC(BoneInfoC o) {
     parent = o.parent;
     name = o.name;
@@ -41,7 +31,7 @@ extension BoneInfoCEx on BoneInfoC {
   );
 }
 
-class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase {
+class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase<BoneInfoD> {
   @override
   String name;
 
@@ -68,23 +58,19 @@ class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase {
 
   @override
   BoneInfoD setD(BoneInfoD o) {
-    originalPointer ??= o.originalPointer;
     name = o.name;
     parent = o.parent;
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.BoneInfo$;
+  getReference(Pointer<BoneInfoC> p) => p.ref;
 
   @override
   void nativeWriteInto(BoneInfoC p) {
     p.name.setDartString(name, nameLength);
     p.parent = parent;
   }
-
-  @override
-  String signature() => '$structName(name: $name, parent: $parent)';
 
   @override
   BoneInfoD clone() => .new(

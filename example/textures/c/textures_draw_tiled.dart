@@ -13,7 +13,7 @@ const int COLOR_SIZE = 16;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_WINDOW_RESIZABLE.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "textures_draw_tiled".toC);

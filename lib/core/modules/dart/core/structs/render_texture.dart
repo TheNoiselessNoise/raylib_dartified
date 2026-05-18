@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension RenderTextureCPEx on Pointer<RenderTextureC> {
-  Pointer<RenderTextureC> setC(RenderTextureC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<RenderTextureC> setD(RenderTextureD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RenderTextureC> setC(RenderTextureC o) { ref.setC(o); return this; }
+  Pointer<RenderTextureC> setD(RenderTextureD o) { ref.setD(o); return this; }
   RenderTextureD toD() => ref.toD(this);
 }
 
@@ -37,7 +29,10 @@ extension RenderTextureCEx on RenderTextureC {
   );
 }
 
-class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with RenderTextureBase {
+class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with RenderTextureBase<
+  RenderTextureD,
+  TextureD
+> {
   @override
   int id;
   
@@ -68,7 +63,6 @@ class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with
 
   @override
   RenderTextureD setD(RenderTextureD o) {
-    originalPointer ??= o.originalPointer;
     id = o.id;
     texture = o.texture;
     depth = o.texture;
@@ -76,7 +70,7 @@ class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.RenderTexture$;
+  getReference(Pointer<RenderTextureC> p) => p.ref;
 
   @override
   void nativeWriteInto(RenderTextureC p) {
@@ -84,9 +78,6 @@ class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with
     texture.nativeWriteInto(p.texture);
     depth.nativeWriteInto(p.depth);
   }
-
-  @override
-  String signature() => '$structName(id: $id, texture: $texture, depth: $depth)';
 
   @override
   RenderTextureD clone() => .new(

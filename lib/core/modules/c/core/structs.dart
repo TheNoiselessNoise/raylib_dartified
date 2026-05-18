@@ -1,4 +1,4 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
 // NOTE: va_list is unsolved computer science problem
 // typedef TraceLogCallbackFunction =

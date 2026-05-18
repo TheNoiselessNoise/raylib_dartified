@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension Camera3DCPEx on Pointer<Camera3DC> {
-  Pointer<Camera3DC> setC(Camera3DC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<Camera3DC> setD(Camera3DD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<Camera3DC> setC(Camera3DC o) { ref.setC(o); return this; }
+  Pointer<Camera3DC> setD(Camera3DD o) { ref.setD(o); return this; }
   Camera3DD toD() => ref.toD(this);
 }
 
@@ -43,7 +35,13 @@ extension Camera3DCEx on Camera3DC {
   );
 }
 
-class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase {
+class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase<
+  Camera3DD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   Vector3D position;
   
@@ -85,7 +83,6 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase {
 
   @override
   Camera3DD setD(Camera3DD o) {
-    originalPointer ??= o.originalPointer;
     position.setD(o.position);
     target.setD(o.target);
     up.setD(o.up);
@@ -95,7 +92,7 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Camera3D$;
+  getReference(Pointer<Camera3DC> p) => p.ref;
 
   @override
   void nativeWriteInto(Camera3DC p) {
@@ -105,9 +102,6 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase {
     p.fovy = fovy;
     p.projection = projection.value;
   }
-
-  @override
-  String signature() => '$structName(position: $position, target: $target, up: $up, fovy: $fovy, projection: ${projection.name})';
 
   @override
   Camera3DD clone() => .new(

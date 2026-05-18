@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension GlyphInfoCPEx on Pointer<GlyphInfoC> {
-  Pointer<GlyphInfoC> setC(GlyphInfoC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<GlyphInfoC> setD(GlyphInfoD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<GlyphInfoC> setC(GlyphInfoC o) { ref.setC(o); return this; }
+  Pointer<GlyphInfoC> setD(GlyphInfoD o) { ref.setD(o); return this; }
   GlyphInfoD toD() => ref.toD(this);
 }
 
@@ -43,7 +35,10 @@ extension GlyphInfoCEx on GlyphInfoC {
   );
 }
 
-class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase {
+class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase<
+  GlyphInfoD,
+  ImageD
+> {
   @override
   int value;
   
@@ -83,7 +78,6 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase {
 
   @override
   GlyphInfoD setD(GlyphInfoD o) {
-    originalPointer ??= o.originalPointer;
     value = o.value;
     offsetX = o.offsetX;
     offsetY = o.offsetY;
@@ -93,7 +87,7 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.GlyphInfo$;
+  getReference(Pointer<GlyphInfoC> p) => p.ref;
 
   @override
   void nativeWriteInto(GlyphInfoC p) {
@@ -103,9 +97,6 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase {
     p.advanceX = advanceX;
     image.nativeWriteInto(p.image);
   }
-
-  @override
-  String signature() => '$structName(value: $value, offsetX: $offsetX, offsetY: $offsetY, advanceX: $advanceX, image: $image)';
 
   @override
   GlyphInfoD clone() => .new(

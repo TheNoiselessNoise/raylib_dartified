@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_texture_waves".toC);
   rl.Core.SetWindowMonitor(0);
@@ -42,31 +42,31 @@ void main()
 
   final screenSize = [ rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight() ];
   rl.Core.SetShaderValue(shader, sizeLoc,
-    rl.Temp.Float$.Array(screenSize).cast(),
+    rl.Temp.Float32$.Array(screenSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
   rl.Core.SetShaderValue(shader, freqXLoc,
-    rl.Temp.Float$.Value(freqX).cast(),
+    rl.Temp.Float32$.Value(freqX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   rl.Core.SetShaderValue(shader, freqYLoc,
-    rl.Temp.Float$.Value(freqY).cast(),
+    rl.Temp.Float32$.Value(freqY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   rl.Core.SetShaderValue(shader, ampXLoc,
-    rl.Temp.Float$.Value(ampX).cast(),
+    rl.Temp.Float32$.Value(ampX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   rl.Core.SetShaderValue(shader, ampYLoc,
-    rl.Temp.Float$.Value(ampY).cast(),
+    rl.Temp.Float32$.Value(ampY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   rl.Core.SetShaderValue(shader, speedXLoc,
-    rl.Temp.Float$.Value(speedX).cast(),
+    rl.Temp.Float32$.Value(speedX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   rl.Core.SetShaderValue(shader, speedYLoc,
-    rl.Temp.Float$.Value(speedY).cast(),
+    rl.Temp.Float32$.Value(speedY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
 
@@ -77,7 +77,7 @@ void main()
     seconds += rl.Core.GetFrameTime();
 
     rl.Core.SetShaderValue(shader, secondsLoc,
-      rl.Temp.Float$.Value(seconds).cast(),
+      rl.Temp.Float32$.Value(seconds).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

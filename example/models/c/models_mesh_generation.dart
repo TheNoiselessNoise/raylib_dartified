@@ -9,7 +9,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "models_mesh_generation".toC);
   rl.Core.SetWindowMonitor(0);
@@ -121,9 +121,9 @@ MeshC GenMeshCustom(Raylib rl) {
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = mesh.ref.triangleCount*3;
 
-  mesh.ref.vertices = rl.Temp.Float$.Raw(mesh.ref.vertexCount*3);
-  mesh.ref.texcoords = rl.Temp.Float$.Raw(mesh.ref.vertexCount*2);
-  mesh.ref.normals = rl.Temp.Float$.Raw(mesh.ref.vertexCount*3);
+  mesh.ref.vertices = rl.Temp.Float32$.Raw(mesh.ref.vertexCount*3);
+  mesh.ref.texcoords = rl.Temp.Float32$.Raw(mesh.ref.vertexCount*2);
+  mesh.ref.normals = rl.Temp.Float32$.Raw(mesh.ref.vertexCount*3);
 
   // Vertex at (0, 0, 0)
   mesh.ref.vertices[0] = 0;

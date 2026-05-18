@@ -12,7 +12,7 @@ const int SHADOWMAP_RESOLUTION = 1024;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_shadowmap".toC);
@@ -53,7 +53,7 @@ void main()
 
   rl.Core.SetShaderValue(shadowShader,
     rl.Core.GetShaderLocation(shadowShader, "ambient".toC),
-    rl.Temp.Float$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+    rl.Temp.Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
   
@@ -147,11 +147,12 @@ void main()
         rl.Core.EndMode3D();
       rl.Core.EndTextureMode();
       
-      final lightViewProj = lightView.mul(lightProj);
+      final lightViewProj = rl.Temp.Matrix$.At('lightViewProj');
+      lightViewProj.setD(lightView.toD().mul(lightProj.toD()));
 
       rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      rl.Core.SetShaderValueMatrix(shadowShader, lightVPLoc, lightViewProj);
+      rl.Core.SetShaderValueMatrix(shadowShader, lightVPLoc, lightViewProj.ref);
 
       rl.Rlgl.rlEnableShader(shadowShader.id);
 

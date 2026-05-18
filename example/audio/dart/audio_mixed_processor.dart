@@ -13,7 +13,7 @@ double exponent = 1;
 final List<double> averageVolume = .filled(400, 0.0);
 
 void main() async {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_mixed_processor");
   rl.CoreD.SetWindowMonitor(0);

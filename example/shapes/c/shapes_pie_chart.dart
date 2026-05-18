@@ -11,18 +11,18 @@ const int MAX_PIE_SLICES = 7;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_pie_chart".toC);
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  final donutInnerRadius = rl.Temp.Float$.Value(25, 'donutInnerRadius');
+  final donutInnerRadius = rl.Temp.Float32$.Value(25, 'donutInnerRadius');
   final sliceCount = rl.Temp.Int$.Value(MAX_PIE_SLICES, 'sliceCount');
 
   final sliceValues = [ 300.0, 100.0, 450.0, 350.0, 600.0, 380.0, 750.0 ];
   assert(sliceValues.length == MAX_PIE_SLICES);
-  final values = rl.Temp.Float$.Array(sliceValues, key: 'values');
+  final values = rl.Temp.Float32$.Array(sliceValues, key: 'values');
 
   final labels = rl.Temp.String$.Fill(
     key: 'labels',

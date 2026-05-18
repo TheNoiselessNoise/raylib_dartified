@@ -27,7 +27,7 @@ enum SplineType {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_splines_drawing".toC);
@@ -56,7 +56,7 @@ void main()
     end: rl.Temp.Vector2$.At('control_end_$i').set(points[i + 1].x - 50, points[i + 1].y),
   ));
 
-  final splineThickness = rl.Temp.Float$.Value(8.0, 'splineThickness');
+  final splineThickness = rl.Temp.Float32$.Value(8.0, 'splineThickness');
   SplineType splineTypeActive = .SPLINE_LINEAR;
   final splineType = rl.Temp.Int$.Value(splineTypeActive.index, 'splineType');
   bool splineTypeEditMode = false; 

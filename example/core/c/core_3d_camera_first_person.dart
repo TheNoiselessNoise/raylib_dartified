@@ -9,7 +9,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final movement = rl.Temp.Vector3$.At('movement');
   final zoom = rl.Temp.Vector3$.At('zoom');
@@ -152,9 +152,9 @@ void main() {
         camera.ref.projection == CameraProjection.CAMERA_ORTHOGRAPHIC.value ? "ORTHOGRAPHIC" : "CUSTOM";
       rl.Core.DrawText("- Projection: $cameraProjectionName".toC, 610, 45, 10, rl.Color.BLACK);
       
-      rl.Core.DrawText("- Position: ${camera.ref.position.format(3)}".toC, 610, 60, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- Target: ${camera.ref.target.format(3)}".toC, 610, 75, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- Up: ${camera.ref.up.format(3)}".toC, 610, 90, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Position: ${camera.ref.position.toD().format(3)}".toC, 610, 60, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Target: ${camera.ref.target.toD().format(3)}".toC, 610, 75, 10, rl.Color.BLACK);
+      rl.Core.DrawText("- Up: ${camera.ref.up.toD().format(3)}".toC, 610, 90, 10, rl.Color.BLACK);
 
     rl.Core.EndDrawing();
   }

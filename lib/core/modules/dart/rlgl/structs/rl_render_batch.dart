@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension RlRenderBatchCPEx on Pointer<RlRenderBatchC> {
-  Pointer<RlRenderBatchC> setC(RlRenderBatchC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<RlRenderBatchC> setD(RlRenderBatchD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RlRenderBatchC> setC(RlRenderBatchC o) { ref.setC(o); return this; }
+  Pointer<RlRenderBatchC> setD(RlRenderBatchD o) { ref.setD(o); return this; }
   RlRenderBatchD toD() => ref.toD(this);
 }
 
@@ -62,7 +54,11 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   );
 }
 
-class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRenderBatchBase {
+class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRenderBatchBase<
+  RlRenderBatchD,
+  RlVertexBufferD,
+  RlDrawCallD
+> {
   @override
   int bufferCount;
   
@@ -116,7 +112,6 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
 
   @override
   RlRenderBatchD setD(RlRenderBatchD o) {
-    originalPointer ??= o.originalPointer;
     bufferCount = o.bufferCount;
     currentBuffer = o.currentBuffer;
     vertexBuffers = o.vertexBuffers.map((e) => e.clone()).toList();
@@ -127,7 +122,7 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.RlRenderBatch$;
+  getReference(Pointer<RlRenderBatchC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
@@ -148,9 +143,6 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
       draws[i].nativeWriteInto((p.draws + i).ref);
     }
   }
-
-  @override
-  String signature() => '$structName(bufferCount: $bufferCount, currentBuffer: $currentBuffer, drawCounter: $drawCounter, currentDepth: $currentDepth)';
 
   @override
   RlRenderBatchD clone() => .new(

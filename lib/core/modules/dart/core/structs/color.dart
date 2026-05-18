@@ -1,32 +1,10 @@
-part of '../../../../raylib.dart';
-
-extension ColorCLike on ColorC {
-  String format() => '{ R:$r G:$g B:$b A:$a }';
-}
-
-extension ColorDLike on ColorD {
-  String format() => '{ R:$r G:$g B:$b A:$a }';
-}
+part of '../../../../raylib_dartified.dart';
 
 extension ColorCPEx on Pointer<ColorC> {
-  Pointer<ColorC> setC(ColorC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<ColorC> setD(ColorD o) {
-    ref.setD(o);
-    return this;
-  }
-  
-  Pointer<ColorC> set(num r, num g, num b, num a) {
-    ref.set(r, g, b, a);
-    return this;
-  }
-
+  Pointer<ColorC> setC(ColorC o) { ref.setC(o); return this; }
+  Pointer<ColorC> setD(ColorD o) { ref.setD(o); return this; }
+  Pointer<ColorC> set(num r, num g, num b, num a) { ref.set(r, g, b, a); return this; }
   ColorD toD() => ref.toD(this);
-
-  String format() => ref.format();
 }
 
 extension ColorCEx on ColorC {
@@ -51,7 +29,7 @@ extension ColorCEx on ColorC {
   );
 }
 
-class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase {
+class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase<ColorD> {
   @override
   int r, g, b, a;
 
@@ -212,20 +190,11 @@ class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase {
   
   @override
   ColorD setD(ColorD o) {
-    originalPointer ??= o.originalPointer;
     return set(o.r, o.g, o.b, o.a);
   }
   
-  ColorD set(num r, num g, num b, num a) {
-    this.r = r.toInt();
-    this.g = g.toInt();
-    this.b = b.toInt();
-    this.a = a.toInt();
-    return this;
-  }
-
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Color$;
+  getReference(Pointer<ColorC> p) => p.ref;
 
   @override
   void nativeWriteInto(ColorC p) {
@@ -234,11 +203,6 @@ class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase {
     p.b = b;
     p.a = a;
   }
-
-  List<int> toArray() => [r, g, b, a];
-
-  @override
-  String signature() => '$structName(r: $r, g: $g, b: $b, a: $a)';
 
   @override
   ColorD clone() => .new(

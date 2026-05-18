@@ -1,6 +1,6 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibCamera extends RaylibModule {
+class RaylibCamera extends RaylibModule<Raylib> {
   RaylibCamera(super.rl);
 
   Vector3C GetCameraForward(Pointer<Camera3DC> camera) {

@@ -8,7 +8,7 @@ const int screenHeight = 600;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final Vector2D mousePosition = .zero();
   final Vector2D windowPosition = .vec2(500, 200);

@@ -11,7 +11,7 @@ const double G = 9.81;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.SetConfigFlags([.FLAG_WINDOW_HIGHDPI]);
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_double_pendulum");

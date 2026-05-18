@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension RlDrawCallCPEx on Pointer<RlDrawCallC> {
-  Pointer<RlDrawCallC> setC(RlDrawCallC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<RlDrawCallC> setD(RlDrawCallD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RlDrawCallC> setC(RlDrawCallC o) { ref.setC(o); return this; }
+  Pointer<RlDrawCallC> setD(RlDrawCallD o) { ref.setD(o); return this; }
   RlDrawCallD toD() => ref.toD(this);
 }
 
@@ -40,7 +32,7 @@ extension RlDrawCallCEx on RlDrawCallC {
   );
 }
 
-class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase {
+class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<RlDrawCallD> {
   @override
   int mode;
   
@@ -74,7 +66,6 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase 
 
   @override
   RlDrawCallD setD(RlDrawCallD o) {
-    originalPointer ??= o.originalPointer;
     mode = o.mode;
     vertexCount = o.vertexCount;
     vertexAlignment = o.vertexAlignment;
@@ -83,7 +74,7 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase 
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.RlDrawCall$;
+  getReference(Pointer<RlDrawCallC> p) => p.ref;
 
   @override
   void nativeWriteInto(RlDrawCallC p) {
@@ -92,9 +83,6 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase 
     p.vertexAlignment = vertexAlignment;
     p.textureId = textureId;
   }
-
-  @override
-  String signature() => '$structName(mode: $mode, vertexCount: $vertexCount, textureId: $textureId)';
 
   @override
   RlDrawCallD clone() => .new(

@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension BoundingBoxCPEx on Pointer<BoundingBoxC> {
-  Pointer<BoundingBoxC> setC(BoundingBoxC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<BoundingBoxC> setD(BoundingBoxD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<BoundingBoxC> setC(BoundingBoxC o) { ref.setC(o); return this; }
+  Pointer<BoundingBoxC> setD(BoundingBoxD o) { ref.setD(o); return this; }
   BoundingBoxD toD() => ref.toD(this);
 }
 
@@ -34,7 +26,13 @@ extension BoundingBoxCEx on BoundingBoxC {
   );
 }
 
-class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with BoundingBoxBase {
+class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with BoundingBoxBase<
+  BoundingBoxD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   Vector3D min;
   
@@ -65,14 +63,13 @@ class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with Bound
 
   @override
   BoundingBoxD setD(BoundingBoxD o) {
-    originalPointer ??= o.originalPointer;
     min.setD(o.min);
     max.setD(o.max);
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.BoundingBox$;
+  getReference(Pointer<BoundingBoxC> p) => p.ref;
   
   @override
   void nativeWriteInto(BoundingBoxC p) {
@@ -80,9 +77,6 @@ class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with Bound
     max.nativeWriteInto(p.max);
   }
 
-  @override
-  String signature() => '$structName(min: $min, max: $max)';
-  
   @override
   BoundingBoxD clone() => .new(
     originalPointer: originalPointer,

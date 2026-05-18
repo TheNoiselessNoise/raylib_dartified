@@ -1,29 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension NPatchInfoCPEx on Pointer<NPatchInfoC> {
-  Pointer<NPatchInfoC> setC(NPatchInfoC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<NPatchInfoC> setD(NPatchInfoD o) {
-    ref.setD(o);
-    return this;
-  }
-
-  Pointer<NPatchInfoC> set(
-    num x, num y, num width, num height,
-    num left, num top, num right, num bottom,
-    int layout,
-  ) {
-    ref.set(
-      x, y, width, height,
-      left, top, right, bottom,
-      layout,
-    );
-    return this;
-  }
-
+  Pointer<NPatchInfoC> setC(NPatchInfoC o) { ref.setC(o); return this; }
+  Pointer<NPatchInfoC> setD(NPatchInfoD o) { ref.setD(o); return this; }
   NPatchInfoD toD() => ref.toD(this);
 }
 
@@ -48,20 +27,6 @@ extension NPatchInfoCEx on NPatchInfoC {
     return this;
   }
 
-  NPatchInfoC set(
-    num x, num y, num width, num height,
-    num left, num top, num right, num bottom,
-    int layout,
-  ) {
-    source.set(x, y, width, height);
-    this.left = left.toInt();
-    this.top = top.toInt();
-    this.right = right.toInt();
-    this.bottom = bottom.toInt();
-    this.layout = layout;
-    return this;
-  }
-
   NPatchInfoD toD([Pointer<NPatchInfoC>? ptr]) => .new(
     originalPointer: ptr,
     source: source.toD(),
@@ -73,7 +38,10 @@ extension NPatchInfoCEx on NPatchInfoC {
   );
 }
 
-class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchInfoBase {
+class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchInfoBase<
+  NPatchInfoD,
+  RectangleD
+> {
   @override
   RectangleD source;
   
@@ -118,7 +86,6 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
 
   @override
   NPatchInfoD setD(NPatchInfoD o) {
-    originalPointer ??= o.originalPointer;
     source.setD(o.source);
     left = o.left;
     top = o.top;
@@ -129,7 +96,7 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.NPatchInfo$;
+  getReference(Pointer<NPatchInfoC> p) => p.ref;
 
   @override
   void nativeWriteInto(NPatchInfoC p) {
@@ -140,9 +107,6 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
     p.bottom = bottom;
     p.layout = layout.value;
   }
-
-  @override
-  String signature() => '$structName(source: $source, left: $left, top: $top, right: $right, bottom: $bottom, layout: $layout)';
 
   @override
   NPatchInfoD clone() => .new(

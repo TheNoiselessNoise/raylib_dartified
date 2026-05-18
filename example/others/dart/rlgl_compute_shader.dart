@@ -37,7 +37,7 @@ class GolUpdateSSBO {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "rlgl_compute_shader");
   rl.CoreD.SetWindowMonitor(0);

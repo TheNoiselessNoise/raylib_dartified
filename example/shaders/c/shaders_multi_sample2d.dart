@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_multi_sample2d".toC);
   rl.Core.SetWindowMonitor(0);
@@ -44,7 +44,7 @@ void main()
     else if (dividerValue > 1.0) dividerValue = 1.0;
 
     rl.Core.SetShaderValue(shader, dividerLoc,
-      rl.Temp.Float$.Value(dividerValue).cast(),
+      rl.Temp.Float32$.Value(dividerValue).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

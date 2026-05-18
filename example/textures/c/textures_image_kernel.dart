@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_kernel".toC);
   rl.Core.SetWindowMonitor(0);
@@ -19,19 +19,19 @@ void main()
   final image = rl.Temp.Image$.At('image');
   image.ref = rl.Core.LoadImage("../resources/cat.png".toC);
 
-  final gaussiankernel = rl.Temp.Float$.Array(key: 'gaussiankernel', [
+  final gaussiankernel = rl.Temp.Float32$.Array(key: 'gaussiankernel', [
     1.0, 2.0, 1.0,
     2.0, 4.0, 2.0,
     1.0, 2.0, 1.0
   ]);
 
-  final sobelkernel = rl.Temp.Float$.Array(key: 'sobelkernel', [
+  final sobelkernel = rl.Temp.Float32$.Array(key: 'sobelkernel', [
     1.0, 0.0, -1.0,
     2.0, 0.0, -2.0,
     1.0, 0.0, -1.0
   ]);
 
-  final sharpenkernel = rl.Temp.Float$.Array(key: 'sharpenkernel', [
+  final sharpenkernel = rl.Temp.Float32$.Array(key: 'sharpenkernel', [
     0.0, -1.0, 0.0,
     -1.0, 5.0, -1.0,
     0.0, -1.0, 0.0

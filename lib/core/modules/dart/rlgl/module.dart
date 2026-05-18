@@ -1,9 +1,16 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements RaylibRlglModuleBase<
+class RaylibRlglD extends RaylibRlglModuleBase<
+  Raylib,
+  
   // types
   MatrixD,
-  RlRenderBatchD
+  QuaternionD,
+  RlDrawCallD,
+  RlRenderBatchD,
+  RlVertexBufferD,
+  Vector3D,
+  Vector4D
   
 > {
   
@@ -13,25 +20,25 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlMatrixMode(
     RlMatrixMode mode,
   ) => run(
-    () => 'rlMatrixMode(${mode.name})',
+    () => RaylibDebugLabels.rlMatrixMode(mode),
     () => rl.Rlgl.rlMatrixMode(mode.value),
   );
 
   @override
   void rlPushMatrix() => run(
-    () => 'rlPushMatrix()',
+    () => RaylibDebugLabels.rlPushMatrix(),
     () => rl.Rlgl.rlPushMatrix(),
   );
 
   @override
   void rlPopMatrix() => run(
-    () => 'rlPopMatrix()',
+    () => RaylibDebugLabels.rlPopMatrix(),
     () => rl.Rlgl.rlPopMatrix(),
   );
 
   @override
   void rlLoadIdentity() => run(
-    () => 'rlLoadIdentity()',
+    () => RaylibDebugLabels.rlLoadIdentity(),
     () => rl.Rlgl.rlLoadIdentity(),
   );
 
@@ -41,7 +48,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlTranslatef($x, $y, $z)',
+    () => RaylibDebugLabels.rlTranslatef(x, y, z),
     () => rl.Rlgl.rlTranslatef(
       x.toDouble(),
       y.toDouble(),
@@ -56,7 +63,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlRotatef($angle, $x, $y, $z)',
+    () => RaylibDebugLabels.rlRotatef(angle, x, y, z),
     () => rl.Rlgl.rlRotatef(
       angle.toDouble(),
       x.toDouble(),
@@ -71,7 +78,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlScalef($x, $y, $z)',
+    () => RaylibDebugLabels.rlScalef(x, y, z),
     () => rl.Rlgl.rlScalef(
       x.toDouble(),
       y.toDouble(),
@@ -83,9 +90,9 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlMultMatrixf(
     List<double> matf,
   ) => run(
-    () => 'rlMultMatrixf($matf)',
+    () => RaylibDebugLabels.rlMultMatrixf(matf),
     () => rl.Rlgl.rlMultMatrixf(
-      rl.Temp.Float$.Array(matf),
+      rl.Temp.Float32$.Array(matf),
     ),
   );
 
@@ -98,7 +105,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num znear,
     num zfar,
   ) => run(
-    () => '_rlFrustum($left, $right, $bottom, $top, $znear, $zfar)',
+    () => RaylibDebugLabels.rlFrustum(left, right, bottom, top, znear, zfar),
     () => rl.Rlgl.rlFrustum(
       left.toDouble(),
       right.toDouble(),
@@ -118,7 +125,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num znear,
     num zfar,
   ) => run(
-    () => '_rlOrtho($left, $right, $bottom, $top, $znear, $zfar)',
+    () => RaylibDebugLabels.rlOrtho(left, right, bottom, top, znear, zfar),
     () => rl.Rlgl.rlOrtho(
       left.toDouble(),
       right.toDouble(),
@@ -136,7 +143,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num width,
     num height,
   ) => run(
-    () => 'rlViewport($x, $y, $width, $height)',
+    () => RaylibDebugLabels.rlViewport(x, y, width, height),
     () => rl.Rlgl.rlViewport(
       x.toInt(),
       y.toInt(),
@@ -150,7 +157,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num nearPlane,
     num farPlane,
   ) => run(
-    () => 'rlSetClipPlanes($nearPlane, $farPlane)',
+    () => RaylibDebugLabels.rlSetClipPlanes(nearPlane, farPlane),
     () => rl.Rlgl.rlSetClipPlanes(
       nearPlane.toDouble(),
       farPlane.toDouble(),
@@ -159,13 +166,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   double rlGetCullDistanceNear() => run(
-    () => 'rlGetCullDistanceNear()',
+    () => RaylibDebugLabels.rlGetCullDistanceNear(),
     () => rl.Rlgl.rlGetCullDistanceNear(),
   );
 
   @override
   double rlGetCullDistanceFar() => run(
-    () => 'rlGetCullDistanceFar()',
+    () => RaylibDebugLabels.rlGetCullDistanceFar(),
     () => rl.Rlgl.rlGetCullDistanceFar(),
   );
 
@@ -173,13 +180,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlBegin(
     RlDrawMode mode,
   ) => run(
-    () => 'rlBegin(${mode.name})',
+    () => RaylibDebugLabels.rlBegin(mode),
     () => rl.Rlgl.rlBegin(mode.value),
   );
 
   @override
   void rlEnd() => run(
-    () => 'rlEnd()',
+    () => RaylibDebugLabels.rlEnd(),
     () => rl.Rlgl.rlEnd(),
   );
 
@@ -188,7 +195,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num x,
     num y,
   ) => run(
-    () => 'rlVertex2i($x, $y)',
+    () => RaylibDebugLabels.rlVertex2i(x, y),
     () => rl.Rlgl.rlVertex2i(
       x.toInt(),
       y.toInt(),
@@ -200,7 +207,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num x,
     num y,
   ) => run(
-    () => 'rlVertex2f($x, $y)',
+    () => RaylibDebugLabels.rlVertex2f(x, y),
     () => rl.Rlgl.rlVertex2f(
       x.toDouble(),
       y.toDouble(),
@@ -213,7 +220,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlVertex3f($x, $y, $z)',
+    () => RaylibDebugLabels.rlVertex3f(x, y, z),
     () => rl.Rlgl.rlVertex3f(
       x.toDouble(),
       y.toDouble(),
@@ -226,7 +233,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num x,
     num y,
   ) => run(
-    () => 'rlTexCoord2f($x, $y)',
+    () => RaylibDebugLabels.rlTexCoord2f(x, y),
     () => rl.Rlgl.rlTexCoord2f(
       x.toDouble(),
       y.toDouble(),
@@ -239,7 +246,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlNormal3f($x, $y, $z)',
+    () => RaylibDebugLabels.rlNormal3f(x, y, z),
     () => rl.Rlgl.rlNormal3f(
       x.toDouble(),
       y.toDouble(),
@@ -254,7 +261,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num b,
     num a,
   ) => run(
-    () => 'rlColor4ub($r, $g, $b, $a)',
+    () => RaylibDebugLabels.rlColor4ub(r, g, b, a),
     () => rl.Rlgl.rlColor4ub(
       r.toInt(),
       g.toInt(),
@@ -269,7 +276,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num y,
     num z,
   ) => run(
-    () => 'rlColor3f($x, $y, $z)',
+    () => RaylibDebugLabels.rlColor3f(x, y, z),
     () => rl.Rlgl.rlColor3f(
       x.toDouble(),
       y.toDouble(),
@@ -284,7 +291,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num z,
     num w,
   ) => run(
-    () => 'rlColor4f($x, $y, $z, $w)',
+    () => RaylibDebugLabels.rlColor4f(x, y, z, w),
     () => rl.Rlgl.rlColor4f(
       x.toDouble(),
       y.toDouble(),
@@ -297,13 +304,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   bool rlEnableVertexArray(
     num vaoId,
   ) => run(
-    () => 'rlEnableVertexArray($vaoId)',
+    () => RaylibDebugLabels.rlEnableVertexArray(vaoId),
     () => rl.Rlgl.rlEnableVertexArray(vaoId.toInt()),
   );
 
   @override
   void rlDisableVertexArray() => run(
-    () => 'rlDisableVertexArray()',
+    () => RaylibDebugLabels.rlDisableVertexArray(),
     () => rl.Rlgl.rlDisableVertexArray(),
   );
 
@@ -311,13 +318,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableVertexBuffer(
     num id,
   ) => run(
-    () => 'rlEnableVertexBuffer($id)',
+    () => RaylibDebugLabels.rlEnableVertexBuffer(id),
     () => rl.Rlgl.rlEnableVertexBuffer(id.toInt()),
   );
 
   @override
   void rlDisableVertexBuffer() => run(
-    () => 'rlDisableVertexBuffer()',
+    () => RaylibDebugLabels.rlDisableVertexBuffer(),
     () => rl.Rlgl.rlDisableVertexBuffer(),
   );
 
@@ -325,13 +332,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableVertexBufferElement(
     num id,
   ) => run(
-    () => 'rlEnableVertexBufferElement($id)',
+    () => RaylibDebugLabels.rlEnableVertexBufferElement(id),
     () => rl.Rlgl.rlEnableVertexBufferElement(id.toInt()),
   );
 
   @override
   void rlDisableVertexBufferElement() => run(
-    () => 'rlDisableVertexBufferElement()',
+    () => RaylibDebugLabels.rlDisableVertexBufferElement(),
     () => rl.Rlgl.rlDisableVertexBufferElement(),
   );
 
@@ -339,7 +346,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableVertexAttribute(
     num index,
   ) => run(
-    () => 'rlEnableVertexAttribute($index)',
+    () => RaylibDebugLabels.rlEnableVertexAttribute(index),
     () => rl.Rlgl.rlEnableVertexAttribute(index.toInt()),
   );
 
@@ -347,7 +354,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlDisableVertexAttribute(
     num index,
   ) => run(
-    () => 'rlDisableVertexAttribute($index)',
+    () => RaylibDebugLabels.rlDisableVertexAttribute(index),
     () => rl.Rlgl.rlDisableVertexAttribute(index.toInt()),
   );
 
@@ -355,7 +362,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlActiveTextureSlot(
     num slot,
   ) => run(
-    () => 'rlActiveTextureSlot($slot)',
+    () => RaylibDebugLabels.rlActiveTextureSlot(slot),
     () => rl.Rlgl.rlActiveTextureSlot(slot.toInt()),
   );
 
@@ -363,13 +370,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableTexture(
     num id,
   ) => run(
-    () => 'rlEnableTexture($id)',
+    () => RaylibDebugLabels.rlEnableTexture(id),
     () => rl.Rlgl.rlEnableTexture(id.toInt()),
   );
 
   @override
   void rlDisableTexture() => run(
-    () => 'rlDisableTexture()',
+    () => RaylibDebugLabels.rlDisableTexture(),
     () => rl.Rlgl.rlDisableTexture(),
   );
 
@@ -377,13 +384,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableTextureCubemap(
     num id,
   ) => run(
-    () => 'rlEnableTextureCubemap($id)',
+    () => RaylibDebugLabels.rlEnableTextureCubemap(id),
     () => rl.Rlgl.rlEnableTextureCubemap(id.toInt()),
   );
 
   @override
   void rlDisableTextureCubemap() => run(
-    () => 'rlDisableTextureCubemap()',
+    () => RaylibDebugLabels.rlDisableTextureCubemap(),
     () => rl.Rlgl.rlDisableTextureCubemap(),
   );
 
@@ -393,7 +400,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num param,
     num value,
   ) => run(
-    () => 'rlTextureParameters($id, $param, $value)',
+    () => RaylibDebugLabels.rlTextureParameters(id, param, value),
     () => rl.Rlgl.rlTextureParameters(
       id.toInt(),
       param.toInt(),
@@ -407,7 +414,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num param,
     num value,
   ) => run(
-    () => 'rlCubemapParameters($id, $param, $value)',
+    () => RaylibDebugLabels.rlCubemapParameters(id, param, value),
     () => rl.Rlgl.rlCubemapParameters(
       id.toInt(),
       param.toInt(),
@@ -419,13 +426,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableShader(
     num id,
   ) => run(
-    () => 'rlEnableShader($id)',
+    () => RaylibDebugLabels.rlEnableShader(id),
     () => rl.Rlgl.rlEnableShader(id.toInt()),
   );
 
   @override
   void rlDisableShader() => run(
-    () => 'rlDisableShader()',
+    () => RaylibDebugLabels.rlDisableShader(),
     () => rl.Rlgl.rlDisableShader(),
   );
 
@@ -433,19 +440,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlEnableFramebuffer(
     num id,
   ) => run(
-    () => 'rlEnableFramebuffer($id)',
+    () => RaylibDebugLabels.rlEnableFramebuffer(id),
     () => rl.Rlgl.rlEnableFramebuffer(id.toInt()),
   );
 
   @override
   void rlDisableFramebuffer() => run(
-    () => 'rlDisableFramebuffer()',
+    () => RaylibDebugLabels.rlDisableFramebuffer(),
     () => rl.Rlgl.rlDisableFramebuffer(),
   );
 
   @override
   int rlGetActiveFramebuffer() => run(
-    () => 'rlGetActiveFramebuffer()',
+    () => RaylibDebugLabels.rlGetActiveFramebuffer(),
     () => rl.Rlgl.rlGetActiveFramebuffer(),
   );
 
@@ -453,7 +460,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlActiveDrawBuffers(
     num count,
   ) => run(
-    () => 'rlActiveDrawBuffers($count)',
+    () => RaylibDebugLabels.rlActiveDrawBuffers(count),
     () => rl.Rlgl.rlActiveDrawBuffers(count.toInt()),
   );
 
@@ -469,7 +476,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num dstHeight,
     num bufferMask,
   ) => run(
-    () => 'rlBlitFramebuffer($srcX, $srcY, $srcWidth, $srcHeight, $dstX, $dstY, $dstWidth, $dstHeight, $bufferMask)',
+    () => RaylibDebugLabels.rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask),
     () => rl.Rlgl.rlBlitFramebuffer(
       srcX.toInt(),
       srcY.toInt(),
@@ -488,7 +495,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num target,
     num framebuffer,
   ) => run(
-    () => 'rlBindFramebuffer($target, $framebuffer)',
+    () => RaylibDebugLabels.rlBindFramebuffer(target, framebuffer),
     () => rl.Rlgl.rlBindFramebuffer(
       target.toInt(),
       framebuffer.toInt(),
@@ -497,49 +504,49 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlEnableColorBlend() => run(
-    () => 'rlEnableColorBlend()',
+    () => RaylibDebugLabels.rlEnableColorBlend(),
     () => rl.Rlgl.rlEnableColorBlend(),
   );
 
   @override
   void rlDisableColorBlend() => run(
-    () => 'rlDisableColorBlend()',
+    () => RaylibDebugLabels.rlDisableColorBlend(),
     () => rl.Rlgl.rlDisableColorBlend(),
   );
 
   @override
   void rlEnableDepthTest() => run(
-    () => 'rlEnableDepthTest()',
+    () => RaylibDebugLabels.rlEnableDepthTest(),
     () => rl.Rlgl.rlEnableDepthTest(),
   );
 
   @override
   void rlDisableDepthTest() => run(
-    () => 'rlDisableDepthTest()',
+    () => RaylibDebugLabels.rlDisableDepthTest(),
     () => rl.Rlgl.rlDisableDepthTest(),
   );
 
   @override
   void rlEnableDepthMask() => run(
-    () => 'rlEnableDepthMask()',
+    () => RaylibDebugLabels.rlEnableDepthMask(),
     () => rl.Rlgl.rlEnableDepthMask(),
   );
 
   @override
   void rlDisableDepthMask() => run(
-    () => 'rlDisableDepthMask()',
+    () => RaylibDebugLabels.rlDisableDepthMask(),
     () => rl.Rlgl.rlDisableDepthMask(),
   );
 
   @override
   void rlEnableBackfaceCulling() => run(
-    () => 'rlEnableBackfaceCulling()',
+    () => RaylibDebugLabels.rlEnableBackfaceCulling(),
     () => rl.Rlgl.rlEnableBackfaceCulling(),
   );
 
   @override
   void rlDisableBackfaceCulling() => run(
-    () => 'rlDisableBackfaceCulling()',
+    () => RaylibDebugLabels.rlDisableBackfaceCulling(),
     () => rl.Rlgl.rlDisableBackfaceCulling(),
   );
 
@@ -550,7 +557,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     bool b,
     bool a,
   ) => run(
-    () => 'rlColorMask($r, $g, $b, $a)',
+    () => RaylibDebugLabels.rlColorMask(r, g, b, a),
     () => rl.Rlgl.rlColorMask(r, g, b, a),
   );
 
@@ -558,19 +565,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetCullFace(
     RlCullMode mode,
   ) => run(
-    () => 'rlSetCullFace(${mode.name})',
+    () => RaylibDebugLabels.rlSetCullFace(mode),
     () => rl.Rlgl.rlSetCullFace(mode.value),
   );
 
   @override
   void rlEnableScissorTest() => run(
-    () => 'rlEnableScissorTest()',
+    () => RaylibDebugLabels.rlEnableScissorTest(),
     () => rl.Rlgl.rlEnableScissorTest(),
   );
 
   @override
   void rlDisableScissorTest() => run(
-    () => 'rlDisableScissorTest()',
+    () => RaylibDebugLabels.rlDisableScissorTest(),
     () => rl.Rlgl.rlDisableScissorTest(),
   );
 
@@ -581,7 +588,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num width,
     num height,
   ) => run(
-    () => 'rlScissor($x, $y, $width, $height)',
+    () => RaylibDebugLabels.rlScissor(x, y, width, height),
     () => rl.Rlgl.rlScissor(
       x.toInt(),
       y.toInt(),
@@ -592,19 +599,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlEnableWireMode() => run(
-    () => 'rlEnableWireMode()',
+    () => RaylibDebugLabels.rlEnableWireMode(),
     () => rl.Rlgl.rlEnableWireMode(),
   );
 
   @override
   void rlEnablePointMode() => run(
-    () => 'rlEnablePointMode()',
+    () => RaylibDebugLabels.rlEnablePointMode(),
     () => rl.Rlgl.rlEnablePointMode(),
   );
 
   @override
   void rlDisableWireMode() => run(
-    () => 'rlDisableWireMode()',
+    () => RaylibDebugLabels.rlDisableWireMode(),
     () => rl.Rlgl.rlDisableWireMode(),
   );
 
@@ -612,43 +619,43 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetLineWidth(
     num width,
   ) => run(
-    () => 'rlSetLineWidth($width)',
+    () => RaylibDebugLabels.rlSetLineWidth(width),
     () => rl.Rlgl.rlSetLineWidth(width.toDouble()),
   );
 
   @override
   double rlGetLineWidth() => run(
-    () => 'rlGetLineWidth()',
+    () => RaylibDebugLabels.rlGetLineWidth(),
     () => rl.Rlgl.rlGetLineWidth(),
   );
 
   @override
   void rlEnableSmoothLines() => run(
-    () => 'rlEnableSmoothLines()',
+    () => RaylibDebugLabels.rlEnableSmoothLines(),
     () => rl.Rlgl.rlEnableSmoothLines(),
   );
 
   @override
   void rlDisableSmoothLines() => run(
-    () => 'rlDisableSmoothLines()',
+    () => RaylibDebugLabels.rlDisableSmoothLines(),
     () => rl.Rlgl.rlDisableSmoothLines(),
   );
 
   @override
   void rlEnableStereoRender() => run(
-    () => 'rlEnableStereoRender()',
+    () => RaylibDebugLabels.rlEnableStereoRender(),
     () => rl.Rlgl.rlEnableStereoRender(),
   );
 
   @override
   void rlDisableStereoRender() => run(
-    () => 'rlDisableStereoRender()',
+    () => RaylibDebugLabels.rlDisableStereoRender(),
     () => rl.Rlgl.rlDisableStereoRender(),
   );
 
   @override
   bool rlIsStereoRenderEnabled() => run(
-    () => 'rlIsStereoRenderEnabled()',
+    () => RaylibDebugLabels.rlIsStereoRenderEnabled(),
     () => rl.Rlgl.rlIsStereoRenderEnabled(),
   );
 
@@ -659,7 +666,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num b,
     num a,
   ) => run(
-    () => 'rlClearColor($r, $g, $b, $a)',
+    () => RaylibDebugLabels.rlClearColor(r, g, b, a),
     () => rl.Rlgl.rlClearColor(
       r.toInt(),
       g.toInt(),
@@ -670,13 +677,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlClearScreenBuffers() => run(
-    () => 'rlClearScreenBuffers()',
+    () => RaylibDebugLabels.rlClearScreenBuffers(),
     () => rl.Rlgl.rlClearScreenBuffers(),
   );
 
   @override
   void rlCheckErrors() => run(
-    () => 'rlCheckErrors()',
+    () => RaylibDebugLabels.rlCheckErrors(),
     () => rl.Rlgl.rlCheckErrors(),
   );
 
@@ -684,7 +691,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetBlendMode(
     BlendMode mode,
   ) => run(
-    () => 'rlSetBlendMode(${mode.name})',
+    () => RaylibDebugLabels.rlSetBlendMode(mode),
     () => rl.Rlgl.rlSetBlendMode(mode.value),
   );
 
@@ -694,7 +701,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num glDstFactor,
     num glEquation,
   ) => run(
-    () => 'rlSetBlendFactors($glSrcFactor, $glDstFactor, $glEquation)',
+    () => RaylibDebugLabels.rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation),
     () => rl.Rlgl.rlSetBlendFactors(
       glSrcFactor.toInt(),
       glDstFactor.toInt(),
@@ -711,7 +718,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num glEqRGB,
     num glEqAlpha,
   ) => run(
-    () => 'rlSetBlendFactorsSeparate($glSrcRGB, $glDstRGB, $glSrcAlpha, $glDstAlpha, $glEqRGB, $glEqAlpha)',
+    () => RaylibDebugLabels.rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha),
     () => rl.Rlgl.rlSetBlendFactorsSeparate(
       glSrcRGB.toInt(),
       glDstRGB.toInt(),
@@ -727,7 +734,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num width,
     num height,
   ) => run(
-    () => 'rlglInit($width, $height)',
+    () => RaylibDebugLabels.rlglInit(width, height),
     () => rl.Rlgl.rlglInit(
       width.toInt(),
       height.toInt(),
@@ -736,7 +743,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlglClose() => run(
-    () => 'rlglClose()',
+    () => RaylibDebugLabels.rlglClose(),
     () => rl.Rlgl.rlglClose(),
   );
 
@@ -744,7 +751,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   int rlGetVersion() => run(
-    () => 'rlGetVersion()',
+    () => RaylibDebugLabels.rlGetVersion(),
     () => rl.Rlgl.rlGetVersion(),
   );
 
@@ -752,13 +759,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetFramebufferWidth(
     num width,
   ) => run(
-    () => 'rlSetFramebufferWidth($width)',
+    () => RaylibDebugLabels.rlSetFramebufferWidth(width),
     () => rl.Rlgl.rlSetFramebufferWidth(width.toInt()),
   );
 
   @override
   int rlGetFramebufferWidth() => run(
-    () => 'rlGetFramebufferWidth()',
+    () => RaylibDebugLabels.rlGetFramebufferWidth(),
     () => rl.Rlgl.rlGetFramebufferWidth(),
   );
 
@@ -766,31 +773,31 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetFramebufferHeight(
     num height,
   ) => run(
-    () => 'rlSetFramebufferHeight($height)',
+    () => RaylibDebugLabels.rlSetFramebufferHeight(height),
     () => rl.Rlgl.rlSetFramebufferHeight(height.toInt()),
   );
 
   @override
   int rlGetFramebufferHeight() => run(
-    () => 'rlGetFramebufferHeight()',
+    () => RaylibDebugLabels.rlGetFramebufferHeight(),
     () => rl.Rlgl.rlGetFramebufferHeight(),
   );
 
   @override
   int rlGetTextureIdDefault() => run(
-    () => 'rlGetTextureIdDefault()',
+    () => RaylibDebugLabels.rlGetTextureIdDefault(),
     () => rl.Rlgl.rlGetTextureIdDefault(),
   );
 
   @override
   int rlGetShaderIdDefault() => run(
-    () => 'rlGetShaderIdDefault()',
+    () => RaylibDebugLabels.rlGetShaderIdDefault(),
     () => rl.Rlgl.rlGetShaderIdDefault(),
   );
 
   @override
   List<int> rlGetShaderLocsDefault() => run(
-    () => 'rlGetShaderLocsDefault()',
+    () => RaylibDebugLabels.rlGetShaderLocsDefault(),
     () {
       final locs = rl.Rlgl.rlGetShaderLocsDefault();
       return .generate(RL_MAX_SHADER_LOCATIONS, (i) => locs[i]);
@@ -802,10 +809,10 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num numBuffers,
     num bufferElements,
   ) => run(
-    () => 'rlLoadRenderBatch($numBuffers, $bufferElements)',
+    () => RaylibDebugLabels.rlLoadRenderBatch(numBuffers, bufferElements),
     () => rl.Temp.RlRenderBatch$.RefCapture(
-      'rlLoadRenderBatch_${numBuffers}_$bufferElements',
-      rl.Rlgl.rlLoadRenderBatch(
+      RaylibCaptureIds.rlLoadRenderBatch(numBuffers, bufferElements),
+      (_) => rl.Rlgl.rlLoadRenderBatch(
         numBuffers.toInt(),
         bufferElements.toInt(),
       ),
@@ -816,7 +823,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadRenderBatch(
     RlRenderBatchD batch,
   ) => run(
-    () => 'rlUnloadRenderBatch($batch)',
+    () => RaylibDebugLabels.rlUnloadRenderBatch(batch),
     () => rl.Rlgl.rlUnloadRenderBatch(
       rl.Temp.RlRenderBatch$.Ref1(batch).ref,
     ),
@@ -826,7 +833,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlDrawRenderBatch(
     RlRenderBatchD batch,
   ) => run(
-    () => 'rlDrawRenderBatch($batch)',
+    () => RaylibDebugLabels.rlDrawRenderBatch(batch),
     () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlDrawRenderBatch(pb),
     ),
@@ -836,7 +843,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetRenderBatchActive(
     RlRenderBatchD batch,
   ) => run(
-    () => 'rlSetRenderBatchActive($batch)',
+    () => RaylibDebugLabels.rlSetRenderBatchActive(batch),
     () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlSetRenderBatchActive(pb),
     ),
@@ -844,7 +851,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlDrawRenderBatchActive() => run(
-    () => 'rlDrawRenderBatchActive()',
+    () => RaylibDebugLabels.rlDrawRenderBatchActive(),
     () => rl.Rlgl.rlDrawRenderBatchActive(),
   );
 
@@ -852,7 +859,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   bool rlCheckRenderBatchLimit(
     num vCount,
   ) => run(
-    () => 'rlCheckRenderBatchLimit($vCount)',
+    () => RaylibDebugLabels.rlCheckRenderBatchLimit(vCount),
     () => rl.Rlgl.rlCheckRenderBatchLimit(vCount.toInt()),
   );
 
@@ -860,89 +867,77 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetTexture(
     num id,
   ) => run(
-    () => 'rlSetTexture($id)',
+    () => RaylibDebugLabels.rlSetTexture(id),
     () => rl.Rlgl.rlSetTexture(id.toInt()),
   );
 
   @override
   int rlLoadVertexArray() => run(
-    () => 'rlLoadVertexArray()',
+    () => RaylibDebugLabels.rlLoadVertexArray(),
     () => rl.Rlgl.rlLoadVertexArray(),
   );
 
   @override
   int rlLoadVertexBuffer(
-    TypedData buffer,
+    TypedDataList buffer,
     bool dynamic,
   ) => run(
-    () => 'rlLoadVertexBuffer(${buffer.lengthInBytes}, $dynamic)',
-    () {
-      final bytes = buffer.buffer.asUint8List(buffer.offsetInBytes, buffer.lengthInBytes);
-      return rl.Rlgl.rlLoadVertexBuffer(
-        rl.Temp.Uint8$.Array(bytes).cast(),
-        bytes.length,
-        dynamic,
-      );
-    },
+    () => RaylibDebugLabels.rlLoadVertexBuffer(buffer, dynamic),
+    () => rl.Rlgl.rlLoadVertexBuffer(
+      rl.Temp.TypedDataList$.Array(buffer).cast(),
+      buffer.length,
+      dynamic,
+    ),
   );
 
   @override
   int rlLoadVertexBufferElement(
-    TypedData buffer,
+    TypedDataList buffer,
     bool dynamic,
   ) => run(
-    () => 'rlLoadVertexBufferElement(${buffer.lengthInBytes}, $dynamic)',
-    () {
-      final bytes = buffer.buffer.asUint8List(buffer.offsetInBytes, buffer.lengthInBytes);
-      return rl.Rlgl.rlLoadVertexBufferElement(
-        rl.Temp.Uint8$.Array(bytes).cast(),
-        bytes.length,
-        dynamic,
-      );
-    },
+    () => RaylibDebugLabels.rlLoadVertexBufferElement(buffer, dynamic),
+    () => rl.Rlgl.rlLoadVertexBufferElement(
+      rl.Temp.TypedDataList$.Array(buffer).cast(),
+      buffer.length,
+      dynamic,
+    ),
   );
 
   @override
   void rlUpdateVertexBuffer(
     num bufferId,
-    TypedData data,
+    TypedDataList data,
     num offset,
   ) => run(
-    () => 'rlUpdateVertexBuffer($bufferId, ${data.lengthInBytes}, $offset)',
-    () {
-      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      return rl.Rlgl.rlUpdateVertexBuffer(
-        bufferId.toInt(),
-        rl.Temp.Uint8$.Array(bytes).cast(),
-        bytes.length,
-        offset.toInt(),
-      );
-    },
+    () => RaylibDebugLabels.rlUpdateVertexBuffer(bufferId, data, offset),
+    () => rl.Rlgl.rlUpdateVertexBuffer(
+      bufferId.toInt(),
+      rl.Temp.TypedDataList$.Array(data).cast(),
+      data.length,
+      offset.toInt(),
+    ),
   );
 
   @override
   void rlUpdateVertexBufferElements(
     num id,
-    TypedData data,
+    TypedDataList data,
     num offset,
   ) => run(
-    () => 'rlLoadVertexBufferElement($id, ${data.lengthInBytes}, $offset)',
-    () {
-      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      return rl.Rlgl.rlUpdateVertexBufferElements(
-        id.toInt(),
-        rl.Temp.Uint8$.Array(bytes).cast(),
-        bytes.length,
-        offset.toInt(),
-      );
-    },
+    () => RaylibDebugLabels.rlUpdateVertexBufferElements(id, data, offset),
+    () => rl.Rlgl.rlUpdateVertexBufferElements(
+      id.toInt(),
+      rl.Temp.TypedDataList$.Array(data).cast(),
+      data.length,
+      offset.toInt(),
+    ),
   );
 
   @override
   void rlUnloadVertexArray(
     num vaoId,
   ) => run(
-    () => 'rlUnloadVertexArray($vaoId)',
+    () => RaylibDebugLabels.rlUnloadVertexArray(vaoId),
     () => rl.Rlgl.rlUnloadVertexArray(vaoId.toInt()),
   );
 
@@ -950,7 +945,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadVertexBuffer(
     num vboId,
   ) => run(
-    () => 'rlUnloadVertexBuffer($vboId)',
+    () => RaylibDebugLabels.rlUnloadVertexBuffer(vboId),
     () => rl.Rlgl.rlUnloadVertexBuffer(vboId.toInt()),
   );
 
@@ -963,7 +958,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num stride,
     num offset,
   ) => run(
-    () => 'rlSetVertexAttribute($index, $compSize, $type, $normalized, $stride, $offset)',
+    () => RaylibDebugLabels.rlSetVertexAttribute(index, compSize, type, normalized, stride, offset),
     () => rl.Rlgl.rlSetVertexAttribute(
       index.toInt(),
       compSize.toInt(),
@@ -979,7 +974,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num index,
     num divisor,
   ) => run(
-    () => 'rlSetVertexAttributeDivisor($index, $divisor)',
+    () => RaylibDebugLabels.rlSetVertexAttributeDivisor(index, divisor),
     () => rl.Rlgl.rlSetVertexAttributeDivisor(
       index.toInt(),
       divisor.toInt(),
@@ -992,10 +987,10 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     Float32List value,
     RlShaderAttributeDataType attribType,
   ) => run(
-    () => 'rlSetVertexAttributeDefault($locIndex, ${value.length}, ${attribType.name})',
+    () => RaylibDebugLabels.rlSetVertexAttributeDefault(locIndex, value, attribType),
     () => rl.Rlgl.rlSetVertexAttributeDefault(
       locIndex.toInt(),
-      rl.Temp.Float$.FromTypedList(value).cast(),
+      rl.Temp.Float32$.FromTypedList(value).cast(),
       attribType.value,
       value.length,
     ),
@@ -1006,7 +1001,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num offset,
     num count,
   ) => run(
-    () => 'rlDrawVertexArray($offset, $count)',
+    () => RaylibDebugLabels.rlDrawVertexArray(offset, count),
     () => rl.Rlgl.rlDrawVertexArray(
       offset.toInt(),
       count.toInt(),
@@ -1019,7 +1014,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num count,
     Uint16List buffer,
   ) => run(
-    () => 'rlDrawVertexArrayElements($offset, ${buffer.length})',
+    () => RaylibDebugLabels.rlDrawVertexArrayElements(offset, count, buffer),
     () => rl.Rlgl.rlDrawVertexArrayElements(
       offset.toInt(),
       count.toInt(),
@@ -1033,7 +1028,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num count,
     num instances,
   ) => run(
-    () => 'rlDrawVertexArrayInstanced($offset, $count, $instances)',
+    () => RaylibDebugLabels.rlDrawVertexArrayInstanced(offset, count, instances),
     () => rl.Rlgl.rlDrawVertexArrayInstanced(
       offset.toInt(),
       count.toInt(),
@@ -1048,7 +1043,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     Uint16List buffer,
     num instances,
   ) => run(
-    () => 'rlDrawVertexArrayElementsInstanced($offset, $count, ${buffer.length}, $instances)',
+    () => RaylibDebugLabels.rlDrawVertexArrayElementsInstanced(offset, count, buffer, instances),
     () => rl.Rlgl.rlDrawVertexArrayElementsInstanced(
       offset.toInt(),
       count.toInt(),
@@ -1065,7 +1060,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     PixelFormat format,
     num mipmapCount,
   ) => run(
-    () => 'rlLoadTexture(${data?.length}, $width, $height, $format, $mipmapCount)',
+    () => RaylibDebugLabels.rlLoadTexture(data, width, height, format, mipmapCount),
     () => rl.Rlgl.rlLoadTexture(
       data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
       width.toInt(),
@@ -1081,7 +1076,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num height,
     bool useRenderBuffer,
   ) => run(
-    () => 'rlLoadTextureDepth($width, $height, $useRenderBuffer)',
+    () => RaylibDebugLabels.rlLoadTextureDepth(width, height, useRenderBuffer),
     () => rl.Rlgl.rlLoadTextureDepth(
       width.toInt(),
       height.toInt(),
@@ -1096,7 +1091,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     PixelFormat format,
     num mipmapCount,
   ) => run(
-    () => 'rlLoadTextureCubemap(${data?.length}, $size, ${format.name}, $mipmapCount)',
+    () => RaylibDebugLabels.rlLoadTextureCubemap(data, size, format, mipmapCount),
     () => rl.Rlgl.rlLoadTextureCubemap(
       data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
       size.toInt(),
@@ -1115,7 +1110,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     PixelFormat format,
     Uint8List data,
   ) => run(
-    () => 'rlUpdateTexture($id, $offsetX, $offsetY, $width, $height, ${format.name}, ${data.length})',
+    () => RaylibDebugLabels.rlUpdateTexture(id, offsetX, offsetY, width, height, format, data),
     () => rl.Rlgl.rlUpdateTexture(
       id.toInt(),
       offsetX.toInt(),
@@ -1131,7 +1126,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   (int glInternalFormat, int glFormat, int glType) rlGetGlTextureFormats(
     PixelFormat format,
   ) => run(
-    () => 'rlGetGlTextureFormats(${format.name})',
+    () => RaylibDebugLabels.rlGetGlTextureFormats(format),
     () {
       final glInternalFormat = rl.Temp.UnsignedInt$.Ref1();
       final glFormat = rl.Temp.UnsignedInt$.Ref2();
@@ -1150,7 +1145,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   String rlGetPixelFormatName(
     PixelFormat format,
   ) => run(
-    () => 'rlGetPixelFormatName(${format.name})',
+    () => RaylibDebugLabels.rlGetPixelFormatName(format),
     () => rl.Rlgl.rlGetPixelFormatName(
       format.value,
     ).toD,
@@ -1160,7 +1155,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadTexture(
     num id,
   ) => run(
-    () => 'rlUnloadTexture($id)',
+    () => RaylibDebugLabels.rlUnloadTexture(id),
     () => rl.Rlgl.rlUnloadTexture(id.toInt()),
   );
 
@@ -1171,7 +1166,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num height,
     PixelFormat format,
   ) => run(
-    () => 'rlGenTextureMipmaps($id, $width, $height, ${format.name})',
+    () => RaylibDebugLabels.rlGenTextureMipmaps(id, width, height, format),
     () {
       final mipmaps = rl.Temp.Int$.Ref1();
       rl.Rlgl.rlGenTextureMipmaps(
@@ -1192,7 +1187,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num height,
     PixelFormat format,
   ) => run(
-    () => 'rlReadTexturePixels($id, $width, $height, ${format.name})',
+    () => RaylibDebugLabels.rlReadTexturePixels(id, width, height, format),
     () {
       final size = rl.Utils.GetPixelDataSize(
         width.toInt(),
@@ -1210,11 +1205,11 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   );
 
   @override
-  List<int> rlReadScreenPixels(
+  Uint8List rlReadScreenPixels(
     num width,
     num height,
   ) => run(
-    () => 'rlReadScreenPixels($width, $height)',
+    () => RaylibDebugLabels.rlReadScreenPixels(width, height),
     () {
       final values = rl.Rlgl.rlReadScreenPixels(
         width.toInt(),
@@ -1222,13 +1217,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
       );
       final pixels = List.generate(width.toInt()*height.toInt()*4, (i) => values[i]);
       calloc.free(values);
-      return pixels;
+      return .fromList(pixels);
     },
   );
 
   @override
   int rlLoadFramebuffer() => run(
-    () => 'rlLoadFramebuffer()',
+    () => RaylibDebugLabels.rlLoadFramebuffer(),
     () => rl.Rlgl.rlLoadFramebuffer(),
   );
 
@@ -1240,7 +1235,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     RlFramebufferAttachTextureType texType,
     num mipLevel,
   ) => run(
-    () => 'rlFramebufferAttach($fboId, $texId, ${attachType.name}, ${texType.name}, $mipLevel)',
+    () => RaylibDebugLabels.rlFramebufferAttach(fboId, texId, attachType, texType, mipLevel),
     () => rl.Rlgl.rlFramebufferAttach(
       fboId.toInt(),
       texId.toInt(),
@@ -1254,7 +1249,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   bool rlFramebufferComplete(
     num id,
   ) => run(
-    () => 'rlFramebufferComplete($id)',
+    () => RaylibDebugLabels.rlFramebufferComplete(id),
     () => rl.Rlgl.rlFramebufferComplete(id.toInt()),
   );
 
@@ -1262,7 +1257,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadFramebuffer(
     num id,
   ) => run(
-    () => 'rlUnloadFramebuffer($id)',
+    () => RaylibDebugLabels.rlUnloadFramebuffer(id),
     () => rl.Rlgl.rlUnloadFramebuffer(id.toInt()),
   );
 
@@ -1271,7 +1266,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     String? vsCode,
     String? fsCode,
   ) => run(
-    () => 'rlLoadShaderCode(vsCode: ${vsCode?.length}, fsCode: ${fsCode?.length})',
+    () => RaylibDebugLabels.rlLoadShaderCode(vsCode, fsCode),
     () => rl.Rlgl.rlLoadShaderCode(
       rl.Temp.String$.ValueOrNull(vsCode),
       rl.Temp.String$.ValueOrNull(fsCode),
@@ -1283,7 +1278,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     String shaderCode,
     RlShaderType type,
   ) => run(
-    () => 'rlCompileShader(shaderCode: ${shaderCode.length}, ${type.name})',
+    () => RaylibDebugLabels.rlCompileShader(shaderCode, type),
     () => rl.Rlgl.rlCompileShader(
       rl.Temp.String$.ValueOrNull(shaderCode),
       type.value,
@@ -1295,7 +1290,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num vShaderId,
     num fShaderId,
   ) => run(
-    () => 'rlLoadShaderProgram($vShaderId, $fShaderId)',
+    () => RaylibDebugLabels.rlLoadShaderProgram(vShaderId, fShaderId),
     () => rl.Rlgl.rlLoadShaderProgram(
       vShaderId.toInt(),
       fShaderId.toInt(),
@@ -1306,7 +1301,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadShaderProgram(
     num id,
   ) => run(
-    () => 'rlUnloadShaderProgram($id)',
+    () => RaylibDebugLabels.rlUnloadShaderProgram(id),
     () => rl.Rlgl.rlUnloadShaderProgram(id.toInt()),
   );
 
@@ -1315,7 +1310,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num shaderId,
     String uniformName,
   ) => run(
-    () => 'rlGetLocationUniform($shaderId, $uniformName)',
+    () => RaylibDebugLabels.rlGetLocationUniform(shaderId, uniformName),
     () => rl.Rlgl.rlGetLocationUniform(
       shaderId.toInt(),
       rl.Temp.String$.ValueOrNull(uniformName),
@@ -1327,7 +1322,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num shaderId,
     String attribName,
   ) => run(
-    () => 'rlGetLocationAttrib($shaderId, $attribName)',
+    () => RaylibDebugLabels.rlGetLocationAttrib(shaderId, attribName),
     () => rl.Rlgl.rlGetLocationAttrib(
       shaderId.toInt(),
       rl.Temp.String$.ValueOrNull(attribName),
@@ -1337,11 +1332,11 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   @override
   void rlSetUniform(
     num locIndex,
-    TypedData value,
+    TypedDataList value,
     RlShaderUniformDataType uniformType,
     num count,
   ) => run(
-    () => 'rlSetUniform($locIndex, ${value.lengthInBytes}, ${uniformType.name})',
+    () => RaylibDebugLabels.rlSetUniform(locIndex, value, uniformType, count),
     () {
       final Pointer<Void> ptr;
       switch (uniformType) {
@@ -1349,7 +1344,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
         case .RL_SHADER_UNIFORM_VEC2:
         case .RL_SHADER_UNIFORM_VEC3:
         case .RL_SHADER_UNIFORM_VEC4:
-          ptr = rl.Temp.Float$.FromTypedData(value).cast();
+          ptr = rl.Temp.Float32$.FromTypedData(value).cast();
         case .RL_SHADER_UNIFORM_INT:
         case .RL_SHADER_UNIFORM_IVEC2:
         case .RL_SHADER_UNIFORM_IVEC3:
@@ -1376,7 +1371,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num locIndex,
     MatrixD mat,
   ) => run(
-    () => 'rlSetUniformMatrix($locIndex, $mat)',
+    () => RaylibDebugLabels.rlSetUniformMatrix(locIndex, mat),
     () => rl.Rlgl.rlSetUniformMatrix(
       locIndex.toInt(),
       rl.Temp.Matrix$.Ref1(mat).ref,
@@ -1388,7 +1383,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num locIndex,
     List<MatrixD> mat,
   ) => run(
-    () => 'rlSetUniformMatrices($locIndex, mat: ${mat.length})',
+    () => RaylibDebugLabels.rlSetUniformMatrices(locIndex, mat),
     () => rl.Rlgl.rlSetUniformMatrices(
       locIndex.toInt(),
       rl.Temp.Matrix$.Array(mat),
@@ -1401,7 +1396,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num locIndex,
     num textureId,
   ) => run(
-    () => 'rlSetUniformSampler($locIndex, $textureId)',
+    () => RaylibDebugLabels.rlSetUniformSampler(locIndex, textureId),
     () => rl.Rlgl.rlSetUniformSampler(
       locIndex.toInt(),
       textureId.toInt(),
@@ -1413,7 +1408,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num id,
     List<int> locs,
   ) => run(
-    () => 'rlSetShader($id, $locs)',
+    () => RaylibDebugLabels.rlSetShader(id, locs),
     () => rl.Rlgl.rlSetShader(
       id.toInt(),
       rl.Temp.Int$.Array(locs),
@@ -1424,7 +1419,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   int rlLoadComputeShaderProgram(
     num shaderId,
   ) => run(
-    () => 'rlLoadComputeShaderProgram($shaderId)',
+    () => RaylibDebugLabels.rlLoadComputeShaderProgram(shaderId),
     () => rl.Rlgl.rlLoadComputeShaderProgram(shaderId.toInt()),
   );
 
@@ -1434,7 +1429,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num groupY,
     num groupZ,
   ) => run(
-    () => 'rlComputeShaderDispatch($groupX, $groupY, $groupZ)',
+    () => RaylibDebugLabels.rlComputeShaderDispatch(groupX, groupY, groupZ),
     () => rl.Rlgl.rlComputeShaderDispatch(
       groupX.toInt(),
       groupY.toInt(),
@@ -1445,13 +1440,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   @override
   int rlLoadShaderBuffer(
     num size,
-    TypedData? data,
+    TypedDataList? data,
     RlUsageHint? usageHint,
   ) => run(
-    () => 'rlLoadShaderBuffer($size, data: ${data?.lengthInBytes}, $usageHint)',
+    () => RaylibDebugLabels.rlLoadShaderBuffer(size, data, usageHint),
     () => rl.Rlgl.rlLoadShaderBuffer(
       size.toInt(),
-      data == null ? nullptr : rl.Temp.Uint8$.FromTypedData(data).cast(),
+      data == null ? nullptr : rl.Temp.TypedDataList$.Array(data).cast(),
       usageHint?.value ?? 0,
     ),
   );
@@ -1460,26 +1455,23 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlUnloadShaderBuffer(
     num ssboId,
   ) => run(
-    () => 'rlUnloadShaderBuffer($ssboId)',
+    () => RaylibDebugLabels.rlUnloadShaderBuffer(ssboId),
     () => rl.Rlgl.rlUnloadShaderBuffer(ssboId.toInt()),
   );
 
   @override
   void rlUpdateShaderBuffer(
     num id,
-    TypedData data,
+    TypedDataList data,
     num offset,
   ) => run(
-    () => 'rlUpdateShaderBuffer($id, data: ${data.lengthInBytes}, $offset)',
-    () {
-      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      rl.Rlgl.rlUpdateShaderBuffer(
-        id.toInt(),
-        rl.Temp.Uint8$.Array(bytes).cast(),
-        bytes.length,
-        offset.toInt(),
-      );
-    },
+    () => RaylibDebugLabels.rlUpdateShaderBuffer(id, data, offset),
+    () => rl.Rlgl.rlUpdateShaderBuffer(
+      id.toInt(),
+      rl.Temp.TypedDataList$.Array(data).cast(),
+      data.length,
+      offset.toInt(),
+    ),
   );
 
   @override
@@ -1487,7 +1479,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num id,
     num index,
   ) => run(
-    () => 'rlBindShaderBuffer($id, $index)',
+    () => RaylibDebugLabels.rlBindShaderBuffer(id, index),
     () => rl.Rlgl.rlBindShaderBuffer(
       id.toInt(),
       index.toInt(),
@@ -1500,7 +1492,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num count,
     num offset,
   ) => run(
-    () => 'rlReadShaderBuffer($id, $count, $offset)',
+    () => RaylibDebugLabels.rlReadShaderBuffer(id, count, offset),
     () {
       final values = rl.Temp.Uint8$.Sized(count.toInt());
       rl.Rlgl.rlReadShaderBuffer(
@@ -1521,7 +1513,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     num srcOffset,
     num count,
   ) => run(
-    () => 'rlCopyShaderBuffer($destId, $srcId, $destOffset, $srcOffset, $count)',
+    () => RaylibDebugLabels.rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count),
     () => rl.Rlgl.rlCopyShaderBuffer(
       destId.toInt(),
       srcId.toInt(),
@@ -1535,7 +1527,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   int rlGetShaderBufferSize(
     num id,
   ) => run(
-    () => 'rlGetShaderBufferSize($id)',
+    () => RaylibDebugLabels.rlGetShaderBufferSize(id),
     () => rl.Rlgl.rlGetShaderBufferSize(id.toInt()),
   );
 
@@ -1546,7 +1538,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     PixelFormat format,
     bool readonly,
   ) => run(
-    () => 'rlBindImageTexture($id, $index, ${format.name}, $readonly)',
+    () => RaylibDebugLabels.rlBindImageTexture(id, index, format, readonly),
     () => rl.Rlgl.rlBindImageTexture(
       id.toInt(),
       index.toInt(),
@@ -1557,19 +1549,19 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   MatrixD rlGetMatrixModelview() => run(
-    () => 'rlGetMatrixModelview()',
+    () => RaylibDebugLabels.rlGetMatrixModelview(),
     () => rl.Rlgl.rlGetMatrixModelview().toD(),
   );
 
   @override
   MatrixD rlGetMatrixProjection() => run(
-    () => 'rlGetMatrixProjection()',
+    () => RaylibDebugLabels.rlGetMatrixProjection(),
     () => rl.Rlgl.rlGetMatrixProjection().toD(),
   );
 
   @override
   MatrixD rlGetMatrixTransform() => run(
-    () => 'rlGetMatrixTransform()',
+    () => RaylibDebugLabels.rlGetMatrixTransform(),
     () => rl.Rlgl.rlGetMatrixTransform().toD(),
   );
 
@@ -1577,7 +1569,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   MatrixD rlGetMatrixProjectionStereo(
     num eye,
   ) => run(
-    () => 'rlGetMatrixProjectionStereo($eye)',
+    () => RaylibDebugLabels.rlGetMatrixProjectionStereo(eye),
     () => rl.Rlgl.rlGetMatrixProjectionStereo(eye.toInt()).toD(),
   );
 
@@ -1585,7 +1577,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   MatrixD rlGetMatrixViewOffsetStereo(
     num eye,
   ) => run(
-    () => 'rlGetMatrixViewOffsetStereo($eye)',
+    () => RaylibDebugLabels.rlGetMatrixViewOffsetStereo(eye),
     () => rl.Rlgl.rlGetMatrixViewOffsetStereo(eye.toInt()).toD(),
   );
 
@@ -1593,7 +1585,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetMatrixProjection(
     MatrixD proj,
   ) => run(
-    () => 'rlSetMatrixProjection($proj)',
+    () => RaylibDebugLabels.rlSetMatrixProjection(proj),
     () => rl.Rlgl.rlSetMatrixProjection(
       rl.Temp.Matrix$.Ref1(proj).ref,
     ),
@@ -1603,7 +1595,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
   void rlSetMatrixModelview(
     MatrixD view,
   ) => run(
-    () => 'rlSetMatrixModelview($view)',
+    () => RaylibDebugLabels.rlSetMatrixModelview(view),
     () => rl.Rlgl.rlSetMatrixModelview(
       rl.Temp.Matrix$.Ref1(view).ref,
     ),
@@ -1614,7 +1606,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     MatrixD right,
     MatrixD left,
   ) => run(
-    () => 'rlSetMatrixProjectionStereo($right, $left)',
+    () => RaylibDebugLabels.rlSetMatrixProjectionStereo(right, left),
     () => rl.Rlgl.rlSetMatrixProjectionStereo(
       rl.Temp.Matrix$.Ref1(right).ref,
       rl.Temp.Matrix$.Ref2(left).ref,
@@ -1626,7 +1618,7 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
     MatrixD right,
     MatrixD left,
   ) => run(
-    () => 'rlSetMatrixViewOffsetStereo($right, $left)',
+    () => RaylibDebugLabels.rlSetMatrixViewOffsetStereo(right, left),
     () => rl.Rlgl.rlSetMatrixViewOffsetStereo(
       rl.Temp.Matrix$.Ref1(right).ref,
       rl.Temp.Matrix$.Ref2(left).ref,
@@ -1635,13 +1627,13 @@ class RaylibRlglD extends RaylibModule with RaylibRlglModuleExtras implements Ra
 
   @override
   void rlLoadDrawCube() => run(
-    () => 'rlLoadDrawCube()',
+    () => RaylibDebugLabels.rlLoadDrawCube(),
     () => rl.Rlgl.rlLoadDrawCube(),
   );
 
   @override
   void rlLoadDrawQuad() => run(
-    () => 'rlLoadDrawQuad()',
+    () => RaylibDebugLabels.rlLoadDrawQuad(),
     () => rl.Rlgl.rlLoadDrawQuad(),
   );
 }

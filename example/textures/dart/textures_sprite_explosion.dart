@@ -11,7 +11,7 @@ const int NUM_LINES = 5;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_sprite_explosion");
   rl.CoreD.SetWindowMonitor(0);

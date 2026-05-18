@@ -9,7 +9,7 @@ const int screenHeight = 600;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final mousePosition = rl.Temp.Vector2$.At('mousePosition');
   final windowPosition = rl.Temp.Vector2$.At('windowPosition').set(500, 200);
@@ -65,11 +65,11 @@ void main()
       ).toBool();
 
       rl.Core.DrawText(
-        "Mouse Position: ${mousePosition.format()}".toC,
+        "Mouse Position: ${mousePosition.toD().format()}".toC,
         10, 40, 10, rl.Color.DARKGRAY
       );
       rl.Core.DrawText(
-        "Window Position: ${windowPosition.format()}".toC,
+        "Window Position: ${windowPosition.toD().format()}".toC,
         10, 60, 10, rl.Color.DARKGRAY
       );
 

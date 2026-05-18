@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension MaterialMapCPEx on Pointer<MaterialMapC> {
-  Pointer<MaterialMapC> setC(MaterialMapC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<MaterialMapC> setD(MaterialMapD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<MaterialMapC> setC(MaterialMapC o) { ref.setC(o); return this; }
+  Pointer<MaterialMapC> setD(MaterialMapD o) { ref.setD(o); return this; }
   MaterialMapD toD() => ref.toD(this);
 }
 
@@ -37,7 +29,11 @@ extension MaterialMapCEx on MaterialMapC {
   );
 }
 
-class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with MaterialMapBase {
+class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with MaterialMapBase<
+  MaterialMapD,
+  TextureD,
+  ColorD
+> {
   @override
   TextureD texture;
   
@@ -68,7 +64,6 @@ class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with Mater
 
   @override
   MaterialMapD setD(MaterialMapD o) {
-    originalPointer ??= o.originalPointer;
     texture.setD(o.texture); 
     color.setD(o.color); 
     value = o.value;
@@ -76,7 +71,7 @@ class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with Mater
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.MaterialMap$;
+  getReference(Pointer<MaterialMapC> p) => p.ref;
 
   @override
   void nativeWriteInto(MaterialMapC p) {
@@ -84,9 +79,6 @@ class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with Mater
     color.nativeWriteInto(p.color);
     p.value = value;
   }
-
-  @override
-  String signature() => '$structName(texture: $texture, color: $color, value: $value)';
 
   @override
   MaterialMapD clone() => .new(

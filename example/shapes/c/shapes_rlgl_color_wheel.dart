@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_rlgl_color_wheel".toC);
@@ -22,7 +22,7 @@ void main()
 
   int triangleCount = 64;
   double pointScale = 150.0;
-  final value = rl.Temp.Float$.At('value');
+  final value = rl.Temp.Float32$.At('value');
 
   final center = rl.Temp.Vector2$.At('center').set(screenWidth/2.0, screenHeight/2.0);
   final circlePosition = rl.Temp.Vector2$.At('circlePos').setC(center.ref);
@@ -51,8 +51,10 @@ void main()
       mousePosition.y < sliderRectangle.ref.y + sliderRectangle.ref.height
     );
 
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) && rl.Core.IsKeyDown(KeyboardKey.KEY_C.value))
-    {
+    if (
+      rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) &&
+      rl.Core.IsKeyDown(KeyboardKey.KEY_C.value)
+    ) {
       if (rl.Core.IsKeyPressed(KeyboardKey.KEY_C.value))
       {
         rl.Core.SetClipboardText("#${color.ref.r.hexPad()}${color.ref.g.hexPad()}${color.ref.b.hexPad()}".toC);
@@ -66,7 +68,7 @@ void main()
       if (pointScale > screenHeight/2.0) {
         pointScale = screenHeight/2.0;
       } else {
-        circlePosition.ref.setD(circlePosition.ref.toD()
+        circlePosition.setD(circlePosition.toD()
           .sub(center.toD())
           .mul(.vec2(1.025, 1.025))
           .add(center.toD())
@@ -81,14 +83,14 @@ void main()
       if (pointScale < 32.0) {
         pointScale = 32.0;
       } else {
-        circlePosition.ref.setD(circlePosition.ref.toD()
+        circlePosition.setD(circlePosition.toD()
           .sub(center.toD())
           .mul(.vec2(0.975, 0.975))
           .add(center.toD())
         );
       }
 
-      double distance = center.distance(circlePosition) / pointScale;
+      double distance = center.toD().distance(circlePosition.toD()) / pointScale;
       double angle = (Vector2D.vec2(0, -pointScale).angle(center.toD().sub(circlePosition.toD())) / rl.PI + 1) / 2;
 
       if (distance > 1.0)
@@ -102,8 +104,10 @@ void main()
       }
     }
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) && rl.Core.GetMousePosition().distance(center.ref) <= pointScale + 10.0)
-    {
+    if (
+      rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) &&
+      rl.Core.GetMousePosition().toD().distance(center.toD()) <= pointScale + 10.0
+    ) {
       settingColor = true;
     }
 
@@ -118,7 +122,7 @@ void main()
     {
       if (settingColor) circlePosition.setC(rl.Core.GetMousePosition());
 
-      double distance = center.distance(circlePosition)/pointScale;
+      double distance = center.toD().distance(circlePosition.toD())/pointScale;
 
       double angle = (Vector2D.vec2(0, -pointScale).angle(center.toD().sub(circlePosition.toD())) / rl.PI + 1) / 2;
       if (settingColor && distance > 1.0) {
@@ -191,7 +195,7 @@ void main()
 
     ColorC handleColor = rl.Color.BLACK;
 
-    if (center.distance(circlePosition)/pointScale <= 0.5 && value.value <= 0.5)
+    if (center.toD().distance(circlePosition.toD())/pointScale <= 0.5 && value.value <= 0.5)
     {
       handleColor = rl.Color.DARKGRAY;
     }

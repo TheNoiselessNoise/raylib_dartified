@@ -1,24 +1,14 @@
-part of '../../../../raylib.dart';
-
-extension AutomationEventCLike on AutomationEventC {
-  int get paramCount => 4;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension AutomationEventCPEx on Pointer<AutomationEventC> {
-  Pointer<AutomationEventC> setC(AutomationEventC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<AutomationEventC> setD(AutomationEventD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<AutomationEventC> setC(AutomationEventC o) { ref.setC(o); return this; }
+  Pointer<AutomationEventC> setD(AutomationEventD o) { ref.setD(o); return this; }
   AutomationEventD toD() => ref.toD(this);
 }
 
 extension AutomationEventCEx on AutomationEventC {
+  int get paramCount => AutomationEventBase.BASE_paramCount;
+
   AutomationEventC setC(AutomationEventC o) {
     frame = o.frame;
     type = o.type;
@@ -45,7 +35,7 @@ extension AutomationEventCEx on AutomationEventC {
   );
 }
 
-class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with AutomationEventBase {
+class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with AutomationEventBase<AutomationEventD> {
   @override
   int frame;
 
@@ -76,7 +66,6 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
 
   @override
   AutomationEventD setD(AutomationEventD o) {
-    originalPointer ??= o.originalPointer;
     frame = o.frame;
     type = o.type;
     params = .from(o.params);
@@ -84,22 +73,14 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
   }
 
   @override
-  nativeAllocator(RaylibTemp temp)
-    => throw UnsupportedError('AutomationEventD: is raylib-owned; cannot allocate externally.');
+  getReference(Pointer<AutomationEventC> p) => p.ref;
 
   @override
   void structSyncInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key) {} // NOTE: do nothing
 
   @override
-  void structAllocateInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key)
-    => throw UnsupportedError('AutomationEventD: is raylib-owned; cannot allocate externally.');
-
-  @override
   void nativeWriteInto(AutomationEventC p)
     => throw UnsupportedError('AutomationEventD: is raylib-owned; cannot write externally.');
-
-  @override
-  String signature() => '$structName(frame: $frame, type: $type, params: $params)';
 
   @override
   AutomationEventD clone() => .new(

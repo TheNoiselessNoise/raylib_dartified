@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension FontCPEx on Pointer<FontC> {
-  Pointer<FontC> setC(FontC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<FontC> setD(FontD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<FontC> setC(FontC o) { ref.setC(o); return this; }
+  Pointer<FontC> setD(FontD o) { ref.setD(o); return this; }
   FontD toD() => ref.toD(this);
 }
 
@@ -48,7 +40,13 @@ extension FontCEx on FontC {
   );
 }
 
-class FontD extends StructD<FontC, FontD> with FontBase {
+class FontD extends StructD<FontC, FontD> with FontBase<
+  FontD,
+  TextureD,
+  RectangleD,
+  GlyphInfoD,
+  ImageD
+> {
   @override
   int baseSize;
   
@@ -99,7 +97,6 @@ class FontD extends StructD<FontC, FontD> with FontBase {
 
   @override
   FontD setD(FontD o) {
-    originalPointer ??= o.originalPointer;
     baseSize = o.baseSize;
     glyphCount = o.glyphCount;
     glyphPadding = o.glyphPadding;
@@ -110,7 +107,7 @@ class FontD extends StructD<FontC, FontD> with FontBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Font$;
+  getReference(Pointer<FontC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
@@ -133,9 +130,6 @@ class FontD extends StructD<FontC, FontD> with FontBase {
       glyphs[i].nativeWriteInto((p.glyphs + i).ref);
     }
   }
-
-  @override
-  String signature() => '$structName(baseSize: $baseSize, glyphCount: $glyphCount, glyphPadding: $glyphPadding, texture: $texture, recs: ${recs.length}, glyphs: ${glyphs.length})';
 
   @override
   FontD clone() => .new(

@@ -32,7 +32,7 @@ class WaveTextConfig {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT,.FLAG_VSYNC_HINT]);
   rl.CoreD.InitWindow(screenWidth, screenHeight, "text_draw_3d");

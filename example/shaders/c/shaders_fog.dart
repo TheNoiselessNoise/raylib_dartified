@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_fog".toC);
@@ -45,7 +45,7 @@ void main()
 
   int ambientLoc = rl.Core.GetShaderLocation(shader, "ambient".toC);
   rl.Core.SetShaderValue(shader, ambientLoc,
-    rl.Temp.Float$.Array([0.2, 0.2, 0.2, 1.0]).cast(),
+    rl.Temp.Float32$.Array([0.2, 0.2, 0.2, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
@@ -54,7 +54,7 @@ void main()
   void updateShaderFogDensity() {
     rl.Core.SetShaderValue(shader,
       rl.Core.GetShaderLocation(shader, "fogDensity".toC),
-      rl.Temp.Float$.Value(fogDensity).cast(),
+      rl.Temp.Float32$.Value(fogDensity).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderFogDensity();

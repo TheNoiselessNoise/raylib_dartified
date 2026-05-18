@@ -17,7 +17,7 @@ double oldFrequency = 1.0;
 double sineIdx = 0.0;
 
 void main() async {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_raw_stream");
   rl.CoreD.SetWindowMonitor(0);

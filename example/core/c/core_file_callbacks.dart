@@ -138,7 +138,7 @@ TestResult testSaveFileText() {
 }
 
 void main() {
-  rl = loadBaseRaylib();
+  rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, 'core_file_callbacks'.toC);
   rl.Core.SetWindowMonitor(0);

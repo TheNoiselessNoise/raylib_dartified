@@ -1,4 +1,4 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension AutomationEventListCPEx on Pointer<AutomationEventListC> {
   Pointer<AutomationEventListC> setC(AutomationEventListC o) => this;
@@ -12,7 +12,10 @@ extension AutomationEventListCEx on AutomationEventListC {
   AutomationEventListD toD(Pointer<AutomationEventListC> ptr) => .new(ptr);
 }
 
-class AutomationEventListD extends StructDView<AutomationEventListC, AutomationEventListD> with AutomationEventListBase {
+class AutomationEventListD extends StructDView<AutomationEventListC, AutomationEventListD> with AutomationEventListBase<
+  AutomationEventListD,
+  AutomationEventD
+> {
   AutomationEventListD(super.originalPointer);
 
   @override
@@ -26,9 +29,6 @@ class AutomationEventListD extends StructDView<AutomationEventListC, AutomationE
 
   @override
   AutomationEventListC get ref => getOriginalPointer().ref;
-
-  @override
-  String signature() => '$structName(capacity: $capacity, count: $count)';
 
   @override
   AutomationEventListD clone() => .new(getOriginalPointer());

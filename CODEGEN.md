@@ -1,8 +1,8 @@
 ## CODEGEN
 
 This project includes a **very dumb and messy codegen** that reads C headers
-and generates the full Dart FFI binding stack — C module, D-layer module, struct mirrors,
-and extension registration — with zero magic and zero dependencies beyond `ffigen` and a
+and generates the full Dart FFI binding stack, C module, D-layer module, struct mirrors,
+and extension registration, with zero magic and zero dependencies beyond `ffigen` and a
 `StringBuffer`.
 
 It is not a framework. It is not a library. It is a messy Dart utility that reads headers,
@@ -69,7 +69,7 @@ This is the happy path. The codegen has no way to know:
 - whether a function **mutates** a provided struct in-place
 - whether a returned struct should be **captured** (preserving its `originalPointer`,
   owned by the library) or immediately **converted** to its D-layer mirror
-- whether a `Pointer<Struct>` argument is an **out parameter** — uninitialized going in,
+- whether a `Pointer<Struct>` argument is an **out parameter**, uninitialized going in,
   meaningful coming out
 
 Any function with a `Pointer<Struct>` argument or return type is marked with a

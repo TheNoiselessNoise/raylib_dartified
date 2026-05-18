@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_texture_tiling".toC);
   rl.Core.SetWindowMonitor(0);
@@ -38,7 +38,7 @@ void main()
   );
   rl.Core.SetShaderValue(shader,
     rl.Core.GetShaderLocation(shader, "tiling".toC),
-    rl.Temp.Float$.Array(tiling).cast(),
+    rl.Temp.Float32$.Array(tiling).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
   model.materials[0].shader = shader;

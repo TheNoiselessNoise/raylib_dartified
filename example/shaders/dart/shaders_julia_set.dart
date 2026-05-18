@@ -22,7 +22,7 @@ const double startingZoom = 0.75;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_julia_set");
   rl.CoreD.SetWindowMonitor(0);

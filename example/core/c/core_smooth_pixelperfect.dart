@@ -12,7 +12,7 @@ const int virtualScreenHeight = 90;
 const double virtualRatio = screenWidth/virtualScreenWidth;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, 'core_smooth_pixelperfect'.toC);
   rl.Core.SetWindowMonitor(0);

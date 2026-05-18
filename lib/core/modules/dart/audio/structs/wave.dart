@@ -1,34 +1,52 @@
-part of '../../../../raylib.dart';
-
-extension WaveCLike on WaveC {
-  int get dataLength {
-    if (frameCount == 0 || channels == 0) return 0;
-    return frameCount * channels;
-  }
-}
-
-extension WaveDLike on WaveD {
-  int get dataLength {
-    if (frameCount == 0 || channels == 0) return 0;
-    return frameCount * channels;
-  }
-}
+part of '../../../../raylib_dartified.dart';
 
 extension WaveCPEx on Pointer<WaveC> {
-  Pointer<WaveC> setC(WaveC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<WaveC> setD(WaveD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<WaveC> setC(WaveC o) { ref.setC(o); return this; }
+  Pointer<WaveC> setD(WaveD o) { ref.setD(o); return this; }
   WaveD toD() => ref.toD(this);
 }
 
+class _WaveUtils {
+  static ByteBuffer _bufferCopy(ByteBuffer data, int sampleSize) => switch (sampleSize) {
+    8  => data.asUint8List().sublist(0).buffer,
+    16 => data.asInt16List().sublist(0).buffer,
+    32 => data.asFloat32List().sublist(0).buffer,
+    _  => throw UnsupportedError('Unexpected sampleSize: $sampleSize'),
+  };
+
+  static int _bufferLength(ByteBuffer data, int sampleSize)
+    => data.lengthInBytes ~/ (sampleSize ~/ 8);
+
+  static ByteBuffer _dataToBuffer(Pointer<Void> data, int sampleSize, int waveLength) => switch (sampleSize) {
+    8  => data.cast<Uint8>().asTypedList(waveLength).sublist(0).buffer,
+    16 => data.cast<Int16>().asTypedList(waveLength).sublist(0).buffer,
+    32 => data.cast<Float>().asTypedList(waveLength).sublist(0).buffer,
+    _  => throw UnsupportedError('Unexpected sampleSize: $sampleSize'),
+  };
+
+  static ByteBuffer _dummyData(int sampleSize, int waveLength) => switch (sampleSize) {
+    8  => Uint8List(waveLength).buffer,
+    16  => Int16List(waveLength).buffer,
+    32  => Float32List(waveLength).buffer,
+    _  => throw UnsupportedError('Unexpected sampleSize: $sampleSize'),
+  };
+  
+  static ByteBuffer _dataToBufferOrZero(Pointer<Void> data, int sampleSize, int waveLength)
+    => data.address != 0
+      ? _WaveUtils._dataToBuffer(data, sampleSize, waveLength)
+      : _dummyData(sampleSize, waveLength);
+
+  static void _dataSetList(Pointer<Void> dst, ByteBuffer src, int sampleSize, int waveLength) {
+    if (dst.address == 0) return;
+    final byteCount = waveLength * (sampleSize ~/ 8);
+    final srcBytes = src.asUint8List(0, byteCount);
+    dst.cast<Uint8>().asTypedList(byteCount).setAll(0, srcBytes);
+  }
+}
+
 extension WaveCEx on WaveC {
+  int get waveLength => WaveBase.BASE_waveLength(frameCount, channels);
+
   WaveC setC(WaveC o) {
     frameCount = o.frameCount;
     sampleRate = o.sampleRate;
@@ -47,9 +65,7 @@ extension WaveCEx on WaveC {
       data = p.ref.data;
     });
     if (data.address != 0) {
-      for (int i = 0; i < dataLength; i++) {
-        data.cast<Short>()[i] = o.data[i];
-      }
+      _WaveUtils._dataSetList(data, o.data, sampleSize, waveLength);
     }
     return this;
   }
@@ -60,13 +76,11 @@ extension WaveCEx on WaveC {
     sampleRate: sampleRate,
     sampleSize: sampleSize,
     channels: channels,
-    data: data.address != 0
-      ? .generate(dataLength, (i) => data.cast<Short>()[i])
-      : [],
+    data: _WaveUtils._dataToBufferOrZero(data, sampleSize, waveLength),
   );
 }
 
-class WaveD extends StructD<WaveC, WaveD> with WaveBase {
+class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
   @override
   int frameCount;
   
@@ -80,16 +94,18 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase {
   int channels;
   
   @override
-  List<int> data;
+  late ByteBuffer data;
 
   WaveD({
     super.originalPointer,
-    required this.frameCount,
-    required this.sampleRate,
-    required this.sampleSize,
-    required this.channels,
-    required this.data,
-  });
+    this.frameCount = 0,
+    this.sampleRate = 0,
+    this.sampleSize = 8,
+    this.channels = 0,
+    ByteBuffer? data,
+  }) {
+    this.data = data ?? _WaveUtils._dummyData(sampleSize, waveLength);
+  }
 
   @override
   WaveD setC(WaveC o) {
@@ -100,27 +116,31 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    data = o.data.address != 0 ? .generate(dataLength, (i) => o.data.cast<Short>()[i]) : [];
+    data = _WaveUtils._dataToBufferOrZero(o.data, sampleSize, waveLength);
     return this;
   }
 
   @override
   WaveD setD(WaveD o) {
-    originalPointer ??= o.originalPointer;
     frameCount = o.frameCount;
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    data = .from(o.data);
+    data = _WaveUtils._bufferCopy(o.data, sampleSize);
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Wave$;
+  getReference(Pointer<WaveC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
-    p.ref.data = temp.Short$.Array(data, key: '${key}_data').cast();
+    p.ref.data = switch (sampleSize) {
+      8  => temp.Uint8$.Array(data.asUint8List(), key: '${key}_data').cast(),
+      16 => temp.Int16$.Array(data.asInt16List(), key: '${key}_data').cast(),
+      32 => temp.Float32$.Array(data.asFloat32List(), key: '${key}_data').cast(),
+      _  => throw UnsupportedError('Unexpected sampleSize: $sampleSize'),
+    };
   }
 
   @override
@@ -131,15 +151,10 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase {
     p.channels = channels;
 
     if (p.data.address != 0) {
-      assert(dataLength <= data.length);
-      for (int i = 0; i < dataLength; i++) {
-        p.data.cast<Short>()[i] = data[i];
-      }
+      assert(waveLength <= _WaveUtils._bufferLength(data, sampleSize));
+      _WaveUtils._dataSetList(p.data, data, sampleSize, waveLength);
     }
   }
-
-  @override
-  String signature() => '$structName(frameCount: $frameCount, sampleRate: $sampleRate, sampleSize: $sampleSize, channels: $channels, data: $dataLength)';
 
   @override
   WaveD clone() => .new(
@@ -148,6 +163,6 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase {
     sampleRate: sampleRate,
     sampleSize: sampleSize,
     channels: channels,
-    data: .from(data),
+    data: _WaveUtils._bufferCopy(data, sampleSize),
   );
 }

@@ -1,4 +1,4 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
 // AudioCallback
 

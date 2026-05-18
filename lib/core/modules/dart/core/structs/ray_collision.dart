@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension RayCollisionCPEx on Pointer<RayCollisionC> {
-  Pointer<RayCollisionC> setC(RayCollisionC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<RayCollisionC> setD(RayCollisionD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RayCollisionC> setC(RayCollisionC o) { ref.setC(o); return this; }
+  Pointer<RayCollisionC> setD(RayCollisionD o) { ref.setD(o); return this; }
   RayCollisionD toD() => ref.toD(this);
 }
 
@@ -40,7 +32,13 @@ extension RayCollisionCEx on RayCollisionC {
   );
 }
 
-class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with RayCollisionBase {
+class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with RayCollisionBase<
+  RayCollisionD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   bool hit;
 
@@ -76,7 +74,6 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
 
   @override
   RayCollisionD setD(RayCollisionD o) {
-    originalPointer ??= o.originalPointer;
     hit = o.hit;
     distance = o.distance;
     point.setD(o.point);
@@ -85,7 +82,7 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.RayCollision$;
+  getReference(Pointer<RayCollisionC> p) => p.ref;
 
   @override
   void nativeWriteInto(RayCollisionC p) {
@@ -94,9 +91,6 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
     point.nativeWriteInto(p.point);
     normal.nativeWriteInto(p.normal);
   }
-
-  @override
-  String signature() => '$structName(hit: $hit, distance: $distance, point: $point, normal: $normal)';
 
   @override
   RayCollisionD clone() => .new(

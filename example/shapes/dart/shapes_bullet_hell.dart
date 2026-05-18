@@ -24,7 +24,7 @@ class Bullet {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_bullet_hell");
   rl.CoreD.SetWindowMonitor(0);

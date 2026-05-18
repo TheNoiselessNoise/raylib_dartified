@@ -1,6 +1,6 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibRlgl extends RaylibModule with RaylibRlglModuleExtras {
+class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib> {
   RaylibRlgl(super.rl);
 
   void rlMatrixMode(int mode) {

@@ -10,7 +10,7 @@ const int NUM_FRAMES = 3;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_sprite_button");
   rl.CoreD.SetWindowMonitor(0);

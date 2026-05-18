@@ -1,6 +1,6 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibAudio extends RaylibModule {
+class RaylibAudio extends RaylibModule<Raylib> {
   RaylibAudio(super.rl);
 
   void InitAudioDevice() {

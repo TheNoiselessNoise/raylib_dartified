@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_basic_lighting");

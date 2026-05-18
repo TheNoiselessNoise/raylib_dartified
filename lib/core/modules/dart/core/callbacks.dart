@@ -1,6 +1,8 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
 // LoadFileDataCallback
+
+// TODO: friendly
 
 typedef LoadFileDataCallbackFunctionD = Pointer<UnsignedChar> Function(
   Pointer<Char> fileName,

@@ -3,6 +3,7 @@
 // Run it: dart run audio_spectrum_visualizer.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
+import 'dart:typed_data';
 import '../../base.dart';
 
 const int    MONO                          = 1;
@@ -59,7 +60,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer");
   rl.CoreD.SetWindowMonitor(0);
@@ -100,7 +101,7 @@ void main()
   );
 
   int wavCursor = 0;
-  final wavPCM16 = wave.data;
+  final wavPCM16 = wave.data.asInt16List(); // short
 
   final List<int> chunkSamples = .filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
   final List<double> audioSamples = .filled(FFT_WINDOW_SIZE, 0);
@@ -116,7 +117,7 @@ void main()
         if (++wavCursor >= wave.frameCount) wavCursor = 0;
       }
 
-      rl.AudioD.UpdateAudioStream(audioStream, chunkSamples);
+      rl.AudioD.UpdateAudioStream(audioStream, Int16List.fromList(chunkSamples));
 
       for (int i = 0; i < FFT_WINDOW_SIZE; i++) {
         audioSamples[i] = (chunkSamples[i*2] + chunkSamples[i*2 + 1])*0.5/32767;

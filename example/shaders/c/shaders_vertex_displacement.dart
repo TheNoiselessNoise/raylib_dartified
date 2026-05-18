@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_vertex_displacement".toC);
   rl.Core.SetWindowMonitor(0);
@@ -53,7 +53,7 @@ void main()
     time += rl.Core.GetFrameTime();
     rl.Core.SetShaderValue(shader,
       rl.Core.GetShaderLocation(shader, "time".toC),
-      rl.Temp.Float$.Value(time).cast(),
+      rl.Temp.Float32$.Value(time).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

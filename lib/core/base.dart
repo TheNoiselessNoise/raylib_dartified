@@ -1,70 +1,6 @@
-part of 'raylib.dart';
+part of 'raylib_dartified.dart';
 
 typedef RaylibLookup = Pointer<T> Function<T extends NativeType>(String symbolName);
-typedef RaylibModuleConstructor<T> = T Function(Raylib);
-
-abstract class RaylibModule with RaylibModuleBase {
-  @override
-  final Raylib rl;
-  
-  RaylibModule(this.rl);
-
-  bool _isLoaded = false;
-  void _doLoad() {
-    if (_isLoaded) return;
-    _isLoaded = true;
-    load();
-  }
-
-  void load() {}
-
-  Logger get logger => rl.logger;
-
-  bool _debugEnabled = false;
-  void debug(bool v) => _debugEnabled = v;
-
-  bool _debugTime = false;
-  void debugTime(bool v) => _debugTime = true;
-  
-  void logInfo(String message) => logger.info(message);
-  void logWarn(String message) => logger.warning(message);
-
-  final List<bool Function(String)> _debugFilters = [];
-  void debugFilter(bool Function(String) filter) => _debugFilters.add(filter);
-  bool _matchesFilters(String message) => _debugFilters.isEmpty || _debugFilters.any((f) => f(message));
-
-  void debugInfo(String message) { if (_debugEnabled && _matchesFilters(message)) logInfo(message); }
-  void debugWarn(String message) { if (_debugEnabled && _matchesFilters(message)) logWarn(message); }
-
-  T disableSync<T>(T Function() f) {
-    final oldSyncing = rl.Temp.doSync;
-    rl.Temp.enableSyncing(false);
-    final result = f();
-    rl.Temp.enableSyncing(oldSyncing);
-    return result;
-  }
-
-  T run<T>(String Function() name, T Function() f) {
-    if (_debugEnabled) {
-      final label = '[$runtimeType] ${name()}';
-      if (_matchesFilters(label)) {
-        if (_debugTime) return rl.timeIt(label, f);
-        logInfo(label);
-      }
-    }
-    return f();
-  }
-
-  final List<void Function()> _onDisposeFns = [];
-  void onDispose(void Function() fn) => _onDisposeFns.add(fn);
-
-  @override
-  @mustCallSuper
-  void dispose() {
-    _onDisposeFns.forEach((f) => f());
-    _onDisposeFns.clear();
-  }
-}
 
 /// A Dart-side wrapper around a [NativeCallable<C>], bridging a Dart function
 /// of type [D] to a native callback of type [C].
@@ -210,7 +146,7 @@ abstract class CallbackD<C extends Function, D extends Function> with RaylibCall
 /// [NativeType]. Every C struct that crosses the FFI boundary has a
 /// paired `StructD` subclass that owns the Dart-visible fields and knows
 /// how to read/write itself from/into native memory.
-abstract class StructD<C extends Struct, D extends StructD<C, D>> extends RaylibStructBase<RaylibTemp, Pointer<C>, D> {
+abstract class StructD<C extends Struct, D extends StructD<C, D>> extends RaylibStructBase<RaylibTemp, Pointer<C>, D> with RaylibStructObjectBase<D> {
   StructD({
     super.originalPointer,
   });
@@ -218,16 +154,16 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
   /// Copies the fields of the native struct [o] into this instance.
   D setC(C o);
 
-  RTempStructAlloc<C, D> nativeAllocator(RaylibTemp temp);
+  C getReference(Pointer<C> p);
 
   /// Syncs Dart-side fields into the already-allocated native pointer [p].
   ///
-  /// Called by [toC] when [originalPointer] is set. The default implementation
+  /// Called by [Allocator.PointerTo] when [originalPointer] is set. The default implementation
   /// delegates to [nativeWriteInto]; override only when sync and full allocation
   /// differ (e.g. to skip re-allocating nested pointers).
   @override
   void structSyncInto(RaylibTemp temp, Pointer<C> p, String key)
-    => nativeWriteInto(nativeAllocator(temp).refFunc(p));
+    => nativeWriteInto(getReference(p));
 
   /// Writes all fields into the native struct at [p], allocating nested pointers
   /// into [temp] under [key] as needed.
@@ -236,11 +172,27 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
   /// with no nested pointers this is typically equivalent to `writeInto(p.ref)`.
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<C> p, String key)
-    => nativeWriteInto(nativeAllocator(temp).refFunc(p));
-  
+    => nativeWriteInto(getReference(p));
+
+  @override
+  void structWriteInto(Pointer<C> p)
+    => nativeWriteInto(getReference(p));
+
+  @override
+  void structReadFrom(Pointer<C> p)
+    => nativeReadFrom(getReference(p));
+
   /// Writes all fields directly into the native struct reference [p].
   /// For nested structs, use `writeInto` as well.
   void nativeWriteInto(C p);
+
+  void nativeReadFrom(C p) {}
+
+  @override
+  void structSyncFromMemory() {}
+  
+  @override
+  void structSyncToMemory() {}
 
   @override
   String toString() => signature();
@@ -287,20 +239,16 @@ abstract class StructDView<C extends Struct, D extends StructD<C, D>> extends St
   C get ref;
 
   @override
-  String signature() => '$structName()';
-
-  @override
   @nonVirtual
   D setC(C o) => throw UnsupportedError('$runtimeType: is just a view; cannot write to it.');
 
   @override
   @nonVirtual
-  D setD(D o) => throw UnsupportedError('$runtimeType: is just a view; cannot write to it.');
+  getReference(Pointer<C> p) => throw UnsupportedError('$runtimeType: is just a view; cannot dereference it.');
 
   @override
   @nonVirtual
-  nativeAllocator(RaylibTemp temp)
-    => throw UnsupportedError('$runtimeType: is just a view; cannot allocate it externally.');
+  D setD(D o) => throw UnsupportedError('$runtimeType: is just a view; cannot write to it.');
 
   @override
   @nonVirtual

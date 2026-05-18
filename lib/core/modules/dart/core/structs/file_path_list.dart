@@ -1,4 +1,4 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension FilePathListCPEx on Pointer<FilePathListC> {
   Pointer<FilePathListC> setC(FilePathListC o) => this;
@@ -12,7 +12,7 @@ extension FilePathListCEx on FilePathListC {
   FilePathListD toD(Pointer<FilePathListC> ptr) => .new(ptr);
 }
 
-class FilePathListD extends StructDView<FilePathListC, FilePathListD> with FilePathListBase {
+class FilePathListD extends StructDView<FilePathListC, FilePathListD> with FilePathListBase<FilePathListD> {
   FilePathListD(super.originalPointer);
 
   int? _cachedCount;
@@ -35,9 +35,6 @@ class FilePathListD extends StructDView<FilePathListC, FilePathListD> with FileP
 
   @override
   FilePathListC get ref => getOriginalPointer().ref;
-
-  @override
-  String signature() => '$structName(capacity: $capacity, count: $count)';
 
   @override
   FilePathListD clone() => .new(getOriginalPointer());

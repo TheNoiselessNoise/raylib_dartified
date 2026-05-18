@@ -4,7 +4,7 @@ import '../../base.dart';
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(800, 450, "temp_dart_vector2".toC);
   rl.Core.SetWindowMonitor(0);
@@ -25,9 +25,17 @@ void main()
     else if (rl.Core.IsKeyDown(KeyboardKey.KEY_D.value))
       vel.ref.x = vel.ref.x + 0.5;
 
-    // C versions of objects/structs are mutated directly
-    vel.scale(0.9);
-    pos.add(vel);
+    // we want to use some Vector math, we need D layer
+    var velD = vel.toD();
+    var posD = pos.toD();
+
+    // do the math
+    velD = velD.scale(0.9);
+    posD = posD.add(velD);
+
+    // assign back
+    vel.setD(velD);
+    pos.setD(posD);
 
     rl.Core.BeginDrawing();
 

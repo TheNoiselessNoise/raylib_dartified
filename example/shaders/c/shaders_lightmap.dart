@@ -12,7 +12,7 @@ const int MAP_SIZE = 10;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_lightmap".toC);
@@ -28,7 +28,7 @@ void main()
 
   final mesh = rl.Core.GenMeshPlane(MAP_SIZE.toDouble(), MAP_SIZE.toDouble(), 1, 1);
 
-  mesh.texcoords2 = rl.Temp.Float$.Raw(mesh.vertexCount*2);
+  mesh.texcoords2 = rl.Temp.Float32$.Raw(mesh.vertexCount*2);
 
   mesh.texcoords2[0] = 0.0; mesh.texcoords2[1] = 0.0;
   mesh.texcoords2[2] = 1.0; mesh.texcoords2[3] = 0.0;

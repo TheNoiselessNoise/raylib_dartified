@@ -12,7 +12,7 @@ const int MIN_POINTS = 1_000;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "models_point_rendering".toC);
   rl.Core.SetWindowMonitor(0);
@@ -158,7 +158,7 @@ MeshC GenMeshPoints(Raylib rl, int numPoints)
   final mesh = rl.Temp.Mesh$.At('mesh'); 
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = numPoints;
-  mesh.ref.vertices = rl.Temp.Float$.RawArrayPopulated(vertices);
+  mesh.ref.vertices = rl.Temp.Float32$.RawArrayPopulated(vertices);
   mesh.ref.colors = rl.Temp.UnsignedChar$.RawArrayPopulated(colors);
 
   rl.Core.UploadMesh(mesh, false);

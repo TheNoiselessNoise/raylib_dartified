@@ -1,11 +1,16 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibLightD extends RaylibModule implements RaylibLightModuleBase<
+class RaylibLightD extends RaylibLightModuleBase<
+  Raylib,
+  
   // types
   ColorD,
   LightD,
+  MatrixD,
+  QuaternionD,
   ShaderD,
-  Vector3D
+  Vector3D,
+  Vector4D
 
 > {
   
@@ -19,7 +24,7 @@ class RaylibLightD extends RaylibModule implements RaylibLightModuleBase<
     ColorD color,
     ShaderD shader,
   ) => run(
-    () => 'CreateLight(${type.name}, $position, $target, $color, $shader)',
+    () => RaylibDebugLabels.CreateLight(type, position, target, color, shader),
     () => rl.Light.CreateLight(
       type.value,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -34,7 +39,7 @@ class RaylibLightD extends RaylibModule implements RaylibLightModuleBase<
     ShaderD shader,
     LightD light,
   ) => run(
-    () => 'UpdateLightValues($shader, $light)',
+    () => RaylibDebugLabels.UpdateLightValues(shader, light),
     () => rl.Temp.Light$.RefUpdate1(light,
       (pl) => rl.Light.UpdateLightValues(
         rl.Temp.Shader$.Ref1(shader).ref,

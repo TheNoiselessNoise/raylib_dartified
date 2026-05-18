@@ -10,7 +10,7 @@ const int MAX_INPUT_CHARS = 9;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "text_writing_anim");
   rl.CoreD.SetWindowMonitor(0);

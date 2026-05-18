@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension TextureCPEx on Pointer<TextureC> {
-  Pointer<TextureC> setC(TextureC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<TextureC> setD(TextureD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<TextureC> setC(TextureC o) { ref.setC(o); return this; }
+  Pointer<TextureC> setD(TextureD o) { ref.setD(o); return this; }
   TextureD toD() => ref.toD(this);
 }
 
@@ -43,7 +35,7 @@ extension TextureCEx on TextureC {
   );
 }
 
-class TextureD extends StructD<TextureC, TextureD> with TextureBase {
+class TextureD extends StructD<TextureC, TextureD> with TextureBase<TextureD> {
   @override
   int id;
   
@@ -82,7 +74,6 @@ class TextureD extends StructD<TextureC, TextureD> with TextureBase {
 
   @override
   TextureD setD(TextureD o) {
-    originalPointer ??= o.originalPointer;
     id = o.id;
     width = o.width;
     height = o.height;
@@ -92,7 +83,7 @@ class TextureD extends StructD<TextureC, TextureD> with TextureBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Texture$;
+  getReference(Pointer<TextureC> p) => p.ref;
 
   @override
   void nativeWriteInto(TextureC p) {
@@ -102,9 +93,6 @@ class TextureD extends StructD<TextureC, TextureD> with TextureBase {
     p.mipmaps = mipmaps;
     p.format = format.value;
   }
-
-  @override
-  String signature() => '$structName(id: $id, width: $width, height: $height, mipmaps: $mipmaps, format: ${format.name})';
 
   @override
   TextureD clone() => .new(

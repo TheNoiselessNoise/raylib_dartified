@@ -37,7 +37,7 @@ void main()
   assert(fontPaths.length == messages.length);
   assert(fontPaths.length == spacings.length);
 
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final List<ColorC> colors = [
     rl.Color.MAROON, rl.Color.ORANGE, rl.Color.DARKGREEN, rl.Color.DARKBLUE,

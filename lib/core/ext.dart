@@ -1,4 +1,4 @@
-part of 'raylib.dart';
+part of 'raylib_dartified.dart';
 
 class DoNotValidate {
   final String reason;
@@ -52,16 +52,6 @@ extension GetStringFromArrayChar on Array<Char> {
     for (int i = 0; i < len; i++) this[i] = bytes[i];
     this[len] = 0;
   }
-}
-
-extension DoubleFormatting on double {
-  String get f0 => toStringAsFixed(0);
-  String get f1 => toStringAsFixed(1);
-  String get f2 => toStringAsFixed(2);
-  String get f3 => toStringAsFixed(3);
-  String get f4 => toStringAsFixed(4);
-  String get f5 => toStringAsFixed(5);
-  String get f6 => toStringAsFixed(6);
 }
 
 extension IntHex on int {

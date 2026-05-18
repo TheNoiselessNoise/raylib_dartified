@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_custom_uniform".toC);
@@ -52,7 +52,7 @@ void main()
     swirlCenter[1] = screenHeight - mousePosition.y;
 
     rl.Core.SetShaderValue(shader, swirlCenterLoc,
-      rl.Temp.Float$.Array(swirlCenter).cast(),
+      rl.Temp.Float32$.Array(swirlCenter).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
 

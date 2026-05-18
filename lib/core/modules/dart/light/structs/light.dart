@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension LightCPEx on Pointer<LightC> {
-  Pointer<LightC> setC(LightC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<LightC> setD(LightD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<LightC> setC(LightC o) { ref.setC(o); return this; }
+  Pointer<LightC> setD(LightD o) { ref.setD(o); return this; }
   LightD toD() => ref.toD(this);
 }
 
@@ -64,7 +56,14 @@ extension LightCEx on LightC {
   );
 }
 
-class LightD extends StructD<LightC, LightD> implements LightBase {
+class LightD extends StructD<LightC, LightD> with LightBase<
+  LightD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D,
+  ColorD
+> {
   @override
   LightType type;
   
@@ -141,7 +140,6 @@ class LightD extends StructD<LightC, LightD> implements LightBase {
 
   @override
   LightD setD(LightD o) {
-    originalPointer ??= o.originalPointer;
     type = o.type;
     enabled = o.enabled;
     position.setD(o.position);
@@ -158,7 +156,7 @@ class LightD extends StructD<LightC, LightD> implements LightBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Light$;
+  getReference(Pointer<LightC> p) => p.ref;
 
   @override
   void nativeWriteInto(LightC p) {
@@ -175,9 +173,6 @@ class LightD extends StructD<LightC, LightD> implements LightBase {
     p.colorLoc = colorLoc;
     p.attenuationLoc = attenuationLoc;
   }
-
-  @override
-  String signature() => '$structName(${type.name}, enabled: $enabled, position: $position, target: $target, ...)';
 
   @override
   LightD clone() => .new(

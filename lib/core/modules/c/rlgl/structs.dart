@@ -1,6 +1,6 @@
 // ignore_for_file: camel_case_types
 
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
 final class RlVertexBufferC extends Struct {
   @Int()

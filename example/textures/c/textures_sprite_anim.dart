@@ -12,7 +12,7 @@ const int MIN_FRAME_SPEED = 1;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "textures_sprite_anim".toC);
   rl.Core.SetWindowMonitor(0);

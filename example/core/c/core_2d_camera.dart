@@ -10,7 +10,7 @@ const int screenHeight = 450;
 const int MAX_BUILDINGS = 100;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, 'core_2d_camera'.toC);
   rl.Core.SetWindowMonitor(0);

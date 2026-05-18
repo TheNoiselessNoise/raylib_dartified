@@ -9,7 +9,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_raw_data");
   rl.CoreD.SetWindowMonitor(0);
@@ -37,7 +37,7 @@ void main()
   }
 
   final checkedIm = ImageD(
-    data: pixels.expand((p) => [p.r, p.g, p.b, p.a]).toList(),
+    data: .fromList(pixels.expand((p) => [p.r, p.g, p.b, p.a]).toList()),
     width: width,
     height: height,
     format: .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,

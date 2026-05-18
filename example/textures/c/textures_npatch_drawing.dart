@@ -10,7 +10,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "textures_npatch_drawing".toC);
   rl.Core.SetWindowMonitor(0);
@@ -27,16 +27,36 @@ void main()
   final dstRecV = rl.Temp.Rectangle$.At('dstRecV').set(92.0, 160.0, 32.0, 32.0);
 
   final ninePatchInfo1 = rl.Temp.NPatchInfo$.At('ninePatchInfo1');
-  ninePatchInfo1.set(0.0, 0.0, 64.0, 64.0, 12, 40, 12, 12, NPatchLayout.NPATCH_NINE_PATCH.value);
+  ninePatchInfo1.ref.source.set(0.0, 0.0, 64.0, 64.0);
+  ninePatchInfo1.ref.left = 12;
+  ninePatchInfo1.ref.top = 40;
+  ninePatchInfo1.ref.right = 12;
+  ninePatchInfo1.ref.bottom = 12;
+  ninePatchInfo1.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
   final ninePatchInfo2 = rl.Temp.NPatchInfo$.At('ninePatchInfo2');
-  ninePatchInfo2.set(0.0, 128.0, 64.0, 64.0, 16, 16, 16, 16, NPatchLayout.NPATCH_NINE_PATCH.value);
+  ninePatchInfo2.ref.source.set(0.0, 128.0, 64.0, 64.0);
+  ninePatchInfo2.ref.left = 16;
+  ninePatchInfo2.ref.top = 16;
+  ninePatchInfo2.ref.right = 16;
+  ninePatchInfo2.ref.bottom = 16;
+  ninePatchInfo2.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
   final h3PatchInfo = rl.Temp.NPatchInfo$.At('h3PatchInfo');
-  h3PatchInfo.set(0.0,  64.0, 64.0, 64.0, 8, 8, 8, 8, NPatchLayout.NPATCH_THREE_PATCH_HORIZONTAL.value);
+  h3PatchInfo.ref.source.set(0.0, 64.0, 64.0, 64.0);
+  h3PatchInfo.ref.left = 8;
+  h3PatchInfo.ref.top = 8;
+  h3PatchInfo.ref.right = 8;
+  h3PatchInfo.ref.bottom = 8;
+  h3PatchInfo.ref.layout = NPatchLayout.NPATCH_THREE_PATCH_HORIZONTAL.value;
 
   final v3PatchInfo = rl.Temp.NPatchInfo$.At('v3PatchInfo');
-  v3PatchInfo.set(0.0, 192.0, 64.0, 64.0, 6, 6, 6, 6, NPatchLayout.NPATCH_THREE_PATCH_VERTICAL.value);
+  v3PatchInfo.ref.source.set(0.0, 192.0, 64.0, 64.0);
+  v3PatchInfo.ref.left = 6;
+  v3PatchInfo.ref.top = 6;
+  v3PatchInfo.ref.right = 6;
+  v3PatchInfo.ref.bottom = 6;
+  v3PatchInfo.ref.layout = NPatchLayout.NPATCH_THREE_PATCH_VERTICAL.value;
 
   while (!rl.Core.WindowShouldClose())
   {

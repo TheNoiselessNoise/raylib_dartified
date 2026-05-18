@@ -1,8 +1,12 @@
-part of '../raylib.dart';
+part of '../raylib_dartified.dart';
 
 // NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
 
-class RaylibColors extends RaylibModule {
+class RaylibColors extends RaylibColorExtensionBase<
+  Raylib,
+  
+  ColorC
+> {
   late Pointer<ColorC> _LIGHTGRAY_ptr;
   late Pointer<ColorC> _GRAY_ptr;
   late Pointer<ColorC> _DARKGRAY_ptr;
@@ -31,33 +35,33 @@ class RaylibColors extends RaylibModule {
   late Pointer<ColorC> _RAYWHITE_ptr;
   late Pointer<ColorC> _TRANSPARENT_ptr;
 
-  ColorC get LIGHTGRAY => _LIGHTGRAY_ptr.ref;
-  ColorC get GRAY => _GRAY_ptr.ref;
-  ColorC get DARKGRAY => _DARKGRAY_ptr.ref;
-  ColorC get YELLOW => _YELLOW_ptr.ref;
-  ColorC get GOLD => _GOLD_ptr.ref;
-  ColorC get ORANGE => _ORANGE_ptr.ref;
-  ColorC get PINK => _PINK_ptr.ref;
-  ColorC get RED => _RED_ptr.ref;
-  ColorC get MAROON => _MAROON_ptr.ref;
-  ColorC get GREEN => _GREEN_ptr.ref;
-  ColorC get LIME => _LIME_ptr.ref;
-  ColorC get DARKGREEN => _DARKGREEN_ptr.ref;
-  ColorC get SKYBLUE => _SKYBLUE_ptr.ref;
-  ColorC get BLUE => _BLUE_ptr.ref;
-  ColorC get DARKBLUE => _DARKBLUE_ptr.ref;
-  ColorC get PURPLE => _PURPLE_ptr.ref;
-  ColorC get VIOLET => _VIOLET_ptr.ref;
-  ColorC get DARKPURPLE => _DARKPURPLE_ptr.ref;
-  ColorC get BEIGE => _BEIGE_ptr.ref;
-  ColorC get BROWN => _BROWN_ptr.ref;
-  ColorC get DARKBROWN => _DARKBROWN_ptr.ref;
-  ColorC get WHITE => _WHITE_ptr.ref;
-  ColorC get BLACK => _BLACK_ptr.ref;
-  ColorC get BLANK => _BLANK_ptr.ref;
-  ColorC get MAGENTA => _MAGENTA_ptr.ref;
-  ColorC get RAYWHITE => _RAYWHITE_ptr.ref;
-  ColorC get TRANSPARENT => _TRANSPARENT_ptr.ref;
+  @override ColorC get LIGHTGRAY => _LIGHTGRAY_ptr.ref;
+  @override ColorC get GRAY => _GRAY_ptr.ref;
+  @override ColorC get DARKGRAY => _DARKGRAY_ptr.ref;
+  @override ColorC get YELLOW => _YELLOW_ptr.ref;
+  @override ColorC get GOLD => _GOLD_ptr.ref;
+  @override ColorC get ORANGE => _ORANGE_ptr.ref;
+  @override ColorC get PINK => _PINK_ptr.ref;
+  @override ColorC get RED => _RED_ptr.ref;
+  @override ColorC get MAROON => _MAROON_ptr.ref;
+  @override ColorC get GREEN => _GREEN_ptr.ref;
+  @override ColorC get LIME => _LIME_ptr.ref;
+  @override ColorC get DARKGREEN => _DARKGREEN_ptr.ref;
+  @override ColorC get SKYBLUE => _SKYBLUE_ptr.ref;
+  @override ColorC get BLUE => _BLUE_ptr.ref;
+  @override ColorC get DARKBLUE => _DARKBLUE_ptr.ref;
+  @override ColorC get PURPLE => _PURPLE_ptr.ref;
+  @override ColorC get VIOLET => _VIOLET_ptr.ref;
+  @override ColorC get DARKPURPLE => _DARKPURPLE_ptr.ref;
+  @override ColorC get BEIGE => _BEIGE_ptr.ref;
+  @override ColorC get BROWN => _BROWN_ptr.ref;
+  @override ColorC get DARKBROWN => _DARKBROWN_ptr.ref;
+  @override ColorC get WHITE => _WHITE_ptr.ref;
+  @override ColorC get BLACK => _BLACK_ptr.ref;
+  @override ColorC get BLANK => _BLANK_ptr.ref;
+  @override ColorC get MAGENTA => _MAGENTA_ptr.ref;
+  @override ColorC get RAYWHITE => _RAYWHITE_ptr.ref;
+  @override ColorC get TRANSPARENT => _TRANSPARENT_ptr.ref;
 
   RaylibColors(super.lib) {
     _LIGHTGRAY_ptr = _CreateRGBA(200, 200, 200);
@@ -90,7 +94,7 @@ class RaylibColors extends RaylibModule {
   }
 
   Pointer<ColorC> _CreateRGBA(int r, int g, int b, [int? a]) {
-    Pointer<ColorC> c = calloc();
+    final c = calloc<ColorC>();
     c.ref.r = r;
     c.ref.g = g;
     c.ref.b = b;

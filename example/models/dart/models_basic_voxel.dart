@@ -9,7 +9,7 @@ const int WORLD_SIZE = 8;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "models_basic_voxel");
   rl.CoreD.SetWindowMonitor(0);

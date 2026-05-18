@@ -1,52 +1,17 @@
-part of '../../../../raylib.dart';
-
-extension ImageCLike on ImageC {
-  int get bytesPerPixel => switch (PixelFormat.fromValue(format)) {
-    .PIXELFORMAT_NONE => 0,
-    .PIXELFORMAT_UNCOMPRESSED_GRAYSCALE => 1,
-    .PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R5G6B5 => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R8G8B8 => 3,
-    .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 => 4,
-    .PIXELFORMAT_UNCOMPRESSED_R32 => 4,
-    .PIXELFORMAT_UNCOMPRESSED_R32G32B32 => 12,
-    .PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 => 16,
-    .PIXELFORMAT_UNCOMPRESSED_R16 => 2,
-    .PIXELFORMAT_UNCOMPRESSED_R16G16B16 => 6,
-    .PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 => 8,
-    _ => throw UnsupportedError('Compressed formats have no simple bpp: $format'),
-  };
-
-  // NOTE: assuming normal image (not a GIF)
-  int get frameCount => 1;
-
-  int get dataLength {
-    final frameSize = this.frameSize;
-    if (frameSize == 0) return 0;
-    return frameSize * frameCount;
-  }
-
-  int get frameSize {
-    if (width == 0 || height == 0) return 0;
-    return width * height * bytesPerPixel;
-  }
-}
+part of '../../../../raylib_dartified.dart';
 
 extension ImageCPEx on Pointer<ImageC> {
-  Pointer<ImageC> setC(ImageC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<ImageC> setD(ImageD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<ImageC> setC(ImageC o) { ref.setC(o); return this; }
+  Pointer<ImageC> setD(ImageD o) { ref.setD(o); return this; }
   ImageD toD() => ref.toD(this);
 }
 
 extension ImageCEx on ImageC {
+  int get bytesPerPixel => ImageBase.BASE_bytesPerPixel(.fromValue(format));
+  // NOTE: 1 frame (which is wrong, but we can't do anything about that)
+  int get dataLength => ImageBase.BASE_dataLength(frameSize, 1);
+  int get frameSize => ImageBase.BASE_frameSize(width, height, .fromValue(format));
+
   ImageC setC(ImageC o) {
     data = o.data;
     width = o.width;
@@ -69,7 +34,7 @@ extension ImageCEx on ImageC {
 
   ImageD toD([Pointer<ImageC>? ptr]) => .new(
     originalPointer: ptr,
-    data: data.cast<Uint8>().asTypedList(ptr?.ref.dataLength ?? dataLength).toList(),
+    data: .fromList(data.cast<Uint8>().asTypedList(ptr?.ref.dataLength ?? dataLength)),
     width: width,
     height: height,
     mipmaps: mipmaps,
@@ -77,7 +42,7 @@ extension ImageCEx on ImageC {
   );
 }
 
-class ImageD extends StructD<ImageC, ImageD> with ImageBase {
+class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
   @override
   int width;
 
@@ -91,7 +56,7 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase {
   PixelFormat format;
 
   @override
-  List<int> data;
+  late Uint8List data;
 
   @override
   int frameCount = 1; // normal image has only 1 frame
@@ -102,19 +67,21 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase {
     this.height = 0,
     this.mipmaps = 0,
     this.format = .PIXELFORMAT_NONE,
-    List<int>? data,
-  }) :
-    data = data ?? [];
+    Uint8List? data,
+  }) {
+    this.data = data ?? Uint8List(dataLength);
+  }
 
   factory ImageD.zero() => .new();
 
   // NOTE: for GIFs
-  void nativeUpdateFrameCount(int frameCount) => structOnOriginalPointer((p) {
+  @override
+  void structUpdateFrameCount(int frameCount) => structOnOriginalPointer((p) {
     if (this.frameCount != frameCount) {
       this.frameCount = frameCount;
       data = p.ref.data.address != 0 ?
-        p.ref.data.cast<Uint8>().asTypedList(frameSize * frameCount).toList() :
-        [];
+        .fromList(p.ref.data.cast<Uint8>().asTypedList(dataLength)) :
+        Uint8List(dataLength);
     }
   });
 
@@ -128,23 +95,24 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase {
     height = o.height;
     mipmaps = o.mipmaps;
     format = .fromValue(o.format);
-    data = o.data.address != 0 ? o.data.cast<Uint8>().asTypedList(frameSize * frameCount).toList() : [];
+    data = o.data.address != 0 ?
+      .fromList(o.data.cast<Uint8>().asTypedList(dataLength)) :
+      Uint8List(dataLength);
     return this;
   }
 
   @override
   ImageD setD(ImageD o) {
-    originalPointer ??= o.originalPointer;
     width = o.width;
     height = o.height;
     mipmaps = o.mipmaps;
     format = o.format;
-    data = .from(o.data);
+    data = .fromList(o.data);
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Image$;
+  getReference(Pointer<ImageC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
@@ -166,15 +134,12 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase {
   }
 
   @override
-  String signature() => '$structName(data: ${data.length}, width: $width, height: $height, mipmaps: $mipmaps, format: ${format.name})';
-
-  @override
   ImageD clone() => .new(
     originalPointer: originalPointer,
     width: width,
     height: height,
     mipmaps: mipmaps,
     format: format,
-    data: .from(data),
+    data: .fromList(data),
   );
 }

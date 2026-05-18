@@ -12,7 +12,7 @@ String GetDataAsHexText(List<int> data, int size) {
 }
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_compute_hash');
   rl.CoreD.SetWindowMonitor(0);
@@ -32,11 +32,11 @@ void main() {
   String base64Text = '';
 
   void computeHashes() {
-    base64Text = rl.CoreD.EncodeDataBase64(input.codeUnits).toDartString();
-    hashCRC32 = rl.CoreD.ComputeCRC32(input.codeUnits);
-    hashMD5 = rl.CoreD.ComputeMD5(input.codeUnits);
-    hashSHA1 = rl.CoreD.ComputeSHA1(input.codeUnits);
-    // hashSHA256 = rl.CoreD.ComputeSHA256(input.codeUnits);
+    base64Text = rl.CoreD.EncodeDataBase64(.fromList(input.codeUnits)).toDartString();
+    hashCRC32 = rl.CoreD.ComputeCRC32(.fromList(input.codeUnits));
+    hashMD5 = rl.CoreD.ComputeMD5(.fromList(input.codeUnits));
+    hashSHA1 = rl.CoreD.ComputeSHA1(.fromList(input.codeUnits));
+    // hashSHA256 = rl.CoreD.ComputeSHA256(.fromList(input.codeUnits));
   } computeHashes();
 
   while (!rl.CoreD.WindowShouldClose()) {

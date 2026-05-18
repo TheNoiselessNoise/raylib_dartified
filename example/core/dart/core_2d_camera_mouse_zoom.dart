@@ -8,7 +8,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera_mouse_zoom');
   rl.CoreD.SetWindowMonitor(0);

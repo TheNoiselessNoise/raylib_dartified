@@ -2,12 +2,11 @@ library;
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math' as math;
 import 'dart:ffi';
 import 'dart:math' show Random;
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
-import 'package:meta/meta.dart' show nonVirtual, mustCallSuper;
+import 'package:meta/meta.dart' show nonVirtual;
 import 'package:path/path.dart' as path;
 import 'package:logging/logging.dart';
 import 'package:raylib_dartified_base/raylib_dartified_base.dart';
@@ -46,7 +45,6 @@ part 'modules/c/core/structs.dart';
 
 part 'modules/dart/core/callbacks.dart';
 part 'modules/dart/core/module.dart';
-part 'modules/dart/core/extra.dart';
 part 'modules/dart/core/structs/automation_event_list.dart';
 part 'modules/dart/core/structs/automation_event.dart';
 part 'modules/dart/core/structs/bone_info.dart';

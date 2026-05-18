@@ -1,6 +1,6 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibCore extends RaylibModule {
+class RaylibCore extends RaylibModule<Raylib> {
   RaylibCore(super.rl);
 
   void InitWindow(int width, int height, Pointer<Char> title) {

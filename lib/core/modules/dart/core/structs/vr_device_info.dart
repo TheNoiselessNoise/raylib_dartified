@@ -1,24 +1,14 @@
-part of '../../../../raylib.dart';
-
-extension VrDeviceInfoCLike on VrDeviceInfoC {
-  int get paramCount => 4;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension VrDeviceInfoCPEx on Pointer<VrDeviceInfoC> {
-  Pointer<VrDeviceInfoC> setC(VrDeviceInfoC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<VrDeviceInfoC> setD(VrDeviceInfoD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<VrDeviceInfoC> setC(VrDeviceInfoC o) { ref.setC(o); return this; }
+  Pointer<VrDeviceInfoC> setD(VrDeviceInfoD o) { ref.setD(o); return this; }
   VrDeviceInfoD toD() => ref.toD(this);
 }
 
 extension VrDeviceInfoCEx on VrDeviceInfoC {
+  int get paramCount => VrDeviceInfoBase.BASE_paramCount;
+
   VrDeviceInfoC setC(VrDeviceInfoC o) {
     hResolution = o.hResolution;
     vResolution = o.vResolution;
@@ -69,7 +59,7 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
   );
 }
 
-class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceInfoBase {
+class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceInfoBase<VrDeviceInfoD> {
   @override
   int hResolution;
   
@@ -135,7 +125,6 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
 
   @override
   VrDeviceInfoD setD(VrDeviceInfoD o) {
-    originalPointer ??= o.originalPointer;
     hResolution = o.hResolution;
     vResolution = o.vResolution;
     hScreenSize = o.hScreenSize;
@@ -149,7 +138,7 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.VrDeviceInfo$;
+  getReference(Pointer<VrDeviceInfoC> p) => p.ref;
 
   @override
   void nativeWriteInto(VrDeviceInfoC p) {
@@ -169,9 +158,6 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
       p.chromaAbCorrection[i] = chromaAbCorrection[i];
     }
   }
-
-  @override
-  String signature() => '$structName()';
 
   @override
   VrDeviceInfoD clone() => .new(

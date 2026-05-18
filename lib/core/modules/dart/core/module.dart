@@ -1,12 +1,15 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
+class RaylibCoreD extends RaylibCoreModuleBase<
+  Raylib,
+  
   // pointers
   Pointer<UnsignedChar>,
 
   // types
   AutomationEventListD,
   AutomationEventD,
+  BoneInfoD,
   BoundingBoxD,
   Camera2DD,
   Camera3DD,
@@ -16,17 +19,20 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   GlyphInfoD,
   ImageD,
   MaterialD,
+  MaterialMapD,
   MatrixD,
   MeshD,
   ModelD,
   ModelAnimationD,
   NPatchInfoD,
+  QuaternionD,
   RayD,
   RayCollisionD,
   RectangleD,
   RenderTextureD,
   ShaderD,
   TextureD,
+  TransformD,
   Vector2D,
   Vector3D,
   Vector4D,
@@ -58,7 +64,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     String title,
   ) => run(
-    () => 'InitWindow($width, $height, $title)',
+    () => RaylibDebugLabels.InitWindow(width, height, title),
     () => rl.Core.InitWindow(
       width.toInt(),
       height.toInt(),
@@ -68,55 +74,55 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   void CloseWindow() => run(
-    () => 'CloseWindow()',
+    () => RaylibDebugLabels.CloseWindow(),
     () => rl.Core.CloseWindow(),
   );
 
   @override
   bool WindowShouldClose() => run(
-    () => 'WindowShouldClose()',
+    () => RaylibDebugLabels.WindowShouldClose(),
     () => rl.Core.WindowShouldClose(),
   );
 
   @override
   bool IsWindowReady() => run(
-    () => 'IsWindowReady()',
+    () => RaylibDebugLabels.IsWindowReady(),
     () => rl.Core.IsWindowReady(),
   );
 
   @override
   bool IsWindowFullscreen() => run(
-    () => 'IsWindowFullscreen()',
+    () => RaylibDebugLabels.IsWindowFullscreen(),
     () => rl.Core.IsWindowFullscreen(),
   );
 
   @override
   bool IsWindowHidden() => run(
-    () => 'IsWindowHidden()',
+    () => RaylibDebugLabels.IsWindowHidden(),
     () => rl.Core.IsWindowHidden(),
   );
     
   @override
   bool IsWindowMinimized() => run(
-    () => 'IsWindowMinimized()',
+    () => RaylibDebugLabels.IsWindowMinimized(),
     () => rl.Core.IsWindowMinimized(),
   );
     
   @override
   bool IsWindowMaximized() => run(
-    () => 'IsWindowMaximized()',
+    () => RaylibDebugLabels.IsWindowMaximized(),
     () => rl.Core.IsWindowMaximized(),
   );
     
   @override
   bool IsWindowFocused() => run(
-    () => 'IsWindowFocused()',
+    () => RaylibDebugLabels.IsWindowFocused(),
     () => rl.Core.IsWindowFocused(),
   );
     
   @override
   bool IsWindowResized() => run(
-    () => 'IsWindowResized()',
+    () => RaylibDebugLabels.IsWindowResized(),
     () => rl.Core.IsWindowResized(),
   );
     
@@ -124,7 +130,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsWindowState(
     ConfigFlags flag,
   ) => run(
-    () => 'IsWindowState(${flag.name})',
+    () => RaylibDebugLabels.IsWindowState(flag),
     () => rl.Core.IsWindowState(flag.value),
   );
     
@@ -132,45 +138,45 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowState(
     Iterable<ConfigFlags> flags,
   ) => run(
-    () => 'SetWindowState(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.SetWindowState(rl.Utils.EnumAsFlagsOr(flags)),
+    () => RaylibDebugLabels.SetWindowState(flags),
+    () => rl.Core.SetWindowState(rl.Utils.EnumsAsFlagsOr(flags)),
   );
     
   @override
   void ClearWindowState(
     Iterable<ConfigFlags> flags,
   ) => run(
-    () => 'ClearWindowState(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.ClearWindowState(rl.Utils.EnumAsFlagsOr(flags)),
+    () => RaylibDebugLabels.ClearWindowState(flags),
+    () => rl.Core.ClearWindowState(rl.Utils.EnumsAsFlagsOr(flags)),
   );
     
   @override
   void ToggleFullscreen() => run(
-    () => 'ToggleFullscreen()',
+    () => RaylibDebugLabels.ToggleFullscreen(),
     () => rl.Core.ToggleFullscreen(),
   );
     
   @override
   void ToggleBorderlessWindowed() => run(
-    () => 'ToggleBorderlessWindowed()',
+    () => RaylibDebugLabels.ToggleBorderlessWindowed(),
     () => rl.Core.ToggleBorderlessWindowed(),
   );
     
   @override
   void MaximizeWindow() => run(
-    () => 'MaximizeWindow()',
+    () => RaylibDebugLabels.MaximizeWindow(),
     () => rl.Core.MaximizeWindow(),
   );
     
   @override
   void MinimizeWindow() => run(
-    () => 'MinimizeWindow()',
+    () => RaylibDebugLabels.MinimizeWindow(),
     () => rl.Core.MinimizeWindow(),
   );
     
   @override
   void RestoreWindow() => run(
-    () => 'RestoreWindow()',
+    () => RaylibDebugLabels.RestoreWindow(),
     () => rl.Core.RestoreWindow(),
   );
     
@@ -178,7 +184,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowIcon(
     ImageD image,
   ) => run(
-    () => 'SetWindowIcon($image)',
+    () => RaylibDebugLabels.SetWindowIcon(image),
     () => rl.Core.SetWindowIcon(
       rl.Temp.Image$.Ref1(image).ref,
     ),
@@ -188,7 +194,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowIcons(
     List<ImageD> images,
   ) => run(
-    () => 'SetWindowIcons(${images.map((i) => i.$state.internalId).join(', ')})',
+    () => RaylibDebugLabels.SetWindowIcons(images),
     () => rl.Core.SetWindowIcons(
       rl.Temp.Image$.Array(images),
       images.length,
@@ -199,7 +205,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowTitle(
     String title,
   ) => run(
-    () => 'SetWindowTitle($title)',
+    () => RaylibDebugLabels.SetWindowTitle(title),
     () => rl.Core.SetWindowTitle(
       rl.Temp.String$.ValueOrNull(title),
     ),
@@ -210,7 +216,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num x,
     num y,
   ) => run(
-    () => 'SetWindowPosition($x, $y)',
+    () => RaylibDebugLabels.SetWindowPosition(x, y),
     () => rl.Core.SetWindowPosition(
       x.toInt(),
       y.toInt(),
@@ -221,7 +227,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowMonitor(
     num monitor,
   ) => run(
-    () => 'SetWindowMonitor($monitor)',
+    () => RaylibDebugLabels.SetWindowMonitor(monitor),
     () => rl.Core.SetWindowMonitor(monitor.toInt()),
   );
     
@@ -230,7 +236,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'SetWindowMinSize($width, $height)',
+    () => RaylibDebugLabels.SetWindowMinSize(width, height),
     () => rl.Core.SetWindowMinSize(
       width.toInt(),
       height.toInt(),
@@ -242,7 +248,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'SetWindowMaxSize($width, $height)',
+    () => RaylibDebugLabels.SetWindowMaxSize(width, height),
     () => rl.Core.SetWindowMaxSize(
       width.toInt(),
       height.toInt(),
@@ -254,7 +260,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'SetWindowSize($width, $height)',
+    () => RaylibDebugLabels.SetWindowSize(width, height),
     () => rl.Core.SetWindowSize(
       width.toInt(),
       height.toInt(),
@@ -265,49 +271,49 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetWindowOpacity(
     num opacity,
   ) => run(
-    () => 'SetWindowOpacity($opacity)',
+    () => RaylibDebugLabels.SetWindowOpacity(opacity),
     () => rl.Core.SetWindowOpacity(opacity.toDouble()),
   );
     
   @override
   void SetWindowFocused() => run(
-    () => 'SetWindowFocused()',
+    () => RaylibDebugLabels.SetWindowFocused(),
     () => rl.Core.SetWindowFocused(),
   );
 
   @override
   int GetScreenWidth() => run(
-    () => 'GetScreenWidth()',
+    () => RaylibDebugLabels.GetScreenWidth(),
     () => rl.Core.GetScreenWidth(),
   );
     
   @override
   int GetScreenHeight() => run(
-    () => 'GetScreenHeight()',
+    () => RaylibDebugLabels.GetScreenHeight(),
     () => rl.Core.GetScreenHeight(),
   );
     
   @override
   int GetRenderWidth() => run(
-    () => 'GetRenderWidth()',
+    () => RaylibDebugLabels.GetRenderWidth(),
     () => rl.Core.GetRenderWidth(),
   );
     
   @override
   int GetRenderHeight() => run(
-    () => 'GetRenderHeight()',
+    () => RaylibDebugLabels.GetRenderHeight(),
     () => rl.Core.GetRenderHeight(),
   );
     
   @override
   int GetMonitorCount() => run(
-    () => 'GetMonitorCount()',
+    () => RaylibDebugLabels.GetMonitorCount(),
     () => rl.Core.GetMonitorCount(),
   );
     
   @override
   int GetCurrentMonitor() => run(
-    () => 'GetCurrentMonitor()',
+    () => RaylibDebugLabels.GetCurrentMonitor(),
     () => rl.Core.GetCurrentMonitor(),
   );
     
@@ -315,7 +321,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   Vector2D GetMonitorPosition(
     num monitor,
   ) => run(
-    () => 'GetMonitorPosition($monitor)',
+    () => RaylibDebugLabels.GetMonitorPosition(monitor),
     () => rl.Core.GetMonitorPosition(monitor.toInt()).toD(),
   );
     
@@ -323,7 +329,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetMonitorWidth(
     num monitor,
   ) => run(
-    () => 'GetMonitorWidth($monitor)',
+    () => RaylibDebugLabels.GetMonitorWidth(monitor),
     () => rl.Core.GetMonitorWidth(monitor.toInt()),
   );
     
@@ -331,7 +337,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetMonitorHeight(
     num monitor,
   ) => run(
-    () => 'GetMonitorHeight($monitor)',
+    () => RaylibDebugLabels.GetMonitorHeight(monitor),
     () => rl.Core.GetMonitorHeight(monitor.toInt()),
   );
     
@@ -339,7 +345,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetMonitorPhysicalWidth(
     num monitor,
   ) => run(
-    () => 'GetMonitorPhysicalWidth($monitor)',
+    () => RaylibDebugLabels.GetMonitorPhysicalWidth(monitor),
     () => rl.Core.GetMonitorPhysicalWidth(monitor.toInt()),
   );
     
@@ -347,7 +353,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetMonitorPhysicalHeight(
     num monitor,
   ) => run(
-    () => 'GetMonitorPhysicalHeight($monitor)',
+    () => RaylibDebugLabels.GetMonitorPhysicalHeight(monitor),
     () => rl.Core.GetMonitorPhysicalHeight(monitor.toInt()),
   );
     
@@ -355,19 +361,19 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetMonitorRefreshRate(
     num monitor,
   ) => run(
-    () => 'GetMonitorRefreshRate($monitor)',
+    () => RaylibDebugLabels.GetMonitorRefreshRate(monitor),
     () => rl.Core.GetMonitorRefreshRate(monitor.toInt()),
   );
     
   @override
   Vector2D GetWindowPosition() => run(
-    () => 'GetWindowPosition()',
+    () => RaylibDebugLabels.GetWindowPosition(),
     () => rl.Core.GetWindowPosition().toD(),
   );
     
   @override
   Vector2D GetWindowScaleDPI() => run(
-    () => 'GetWindowScaleDPI()',
+    () => RaylibDebugLabels.GetWindowScaleDPI(),
     () => rl.Core.GetWindowScaleDPI().toD(),
   );
     
@@ -375,7 +381,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetMonitorName(
     num monitor,
   ) => run(
-    () => 'GetMonitorName($monitor)',
+    () => RaylibDebugLabels.GetMonitorName(monitor),
     () => rl.Core.GetMonitorName(monitor.toInt()).toD,
   );
     
@@ -383,7 +389,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetClipboardText(
     String text,
   ) => run(
-    () => 'SetClipboardText($text)',
+    () => RaylibDebugLabels.SetClipboardText(text),
     () => rl.Core.SetClipboardText(
       rl.Temp.String$.ValueOrNull(text),
     ),
@@ -391,64 +397,64 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   String GetClipboardText() => run(
-    () => 'GetClipboardText()',
+    () => RaylibDebugLabels.GetClipboardText(),
     () => rl.Core.GetClipboardText().toD,
   );
     
   @override
   ImageD GetClipboardImage() => run(
-    () => 'GetClipboardImage()',
+    () => RaylibDebugLabels.GetClipboardImage(),
     () => rl.Temp.Image$.RefCapture(
-      'GetClipboardImage',
-      rl.Core.GetClipboardImage(),
+      RaylibCaptureIds.GetClipboardImage(),
+      (_) => rl.Core.GetClipboardImage(),
     ),
   );
     
   @override
   void EnableEventWaiting() => run(
-    () => 'EnableEventWaiting()',
+    () => RaylibDebugLabels.EnableEventWaiting(),
     () => rl.Core.EnableEventWaiting(),
   );
     
   @override
   void DisableEventWaiting() => run(
-    () => 'DisableEventWaiting()',
+    () => RaylibDebugLabels.DisableEventWaiting(),
     () => rl.Core.DisableEventWaiting(),
   );
     
   @override
   void ShowCursor() => run(
-    () => 'ShowCursor()',
+    () => RaylibDebugLabels.ShowCursor(),
     () => rl.Core.ShowCursor(),
   );
     
   @override
   void HideCursor() => run(
-    () => 'HideCursor()',
+    () => RaylibDebugLabels.HideCursor(),
     () => rl.Core.HideCursor(),
   );
     
   @override
   bool IsCursorHidden() => run(
-    () => 'IsCursorHidden()',
+    () => RaylibDebugLabels.IsCursorHidden(),
     () => rl.Core.IsCursorHidden(),
   );
     
   @override
   void EnableCursor() => run(
-    () => 'EnableCursor()',
+    () => RaylibDebugLabels.EnableCursor(),
     () => rl.Core.EnableCursor(),
   );
     
   @override
   void DisableCursor() => run(
-    () => 'DisableCursor()',
+    () => RaylibDebugLabels.DisableCursor(),
     () => rl.Core.DisableCursor(),
   );
     
   @override
   bool IsCursorOnScreen() => run(
-    () => 'IsCursorOnScreen()',
+    () => RaylibDebugLabels.IsCursorOnScreen(),
     () => rl.Core.IsCursorOnScreen(),
   );
     
@@ -456,7 +462,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ClearBackground(
     ColorD color,
   ) => run(
-    () => 'ClearBackground($color)',
+    () => RaylibDebugLabels.ClearBackground(color),
     () => rl.Core.ClearBackground(
       rl.Temp.Color$.Ref1(color).ref,
     ),
@@ -464,13 +470,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void BeginDrawing() => run(
-    () => 'BeginDrawing()',
+    () => RaylibDebugLabels.BeginDrawing(),
     () => rl.Core.BeginDrawing(),
   );
     
   @override
   void EndDrawing() => run(
-    () => 'EndDrawing()',
+    () => RaylibDebugLabels.EndDrawing(),
     () => rl.Core.EndDrawing(),
   );
     
@@ -478,7 +484,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginMode2D(
     Camera2DD camera,
   ) => run(
-    () => 'BeginMode2D($camera)',
+    () => RaylibDebugLabels.BeginMode2D(camera),
     () => rl.Core.BeginMode2D(
       rl.Temp.Camera2D$.Ref1(camera).ref,
     ),
@@ -486,7 +492,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void EndMode2D() => run(
-    () => 'EndMode2D()',
+    () => RaylibDebugLabels.EndMode2D(),
     () => rl.Core.EndMode2D(),
   );
     
@@ -494,7 +500,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginMode3D(
     Camera3DD camera,
   ) => run(
-    () => 'BeginMode3D($camera)',
+    () => RaylibDebugLabels.BeginMode3D(camera),
     () => rl.Core.BeginMode3D(
       rl.Temp.Camera3D$.Ref1(camera).ref,
     ),
@@ -502,7 +508,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void EndMode3D() => run(
-    () => 'EndMode3D()',
+    () => RaylibDebugLabels.EndMode3D(),
     () => rl.Core.EndMode3D(),
   );
     
@@ -510,7 +516,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginTextureMode(
     RenderTextureD target,
   ) => run(
-    () => 'BeginTextureMode($target)',
+    () => RaylibDebugLabels.BeginTextureMode(target),
     () => rl.Core.BeginTextureMode(
       rl.Temp.RenderTexture$.Ref1(target).ref,
     ),
@@ -518,7 +524,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void EndTextureMode() => run(
-    () => 'EndTextureMode()',
+    () => RaylibDebugLabels.EndTextureMode(),
     () => rl.Core.EndTextureMode(),
   );
     
@@ -526,7 +532,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginShaderMode(
     ShaderD shader,
   ) => run(
-    () => 'BeginShaderMode($shader)',
+    () => RaylibDebugLabels.BeginShaderMode(shader),
     () => rl.Core.BeginShaderMode(
       rl.Temp.Shader$.Ref1(shader).ref,
     ),
@@ -534,7 +540,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void EndShaderMode() => run(
-    () => 'EndShaderMode()',
+    () => RaylibDebugLabels.EndShaderMode(),
     () => rl.Core.EndShaderMode(),
   );
     
@@ -542,13 +548,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginBlendMode(
     BlendMode mode,
   ) => run(
-    () => 'BeginBlendMode($mode)',
+    () => RaylibDebugLabels.BeginBlendMode(mode),
     () => rl.Core.BeginBlendMode(mode.value),
   );
     
   @override
   void EndBlendMode() => run(
-    () => 'EndBlendMode()',
+    () => RaylibDebugLabels.EndBlendMode(),
     () => rl.Core.EndBlendMode(),
   );
     
@@ -559,7 +565,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'BeginScissorMode($x, $y, $width, $height)',
+    () => RaylibDebugLabels.BeginScissorMode(x, y, width, height),
     () => rl.Core.BeginScissorMode(
       x.toInt(),
       y.toInt(),
@@ -570,7 +576,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   void EndScissorMode() => run(
-    () => 'EndScissorMode()',
+    () => RaylibDebugLabels.EndScissorMode(),
     () => rl.Core.EndScissorMode(),
   );
     
@@ -579,7 +585,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void BeginVrStereoMode(
     VrStereoConfigD config,
   ) => run(
-    () => 'BeginVrStereoMode($config)',
+    () => RaylibDebugLabels.BeginVrStereoMode(config),
     () => rl.Core.BeginVrStereoMode(
       rl.Temp.VrStereoConfig$.Ref1(config).ref,
     ),
@@ -588,7 +594,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   // TODO: untested, no VR hardware
   @override
   void EndVrStereoMode() => run(
-    () => 'EndVrStereoMode()',
+    () => RaylibDebugLabels.EndVrStereoMode(),
     () => rl.Core.EndVrStereoMode(),
   );
     
@@ -597,10 +603,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   VrStereoConfigD LoadVrStereoConfig(
     VrDeviceInfoD device,
   ) => run(
-    () => 'LoadVrStereoConfig($device)',
+    () => RaylibDebugLabels.LoadVrStereoConfig(device),
     () => rl.Temp.VrStereoConfig$.RefCapture(
-      'LoadVrStereoConfig_${device.$state.internalId}',
-      rl.Core.LoadVrStereoConfig(
+      RaylibCaptureIds.LoadVrStereoConfig(device),
+      (_) => rl.Core.LoadVrStereoConfig(
         rl.Temp.VrDeviceInfo$.Ref1(device).ref,
       ),
     ),
@@ -611,7 +617,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadVrStereoConfig(
     VrStereoConfigD config,
   ) => run(
-    () => 'UnloadVrStereoConfig($config)',
+    () => RaylibDebugLabels.UnloadVrStereoConfig(config),
     () => rl.Core.UnloadVrStereoConfig(
       config.getOriginalPointerAndDispose().ref,
     ),
@@ -622,10 +628,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String? vsFileName,
     String? fsFileName,
   ) => run(
-    () => 'LoadShader($vsFileName, $fsFileName)',
+    () => RaylibDebugLabels.LoadShader(vsFileName, fsFileName),
     () => rl.Temp.Shader$.RefCapture(
-      'LoadShader_${vsFileName ?? 'default'}_${fsFileName ?? 'default'}',
-      rl.Core.LoadShader(
+      RaylibCaptureIds.LoadShader(vsFileName, fsFileName),
+      (_) => rl.Core.LoadShader(
         rl.Temp.String$.ValueOrNull(vsFileName),
         rl.Temp.String$.ValueOrNull(fsFileName),
       ),
@@ -637,10 +643,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String? vsCode,
     String? fsCode,
   ) => run(
-    () => 'LoadShaderFromMemory($vsCode, $fsCode)',
+    () => RaylibDebugLabels.LoadShaderFromMemory(vsCode, fsCode),
     () => rl.Temp.Shader$.RefCapture(
-      'LoadShaderFromMemory',
-      rl.Core.LoadShaderFromMemory(
+      RaylibCaptureIds.LoadShaderFromMemory(vsCode, fsCode),
+      (_) => rl.Core.LoadShaderFromMemory(
         rl.Temp.String$.ValueOrNull(vsCode),
         rl.Temp.String$.ValueOrNull(fsCode),
       ),
@@ -651,7 +657,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsShaderValid(
     ShaderD shader,
   ) => run(
-    () => 'IsShaderValid($shader)',
+    () => RaylibDebugLabels.IsShaderValid(shader),
     () => rl.Core.IsShaderValid(
       rl.Temp.Shader$.Ref1(shader).ref,
     ),
@@ -662,7 +668,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ShaderD shader,
     String uniformName,
   ) => run(
-    () => 'GetShaderLocation($shader, $uniformName)',
+    () => RaylibDebugLabels.GetShaderLocation(shader, uniformName),
     () => rl.Core.GetShaderLocation(
       rl.Temp.Shader$.Ref1(shader).ref,
       rl.Temp.String$.ValueOrNull(uniformName),
@@ -674,7 +680,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ShaderD shader,
     String attribName,
   ) => run(
-    () => 'GetShaderLocationAttrib($shader, $attribName)',
+    () => RaylibDebugLabels.GetShaderLocationAttrib(shader, attribName),
     () => rl.Core.GetShaderLocationAttrib(
       rl.Temp.Shader$.Ref1(shader).ref,
       rl.Temp.String$.ValueOrNull(attribName),
@@ -703,20 +709,20 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ShaderUniformDataType uniformType,
     num count,
   ) => run(
-    () => 'SetShaderValueV($shader, $locIndex, $value, ${uniformType.name}, $count)',
+    () => RaylibDebugLabels.SetShaderValueV(shader, locIndex, value, uniformType, count),
     () {
       final ptr = switch (uniformType) {
         .SHADER_UNIFORM_FLOAT ||
         .SHADER_UNIFORM_VEC2  ||
         .SHADER_UNIFORM_VEC3  ||
-        .SHADER_UNIFORM_VEC4  => rl.Temp.Float$.Array(value, key: 'SetShaderValueV_Float'),
+        .SHADER_UNIFORM_VEC4  => rl.Temp.Float32$.Array(value),
         
         .SHADER_UNIFORM_INT   ||
         .SHADER_UNIFORM_IVEC2 ||
         .SHADER_UNIFORM_IVEC3 ||
-        .SHADER_UNIFORM_IVEC4 => rl.Temp.Int$.Array(value, key: 'SetShaderValueV_Int'),
+        .SHADER_UNIFORM_IVEC4 => rl.Temp.Int$.Array(value),
         
-        .SHADER_UNIFORM_SAMPLER2D => rl.Temp.Int$.Array(value, key: 'SetShaderValueV_Int'),
+        .SHADER_UNIFORM_SAMPLER2D => rl.Temp.Int$.Array(value),
       };
 
       rl.Core.SetShaderValueV(
@@ -735,7 +741,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num locIndex,
     MatrixD mat,
   ) => run(
-    () => 'SetShaderValueMatrix($shader, $locIndex, $mat)',
+    () => RaylibDebugLabels.SetShaderValueMatrix(shader, locIndex, mat),
     () => rl.Core.SetShaderValueMatrix(
       rl.Temp.Shader$.Ref1(shader).ref,
       locIndex.toInt(),
@@ -749,7 +755,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num locIndex,
     TextureD texture,
   ) => run(
-    () => 'SetShaderValueTexture($shader, $locIndex, $texture)',
+    () => RaylibDebugLabels.SetShaderValueTexture(shader, locIndex, texture),
     () => rl.Core.SetShaderValueTexture(
       rl.Temp.Shader$.Ref1(shader).ref,
       locIndex.toInt(),
@@ -761,7 +767,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadShader(
     ShaderD shader,
   ) => run(
-    () => 'UnloadShader($shader)',
+    () => RaylibDebugLabels.UnloadShader(shader),
     () => rl.Core.UnloadShader(
       shader.getOriginalPointerAndDispose().ref,
     ),
@@ -772,7 +778,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     Camera3DD camera,
   ) => run(
-    () => 'GetScreenToWorldRay($position, $camera)',
+    () => RaylibDebugLabels.GetScreenToWorldRay(position, camera),
     () => rl.Core.GetScreenToWorldRay(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Camera3D$.Ref1(camera).ref,
@@ -786,7 +792,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'GetScreenToWorldRayEx($position, $camera, $width, $height)',
+    () => RaylibDebugLabels.GetScreenToWorldRayEx(position, camera, width, height),
     () => rl.Core.GetScreenToWorldRayEx(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Camera3D$.Ref1(camera).ref,
@@ -800,7 +806,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D position,
     Camera3DD camera,
   ) => run(
-    () => 'GetWorldToScreen($position, $camera)',
+    () => RaylibDebugLabels.GetWorldToScreen(position, camera),
     () => rl.Core.GetWorldToScreen(
       rl.Temp.Vector3$.Ref1(position).ref,
       rl.Temp.Camera3D$.Ref1(camera).ref,
@@ -814,7 +820,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'GetWorldToScreenEx($position, $camera, $width, $height)',
+    () => RaylibDebugLabels.GetWorldToScreenEx(position, camera, width, height),
     () => rl.Core.GetWorldToScreenEx(
       rl.Temp.Vector3$.Ref1(position).ref,
       rl.Temp.Camera3D$.Ref1(camera).ref,
@@ -828,7 +834,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     Camera2DD camera,
   ) => run(
-    () => 'GetWorldToScreen2D($position, $camera)',
+    () => RaylibDebugLabels.GetWorldToScreen2D(position, camera),
     () => rl.Core.GetWorldToScreen2D(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Camera2D$.Ref1(camera).ref,
@@ -840,7 +846,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     Camera2DD camera,
   ) => run(
-    () => 'GetScreenToWorld2D($position, $camera)',
+    () => RaylibDebugLabels.GetScreenToWorld2D(position, camera),
     () => rl.Core.GetScreenToWorld2D(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Camera2D$.Ref1(camera).ref,
@@ -851,7 +857,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   MatrixD GetCameraMatrix(
     Camera3DD camera,
   ) => run(
-    () => 'GetCameraMatrix($camera)',
+    () => RaylibDebugLabels.GetCameraMatrix(camera),
     () => rl.Core.GetCameraMatrix(
       rl.Temp.Camera3D$.Ref1(camera).ref,
     ).toD(),
@@ -861,7 +867,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   MatrixD GetCameraMatrix2D(
     Camera2DD camera,
   ) => run(
-    () => 'GetCameraMatrix2D($camera)',
+    () => RaylibDebugLabels.GetCameraMatrix2D(camera),
     () => rl.Core.GetCameraMatrix2D(
       rl.Temp.Camera2D$.Ref1(camera).ref,
     ).toD(),
@@ -871,37 +877,37 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetTargetFPS(
     num fps,
   ) => run(
-    () => 'SetTargetFPS($fps)',
+    () => RaylibDebugLabels.SetTargetFPS(fps),
     () => rl.Core.SetTargetFPS(fps.toInt()),
   );
 
   @override
   double GetFrameTime() => run(
-    () => 'GetFrameTime()',
+    () => RaylibDebugLabels.GetFrameTime(),
     () => rl.Core.GetFrameTime(),
   );
 
   @override
   double GetTime() => run(
-    () => 'GetTime()',
+    () => RaylibDebugLabels.GetTime(),
     () => rl.Core.GetTime(),
   );
 
   @override
   int GetFPS() => run(
-    () => 'GetFPS()',
+    () => RaylibDebugLabels.GetFPS(),
     () => rl.Core.GetFPS(),
   );
 
   @override
   void SwapScreenBuffer() => run(
-    () => 'SwapScreenBuffer()',
+    () => RaylibDebugLabels.SwapScreenBuffer(),
     () => rl.Core.SwapScreenBuffer(),
   );
 
   @override
   void PollInputEvents() => run(
-    () => 'PollInputEvents()',
+    () => RaylibDebugLabels.PollInputEvents(),
     () => rl.Core.PollInputEvents(),
   );
 
@@ -909,7 +915,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void WaitTime(
     num seconds,
   ) => run(
-    () => 'WaitTime($seconds)',
+    () => RaylibDebugLabels.WaitTime(seconds),
     () => rl.Core.WaitTime(seconds.toDouble()),
   );
 
@@ -917,7 +923,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetRandomSeed(
     num seed,
   ) => run(
-    () => 'SetRandomSeed($seed)',
+    () => RaylibDebugLabels.SetRandomSeed(seed),
     () => rl.Core.SetRandomSeed(seed.toInt()),
   );
 
@@ -926,7 +932,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num min,
     num max,
   ) => run(
-    () => 'GetRandomValue($min, $max)',
+    () => RaylibDebugLabels.GetRandomValue(min, max),
     () => rl.Core.GetRandomValue(
       min.toInt(),
       max.toInt(),
@@ -940,7 +946,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     int max,
     [int? seed]
   ) => run(
-    () => 'LoadRandomSequence($count, $min, $max, seed: $seed)',
+    () => RaylibDebugLabels.LoadRandomSequence(count, min, max, seed),
     () {
       final random = Random(seed);
       return .generate(count, (_) => min + random.nextInt(max - min + 1));
@@ -951,7 +957,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void TakeScreenshot(
     String fileName,
   ) => run(
-    () => 'TakeScreenshot($fileName)',
+    () => RaylibDebugLabels.TakeScreenshot(fileName),
     () => rl.Core.TakeScreenshot(
       rl.Temp.String$.ValueOrNull(fileName),
     ),
@@ -961,15 +967,15 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetConfigFlags(
     Iterable<ConfigFlags> flags,
   ) => run(
-    () => 'SetConfigFlags(${flags.map((e) => e.name).join(' | ')})',
-    () => rl.Core.SetConfigFlags(rl.Utils.EnumAsFlagsOr(flags)),
+    () => RaylibDebugLabels.SetConfigFlags(flags),
+    () => rl.Core.SetConfigFlags(rl.Utils.EnumsAsFlagsOr(flags)),
   );
 
   @override
   void OpenURL(
     String url,
   ) => run(
-    () => 'OpenURL($url)',
+    () => RaylibDebugLabels.OpenURL(url),
     () => rl.Core.OpenURL(
       rl.Temp.String$.ValueOrNull(url),
     ),
@@ -980,7 +986,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     TraceLogLevel logLevel,
     String text,
   ) => run(
-    () => 'TraceLog(${logLevel.name}, $text)',
+    () => RaylibDebugLabels.TraceLog(logLevel, text),
     () => rl.Core.TraceLog(
       logLevel.value,
       rl.Temp.String$.ValueOrNull(text),
@@ -991,7 +997,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetTraceLogLevel(
     TraceLogLevel logLevel,
   ) => run(
-    () => 'SetTraceLogLevel(${logLevel.name})',
+    () => RaylibDebugLabels.SetTraceLogLevel(logLevel),
     () => rl.Core.SetTraceLogLevel(logLevel.value),
   );
     
@@ -999,7 +1005,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetLoadFileDataCallback(
     LoadFileDataCallbackD? callback
   ) => run(
-    () => 'SetLoadFileDataCallback($callback)',
+    () => RaylibDebugLabels.SetLoadFileDataCallback(callback),
     () => rl.Core.SetLoadFileDataCallback(callback?.attach() ?? nullptr),
   );
     
@@ -1007,7 +1013,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetSaveFileDataCallback(
     SaveFileDataCallbackD? callback
   ) => run(
-    () => 'SetSaveFileDataCallback($callback)',
+    () => RaylibDebugLabels.SetSaveFileDataCallback(callback),
     () => rl.Core.SetSaveFileDataCallback(callback?.attach() ?? nullptr),
   );
     
@@ -1015,7 +1021,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetLoadFileTextCallback(
     LoadFileTextCallbackD? callback
   ) => run(
-    () => 'SetLoadFileTextCallback($callback)',
+    () => RaylibDebugLabels.SetLoadFileTextCallback(callback),
     () => rl.Core.SetLoadFileTextCallback(callback?.attach() ?? nullptr),
   );
     
@@ -1023,22 +1029,22 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetSaveFileTextCallback(
     SaveFileTextCallbackD? callback
   ) => run(
-    () => 'SetSaveFileTextCallback($callback)',
+    () => RaylibDebugLabels.SetSaveFileTextCallback(callback),
     () => rl.Core.SetSaveFileTextCallback(callback?.attach() ?? nullptr),
   );
     
   @override
-  List<int> LoadFileData(
+  Uint8List LoadFileData(
     String fileName,
   ) => run(
-    () => 'LoadFileData($fileName)',
+    () => RaylibDebugLabels.LoadFileData(fileName),
     () {
       final fileSize = rl.Temp.Int$.Ref1();
       final data = rl.Core.LoadFileData(
         rl.Temp.String$.ValueOrNull(fileName),
         fileSize,
       );
-      final listData = rl.Temp.UnsignedChar$.asDartList(data, fileSize.value);
+      final listData = Uint8List.fromList(rl.Temp.UnsignedChar$.asView(data, fileSize.value));
       rl.Core.UnloadFileData(data);
       return listData;
     },
@@ -1047,9 +1053,9 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   bool SaveFileData(
     String fileName,
-    List<int> data,
+    Uint8List data,
   ) => run(
-    () => 'SaveFileData($fileName, data: ${data.length})',
+    () => RaylibDebugLabels.SaveFileData(fileName, data),
     () => rl.Core.SaveFileData(
       rl.Temp.String$.ValueOrNull(fileName),
       rl.Temp.Uint8$.Array(data).cast(),
@@ -1059,10 +1065,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   bool ExportDataAsCode(
-    List<int> data,
+    Uint8List data,
     String fileName,
   ) => run(
-    () => 'ExportDataAsCode(data: ${data.length}, $fileName)',
+    () => RaylibDebugLabels.ExportDataAsCode(data, fileName),
     () => rl.Core.ExportDataAsCode(
       rl.Temp.Uint8$.Array(data).cast(),
       data.length,
@@ -1074,7 +1080,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String LoadFileText(
     String fileName,
   ) => run(
-    () => 'LoadFileText($fileName)',
+    () => RaylibDebugLabels.LoadFileText(fileName),
     () {
       final text = rl.Core.LoadFileText(
         rl.Temp.String$.ValueOrNull(fileName),
@@ -1090,7 +1096,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String fileName,
     String text,
   ) => run(
-    () => 'SaveFileText($fileName, $text)',
+    () => RaylibDebugLabels.SaveFileText(fileName, text),
     () => rl.Core.SaveFileText(
       rl.Temp.String$.ValueOrNull(fileName),
       rl.Temp.String$.ValueOrNull(text),
@@ -1101,7 +1107,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool FileExists(
     String fileName,
   ) => run(
-    () => 'FileExists($fileName)',
+    () => RaylibDebugLabels.FileExists(fileName),
     () => rl.Core.FileExists(
       rl.Temp.String$.ValueOrNull(fileName),
     ),
@@ -1111,7 +1117,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool DirectoryExists(
     String dirPath,
   ) => run(
-    () => 'DirectoryExists($dirPath)',
+    () => RaylibDebugLabels.DirectoryExists(dirPath),
     () => rl.Core.DirectoryExists(
       rl.Temp.String$.ValueOrNull(dirPath),
     ),
@@ -1122,7 +1128,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String fileName,
     String ext,
   ) => run(
-    () => 'IsFileExtension($fileName, $ext)',
+    () => RaylibDebugLabels.IsFileExtension(fileName, ext),
     () => rl.Core.IsFileExtension(
       rl.Temp.String$.ValueOrNull(fileName),
       rl.Temp.String$.ValueOrNull(ext),
@@ -1133,7 +1139,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetFileLength(
     String fileName,
   ) => run(
-    () => 'GetFileLength($fileName)',
+    () => RaylibDebugLabels.GetFileLength(fileName),
     () => rl.Core.GetFileLength(
       rl.Temp.String$.ValueOrNull(fileName),
     ),
@@ -1143,7 +1149,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetFileExtension(
     String fileName,
   ) => run(
-    () => 'GetFileExtension($fileName)',
+    () => RaylibDebugLabels.GetFileExtension(fileName),
     () => rl.Core.GetFileExtension(
       rl.Temp.String$.ValueOrNull(fileName),
     ).toD,
@@ -1153,7 +1159,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetFileName(
     String filePath,
   ) => run(
-    () => 'GetFileName($filePath)',
+    () => RaylibDebugLabels.GetFileName(filePath),
     () => rl.Core.GetFileName(
       rl.Temp.String$.ValueOrNull(filePath),
     ).toD,
@@ -1163,7 +1169,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetFileNameWithoutExt(
     String filePath,
   ) => run(
-    () => 'GetFileNameWithoutExt($filePath)',
+    () => RaylibDebugLabels.GetFileNameWithoutExt(filePath),
     () => rl.Core.GetFileNameWithoutExt(
       rl.Temp.String$.ValueOrNull(filePath),
     ).toD,
@@ -1173,7 +1179,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetDirectoryPath(
     String filePath,
   ) => run(
-    () => 'GetDirectoryPath($filePath)',
+    () => RaylibDebugLabels.GetDirectoryPath(filePath),
     () => rl.Core.GetDirectoryPath(
       rl.Temp.String$.ValueOrNull(filePath),
     ).toD,
@@ -1183,7 +1189,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetPrevDirectoryPath(
     String dirPath,
   ) => run(
-    () => 'GetPrevDirectoryPath($dirPath)',
+    () => RaylibDebugLabels.GetPrevDirectoryPath(dirPath),
     () => rl.Core.GetPrevDirectoryPath(
       rl.Temp.String$.ValueOrNull(dirPath),
     ).toD,
@@ -1191,13 +1197,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   String GetWorkingDirectory() => run(
-    () => 'GetWorkingDirectory()',
+    () => RaylibDebugLabels.GetWorkingDirectory(),
     () => rl.Core.GetWorkingDirectory().toD,
   );
 
   @override
   String GetApplicationDirectory() => run(
-    () => 'GetApplicationDirectory()',
+    () => RaylibDebugLabels.GetApplicationDirectory(),
     () => rl.Core.GetApplicationDirectory().toD,
   );
 
@@ -1205,7 +1211,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int MakeDirectory(
     String dirPath,
   ) => run(
-    () => 'MakeDirectory($dirPath)',
+    () => RaylibDebugLabels.MakeDirectory(dirPath),
     () => rl.Core.MakeDirectory(
       rl.Temp.String$.ValueOrNull(dirPath),
     ),
@@ -1215,7 +1221,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool ChangeDirectory(
     String dir,
   ) => run(
-    () => 'ChangeDirectory($dir)',
+    () => RaylibDebugLabels.ChangeDirectory(dir),
     () => rl.Core.ChangeDirectory(
       rl.Temp.String$.ValueOrNull(dir),
     ),
@@ -1225,7 +1231,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsPathFile(
     String path,
   ) => run(
-    () => 'IsPathFile($path)',
+    () => RaylibDebugLabels.IsPathFile(path),
     () => rl.Core.IsPathFile(
       rl.Temp.String$.ValueOrNull(path),
     ),
@@ -1235,7 +1241,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsFileNameValid(
     String fileName,
   ) => run(
-    () => 'IsFileNameValid($fileName)',
+    () => RaylibDebugLabels.IsFileNameValid(fileName),
     () => rl.Core.IsFileNameValid(
       rl.Temp.String$.ValueOrNull(fileName),
     ),
@@ -1245,10 +1251,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   FilePathListD LoadDirectoryFiles(
     String dirPath,
   ) => run(
-    () => 'LoadDirectoryFiles($dirPath)',
+    () => RaylibDebugLabels.LoadDirectoryFiles(dirPath),
     () => rl.Temp.FilePathList$.RefCapture(
-      'LoadDirectoryFiles_$dirPath',
-      rl.Core.LoadDirectoryFiles(
+      RaylibCaptureIds.LoadDirectoryFiles(dirPath),
+      (_) => rl.Core.LoadDirectoryFiles(
         rl.Temp.String$.ValueOrNull(dirPath),
       ),
     ),
@@ -1260,10 +1266,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String filter,
     bool scanSubdirs,
   ) => run(
-    () => 'LoadDirectoryFilesEx($basePath, $filter, $scanSubdirs)',
+    () => RaylibDebugLabels.LoadDirectoryFilesEx(basePath, filter, scanSubdirs),
     () => rl.Temp.FilePathList$.RefCapture(
-      'LoadDirectoryFilesEx_$basePath',
-      rl.Core.LoadDirectoryFilesEx(
+      RaylibCaptureIds.LoadDirectoryFilesEx(basePath, filter, scanSubdirs),
+      (_) => rl.Core.LoadDirectoryFilesEx(
         rl.Temp.String$.ValueOrNull(basePath),
         rl.Temp.String$.ValueOrNull(filter),
         scanSubdirs,
@@ -1273,16 +1279,16 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   bool IsFileDropped() => run(
-    () => 'IsFileDropped()',
+    () => RaylibDebugLabels.IsFileDropped(),
     () => rl.Core.IsFileDropped(),
   );
     
   @override
   FilePathListD LoadDroppedFiles() => run(
-    () => 'LoadDroppedFiles()',
+    () => RaylibDebugLabels.LoadDroppedFiles(),
     () => rl.Temp.FilePathList$.RefCapture(
-      'LoadDroppedFiles',
-      rl.Core.LoadDroppedFiles(),
+      RaylibCaptureIds.LoadDroppedFiles(),
+      (_) => rl.Core.LoadDroppedFiles(),
     ),
   );
 
@@ -1290,7 +1296,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadDroppedFiles(
     FilePathListD files,
   ) => run(
-    () => 'UnloadDroppedFiles($files)',
+    () => RaylibDebugLabels.UnloadDroppedFiles(files),
     () => rl.Core.UnloadDroppedFiles(
       files.getOriginalPointerAndDispose().ref,
     ),
@@ -1300,17 +1306,17 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetFileModTime(
     String fileName,
   ) => run(
-    () => 'GetFileModTime($fileName)',
+    () => RaylibDebugLabels.GetFileModTime(fileName),
     () => rl.Core.GetFileModTime(
       rl.Temp.String$.ValueOrNull(fileName),
     ),
   );
 
   @override
-  List<int> CompressData(
-    List<int> data,
+  Uint8List CompressData(
+    Uint8List data,
   ) => run(
-    () => 'CompressData(data: ${data.length})',
+    () => RaylibDebugLabels.CompressData(data),
     () {
       final compDataSize = rl.Temp.Int$.Ref1();
       final compData = rl.Core.CompressData(
@@ -1318,15 +1324,15 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
         data.length,
         compDataSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(compData, compDataSize.value);
+      return .fromList(rl.Temp.UnsignedChar$.asView(compData, compDataSize.value));
     },
   );
 
   @override
-  List<int> DecompressData(
-    List<int> compData,
+  Uint8List DecompressData(
+    Uint8List compData,
   ) => run(
-    () => 'DecompressData(compData: ${compData.length})',
+    () => RaylibDebugLabels.DecompressData(compData),
     () {
       final dataSize = rl.Temp.Int$.Ref1();
       final data = rl.Core.DecompressData(
@@ -1334,15 +1340,15 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
         compData.length,
         dataSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(data, dataSize.value);
+      return .fromList(rl.Temp.UnsignedChar$.asView(data, dataSize.value));
     },
   );
 
   @override
-  List<int> EncodeDataBase64(
-    List<int> data,
+  Uint8List EncodeDataBase64(
+    Uint8List data,
   ) => run(
-    () => 'EncodeDataBase64(data: ${data.length})',
+    () => RaylibDebugLabels.EncodeDataBase64(data),
     () {
       final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.EncodeDataBase64(
@@ -1350,30 +1356,30 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
         data.length,
         outputSize,
       );
-      return rl.Temp.Char$.asDartList(outputData, outputSize.value);
+      return .fromList(rl.Temp.Char$.asView(outputData, outputSize.value));
     },
   );
 
   @override
-  List<int> DecodeDataBase64(
-    List<int> data,
+  Uint8List DecodeDataBase64(
+    Uint8List data,
   ) => run(
-    () => 'DecodeDataBase64(data: ${data.length})',
+    () => RaylibDebugLabels.DecodeDataBase64(data),
     () {
       final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.DecodeDataBase64(
         rl.Temp.Uint8$.Array(data).cast(),
         outputSize,
       );
-      return rl.Temp.UnsignedChar$.asDartList(outputData, outputSize.value);
+      return .fromList(rl.Temp.UnsignedChar$.asView(outputData, outputSize.value));
     },
   );
 
   @override
   int ComputeCRC32(
-    List<int> data,
+    Uint8List data,
   ) => run(
-    () => 'ComputeCRC32(data: ${data.length})',
+    () => RaylibDebugLabels.ComputeCRC32(data),
     () => rl.Core.ComputeCRC32(
       rl.Temp.Uint8$.Array(data).cast(),
       data.length,
@@ -1381,47 +1387,41 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   );
 
   @override
-  List<int> ComputeMD5(
-    List<int> data,
+  Uint8List ComputeMD5(
+    Uint8List data,
   ) => run(
-    () => 'ComputeMD5(data: ${data.length})',
-    () {
-      const int hashLength = 4; 
-
-      final md5 = rl.Core.ComputeMD5(
+    () => RaylibDebugLabels.ComputeMD5(data),
+    () => .fromList(rl.Temp.UnsignedInt$.ToLEBytes(
+      rl.Core.ComputeMD5(
         rl.Temp.Uint8$.Array(data).cast(),
         data.length,
-      );
-
-      return rl.Temp.UnsignedInt$.ToLEBytes(md5, hashLength);
-    },
+      ),
+      rl.Utils.md5Uint32HashLength,
+    )),
   );
 
   @override
-  List<int> ComputeSHA1(
-    List<int> data,
+  Uint8List ComputeSHA1(
+    Uint8List data,
   ) => run(
-    () => 'ComputeSHA1(data: ${data.length})',
-    () {
-      const int hashLength = 5; 
-
-      final sha1 = rl.Core.ComputeSHA1(
+    () => RaylibDebugLabels.ComputeSHA1(data),
+    () => .fromList(rl.Temp.UnsignedInt$.ToBEBytes(
+      rl.Core.ComputeSHA1(
         rl.Temp.Uint8$.Array(data).cast(),
         data.length,
-      );
-
-      return rl.Temp.UnsignedInt$.ToBEBytes(sha1, hashLength);
-    },
+      ),
+      rl.Utils.sha1Uint32HashLength,
+    )),
   );
     
   @override
   AutomationEventListD LoadAutomationEventList(
     String? fileName,
   ) => run(
-    () => 'LoadAutomationEventList($fileName)',
+    () => RaylibDebugLabels.LoadAutomationEventList(fileName),
     () => rl.Temp.AutomationEventList$.RefCapture(
-      'LoadAutomationEventList_$fileName',
-      rl.Core.LoadAutomationEventList(
+      RaylibCaptureIds.LoadAutomationEventList(fileName),
+      (_) => rl.Core.LoadAutomationEventList(
         rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
@@ -1431,7 +1431,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadAutomationEventList(
     AutomationEventListD list,
   ) => run(
-    () => 'UnloadAutomationEventList($list)',
+    () => RaylibDebugLabels.UnloadAutomationEventList(list),
     () => rl.Core.UnloadAutomationEventList(
       list.getOriginalPointerAndDispose().ref,
     ),
@@ -1442,7 +1442,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     AutomationEventListD list,
     String fileName,
   ) => run(
-    () => 'ExportAutomationEventList($list, $fileName)',
+    () => RaylibDebugLabels.ExportAutomationEventList(list, fileName),
     () => rl.Core.ExportAutomationEventList(
       rl.Temp.AutomationEventList$.Ref1(list).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -1453,7 +1453,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetAutomationEventList(
     AutomationEventListD list,
   ) => run(
-    () => 'SetAutomationEventList($list)',
+    () => RaylibDebugLabels.SetAutomationEventList(list),
     () => rl.Core.SetAutomationEventList(
       rl.Temp.AutomationEventList$.Ref1(list),
     ),
@@ -1463,19 +1463,19 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetAutomationEventBaseFrame(
     int frame,
   ) => run(
-    () => 'SetAutomationEventBaseFrame($frame)',
+    () => RaylibDebugLabels.SetAutomationEventBaseFrame(frame),
     () => rl.Core.SetAutomationEventBaseFrame(frame),
   );
     
   @override
   void StartAutomationEventRecording() => run(
-    () => 'StartAutomationEventRecording()',
+    () => RaylibDebugLabels.StartAutomationEventRecording(),
     () => rl.Core.StartAutomationEventRecording(),
   );
 
   @override
   void StopAutomationEventRecording() => run(
-    () => 'StopAutomationEventRecording()',
+    () => RaylibDebugLabels.StopAutomationEventRecording(),
     () => rl.Core.StopAutomationEventRecording(),
   );
     
@@ -1483,7 +1483,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void PlayAutomationEvent(
     AutomationEventD event,
   ) => run(
-    () => 'PlayAutomationEvent($event)',
+    () => RaylibDebugLabels.PlayAutomationEvent(event),
     () => rl.Core.PlayAutomationEvent(
       rl.Temp.AutomationEvent$.Ref1(event).ref,
     ),
@@ -1493,7 +1493,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsKeyPressed(
     KeyboardKey key,
   ) => run(
-    () => 'IsKeyPressed(${key.name})',
+    () => RaylibDebugLabels.IsKeyPressed(key),
     () => rl.Core.IsKeyPressed(key.value),
   );
 
@@ -1501,7 +1501,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsKeyPressedRepeat(
     KeyboardKey key,
   ) => run(
-    () => 'IsKeyPressedRepeat(${key.name})',
+    () => RaylibDebugLabels.IsKeyPressedRepeat(key),
     () => rl.Core.IsKeyPressedRepeat(key.value),
   );
 
@@ -1509,7 +1509,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsKeyDown(
     KeyboardKey key,
   ) => run(
-    () => 'IsKeyDown(${key.name})',
+    () => RaylibDebugLabels.IsKeyDown(key),
     () => rl.Core.IsKeyDown(key.value),
   );
 
@@ -1517,7 +1517,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsKeyReleased(
     KeyboardKey key,
   ) => run(
-    () => 'IsKeyReleased(${key.name})',
+    () => RaylibDebugLabels.IsKeyReleased(key),
     () => rl.Core.IsKeyReleased(key.value),
   );
 
@@ -1525,19 +1525,19 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsKeyUp(
     KeyboardKey key,
   ) => run(
-    () => 'IsKeyUp(${key.name})',
+    () => RaylibDebugLabels.IsKeyUp(key),
     () => rl.Core.IsKeyUp(key.value),
   );
 
   @override
   int GetKeyPressed() => run(
-    () => 'GetKeyPressed()',
+    () => RaylibDebugLabels.GetKeyPressed(),
     () => rl.Core.GetKeyPressed(),
   );
 
   @override
   int GetCharPressed() => run(
-    () => 'GetCharPressed()',
+    () => RaylibDebugLabels.GetCharPressed(),
     () => rl.Core.GetCharPressed(),
   );
 
@@ -1545,7 +1545,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetExitKey(
     KeyboardKey key,
   ) => run(
-    () => 'SetExitKey(${key.name})',
+    () => RaylibDebugLabels.SetExitKey(key),
     () => rl.Core.SetExitKey(key.value),
   );
 
@@ -1553,7 +1553,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsGamepadAvailable(
     num gamepad,
   ) => run(
-    () => 'IsGamepadAvailable($gamepad)',
+    () => RaylibDebugLabels.IsGamepadAvailable(gamepad),
     () => rl.Core.IsGamepadAvailable(gamepad.toInt()),
   );
 
@@ -1561,7 +1561,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   String GetGamepadName(
     num gamepad,
   ) => run(
-    () => 'GetGamepadName($gamepad)',
+    () => RaylibDebugLabels.GetGamepadName(gamepad),
     () => rl.Core.GetGamepadName(gamepad.toInt()).toD,
   );
 
@@ -1570,7 +1570,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num gamepad,
     GamepadButton button,
   ) => run(
-    () => 'IsGamepadButtonPressed($gamepad, ${button.name})',
+    () => RaylibDebugLabels.IsGamepadButtonPressed(gamepad, button),
     () => rl.Core.IsGamepadButtonPressed(
       gamepad.toInt(),
       button.value,
@@ -1582,7 +1582,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num gamepad,
     GamepadButton button,
   ) => run(
-    () => 'IsGamepadButtonDown($gamepad, ${button.name})',
+    () => RaylibDebugLabels.IsGamepadButtonDown(gamepad, button),
     () => rl.Core.IsGamepadButtonDown(
       gamepad.toInt(),
       button.value,
@@ -1594,7 +1594,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num gamepad,
     GamepadButton button,
   ) => run(
-    () => 'IsGamepadButtonReleased($gamepad, ${button.name})',
+    () => RaylibDebugLabels.IsGamepadButtonReleased(gamepad, button),
     () => rl.Core.IsGamepadButtonReleased(
       gamepad.toInt(),
       button.value,
@@ -1606,7 +1606,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num gamepad,
     GamepadButton button,
   ) => run(
-    () => 'IsGamepadButtonUp($gamepad, ${button.name})',
+    () => RaylibDebugLabels.IsGamepadButtonUp(gamepad, button),
     () => rl.Core.IsGamepadButtonUp(
       gamepad.toInt(),
       button.value,
@@ -1615,7 +1615,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   GamepadButton GetGamepadButtonPressed() => run(
-    () => 'GetGamepadButtonPressed()',
+    () => RaylibDebugLabels.GetGamepadButtonPressed(),
     () => .fromValue(rl.Core.GetGamepadButtonPressed()),
   );
 
@@ -1623,7 +1623,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetGamepadAxisCount(
     num gamepad,
   ) => run(
-    () => 'GetGamepadAxisCount($gamepad)',
+    () => RaylibDebugLabels.GetGamepadAxisCount(gamepad),
     () => rl.Core.GetGamepadAxisCount(gamepad.toInt()),
   );
 
@@ -1632,7 +1632,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num gamepad,
     GamepadAxis axis,
   ) => run(
-    () => 'GetGamepadAxisMovement($gamepad, $axis)',
+    () => RaylibDebugLabels.GetGamepadAxisMovement(gamepad, axis),
     () => rl.Core.GetGamepadAxisMovement(
       gamepad.toInt(),
       axis.value,
@@ -1643,7 +1643,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int SetGamepadMappings(
     String mappings,
   ) => run(
-    () => 'SetGamepadMappings($mappings)',
+    () => RaylibDebugLabels.SetGamepadMappings(mappings),
     () => rl.Core.SetGamepadMappings(
       rl.Temp.String$.ValueOrNull(mappings),
     ),
@@ -1656,7 +1656,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rightMotor,
     num duration,
   ) => run(
-    () => 'SetGamepadVibration($gamepad, $leftMotor, $rightMotor, $duration)',
+    () => RaylibDebugLabels.SetGamepadVibration(gamepad, leftMotor, rightMotor, duration),
     () => rl.Core.SetGamepadVibration(
       gamepad.toInt(),
       leftMotor.toDouble(),
@@ -1669,7 +1669,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsMouseButtonPressed(
     MouseButton button,
   ) => run(
-    () => 'IsMouseButtonPressed(${button.name})',
+    () => RaylibDebugLabels.IsMouseButtonPressed(button),
     () => rl.Core.IsMouseButtonPressed(button.value),
   );
 
@@ -1677,7 +1677,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsMouseButtonDown(
     MouseButton button,
   ) => run(
-    () => 'IsMouseButtonDown(${button.name})',
+    () => RaylibDebugLabels.IsMouseButtonDown(button),
     () => rl.Core.IsMouseButtonDown(button.value),
   );
 
@@ -1685,7 +1685,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsMouseButtonReleased(
     MouseButton button,
   ) => run(
-    () => 'IsMouseButtonReleased(${button.name})',
+    () => RaylibDebugLabels.IsMouseButtonReleased(button),
     () => rl.Core.IsMouseButtonReleased(button.value),
   );
 
@@ -1693,31 +1693,31 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsMouseButtonUp(
     MouseButton button,
   ) => run(
-    () => 'IsMouseButtonUp(${button.name})',
+    () => RaylibDebugLabels.IsMouseButtonUp(button),
     () => rl.Core.IsMouseButtonUp(button.value),
   );
 
   @override
   int GetMouseX() => run(
-    () => 'GetMouseX()',
+    () => RaylibDebugLabels.GetMouseX(),
     () => rl.Core.GetMouseX(),
   );
 
   @override
   int GetMouseY() => run(
-    () => 'GetMouseY()',
+    () => RaylibDebugLabels.GetMouseY(),
     () => rl.Core.GetMouseY(),
   );
 
   @override
   Vector2D GetMousePosition() => run(
-    () => 'GetMousePosition()',
+    () => RaylibDebugLabels.GetMousePosition(),
     () => rl.Core.GetMousePosition().toD(),
   );
 
   @override
   Vector2D GetMouseDelta() => run(
-    () => 'GetMouseDelta()',
+    () => RaylibDebugLabels.GetMouseDelta(),
     () => rl.Core.GetMouseDelta().toD(),
   );
 
@@ -1726,7 +1726,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num x,
     num y,
   ) => run(
-    () => 'SetMousePosition($x, $y)',
+    () => RaylibDebugLabels.SetMousePosition(x, y),
     () => rl.Core.SetMousePosition(
       x.toInt(),
       y.toInt(),
@@ -1738,7 +1738,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num offsetX,
     num offsetY,
   ) => run(
-    () => 'SetMouseOffset($offsetX, $offsetY)',
+    () => RaylibDebugLabels.SetMouseOffset(offsetX, offsetY),
     () => rl.Core.SetMouseOffset(
       offsetX.toInt(),
       offsetY.toInt(),
@@ -1750,7 +1750,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scaleX,
     num scaleY,
   ) => run(
-    () => 'SetMouseScale($scaleX, $scaleY)',
+    () => RaylibDebugLabels.SetMouseScale(scaleX, scaleY),
     () => rl.Core.SetMouseScale(
       scaleX.toDouble(),
       scaleY.toDouble(),
@@ -1759,13 +1759,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   double GetMouseWheelMove() => run(
-    () => 'GetMouseWheelMove()',
+    () => RaylibDebugLabels.GetMouseWheelMove(),
     () => rl.Core.GetMouseWheelMove(),
   );
 
   @override
   Vector2D GetMouseWheelMoveV() => run(
-    () => 'GetMouseWheelMoveV()',
+    () => RaylibDebugLabels.GetMouseWheelMoveV(),
     () => rl.Core.GetMouseWheelMoveV().toD(),
   );
 
@@ -1773,19 +1773,19 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetMouseCursor(
     MouseCursor cursor,
   ) => run(
-    () => 'SetMouseCursor(${cursor.name})',
+    () => RaylibDebugLabels.SetMouseCursor(cursor),
     () => rl.Core.SetMouseCursor(cursor.value),
   );
 
   @override
   int GetTouchX() => run(
-    () => 'GetTouchX()',
+    () => RaylibDebugLabels.GetTouchX(),
     () => rl.Core.GetTouchX(),
   );
 
   @override
   int GetTouchY() => run(
-    () => 'GetTouchY()',
+    () => RaylibDebugLabels.GetTouchY(),
     () => rl.Core.GetTouchY(),
   );
 
@@ -1793,7 +1793,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   Vector2D GetTouchPosition(
     num index,
   ) => run(
-    () => 'GetTouchPosition($index)',
+    () => RaylibDebugLabels.GetTouchPosition(index),
     () => rl.Core.GetTouchPosition(index.toInt()).toD(),
   );
 
@@ -1801,13 +1801,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetTouchPointId(
     num index,
   ) => run(
-    () => 'GetTouchPointId($index)',
+    () => RaylibDebugLabels.GetTouchPointId(index),
     () => rl.Core.GetTouchPointId(index.toInt()),
   );
 
   @override
   int GetTouchPointCount() => run(
-    () => 'GetTouchPointCount()',
+    () => RaylibDebugLabels.GetTouchPointCount(),
     () => rl.Core.GetTouchPointCount(),
   );
 
@@ -1815,51 +1815,51 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetGesturesEnabled(
     Iterable<Gesture> flags,
   ) => run(
-    () => 'SetGesturesEnabled($flags)',
-    () => rl.Core.SetGesturesEnabled(rl.Utils.EnumAsFlagsOr(flags)),
+    () => RaylibDebugLabels.SetGesturesEnabled(flags),
+    () => rl.Core.SetGesturesEnabled(rl.Utils.EnumsAsFlagsOr(flags)),
   );
 
   @override
   bool IsGestureDetected(
-    Gesture gesture,
+    Gesture key,
   ) => run(
-    () => 'IsGestureDetected($gesture)',
-    () => rl.Core.IsGestureDetected(gesture.value),
+    () => RaylibDebugLabels.IsGestureDetected(key),
+    () => rl.Core.IsGestureDetected(key.value),
   );
 
   @override
   Gesture GetGestureDetected() => run(
-    () => 'GetGestureDetected()',
+    () => RaylibDebugLabels.GetGestureDetected(),
     () => .fromValue(rl.Core.GetGestureDetected()),
   );
 
   @override
   double GetGestureHoldDuration() => run(
-    () => 'GetGestureHoldDuration()',
+    () => RaylibDebugLabels.GetGestureHoldDuration(),
     () => rl.Core.GetGestureHoldDuration(),
   );
 
   @override
   Vector2D GetGestureDragVector() => run(
-    () => 'GetGestureDragVector()',
+    () => RaylibDebugLabels.GetGestureDragVector(),
     () => rl.Core.GetGestureDragVector().toD(),
   );
 
   @override
   double GetGestureDragAngle() => run(
-    () => 'GetGestureDragAngle()',
+    () => RaylibDebugLabels.GetGestureDragAngle(),
     () => rl.Core.GetGestureDragAngle(),
   );
 
   @override
   Vector2D GetGesturePinchVector() => run(
-    () => 'GetGesturePinchVector()',
+    () => RaylibDebugLabels.GetGesturePinchVector(),
     () => rl.Core.GetGesturePinchVector().toD(),
   );
 
   @override
   double GetGesturePinchAngle() => run(
-    () => 'GetGesturePinchAngle()',
+    () => RaylibDebugLabels.GetGesturePinchAngle(),
     () => rl.Core.GetGesturePinchAngle(),
   );
     
@@ -1868,7 +1868,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Camera3DD camera,
     CameraMode mode,
   ) => run(
-    () => 'UpdateCamera($camera, $mode)',
+    () => RaylibDebugLabels.UpdateCamera(camera, mode),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (p) => rl.Core.UpdateCamera(p, mode.value),
     ),
@@ -1881,7 +1881,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D rotation,
     num zoom,
   ) => run(
-    () => 'UpdateCameraPro($camera, $movement, $rotation, $zoom)',
+    () => RaylibDebugLabels.UpdateCameraPro(camera, movement, rotation, zoom),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (p) => rl.Core.UpdateCameraPro(
         p,
@@ -1897,7 +1897,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     TextureD texture,
     RectangleD source,
   ) => run(
-    () => 'SetShapesTexture($texture, $source)',
+    () => RaylibDebugLabels.SetShapesTexture(texture, source),
     () => rl.Core.SetShapesTexture(
       rl.Temp.Texture$.Ref1(texture).ref,
       rl.Temp.Rectangle$.Ref1(source).ref,
@@ -1906,13 +1906,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   TextureD GetShapesTexture() => run(
-    () => 'GetShapesTexture()',
+    () => RaylibDebugLabels.GetShapesTexture(),
     () => rl.Core.GetShapesTexture().toD(),
   );
 
   @override
   RectangleD GetShapesTextureRectangle() => run(
-    () => 'GetShapesTextureRectangle()',
+    () => RaylibDebugLabels.GetShapesTextureRectangle(),
     () => rl.Core.GetShapesTextureRectangle().toD(),
   );
 
@@ -1922,7 +1922,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num posY,
     ColorD color,
   ) => run(
-    () => 'DrawPixel($posX, $posY, $color)',
+    () => RaylibDebugLabels.DrawPixel(posX, posY, color),
     () => rl.Core.DrawPixel(
       posX.toInt(),
       posY.toInt(),
@@ -1935,7 +1935,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     ColorD color,
   ) => run(
-    () => 'DrawPixelV($position, $color)',
+    () => RaylibDebugLabels.DrawPixelV(position, color),
     () => rl.Core.DrawPixelV(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Color$.Ref1(color).ref,
@@ -1950,7 +1950,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num endPosY,
     ColorD color,
   ) => run(
-    () => 'DrawLine($startPosX, $startPosY, $endPosX, $endPosY, $color)',
+    () => RaylibDebugLabels.DrawLine(startPosX, startPosY, endPosX, endPosY, color),
     () => rl.Core.DrawLine(
       startPosX.toInt(),
       startPosY.toInt(),
@@ -1966,7 +1966,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D endPos,
     ColorD color,
   ) => run(
-    () => 'DrawLineV($startPos, $endPos, $color)',
+    () => RaylibDebugLabels.DrawLineV(startPos, endPos, color),
     () => rl.Core.DrawLineV(
       rl.Temp.Vector2$.Ref1(startPos).ref,
       rl.Temp.Vector2$.Ref2(endPos).ref,
@@ -1981,7 +1981,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawLineEx($startPos, $endPos, $thick, $color)',
+    () => RaylibDebugLabels.DrawLineEx(startPos, endPos, thick, color),
     () => rl.Core.DrawLineEx(
       rl.Temp.Vector2$.Ref1(startPos).ref,
       rl.Temp.Vector2$.Ref2(endPos).ref,
@@ -1995,7 +1995,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector2D> points,
     ColorD color,
   ) => run(
-    () => 'DrawLineStrip(points: ${points.length}, $color)',
+    () => RaylibDebugLabels.DrawLineStrip(points, color),
     () => rl.Core.DrawLineStrip(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2010,7 +2010,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawLineBezier($startPos, $endPos, $thick, $color)',
+    () => RaylibDebugLabels.DrawLineBezier(startPos, endPos, thick, color),
     () => rl.Core.DrawLineBezier(
       rl.Temp.Vector2$.Ref1(startPos).ref,
       rl.Temp.Vector2$.Ref2(endPos).ref,
@@ -2026,7 +2026,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'DrawCircle($centerX, $centerY, $radius, $color)',
+    () => RaylibDebugLabels.DrawCircle(centerX, centerY, radius, color),
     () => rl.Core.DrawCircle(
       centerX.toInt(),
       centerY.toInt(),
@@ -2044,7 +2044,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawCircleSector($center, $radius, $startAngle, $endAngle, $segments, $color)',
+    () => RaylibDebugLabels.DrawCircleSector(center, radius, startAngle, endAngle, segments, color),
     () => rl.Core.DrawCircleSector(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2064,7 +2064,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawCircleSectorLines($center, $radius, $startAngle, $endAngle, $segments, $color)',
+    () => RaylibDebugLabels.DrawCircleSectorLines(center, radius, startAngle, endAngle, segments, color),
     () => rl.Core.DrawCircleSectorLines(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2083,7 +2083,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD inner,
     ColorD outer,
   ) => run(
-    () => 'DrawCircleGradient($centerX, $centerY, $radius, $inner, $outer)',
+    () => RaylibDebugLabels.DrawCircleGradient(centerX, centerY, radius, inner, outer),
     () => rl.Core.DrawCircleGradient(
       centerX.toInt(),
       centerY.toInt(),
@@ -2099,7 +2099,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'DrawCircleV($center, $radius, $color)',
+    () => RaylibDebugLabels.DrawCircleV(center, radius, color),
     () => rl.Core.DrawCircleV(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2114,7 +2114,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'DrawCircleLines($centerX, $centerY, $radius, $color)',
+    () => RaylibDebugLabels.DrawCircleLines(centerX, centerY, radius, color),
     () => rl.Core.DrawCircleLines(
       centerX.toInt(),
       centerY.toInt(),
@@ -2129,7 +2129,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'DrawCircleLinesV($center, $radius, $color)',
+    () => RaylibDebugLabels.DrawCircleLinesV(center, radius, color),
     () => rl.Core.DrawCircleLinesV(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2145,7 +2145,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radiusV,
     ColorD color,
   ) => run(
-    () => 'DrawEllipse($centerX, $centerY, $radiusH, $radiusV, $color)',
+    () => RaylibDebugLabels.DrawEllipse(centerX, centerY, radiusH, radiusV, color),
     () => rl.Core.DrawEllipse(
       centerX.toInt(),
       centerY.toInt(),
@@ -2163,7 +2163,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radiusV,
     ColorD color,
   ) => run(
-    () => 'DrawEllipseLines($centerX, $centerY, $radiusH, $radiusV, $color)',
+    () => RaylibDebugLabels.DrawEllipseLines(centerX, centerY, radiusH, radiusV, color),
     () => rl.Core.DrawEllipseLines(
       centerX.toInt(),
       centerY.toInt(),
@@ -2183,7 +2183,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawRing($center, $innerRadius, $outerRadius, $startAngle, $endAngle, $segments, $color)',
+    () => RaylibDebugLabels.DrawRing(center, innerRadius, outerRadius, startAngle, endAngle, segments, color),
     () => rl.Core.DrawRing(
       rl.Temp.Vector2$.Ref1(center).ref,
       innerRadius.toDouble(),
@@ -2205,7 +2205,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawRingLines($center, $innerRadius, $outerRadius, $startAngle, $endAngle, $segments, $color)',
+    () => RaylibDebugLabels.DrawRingLines(center, innerRadius, outerRadius, startAngle, endAngle, segments, color),
     () => rl.Core.DrawRingLines(
       rl.Temp.Vector2$.Ref1(center).ref,
       innerRadius.toDouble(),
@@ -2225,7 +2225,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     ColorD color,
   ) => run(
-    () => 'DrawRectangle($posX, $posY, $width, $height, $color)',
+    () => RaylibDebugLabels.DrawRectangle(posX, posY, width, height, color),
     () => rl.Core.DrawRectangle(
       posX.toInt(),
       posY.toInt(),
@@ -2241,7 +2241,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D size,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleV($position, $size, $color)',
+    () => RaylibDebugLabels.DrawRectangleV(position, size, color),
     () => rl.Core.DrawRectangleV(
       rl.Temp.Vector2$.Ref1(position).ref,
       rl.Temp.Vector2$.Ref2(size).ref,
@@ -2254,7 +2254,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RectangleD rec,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleRec($rec, $color)',
+    () => RaylibDebugLabels.DrawRectangleRec(rec, color),
     () => rl.Core.DrawRectangleRec(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       rl.Temp.Color$.Ref1(color).ref,
@@ -2268,7 +2268,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD color,
   ) => run(
-    () => 'DrawRectanglePro($rec, $origin, $rotation, $color)',
+    () => RaylibDebugLabels.DrawRectanglePro(rec, origin, rotation, color),
     () => rl.Core.DrawRectanglePro(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       rl.Temp.Vector2$.Ref1(origin).ref,
@@ -2286,7 +2286,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD top,
     ColorD bottom,
   ) => run(
-    () => 'DrawRectangleGradientV($posX, $posY, $width, $height, $top, $bottom)',
+    () => RaylibDebugLabels.DrawRectangleGradientV(posX, posY, width, height, top, bottom),
     () => rl.Core.DrawRectangleGradientV(
       posX.toInt(),
       posY.toInt(),
@@ -2306,7 +2306,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD left,
     ColorD right,
   ) => run(
-    () => 'DrawRectangleGradientH($posX, $posY, $width, $height, $left, $right)',
+    () => RaylibDebugLabels.DrawRectangleGradientH(posX, posY, width, height, left, right),
     () => rl.Core.DrawRectangleGradientH(
       posX.toInt(),
       posY.toInt(),
@@ -2325,7 +2325,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD topRight,
     ColorD bottomRight,
   ) => run(
-    () => 'DrawRectangleGradientEx($rec, $topLeft, $bottomLeft, $topRight, $bottomRight)',
+    () => RaylibDebugLabels.DrawRectangleGradientEx(rec, topLeft, bottomLeft, topRight, bottomRight),
     () => rl.Core.DrawRectangleGradientEx(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       rl.Temp.Color$.Ref1(topLeft).ref,
@@ -2343,7 +2343,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleLines($posX, $posY, $width, $height, $color)',
+    () => RaylibDebugLabels.DrawRectangleLines(posX, posY, width, height, color),
     () => rl.Core.DrawRectangleLines(
       posX.toInt(),
       posY.toInt(),
@@ -2359,7 +2359,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num lineThick,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleLinesEx($rec, $lineThick, $color)',
+    () => RaylibDebugLabels.DrawRectangleLinesEx(rec, lineThick, color),
     () => rl.Core.DrawRectangleLinesEx(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       lineThick.toDouble(),
@@ -2374,7 +2374,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleRounded($rec, $roundness, $segments, $color)',
+    () => RaylibDebugLabels.DrawRectangleRounded(rec, roundness, segments, color),
     () => rl.Core.DrawRectangleRounded(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
@@ -2390,7 +2390,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num segments,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleRoundedLines($rec, $roundness, $segments, $color)',
+    () => RaylibDebugLabels.DrawRectangleRoundedLines(rec, roundness, segments, color),
     () => rl.Core.DrawRectangleRoundedLines(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
@@ -2407,7 +2407,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num lineThick,
     ColorD color,
   ) => run(
-    () => 'DrawRectangleRoundedLinesEx($rec, $roundness, $segments, $lineThick, $color)',
+    () => RaylibDebugLabels.DrawRectangleRoundedLinesEx(rec, roundness, segments, lineThick, color),
     () => rl.Core.DrawRectangleRoundedLinesEx(
       rl.Temp.Rectangle$.Ref1(rec).ref,
       roundness.toDouble(),
@@ -2424,7 +2424,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D v3,
     ColorD color,
   ) => run(
-    () => 'DrawTriangle($v1, $v2, $v3, $color)',
+    () => RaylibDebugLabels.DrawTriangle(v1, v2, v3, color),
     () => rl.Core.DrawTriangle(
       rl.Temp.Vector2$.Ref1(v1).ref,
       rl.Temp.Vector2$.Ref2(v2).ref,
@@ -2440,7 +2440,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D v3,
     ColorD color,
   ) => run(
-    () => 'DrawTriangleLines($v1, $v2, $v3, $color)',
+    () => RaylibDebugLabels.DrawTriangleLines(v1, v2, v3, color),
     () => rl.Core.DrawTriangleLines(
       rl.Temp.Vector2$.Ref1(v1).ref,
       rl.Temp.Vector2$.Ref2(v2).ref,
@@ -2454,7 +2454,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector2D> points,
     ColorD color,
   ) => run(
-    () => 'DrawTriangleFan(points: ${points.length}, $color)',
+    () => RaylibDebugLabels.DrawTriangleFan(points, color),
     () => rl.Core.DrawTriangleFan(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2467,7 +2467,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector2D> points,
     ColorD color,
   ) => run(
-    () => 'DrawTriangleStrip(points: ${points.length}, $color)',
+    () => RaylibDebugLabels.DrawTriangleStrip(points, color),
     () => rl.Core.DrawTriangleStrip(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2483,7 +2483,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD color,
   ) => run(
-    () => 'DrawPoly($center, $sides, $radius, $rotation, $color)',
+    () => RaylibDebugLabels.DrawPoly(center, sides, radius, rotation, color),
     () => rl.Core.DrawPoly(
       rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
@@ -2501,7 +2501,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD color,
   ) => run(
-    () => 'DrawPolyLines($center, $sides, $radius, $rotation, $color)',
+    () => RaylibDebugLabels.DrawPolyLines(center, sides, radius, rotation, color),
     () => rl.Core.DrawPolyLines(
       rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
@@ -2520,7 +2520,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num lineThick,
     ColorD color,
   ) => run(
-    () => 'DrawPolyLinesEx($center, $sides, $radius, $rotation, $lineThick, $color)',
+    () => RaylibDebugLabels.DrawPolyLinesEx(center, sides, radius, rotation, lineThick, color),
     () => rl.Core.DrawPolyLinesEx(
       rl.Temp.Vector2$.Ref1(center).ref,
       sides.toInt(),
@@ -2537,7 +2537,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineLinear(points: ${points.length}, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineLinear(points, thick, color),
     () => rl.Core.DrawSplineLinear(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2552,7 +2552,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineBasis(points: ${points.length}, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineBasis(points, thick, color),
     () => rl.Core.DrawSplineBasis(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2567,7 +2567,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineCatmullRom(points: ${points.length}, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineCatmullRom(points, thick, color),
     () => rl.Core.DrawSplineCatmullRom(
       rl.Temp.Vector2$.Array(points), 
       points.length, 
@@ -2582,7 +2582,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineBezierQuadratic(points: ${points.length}, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineBezierQuadratic(points, thick, color),
     () => rl.Core.DrawSplineBezierQuadratic(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2597,7 +2597,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineBezierCubic(points: ${points.length}, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineBezierCubic(points, thick, color),
     () => rl.Core.DrawSplineBezierCubic(
       rl.Temp.Vector2$.Array(points),
       points.length,
@@ -2613,7 +2613,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineSegmentLinear($p1, $p2, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineSegmentLinear(p1, p2, thick, color),
     () => rl.Core.DrawSplineSegmentLinear(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(p2).ref,
@@ -2631,7 +2631,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineSegmentBasis($p1, $p2, $p3, $p4, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineSegmentBasis(p1, p2, p3, p4, thick, color),
     () => rl.Core.DrawSplineSegmentBasis(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(p2).ref,
@@ -2651,7 +2651,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineSegmentCatmullRom($p1, $p2, $p3, $p4, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineSegmentCatmullRom(p1, p2, p3, p4, thick, color),
     () => rl.Core.DrawSplineSegmentCatmullRom(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(p2).ref,
@@ -2670,7 +2670,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineSegmentBezierQuadratic($p1, $c2, $p3, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineSegmentBezierQuadratic(p1, c2, p3, thick, color),
     () => rl.Core.DrawSplineSegmentBezierQuadratic(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(c2).ref,
@@ -2689,7 +2689,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'DrawSplineSegmentBezierCubic($p1, $c2, $c3, $p4, $thick, $color)',
+    () => RaylibDebugLabels.DrawSplineSegmentBezierCubic(p1, c2, c3, p4, thick, color),
     () => rl.Core.DrawSplineSegmentBezierCubic(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(c2).ref,
@@ -2706,7 +2706,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D endPos,
     num t,
   ) => run(
-    () => 'GetSplinePointLinear($startPos, $endPos, $t)',
+    () => RaylibDebugLabels.GetSplinePointLinear(startPos, endPos, t),
     () => rl.Core.GetSplinePointLinear(
       rl.Temp.Vector2$.Ref1(startPos).ref,
       rl.Temp.Vector2$.Ref2(endPos).ref,
@@ -2722,7 +2722,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p4,
     num t,
   ) => run(
-    () => 'GetSplinePointBasis($p1, $p2, $p3, $p4, $t)',
+    () => RaylibDebugLabels.GetSplinePointBasis(p1, p2, p3, p4, t),
     () => rl.Core.GetSplinePointBasis(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(p2).ref,
@@ -2740,7 +2740,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p4,
     num t,
   ) => run(
-    () => 'GetSplinePointCatmullRom($p1, $p2, $p3, $p4, $t)',
+    () => RaylibDebugLabels.GetSplinePointCatmullRom(p1, p2, p3, p4, t),
     () => rl.Core.GetSplinePointCatmullRom(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(p2).ref,
@@ -2757,7 +2757,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p3,
     num t,
   ) => run(
-    () => 'GetSplinePointBezierQuad($p1, $c2, $p3, $t)',
+    () => RaylibDebugLabels.GetSplinePointBezierQuad(p1, c2, p3, t),
     () => rl.Core.GetSplinePointBezierQuad(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(c2).ref,
@@ -2774,7 +2774,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p4,
     num t,
   ) => run(
-    () => 'GetSplinePointBezierCubic($p1, $c2, $c3, $p4, $t)',
+    () => RaylibDebugLabels.GetSplinePointBezierCubic(p1, c2, c3, p4, t),
     () => rl.Core.GetSplinePointBezierCubic(
       rl.Temp.Vector2$.Ref1(p1).ref,
       rl.Temp.Vector2$.Ref2(c2).ref,
@@ -2789,7 +2789,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RectangleD rec1,
     RectangleD rec2,
   ) => run(
-    () => 'CheckCollisionRecs($rec1, $rec2)',
+    () => RaylibDebugLabels.CheckCollisionRecs(rec1, rec2),
     () => rl.Core.CheckCollisionRecs(
       rl.Temp.Rectangle$.Ref1(rec1).ref,
       rl.Temp.Rectangle$.Ref2(rec2).ref,
@@ -2803,7 +2803,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D center2,
     num radius2,
   ) => run(
-    () => 'CheckCollisionCircles($center1, $radius1, $center2, $radius2)',
+    () => RaylibDebugLabels.CheckCollisionCircles(center1, radius1, center2, radius2),
     () => rl.Core.CheckCollisionCircles(
       rl.Temp.Vector2$.Ref1(center1).ref,
       radius1.toDouble(),
@@ -2818,7 +2818,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     RectangleD rec,
   ) => run(
-    () => 'CheckCollisionCircleRec($center, $radius, $rec)',
+    () => RaylibDebugLabels.CheckCollisionCircleRec(center, radius, rec),
     () => rl.Core.CheckCollisionCircleRec(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2833,7 +2833,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p1,
     Vector2D p2,
   ) => run(
-    () => 'CheckCollisionCircleLine($center, $radius, $p1, $p2)',
+    () => RaylibDebugLabels.CheckCollisionCircleLine(center, radius, p1, p2),
     () => rl.Core.CheckCollisionCircleLine(
       rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
@@ -2847,7 +2847,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D point,
     RectangleD rec,
   ) => run(
-    () => 'CheckCollisionPointRec($point, $rec)',
+    () => RaylibDebugLabels.CheckCollisionPointRec(point, rec),
     () => rl.Core.CheckCollisionPointRec(
       rl.Temp.Vector2$.Ref1(point).ref,
       rl.Temp.Rectangle$.Ref1(rec).ref,
@@ -2860,7 +2860,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D center,
     num radius,
   ) => run(
-    () => 'CheckCollisionPointCircle($point, $center, $radius)',
+    () => RaylibDebugLabels.CheckCollisionPointCircle(point, center, radius),
     () => rl.Core.CheckCollisionPointCircle(
       rl.Temp.Vector2$.Ref1(point).ref,
       rl.Temp.Vector2$.Ref2(center).ref,
@@ -2875,7 +2875,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p2,
     Vector2D p3,
   ) => run(
-    () => 'CheckCollisionPointTriangle($point, $p1, $p2, $p3)',
+    () => RaylibDebugLabels.CheckCollisionPointTriangle(point, p1, p2, p3),
     () => rl.Core.CheckCollisionPointTriangle(
       rl.Temp.Vector2$.Ref1(point).ref,
       rl.Temp.Vector2$.Ref2(p1).ref,
@@ -2891,7 +2891,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D p2,
     num threshold,
   ) => run(
-    () => 'CheckCollisionPointLine($point, $p1, $p2, $threshold)',
+    () => RaylibDebugLabels.CheckCollisionPointLine(point, p1, p2, threshold),
     () => rl.Core.CheckCollisionPointLine(
       rl.Temp.Vector2$.Ref1(point).ref,
       rl.Temp.Vector2$.Ref2(p1).ref,
@@ -2905,7 +2905,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D point,
     List<Vector2D> points,
   ) => run(
-    () => 'CheckCollisionPointPoly($point, points: ${points.length})',
+    () => RaylibDebugLabels.CheckCollisionPointPoly(point, points),
     () => rl.Core.CheckCollisionPointPoly(
       rl.Temp.Vector2$.Ref1(point).ref,
       rl.Temp.Vector2$.Array(points),
@@ -2920,7 +2920,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D startPos2,
     Vector2D endPos2,
   ) => run(
-    () => 'CheckCollisionLines($startPos1, $endPos1, $startPos2, $endPos2)',
+    () => RaylibDebugLabels.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2),
     () {
       final collisionPoint = rl.Temp.Vector2$.Ref5();
       final result = rl.Core.CheckCollisionLines(
@@ -2939,7 +2939,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RectangleD rec1,
     RectangleD rec2,
   ) => run(
-    () => 'GetCollisionRec($rec1, $rec2)',
+    () => RaylibDebugLabels.GetCollisionRec(rec1, rec2),
     () => rl.Core.GetCollisionRec(
       rl.Temp.Rectangle$.Ref1(rec1).ref,
       rl.Temp.Rectangle$.Ref2(rec2).ref,
@@ -2950,10 +2950,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ImageD LoadImage(
     String fileName,
   ) => run(
-    () => 'LoadImage($fileName)',
+    () => RaylibDebugLabels.LoadImage(fileName),
     () => rl.Temp.Image$.RefCapture(
-      'LoadImage_$fileName',
-      rl.Core.LoadImage(
+      RaylibCaptureIds.LoadImage(fileName),
+      (_) => rl.Core.LoadImage(
         rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
@@ -2967,10 +2967,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     PixelFormat format,
     num headerSize,
   ) => run(
-    () => 'LoadImageRaw($fileName, $width, $height, ${format.name}, $headerSize)',
+    () => RaylibDebugLabels.LoadImageRaw(fileName, width, height, format, headerSize),
     () => rl.Temp.Image$.RefCapture(
-      'LoadImageRaw_${fileName}_${width}_${height}_${format.name}',
-      rl.Core.LoadImageRaw(
+      RaylibCaptureIds.LoadImageRaw(fileName, width, height, format, headerSize),
+      (_) => rl.Core.LoadImageRaw(
         rl.Temp.String$.ValueOrNull(fileName),
         width.toInt(),
         height.toInt(),
@@ -2984,17 +2984,17 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ImageD LoadImageAnim(
     String fileName,
   ) => run(
-    () => 'LoadImageAnim($fileName)',
+    () => RaylibDebugLabels.LoadImageAnim(fileName),
     () {
       final frames = rl.Temp.Int$.Ref1();
       final image = rl.Temp.Image$.RefCapture(
-        'LoadImageAnim_$fileName',
-        rl.Core.LoadImageAnim(
+        RaylibCaptureIds.LoadImageAnim(fileName),
+        (_) => rl.Core.LoadImageAnim(
           rl.Temp.String$.ValueOrNull(fileName),
           frames,
         ),
       );
-      image.nativeUpdateFrameCount(frames.value);
+      image.structUpdateFrameCount(frames.value);
       return image;
     },
   );
@@ -3002,21 +3002,21 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   ImageD LoadImageAnimFromMemory(
     String fileType,
-    List<int> fileData,
+    Uint8List fileData,
   ) => run(
-    () => 'LoadImageAnimFromMemory($fileType, fileData: ${fileData.length})',
+    () => RaylibDebugLabels.LoadImageAnimFromMemory(fileType, fileData),
     () {
       final frames = rl.Temp.Int$.Ref1();
       final image = rl.Temp.Image$.RefCapture(
-        'LoadImageAnimFromMemory_$fileType',
-        rl.Core.LoadImageAnimFromMemory(
+        RaylibCaptureIds.LoadImageAnimFromMemory(fileType, fileData),
+        (_) => rl.Core.LoadImageAnimFromMemory(
           rl.Temp.String$.ValueOrNull(fileType),
           rl.Temp.UnsignedChar$.Array(fileData),
           fileData.length,
           frames,
         ),
       );
-      image.nativeUpdateFrameCount(frames.value);
+      image.structUpdateFrameCount(frames.value);
       return image;
     },
   );
@@ -3024,12 +3024,12 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   ImageD LoadImageFromMemory(
     String fileType,
-    List<int> fileData,
+    Uint8List fileData,
   ) => run(
-    () => 'LoadImageFromMemory($fileType, fileData: ${fileData.length})',
+    () => RaylibDebugLabels.LoadImageFromMemory(fileType, fileData),
     () => rl.Temp.Image$.RefCapture(
-      'LoadImageFromMemory_${fileType}_${fileData.length}',
-      rl.Core.LoadImageFromMemory(
+      RaylibCaptureIds.LoadImageFromMemory(fileType, fileData),
+      (_) => rl.Core.LoadImageFromMemory(
         rl.Temp.String$.ValueOrNull(fileType),
         rl.Temp.UnsignedChar$.Array(fileData),
         fileData.length,
@@ -3041,10 +3041,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ImageD LoadImageFromTexture(
     TextureD texture,
   ) => run(
-    () => 'LoadImageFromTexture($texture)',
+    () => RaylibDebugLabels.LoadImageFromTexture(texture),
     () => rl.Temp.Image$.RefCapture(
-      'LoadImageFromTexture_${texture.id}_${texture.width}_${texture.height}',
-      rl.Core.LoadImageFromTexture(
+      RaylibCaptureIds.LoadImageFromTexture(texture),
+      (_) => rl.Core.LoadImageFromTexture(
         rl.Temp.Texture$.Ref1(texture).ref,
       ),
     ),
@@ -3052,10 +3052,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   ImageD LoadImageFromScreen() => run(
-    () => 'LoadImageFromScreen()',
+    () => RaylibDebugLabels.LoadImageFromScreen(),
     () => rl.Temp.Image$.RefCapture(
-      'LoadImageFromScreen',
-      rl.Core.LoadImageFromScreen(),
+      RaylibCaptureIds.LoadImageFromScreen(),
+      (_) => rl.Core.LoadImageFromScreen(),
     ),
   );
 
@@ -3063,7 +3063,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsImageValid(
     ImageD image,
   ) => run(
-    () => 'IsImageValid($image)',
+    () => RaylibDebugLabels.IsImageValid(image),
     () => rl.Core.IsImageValid(
       rl.Temp.Image$.Ref1(image).ref,
     ),
@@ -3073,7 +3073,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadImage(
     ImageD image,
   ) => run(
-    () => 'UnloadImage($image)',
+    () => RaylibDebugLabels.UnloadImage(image),
     () => rl.Core.UnloadImage(
       rl.Temp.Image$.Ref1(image).ref,
     ),
@@ -3084,7 +3084,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     String fileName,
   ) => run(
-    () => 'ExportImage($image, $fileName)',
+    () => RaylibDebugLabels.ExportImage(image, fileName),
     () => rl.Core.ExportImage(
       rl.Temp.Image$.Ref1(image).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -3096,7 +3096,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     String fileType,
   ) => run(
-    () => 'ExportImageToMemory($image, $fileType)',
+    () => RaylibDebugLabels.ExportImageToMemory(image, fileType),
     () {
       final dataSize = rl.Temp.Int$.Ref1();
       final dataPtr = rl.Core.ExportImageToMemory(
@@ -3113,7 +3113,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     String fileName,
   ) => run(
-    () => 'ExportImageAsCode($image, $fileName)',
+    () => RaylibDebugLabels.ExportImageAsCode(image, fileName),
     () => rl.Core.ExportImageAsCode(
       rl.Temp.Image$.Ref1(image).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -3126,10 +3126,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     ColorD color,
   ) => run(
-    () => 'GenImageColor($width, $height, $color)',
+    () => RaylibDebugLabels.GenImageColor(width, height, color),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageColor_${width}_$height',
-      rl.Core.GenImageColor(
+      RaylibCaptureIds.GenImageColor(width, height, color),
+      (_) => rl.Core.GenImageColor(
         width.toInt(),
         height.toInt(),
         rl.Temp.Color$.Ref1(color).ref,
@@ -3145,10 +3145,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD start,
     ColorD end,
   ) => run(
-    () => 'GenImageGradientLinear($width, $height, $direction, $start, $end)',
+    () => RaylibDebugLabels.GenImageGradientLinear(width, height, direction, start, end),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageGradientLinear_${width}_$height',
-      rl.Core.GenImageGradientLinear(
+      RaylibCaptureIds.GenImageGradientLinear(width, height, direction, start, end),
+      (_) => rl.Core.GenImageGradientLinear(
         width.toInt(),
         height.toInt(),
         direction.toInt(),
@@ -3166,10 +3166,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD inner,
     ColorD outer,
   ) => run(
-    () => 'GenImageGradientRadial($width, $height, $density, $inner, $outer)',
+    () => RaylibDebugLabels.GenImageGradientRadial(width, height, density, inner, outer),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageGradientRadial_${width}_$height',
-      rl.Core.GenImageGradientRadial(
+      RaylibCaptureIds.GenImageGradientRadial(width, height, density, inner, outer),
+      (_) => rl.Core.GenImageGradientRadial(
         width.toInt(),
         height.toInt(),
         density.toDouble(),
@@ -3187,10 +3187,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD inner,
     ColorD outer,
   ) => run(
-    () => 'GenImageGradientSquare($width, $height, $density, $inner, $outer)',
+    () => RaylibDebugLabels.GenImageGradientSquare(width, height, density, inner, outer),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageGradientSquare_${width}_$height',
-      rl.Core.GenImageGradientSquare(
+      RaylibCaptureIds.GenImageGradientSquare(width, height, density, inner, outer),
+      (_) => rl.Core.GenImageGradientSquare(
         width.toInt(),
         height.toInt(),
         density.toDouble(),
@@ -3209,10 +3209,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD col1,
     ColorD col2,
   ) => run(
-    () => 'GenImageChecked($width, $height, $checksX, $checksY, $col1, $col2)',
+    () => RaylibDebugLabels.GenImageChecked(width, height, checksX, checksY, col1, col2),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageChecked_${width}_$height',
-      rl.Core.GenImageChecked(
+      RaylibCaptureIds.GenImageChecked(width, height, checksX, checksY, col1, col2),
+      (_) => rl.Core.GenImageChecked(
         width.toInt(),
         height.toInt(),
         checksX.toInt(),
@@ -3229,10 +3229,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     num factor,
   ) => run(
-    () => 'GenImageWhiteNoise($width, $height, $factor)',
+    () => RaylibDebugLabels.GenImageWhiteNoise(width, height, factor),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageWhiteNoise_${width}_$height',
-      rl.Core.GenImageWhiteNoise(
+      RaylibCaptureIds.GenImageWhiteNoise(width, height, factor),
+      (_) => rl.Core.GenImageWhiteNoise(
         width.toInt(),
         height.toInt(),
         factor.toDouble(),
@@ -3248,10 +3248,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num offsetY,
     num scale,
   ) => run(
-    () => 'GenImagePerlinNoise($width, $height, $offsetX, $offsetY, $scale)',
+    () => RaylibDebugLabels.GenImagePerlinNoise(width, height, offsetX, offsetY, scale),
     () => rl.Temp.Image$.RefCapture(
-      'GenImagePerlinNoise_${width}_$height',
-      rl.Core.GenImagePerlinNoise(
+      RaylibCaptureIds.GenImagePerlinNoise(width, height, offsetX, offsetY, scale),
+      (_) => rl.Core.GenImagePerlinNoise(
         width.toInt(),
         height.toInt(),
         offsetX.toInt(),
@@ -3267,10 +3267,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     num tileSize,
   ) => run(
-    () => 'GenImageCellular($width, $height, $tileSize)',
+    () => RaylibDebugLabels.GenImageCellular(width, height, tileSize),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageCellular_${width}_$height',
-      rl.Core.GenImageCellular(
+      RaylibCaptureIds.GenImageCellular(width, height, tileSize),
+      (_) => rl.Core.GenImageCellular(
         width.toInt(),
         height.toInt(),
         tileSize.toInt(),
@@ -3284,10 +3284,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     String text,
   ) => run(
-    () => 'GenImageText($width, $height, $text)',
+    () => RaylibDebugLabels.GenImageText(width, height, text),
     () => rl.Temp.Image$.RefCapture(
-      'GenImageText_${width}_$height',
-      rl.Core.GenImageText(
+      RaylibCaptureIds.GenImageText(width, height, text),
+      (_) => rl.Core.GenImageText(
         width.toInt(),
         height.toInt(),
         rl.Temp.String$.ValueOrNull(text),
@@ -3299,10 +3299,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ImageD ImageCopy(
     ImageD image,
   ) => run(
-    () => 'ImageCopy($image)',
+    () => RaylibDebugLabels.ImageCopy(image),
     () => rl.Temp.Image$.RefCapture(
-      'ImageCopy_${image.$state.internalId}',
-      rl.Core.ImageCopy(
+      RaylibCaptureIds.ImageCopy(image),
+      (_) => rl.Core.ImageCopy(
         rl.Temp.Image$.Ref1(image).ref,
       ),
     ),
@@ -3313,10 +3313,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     RectangleD rec,
   ) => run(
-    () => 'ImageFromImage($image, $rec)',
+    () => RaylibDebugLabels.ImageFromImage(image, rec),
     () => rl.Temp.Image$.RefCapture(
-      'ImageFromImage_${image.$state.internalId}',
-      rl.Core.ImageFromImage(
+      RaylibCaptureIds.ImageFromImage(image, rec),
+      (_) => rl.Core.ImageFromImage(
         rl.Temp.Image$.Ref1(image).ref,
         rl.Temp.Rectangle$.Ref1(rec).ref,
       ),
@@ -3328,10 +3328,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num selectedChannel,
   ) => run(
-    () => 'ImageFromChannel($image, $selectedChannel)',
+    () => RaylibDebugLabels.ImageFromChannel(image, selectedChannel),
     () => rl.Temp.Image$.RefCapture(
-      'ImageFromChannel_${image.$state.internalId}',
-      rl.Core.ImageFromChannel(
+      RaylibCaptureIds.ImageFromChannel(image, selectedChannel),
+      (_) => rl.Core.ImageFromChannel(
         rl.Temp.Image$.Ref1(image).ref,
         selectedChannel.toInt(),
       ),
@@ -3344,10 +3344,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num fontSize,
     ColorD color,
   ) => run(
-    () => 'ImageText($text, $fontSize, $color)',
+    () => RaylibDebugLabels.ImageText(text, fontSize, color),
     () => rl.Temp.Image$.RefCapture(
-      'ImageText_$fontSize',
-      rl.Core.ImageText(
+      RaylibCaptureIds.ImageText(text, fontSize, color),
+      (_) => rl.Core.ImageText(
         rl.Temp.String$.ValueOrNull(text),
         fontSize.toInt(),
         rl.Temp.Color$.Ref1(color).ref,
@@ -3363,10 +3363,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num spacing,
     ColorD tint,
   ) => run(
-    () => 'ImageTextEx($font, $text, $fontSize, $spacing, $tint)',
+    () => RaylibDebugLabels.ImageTextEx(font, text, fontSize, spacing, tint),
     () => rl.Temp.Image$.RefCapture(
-      'ImageTextEx_${font.$state.internalId}',
-      rl.Core.ImageTextEx(
+      RaylibCaptureIds.ImageTextEx(font, text, fontSize, spacing, tint),
+      (_) => rl.Core.ImageTextEx(
         rl.Temp.Font$.Ref1(font).ref,
         rl.Temp.String$.ValueOrNull(text),
         fontSize.toDouble(),
@@ -3381,7 +3381,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     PixelFormat newFormat,
   ) => run(
-    () => 'ImageFormat($image, ${newFormat.name})',
+    () => RaylibDebugLabels.ImageFormat(image, newFormat),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFormat(
         p,
@@ -3395,7 +3395,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     ColorD fill,
   ) => run(
-    () => 'ImageToPOT($image, $fill)',
+    () => RaylibDebugLabels.ImageToPOT(image, fill),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageToPOT(
         p,
@@ -3409,7 +3409,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     RectangleD crop,
   ) => run(
-    () => 'ImageCrop($image, $crop)',
+    () => RaylibDebugLabels.ImageCrop(image, crop),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageCrop(
         p,
@@ -3423,7 +3423,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num threshold,
   ) => run(
-    () => 'ImageAlphaCrop($image, $threshold)',
+    () => RaylibDebugLabels.ImageAlphaCrop(image, threshold),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaCrop(
         p,
@@ -3438,7 +3438,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     num threshold,
   ) => run(
-    () => 'ImageAlphaClear($image, $color, $threshold)',
+    () => RaylibDebugLabels.ImageAlphaClear(image, color, threshold),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaClear(
         p,
@@ -3453,7 +3453,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     ImageD alphaMask,
   ) => run(
-    () => 'ImageAlphaMask($image, $alphaMask)',
+    () => RaylibDebugLabels.ImageAlphaMask(image, alphaMask),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaMask(
         p,
@@ -3466,7 +3466,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageAlphaPremultiply(
     ImageD image,
   ) => run(
-    () => 'ImageAlphaPremultiply($image)',
+    () => RaylibDebugLabels.ImageAlphaPremultiply(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageAlphaPremultiply(p),
     ),
@@ -3477,7 +3477,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num blurSize,
   ) => run(
-    () => 'ImageBlurGaussian($image, $blurSize)',
+    () => RaylibDebugLabels.ImageBlurGaussian(image, blurSize),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageBlurGaussian(
         p,
@@ -3491,11 +3491,11 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     List<double> kernel,
   ) => run(
-    () => 'ImageKernelConvolution($image, kernel: ${kernel.length})',
+    () => RaylibDebugLabels.ImageKernelConvolution(image, kernel),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageKernelConvolution(
         p,
-        rl.Temp.Float$.Array(kernel),
+        rl.Temp.Float32$.Array(kernel),
         kernel.length,
       ),
     ),
@@ -3507,7 +3507,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num newWidth,
     num newHeight,
   ) => run(
-    () => 'ImageResize($image, $newWidth, $newHeight)',
+    () => RaylibDebugLabels.ImageResize(image, newWidth, newHeight),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResize(
         p,
@@ -3523,7 +3523,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num newWidth,
     num newHeight,
   ) => run(
-    () => 'ImageResizeNN($image, $newWidth, $newHeight)',
+    () => RaylibDebugLabels.ImageResizeNN(image, newWidth, newHeight),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResizeNN(
         p,
@@ -3542,7 +3542,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num offsetY,
     ColorD fill,
   ) => run(
-    () => 'ImageResizeCanvas($image, $newWidth, $newHeight, $offsetX, $offsetY, $fill)',
+    () => RaylibDebugLabels.ImageResizeCanvas(image, newWidth, newHeight, offsetX, offsetY, fill),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageResizeCanvas(
         p,
@@ -3559,7 +3559,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageMipmaps(
     ImageD image,
   ) => run(
-    () => 'ImageMipmaps($image)',
+    () => RaylibDebugLabels.ImageMipmaps(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageMipmaps(p),
     ),
@@ -3573,7 +3573,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num bBpp,
     num aBpp,
   ) => run(
-    () => 'ImageDither($image, $rBpp, $gBpp, $bBpp, $aBpp)',
+    () => RaylibDebugLabels.ImageDither(image, rBpp, gBpp, bBpp, aBpp),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageDither(
         p,
@@ -3589,7 +3589,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageFlipVertical(
     ImageD image,
   ) => run(
-    () => 'ImageFlipVertical($image)',
+    () => RaylibDebugLabels.ImageFlipVertical(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFlipVertical(p),
     ),
@@ -3599,7 +3599,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageFlipHorizontal(
     ImageD image,
   ) => run(
-    () => 'ImageFlipHorizontal($image)',
+    () => RaylibDebugLabels.ImageFlipHorizontal(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageFlipHorizontal(p),
     ),
@@ -3610,7 +3610,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num degrees,
   ) => run(
-    () => 'ImageRotate($image, $degrees)',
+    () => RaylibDebugLabels.ImageRotate(image, degrees),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotate(
         p,
@@ -3623,7 +3623,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageRotateCW(
     ImageD image,
   ) => run(
-    () => 'ImageRotateCW($image)',
+    () => RaylibDebugLabels.ImageRotateCW(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotateCW(p),
     ),
@@ -3633,7 +3633,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageRotateCCW(
     ImageD image,
   ) => run(
-    () => 'ImageRotateCCW($image)',
+    () => RaylibDebugLabels.ImageRotateCCW(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageRotateCCW(p),
     ),
@@ -3644,7 +3644,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     ColorD color,
   ) => run(
-    () => 'ImageColorTint($image, $color)',
+    () => RaylibDebugLabels.ImageColorTint(image, color),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorTint(
         p,
@@ -3657,7 +3657,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageColorInvert(
     ImageD image,
   ) => run(
-    () => 'ImageColorInvert($image)',
+    () => RaylibDebugLabels.ImageColorInvert(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorInvert(p),
     ),
@@ -3667,7 +3667,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void ImageColorGrayscale(
     ImageD image,
   ) => run(
-    () => 'ImageColorGrayscale($image)',
+    () => RaylibDebugLabels.ImageColorGrayscale(image),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorGrayscale(p),
     ),
@@ -3678,7 +3678,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num contrast,
   ) => run(
-    () => 'ImageColorContrast($image, $contrast)',
+    () => RaylibDebugLabels.ImageColorContrast(image, contrast),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorContrast(
         p,
@@ -3692,7 +3692,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num brightness,
   ) => run(
-    () => 'ImageColorBrightness($image, $brightness)',
+    () => RaylibDebugLabels.ImageColorBrightness(image, brightness),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorBrightness(
         p,
@@ -3707,7 +3707,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     ColorD replace,
   ) => run(
-    () => 'ImageColorReplace($image, $color, $replace)',
+    () => RaylibDebugLabels.ImageColorReplace(image, color, replace),
     () => rl.Temp.Image$.RefUpdate1(image,
       (p) => rl.Core.ImageColorReplace(
         p,
@@ -3721,7 +3721,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   List<ColorD> LoadImageColors(
     ImageD image,
   ) => run(
-    () => 'LoadImageColors($image)',
+    () => RaylibDebugLabels.LoadImageColors(image),
     () {
       final colors = rl.Core.LoadImageColors(
         rl.Temp.Image$.Ref1(image).ref,
@@ -3740,7 +3740,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num maxPaletteSize,
   ) => run(
-    () => 'LoadImagePalette($image, $maxPaletteSize)',
+    () => RaylibDebugLabels.LoadImagePalette(image, maxPaletteSize),
     () {
       final colorCount = rl.Temp.Int$.Ref1();
       final colors = rl.Core.LoadImagePalette(
@@ -3761,7 +3761,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     num threshold,
   ) => run(
-    () => 'GetImageAlphaBorder($image, $threshold)',
+    () => RaylibDebugLabels.GetImageAlphaBorder(image, threshold),
     () => rl.Core.GetImageAlphaBorder(
       rl.Temp.Image$.Ref1(image).ref,
       threshold.toDouble(),
@@ -3774,7 +3774,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num x,
     num y,
   ) => run(
-    () => 'GetImageColor($image, $x, $y)',
+    () => RaylibDebugLabels.GetImageColor(image, x, y),
     () => rl.Core.GetImageColor(
       rl.Temp.Image$.Ref1(image).ref,
       x.toInt(),
@@ -3787,7 +3787,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD dst,
     ColorD color,
   ) => run(
-    () => 'ImageClearBackground($dst, $color)',
+    () => RaylibDebugLabels.ImageClearBackground(dst, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageClearBackground(
         p,
@@ -3803,7 +3803,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num posY,
     ColorD color,
   ) => run(
-    () => 'ImageDrawPixel($dst, $posX, $posY, $color)',
+    () => RaylibDebugLabels.ImageDrawPixel(dst, posX, posY, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawPixel(
         p,
@@ -3820,7 +3820,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     ColorD color,
   ) => run(
-    () => 'ImageDrawPixelV($dst, $position, $color)',
+    () => RaylibDebugLabels.ImageDrawPixelV(dst, position, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawPixelV(
         p,
@@ -3839,7 +3839,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num endPosY,
     ColorD color,
   ) => run(
-    () => 'ImageDrawLine($dst, $startPosX, $startPosY, $endPosX, $endPosY, $color)',
+    () => RaylibDebugLabels.ImageDrawLine(dst, startPosX, startPosY, endPosX, endPosY, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLine(
         p,
@@ -3859,7 +3859,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D end,
     ColorD color,
   ) => run(
-    () => 'ImageDrawLineV($dst, $start, $end, $color)',
+    () => RaylibDebugLabels.ImageDrawLineV(dst, start, end, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLineV(
         p,
@@ -3878,7 +3878,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'ImageDrawLineEx($dst, $start, $end, $thick, $color)',
+    () => RaylibDebugLabels.ImageDrawLineEx(dst, start, end, thick, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawLineEx(
         p,
@@ -3898,7 +3898,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'ImageDrawCircle($dst, $centerX, $centerY, $radius, $color)',
+    () => RaylibDebugLabels.ImageDrawCircle(dst, centerX, centerY, radius, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircle(
         p,
@@ -3917,7 +3917,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'ImageDrawCircleV($dst, $center, $radius, $color)',
+    () => RaylibDebugLabels.ImageDrawCircleV(dst, center, radius, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleV(
         p,
@@ -3936,7 +3936,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'ImageDrawCircleLines($dst, $centerX, $centerY, $radius, $color)',
+    () => RaylibDebugLabels.ImageDrawCircleLines(dst, centerX, centerY, radius, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleLines(
         p,
@@ -3955,7 +3955,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'ImageDrawCircleLinesV($dst, $center, $radius, $color)',
+    () => RaylibDebugLabels.ImageDrawCircleLinesV(dst, center, radius, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawCircleLinesV(
         p,
@@ -3975,7 +3975,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     ColorD color,
   ) => run(
-    () => 'ImageDrawRectangle($dst, $posX, $posY, $width, $height, $color)',
+    () => RaylibDebugLabels.ImageDrawRectangle(dst, posX, posY, width, height, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangle(
         p,
@@ -3995,7 +3995,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D size,
     ColorD color,
   ) => run(
-    () => 'ImageDrawRectangleV($dst, $position, $size, $color)',
+    () => RaylibDebugLabels.ImageDrawRectangleV(dst, position, size, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleV(
         p,
@@ -4012,7 +4012,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RectangleD rec,
     ColorD color,
   ) => run(
-    () => 'ImageDrawRectangleRec($dst, $rec, $color)',
+    () => RaylibDebugLabels.ImageDrawRectangleRec(dst, rec, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleRec(
         p,
@@ -4029,7 +4029,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num thick,
     ColorD color,
   ) => run(
-    () => 'ImageDrawRectangleLines($dst, $rec, $thick, $color)',
+    () => RaylibDebugLabels.ImageDrawRectangleLines(dst, rec, thick, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawRectangleLines(
         p,
@@ -4048,7 +4048,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D v3,
     ColorD color,
   ) => run(
-    () => 'ImageDrawTriangle($dst, $v1, $v2, $v3, $color)',
+    () => RaylibDebugLabels.ImageDrawTriangle(dst, v1, v2, v3, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangle(
         p,
@@ -4070,7 +4070,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD c2,
     ColorD c3,
   ) => run(
-    () => 'ImageDrawTriangleEx($dst, $v1, $v2, $v3, $c1, $c2, $c3)',
+    () => RaylibDebugLabels.ImageDrawTriangleEx(dst, v1, v2, v3, c1, c2, c3),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleEx(
         p,
@@ -4092,7 +4092,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D v3,
     ColorD color,
   ) => run(
-    () => 'ImageDrawTriangleLines($dst, $v1, $v2, $v3, $color)',
+    () => RaylibDebugLabels.ImageDrawTriangleLines(dst, v1, v2, v3, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleLines(
         p,
@@ -4110,7 +4110,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector2D> points,
     ColorD color,
   ) => run(
-    () => 'ImageDrawTriangleFan($dst, points: ${points.length}, $color)',
+    () => RaylibDebugLabels.ImageDrawTriangleFan(dst, points, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleFan(
         p,
@@ -4127,7 +4127,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector2D> points,
     ColorD color,
   ) => run(
-    () => 'ImageDrawTriangleStrip($dst, points: ${points.length}, $color)',
+    () => RaylibDebugLabels.ImageDrawTriangleStrip(dst, points, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTriangleStrip(
         p,
@@ -4146,7 +4146,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RectangleD dstRec,
     ColorD tint,
   ) => run(
-    () => 'ImageDraw($dst, $src, $srcRec, $dstRec, $tint)',
+    () => RaylibDebugLabels.ImageDraw(dst, src, srcRec, dstRec, tint),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDraw(
         p,
@@ -4167,7 +4167,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num fontSize,
     ColorD color,
   ) => run(
-    () => 'ImageDrawText($dst, $text, $posX, $posY, $fontSize, $color)',
+    () => RaylibDebugLabels.ImageDrawText(dst, text, posX, posY, fontSize, color),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawText(
         p,
@@ -4190,7 +4190,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num spacing,
     ColorD tint,
   ) => run(
-    () => 'ImageDrawTextEx($dst, $font, $text, $position, $fontSize, $spacing, $tint)',
+    () => RaylibDebugLabels.ImageDrawTextEx(dst, font, text, position, fontSize, spacing, tint),
     () => rl.Temp.Image$.RefUpdate1(dst,
       (p) => rl.Core.ImageDrawTextEx(
         p,
@@ -4208,10 +4208,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   TextureD LoadTexture(
     String fileName,
   ) => run(
-    () => 'LoadTexture($fileName)',
+    () => RaylibDebugLabels.LoadTexture(fileName),
     () => rl.Temp.Texture$.RefCapture(
-      'LoadTexture_$fileName',
-      rl.Core.LoadTexture(
+      RaylibCaptureIds.LoadTexture(fileName),
+      (_) => rl.Core.LoadTexture(
         rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
@@ -4221,10 +4221,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   TextureD LoadTextureFromImage(
     ImageD image,
   ) => run(
-    () => 'LoadTextureFromImage($image)',
+    () => RaylibDebugLabels.LoadTextureFromImage(image),
     () => rl.Temp.Texture$.RefCapture(
-      'LoadTextureFromImage_${image.$state.internalId}',
-      rl.Core.LoadTextureFromImage(
+      RaylibCaptureIds.LoadTextureFromImage(image),
+      (_) => rl.Core.LoadTextureFromImage(
         rl.Temp.Image$.Ref1(image).ref,
       ),
     ),
@@ -4235,10 +4235,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD image,
     CubemapLayout layout,
   ) => run(
-    () => 'LoadTextureCubemap($image, $layout)',
+    () => RaylibDebugLabels.LoadTextureCubemap(image, layout),
     () => rl.Temp.Texture$.RefCapture(
-      'LoadTextureCubemap_${image.$state.internalId}',
-      rl.Core.LoadTextureCubemap(
+      RaylibCaptureIds.LoadTextureCubemap(image, layout),
+      (_) => rl.Core.LoadTextureCubemap(
         rl.Temp.Image$.Ref1(image).ref,
         layout.value,
       ),
@@ -4250,10 +4250,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num width,
     num height,
   ) => run(
-    () => 'LoadRenderTexture($width, $height)',
+    () => RaylibDebugLabels.LoadRenderTexture(width, height),
     () => rl.Temp.RenderTexture$.RefCapture(
-      'LoadRenderTexture_${width}_$height',
-      rl.Core.LoadRenderTexture(
+      RaylibCaptureIds.LoadRenderTexture(width, height),
+      (_) => rl.Core.LoadRenderTexture(
         width.toInt(),
         height.toInt(),
       ),
@@ -4264,7 +4264,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsTextureValid(
     TextureD texture,
   ) => run(
-    () => 'IsTextureValid($texture)',
+    () => RaylibDebugLabels.IsTextureValid(texture),
     () => rl.Core.IsTextureValid(
       rl.Temp.Texture$.Ref1(texture).ref,
     ),
@@ -4274,7 +4274,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadTexture(
     TextureD texture,
   ) => run(
-    () => 'UnloadTexture($texture)',
+    () => RaylibDebugLabels.UnloadTexture(texture),
     () => rl.Core.UnloadTexture(
       texture.getOriginalPointerAndDispose().ref,
     ),
@@ -4284,7 +4284,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsRenderTextureValid(
     RenderTextureD target,
   ) => run(
-    () => 'IsRenderTextureValid($target)',
+    () => RaylibDebugLabels.IsRenderTextureValid(target),
     () => rl.Core.IsRenderTextureValid(
       rl.Temp.RenderTexture$.Ref1(target).ref,
     ),
@@ -4294,7 +4294,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadRenderTexture(
     RenderTextureD target,
   ) => run(
-    () => 'UnloadRenderTexture($target)',
+    () => RaylibDebugLabels.UnloadRenderTexture(target),
     () => rl.Core.UnloadRenderTexture(
       rl.Temp.RenderTexture$.Ref1(target).ref,
     ),
@@ -4303,9 +4303,9 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   void UpdateTexture(
     TextureD texture,
-    List<int> pixels,
+    Uint8List pixels,
   ) => run(
-    () => 'UpdateTexture($texture, pixels: ${pixels.length})',
+    () => RaylibDebugLabels.UpdateTexture(texture, pixels),
     () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.UpdateTexture(
         p.ref,
@@ -4318,9 +4318,9 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UpdateTextureRec(
     TextureD texture,
     RectangleD rec,
-    List<int> pixels,
+    Uint8List pixels,
   ) => run(
-    () => 'UpdateTextureRec($texture, $rec, pixels: ${pixels.length})',
+    () => RaylibDebugLabels.UpdateTextureRec(texture, rec, pixels),
     () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.UpdateTextureRec(
         p.ref,
@@ -4334,7 +4334,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void GenTextureMipmaps(
     TextureD texture,
   ) => run(
-    () => 'GenTextureMipmaps($texture)',
+    () => RaylibDebugLabels.GenTextureMipmaps(texture),
     () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.GenTextureMipmaps(p),
     ),
@@ -4345,7 +4345,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     TextureD texture,
     TextureFilter filter,
   ) => run(
-    () => 'SetTextureFilter($texture, $filter)',
+    () => RaylibDebugLabels.SetTextureFilter(texture, filter),
     () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.SetTextureFilter(
         p.ref,
@@ -4359,7 +4359,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     TextureD texture,
     TextureWrap wrap,
   ) => run(
-    () => 'SetTextureWrap($texture, $wrap)',
+    () => RaylibDebugLabels.SetTextureWrap(texture, wrap),
     () => rl.Temp.Texture$.RefUpdate1(texture,
       (p) => rl.Core.SetTextureWrap(
         p.ref,
@@ -4375,7 +4375,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num posY,
     ColorD tint,
   ) => run(
-    () => 'DrawTexture($texture, $posX, $posY, $tint)',
+    () => RaylibDebugLabels.DrawTexture(texture, posX, posY, tint),
     () => rl.Core.DrawTexture(
       rl.Temp.Texture$.Ref1(texture).ref,
       posX.toInt(),
@@ -4390,7 +4390,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     ColorD tint,
   ) => run(
-    () => 'DrawTextureV($texture, $position, $tint)',
+    () => RaylibDebugLabels.DrawTextureV(texture, position, tint),
     () => rl.Core.DrawTextureV(
       rl.Temp.Texture$.Ref1(texture).ref,
       rl.Temp.Vector2$.Ref1(position).ref,
@@ -4406,7 +4406,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scale,
     ColorD tint,
   ) => run(
-    () => 'DrawTextureEx($texture, $position, $rotation, $scale, $tint)',
+    () => RaylibDebugLabels.DrawTextureEx(texture, position, rotation, scale, tint),
     () => rl.Core.DrawTextureEx(
       rl.Temp.Texture$.Ref1(texture).ref,
       rl.Temp.Vector2$.Ref1(position).ref,
@@ -4423,7 +4423,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D position,
     ColorD tint,
   ) => run(
-    () => 'DrawTextureRec($texture, $source, $position, $tint)',
+    () => RaylibDebugLabels.DrawTextureRec(texture, source, position, tint),
     () => rl.Core.DrawTextureRec(
       rl.Temp.Texture$.Ref1(texture).ref,
       rl.Temp.Rectangle$.Ref1(source).ref,
@@ -4441,7 +4441,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD tint,
   ) => run(
-    () => 'DrawTexturePro($texture, $source, $dest, $origin, $rotation, $tint)',
+    () => RaylibDebugLabels.DrawTexturePro(texture, source, dest, origin, rotation, tint),
     () {
       rl.Core.DrawTexturePro(
         rl.Temp.Texture$.Ref1(texture).ref,
@@ -4463,7 +4463,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD tint,
   ) => run(
-    () => 'DrawTextureNPatch($texture, $nPatchInfo, $dest, $origin, $rotation, $tint)',
+    () => RaylibDebugLabels.DrawTextureNPatch(texture, nPatchInfo, dest, origin, rotation, tint),
     () => rl.Core.DrawTextureNPatch(
       rl.Temp.Texture$.Ref1(texture).ref,
       rl.Temp.NPatchInfo$.Ref1(nPatchInfo).ref,
@@ -4479,7 +4479,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD col1,
     ColorD col2,
   ) => run(
-    () => 'ColorIsEqual($col1, $col2)',
+    () => RaylibDebugLabels.ColorIsEqual(col1, col2),
     () => rl.Core.ColorIsEqual(
       rl.Temp.Color$.Ref1(col1).ref,
       rl.Temp.Color$.Ref2(col2).ref,
@@ -4491,7 +4491,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     num alpha,
   ) => run(
-    () => 'Fade($color, $alpha)',
+    () => RaylibDebugLabels.Fade(color, alpha),
     () => rl.Core.Fade(
       rl.Temp.Color$.Ref1(color).ref,
       alpha.toDouble(),
@@ -4502,7 +4502,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int ColorToInt(
     ColorD color,
   ) => run(
-    () => 'ColorToInt($color)',
+    () => RaylibDebugLabels.ColorToInt(color),
     () => rl.Core.ColorToInt(
       rl.Temp.Color$.Ref1(color).ref,
     ),
@@ -4512,7 +4512,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   Vector4D ColorNormalize(
     ColorD color,
   ) => run(
-    () => 'ColorNormalize($color)',
+    () => RaylibDebugLabels.ColorNormalize(color),
     () => rl.Core.ColorNormalize(
       rl.Temp.Color$.Ref1(color).ref,
     ).toD(),
@@ -4522,7 +4522,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ColorD ColorFromNormalized(
     Vector4D normalized,
   ) => run(
-    () => 'ColorFromNormalized($normalized)',
+    () => RaylibDebugLabels.ColorFromNormalized(normalized),
     () => rl.Core.ColorFromNormalized(
       rl.Temp.Vector4$.Ref1(normalized).ref,
     ).toD(),
@@ -4532,7 +4532,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   Vector3D ColorToHSV(
     ColorD color,
   ) => run(
-    () => 'ColorToHSV($color)',
+    () => RaylibDebugLabels.ColorToHSV(color),
     () => rl.Core.ColorToHSV(
       rl.Temp.Color$.Ref1(color).ref,
     ).toD(),
@@ -4544,7 +4544,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num saturation,
     num value,
   ) => run(
-    () => 'ColorFromHSV($hue, $saturation, $value)',
+    () => RaylibDebugLabels.ColorFromHSV(hue, saturation, value),
     () => rl.Core.ColorFromHSV(
       hue.toDouble(),
       saturation.toDouble(),
@@ -4557,7 +4557,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     ColorD tint,
   ) => run(
-    () => 'ColorTint($color, $tint)',
+    () => RaylibDebugLabels.ColorTint(color, tint),
     () => rl.Core.ColorTint(
       rl.Temp.Color$.Ref1(color).ref,
       rl.Temp.Color$.Ref2(tint).ref,
@@ -4569,7 +4569,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     num factor,
   ) => run(
-    () => 'ColorBrightness($color, $factor)',
+    () => RaylibDebugLabels.ColorBrightness(color, factor),
     () => rl.Core.ColorBrightness(
       rl.Temp.Color$.Ref1(color).ref,
       factor.toDouble(),
@@ -4581,7 +4581,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     num contrast,
   ) => run(
-    () => 'ColorContrast($color, $contrast)',
+    () => RaylibDebugLabels.ColorContrast(color, contrast),
     () => rl.Core.ColorContrast(
       rl.Temp.Color$.Ref1(color).ref,
       contrast.toDouble(),
@@ -4593,7 +4593,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color,
     num alpha,
   ) => run(
-    () => 'ColorAlpha($color, $alpha)',
+    () => RaylibDebugLabels.ColorAlpha(color, alpha),
     () => rl.Core.ColorAlpha(
       rl.Temp.Color$.Ref1(color).ref,
       alpha.toDouble(),
@@ -4606,7 +4606,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD src,
     ColorD tint,
   ) => run(
-    () => 'ColorAlphaBlend($dst, $src, $tint)',
+    () => RaylibDebugLabels.ColorAlphaBlend(dst, src, tint),
     () => rl.Core.ColorAlphaBlend(
       rl.Temp.Color$.Ref1(dst).ref,
       rl.Temp.Color$.Ref2(src).ref,
@@ -4620,7 +4620,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD color2,
     num factor,
   ) => run(
-    () => 'ColorLerp($color1, $color2, $factor)',
+    () => RaylibDebugLabels.ColorLerp(color1, color2, factor),
     () => rl.Core.ColorLerp(
       rl.Temp.Color$.Ref1(color1).ref,
       rl.Temp.Color$.Ref2(color2).ref,
@@ -4632,7 +4632,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ColorD GetColor(
     num hexValue,
   ) => run(
-    () => 'GetColor($hexValue)',
+    () => RaylibDebugLabels.GetColor(hexValue),
     () => rl.Core.GetColor(hexValue.toInt()).toD(),
   );
 
@@ -4642,7 +4642,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     PixelFormat format,
   ) => run(
-    () => 'GetPixelDataSize($width, $height, $format)',
+    () => RaylibDebugLabels.GetPixelDataSize(width, height, format),
     () => rl.Core.GetPixelDataSize(
       width.toInt(),
       height.toInt(),
@@ -4652,10 +4652,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
 
   @override
   FontD GetFontDefault() => run(
-    () => 'GetFontDefault()',
+    () => RaylibDebugLabels.GetFontDefault(),
     () => rl.Temp.Font$.RefCapture(
-      'GetFontDefault',
-      rl.Core.GetFontDefault(),
+      RaylibCaptureIds.GetFontDefault(),
+      (_) => rl.Core.GetFontDefault(),
     ),
   );
 
@@ -4663,10 +4663,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   FontD LoadFont(
     String fileName,
   ) => run(
-    () => 'LoadFont($fileName)',
+    () => RaylibDebugLabels.LoadFont(fileName),
     () => rl.Temp.Font$.RefCapture(
-      'LoadFont_$fileName',
-      rl.Core.LoadFont(
+      RaylibCaptureIds.LoadFont(fileName),
+      (_) => rl.Core.LoadFont(
         rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
@@ -4676,14 +4676,14 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   FontD LoadFontEx(
     String fileName,
     num fontSize, [
-      List<int>? codepoints,
+      Int32List? codepoints,
       num? codePointCount
     ]
   ) => run(
-    () => 'LoadFontEx($fileName, $fontSize, codepoints: ${codepoints?.length})',
+    () => RaylibDebugLabels.LoadFontEx(fileName, fontSize, codepoints),
     () => rl.Temp.Font$.RefCapture(
-      'LoadFontEx_${fileName}_$fontSize',
-      rl.Core.LoadFontEx(
+      RaylibCaptureIds.LoadFontEx(fileName, fontSize, codepoints),
+      (_) => rl.Core.LoadFontEx(
         rl.Temp.String$.ValueOrNull(fileName),
         fontSize.toInt(),
         codepoints == null ? nullptr : rl.Temp.Int$.Array(codepoints),
@@ -4698,10 +4698,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ColorD key,
     num firstChar,
   ) => run(
-    () => 'LoadFontFromImage($image, $key, $firstChar)',
+    () => RaylibDebugLabels.LoadFontFromImage(image, key, firstChar),
     () => rl.Temp.Font$.RefCapture(
-      'LoadFontFromImage_${image.$state.internalId}',
-      rl.Core.LoadFontFromImage(
+      RaylibCaptureIds.LoadFontFromImage(image, key, firstChar),
+      (_) => rl.Core.LoadFontFromImage(
         rl.Temp.Image$.Ref1(image).ref,
         rl.Temp.Color$.Ref1(key).ref,
         firstChar.toInt(),
@@ -4712,14 +4712,14 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   FontD LoadFontFromMemory(
     String fileType,
-    List<int> fileData,
+    Uint8List fileData,
     num fontSize,
-    List<int> codepoints,
+    Int32List codepoints,
   ) => run(
-    () => 'LoadFontFromMemory($fileType, fileData: ${fileData.length}, $fontSize, codepoints: ${codepoints.length})',
+    () => RaylibDebugLabels.LoadFontFromMemory(fileType, fileData, fontSize, codepoints),
     () => rl.Temp.Font$.RefCapture(
-      'LoadFontFromMemory_${fileType}_${fileData.length}_${fontSize}_${codepoints.length}',
-      rl.Core.LoadFontFromMemory(
+      RaylibCaptureIds.LoadFontFromMemory(fileType, fileData, fontSize, codepoints),
+      (_) => rl.Core.LoadFontFromMemory(
         rl.Temp.String$.ValueOrNull(fileType),
         rl.Temp.Uint8$.Array(fileData).cast(),
         fileData.length,
@@ -4734,7 +4734,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsFontValid(
     FontD font,
   ) => run(
-    () => 'IsFontValid($font)',
+    () => RaylibDebugLabels.IsFontValid(font),
     () => rl.Core.IsFontValid(
       rl.Temp.Font$.Ref1(font).ref,
     ),
@@ -4743,13 +4743,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   // TODO: ON NEW RAYLIB RELEASE - add glyphCount, now it defaults to 95
   @override
   List<GlyphInfoD> LoadFontData(
-    List<int> fileData,
+    Uint8List fileData,
     num fontSize,
-    List<int>? codepoints,
+    Int32List? codepoints,
     num? codepointCount,
     FontType type,
   ) => run(
-    () => 'LoadFontData(fileData: ${fileData.length}, $fontSize, codepoints: ${codepoints?.length}, $type)',
+    () => RaylibDebugLabels.LoadFontData(fileData, fontSize, codepoints, codepointCount, type),
     () {
       // final glyphCount = _int1();
       final glyphs = rl.Core.LoadFontData(
@@ -4776,14 +4776,14 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num padding,
     num packMethod,
   ) => run(
-    () => 'GenImageFontAtlas(glyphs: ${glyphs.length}, $fontSize, $padding, $packMethod)',
+    () => RaylibDebugLabels.GenImageFontAtlas(glyphs, fontSize, padding, packMethod),
     () {
       final recsPtr = rl.Temp.Ptr$Rectangle$.Raw();
 
       try {
         final image = rl.Temp.Image$.RefCapture(
-          'GenImageFontAtlas_${glyphs.length}_${fontSize}_$padding',
-          rl.Core.GenImageFontAtlas(
+          RaylibCaptureIds.GenImageFontAtlas(glyphs, fontSize, padding, packMethod),
+          (_) => rl.Core.GenImageFontAtlas(
             glyphs.firstOrNull?.originalPointer ?? rl.Temp.GlyphInfo$.Array(glyphs),
             recsPtr,
             glyphs.length,
@@ -4808,7 +4808,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadFontData(
     List<GlyphInfoD> glyphs,
   ) => run(
-    () => 'UnloadFontData(glyphs: ${glyphs.length})',
+    () => RaylibDebugLabels.UnloadFontData(glyphs),
     () => rl.Core.UnloadFontData(
       glyphs.firstOrNull?.originalPointer ?? rl.Temp.GlyphInfo$.Array(glyphs),
       glyphs.length,
@@ -4819,7 +4819,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadFont(
     FontD font,
   ) => run(
-    () => 'UnloadFont($font)',
+    () => RaylibDebugLabels.UnloadFont(font),
     () => rl.Core.UnloadFont(
       rl.Temp.Font$.Ref1(font).ref,
     ),
@@ -4830,7 +4830,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     FontD font,
     String fileName,
   ) => run(
-    () => 'ExportFontAsCode($font, $fileName)',
+    () => RaylibDebugLabels.ExportFontAsCode(font, fileName),
     () => rl.Core.ExportFontAsCode(
       rl.Temp.Font$.Ref1(font).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -4842,7 +4842,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num posX,
     num posY,
   ) => run(
-    () => 'DrawFPS($posX, $posY)',
+    () => RaylibDebugLabels.DrawFPS(posX, posY),
     () => rl.Core.DrawFPS(
       posX.toInt(),
       posY.toInt(),
@@ -4857,7 +4857,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num fontSize,
     ColorD color,
   ) => run(
-    () => 'DrawText($text, $posX, $posY, $fontSize, $color)',
+    () => RaylibDebugLabels.DrawText(text, posX, posY, fontSize, color),
     () => rl.Core.DrawText(
       rl.Temp.String$.ValueOrNull(text),
       posX.toInt(),
@@ -4876,7 +4876,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num spacing,
     ColorD tint,
   ) => run(
-    () => 'DrawTextEx($font, $text, $position, $fontSize, $spacing, $tint)',
+    () => RaylibDebugLabels.DrawTextEx(font, text, position, fontSize, spacing, tint),
     () => rl.Core.DrawTextEx(
       rl.Temp.Font$.Ref1(font).ref,
       rl.Temp.String$.ValueOrNull(text),
@@ -4898,7 +4898,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num spacing,
     ColorD tint,
   ) => run(
-    () => 'DrawTextPro($font, $text, $position, $origin, $rotation, $fontSize, $spacing, $tint)',
+    () => RaylibDebugLabels.DrawTextPro(font, text, position, origin, rotation, fontSize, spacing, tint),
     () => rl.Core.DrawTextPro(
       rl.Temp.Font$.Ref1(font).ref,
       rl.Temp.String$.ValueOrNull(text),
@@ -4919,7 +4919,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num fontSize,
     ColorD tint,
   ) => run(
-    () => 'DrawTextCodepoint($font, $codepoint, $position, $fontSize, $tint)',
+    () => RaylibDebugLabels.DrawTextCodepoint(font, codepoint, position, fontSize, tint),
     () => rl.Core.DrawTextCodepoint(
       rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
@@ -4932,13 +4932,13 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   @override
   void DrawTextCodepoints(
     FontD font,
-    List<int> codepoints,
+    Int32List codepoints,
     Vector2D position,
     num fontSize,
     num spacing,
     ColorD tint,
   ) => run(
-    () => 'DrawTextCodepoints($font, codepoints: ${codepoints.length}, $position, $fontSize, $spacing, $tint)',
+    () => RaylibDebugLabels.DrawTextCodepoints(font, codepoints, position, fontSize, spacing, tint),
     () => rl.Core.DrawTextCodepoints(
       rl.Temp.Font$.Ref1(font).ref,
       rl.Temp.Int$.Array(codepoints),
@@ -4954,7 +4954,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void SetTextLineSpacing(
     num spacing,
   ) => run(
-    () => 'SetTextLineSpacing($spacing)',
+    () => RaylibDebugLabels.SetTextLineSpacing(spacing),
     () => rl.Core.SetTextLineSpacing(spacing.toInt()),
   );
 
@@ -4963,7 +4963,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     String text,
     num fontSize,
   ) => run(
-    () => 'MeasureText($text, $fontSize)',
+    () => RaylibDebugLabels.MeasureText(text, fontSize),
     () => rl.Core.MeasureText(
       rl.Temp.String$.ValueOrNull(text),
       fontSize.toInt(),
@@ -4977,7 +4977,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num fontSize,
     num spacing,
   ) => run(
-    () => 'MeasureTextEx($font, $text, $fontSize, $spacing)',
+    () => RaylibDebugLabels.MeasureTextEx(font, text, fontSize, spacing),
     () => rl.Core.MeasureTextEx(
       rl.Temp.Font$.Ref1(font).ref,
       rl.Temp.String$.ValueOrNull(text),
@@ -4993,7 +4993,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     FontD font,
     num codepoint,
   ) => run(
-    () => 'GetGlyphIndex($font, $codepoint)',
+    () => RaylibDebugLabels.GetGlyphIndex(font, codepoint),
     () => disableSync(() => rl.Core.GetGlyphIndex(
         rl.Temp.Font$.Ref1(font).ref,
         codepoint.toInt(),
@@ -5006,7 +5006,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     FontD font,
     num codepoint,
   ) => run(
-    () => 'GetGlyphInfo($font, $codepoint)',
+    () => RaylibDebugLabels.GetGlyphInfo(font, codepoint),
     () => rl.Core.GetGlyphInfo(
       rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
@@ -5018,7 +5018,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     FontD font,
     num codepoint,
   ) => run(
-    () => 'GetGlyphAtlasRec($font, $codepoint)',
+    () => RaylibDebugLabels.GetGlyphAtlasRec(font, codepoint),
     () => rl.Core.GetGlyphAtlasRec(
       rl.Temp.Font$.Ref1(font).ref,
       codepoint.toInt(),
@@ -5027,9 +5027,9 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   String LoadUTF8(
-    List<int> codepoints,
+    Int32List codepoints,
   ) => run(
-    () => 'LoadUTF8(codepoints: ${codepoints.length})',
+    () => RaylibDebugLabels.LoadUTF8(codepoints),
     () {
       final utf8 = rl.Core.LoadUTF8(
         rl.Temp.Int$.Array(codepoints),
@@ -5044,10 +5044,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   );
 
   @override
-  List<int> LoadCodepoints(
+  Int32List LoadCodepoints(
     String text,
   ) => run(
-    () => 'LoadCodepoints($text)',
+    () => RaylibDebugLabels.LoadCodepoints(text),
     () {
       final count = rl.Temp.Int$.Ref1();
       final result = rl.Core.LoadCodepoints(
@@ -5055,7 +5055,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
         count,
       );
       try {
-        return .generate(count.value, (i) => result[i]);
+        return .fromList(.generate(count.value, (i) => result[i]));
       } finally {
         rl.Core.UnloadCodepoints(result);
       }
@@ -5066,7 +5066,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   int GetCodepointCount(
     String text,
   ) => run(
-    () => 'GetCodepointCount($text)',
+    () => RaylibDebugLabels.GetCodepointCount(text),
     () => rl.Core.GetCodepointCount(
       rl.Temp.String$.ValueOrNull(text),
     ),
@@ -5076,7 +5076,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   (int codepoint, int codepointSize) GetCodepoint(
     String text,
   ) => run(
-    () => 'GetCodepoint($text)',
+    () => RaylibDebugLabels.GetCodepoint(text),
     () {
       final size = rl.Temp.Int$.Ref1();
       final codepoint = rl.Core.GetCodepoint(
@@ -5091,7 +5091,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   (int codepoint, int codepointSize) GetCodepointNext(
     String text,
   ) => run(
-    () => 'GetCodepointNext($text)',
+    () => RaylibDebugLabels.GetCodepointNext(text),
     () {
       final size = rl.Temp.Int$.Ref1();
       final codepoint = rl.Core.GetCodepointNext(
@@ -5106,7 +5106,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   (int codepoint, int codepointSize) GetCodepointPrevious(
     String text,
   ) => run(
-    () => 'GetCodepointPrevious($text)',
+    () => RaylibDebugLabels.GetCodepointPrevious(text),
     () {
       final size = rl.Temp.Int$.Ref1();
       final codepoint = rl.Core.GetCodepointPrevious(
@@ -5121,7 +5121,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   (String text, int size) CodepointToUTF8(
     num codepoint,
   ) => run(
-    () => 'CodepointToUTF8($codepoint)',
+    () => RaylibDebugLabels.CodepointToUTF8(codepoint),
     () {
       final size = rl.Temp.Int$.Ref1();
       final text = rl.Core.CodepointToUTF8(
@@ -5138,7 +5138,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D endPos,
     ColorD color,
   ) => run(
-    () => 'DrawLine3D($startPos, $endPos, $color)',
+    () => RaylibDebugLabels.DrawLine3D(startPos, endPos, color),
     () => rl.Core.DrawLine3D(
       rl.Temp.Vector3$.Ref1(startPos).ref,
       rl.Temp.Vector3$.Ref2(endPos).ref,
@@ -5151,7 +5151,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D position,
     ColorD color,
   ) => run(
-    () => 'DrawPoint3D($position, $color)',
+    () => RaylibDebugLabels.DrawPoint3D(position, color),
     () => rl.Core.DrawPoint3D(
       rl.Temp.Vector3$.Ref1(position).ref,
       rl.Temp.Color$.Ref1(color).ref,
@@ -5166,7 +5166,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotationAngle,
     ColorD color,
   ) => run(
-    () => 'DrawCircle3D($center, $radius, $rotationAxis, $rotationAngle, $color)',
+    () => RaylibDebugLabels.DrawCircle3D(center, radius, rotationAxis, rotationAngle, color),
     () => rl.Core.DrawCircle3D(
       rl.Temp.Vector3$.Ref1(center).ref,
       radius.toDouble(),
@@ -5183,7 +5183,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D v3,
     ColorD color,
   ) => run(
-    () => 'DrawTriangle3D($v1, $v2, $v3, $color)',
+    () => RaylibDebugLabels.DrawTriangle3D(v1, v2, v3, color),
     () => rl.Core.DrawTriangle3D(
       rl.Temp.Vector3$.Ref1(v1).ref,
       rl.Temp.Vector3$.Ref2(v2).ref,
@@ -5197,7 +5197,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     List<Vector3D> points,
     ColorD color,
   ) => run(
-    () => 'DrawTriangleStrip3D(points: ${points.length}, $color)',
+    () => RaylibDebugLabels.DrawTriangleStrip3D(points, color),
     () => rl.Core.DrawTriangleStrip3D(
       rl.Temp.Vector3$.Array(points),
       points.length,
@@ -5213,7 +5213,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num length,
     ColorD color,
   ) => run(
-    () => 'DrawCube($position, $width, $height, $length, $color)',
+    () => RaylibDebugLabels.DrawCube(position, width, height, length, color),
     () => rl.Core.DrawCube(
       rl.Temp.Vector3$.Ref1(position).ref,
       width.toDouble(),
@@ -5229,7 +5229,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D size,
     ColorD color,
   ) => run(
-    () => 'DrawCubeV($position, $size, $color)',
+    () => RaylibDebugLabels.DrawCubeV(position, size, color),
     () => rl.Core.DrawCubeV(
       rl.Temp.Vector3$.Ref1(position).ref,
       rl.Temp.Vector3$.Ref2(size).ref,
@@ -5245,7 +5245,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num length,
     ColorD color,
   ) => run(
-    () => 'DrawCubeWires($position, $width, $height, $length, $color)',
+    () => RaylibDebugLabels.DrawCubeWires(position, width, height, length, color),
     () => rl.Core.DrawCubeWires(
       rl.Temp.Vector3$.Ref1(position).ref,
       width.toDouble(),
@@ -5261,7 +5261,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D size,
     ColorD color,
   ) => run(
-    () => 'DrawCubeWiresV($position, $size, $color)',
+    () => RaylibDebugLabels.DrawCubeWiresV(position, size, color),
     () => rl.Core.DrawCubeWiresV(
       rl.Temp.Vector3$.Ref1(position).ref,
       rl.Temp.Vector3$.Ref2(size).ref,
@@ -5275,7 +5275,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radius,
     ColorD color,
   ) => run(
-    () => 'DrawSphere($centerPos, $radius, $color)',
+    () => RaylibDebugLabels.DrawSphere(centerPos, radius, color),
     () => rl.Core.DrawSphere(
       rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
@@ -5291,7 +5291,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num slices,
     ColorD color,
   ) => run(
-    () => 'DrawSphereEx($centerPos, $radius, $rings, $slices, $color)',
+    () => RaylibDebugLabels.DrawSphereEx(centerPos, radius, rings, slices, color),
     () => rl.Core.DrawSphereEx(
       rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
@@ -5309,7 +5309,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num slices,
     ColorD color,
   ) => run(
-    () => 'DrawSphereWires($centerPos, $radius, $rings, $slices, $color)',
+    () => RaylibDebugLabels.DrawSphereWires(centerPos, radius, rings, slices, color),
     () => rl.Core.DrawSphereWires(
       rl.Temp.Vector3$.Ref1(centerPos).ref,
       radius.toDouble(),
@@ -5328,7 +5328,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num slices,
     ColorD color,
   ) => run(
-    () => 'DrawCylinder($position, $radiusTop, $radiusBottom, $height, $slices, $color)',
+    () => RaylibDebugLabels.DrawCylinder(position, radiusTop, radiusBottom, height, slices, color),
     () => rl.Core.DrawCylinder(
       rl.Temp.Vector3$.Ref1(position).ref,
       radiusTop.toDouble(),
@@ -5348,7 +5348,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num sides,
     ColorD color,
   ) => run(
-    () => 'DrawCylinderEx($startPos, $endPos, $startRadius, $endRadius, $sides, $color)',
+    () => RaylibDebugLabels.DrawCylinderEx(startPos, endPos, startRadius, endRadius, sides, color),
     () => rl.Core.DrawCylinderEx(
       rl.Temp.Vector3$.Ref1(startPos).ref,
       rl.Temp.Vector3$.Ref2(endPos).ref,
@@ -5368,7 +5368,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num slices,
     ColorD color,
   ) => run(
-    () => 'DrawCylinderWires($position, $radiusTop, $radiusBottom, $height, $slices, $color)',
+    () => RaylibDebugLabels.DrawCylinderWires(position, radiusTop, radiusBottom, height, slices, color),
     () => rl.Core.DrawCylinderWires(
       rl.Temp.Vector3$.Ref1(position).ref,
       radiusTop.toDouble(),
@@ -5388,7 +5388,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num sides,
     ColorD color,
   ) => run(
-    () => 'DrawCylinderWiresEx($startPos, $endPos, $startRadius, $endRadius, $sides, $color)',
+    () => RaylibDebugLabels.DrawCylinderWiresEx(startPos, endPos, startRadius, endRadius, sides, color),
     () => rl.Core.DrawCylinderWiresEx(
       rl.Temp.Vector3$.Ref1(startPos).ref,
       rl.Temp.Vector3$.Ref2(endPos).ref,
@@ -5408,7 +5408,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rings,
     ColorD color,
   ) => run(
-    () => 'DrawCapsule($startPos, $endPos, $radius, $slices, $rings, $color)',
+    () => RaylibDebugLabels.DrawCapsule(startPos, endPos, radius, slices, rings, color),
     () => rl.Core.DrawCapsule(
       rl.Temp.Vector3$.Ref1(startPos).ref,
       rl.Temp.Vector3$.Ref2(endPos).ref,
@@ -5428,7 +5428,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rings,
     ColorD color,
   ) => run(
-    () => 'DrawCapsuleWires($startPos, $endPos, $radius, $slices, $rings, $color)',
+    () => RaylibDebugLabels.DrawCapsuleWires(startPos, endPos, radius, slices, rings, color),
     () => rl.Core.DrawCapsuleWires(
       rl.Temp.Vector3$.Ref1(startPos).ref,
       rl.Temp.Vector3$.Ref2(endPos).ref,
@@ -5445,7 +5445,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D size,
     ColorD color,
   ) => run(
-    () => 'DrawPlane($centerPos, $size, $color)',
+    () => RaylibDebugLabels.DrawPlane(centerPos, size, color),
     () => rl.Core.DrawPlane(
       rl.Temp.Vector3$.Ref1(centerPos).ref,
       rl.Temp.Vector2$.Ref1(size).ref,
@@ -5458,7 +5458,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RayD ray,
     ColorD color,
   ) => run(
-    () => 'DrawRay($ray, $color)',
+    () => RaylibDebugLabels.DrawRay(ray, color),
     () => rl.Core.DrawRay(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.Color$.Ref1(color).ref,
@@ -5470,7 +5470,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num slices,
     num spacing,
   ) => run(
-    () => 'DrawGrid($slices, $spacing)',
+    () => RaylibDebugLabels.DrawGrid(slices, spacing),
     () => rl.Core.DrawGrid(
       slices.toInt(),
       spacing.toDouble(),
@@ -5481,10 +5481,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ModelD LoadModel(
     String fileName,
   ) => run(
-    () => 'LoadModel($fileName)',
+    () => RaylibDebugLabels.LoadModel(fileName),
     () => rl.Temp.Model$.RefCapture(
-      'LoadModel_$fileName',
-      rl.Core.LoadModel(
+      RaylibCaptureIds.LoadModel(fileName),
+      (_) => rl.Core.LoadModel(
         rl.Temp.String$.ValueOrNull(fileName),
       ),
     ),
@@ -5494,10 +5494,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   ModelD LoadModelFromMesh(
     MeshD mesh,
   ) => run(
-    () => 'LoadModelFromMesh($mesh)',
+    () => RaylibDebugLabels.LoadModelFromMesh(mesh),
     () => rl.Temp.Model$.RefCapture(
-      'LoadModelFromMesh_${mesh.$state.internalId}',
-      rl.Core.LoadModelFromMesh(
+      RaylibCaptureIds.LoadModelFromMesh(mesh),
+      (_) => rl.Core.LoadModelFromMesh(
         rl.Temp.Mesh$.Ref1(mesh).ref,
       ),
     ),
@@ -5507,7 +5507,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsModelValid(
     ModelD model,
   ) => run(
-    () => 'IsModelValid($model)',
+    () => RaylibDebugLabels.IsModelValid(model),
     () => rl.Core.IsModelValid(
       rl.Temp.Model$.Ref1(model).ref,
     ),
@@ -5517,7 +5517,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadModel(
     ModelD model,
   ) => run(
-    () => 'UnloadModel($model)',
+    () => RaylibDebugLabels.UnloadModel(model),
     () => rl.Core.UnloadModel(
       model.getOriginalPointerAndDispose().ref,
     ),
@@ -5527,7 +5527,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   BoundingBoxD GetModelBoundingBox(
     ModelD model,
   ) => run(
-    () => 'GetModelBoundingBox($model)',
+    () => RaylibDebugLabels.GetModelBoundingBox(model),
     () => rl.Core.GetModelBoundingBox(
       rl.Temp.Model$.Ref1(model).ref,
     ).toD(),
@@ -5540,7 +5540,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scale,
     ColorD tint
   ) => run(
-    () => 'DrawModel($model, $position, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModel(model, position, scale, tint),
     () => rl.Core.DrawModel(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5558,7 +5558,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D scale,
     ColorD tint,
   ) => run(
-    () => 'DrawModelEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModelEx(model, position, rotationAxis, rotationAngle, scale, tint),
     () => rl.Core.DrawModelEx(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5576,7 +5576,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scale,
     ColorD tint,
   ) => run(
-    () => 'DrawModelWires($model, $position, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModelWires(model, position, scale, tint),
     () => rl.Core.DrawModelWires(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5594,7 +5594,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D scale,
     ColorD tint,
   ) => run(
-    () => 'DrawModelWiresEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModelWiresEx(model, position, rotationAxis, rotationAngle, scale, tint),
     () => rl.Core.DrawModelWiresEx(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5612,7 +5612,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scale,
     ColorD tint,
   ) => run(
-    () => 'DrawModelPoints($model, $position, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModelPoints(model, position, scale, tint),
     () => rl.Core.DrawModelPoints(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5630,7 +5630,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D scale,
     ColorD tint,
   ) => run(
-    () => 'DrawModelPointsEx($model, $position, $rotationAxis, $rotationAngle, $scale, $tint)',
+    () => RaylibDebugLabels.DrawModelPointsEx(model, position, rotationAxis, rotationAngle, scale, tint),
     () => rl.Core.DrawModelPointsEx(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.Vector3$.Ref1(position).ref,
@@ -5646,7 +5646,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     BoundingBoxD box,
     ColorD color,
   ) => run(
-    () => 'DrawBoundingBox($box, $color)',
+    () => RaylibDebugLabels.DrawBoundingBox(box, color),
     () => rl.Core.DrawBoundingBox(
       rl.Temp.BoundingBox$.Ref1(box).ref,
       rl.Temp.Color$.Ref1(color).ref,
@@ -5661,7 +5661,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num scale,
     ColorD tint,
   ) => run(
-    () => 'DrawBillboard($camera, $texture, $position, $scale, $tint)',
+    () => RaylibDebugLabels.DrawBillboard(camera, texture, position, scale, tint),
     () => rl.Core.DrawBillboard(
       rl.Temp.Camera3D$.Ref1(camera).ref,
       rl.Temp.Texture$.Ref1(texture).ref,
@@ -5680,7 +5680,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector2D size,
     ColorD tint,
   ) => run(
-    () => 'DrawBillboardRec($camera, $texture, $source, $position, $size, $tint)',
+    () => RaylibDebugLabels.DrawBillboardRec(camera, texture, source, position, size, tint),
     () => rl.Core.DrawBillboardRec(
       rl.Temp.Camera3D$.Ref1(camera).ref,
       rl.Temp.Texture$.Ref1(texture).ref,
@@ -5703,7 +5703,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rotation,
     ColorD tint,
   ) => run(
-    () => 'DrawBillboardPro($camera, $texture, $source, $position, $up, $size, $origin, $rotation, $tint)',
+    () => RaylibDebugLabels.DrawBillboardPro(camera, texture, source, position, up, size, origin, rotation, tint),
     () => rl.Core.DrawBillboardPro(
       rl.Temp.Camera3D$.Ref1(camera).ref,
       rl.Temp.Texture$.Ref1(texture).ref,
@@ -5722,7 +5722,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MeshD mesh,
     bool dynamic,
   ) => run(
-    () => 'UploadMesh($mesh, $dynamic)',
+    () => RaylibDebugLabels.UploadMesh(mesh, dynamic),
     () => rl.Temp.Mesh$.RefUpdate1(mesh,
       (p) => rl.Core.UploadMesh(p, dynamic),
     ),
@@ -5732,14 +5732,14 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UpdateMeshBuffer(
     MeshD mesh,
     num index,
-    List<int> data,
+    TypedDataList data,
     num offset,
   ) => run(
-    () => 'UpdateMeshBuffer($mesh, $index, data: ${data.length}, $offset)',
+    () => RaylibDebugLabels.UpdateMeshBuffer(mesh, index, data, offset),
     () => rl.Core.UpdateMeshBuffer(
       rl.Temp.Mesh$.Ref1(mesh).ref,
       index.toInt(),
-      rl.Temp.Int$.Array(data).cast(),
+      rl.Temp.TypedDataList$.Array(data).cast(),
       data.length,
       offset.toInt(),
     ),
@@ -5749,7 +5749,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadMesh(
     MeshD mesh,
   ) => run(
-    () => 'UnloadMesh($mesh)',
+    () => RaylibDebugLabels.UnloadMesh(mesh),
     () => rl.Core.UnloadMesh(
       rl.Temp.Mesh$.Ref1(mesh).ref,
     ),
@@ -5761,7 +5761,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MaterialD material,
     MatrixD transform,
   ) => run(
-    () => 'DrawMesh($mesh, $material, transform: $transform)',
+    () => RaylibDebugLabels.DrawMesh(mesh, material, transform),
     () => rl.Core.DrawMesh(
       rl.Temp.Mesh$.Ref1(mesh).ref,
       rl.Temp.Material$.Ref1(material).ref,
@@ -5775,7 +5775,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MaterialD material,
     List<MatrixD> transforms,
   ) => run(
-    () => 'DrawMeshInstanced($mesh, $material, transforms: ${transforms.length})',
+    () => RaylibDebugLabels.DrawMeshInstanced(mesh, material, transforms),
     () => rl.Core.DrawMeshInstanced(
       rl.Temp.Mesh$.Ref1(mesh).ref,
       rl.Temp.Material$.Ref1(material).ref,
@@ -5788,7 +5788,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   BoundingBoxD GetMeshBoundingBox(
     MeshD mesh,
   ) => run(
-    () => 'GetMeshBoundingBox($mesh)',
+    () => RaylibDebugLabels.GetMeshBoundingBox(mesh),
     () => rl.Core.GetMeshBoundingBox(
       rl.Temp.Mesh$.Ref1(mesh).ref,
     ).toD(),
@@ -5798,7 +5798,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void GenMeshTangents(
     MeshD mesh,
   ) => run(
-    () => 'GenMeshTangents($mesh)',
+    () => RaylibDebugLabels.GenMeshTangents(mesh),
     () => rl.Temp.Mesh$.RefUpdate1(mesh,
       (p) => rl.Core.GenMeshTangents(p),
     ),
@@ -5809,7 +5809,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MeshD mesh,
     String fileName,
   ) => run(
-    () => 'ExportMesh($mesh, $fileName)',
+    () => RaylibDebugLabels.ExportMesh(mesh, fileName),
     () => rl.Core.ExportMesh(
       rl.Temp.Mesh$.Ref1(mesh).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -5821,7 +5821,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MeshD mesh,
     String fileName,
   ) => run(
-    () => 'ExportMeshAsCode($mesh, $fileName)',
+    () => RaylibDebugLabels.ExportMeshAsCode(mesh, fileName),
     () => rl.Core.ExportMeshAsCode(
       rl.Temp.Mesh$.Ref1(mesh).ref,
       rl.Temp.String$.ValueOrNull(fileName),
@@ -5833,10 +5833,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num sides,
     num radius,
   ) => run(
-    () => 'GenMeshPoly($sides, $radius)',
+    () => RaylibDebugLabels.GenMeshPoly(sides, radius),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshPoly_${sides}_${radius.toDouble()}',
-      rl.Core.GenMeshPoly(
+      RaylibCaptureIds.GenMeshPoly(sides, radius),
+      (_) => rl.Core.GenMeshPoly(
         sides.toInt(),
         radius.toDouble(),
       ),
@@ -5850,10 +5850,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num resX,
     num resZ,
   ) => run(
-    () => 'GenMeshPlane($width, $length, $resX, $resZ)',
+    () => RaylibDebugLabels.GenMeshPlane(width, length, resX, resZ),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshPlane_${width.toDouble()}_${length.toDouble()}',
-      rl.Core.GenMeshPlane(
+      RaylibCaptureIds.GenMeshPlane(width, length, resX, resZ),
+      (_) => rl.Core.GenMeshPlane(
         width.toDouble(),
         length.toDouble(),
         resX.toInt(),
@@ -5868,10 +5868,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     num length,
   ) => run(
-    () => 'GenMeshCube($width, $height, $length)',
+    () => RaylibDebugLabels.GenMeshCube(width, height, length),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshCube_${width.toDouble()}_${height.toDouble()}_${length.toDouble()}',
-      rl.Core.GenMeshCube(
+      RaylibCaptureIds.GenMeshCube(width, height, length),
+      (_) => rl.Core.GenMeshCube(
         width.toDouble(),
         height.toDouble(),
         length.toDouble(),
@@ -5885,10 +5885,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rings,
     num slices,
   ) => run(
-    () => 'GenMeshSphere($radius, $rings, $slices)',
+    () => RaylibDebugLabels.GenMeshSphere(radius, rings, slices),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshSphere_${radius.toDouble()}_${rings}_$slices',
-      rl.Core.GenMeshSphere(
+      RaylibCaptureIds.GenMeshSphere(radius, rings, slices),
+      (_) => rl.Core.GenMeshSphere(
         radius.toDouble(),
         rings.toInt(),
         slices.toInt(),
@@ -5902,10 +5902,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num rings,
     num slices,
   ) => run(
-    () => 'GenMeshHemiSphere($radius, $rings, $slices)',
+    () => RaylibDebugLabels.GenMeshHemiSphere(radius, rings, slices),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshHemiSphere_${radius.toDouble()}_${rings}_$slices',
-      rl.Core.GenMeshHemiSphere(
+      RaylibCaptureIds.GenMeshHemiSphere(radius, rings, slices),
+      (_) => rl.Core.GenMeshHemiSphere(
         radius.toDouble(),
         rings.toInt(),
         slices.toInt(),
@@ -5919,10 +5919,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     num slices,
   ) => run(
-    () => 'GenMeshCylinder($radius, $height, $slices)',
+    () => RaylibDebugLabels.GenMeshCylinder(radius, height, slices),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshCylinder_${radius.toDouble()}_${height.toDouble()}_$slices',
-      rl.Core.GenMeshCylinder(
+      RaylibCaptureIds.GenMeshCylinder(radius, height, slices),
+      (_) => rl.Core.GenMeshCylinder(
         radius.toDouble(),
         height.toDouble(),
         slices.toInt(),
@@ -5936,10 +5936,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num height,
     num slices,
   ) => run(
-    () => 'GenMeshCone($radius, $height, $slices)',
+    () => RaylibDebugLabels.GenMeshCone(radius, height, slices),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshCone_${radius.toDouble()}_${height.toDouble()}_$slices',
-      rl.Core.GenMeshCone(
+      RaylibCaptureIds.GenMeshCone(radius, height, slices),
+      (_) => rl.Core.GenMeshCone(
         radius.toDouble(),
         height.toDouble(),
         slices.toInt(),
@@ -5954,10 +5954,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radSeg,
     num sides,
   ) => run(
-    () => 'GenMeshTorus($radius, $size, $radSeg, $sides)',
+    () => RaylibDebugLabels.GenMeshTorus(radius, size, radSeg, sides),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshTorus_${radius.toDouble()}_${size.toDouble()}_${radSeg}_$sides',
-      rl.Core.GenMeshTorus(
+      RaylibCaptureIds.GenMeshTorus(radius, size, radSeg, sides),
+      (_) => rl.Core.GenMeshTorus(
         radius.toDouble(),
         size.toDouble(),
         radSeg.toInt(),
@@ -5973,10 +5973,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num radSeg,
     num sides,
   ) => run(
-    () => 'GenMeshKnot($radius, $size, $radSeg, $sides)',
+    () => RaylibDebugLabels.GenMeshKnot(radius, size, radSeg, sides),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshKnot_${radius.toDouble()}_${size.toDouble()}_${radSeg}_$sides',
-      rl.Core.GenMeshKnot(
+      RaylibCaptureIds.GenMeshKnot(radius, size, radSeg, sides),
+      (_) => rl.Core.GenMeshKnot(
         radius.toDouble(),
         size.toDouble(),
         radSeg.toInt(),
@@ -5990,10 +5990,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD heightmap,
     Vector3D size,
   ) => run(
-    () => 'GenMeshHeightmap($heightmap, $size)',
+    () => RaylibDebugLabels.GenMeshHeightmap(heightmap, size),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshHeightmap_${heightmap.$state.internalId}',
-      rl.Core.GenMeshHeightmap(
+      RaylibCaptureIds.GenMeshHeightmap(heightmap, size),
+      (_) => rl.Core.GenMeshHeightmap(
         rl.Temp.Image$.Ref1(heightmap).ref,
         rl.Temp.Vector3$.Ref1(size).ref,
       ),
@@ -6005,10 +6005,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ImageD cubicmap,
     Vector3D cubeSize,
   ) => run(
-    () => 'GenMeshCubicmap($cubicmap, $cubeSize)',
+    () => RaylibDebugLabels.GenMeshCubicmap(cubicmap, cubeSize),
     () => rl.Temp.Mesh$.RefCapture(
-      'GenMeshCubicmap_${cubicmap.$state.internalId}',
-      rl.Core.GenMeshCubicmap(
+      RaylibCaptureIds.GenMeshCubicmap(cubicmap, cubeSize),
+      (_) => rl.Core.GenMeshCubicmap(
         rl.Temp.Image$.Ref1(cubicmap).ref,
         rl.Temp.Vector3$.Ref1(cubeSize).ref,
       ),
@@ -6019,7 +6019,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   List<MaterialD> LoadMaterials(
     String fileName,
   ) => run(
-    () => 'LoadMaterials($fileName)',
+    () => RaylibDebugLabels.LoadMaterials(fileName),
     () {
       final materialCount = rl.Temp.Int$.Ref1();
       final materials = rl.Core.LoadMaterials(
@@ -6032,10 +6032,10 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     
   @override
   MaterialD LoadMaterialDefault() => run(
-    () => 'LoadMaterialDefault()',
+    () => RaylibDebugLabels.LoadMaterialDefault(),
     () => rl.Temp.Material$.RefCapture(
-      'LoadMaterialDefault',
-      rl.Core.LoadMaterialDefault(),
+      RaylibCaptureIds.LoadMaterialDefault(),
+      (_) => rl.Core.LoadMaterialDefault(),
     ),
   );
     
@@ -6043,7 +6043,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   bool IsMaterialValid(
     MaterialD material,
   ) => run(
-    () => 'IsMaterialValid($material)',
+    () => RaylibDebugLabels.IsMaterialValid(material),
     () => rl.Core.IsMaterialValid(
       rl.Temp.Material$.Ref1(material).ref,
     ),
@@ -6053,7 +6053,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadMaterial(
     MaterialD material,
   ) => run(
-    () => 'UnloadMaterial($material)',
+    () => RaylibDebugLabels.UnloadMaterial(material),
     () => rl.Core.UnloadMaterial(
       rl.Temp.Material$.Ref1(material).ref,
     ),
@@ -6065,7 +6065,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MaterialMapIndex mapType,
     TextureD texture,
   ) => run(
-    () => 'SetMaterialTexture($material, ${mapType.name}, $texture)',
+    () => RaylibDebugLabels.SetMaterialTexture(material, mapType, texture),
     () => material.maps[mapType.value].texture = texture,
   );
     
@@ -6075,7 +6075,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     num meshId,
     num materialId,
   ) => run(
-    () => 'SetModelMeshMaterial($model, $meshId, $materialId)',
+    () => RaylibDebugLabels.SetModelMeshMaterial(model, meshId, materialId),
     () {
       if (meshId >= model.meshes.length) {
         TraceLog(.LOG_WARNING, "MESH: Id greater than mesh count");
@@ -6093,7 +6093,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   List<ModelAnimationD> LoadModelAnimations(
     String fileName,
   ) => run(
-    () => 'LoadModelAnimations($fileName)',
+    () => RaylibDebugLabels.LoadModelAnimations(fileName),
     () {
       final animCount = rl.Temp.Int$.Ref1();
       final anims = rl.Core.LoadModelAnimations(
@@ -6110,7 +6110,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ModelAnimationD anim,
     num frame,
   ) => run(
-    () => 'UpdateModelAnimation($model, $anim, $frame)',
+    () => RaylibDebugLabels.UpdateModelAnimation(model, anim, frame),
     () => rl.Temp.Model$.RefUpdate1(model,
       (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
         (pma) => rl.Core.UpdateModelAnimation(
@@ -6128,7 +6128,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ModelAnimationD anim,
     num frame,
   ) => run(
-    () => 'UpdateModelAnimationBones($model, $anim, $frame)',
+    () => RaylibDebugLabels.UpdateModelAnimationBones(model, anim, frame),
     () => rl.Temp.Model$.RefUpdate1(model,
       (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
         (pma) => rl.Core.UpdateModelAnimationBones(
@@ -6144,7 +6144,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadModelAnimation(
     ModelAnimationD anim,
   ) => run(
-    () => 'UnloadModelAnimation($anim)',
+    () => RaylibDebugLabels.UnloadModelAnimation(anim),
     () => rl.Core.UnloadModelAnimation(
       rl.Temp.ModelAnimation$.Ref1(anim).ref,
     ),
@@ -6154,7 +6154,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
   void UnloadModelAnimations(
     List<ModelAnimationD> animations,
   ) => run(
-    () => 'UnloadModelAnimations(animations: ${animations.length})',
+    () => RaylibDebugLabels.UnloadModelAnimations(animations),
     () => animations.forEach(UnloadModelAnimation),
   );
     
@@ -6163,7 +6163,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     ModelD model,
     ModelAnimationD anim,
   ) => run(
-    () => 'IsModelAnimationValid($model, $anim)',
+    () => RaylibDebugLabels.IsModelAnimationValid(model, anim),
     () => rl.Core.IsModelAnimationValid(
       rl.Temp.Model$.Ref1(model).ref,
       rl.Temp.ModelAnimation$.Ref1(anim).ref,
@@ -6177,7 +6177,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D center2,
     num radius2,
   ) => run(
-    () => 'CheckCollisionSpheres($center1, $radius1, $center2, $radius2)',
+    () => RaylibDebugLabels.CheckCollisionSpheres(center1, radius1, center2, radius2),
     () => rl.Core.CheckCollisionSpheres(
       rl.Temp.Vector3$.Ref1(center1).ref,
       radius1.toDouble(),
@@ -6191,7 +6191,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     BoundingBoxD box1,
     BoundingBoxD box2,
   ) => run(
-    () => 'CheckCollisionBoxes($box1, $box2)',
+    () => RaylibDebugLabels.CheckCollisionBoxes(box1, box2),
     () => rl.Core.CheckCollisionBoxes(
       rl.Temp.BoundingBox$.Ref1(box1).ref,
       rl.Temp.BoundingBox$.Ref2(box2).ref,
@@ -6204,7 +6204,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D center,
     num radius,
   ) => run(
-    () => 'CheckCollisionBoxSphere($box, $center, $radius)',
+    () => RaylibDebugLabels.CheckCollisionBoxSphere(box, center, radius),
     () => rl.Core.CheckCollisionBoxSphere(
       rl.Temp.BoundingBox$.Ref1(box).ref,
       rl.Temp.Vector3$.Ref1(center).ref,
@@ -6218,7 +6218,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D center,
     num radius,
   ) => run(
-    () => 'GetRayCollisionSphere($ray, $center, $radius)',
+    () => RaylibDebugLabels.GetRayCollisionSphere(ray, center, radius),
     () => rl.Core.GetRayCollisionSphere(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.Vector3$.Ref1(center).ref,
@@ -6231,7 +6231,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     RayD ray,
     BoundingBoxD box,
   ) => run(
-    () => 'GetRayCollisionBox($ray, $box)',
+    () => RaylibDebugLabels.GetRayCollisionBox(ray, box),
     () => rl.Core.GetRayCollisionBox(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.BoundingBox$.Ref1(box).ref,
@@ -6244,7 +6244,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     MeshD mesh,
     MatrixD transform,
   ) => run(
-    () => 'GetRayCollisionMesh($ray, $mesh, $transform)',
+    () => RaylibDebugLabels.GetRayCollisionMesh(ray, mesh, transform),
     () => rl.Core.GetRayCollisionMesh(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.Mesh$.Ref1(mesh).ref,
@@ -6259,7 +6259,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D p2,
     Vector3D p3,
   ) => run(
-    () => 'GetRayCollisionTriangle($ray, $p1, $p2, $p3)',
+    () => RaylibDebugLabels.GetRayCollisionTriangle(ray, p1, p2, p3),
     () => rl.Core.GetRayCollisionTriangle(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.Vector3$.Ref1(p1).ref,
@@ -6276,7 +6276,7 @@ class RaylibCoreD extends RaylibModule implements RaylibCoreModuleBase<
     Vector3D p3,
     Vector3D p4,
   ) => run(
-    () => 'GetRayCollisionQuad($ray, $p1, $p2, $p3, $p4)',
+    () => RaylibDebugLabels.GetRayCollisionQuad(ray, p1, p2, p3, p4),
     () => rl.Core.GetRayCollisionQuad(
       rl.Temp.Ray$.Ref1(ray).ref,
       rl.Temp.Vector3$.Ref1(p1).ref,

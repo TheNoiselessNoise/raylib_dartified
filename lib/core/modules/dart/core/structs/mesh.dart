@@ -1,36 +1,26 @@
-part of '../../../../raylib.dart';
-
-extension MeshCLike on MeshC {
-  int get verticesCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get texcoordsCount => vertexCount > 0 ? vertexCount * 2 : 0;
-  int get texcoords2Count => vertexCount > 0 ? vertexCount * 2 : 0;
-  int get normalsCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get tangentsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get colorsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get indicesCount => triangleCount > 0 ? triangleCount * 3 : 0;
-  int get animVerticesCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get animNormalsCount => vertexCount > 0 ? vertexCount * 3 : 0;
-  int get boneIdsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get boneWeightsCount => vertexCount > 0 ? vertexCount * 4 : 0;
-  int get boneMatricesCount => boneCount;
-  int get vboIdCount => 9;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension MeshCPEx on Pointer<MeshC> {
-  Pointer<MeshC> setC(MeshC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<MeshC> setD(MeshD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<MeshC> setC(MeshC o) { ref.setC(o); return this; }
+  Pointer<MeshC> setD(MeshD o) { ref.setD(o); return this; }
   MeshD toD() => ref.toD(this);
 }
 
 extension MeshCEx on MeshC {
+  int get verticesCount => MeshBase.BASE_verticesCount(vertexCount);
+  int get texcoordsCount => MeshBase.BASE_texcoordsCount(vertexCount);
+  int get texcoords2Count => MeshBase.BASE_texcoords2Count(vertexCount);
+  int get normalsCount => MeshBase.BASE_normalsCount(vertexCount);
+  int get tangentsCount => MeshBase.BASE_tangentsCount(vertexCount);
+  int get colorsCount => MeshBase.BASE_colorsCount(vertexCount);
+  int get indicesCount => MeshBase.BASE_indicesCount(triangleCount);
+  int get animVerticesCount => MeshBase.BASE_animVerticesCount(vertexCount);
+  int get animNormalsCount => MeshBase.BASE_animNormalsCount(vertexCount);
+  int get boneIdsCount => MeshBase.BASE_boneIdsCount(vertexCount);
+  int get boneWeightsCount => MeshBase.BASE_boneWeightsCount(vertexCount);
+  int get boneMatricesCount => MeshBase.BASE_boneMatricesCount(boneCount);
+  int get vboIdCount => MeshBase.BASE_vboIdCount;
+
   MeshC setC(MeshC o) {
     vertexCount = o.vertexCount;
     triangleCount = o.triangleCount;
@@ -97,7 +87,13 @@ extension MeshCEx on MeshC {
   );
 }
 
-class MeshD extends StructD<MeshC, MeshD> with MeshBase {
+class MeshD extends StructD<MeshC, MeshD> with MeshBase<
+  MeshD,
+  MatrixD,
+  Vector3D,
+  QuaternionD,
+  Vector4D
+> {
   @override
   int vertexCount;
   
@@ -227,7 +223,6 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase {
 
   @override
   MeshD setD(MeshD o) {
-    originalPointer ??= o.originalPointer;
     vertexCount = o.vertexCount;
     triangleCount = o.triangleCount;
     boneCount = o.boneCount;
@@ -249,21 +244,21 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Mesh$;
+  getReference(Pointer<MeshC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
-    p.ref.vertices = vertices.isNotEmpty ? temp.Float$.RawArray(vertices) : nullptr;
-    p.ref.texcoords = texcoords.isNotEmpty ? temp.Float$.RawArray(texcoords) : nullptr;
-    p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float$.RawArray(texcoords2) : nullptr;
-    p.ref.normals = normals.isNotEmpty ? temp.Float$.RawArray(normals) : nullptr;
-    p.ref.tangents = tangents.isNotEmpty ? temp.Float$.RawArray(tangents) : nullptr;
+    p.ref.vertices = vertices.isNotEmpty ? temp.Float32$.RawArray(vertices) : nullptr;
+    p.ref.texcoords = texcoords.isNotEmpty ? temp.Float32$.RawArray(texcoords) : nullptr;
+    p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float32$.RawArray(texcoords2) : nullptr;
+    p.ref.normals = normals.isNotEmpty ? temp.Float32$.RawArray(normals) : nullptr;
+    p.ref.tangents = tangents.isNotEmpty ? temp.Float32$.RawArray(tangents) : nullptr;
     p.ref.colors = colors.isNotEmpty ? temp.UnsignedChar$.RawArray(colors) : nullptr;
     p.ref.indices = indices.isNotEmpty ? temp.UnsignedShort$.RawArray(indices) : nullptr;
-    p.ref.animVertices = animVertices.isNotEmpty ? temp.Float$.RawArray(animVertices) : nullptr;
-    p.ref.animNormals = animNormals.isNotEmpty ? temp.Float$.RawArray(animNormals) : nullptr;
+    p.ref.animVertices = animVertices.isNotEmpty ? temp.Float32$.RawArray(animVertices) : nullptr;
+    p.ref.animNormals = animNormals.isNotEmpty ? temp.Float32$.RawArray(animNormals) : nullptr;
     p.ref.boneIds = boneIds.isNotEmpty ? temp.UnsignedChar$.RawArray(boneIds) : nullptr;
-    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float$.RawArray(boneWeights) : nullptr;
+    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float32$.RawArray(boneWeights) : nullptr;
     p.ref.boneMatrices = boneMatrices.isNotEmpty ? temp.Matrix$.RawArray(boneMatrices) : nullptr;
     p.ref.vboId = nullptr;
   }
@@ -376,9 +371,6 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase {
       }
     }
   }
-
-  @override
-  String signature() => '$structName(vertexCount: $vertexCount, triangleCount: $triangleCount, boneCount: $boneCount, vaoId: $vaoId)';
 
   @override
   MeshD clone() => .new(

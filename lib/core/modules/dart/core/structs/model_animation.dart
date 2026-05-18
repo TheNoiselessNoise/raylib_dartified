@@ -1,25 +1,15 @@
-part of '../../../../raylib.dart';
-
-extension ModelAnimationCLike on ModelAnimationC {
-  int get nameLength => 32;
-  String get nameString => name.toDartString(nameLength);
-}
+part of '../../../../raylib_dartified.dart';
 
 extension ModelAnimationCPEx on Pointer<ModelAnimationC> {
-  Pointer<ModelAnimationC> setC(ModelAnimationC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<ModelAnimationC> setD(ModelAnimationD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<ModelAnimationC> setC(ModelAnimationC o) { ref.setC(o); return this; }
+  Pointer<ModelAnimationC> setD(ModelAnimationD o) { ref.setD(o); return this; }
   ModelAnimationD toD() => ref.toD(this);
 }
 
 extension ModelAnimationCEx on ModelAnimationC {
+  int get nameLength => ModelAnimationBase.BASE_nameLength;
+  String get nameString => name.toDartString(nameLength);
+
   ModelAnimationC setC(ModelAnimationC o) {
     boneCount = o.boneCount;
     frameCount = o.frameCount;
@@ -50,7 +40,15 @@ extension ModelAnimationCEx on ModelAnimationC {
   );
 }
 
-class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with ModelAnimationBase {
+class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with ModelAnimationBase<
+  ModelAnimationD,
+  BoneInfoD,
+  TransformD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   List<BoneInfoD> bones;
   
@@ -88,7 +86,6 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
 
   @override
   ModelAnimationD setD(ModelAnimationD o) {
-    originalPointer ??= o.originalPointer;
     bones = .from(o.bones); 
     framePoses = .from(o.framePoses); 
     name = o.name;
@@ -96,7 +93,7 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.ModelAnimation$;
+  getReference(Pointer<ModelAnimationC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
@@ -130,9 +127,6 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
 
     p.name.setDartString(name, nameLength);
   }
-
-  @override
-  String signature() => '$structName(bones: ${bones.length}, framePoses: ${framePoses.length}, name: $name)';
 
   @override
   ModelAnimationD clone() => .new(

@@ -51,7 +51,7 @@ AudioCallbackD AudioProcessEffectDelay = .function((buffer, frames) {
 });
 
 void main() async {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.AudioD.debug(true);
   rl.AudioD.debugFilter((c) => c.contains('AudioStreamProcessor'));
@@ -65,7 +65,7 @@ void main() async {
   final music = rl.AudioD.LoadMusicStream("../resources/country.mp3");
 
   delayBufferSize = 48000*2;
-  delayBuffer = rl.Temp.Float$.At('delayBuffer', delayBufferSize);
+  delayBuffer = rl.Temp.Float32$.At('delayBuffer', delayBufferSize);
 
   rl.AudioD.PlayMusicStream(music);
 

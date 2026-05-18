@@ -44,7 +44,7 @@ double hypot(double x, double y) {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_ball_physics".toC);
   rl.Core.SetWindowMonitor(0);

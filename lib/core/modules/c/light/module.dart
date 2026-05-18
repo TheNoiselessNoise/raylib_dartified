@@ -1,11 +1,8 @@
-// Portions of this file are derived from raylib.
-// Original work © Ramon Santamaria and contributors.
-// Used under the zlib/libpng license. See LICENSE for details.
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
 // NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
 
-class RaylibLight extends RaylibModule {
+class RaylibLight extends RaylibModule<Raylib> {
   final List<Pointer<LightC>> _lights = [];
 
   final Pointer<Int8> _lightInt8ValuePtr = calloc<Int8>();

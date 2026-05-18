@@ -11,7 +11,7 @@ const bool SUPPORT_QUADS_DRAW_MODE = true;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_rectangle_advanced".toC);
   rl.Core.SetWindowMonitor(0);

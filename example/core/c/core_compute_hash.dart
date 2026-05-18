@@ -24,7 +24,7 @@ Pointer<Char> GetDataAsHexText(Raylib rl, Pointer<UnsignedInt> data, int size, [
 }
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, 'core_compute_hash'.toC);
   rl.Core.SetWindowMonitor(0);

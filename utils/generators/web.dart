@@ -56,7 +56,7 @@ class WebModuleWriter extends Writable {
       // Parameter name
       final name = param.name?.lexeme;
 
-      // Parameter type — cast to the most common kind first
+      // Parameter type, cast to the most common kind first
       if (param is SimpleFormalParameter) {
         final type = param.type; // TypeAnnotation?
         if (type is NamedType) {

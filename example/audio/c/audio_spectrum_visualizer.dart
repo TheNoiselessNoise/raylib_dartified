@@ -62,7 +62,7 @@ late Pointer<Vector4C> renderFrameVec4;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   renderFrameVec4 = rl.Temp.Vector4$.At('renderFrame')
     .set(UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL);
@@ -126,7 +126,7 @@ void main()
   final wavPCM16 = wavePtr.ref.data.cast<Short>();
 
   final chunkSamples = rl.Temp.Int16$.At('chunkSamples', AUDIO_STREAM_RING_BUFFER_SIZE);
-  final audioSamples = rl.Temp.Float$.At('audioSamples', FFT_WINDOW_SIZE);
+  final audioSamples = rl.Temp.Float32$.At('audioSamples', FFT_WINDOW_SIZE);
 
   while (!rl.Core.WindowShouldClose())
   {

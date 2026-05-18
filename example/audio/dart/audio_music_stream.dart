@@ -6,7 +6,7 @@ import '../../base.dart';
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(800, 450, "audio_music_stream");
   rl.CoreD.SetWindowMonitor(0);

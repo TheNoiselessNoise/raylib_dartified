@@ -19,7 +19,7 @@ double sineIdx = 0.0;
 late Raylib rl;
 
 void main() async {
-  rl = loadBaseRaylib();
+  rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "audio_raw_stream".toC);
   rl.Core.SetWindowMonitor(0);

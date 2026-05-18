@@ -251,7 +251,6 @@ class MyIntD extends StructDLiteral<MyIntD, MyIntC> {
   
   @override
   MyIntD setD(MyIntD o) {
-    originalPointer ??= o.originalPointer;
     value = o.value;
     return this;
   }

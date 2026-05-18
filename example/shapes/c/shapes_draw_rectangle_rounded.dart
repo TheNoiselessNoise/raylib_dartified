@@ -9,17 +9,17 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_draw_rectangle_rounded".toC);
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  final roundness = rl.Temp.Float$.Value(0.2, 'roundness');
-  final width = rl.Temp.Float$.Value(200.0, 'width');
-  final height = rl.Temp.Float$.Value(100.0, 'height');
-  final segments = rl.Temp.Float$.Value(0.0, 'segments');
-  final lineThick = rl.Temp.Float$.Value(1.0, 'lineThick');
+  final roundness = rl.Temp.Float32$.Value(0.2, 'roundness');
+  final width = rl.Temp.Float32$.Value(200.0, 'width');
+  final height = rl.Temp.Float32$.Value(100.0, 'height');
+  final segments = rl.Temp.Float32$.Value(0.0, 'segments');
+  final lineThick = rl.Temp.Float32$.Value(1.0, 'lineThick');
 
   final drawRect = rl.Temp.Bool$.Value(false, 'drawRect');
   final drawRoundedRect = rl.Temp.Bool$.Value(true, 'drawRoundedRect');

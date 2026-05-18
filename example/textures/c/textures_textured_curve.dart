@@ -25,7 +25,7 @@ Pointer<Vector2C> curveSelectedPoint = nullptr;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(
     ConfigFlags.FLAG_VSYNC_HINT.value |
@@ -59,7 +59,7 @@ void main()
     if (!rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)) curveSelectedPoint = nullptr;
 
     if (curveSelectedPoint.address != 0) {
-      curveSelectedPoint.ref.add(rl.Core.GetMouseDelta());
+      curveSelectedPoint.setD(curveSelectedPoint.toD().add(rl.Core.GetMouseDelta().toD()));
     }
 
     final mouse = rl.Core.GetMousePosition();
@@ -162,7 +162,7 @@ void DrawTexturedCurve(Raylib rl)
       .vec2(-delta.ref.y, delta.ref.x).normalize()
     );
 
-    double v = previousV + delta.length;
+    double v = previousV + delta.toD().length;
 
     if (!tangentSet)
     {

@@ -1,25 +1,15 @@
-part of '../../../../raylib.dart';
-
-extension MaterialCLike on MaterialC {
-  int get paramCount => 4;
-  int get mapCount => Raylib.instance.MAX_MATERIAL_MAPS;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension MaterialCPEx on Pointer<MaterialC> {
-  Pointer<MaterialC> setC(MaterialC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<MaterialC> setD(MaterialD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<MaterialC> setC(MaterialC o) { ref.setC(o); return this; }
+  Pointer<MaterialC> setD(MaterialD o) { ref.setD(o); return this; }
   MaterialD toD() => ref.toD(this);
 }
 
 extension MaterialCEx on MaterialC {
+  int get paramCount => MaterialBase.BASE_paramCount;
+  int get mapCount => MaterialBase.BASE_mapCount;
+
   MaterialC setC(MaterialC o) {
     shader = o.shader;
     maps = o.maps;
@@ -55,7 +45,13 @@ extension MaterialCEx on MaterialC {
   );
 }
 
-class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase {
+class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
+  MaterialD,
+  ShaderD,
+  MaterialMapD,
+  TextureD,
+  ColorD
+> {
   @override
   ShaderD shader;
   
@@ -92,7 +88,6 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase {
 
   @override
   MaterialD setD(MaterialD o) {
-    originalPointer ??= o.originalPointer;
     shader.setD(o.shader);
     maps = o.maps.map((x) => x.clone()).toList();
     params = .from(o.params);
@@ -100,7 +95,7 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Material$;
+  getReference(Pointer<MaterialC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
@@ -125,9 +120,6 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase {
       p.params[i] = params[i];
     }
   }
-
-  @override
-  String signature() => '$structName(shader: $shader, maps: ${maps.length}, params: ${params.join(', ')})';
 
   @override
   MaterialD clone() => .new(

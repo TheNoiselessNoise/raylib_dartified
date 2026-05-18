@@ -14,7 +14,7 @@ const int BONE_SOCKET_HAND_L = 2;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "models_bone_socket".toC);
   rl.Core.SetWindowMonitor(0);

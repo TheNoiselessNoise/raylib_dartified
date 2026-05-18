@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension ModelCPEx on Pointer<ModelC> {
-  Pointer<ModelC> setC(ModelC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<ModelC> setD(ModelD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<ModelC> setC(ModelC o) { ref.setC(o); return this; }
+  Pointer<ModelC> setD(ModelD o) { ref.setD(o); return this; }
   ModelD toD() => ref.toD(this);
 }
 
@@ -54,7 +46,21 @@ extension ModelCEx on ModelC {
   );
 }
 
-class ModelD extends StructD<ModelC, ModelD> with ModelBase {
+class ModelD extends StructD<ModelC, ModelD> with ModelBase<
+  ModelD,
+  MeshD,
+  MatrixD,
+  Vector3D,
+  QuaternionD,
+  Vector4D,
+  MaterialD,
+  ShaderD,
+  MaterialMapD,
+  TextureD,
+  ColorD,
+  TransformD,
+  BoneInfoD
+> {
   @override
   MatrixD transform;
   
@@ -111,7 +117,6 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase {
 
   @override
   ModelD setD(ModelD o) {
-    originalPointer ??= o.originalPointer;
     transform.setD(o.transform);
     meshes = .from(o.meshes);
     materials = .from(o.materials);
@@ -122,7 +127,7 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase {
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Model$;
+  getReference(Pointer<ModelC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
@@ -170,9 +175,6 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase {
       }
     }
   }
-
-  @override
-  String signature() => '$structName(transform: $transform, meshes: ${meshes.length}, materials: ${materials.length}, bones: ${bones.length}, ...)';
 
   @override
   ModelD clone() => .new(

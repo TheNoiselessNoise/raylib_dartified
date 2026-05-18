@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_texture_outline".toC);
   rl.Core.SetWindowMonitor(0);
@@ -34,18 +34,18 @@ void main()
 
   void updateShaderOutlineSize() {
     rl.Core.SetShaderValue(shdrOutline, outlineSizeLoc,
-      rl.Temp.Float$.Value(outlineSize).cast(),
+      rl.Temp.Float32$.Value(outlineSize).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderOutlineSize();
 
   rl.Core.SetShaderValue(shdrOutline, outlineColorLoc,
-    rl.Temp.Float$.Array(outlineColor).cast(),
+    rl.Temp.Float32$.Array(outlineColor).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
   rl.Core.SetShaderValue(shdrOutline, textureSizeLoc,
-    rl.Temp.Float$.Array(textureSize).cast(),
+    rl.Temp.Float32$.Array(textureSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
 

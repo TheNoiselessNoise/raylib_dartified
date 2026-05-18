@@ -9,7 +9,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shapes_draw_ring".toC);
   rl.Core.SetWindowMonitor(0);
@@ -19,12 +19,12 @@ void main()
     (rl.Core.GetScreenWidth() - 300)/2.0, rl.Core.GetScreenHeight()/2.0
   );
 
-  final innerRadius = rl.Temp.Float$.Value(80.0, 'innerRadius');
-  final outerRadius = rl.Temp.Float$.Value(190.0, 'outerRadius');
+  final innerRadius = rl.Temp.Float32$.Value(80.0, 'innerRadius');
+  final outerRadius = rl.Temp.Float32$.Value(190.0, 'outerRadius');
 
-  final startAngle = rl.Temp.Float$.Value(0.0, 'startAngle');
-  final endAngle = rl.Temp.Float$.Value(360.0, 'endAngle');
-  final segments = rl.Temp.Float$.Value(0.0, 'segments');
+  final startAngle = rl.Temp.Float32$.Value(0.0, 'startAngle');
+  final endAngle = rl.Temp.Float32$.Value(360.0, 'endAngle');
+  final segments = rl.Temp.Float32$.Value(0.0, 'segments');
 
   final drawRing = rl.Temp.Bool$.Value(true, 'drawRing');
   final drawRingLines = rl.Temp.Bool$.Value(false, 'drawRingLines');

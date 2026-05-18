@@ -1,4 +1,4 @@
-part of 'raylib.dart';
+part of 'raylib_dartified.dart';
 
 class Raylib with RaylibBase {
   static Raylib? _instance;
@@ -9,41 +9,50 @@ class Raylib with RaylibBase {
 
   Logger logger = Logger.detached('Raylib');
 
-  void logInfo(String message) => logger.info('[Raylib] $message');
+  @override
+  void logInfo(Object? message) => logger.info('[Raylib] $message');
+  
+  @override
+  void logWarn(Object? message) => logger.warning('[Raylib] $message');
+  
+  @override
+  void logError(Object? message) => logger.severe('[Raylib] $message');
 
-  late RaylibTemp Temp;
+  @override RaylibTemp get Temp => module();
+  @override RaylibColors get Color => module();
+  @override RaylibEasings get Ease => module();
+  @override RaylibQuaternions get Quat => module();
+  @override RaylibMatrices get Matrix => module();
+  @override RaylibVectors get Vector => module();
 
-  late RaylibQuaternions Quat;
-  late RaylibMatrices Matrix;
-  late RaylibVectors Vector;
-  late RaylibColors Color;
-  late RaylibEasings Ease;
-
-  late RaylibCore Core;
-  late RaylibCoreD CoreD;
-  late RaylibAudio Audio;
-  late RaylibAudioD AudioD;
-  late RaylibRlgl Rlgl;
-  late RaylibRlglD RlglD;
-  late RaylibCamera Camera;
-  late RaylibCameraD CameraD;
-  late RaylibLight Light;
-  late RaylibLightD LightD;
-
+  RaylibAudio get Audio => module();
+  @override RaylibAudioD get AudioD => module();
+  RaylibCamera get Camera => module();
+  @override RaylibCameraD get CameraD => module();
+  RaylibCore get Core => module();
+  @override RaylibCoreD get CoreD => module();
+  
   // NOTE: external modules may not be initialized at all
   //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
   //       LateInitializationError: Field 'Gui' has not been initialized.
   //       That's expected behavior!
-  late RaylibGui Gui;
-  late RaylibGuiD GuiD;
-
-  late RaylibUtils Utils;
+  RaylibGui get Gui => module();
+  @override RaylibGuiD get GuiD => module();
+  
+  RaylibLight get Light => module();
+  @override RaylibLightD get LightD => module();
+  RaylibRlgl get Rlgl => module();
+  @override RaylibRlglD get RlglD => module();
+  @override RaylibUtils get Utils => module();
 
   late final DynamicLibrary _dynCore;
+  RaylibLookup get coreLookup => _dynCore.lookup;
+
   late final DynamicLibrary? _dynGui;
+  RaylibLookup get guiLookup => _dynGui!.lookup;
 
   late final RaylibTempOptions tempOptions;
-  late Random random;
+  @override late Random random;
 
   Raylib({
     required String core,
@@ -71,82 +80,55 @@ class Raylib with RaylibBase {
     _init();
   }
 
-  RaylibLookup get coreLookup => _dynCore.lookup;
-  RaylibLookup get guiLookup => _dynGui!.lookup;
+  void _init() {
+    logger.level = Level.ALL;
+    logger.onRecord.listen((record) {
+      if (record.level >= Level.WARNING) {
+        stderr.writeln(record.message);
+      } else {
+        stdout.writeln(record.message);
+      }
+      if (record.error != null) {
+        stderr.writeln(record.error);
+      }
+      if (record.stackTrace != null) {
+        stderr.writeln(record.stackTrace);
+      }
+    });
 
-  List<Function()> get _moduleLoaders => [
-    // NOTE: no Temp
-    () => _loadModule(RaylibQuaternions.new, (m) => Quat = m),
-    () => _loadModule(RaylibMatrices.new, (m) => Matrix = m),
-    () => _loadModule(RaylibVectors.new, (m) => Vector = m),
-    () => _loadModule(RaylibColors.new, (m) => Color = m),
-    () => _loadModule(RaylibEasings.new, (m) => Ease = m),
+    RaylibMatrixFactories.createFactory = MatrixD.mat4;
+    RaylibMatrixFactories.zeroFactory = MatrixD.zero;
+    RaylibQuaternionFactories.createFactory = QuaternionD.quat;
+    RaylibQuaternionFactories.zeroFactory = QuaternionD.zero;
+    RaylibVector2Factories.createFactory = Vector2D.vec2;
+    RaylibVector2Factories.zeroFactory = Vector2D.zero;
+    RaylibVector3Factories.createFactory = Vector3D.vec3;
+    RaylibVector3Factories.zeroFactory = Vector3D.zero;
+    RaylibVector4Factories.createFactory = Vector4D.vec4;
+    RaylibVector4Factories.zeroFactory = Vector4D.zero;
 
-    () => _loadModule(RaylibCore.new, (m) => Core = m),
-    () => _loadModule(RaylibCoreD.new, (m) => CoreD = m),
-    () => _loadModule(RaylibAudio.new, (m) => Audio = m),
-    () => _loadModule(RaylibAudioD.new, (m) => AudioD = m),
-    () => _loadModule(RaylibRlgl.new, (m) => Rlgl = m),
-    () => _loadModule(RaylibRlglD.new, (m) => RlglD = m),
-    () => _loadModule(RaylibCamera.new, (m) => Camera = m),
-    () => _loadModule(RaylibCameraD.new, (m) => CameraD = m),
-    () => _loadModule(RaylibLight.new, (m) => Light = m),
-    () => _loadModule(RaylibLightD.new, (m) => LightD = m),
+    // extensions
+    registerModule(RaylibTemp(this, options: tempOptions));
+    registerModule(RaylibColors(this));
+    registerModule(RaylibEasings(this));
+    registerModule(RaylibQuaternions(this));
+    registerModule(RaylibMatrices(this));
+    registerModule(RaylibVectors(this));
 
-    if (_dynGui != null) ...[
-      () => _loadModule(RaylibGui.new, (m) => Gui = m),
-      () => _loadModule(RaylibGuiD.new, (m) => GuiD = m),
-    ],
-
-    () => _loadModule(RaylibUtils.new, (m) => Utils = m),
-  ];
-
-  List<RaylibModule> get _allModules => [
-    Temp,
-
-    Quat,
-    Matrix,
-    Vector,
-    Color,
-    Ease,
-
-    Core,
-    CoreD,
-    Audio,
-    AudioD,
-    Rlgl,
-    RlglD,
-    Camera,
-    CameraD,
-    Light,
-    LightD,
-
-    if (_dynGui != null) ...[Gui, GuiD],
-
-    ..._customModules.values,
-  ];
-
-  // Custom modules
-
-  final Map<Type, RaylibModule> _customModules = {};
-  T registerModule<T extends RaylibModule>(T module) {
-    logInfo('Registering $T');
-    final key = module.runtimeType;
-    if (_customModules.containsKey(key)) {
-      throw StateError("Module '$key' is already registered!");
-    }
-    _customModules[key] = module;
-    module._doLoad();
-    return module;
-  }
-
-  T module<T extends RaylibModule>() =>
-      _customModules.values.whereType<T>().first;
-
-  void debugEverything(bool debug) {
-    _allModules.forEach((d) => d.debug(debug));
-    Temp.debugFree(debug);
-    Temp.debugSync(debug);
+    // modules
+    registerModule(RaylibAudio(this));
+    registerModule(RaylibAudioD(this));
+    registerModule(RaylibCamera(this));
+    registerModule(RaylibCameraD(this));
+    registerModule(RaylibCore(this));
+    registerModule(RaylibCoreD(this));
+    registerModule(RaylibGui(this));
+    registerModule(RaylibGuiD(this));
+    registerModule(RaylibLight(this));
+    registerModule(RaylibLightD(this));
+    registerModule(RaylibRlgl(this));
+    registerModule(RaylibRlglD(this));
+    registerModule(RaylibUtils(this));
   }
 
   // Custom dynamic libraries
@@ -172,125 +154,6 @@ class Raylib with RaylibBase {
       throw StateError("No DynamicLibrary registered for $T.");
     }
     return lib;
-  }
-
-  void _loadModule<T extends RaylibModule>(
-    RaylibModuleConstructor<T> constructor,
-    void Function(T) loader,
-  ) {
-    logInfo('Loading $T');
-    final module = constructor(this);
-    loader(module);
-    module._doLoad();
-  }
-
-  void _disposeModule(RaylibModule module) {
-    logInfo('Disposing ${module.runtimeType}');
-    module.dispose();
-  }
-
-  void _init() {
-    logger.level = Level.ALL;
-    logger.onRecord.listen((record) {
-      if (record.level >= Level.WARNING) {
-        stderr.writeln(record.message);
-      } else {
-        stdout.writeln(record.message);
-      }
-      if (record.error != null) {
-        stderr.writeln(record.error);
-      }
-      if (record.stackTrace != null) {
-        stderr.writeln(record.stackTrace);
-      }
-    });
-
-    logInfo('Loading rl.Temp');
-    Temp = RaylibTemp(this, options: tempOptions);
-
-    _moduleLoaders.forEach((f) => f());
-  }
-
-  void dispose() => _allModules.forEach(_disposeModule);
-
-  // Functions
-
-  double Clamp(num value, num min, num max) {
-    num result = (value < min) ? min : value;
-    if (result > max) result = max;
-    return result.toDouble();
-  }
-
-  double Lerp(num start, num end, num amount) {
-    return (start + amount * (end - start)).toDouble();
-  }
-
-  double Normalize(num value, num start, num end) {
-    return (value - start) / (end - start);
-  }
-
-  double Remap(
-    num value,
-    num inputStart,
-    num inputEnd,
-    num outputStart,
-    num outputEnd,
-  ) {
-    return (value - inputStart) /
-            (inputEnd - inputStart) *
-            (outputEnd - outputStart) +
-        outputStart;
-  }
-
-  double Wrap(num value, num min, num max) {
-    return value - (max - min) * ((value - min) / (max - min)).floorToDouble();
-  }
-
-  bool FloatEquals(double x, double y) {
-    return ((x - y).abs()) <=
-        (EPSILON * math.max(1.0, math.max(x.abs(), y.abs())));
-  }
-
-  // Constants
-
-  final int RAYLIB_VERSION_MAJOR = 5;
-  final int RAYLIB_VERSION_MINOR = 5;
-  final int RAYLIB_VERSION_PATCH = 0;
-  final String RAYLIB_VERSION = '5.5.0';
-  final double PI = 3.1415927410125732;
-  final double DEG2RAD = 0.01745329238474369;
-  final double RAD2DEG = 57.2957763671875;
-  final MaterialMapIndex MATERIAL_MAP_DIFFUSE = .MATERIAL_MAP_ALBEDO;
-  final MaterialMapIndex MATERIAL_MAP_SPECULAR = .MATERIAL_MAP_METALNESS;
-  final int MAX_MATERIAL_MAPS = 12;
-  final int SHADER_LOC_MAP_DIFFUSE = 15;
-  final int SHADER_LOC_MAP_SPECULAR = 16;
-  final double EPSILON = 9.999999974752427e-7;
-  final double M_E = 2.718281828459045;
-  final double M_LOG2E = 1.4426950408889634;
-  final double M_LOG10E = 0.4342944819032518;
-  final double M_LN2 = 0.6931471805599453;
-  final double M_LN10 = 2.302585092994046;
-  final double M_PI = 3.141592653589793;
-  final double M_PI_2 = 1.5707963267948966;
-  final double M_PI_4 = 0.7853981633974483;
-  final double M_1_PI = 0.3183098861837907;
-  final double M_2_PI = 0.6366197723675814;
-  final double M_2_SQRTPI = 1.1283791670955126;
-  final double M_SQRT2 = 1.4142135623730951;
-  final double M_SQRT1_2 = 0.7071067811865476;
-  final int RAND_MAX = 2147483647;
-
-  double rand() => random.nextDouble();
-  double randC() => rand() * RAND_MAX;
-
-  T timeIt<T>(String label, T Function() fn) {
-    logger.info(label);
-    final sw = Stopwatch()..start();
-    final result = fn();
-    sw.stop();
-    logger.info('${sw.elapsedMilliseconds}ms (${sw.elapsedMicroseconds}µs)');
-    return result;
   }
 
   void CloseWindowAndDispose() {

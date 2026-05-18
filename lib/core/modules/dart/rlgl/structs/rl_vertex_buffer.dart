@@ -1,29 +1,19 @@
-part of '../../../../raylib.dart';
-
-extension RlVertexBufferCLike on RlVertexBufferC {
-  int get vboIdCount => 5;
-  int get verticesCount => elementCount > 0 ? elementCount * 3 : 0;
-  int get texcoordsCount => elementCount > 0 ? elementCount * 2 : 0;
-  int get normalsCount => elementCount > 0 ? elementCount * 3 : 0;
-  int get colorsCount => elementCount > 0 ? elementCount * 4 : 0;
-  int get indicesCount => elementCount;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension RlVertexBufferCPEx on Pointer<RlVertexBufferC> {
-  Pointer<RlVertexBufferC> setC(RlVertexBufferC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<RlVertexBufferC> setD(RlVertexBufferD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RlVertexBufferC> setC(RlVertexBufferC o) { ref.setC(o); return this; }
+  Pointer<RlVertexBufferC> setD(RlVertexBufferD o) { ref.setD(o); return this; }
   RlVertexBufferD toD() => ref.toD(this);
 }
 
 extension RlVertexBufferCEx on RlVertexBufferC {
+  int get verticesCount => RlVertexBufferBase.BASE_verticesCount(elementCount);
+  int get texcoordsCount => RlVertexBufferBase.BASE_texcoordsCount(elementCount);
+  int get normalsCount => RlVertexBufferBase.BASE_normalsCount(elementCount);
+  int get colorsCount => RlVertexBufferBase.BASE_colorsCount(elementCount);
+  int get indicesCount => RlVertexBufferBase.BASE_indicesCount(elementCount);
+  int get vboIdCount => RlVertexBufferBase.BASE_vboIdCount;
+
   RlVertexBufferC setC(RlVertexBufferC o) {
     elementCount = o.elementCount;
     vertices = o.vertices;
@@ -102,7 +92,7 @@ extension RlVertexBufferCEx on RlVertexBufferC {
   );
 }
 
-class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlVertexBufferBase {
+class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlVertexBufferBase<RlVertexBufferD> {
   @override
   int elementCount;
 
@@ -179,7 +169,6 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
 
   @override
   RlVertexBufferD setD(RlVertexBufferD o) {
-    originalPointer ??= o.originalPointer;
     elementCount = o.elementCount;
     vertices = .from(o.vertices);
     texcoords = .from(o.texcoords);
@@ -192,13 +181,13 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.RlVertexBuffer$;
+  getReference(Pointer<RlVertexBufferC> p) => p.ref;
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
-    p.ref.vertices = temp.Float$.Array(vertices, key: '${key}_vertices');
-    p.ref.texcoords = temp.Float$.Array(texcoords, key: '${key}_texcoords');
-    p.ref.normals = temp.Float$.Array(normals, key: '${key}_normals');
+    p.ref.vertices = temp.Float32$.Array(vertices, key: '${key}_vertices');
+    p.ref.texcoords = temp.Float32$.Array(texcoords, key: '${key}_texcoords');
+    p.ref.normals = temp.Float32$.Array(normals, key: '${key}_normals');
     p.ref.colors = temp.UnsignedChar$.Array(colors, key: '${key}_colors');
     p.ref.indices = temp.UnsignedInt$.Array(indices, key: '${key}_indices');
   }
@@ -214,9 +203,6 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
     for (var i = 0; i < colors.length; i++) p.colors[i] = colors[i];
     for (var i = 0; i < indices.length; i++) p.indices[i] = indices[i];
   }
-
-  @override
-  String signature() => '$structName(elementCount: $elementCount, vaoId: $vaoId, vboId: $vboId)';
 
   @override
   RlVertexBufferD clone() => .new(

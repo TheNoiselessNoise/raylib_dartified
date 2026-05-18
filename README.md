@@ -220,6 +220,23 @@ void main() {
 }
 ```
 
+## Why `*C` Structs No Longer Have Math Methods
+
+The `*C` structs (`Vector2C`, `Vector3C`, `MatrixC`, etc.) previously exposed math methods such as `add`, `sub`, `scale`, `normalize`, and others, mirroring the full operation set available on the `*D` layer. These have been removed.
+
+The reason is simple: `dart:ffi` `Struct` subclasses cannot use mixins, which means all math on the C side had to be maintained separately and kept in sync by hand forever. Every time the math logic changed, it had to be updated in two places with no compiler help to catch drift. That is a maintenance liability with no real payoff, since the C layer is never the right place to do math anyway.
+
+All math, transformation, and utility logic now lives exclusively on the `*D` layer (`Vector2D`, `Vector3D`, `MatrixD`, etc.), which are proper Dart objects backed by a shared mixin hierarchy, a single source of truth for every mathematical operation.
+
+The `*C` structs are now what they always should have been: dumb, flat data containers that sit at the FFI boundary and expose only three operations: `setC`, `setD`, and `toD`.
+
+The intended pattern is:
+
+```dart
+// read from C, work in D, write back
+someCPtr.ref.setD(someCPtr.ref.toD().add(otherVec).scale(0.5));
+```
+
 ## Safety Notes
 
 * This is **not memory-safe Dart** - you are responsible for correct usage when using the raw FFI layer
@@ -248,6 +265,17 @@ See the [example/](example/) directory for runnable code.
 
 > WARNING: Some examples require `resources/` from the original Raylib source.   
 > In that case just copy-paste the `resources/` folder into `example/<category>/`
+
+## Running examples
+
+```
+dart run <example>
+```
+
+**[LINUX]** Under wayland using X11:
+```
+WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11 dart run <example>
+```
 
 ## See Also
 

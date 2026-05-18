@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension RayCPEx on Pointer<RayC> {
-  Pointer<RayC> setC(RayC o) {
-    ref.setC(o);
-    return this;
-  }
-
-  Pointer<RayC> setD(RayD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<RayC> setC(RayC o) { ref.setC(o); return this; }
+  Pointer<RayC> setD(RayD o) { ref.setD(o); return this; }
   RayD toD() => ref.toD(this);
 }
 
@@ -34,7 +26,13 @@ extension RayCEx on RayC {
   );
 }
 
-class RayD extends StructDLiteral<RayC, RayD> with RayBase {
+class RayD extends StructDLiteral<RayC, RayD> with RayBase<
+  RayD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   Vector3D position;
 
@@ -60,23 +58,19 @@ class RayD extends StructDLiteral<RayC, RayD> with RayBase {
 
   @override
   RayD setD(RayD o) {
-    originalPointer ??= o.originalPointer;
     position.setD(o.position);
     direction.setD(o.direction);
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Ray$;
+  getReference(Pointer<RayC> p) => p.ref;
 
   @override
   void nativeWriteInto(RayC p) {
     position.nativeWriteInto(p.position);
     direction.nativeWriteInto(p.direction);
   }
-
-  @override
-  String signature() => '$structName(position: $position, direction: $direction)';
 
   @override
   RayD clone() => .new(

@@ -11,7 +11,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_hot_reloading".toC);
   rl.Core.SetWindowMonitor(0);
@@ -29,7 +29,7 @@ void main()
   final resolution = [ screenWidth, screenHeight ];
   void updateShaderResolution() {
     rl.Core.SetShaderValue(shader, resolutionLoc,
-      rl.Temp.Float$.Array(resolution).cast(),
+      rl.Temp.Float32$.Array(resolution).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderResolution();
@@ -43,7 +43,7 @@ void main()
     final mouse = rl.Core.GetMousePosition();
 
     rl.Core.SetShaderValue(shader, timeLoc,
-      rl.Temp.Float$.Value(totalTime).cast(),
+      rl.Temp.Float32$.Value(totalTime).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
     

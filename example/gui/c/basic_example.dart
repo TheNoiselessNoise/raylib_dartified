@@ -5,7 +5,7 @@ import '../../base.dart';
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final rect = rl.Temp.Rectangle$.At('rect');
 

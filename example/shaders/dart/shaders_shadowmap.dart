@@ -12,7 +12,7 @@ const int SHADOWMAP_RESOLUTION = 1024;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
   rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_shadowmap");
@@ -209,7 +209,7 @@ RenderTextureD LoadShadowmapRenderTexture(
   {
     rl.RlglD.rlEnableFramebuffer(target.id);
 
-    target.depth.id = rl.RlglD.rlLoadTextureDepth(width, height, false);
+    target.depth.id = rl.RlglD.rlLoadTextureDepth(width, height, true);
     target.depth.width = width;
     target.depth.height = height;
     target.depth.format = .fromValue(19);

@@ -8,7 +8,7 @@ const int screenHeight = 440;
 const int PLAYER_SIZE = 40;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera_split_screen');
   rl.CoreD.SetWindowMonitor(0);

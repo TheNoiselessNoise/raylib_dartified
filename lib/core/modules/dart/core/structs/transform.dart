@@ -1,16 +1,8 @@
-part of '../../../../raylib.dart';
+part of '../../../../raylib_dartified.dart';
 
 extension TransformCPEx on Pointer<TransformC> {
-  Pointer<TransformC> setC(TransformC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<TransformC> setD(TransformD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<TransformC> setC(TransformC o) { ref.setC(o); return this; }
+  Pointer<TransformC> setD(TransformD o) { ref.setD(o); return this; }
   TransformD toD() => ref.toD(this);
 }
 
@@ -37,7 +29,13 @@ extension TransformCEx on TransformC {
   );
 }
 
-class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBase {
+class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBase<
+  TransformD,
+  Vector3D,
+  MatrixD,
+  QuaternionD,
+  Vector4D
+> {
   @override
   Vector3D translation;
   
@@ -69,7 +67,6 @@ class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBa
 
   @override
   TransformD setD(TransformD o) {
-    originalPointer ??= o.originalPointer;
     translation.setD(o.translation);
     rotation.setD(o.rotation);
     scale.setD(o.scale);
@@ -77,7 +74,7 @@ class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBa
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.Transform$;
+  getReference(Pointer<TransformC> p) => p.ref;
 
   @override
   void nativeWriteInto(TransformC p) {
@@ -85,9 +82,6 @@ class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBa
     rotation.nativeWriteInto(p.rotation);
     scale.nativeWriteInto(p.scale);
   }
-
-  @override
-  String signature() => '$structName(translation: $translation, rotation: $rotation, scale: $scale)';
 
   @override
   TransformD clone() => .new(

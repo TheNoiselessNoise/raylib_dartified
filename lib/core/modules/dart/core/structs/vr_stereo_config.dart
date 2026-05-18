@@ -1,24 +1,14 @@
-part of '../../../../raylib.dart';
-
-extension VrStereoConfigCLike on VrStereoConfigC {
-  int get paramCount => 2;
-}
+part of '../../../../raylib_dartified.dart';
 
 extension VrStereoConfigCPEx on Pointer<VrStereoConfigC> {
-  Pointer<VrStereoConfigC> setC(VrStereoConfigC o) {
-    ref.setC(o);
-    return this;
-  }
-  
-  Pointer<VrStereoConfigC> setD(VrStereoConfigD o) {
-    ref.setD(o);
-    return this;
-  }
-
+  Pointer<VrStereoConfigC> setC(VrStereoConfigC o) { ref.setC(o); return this; }
+  Pointer<VrStereoConfigC> setD(VrStereoConfigD o) { ref.setD(o); return this; }
   VrStereoConfigD toD() => ref.toD(this);
 }
 
 extension VrStereoConfigCEx on VrStereoConfigC {
+  int get paramCount => VrStereoConfigBase.BASE_paramCount;
+
   VrStereoConfigC setC(VrStereoConfigC o) {
     for (int i = 0; i < paramCount; i++) {
       projection[i].setC(o.projection[i]);
@@ -90,7 +80,13 @@ extension VrStereoConfigCEx on VrStereoConfigC {
   );
 }
 
-class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrStereoConfigBase {
+class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrStereoConfigBase<
+  VrStereoConfigD,
+  MatrixD,
+  Vector3D,
+  QuaternionD,
+  Vector4D
+> {
   @override
   late List<MatrixD> projection;
   
@@ -163,7 +159,6 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
 
   @override
   VrStereoConfigD setD(VrStereoConfigD o) {
-    originalPointer ??= o.originalPointer;
     projection = .from(o.projection);
     viewOffset = .from(o.viewOffset);
     leftLensCenter = .from(o.leftLensCenter);
@@ -176,7 +171,7 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.VrStereoConfig$;
+  getReference(Pointer<VrStereoConfigC> p) => p.ref;
 
   @override
   void nativeWriteInto(VrStereoConfigC p) {
@@ -205,9 +200,6 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
       p.scaleIn[i] = scaleIn[i];
     }
   }
-
-  @override
-  String signature() => '$structName()';
 
   @override
   VrStereoConfigD clone() => .new(

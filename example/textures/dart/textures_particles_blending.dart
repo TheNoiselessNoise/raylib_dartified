@@ -28,7 +28,7 @@ class Particle {
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_particles_blending");
   rl.CoreD.SetWindowMonitor(0);

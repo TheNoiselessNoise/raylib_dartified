@@ -17,7 +17,7 @@ GameScreen currentScreen = .logo;
 int framesCounter = 0;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.InitWindow(screenWidth, screenHeight, 'core_basic_screen_manager'.toC);
   rl.Core.SetWindowMonitor(0);

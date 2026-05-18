@@ -51,7 +51,7 @@ List<Pointer<LightCEx>> lights = [];
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
   rl.Core.InitWindow(screenWidth, screenHeight, "shaders_basic_pbr".toC);
@@ -93,7 +93,7 @@ void main()
 
   rl.Core.SetShaderValue(shader,
     rl.Core.GetShaderLocation(shader, "ambientColor".toC),
-    rl.Temp.Float$.Array([
+    rl.Temp.Float32$.Array([
       ambientColor.r/255.0,
       ambientColor.g/255.0,
       ambientColor.b/255.0,
@@ -103,7 +103,7 @@ void main()
 
   rl.Core.SetShaderValue(shader,
     rl.Core.GetShaderLocation(shader, "ambient".toC),
-    rl.Temp.Float$.Value(0.02).cast(),
+    rl.Temp.Float32$.Value(0.02).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 
@@ -249,7 +249,7 @@ void main()
         );
         
         rl.Core.SetShaderValue(shader, emissiveIntensityLoc,
-          rl.Temp.Float$.Value(0.01).cast(),
+          rl.Temp.Float32$.Value(0.01).cast(),
           ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
         );
         
@@ -365,7 +365,7 @@ void UpdateLight(Raylib rl, ShaderC shader, LightCEx light)
   );
   
   rl.Core.SetShaderValue(shader, light.intensityLoc,
-    rl.Temp.Float$.Value(light.intensity).cast(),
+    rl.Temp.Float32$.Value(light.intensity).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 }

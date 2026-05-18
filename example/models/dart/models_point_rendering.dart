@@ -11,7 +11,7 @@ const int MIN_POINTS = 1_000;
 
 void main()
 {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   rl.CoreD.InitWindow(screenWidth, screenHeight, "models_point_rendering");
   rl.CoreD.SetWindowMonitor(0);

@@ -1,6 +1,6 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibGui extends RaylibModule with RaylibGuiModuleExtras {
+class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> {
   RaylibGui(super.rl);
 
   void GuiEnable() {

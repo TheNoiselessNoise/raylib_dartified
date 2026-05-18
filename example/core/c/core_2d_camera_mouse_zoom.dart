@@ -9,7 +9,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = loadBaseRaylib();
+  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
   final camera = rl.Temp.Camera2D$.At('camera');
   camera.ref.zoom = 1;

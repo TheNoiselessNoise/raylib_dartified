@@ -1,10 +1,14 @@
-part of '../../../raylib.dart';
+part of '../../../raylib_dartified.dart';
 
-class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
+class RaylibCameraD extends RaylibCameraModuleBase<
+  Raylib,
+
   // types
   Camera3DD,
   MatrixD,
-  Vector3D
+  QuaternionD,
+  Vector3D,
+  Vector4D
   
 > {
 
@@ -14,7 +18,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
   Vector3D GetCameraForward(
     Camera3DD camera,
   ) => run(
-    () => 'GetCameraForward($camera)',
+    () => RaylibDebugLabels.GetCameraForward(camera),
     () => rl.Camera.GetCameraForward(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
@@ -24,7 +28,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
   Vector3D GetCameraUp(
     Camera3DD camera,
   ) => run(
-    () => 'GetCameraUp($camera)',
+    () => RaylibDebugLabels.GetCameraUp(camera),
     () => rl.Camera.GetCameraUp(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
@@ -34,7 +38,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
   Vector3D GetCameraRight(
     Camera3DD camera,
   ) => run(
-    () => 'GetCameraRight($camera)',
+    () => RaylibDebugLabels.GetCameraRight(camera),
     () => rl.Camera.GetCameraRight(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
@@ -46,7 +50,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     num distance,
     bool moveInWorldPlane,
   ) => run(
-    () => 'CameraMoveForward($camera, $distance, $moveInWorldPlane)',
+    () => RaylibDebugLabels.CameraMoveForward(camera, distance, moveInWorldPlane),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraMoveForward(
         pc,
@@ -61,7 +65,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     Camera3DD camera,
     num distance,
   ) => run(
-    () => 'CameraMoveUp($camera, $distance)',
+    () => RaylibDebugLabels.CameraMoveUp(camera, distance),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraMoveUp(
         pc,
@@ -76,7 +80,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     num distance,
     bool moveInWorldPlane,
   ) => run(
-    () => 'CameraMoveRight($camera, $distance, $moveInWorldPlane)',
+    () => RaylibDebugLabels.CameraMoveRight(camera, distance, moveInWorldPlane),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraMoveRight(
         pc,
@@ -91,7 +95,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     Camera3DD camera,
     num delta,
   ) => run(
-    () => 'CameraMoveToTarget($camera, $delta)',
+    () => RaylibDebugLabels.CameraMoveToTarget(camera, delta),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraMoveToTarget(
         pc,
@@ -106,7 +110,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     num angle,
     bool rotateAroundTarget,
   ) => run(
-    () => 'CameraYaw($camera, $angle, $rotateAroundTarget)',
+    () => RaylibDebugLabels.CameraYaw(camera, angle, rotateAroundTarget),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraYaw(
         pc,
@@ -124,7 +128,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     bool rotateAroundTarget,
     bool rotateUp,
   ) => run(
-    () => 'CameraPitch($camera, $angle, $lockView, $rotateAroundTarget, $rotateUp)',
+    () => RaylibDebugLabels.CameraPitch(camera, angle, lockView, rotateAroundTarget, rotateUp),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraPitch(
         pc,
@@ -141,7 +145,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     Camera3DD camera,
     num angle,
   ) => run(
-    () => 'CameraRoll($camera, $angle)',
+    () => RaylibDebugLabels.CameraRoll(camera, angle),
     () => rl.Temp.Camera3D$.RefUpdate1(camera,
       (pc) => rl.Camera.CameraRoll(
         pc,
@@ -154,7 +158,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
   MatrixD GetCameraViewMatrix(
     Camera3DD camera,
   ) => run(
-    () => 'GetCameraViewMatrix($camera)',
+    () => RaylibDebugLabels.GetCameraViewMatrix(camera),
     () => rl.Camera.GetCameraViewMatrix(
       rl.Temp.Camera3D$.Ref1(camera),
     ).toD(),
@@ -165,7 +169,7 @@ class RaylibCameraD extends RaylibModule implements RaylibCameraModuleBase<
     Camera3DD camera,
     num aspect,
   ) => run(
-    () => 'GetCameraProjectionMatrix($camera)',
+    () => RaylibDebugLabels.GetCameraProjectionMatrix(camera, aspect),
     () => rl.Camera.GetCameraProjectionMatrix(
       rl.Temp.Camera3D$.Ref1(camera),
       aspect.toDouble(),
