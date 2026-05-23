@@ -32,9 +32,9 @@ extension ModelAnimationCEx on ModelAnimationC {
 
   ModelAnimationD toD([Pointer<ModelAnimationC>? ptr]) => .new(
     originalPointer: ptr,
-    bones: .generate(boneCount, (i) => bones[i].toD()),
+    bones: .generate(boneCount, (i) => (bones + i).toD()),
     framePoses: .generate(frameCount, (i) =>
-      .generate(boneCount, (j) => framePoses[i][j].toD())
+      .generate(boneCount, (j) => (framePoses[i] + j).toD())
     ),
     name: name.toDartString(nameLength),
   );
@@ -49,40 +49,60 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
   QuaternionD,
   Vector4D
 > {
-  @override
-  List<BoneInfoD> bones;
   
-  @override
-  List<List<TransformD>> framePoses;
+  late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
+  @override get bones {
+    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    return _bones;
+  }
+  @override set bones(List<BoneInfoD> value) {
+    structOnOriginalPointer((p) {
+      _bones.ptr = p.ref.bones;
+      p.ref.boneCount = value.length;
+    });
+    _bones.inner = value;
+  }
   
-  @override
-  String name;
+  late NativeLiveListPointerPointerStruct<TransformC, TransformD> _framePoses;
+  @override get framePoses {
+    structOnOriginalPointer((p) => _framePoses.ptr = p.ref.framePoses);
+    return _framePoses;
+  }
+  @override set framePoses(List<List<TransformD>> value) {
+    structOnOriginalPointer((p) {
+      _framePoses.ptr = p.ref.framePoses;
+      p.ref.frameCount = value.length;
+    });
+
+    _framePoses.inner = .generate(value.length, (i) {
+      return .new(value[i], _framePoses.innerPointer(i));
+    });
+  }
+
+  String _name;
+  @override get name {
+    structOnOriginalPointer((p) => _name = p.ref.name.toDartString(nameLength));
+    return _name;
+  }
+  @override set name(String value) {
+    assert(value.length <= nameLength);
+    _name = value;
+    structOnOriginalPointer((p) => p.ref.name.setDartString(value, nameLength));
+  }
 
   ModelAnimationD({
     super.originalPointer,
     List<BoneInfoD>? bones,
     List<List<TransformD>>? framePoses,
-    this.name = '',
+    String name = '',
   }) :
-    bones = bones ?? [],
-    framePoses = framePoses ?? [];
+    _name = name
+  {
+    _framePoses = NativeLiveListPointerPointerStruct.fromList(framePoses, originalPointer?.ref.framePoses);
+    _bones = .new(bones ?? [], originalPointer?.ref.bones);
+  }
 
   factory ModelAnimationD.zero() => .new();
-
-  @override
-  ModelAnimationD setC(ModelAnimationC o) {
-    structOnOriginalPointer((p) {
-      p.ref.bones = o.bones;
-      p.ref.framePoses = o.framePoses;
-      p.ref.name = o.name;
-    });
-    bones = .generate(o.boneCount, (i) => o.bones[i].toD());
-    framePoses = .generate(o.frameCount, (i) =>
-      .generate(o.boneCount, (j) => o.framePoses[i][j].toD())
-    );
-    name = o.name.toDartString(nameLength);
-    return this;
-  }
 
   @override
   ModelAnimationD setD(ModelAnimationD o) {
@@ -93,7 +113,10 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
   }
 
   @override
-  getReference(Pointer<ModelAnimationC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<ModelAnimationC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<ModelAnimationC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
@@ -113,19 +136,37 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
     p.boneCount = bones.length;
     p.frameCount = framePoses.length;
 
-    for (int i = 0; i < bones.length; i++) {
-      bones[i].nativeWriteInto((p.bones + i).ref);
+    if (p.bones.address != 0) {
+      for (int i = 0; i < bones.length; i++) {
+        _bones.inner[i].nativeWriteInto((p.bones + i).ref);
+      }
     }
 
-    for (int i = 0; i < framePoses.length; i++) {
-      final innerPtr = (p.framePoses + i).value;
+    if (p.framePoses.address != 0) {
+      for (int i = 0; i < framePoses.length; i++) {
+        final innerPtr = (p.framePoses + i).value;
 
-      for (int j = 0; j < framePoses[i].length; j++) {
-        framePoses[i][j].nativeWriteInto((innerPtr + j).ref);
+        for (int j = 0; j < framePoses[i].length; j++) {
+          _framePoses.inner[i].inner[j].nativeWriteInto((innerPtr + j).ref);
+        }
       }
     }
 
     p.name.setDartString(name, nameLength);
+  }
+
+  @override
+  void nativeReadFrom(ModelAnimationC p) {
+    structOnOriginalPointer((o) {
+      o.ref.bones = p.bones;
+      o.ref.framePoses = p.framePoses;
+      o.ref.name = p.name;
+    });
+    if (p.bones.address != 0) bones = .generate(p.boneCount, (i) => (p.bones + i).toD());
+    if (p.framePoses.address != 0) framePoses = .generate(p.frameCount, (i) =>
+      .generate(p.boneCount, (j) => (p.framePoses[i] + j).toD())
+    );
+    name = p.name.toDartString(nameLength);
   }
 
   @override

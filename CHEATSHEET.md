@@ -147,14 +147,14 @@ rl.Core   // C bindings
 rl.CoreD  // D layer (idiomatic Dart, hides pointers)
 rl.Audio  rl.AudioD
 rl.Rlgl   rl.RlglD
-rl.Cam    rl.CamD
+rl.Camera rl.CameraD
 rl.Light  rl.LightD
 rl.Gui    rl.GuiD // only if dynGui was loaded
 
-rl.Vec    // Vector math
+rl.Vector // Vector math
 rl.Matrix // Matrix math
-rl.Q      // Quaternion math
-rl.C      // Color constants
+rl.Quat   // Quaternion math
+rl.Color  // Color constants
 rl.Ease   // Easing functions
 rl.Temp   // Allocator
 ```
@@ -167,7 +167,7 @@ rl.Temp   // Allocator
 ### User modules `[D layer]`
 
 ```dart
-class MyPhysicsModule extends BaseRaylibModule {
+class MyPhysicsModule extends RaylibModule<Raylib> {
   MyPhysicsModule(super.rl);
 
   void simulate(double dt) { /* ... */ }
@@ -215,7 +215,7 @@ and one Temp registration.
 | `extension XCEx on XC` | `setC` / `setD` / `toD` on the value | yes |
 | `extension XCPEx on Pointer<XC>` | same helpers, pointer-receiver form | yes |
 | `XD extends StructDLiteral<XD, XC>` | Dart-side mirror; owns fields, clones, serializes to C | yes |
-| Temp registration | registers `RTempStructAlloc` so Temp can manage slots | only if using `rl.Temp` |
+| Temp registration | registers `NativeStructAlloc` so Temp can manage slots | only if using `rl.Temp` |
 
 ### XC - FFI struct + extensions `[C layer]`
 
@@ -247,23 +247,22 @@ class MyIntD extends StructDLiteral<MyIntD, MyIntC> {
   factory MyIntD.zero() => .new();
 
   @override
-  MyIntD setC(MyIntC o) { value = o.value; return this; }
-  
-  @override
   MyIntD setD(MyIntD o) {
     value = o.value;
     return this;
   }
 
   @override
-  nativeAllocator(RaylibTemp temp) => temp.alloc<MyIntC, MyIntD>('MyInt\$');
+  nativeGetIndexedReference(Pointer<MyIntC> p, int index) => (p + index).ref;
 
   @override
-  void nativeAllocateInto(RaylibTemp temp, Pointer<MyIntC> p, String key)
-    => writeInto(p.ref);
+  nativeGetIndexedArrayReference(Array<MyIntC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(MyIntC p) { p.value = value; }
+
+  @override
+  void nativeReadFrom(MyIntC p) { value = p.value; }
 
   @override
   String signature() => 'MyInt(value: $value)';
@@ -288,18 +287,16 @@ void registerMyInt(Raylib rl) {
   // literally copy-pastable
   // for `Pointer<MyInt>` allocations
   final alloc = RTempStructAlloc<MyInt, MyIntD>(rl.Temp, name,
-    allocatorFunc:        ([count = 1]) => calloc<MyInt>(count),
-    sizeOfFunc:           ()            => sizeOf<MyInt>(),
-    castFunc:             (ptr)         => ptr.cast<MyInt>(),
-    refFunc:              (ptr)         => ptr.ref,
-    setRefFunc:           (ptr, v)      => ptr..ref = v,
-    ptrToDFunc:           (ptr)         => ptr.toD(),
-    printerFunc:          (ptr)         => ptr.toD().signature(),
-    indexerFunc:          (ptr, i)      => ptr[i],
-    writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),
-    writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),
-    setCFunc:             (ptr, i, v)   => ptr[i].setC(v),
-    indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,
+    byteSize:        sizeOf<MyInt>(),
+    allocatorFunc:   ([count = 1]) => calloc<MyInt>(count),
+    refFunc:         (ptr)         => ptr.ref,
+    setRefFunc:      (ptr, v)      => ptr..ref = v,
+    pointerToStruct: (ptr)         => ptr.toD(),
+    printerFunc:     (ptr)         => ptr.toD().signature(),
+    setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
+    indexerFunc:     (ptr, i)      => ptr[i],
+    indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
+    updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
   );
 
   rl.Temp.registerAllocator(name, alloc);
@@ -307,11 +304,9 @@ void registerMyInt(Raylib rl) {
   // for `Pointer<Pointer<MyInt>>` allocations
   name = 'Ptr\$MyInt\$';
   final allocPtr = RTempStructPtrAlloc<MyInt, MyIntD>(rl.Temp, name,
-    allocatorFunc:   ([count = 1]) => calloc<Pointer<MyInt>>(count),
-    printerFunc:     (ptr) => 'We can\'t print Pointer<Pointer<MyInt>> at this level',
-    valueFunc:       alloc.Value,
-    rawArrayFunc:    alloc.RawArray,
-    indexSetterFunc: (ptr, i, value) => ptr[i] = value,
+    allocatorFunc: ([count = 1]) => calloc<Pointer<MyInt>>(count),
+    valueFunc: alloc.Value,
+    rawArrayFunc: alloc.RawArray,
   );
 
   rl.Temp.registerAllocator(name, allocPtr);

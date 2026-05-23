@@ -18,9 +18,7 @@ extension BoneInfoCEx on BoneInfoC {
 
   BoneInfoC setD(BoneInfoD o) {
     parent = o.parent;
-    o.structOnOriginalPointer((p) {
-      name = p.ref.name;
-    });
+    o.structOnOriginalPointer((p) => name = p.ref.name);
     return this;
   }
 
@@ -47,16 +45,6 @@ class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase<B
   factory BoneInfoD.zero() => .new();
 
   @override
-  BoneInfoD setC(BoneInfoC o) {
-    structOnOriginalPointer((p) {
-      p.ref.name = o.name;
-    });
-    parent = o.parent;
-    name = o.name.toDartString(nameLength);
-    return this;
-  }
-
-  @override
   BoneInfoD setD(BoneInfoD o) {
     name = o.name;
     parent = o.parent;
@@ -64,12 +52,22 @@ class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase<B
   }
 
   @override
-  getReference(Pointer<BoneInfoC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<BoneInfoC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<BoneInfoC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(BoneInfoC p) {
     p.name.setDartString(name, nameLength);
     p.parent = parent;
+  }
+
+  @override
+  void nativeReadFrom(BoneInfoC p) {
+    structOnOriginalPointer((o) => o.ref.name = p.name);
+    parent = p.parent;
+    name = p.name.toDartString(nameLength);
   }
 
   @override

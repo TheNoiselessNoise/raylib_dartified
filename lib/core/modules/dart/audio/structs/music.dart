@@ -61,19 +61,6 @@ class MusicD extends StructD<MusicC, MusicD> with MusicBase<
   });
 
   @override
-  MusicD setC(MusicC o) {
-    structOnOriginalPointer((p) {
-      p.ref.stream.setC(o.stream);
-      p.ref.ctxData = o.ctxData;
-    });
-    stream.setC(o.stream);
-    frameCount = o.frameCount;
-    looping = o.looping;
-    ctxType = .fromValue(o.ctxType);
-    return this;
-  }
-
-  @override
   MusicD setD(MusicD o) {
     stream.setD(o.stream);
     frameCount = o.frameCount;
@@ -83,7 +70,10 @@ class MusicD extends StructD<MusicC, MusicD> with MusicBase<
   }
 
   @override
-  getReference(Pointer<MusicC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<MusicC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<MusicC> p, int index) => p[index];
 
   @override
   void structSyncInto(RaylibTemp temp, Pointer<MusicC> p, String key) {} // NOTE: do nothing
@@ -91,6 +81,18 @@ class MusicD extends StructD<MusicC, MusicD> with MusicBase<
   @override
   void nativeWriteInto(MusicC p)
     => throw UnsupportedError('MusicD: is raylib-owned; cannot write externally.');
+
+  @override
+  void nativeReadFrom(MusicC p) {
+    structOnOriginalPointer((o) {
+      o.ref.stream.setC(p.stream);
+      o.ref.ctxData = p.ctxData;
+    });
+    stream.nativeReadFrom(p.stream);
+    frameCount = p.frameCount;
+    looping = p.looping;
+    ctxType = .fromValue(p.ctxType);
+  }
 
   @override
   MusicD clone() => .new(

@@ -90,11 +90,6 @@ void main()
 
 void NormalizeKernel(List<double> kernel)
 {
-  double sum = 0.0;
-  for (int i = 0; i < kernel.length; i++) sum += kernel[i]; 
-
-  if (sum != 0.0)
-  {
-    for (int i = 0; i < kernel.length; i++) kernel[i] /= sum; 
-  }
+  double sum = kernel.fold(0, (a, b) => a + b);
+  if (sum != 0.0) kernel.indexed.forEach((i) => kernel[i.$1] = i.$2 / sum);
 }

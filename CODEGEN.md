@@ -33,7 +33,7 @@ Using simple custom example [C library](./utils/resources/mylib/src/).
 Given a C header, the codegen produces a D-layer module that looks roughly like this:
 
 ```dart
-class MyModuleD extends RaylibModule {
+class MyModuleD extends RaylibModule<Raylib> {
   MyModuleD(super.rl);
 
   MyModule get _ffi => rl.module<MyModule>();

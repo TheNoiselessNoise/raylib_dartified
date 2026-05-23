@@ -183,7 +183,7 @@ class StructWriter extends Writable {
     writeln('extension ${d}Like on $d {');
     for (final f in arrayFields) {
       if (f.kind is PrimitivePointerField) {
-        padln('// TODO: implement this please');
+        padln('// TODO: ???');
       }
 
       final length = switch (f.kind) {
@@ -253,7 +253,7 @@ class StructWriter extends Writable {
       case EnumField():
         pad2ln('${f.name}AsInt = o.${f.name}.value;');
       case CharArrayField():
-        pad2ln('o.onOriginalPointer((p) => ${f.name} = p.ref.${f.name});');
+        pad2ln('o.structOnOriginalPointer((p) => ${f.name} = p.ref.${f.name});');
       case IntArrayField(:final length) || FloatArrayField(:final length):
         pad2ln('for (int i = 0; i < $length; i++) ${f.name}[i] = o.${f.name}[i];');
       case PrimitiveField():
@@ -261,7 +261,7 @@ class StructWriter extends Writable {
       case StructValueField():
         pad2ln('${f.name}.setD(o.${f.name});');
       case StructPointerField() || PrimitivePointerField():
-        pad2ln('o.onOriginalPointer((p) => ${f.name} = p.ref.${f.name});');
+        pad2ln('o.structOnOriginalPointer((p) => ${f.name} = p.ref.${f.name});');
     }
   }
 
@@ -294,7 +294,7 @@ class StructWriter extends Writable {
   }
 
   void _writeDClass() {
-    writeln('class $d extends StructDLiteral<$d, $c> {');
+    writeln('class $d extends StructDLiteral<$c, $d> {');
 
     // fields
     for (final f in fields) {
@@ -317,14 +317,6 @@ class StructWriter extends Writable {
 
     // writeln(METHODS_TO_IMPLEMENT);
 
-    // setC
-    padln('@override');
-    padln('$d setC($c o) {');
-    fields.forEach(_writeDSetCField);
-    pad2ln('return this;');
-    padln('}');
-    writeln();
-
     // setD
     padln('@override');
     padln('$d setD($d o) {');
@@ -334,22 +326,24 @@ class StructWriter extends Writable {
     padln('}');
     writeln();
 
-    // allocatePointer
+    // references
     padln('@override');
-    padln('Pointer<$c> allocatePointer(RaylibTemp temp, String key, [int count = 1])');
-    pad2ln('=> temp.allocStruct<$c, $d>(\'$tempKey\').At(key, count);');
-    writeln();
+    padln('nativeGetIndexedReference(${struct.ptr} p, int index) => (p + index).ref;');
 
-    // allocateInto
     padln('@override');
-    padln('void allocateInto(RaylibTemp temp, Pointer<$c> p, String key)');
-    pad2ln('=> writeInto(p.ref);');
-    writeln();
-    
+    padln('nativeGetIndexedArrayReference(${struct.array} p, int index) => p[index];');
+
     // writeInto
     padln('@override');
-    padln('void writeInto($c p) {');
-    fields.forEach(_writeDWriteIntoField);
+    padln('void nativeWriteInto($c p) {');
+    fields.forEach(_writeDNativeWriteIntoField);
+    padln('}');
+    writeln();
+
+    // setC
+    padln('@override');
+    padln('void nativeReadFrom($c p) {');
+    fields.forEach(_writeDNativeReadFromField);
     padln('}');
     writeln();
 
@@ -446,23 +440,24 @@ class StructWriter extends Writable {
     }
   }
 
-  void _writeDSetCField(ResolvedField f) {
+  void _writeDNativeReadFromField(ResolvedField f) {
     switch (f.kind) {
       case EnumField():
-        pad2ln('${f.name} = o.${f.name};');
+        pad2ln('${f.name} = p.${f.name};');
       case CharArrayField():
-        pad2ln('${f.name} = o.${f.name}.toDartString(${f.name}Length);');
+        pad2ln('${f.name} = p.${f.name}.toDartString(${f.name}Length);');
       case IntArrayField(:final length) || FloatArrayField(:final length):
-        pad2ln('${f.name} = .generate($length, (i) => o.${f.name}[i]);');
+        pad2ln('${f.name} = .generate($length, (i) => p.${f.name}[i]);');
       case PrimitiveField():
-        pad2ln('${f.name} = o.${f.name};');
+        pad2ln('${f.name} = p.${f.name};');
       case StructValueField():
-        pad2ln('${f.name}.setC(o.${f.name});');
+        pad2ln('${f.name}.nativeReadFrom(p.${f.name});');
       case StructPointerField():
-        pad2ln('onOriginalPointer((p) { ${f.name} = o.${f.name} != nullptr ? o.${f.name}.ref.toD(o.${f.name}) : null; });');
+        pad2ln('structOnOriginalPointer((o) => o.ref.${f.name} = p.${f.name});');
+        pad2ln('${f.name} = p.${f.name}.address != 0 ? p.${f.name}.toD() : null;');
       case PrimitivePointerField(:final ffiType):
-        pad2ln('onOriginalPointer((p) => p.ref.${f.name} = o.${f.name});');
-        pad2ln('${f.name} = o.${f.name}.address != 0 ? o.${f.name}.cast<$ffiType>().asTypedList(${f.name}Length).toList() : [];');
+        pad2ln('structOnOriginalPointer((o) => o.ref.${f.name} = p.${f.name});');
+        pad2ln('${f.name} = p.${f.name}.address != 0 ? p.${f.name}.cast<$ffiType>().asTypedList(${f.name}Length).toList() : [];');
     }
   }
 
@@ -479,13 +474,13 @@ class StructWriter extends Writable {
       case StructValueField():
         pad2ln('${f.name}.setD(o.${f.name});');
       case StructPointerField():
-        pad2ln('onOriginalPointer((p) { ${f.name} = o.${f.name}; });');
+        pad2ln('structOnOriginalPointer((p) => ${f.name} = o.${f.name});');
       case PrimitivePointerField():
         pad2ln('${f.name} = .from(o.${f.name});');
     }
   }
 
-  void _writeDWriteIntoField(ResolvedField f) {
+  void _writeDNativeWriteIntoField(ResolvedField f) {
     switch (f.kind) {
       case EnumField():
         pad2ln('p.${f.name}AsInt = ${f.name}.value;');
@@ -496,7 +491,7 @@ class StructWriter extends Writable {
       case PrimitiveField():
         pad2ln('p.${f.name} = ${f.name};');
       case StructValueField():
-        pad2ln('${f.name}.writeInto(p.${f.name});');
+        pad2ln('${f.name}.nativeWriteInto(p.${f.name});');
       case StructPointerField():
         pad2ln('p.${f.name} = ${f.name}?.originalPointer ?? nullptr;');
       case PrimitivePointerField(:final ffiType):
@@ -531,21 +526,19 @@ class StructWriter extends Writable {
 
   void _writeTempRegistration() {
     writeln('void register$c(Raylib rl) {');
-    
+
     padln('String name = \'$tempKey\';');
-    padln('final alloc = RTempStructAlloc<$c, $d>(rl.Temp, name,');
-    padln('  allocatorFunc:        ([count = 1]) => calloc<$c>(count),');
-    padln('  sizeOfFunc:           ()            => sizeOf<$c>(),');
-    padln('  castFunc:             (ptr)         => ptr.cast<$c>(),');
-    padln('  refFunc:              (ptr)         => ptr.ref,');
-    padln('  setRefFunc:           (ptr, v)      => ptr..ref = v,');
-    padln('  ptrToDFunc:           (ptr)         => ptr.toD(),');
-    padln('  printerFunc:          (ptr)         => ptr.toD().signature(),');
-    padln('  indexerFunc:          (ptr, i)      => ptr[i],');
-    padln('  writeIntoFunc:        (ptr, v)      => v.writeInto(ptr.ref),');
-    padln('  writeIntoIndexedFunc: (ptr, i, v)   => v.writeInto((ptr + i).ref),');
-    padln('  setCFunc:             (ptr, i, v)   => ptr[i].setC(v),');
-    padln('  indexSetterFunc:      (ptr, i, v)   => ptr[i] = v,');
+    padln('final alloc = NativeStructAlloc<$c, $d>(rl.Temp, name,');
+    padln('  byteSize:        sizeOf<$c>(),');
+    padln('  allocatorFunc:   ([count = 1]) => calloc<$c>(count),');
+    padln('  refFunc:         (ptr)         => ptr.ref,');
+    padln('  setRefFunc:      (ptr, v)      => ptr..ref = v,');
+    padln('  pointerToStruct: (ptr)         => ptr.toD(),');
+    padln('  printerFunc:     (ptr)         => ptr.toD().signature(),');
+    padln('  setCFunc:        (ptr, i, v)   => ptr[i].setC(v),');
+    padln('  indexerFunc:     (ptr, i)      => ptr[i],');
+    padln('  indexSetterFunc: (ptr, i, v)   => ptr[i] = v,');
+    padln('  updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),');
     padln(');');
     writeln();
     
@@ -553,12 +546,10 @@ class StructWriter extends Writable {
     writeln();
 
     padln('name = \'$ptrTempKey\';');
-    padln('final allocPtr = RTempStructPtrAlloc<$c, $d>(rl.Temp, name,');
-    padln('  allocatorFunc:   ([count = 1]) => calloc<${struct.ptr}>(count),');
-    padln('  printerFunc:     (ptr) => \'We can\\\'t print ${struct.ptrPtr} at this level\',');
-    padln('  valueFunc:       alloc.Value,');
-    padln('  rawArrayFunc:    alloc.RawArray,');
-    padln('  indexSetterFunc: (ptr, i, value) => ptr[i] = value,');
+    padln('final allocPtr = NativeStructPtrAlloc<$c, $d>(rl.Temp, name,');
+    padln('  allocatorFunc: ([count = 1]) => calloc<${struct.ptr}>(count),');
+    padln('  valueFunc: alloc.Value,');
+    padln('  rawArrayFunc: alloc.RawArray,');
     padln(');');
     writeln();
     
@@ -572,9 +563,9 @@ class StructWriter extends Writable {
     writeln('extension ${name}TempGetter on RaylibTemp {');
     writeln();
 
-    padln('RTempStructAlloc<$c, $d> get $tempVar => allocStruct(\'$tempKey\');');
+    padln('NativeStructAlloc<$c, $d> get $tempVar => allocStruct(\'$tempKey\');');
     writeln();
-    padln('RTempStructPtrAlloc<$c, $d> get $ptrTempVar => allocStructPtr(\'$ptrTempKey\');');
+    padln('NativeStructPtrAlloc<$c, $d> get $ptrTempVar => allocStructPtr(\'$ptrTempKey\');');
     writeln();
 
     writeln('}');

@@ -151,10 +151,11 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
     super.originalPointer,
   });
 
-  /// Copies the fields of the native struct [o] into this instance.
-  D setC(C o);
+  C nativeGetReference(Pointer<C> p) => nativeGetIndexedReference(p, 0);
 
-  C getReference(Pointer<C> p);
+  C nativeGetIndexedReference(Pointer<C> p, int index);
+  
+  C nativeGetIndexedArrayReference(Array<C> p, int index);
 
   /// Syncs Dart-side fields into the already-allocated native pointer [p].
   ///
@@ -163,7 +164,7 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
   /// differ (e.g. to skip re-allocating nested pointers).
   @override
   void structSyncInto(RaylibTemp temp, Pointer<C> p, String key)
-    => nativeWriteInto(getReference(p));
+    => nativeWriteInto(nativeGetReference(p));
 
   /// Writes all fields into the native struct at [p], allocating nested pointers
   /// into [temp] under [key] as needed.
@@ -172,27 +173,31 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
   /// with no nested pointers this is typically equivalent to `writeInto(p.ref)`.
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<C> p, String key)
-    => nativeWriteInto(getReference(p));
+    => nativeWriteInto(nativeGetReference(p));
 
   @override
-  void structWriteInto(Pointer<C> p)
-    => nativeWriteInto(getReference(p));
+  void structWriteInto(Pointer<C> p) {
+    print('$structName writing into...');
+    nativeWriteInto(nativeGetReference(p));
+  }
 
   @override
   void structReadFrom(Pointer<C> p)
-    => nativeReadFrom(getReference(p));
+    => nativeReadFrom(nativeGetReference(p));
 
   /// Writes all fields directly into the native struct reference [p].
   /// For nested structs, use `writeInto` as well.
   void nativeWriteInto(C p);
 
-  void nativeReadFrom(C p) {}
+  void nativeReadFrom(C p);
 
   @override
-  void structSyncFromMemory() {}
+  void structSyncFromMemory()
+    => nativeReadFrom(nativeGetReference(getOriginalPointer()));
   
   @override
-  void structSyncToMemory() {}
+  void structSyncToMemory()
+    => nativeWriteInto(nativeGetReference(getOriginalPointer()));
 
   @override
   String toString() => signature();
@@ -240,11 +245,19 @@ abstract class StructDView<C extends Struct, D extends StructD<C, D>> extends St
 
   @override
   @nonVirtual
-  D setC(C o) => throw UnsupportedError('$runtimeType: is just a view; cannot write to it.');
+  nativeGetReference(Pointer<C> p) => throw UnsupportedError('$runtimeType: is just a view; cannot dereference it.');
 
   @override
   @nonVirtual
-  getReference(Pointer<C> p) => throw UnsupportedError('$runtimeType: is just a view; cannot dereference it.');
+  nativeGetIndexedReference(Pointer<C> p, int index) => throw UnsupportedError('$runtimeType: is just a view; cannot dereference it.');
+
+  @override
+  @nonVirtual
+  nativeGetIndexedArrayReference(Array<C> p, int index) => throw UnsupportedError('$runtimeType: is just a view; cannot dereference it.');
+
+  @override
+  @nonVirtual
+  void nativeReadFrom(C p) {} // NOTE: do nothing
 
   @override
   @nonVirtual
@@ -263,4 +276,307 @@ abstract class StructDView<C extends Struct, D extends StructD<C, D>> extends St
   @nonVirtual
   void nativeWriteInto(C p)
     => throw UnsupportedError('$runtimeType: is just a view; cannot write externally.');
+}
+
+// Lists
+
+abstract class NativeLiveListPointer<C extends NativeType, E> extends RaylibLiveList<E> {
+  Pointer<C>? ptr;
+
+  NativeLiveListPointer(super.inner, [this.ptr]);
+
+  @override
+  void onElementSet(int index, E value) {
+    if (ptr == null || ptr!.address == 0) return;
+    _indexSetter(ptr!, index, value);
+  }
+
+  @override
+  void onSet(List<E> value) {
+    if (ptr == null || ptr!.address == 0) return;
+    _arraySetter(ptr!, value);
+  }
+
+  @override
+  E operator [](int index) {
+    if (ptr != null) return _indexGetter(ptr!, index);
+    return inner[index];
+  }
+
+  E _indexGetter(Pointer<C> ptr, int index);
+
+  void _indexSetter(Pointer<C> ptr, int index, E value);
+
+  void _arraySetter(Pointer<C> ptr, List<E> array);
+}
+
+abstract class NativeLiveListArray<C extends NativeType, E> extends RaylibLiveList<E> {
+  Array<C>? ptr;
+
+  NativeLiveListArray(super.inner, [this.ptr]);
+
+  @override
+  void onElementSet(int index, E value) {
+    if (ptr == null) return;
+    _indexSetter(ptr!, index, value);
+  }
+
+  @override
+  void onSet(List<E> value) {
+    if (ptr == null) return;
+    _arraySetter(ptr!, value);
+  }
+
+  @override
+  E operator [](int index) {
+    if (ptr != null) return _indexGetter(ptr!, index);
+    return inner[index];
+  }
+
+  E _indexGetter(Array<C> ptr, int index);
+
+  void _indexSetter(Array<C> ptr, int index, E value);
+
+  void _arraySetter(Array<C> ptr, List<E> array);
+}
+
+class NativeLiveListPointerStruct<
+  C extends Struct,
+  D extends StructD<C, D>
+> extends NativeLiveListPointer<C, D> {
+
+  NativeLiveListPointerStruct(super.inner, [super.ptr]);
+
+  @override
+  D _indexGetter(Pointer<C> ptr, int index) => inner[index];
+
+  @override
+  void _indexSetter(Pointer<C> ptr, int index, D value) {
+    value.nativeWriteInto(value.nativeGetIndexedReference(ptr, index));
+  }
+
+  @override
+  void _arraySetter(Pointer<C> ptr, List<D> array) {
+    for (final (i, v) in array.indexed) {
+      v.nativeWriteInto(v.nativeGetIndexedReference(ptr, i));
+    }
+  }
+}
+
+class NativeLiveListPointerPointerStruct<
+  C extends Struct,
+  D extends StructD<C, D>
+> extends NativeLiveListPointer<Pointer<C>, NativeLiveListPointerStruct<C, D>> {
+
+  NativeLiveListPointerPointerStruct(super.inner, [super.ptr]);
+
+  Pointer<C>? innerPointer(int index) => ptr == null ? null : (ptr! + index).value;
+
+  @override
+  NativeLiveListPointerStruct<C, D> _indexGetter(Pointer<Pointer<C>> ptr, int index) => inner[index];
+
+  @override
+  void _indexSetter(Pointer<Pointer<C>> ptr, int index, NativeLiveListPointerStruct<C, D> value) {
+    value.ptr = ptr[index]; // rewire inner list's pointer to correct frame
+    value.onSet(value.inner); // flush inner list to that frame
+  }
+
+  @override
+  void _arraySetter(Pointer<Pointer<C>> ptr, List<NativeLiveListPointerStruct<C, D>> array) {
+    for (final (i, v) in array.indexed) {
+      v.ptr = ptr[i]; // wire inner list to its frame
+      v.onSet(v.inner); // flush inner list to memory
+    }
+  }
+
+  static NativeLiveListPointerPointerStruct<C, D> fromList<
+    C extends Struct, D extends StructD<C, D>
+  >([List<List<D>>? list, Pointer<Pointer<C>>? ptr]) {
+    return .new(
+      .generate((list ?? []).length, (i) {
+        final innerPtr = ptr != null ? (ptr + i).value : null;
+        return .new((list ?? [])[i], innerPtr);
+      }),
+      ptr,
+    );
+  }
+}
+
+class NativeLiveListArrayStruct<
+  C extends Struct,
+  D extends StructD<C, D>
+> extends NativeLiveListArray<C, D> {
+
+  NativeLiveListArrayStruct(super.inner, [super.ptr]);
+
+  @override
+  D _indexGetter(Array<C> ptr, int index) => inner[index];
+
+  @override
+  void _indexSetter(Array<C> ptr, int index, D value) {
+    value.nativeWriteInto(value.nativeGetIndexedArrayReference(ptr, index));
+  }
+
+  @override
+  void _arraySetter(Array<C> ptr, List<D> array) {
+    for (final (i, v) in array.indexed) {
+      v.nativeWriteInto(v.nativeGetIndexedArrayReference(ptr, i));
+    }
+  }
+}
+
+abstract class _NativeLiveListIntegerPointer<C extends NativeType> extends NativeLiveListPointer<C, int> {
+  _NativeLiveListIntegerPointer(super.inner, [super.ptr]);
+}
+
+abstract class _NativeLiveListDoublePointer<C extends NativeType> extends NativeLiveListPointer<C, double> {
+  _NativeLiveListDoublePointer(super.inner, [super.ptr]);
+}
+
+abstract class _NativeLiveListIntegerArray<C extends NativeType> extends NativeLiveListArray<C, int> {
+  _NativeLiveListIntegerArray(super.inner, [super.ptr]);
+}
+
+abstract class _NativeLiveListDoubleArray<C extends NativeType> extends NativeLiveListArray<C, double> {
+  _NativeLiveListDoubleArray(super.inner, [super.ptr]);
+}
+
+class NativeLiveListArrayFloat extends _NativeLiveListDoubleArray<Float> {
+  NativeLiveListArrayFloat(super.inner, [super.ptr]);
+
+  @override
+  double _indexGetter(Array<Float> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Array<Float> ptr, int index, double value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Array<Float> ptr, List<double> array)
+    => ptr.elements.setAll(0, array);
+}
+
+class NativeLiveListPointerFloat extends _NativeLiveListDoublePointer<Float> {
+  NativeLiveListPointerFloat(super.inner, [super.ptr]);
+
+  @override
+  double _indexGetter(Pointer<Float> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Pointer<Float> ptr, int index, double value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Pointer<Float> ptr, List<double> array)
+    => ptr.asTypedList(array.length).setAll(0, array);
+}
+
+class NativeLiveListArrayInt extends _NativeLiveListIntegerArray<Int> {
+  NativeLiveListArrayInt(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Array<Int> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Array<Int> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Array<Int> ptr, List<int> array)
+    => ptr.elements.setAll(0, array);
+}
+
+class NativeLiveListPointerInt extends _NativeLiveListIntegerPointer<Int> {
+  NativeLiveListPointerInt(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Pointer<Int> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Pointer<Int> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Pointer<Int> ptr, List<int> array)
+    => ptr.cast<Int32>().asTypedList(array.length).setAll(0, array);
+}
+
+class NativeLiveListArrayUnsignedInt extends _NativeLiveListIntegerArray<UnsignedInt> {
+  NativeLiveListArrayUnsignedInt(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Array<UnsignedInt> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Array<UnsignedInt> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Array<UnsignedInt> ptr, List<int> array)
+    => ptr.elements.setAll(0, array);
+}
+
+class NativeLiveListPointerUnsignedInt extends _NativeLiveListIntegerPointer<UnsignedInt> {
+  NativeLiveListPointerUnsignedInt(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Pointer<UnsignedInt> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Pointer<UnsignedInt> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Pointer<UnsignedInt> ptr, List<int> array)
+    => ptr.cast<Uint32>().asTypedList(array.length).setAll(0, array);
+}
+
+class NativeLiveListArrayUnsignedChar extends _NativeLiveListIntegerArray<UnsignedChar> {
+  NativeLiveListArrayUnsignedChar(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Array<UnsignedChar> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Array<UnsignedChar> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Array<UnsignedChar> ptr, List<int> array)
+    => ptr.elements.setAll(0, array);
+}
+
+class NativeLiveListPointerUnsignedChar extends _NativeLiveListIntegerPointer<UnsignedChar> {
+  NativeLiveListPointerUnsignedChar(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Pointer<UnsignedChar> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Pointer<UnsignedChar> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Pointer<UnsignedChar> ptr, List<int> array)
+    => ptr.cast<Uint8>().asTypedList(array.length).setAll(0, array);
+}
+
+class NativeLiveListArrayUnsignedShort extends _NativeLiveListIntegerArray<UnsignedShort> {
+  NativeLiveListArrayUnsignedShort(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Array<UnsignedShort> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Array<UnsignedShort> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Array<UnsignedShort> ptr, List<int> array)
+    => ptr.elements.setAll(0, array);
+}
+
+class NativeLiveListPointerUnsignedShort extends _NativeLiveListIntegerPointer<UnsignedShort> {
+  NativeLiveListPointerUnsignedShort(super.inner, [super.ptr]);
+
+  @override
+  int _indexGetter(Pointer<UnsignedShort> ptr, int index) => ptr[index];
+
+  @override
+  void _indexSetter(Pointer<UnsignedShort> ptr, int index, int value) => ptr[index] = value;
+
+  @override
+  void _arraySetter(Pointer<UnsignedShort> ptr, List<int> array)
+    => ptr.cast<Uint16>().asTypedList(array.length).setAll(0, array);
 }

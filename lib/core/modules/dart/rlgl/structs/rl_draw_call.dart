@@ -33,36 +33,59 @@ extension RlDrawCallCEx on RlDrawCallC {
 }
 
 class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<RlDrawCallD> {
-  @override
-  int mode;
+  int _mode;
+  @override get mode {
+    structOnOriginalPointer((p) => _mode = p.ref.mode);
+    return _mode;
+  }
+  @override set mode(int value) {
+    _mode = value;
+    structOnOriginalPointer((p) => p.ref.mode = value);
+  }
   
-  @override
-  int vertexCount;
+  int _vertexCount;
+  @override get vertexCount {
+    structOnOriginalPointer((p) => _vertexCount = p.ref.vertexCount);
+    return _vertexCount;
+  }
+  @override set vertexCount(int value) {
+    _vertexCount = value;
+    structOnOriginalPointer((p) => p.ref.vertexCount = value);
+  }
   
-  @override
-  int vertexAlignment;
+  int _vertexAlignment;
+  @override get vertexAlignment {
+    structOnOriginalPointer((p) => _vertexAlignment = p.ref.vertexAlignment);
+    return _vertexAlignment;
+  }
+  @override set vertexAlignment(int value) {
+    _vertexAlignment = value;
+    structOnOriginalPointer((p) => p.ref.vertexAlignment = value);
+  }
   
-  @override
-  int textureId;
+  int _textureId;
+  @override get textureId {
+    structOnOriginalPointer((p) => _textureId = p.ref.textureId);
+    return _textureId;
+  }
+  @override set textureId(int value) {
+    _textureId = value;
+    structOnOriginalPointer((p) => p.ref.textureId = value);
+  }
 
   RlDrawCallD({
     super.originalPointer,
-    this.mode = 0,
-    this.vertexCount = 0,
-    this.vertexAlignment = 0,
-    this.textureId = 0,
-  });
+    int mode = 0,
+    int vertexCount = 0,
+    int vertexAlignment = 0,
+    int textureId = 0,
+  }) :
+    _mode = mode,
+    _vertexCount = vertexCount,
+    _vertexAlignment = vertexAlignment,
+    _textureId = textureId;
 
   factory RlDrawCallD.zero() => .new();
-
-  @override
-  RlDrawCallD setC(RlDrawCallC o) {
-    mode = o.mode;
-    vertexCount = o.vertexCount;
-    vertexAlignment = o.vertexAlignment;
-    textureId = o.textureId;
-    return this;
-  }
 
   @override
   RlDrawCallD setD(RlDrawCallD o) {
@@ -74,7 +97,10 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<
   }
 
   @override
-  getReference(Pointer<RlDrawCallC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<RlDrawCallC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<RlDrawCallC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(RlDrawCallC p) {
@@ -82,6 +108,14 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<
     p.vertexCount = vertexCount;
     p.vertexAlignment = vertexAlignment;
     p.textureId = textureId;
+  }
+
+  @override
+  void nativeReadFrom(RlDrawCallC p) {
+    mode = p.mode;
+    vertexCount = p.vertexCount;
+    vertexAlignment = p.vertexAlignment;
+    textureId = p.textureId;
   }
 
   @override

@@ -65,15 +65,6 @@ class Camera2DD extends StructDLiteral<Camera2DC, Camera2DD> with Camera2DBase<
   factory Camera2DD.zero() => .new();
 
   @override
-  Camera2DD setC(Camera2DC o) {
-    offset.setC(o.offset);
-    target.setC(o.target);
-    rotation = o.rotation;
-    zoom = o.zoom;
-    return this;
-  }
-
-  @override
   Camera2DD setD(Camera2DD o) {
     offset.setD(o.offset);
     target.setD(o.target);
@@ -83,7 +74,10 @@ class Camera2DD extends StructDLiteral<Camera2DC, Camera2DD> with Camera2DBase<
   }
 
   @override
-  getReference(Pointer<Camera2DC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<Camera2DC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<Camera2DC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(Camera2DC p) {
@@ -91,6 +85,14 @@ class Camera2DD extends StructDLiteral<Camera2DC, Camera2DD> with Camera2DBase<
     target.nativeWriteInto(p.target);
     p.rotation = rotation;
     p.zoom = zoom;
+  }
+
+  @override
+  void nativeReadFrom(Camera2DC p) {
+    offset.nativeReadFrom(p.offset);
+    target.nativeReadFrom(p.target);
+    rotation = p.rotation;
+    zoom = p.zoom;
   }
 
   @override

@@ -58,14 +58,6 @@ class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBa
   factory TransformD.zero() => .new();
 
   @override
-  TransformD setC(TransformC o) {
-    translation.setC(o.translation);
-    rotation.setC(o.rotation);
-    scale.setC(o.scale);
-    return this;
-  }
-
-  @override
   TransformD setD(TransformD o) {
     translation.setD(o.translation);
     rotation.setD(o.rotation);
@@ -74,13 +66,23 @@ class TransformD extends StructDLiteral<TransformC, TransformD> with TransformBa
   }
 
   @override
-  getReference(Pointer<TransformC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<TransformC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<TransformC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(TransformC p) {
     translation.nativeWriteInto(p.translation);
     rotation.nativeWriteInto(p.rotation);
     scale.nativeWriteInto(p.scale);
+  }
+
+  @override
+  void nativeReadFrom(TransformC p) {
+    translation.nativeReadFrom(p.translation);
+    rotation.nativeReadFrom(p.rotation);
+    scale.nativeReadFrom(p.scale);
   }
 
   @override

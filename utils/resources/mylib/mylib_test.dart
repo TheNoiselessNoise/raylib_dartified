@@ -6,7 +6,7 @@ import './output/generated_d_module.dart';
 void main() {
   final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
-  MyModuleRegister.register(rl, './libmylib.so');
+  MyModuleRegister.register(rl, './build/libmylib.so');
 
   rl.CoreD.InitWindow(800, 450, 'MyModule Tester');
 

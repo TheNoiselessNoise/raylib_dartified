@@ -65,13 +65,13 @@ class Vector4D extends StructDLiteral<Vector4C, Vector4D> with Vector4Base<
   );
 
   @override
-  Vector4D setC(Vector4C o) => set(o.x, o.y, o.z, o.w);
-
-  @override
   Vector4D setD(Vector4D o) => set(o.x, o.y, o.z, o.w);
 
   @override
-  getReference(Pointer<Vector4C> p) => p.ref;
+  nativeGetIndexedReference(Pointer<Vector4C> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<Vector4C> p, int index) => p[index];
 
   @override
   void nativeWriteInto(Vector4C p) {
@@ -79,6 +79,14 @@ class Vector4D extends StructDLiteral<Vector4C, Vector4D> with Vector4Base<
     p.y = y;
     p.z = z;
     p.w = w;
+  }
+
+  @override
+  void nativeReadFrom(Vector4C p) {
+    x = p.x;
+    y = p.y;
+    z = p.z;
+    w = p.w;
   }
 
   @override

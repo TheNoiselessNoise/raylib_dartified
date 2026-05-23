@@ -68,15 +68,13 @@ class QuaternionD extends StructDLiteral<QuaternionC, QuaternionD> with Quaterni
   );
 
   @override
-  QuaternionD setC(QuaternionC o) => set(o.x, o.y, o.z, o.w);
+  QuaternionD setD(QuaternionD o) => set(o.x, o.y, o.z, o.w);
 
   @override
-  QuaternionD setD(QuaternionD o) {
-    return set(o.x, o.y, o.z, o.w);
-  }
+  nativeGetIndexedReference(Pointer<QuaternionC> p, int index) => (p + index).ref;
 
   @override
-  getReference(Pointer<QuaternionC> p) => p.ref;
+  nativeGetIndexedArrayReference(Array<QuaternionC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(QuaternionC p) {
@@ -84,6 +82,14 @@ class QuaternionD extends StructDLiteral<QuaternionC, QuaternionD> with Quaterni
     p.y = y;
     p.z = z;
     p.w = w;
+  }
+
+  @override
+  void nativeReadFrom(QuaternionC p) {
+    x = p.x;
+    y = p.y;
+    z = p.z;
+    w = p.w;
   }
 
   @override

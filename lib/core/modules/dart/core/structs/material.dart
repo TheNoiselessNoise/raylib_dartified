@@ -7,13 +7,13 @@ extension MaterialCPEx on Pointer<MaterialC> {
 }
 
 extension MaterialCEx on MaterialC {
-  int get paramCount => MaterialBase.BASE_paramCount;
-  int get mapCount => MaterialBase.BASE_mapCount;
+  int get paramsCount => MaterialBase.BASE_paramsCount;
+  int get mapsCount => MaterialBase.BASE_mapsCount;
 
   MaterialC setC(MaterialC o) {
     shader = o.shader;
     maps = o.maps;
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       params[i] = o.params[i];
     }
     return this;
@@ -21,15 +21,13 @@ extension MaterialCEx on MaterialC {
 
   MaterialC setD(MaterialD o) {
     shader.setD(o.shader);
-    o.structOnOriginalPointer((p) {
-      maps = p.ref.maps;
-    });
+    o.structOnOriginalPointer((p) => maps = p.ref.maps);
     if (maps.address != 0) {
-      for (int i = 0; i < mapCount; i++) {
+      for (int i = 0; i < mapsCount; i++) {
         maps[i].setD(o.maps[i]);
       }
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       params[i] = o.params[i];
     }
     return this;
@@ -39,9 +37,9 @@ extension MaterialCEx on MaterialC {
     originalPointer: ptr,
     shader: shader.toD(),
     maps: maps.address != 0
-      ? .generate(mapCount, (i) => (maps + i).toD())
+      ? .generate(mapsCount, (i) => (maps + i).toD())
       : [],
-    params: .generate(paramCount, (i) => params[i]),
+    params: .generate(paramsCount, (i) => params[i]),
   );
 }
 
@@ -52,14 +50,37 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
   TextureD,
   ColorD
 > {
-  @override
-  ShaderD shader;
+  ShaderD _shader;
+  @override get shader {
+    structOnOriginalPointer((p) => _shader.nativeReadFrom(p.ref.shader));
+    return _shader;
+  }
+  @override set shader(ShaderD value) {
+    _shader = value;
+    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.shader));
+  }
   
-  @override
-  List<MaterialMapD> maps;
+  late NativeLiveListPointerStruct<MaterialMapC, MaterialMapD> _maps;
+  @override get maps {
+    structOnOriginalPointer((p) => _maps.ptr = p.ref.maps);
+    return _maps;
+  }
+  @override set maps(List<MaterialMapD> value) {
+    assert(value.length <= mapsCount);
+    structOnOriginalPointer((p) => _maps.ptr = p.ref.maps);
+    _maps.inner = value;
+  }
   
-  @override
-  late List<double> params;
+  late NativeLiveListArrayFloat _params;
+  @override get params {
+    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    return _params;
+  }
+  @override set params(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    _params.inner = value;
+  }
 
   MaterialD({
     super.originalPointer,
@@ -67,24 +88,13 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
     List<MaterialMapD>? maps,
     List<double>? params,
   }) :
-    shader = shader ?? .zero(),
-    maps = maps ?? []
+    _shader = shader ?? .zero()
   {
-    this.params = params ?? .filled(paramCount, 0);
+    _maps = .new(maps ?? [], originalPointer?.ref.maps);
+    _params = .new(params ?? .filled(paramsCount, 0), originalPointer?.ref.params);
   }
 
   factory MaterialD.zero() => .new();
-
-  @override
-  MaterialD setC(MaterialC o) {
-    structOnOriginalPointer((p) {
-      p.ref.maps = o.maps;
-    });
-    shader.setC(o.shader);
-    maps = o.maps.address != 0 ? .generate(mapCount, (i) => o.maps[i].toD()) : [];
-    params = .generate(paramCount, (i) => o.params[i]);
-    return this;
-  }
 
   @override
   MaterialD setD(MaterialD o) {
@@ -95,7 +105,10 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
   }
 
   @override
-  getReference(Pointer<MaterialC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<MaterialC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<MaterialC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
@@ -107,18 +120,22 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
     shader.nativeWriteInto(p.shader);
     
     if (p.maps.address != 0) {
-      if (maps.isNotEmpty) {
-        for (int i = 0; i < maps.length; i++) {
-          maps[i].nativeWriteInto((p.maps + i).ref);
-        }
-      } else {
-        p.maps = nullptr;
+      for (int i = 0; i < maps.length; i++) {
+        _maps.inner[i].nativeWriteInto((p.maps + i).ref);
       }
     }
 
-    for (int i = 0; i < paramCount; i++) {
-      p.params[i] = params[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.params[i] = _params.inner[i];
     }
+  }
+
+  @override
+  void nativeReadFrom(MaterialC p) {
+    structOnOriginalPointer((o) => o.ref.maps = p.maps);
+    shader.nativeReadFrom(p.shader);
+    if (p.maps.address != 0) maps = .generate(mapsCount, (i) => (p.maps + i).toD());
+    params = .generate(paramsCount, (i) => p.params[i]);
   }
 
   @override

@@ -74,17 +74,6 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
   factory NPatchInfoD.zero() => .new();
 
   @override
-  NPatchInfoD setC(NPatchInfoC o) {
-    source.setC(o.source);
-    left = o.left;
-    top = o.top;
-    right = o.right;
-    bottom = o.bottom;
-    layout = .fromValue(o.layout);
-    return this;
-  }
-
-  @override
   NPatchInfoD setD(NPatchInfoD o) {
     source.setD(o.source);
     left = o.left;
@@ -96,7 +85,10 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
   }
 
   @override
-  getReference(Pointer<NPatchInfoC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<NPatchInfoC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<NPatchInfoC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(NPatchInfoC p) {
@@ -106,6 +98,16 @@ class NPatchInfoD extends StructDLiteral<NPatchInfoC, NPatchInfoD> with NPatchIn
     p.right = right;
     p.bottom = bottom;
     p.layout = layout.value;
+  }
+
+  @override
+  void nativeReadFrom(NPatchInfoC p) {
+    source.nativeReadFrom(p.source);
+    left = p.left;
+    top = p.top;
+    right = p.right;
+    bottom = p.bottom;
+    layout = .fromValue(p.layout);
   }
 
   @override

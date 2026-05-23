@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gcc -shared -fPIC -o libmylib.so src/mylib.c
+gcc -shared -fPIC -o build/libmylib.so src/mylib.c

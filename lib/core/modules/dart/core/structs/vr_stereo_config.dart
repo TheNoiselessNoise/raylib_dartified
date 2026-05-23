@@ -7,31 +7,31 @@ extension VrStereoConfigCPEx on Pointer<VrStereoConfigC> {
 }
 
 extension VrStereoConfigCEx on VrStereoConfigC {
-  int get paramCount => VrStereoConfigBase.BASE_paramCount;
+  int get paramsCount => VrStereoConfigBase.BASE_paramsCount;
 
   VrStereoConfigC setC(VrStereoConfigC o) {
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       projection[i].setC(o.projection[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       viewOffset[i].setC(o.viewOffset[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       leftLensCenter[i] = o.leftLensCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       rightLensCenter[i] = o.rightLensCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       leftScreenCenter[i] = o.leftScreenCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       rightScreenCenter[i] = o.rightScreenCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       scale[i] = o.scale[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       scaleIn[i] = o.scaleIn[i];
     }
 
@@ -39,28 +39,28 @@ extension VrStereoConfigCEx on VrStereoConfigC {
   }
 
   VrStereoConfigC setD(VrStereoConfigD o) {
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       projection[i].setD(o.projection[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       viewOffset[i].setD(o.viewOffset[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       leftLensCenter[i] = o.leftLensCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       rightLensCenter[i] = o.rightLensCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       leftScreenCenter[i] = o.leftScreenCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       rightScreenCenter[i] = o.rightScreenCenter[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       scale[i] = o.scale[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       scaleIn[i] = o.scaleIn[i];
     }
 
@@ -69,14 +69,14 @@ extension VrStereoConfigCEx on VrStereoConfigC {
 
   VrStereoConfigD toD([Pointer<VrStereoConfigC>? ptr]) => .new(
     originalPointer: ptr,
-    projection: .generate(paramCount, (i) => projection[i].toD()),
-    viewOffset: .generate(paramCount, (i) => viewOffset[i].toD()),
-    leftLensCenter: .generate(paramCount, (i) => leftLensCenter[i]),
-    rightLensCenter: .generate(paramCount, (i) => rightLensCenter[i]),
-    leftScreenCenter: .generate(paramCount, (i) => leftScreenCenter[i]),
-    rightScreenCenter: .generate(paramCount, (i) => rightScreenCenter[i]),
-    scale: .generate(paramCount, (i) => scale[i]),
-    scaleIn: .generate(paramCount, (i) => scaleIn[i]),
+    projection: .generate(paramsCount, (i) => projection[i].toD()),
+    viewOffset: .generate(paramsCount, (i) => viewOffset[i].toD()),
+    leftLensCenter: .generate(paramsCount, (i) => leftLensCenter[i]),
+    rightLensCenter: .generate(paramsCount, (i) => rightLensCenter[i]),
+    leftScreenCenter: .generate(paramsCount, (i) => leftScreenCenter[i]),
+    rightScreenCenter: .generate(paramsCount, (i) => rightScreenCenter[i]),
+    scale: .generate(paramsCount, (i) => scale[i]),
+    scaleIn: .generate(paramsCount, (i) => scaleIn[i]),
   );
 }
 
@@ -87,29 +87,93 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
   QuaternionD,
   Vector4D
 > {
-  @override
-  late List<MatrixD> projection;
+  late NativeLiveListArrayStruct<MatrixC, MatrixD> _projection;
+  @override get projection {
+    structOnOriginalPointer((p) => _projection.ptr = p.ref.projection);
+    return _projection;
+  }
+  @override set projection(List<MatrixD> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _projection.ptr = p.ref.projection);
+    _projection.inner = value;
+  }
   
-  @override
-  late List<MatrixD> viewOffset;
+  late NativeLiveListArrayStruct<MatrixC, MatrixD> _viewOffset;
+  @override get viewOffset {
+    structOnOriginalPointer((p) => _viewOffset.ptr = p.ref.viewOffset);
+    return _viewOffset;
+  }
+  @override set viewOffset(List<MatrixD> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _viewOffset.ptr = p.ref.viewOffset);
+    _viewOffset.inner = value;
+  }
   
-  @override
-  late List<double> leftLensCenter;
+  late NativeLiveListArrayFloat _leftLensCenter;
+  @override get leftLensCenter {
+    structOnOriginalPointer((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
+    return _leftLensCenter;
+  }
+  @override set leftLensCenter(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
+    _leftLensCenter.inner = value;
+  }
   
-  @override
-  late List<double> rightLensCenter;
+  late NativeLiveListArrayFloat _rightLensCenter;
+  @override get rightLensCenter {
+    structOnOriginalPointer((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
+    return _rightLensCenter;
+  }
+  @override set rightLensCenter(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
+    _rightLensCenter.inner = value;
+  }
   
-  @override
-  late List<double> leftScreenCenter;
+  late NativeLiveListArrayFloat _leftScreenCenter;
+  @override get leftScreenCenter {
+    structOnOriginalPointer((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
+    return _leftScreenCenter;
+  }
+  @override set leftScreenCenter(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
+    _leftScreenCenter.inner = value;
+  }
   
-  @override
-  late List<double> rightScreenCenter;
+  late NativeLiveListArrayFloat _rightScreenCenter;
+  @override get rightScreenCenter {
+    structOnOriginalPointer((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
+    return _rightScreenCenter;
+  }
+  @override set rightScreenCenter(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
+    _rightScreenCenter.inner = value;
+  }
   
-  @override
-  late List<double> scale;
+  late NativeLiveListArrayFloat _scale;
+  @override get scale {
+    structOnOriginalPointer((p) => _scale.ptr = p.ref.scale);
+    return _scale;
+  }
+  @override set scale(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _scale.ptr = p.ref.scale);
+    _scale.inner = value;
+  }
   
-  @override
-  late List<double> scaleIn;
+  late NativeLiveListArrayFloat _scaleIn;
+  @override get scaleIn {
+    structOnOriginalPointer((p) => _scaleIn.ptr = p.ref.scaleIn);
+    return _scaleIn;
+  }
+  @override set scaleIn(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _scaleIn.ptr = p.ref.scaleIn);
+    _scaleIn.inner = value;
+  }
 
   VrStereoConfigD({
     super.originalPointer,
@@ -122,40 +186,17 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
     List<double>? scale,
     List<double>? scaleIn,
   }) {
-    this.projection = projection ?? .generate(paramCount, (_) => .zero());
-    this.viewOffset = viewOffset ?? .generate(paramCount, (_) => .zero());
-    this.leftLensCenter = leftLensCenter ?? .filled(paramCount, 0);
-    this.rightLensCenter = rightLensCenter ?? .filled(paramCount, 0);
-    this.leftScreenCenter = leftScreenCenter ?? .filled(paramCount, 0);
-    this.rightScreenCenter = rightScreenCenter ?? .filled(paramCount, 0);
-    this.scale = scale ?? .filled(paramCount, 0);
-    this.scaleIn = scaleIn ?? .filled(paramCount, 0);
+    _projection = .new(projection ?? .generate(paramsCount, (_) => .zero()), originalPointer?.ref.projection);
+    _viewOffset = .new(viewOffset ?? .generate(paramsCount, (_) => .zero()), originalPointer?.ref.viewOffset);
+    _leftLensCenter = .new(leftLensCenter ?? .filled(paramsCount, 0), originalPointer?.ref.leftLensCenter);
+    _rightLensCenter = .new(rightLensCenter ?? .filled(paramsCount, 0), originalPointer?.ref.rightLensCenter);
+    _leftScreenCenter = .new(leftScreenCenter ?? .filled(paramsCount, 0), originalPointer?.ref.leftScreenCenter);
+    _rightScreenCenter = .new(rightScreenCenter ?? .filled(paramsCount, 0), originalPointer?.ref.rightScreenCenter);
+    _scale = .new(scale ?? .filled(paramsCount, 0), originalPointer?.ref.scale);
+    _scaleIn = .new(scaleIn ?? .filled(paramsCount, 0), originalPointer?.ref.scaleIn);
   }
 
   factory VrStereoConfigD.zero() => .new();
-
-  @override
-  VrStereoConfigD setC(VrStereoConfigC o) {
-    structOnOriginalPointer((p) {
-      p.ref.projection = o.projection;
-      p.ref.viewOffset = o.viewOffset;
-      p.ref.leftLensCenter = o.leftLensCenter;
-      p.ref.rightLensCenter = o.rightLensCenter;
-      p.ref.leftScreenCenter = o.leftScreenCenter;
-      p.ref.rightScreenCenter = o.rightScreenCenter;
-      p.ref.scale = o.scale;
-      p.ref.scaleIn = o.scaleIn;
-    });
-    projection = .generate(paramCount, (i) => o.projection[i].toD());
-    viewOffset = .generate(paramCount, (i) => o.viewOffset[i].toD());
-    leftLensCenter = .generate(paramCount, (i) => o.leftLensCenter[i]);
-    rightLensCenter = .generate(paramCount, (i) => o.rightLensCenter[i]);
-    leftScreenCenter = .generate(paramCount, (i) => o.leftScreenCenter[i]);
-    rightScreenCenter = .generate(paramCount, (i) => o.rightScreenCenter[i]);
-    scale = .generate(paramCount, (i) => o.scale[i]);
-    scaleIn = .generate(paramCount, (i) => o.scaleIn[i]);
-    return this;
-  }
 
   @override
   VrStereoConfigD setD(VrStereoConfigD o) {
@@ -171,34 +212,59 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
   }
 
   @override
-  getReference(Pointer<VrStereoConfigC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<VrStereoConfigC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<VrStereoConfigC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(VrStereoConfigC p) {
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       projection[i].nativeWriteInto(p.projection[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       viewOffset[i].nativeWriteInto(p.viewOffset[i]);
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.leftLensCenter[i] = leftLensCenter[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.leftLensCenter[i] = _leftLensCenter.inner[i];
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.rightLensCenter[i] = rightLensCenter[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.rightLensCenter[i] = _rightLensCenter.inner[i];
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.leftScreenCenter[i] = leftScreenCenter[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.leftScreenCenter[i] = _leftScreenCenter.inner[i];
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.rightScreenCenter[i] = rightScreenCenter[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.rightScreenCenter[i] = _rightScreenCenter.inner[i];
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.scale[i] = scale[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.scale[i] = _scale.inner[i];
     }
-    for (int i = 0; i < paramCount; i++) {
-      p.scaleIn[i] = scaleIn[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.scaleIn[i] = _scaleIn.inner[i];
     }
+  }
+
+  @override
+  void nativeReadFrom(VrStereoConfigC p) {
+    structOnOriginalPointer((o) {
+      o.ref.projection = p.projection;
+      o.ref.viewOffset = p.viewOffset;
+      o.ref.leftLensCenter = p.leftLensCenter;
+      o.ref.rightLensCenter = p.rightLensCenter;
+      o.ref.leftScreenCenter = p.leftScreenCenter;
+      o.ref.rightScreenCenter = p.rightScreenCenter;
+      o.ref.scale = p.scale;
+      o.ref.scaleIn = p.scaleIn;
+    });
+    projection = .generate(paramsCount, (i) => p.projection[i].toD());
+    viewOffset = .generate(paramsCount, (i) => p.viewOffset[i].toD());
+    leftLensCenter = .generate(paramsCount, (i) => p.leftLensCenter[i]);
+    rightLensCenter = .generate(paramsCount, (i) => p.rightLensCenter[i]);
+    leftScreenCenter = .generate(paramsCount, (i) => p.leftScreenCenter[i]);
+    rightScreenCenter = .generate(paramsCount, (i) => p.rightScreenCenter[i]);
+    scale = .generate(paramsCount, (i) => p.scale[i]);
+    scaleIn = .generate(paramsCount, (i) => p.scaleIn[i]);
   }
 
   @override

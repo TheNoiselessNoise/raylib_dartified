@@ -53,18 +53,6 @@ class AudioStreamD extends StructD<AudioStreamC, AudioStreamD> with AudioStreamB
   });
 
   @override
-  AudioStreamD setC(AudioStreamC o) {
-    structOnOriginalPointer((p) {
-      p.ref.buffer = o.buffer;
-      p.ref.processor = o.processor;
-    });
-    sampleRate = o.sampleRate;
-    sampleSize = o.sampleSize;
-    channels = o.channels;
-    return this;
-  }
-
-  @override
   AudioStreamD setD(AudioStreamD o) {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
@@ -73,7 +61,10 @@ class AudioStreamD extends StructD<AudioStreamC, AudioStreamD> with AudioStreamB
   }
 
   @override
-  getReference(Pointer<AudioStreamC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<AudioStreamC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<AudioStreamC> p, int index) => p[index];
 
   @override
   void structSyncInto(RaylibTemp temp, Pointer<AudioStreamC> p, String key) {} // NOTE: do nothing
@@ -81,6 +72,17 @@ class AudioStreamD extends StructD<AudioStreamC, AudioStreamD> with AudioStreamB
   @override
   void nativeWriteInto(AudioStreamC p)
     => throw UnsupportedError('AudioStreamD: is raylib-owned; cannot write externally.');
+
+  @override
+  void nativeReadFrom(AudioStreamC p) {
+    structOnOriginalPointer((o) {
+      o.ref.buffer = p.buffer;
+      o.ref.processor = p.processor;
+    });
+    sampleRate = p.sampleRate;
+    sampleSize = p.sampleSize;
+    channels = p.channels;
+  }
 
   @override
   AudioStreamD clone() => .new(

@@ -55,13 +55,6 @@ class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with Bound
   ) => .new(min: min, max: max);
 
   @override
-  BoundingBoxD setC(BoundingBoxC o) {
-    min.setC(o.min);
-    max.setC(o.max);
-    return this;
-  }
-
-  @override
   BoundingBoxD setD(BoundingBoxD o) {
     min.setD(o.min);
     max.setD(o.max);
@@ -69,12 +62,21 @@ class BoundingBoxD extends StructDLiteral<BoundingBoxC, BoundingBoxD> with Bound
   }
 
   @override
-  getReference(Pointer<BoundingBoxC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<BoundingBoxC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<BoundingBoxC> p, int index) => p[index];
   
   @override
   void nativeWriteInto(BoundingBoxC p) {
     min.nativeWriteInto(p.min);
     max.nativeWriteInto(p.max);
+  }
+
+  @override
+  void nativeReadFrom(BoundingBoxC p) {
+    min.nativeReadFrom(p.min);
+    max.nativeReadFrom(p.max);
   }
 
   @override

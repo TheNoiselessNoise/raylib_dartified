@@ -55,14 +55,6 @@ class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with Mater
   factory MaterialMapD.zero() => .new();
 
   @override
-  MaterialMapD setC(MaterialMapC o) {
-    texture.setC(o.texture); 
-    color.setC(o.color); 
-    value = o.value;
-    return this;
-  }
-
-  @override
   MaterialMapD setD(MaterialMapD o) {
     texture.setD(o.texture); 
     color.setD(o.color); 
@@ -71,13 +63,23 @@ class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with Mater
   }
 
   @override
-  getReference(Pointer<MaterialMapC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<MaterialMapC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<MaterialMapC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(MaterialMapC p) {
     texture.nativeWriteInto(p.texture);
     color.nativeWriteInto(p.color);
     p.value = value;
+  }
+
+  @override
+  void nativeReadFrom(MaterialMapC p) {
+    texture.nativeReadFrom(p.texture); 
+    color.nativeReadFrom(p.color); 
+    value = p.value;
   }
 
   @override

@@ -122,23 +122,6 @@ class LightD extends StructD<LightC, LightD> with LightBase<
   factory LightD.zero() => .new();
 
   @override
-  LightD setC(LightC o) {
-    type = .fromValue(o.type);
-    enabled = o.enabled;
-    position.setC(o.position);
-    target.setC(o.target);
-    color.setC(o.color);
-    attenuation = o.attenuation;
-    enabledLoc = o.enabledLoc;
-    typeLoc = o.typeLoc;
-    positionLoc = o.positionLoc;
-    targetLoc = o.targetLoc;
-    colorLoc = o.colorLoc;
-    attenuationLoc = o.attenuationLoc;
-    return this;
-  }
-
-  @override
   LightD setD(LightD o) {
     type = o.type;
     enabled = o.enabled;
@@ -156,7 +139,10 @@ class LightD extends StructD<LightC, LightD> with LightBase<
   }
 
   @override
-  getReference(Pointer<LightC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<LightC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<LightC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(LightC p) {
@@ -172,6 +158,22 @@ class LightD extends StructD<LightC, LightD> with LightBase<
     p.targetLoc = targetLoc;
     p.colorLoc = colorLoc;
     p.attenuationLoc = attenuationLoc;
+  }
+
+  @override
+  void nativeReadFrom(LightC p) {
+    type = .fromValue(p.type);
+    enabled = p.enabled;
+    position.nativeReadFrom(p.position);
+    target.nativeReadFrom(p.target);
+    color.nativeReadFrom(p.color);
+    attenuation = p.attenuation;
+    enabledLoc = p.enabledLoc;
+    typeLoc = p.typeLoc;
+    positionLoc = p.positionLoc;
+    targetLoc = p.targetLoc;
+    colorLoc = p.colorLoc;
+    attenuationLoc = p.attenuationLoc;
   }
 
   @override

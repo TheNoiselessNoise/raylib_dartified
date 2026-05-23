@@ -168,7 +168,7 @@ class ModuleCWriter extends ModuleWriter {
     _writeStructsC();
     _writeEnumsC();
 
-    writeln('class $libraryName extends RaylibModule {');
+    writeln('class $libraryName extends RaylibModule<Raylib> {');
     writeln('  $libraryName(super.rl);');
     writeln();
     writeln('  RaylibLookup get _lookup => rl.dynLib<$libraryName>().lookup;');
@@ -188,8 +188,11 @@ class ModuleDartWriter extends ModuleWriter {
   int _nextRef(Map<String, int> refsUsed, String key) =>
   refsUsed[key] = 1 + refsUsed.putIfAbsent(key, () => 0);
 
-  String _ffiBaseType(Type type) =>
-    type.baseType.getCType(c2Dart.context).replaceAll('ffi.', '').trim();
+  String _ffiBaseType(Type type) {
+    final baseType = type.baseType.getCType(c2Dart.context).replaceAll('ffi.', '').trim();
+    if (baseType == 'Float') return 'Float32';
+    return baseType;
+  }
 
   String _ffiPtrType(Type type) =>
     type.getCType(c2Dart.context).replaceAll('ffi.', '').trim();
@@ -390,7 +393,7 @@ class ModuleDartWriter extends ModuleWriter {
 
   void _writeModule() {
     writeln();
-    writeln('class $libraryNameD extends RaylibModule {');
+    writeln('class $libraryNameD extends RaylibModule<Raylib> {');
     writeln('  $libraryNameD(super.rl);');
     writeln();
     writeln('  $libraryName get $ffiLib => rl.module<$libraryName>();');

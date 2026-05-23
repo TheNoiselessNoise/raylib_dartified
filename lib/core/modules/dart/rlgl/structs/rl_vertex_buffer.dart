@@ -93,79 +93,115 @@ extension RlVertexBufferCEx on RlVertexBufferC {
 }
 
 class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlVertexBufferBase<RlVertexBufferD> {
-  @override
-  int elementCount;
+  int _elementCount;
+  @override get elementCount {
+    structOnOriginalPointer((p) => _elementCount = p.ref.elementCount);
+    return _elementCount;
+  }
+  @override set elementCount(int value) {
+    _elementCount = value;
+    structOnOriginalPointer((p) => p.ref.elementCount = value);
+  }
 
-  @override
-  List<double> vertices;
+  late NativeLiveListPointerFloat _vertices;
+  @override get vertices {
+    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    return _vertices;
+  }
+  @override set vertices(List<double> value) {
+    assert(value.length <= verticesCount);
+    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    _vertices.inner = value;
+  }
 
-  @override
-  List<double> texcoords;
+  late NativeLiveListPointerFloat _texcoords;
+  @override get texcoords {
+    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    return _texcoords;
+  }
+  @override set texcoords(List<double> value) {
+    assert(value.length <= texcoordsCount);
+    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    _texcoords.inner = value;
+  }
 
-  @override
-  List<double> normals;
+  late NativeLiveListPointerFloat _normals;
+  @override get normals {
+    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    return _normals;
+  }
+  @override set normals(List<double> value) {
+    assert(value.length <= normalsCount);
+    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    _normals.inner = value;
+  }
 
-  @override
-  List<int> colors;
+  late NativeLiveListPointerUnsignedChar _colors;
+  @override get colors {
+    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    return _colors;
+  }
+  @override set colors(List<int> value) {
+    assert(value.length <= colorsCount);
+    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    _colors.inner = value;
+  }
 
-  @override
-  List<int> indices;
+  late NativeLiveListPointerUnsignedInt _indices;
+  @override get indices {
+    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    return _indices;
+  }
+  @override set indices(List<int> value) {
+    assert(value.length <= indicesCount);
+    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    _indices.inner = value;
+  }
 
-  @override
-  int vaoId;
+  int _vaoId;
+  @override get vaoId {
+    structOnOriginalPointer((p) => _vaoId = p.ref.vaoId);
+    return _vaoId;
+  }
+  @override set vaoId(int value) {
+    _vaoId = value;
+    structOnOriginalPointer((p) => p.ref.vaoId = value);
+  }
 
-  @override
-  List<int> vboId;
+  late NativeLiveListArrayUnsignedInt _vboId;
+  @override get vboId {
+    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    return _vboId;
+  }
+  @override set vboId(List<int> value) {
+    assert(value.length <= vboIdCount);
+    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    _vboId.inner = value;
+  }
 
   RlVertexBufferD({
     super.originalPointer,
-    this.elementCount = 0,
+    int elementCount = 0,
     List<double>? vertices,
     List<double>? texcoords,
     List<double>? normals,
     List<int>? colors,
     List<int>? indices,
-    this.vaoId = 0,
+    int vaoId = 0,
     List<int>? vboId,
   }) :
-    vertices = vertices ?? [],
-    texcoords = texcoords ?? [],
-    normals = normals ?? [],
-    colors = colors ?? [],
-    indices = indices ?? [],
-    vboId = vboId ?? [];
+    _elementCount = elementCount,
+    _vaoId = vaoId
+  {
+    _vertices = .new(vertices ?? [], originalPointer?.ref.vertices);
+    _texcoords = .new(texcoords ?? [], originalPointer?.ref.texcoords);
+    _normals = .new(normals ?? [], originalPointer?.ref.normals);
+    _colors = .new(colors ?? [], originalPointer?.ref.colors);
+    _indices = .new(indices ?? [], originalPointer?.ref.indices);
+    _vboId = .new(vboId ?? [], originalPointer?.ref.vboId);
+  }
 
   factory RlVertexBufferD.zero() => .new();
-
-  @override
-  RlVertexBufferD setC(RlVertexBufferC o) {
-    structOnOriginalPointer((p) {
-      p.ref.vertices = o.vertices;
-      p.ref.texcoords = o.texcoords;
-      p.ref.normals = o.normals;
-      p.ref.colors = o.colors;
-      p.ref.indices = o.indices;
-    });
-    elementCount = o.elementCount;
-    vertices = o.vertices.address != 0
-      ? .generate(o.verticesCount, (i) => o.vertices[i].toDouble())
-      : [];
-    texcoords = o.texcoords.address != 0
-      ? .generate(o.texcoordsCount, (i) => o.texcoords[i].toDouble())
-      : [];
-    normals = o.normals.address != 0
-      ? .generate(o.normalsCount, (i) => o.normals[i].toDouble())
-      : [];
-    colors = o.colors.address != 0
-      ? .generate(o.colorsCount, (i) => o.colors[i])
-      : [];
-    indices = o.indices.address != 0
-      ? .generate(o.indicesCount, (i) => o.indices[i])
-      : [];
-    vaoId = o.vaoId;
-    vboId = .generate(vboIdCount, (i) => o.vboId[i]);
-    return this;
-  }
 
   @override
   RlVertexBufferD setD(RlVertexBufferD o) {
@@ -181,7 +217,10 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
   }
 
   @override
-  getReference(Pointer<RlVertexBufferC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<RlVertexBufferC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<RlVertexBufferC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
@@ -196,12 +235,69 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
   void nativeWriteInto(RlVertexBufferC p) {
     p.elementCount = elementCount;
     p.vaoId = vaoId;
-    for (var i = 0; i < vboIdCount; i++) p.vboId[i] = vboId[i];
-    for (var i = 0; i < vertices.length; i++) p.vertices[i] = vertices[i];
-    for (var i = 0; i < texcoords.length; i++) p.texcoords[i] = texcoords[i];
-    for (var i = 0; i < normals.length; i++) p.normals[i] = normals[i];
-    for (var i = 0; i < colors.length; i++) p.colors[i] = colors[i];
-    for (var i = 0; i < indices.length; i++) p.indices[i] = indices[i];
+
+    for (var i = 0; i < vboIdCount; i++) {
+      p.vboId[i] = _vboId.inner[i];
+    }
+
+    if (p.vertices.address != 0) {
+      for (var i = 0; i < vertices.length; i++) {
+        p.vertices[i] = _vertices.inner[i];
+      }
+    }
+
+    if (p.texcoords.address != 0) {
+      for (var i = 0; i < texcoords.length; i++) {
+        p.texcoords[i] = _texcoords.inner[i];
+      }
+    }
+
+    if (p.normals.address != 0) {
+      for (var i = 0; i < normals.length; i++) {
+        p.normals[i] = _normals.inner[i];
+      }
+    }
+
+    if (p.colors.address != 0) {
+      for (var i = 0; i < colors.length; i++) {
+        p.colors[i] = _colors.inner[i];
+      }
+    }
+
+    if (p.indices.address != 0) {
+      for (var i = 0; i < indices.length; i++) {
+        p.indices[i] = _indices.inner[i];
+      }
+    }
+  }
+
+  @override
+  void nativeReadFrom(RlVertexBufferC p) {
+    structOnOriginalPointer((o) {
+      o.ref.vertices = p.vertices;
+      o.ref.texcoords = p.texcoords;
+      o.ref.normals = p.normals;
+      o.ref.colors = p.colors;
+      o.ref.indices = p.indices;
+    });
+    elementCount = p.elementCount;
+    vertices = p.vertices.address != 0
+      ? .generate(p.verticesCount, (i) => p.vertices[i].toDouble())
+      : [];
+    texcoords = p.texcoords.address != 0
+      ? .generate(p.texcoordsCount, (i) => p.texcoords[i].toDouble())
+      : [];
+    normals = p.normals.address != 0
+      ? .generate(p.normalsCount, (i) => p.normals[i].toDouble())
+      : [];
+    colors = p.colors.address != 0
+      ? .generate(p.colorsCount, (i) => p.colors[i])
+      : [];
+    indices = p.indices.address != 0
+      ? .generate(p.indicesCount, (i) => p.indices[i])
+      : [];
+    vaoId = p.vaoId;
+    vboId = .generate(vboIdCount, (i) => p.vboId[i]);
   }
 
   @override

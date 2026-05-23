@@ -72,16 +72,6 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase<
   factory Camera3DD.zero() => .new();
 
   @override
-  Camera3DD setC(Camera3DC o) {
-    position.setC(o.position);
-    target.setC(o.target);
-    up.setC(o.up);
-    fovy = o.fovy;
-    projection = .fromValue(o.projection);
-    return this;
-  }
-
-  @override
   Camera3DD setD(Camera3DD o) {
     position.setD(o.position);
     target.setD(o.target);
@@ -92,7 +82,10 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase<
   }
 
   @override
-  getReference(Pointer<Camera3DC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<Camera3DC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<Camera3DC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(Camera3DC p) {
@@ -101,6 +94,15 @@ class Camera3DD extends StructDLiteral<Camera3DC, Camera3DD> with Camera3DBase<
     up.nativeWriteInto(p.up);
     p.fovy = fovy;
     p.projection = projection.value;
+  }
+
+  @override
+  void nativeReadFrom(Camera3DC p) {
+    position.nativeReadFrom(p.position);
+    target.nativeReadFrom(p.target);
+    up.nativeReadFrom(p.up);
+    fovy = p.fovy;
+    projection = .fromValue(p.projection);
   }
 
   @override

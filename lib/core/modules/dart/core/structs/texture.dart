@@ -36,41 +36,71 @@ extension TextureCEx on TextureC {
 }
 
 class TextureD extends StructD<TextureC, TextureD> with TextureBase<TextureD> {
-  @override
-  int id;
+  int _id;
+  @override get id {
+    structOnOriginalPointer((p) => _id = p.ref.id);
+    return _id;
+  }
+  @override set id(int value) {
+    _id = value;
+    structOnOriginalPointer((p) => p.ref.id = value);
+  }
   
-  @override
-  int width;
+  int _width;
+  @override get width {
+    structOnOriginalPointer((p) => _width = p.ref.width);
+    return _width;
+  }
+  @override set width(int value) {
+    _width = value;
+    structOnOriginalPointer((p) => p.ref.width = value);
+  }
   
-  @override
-  int height;
+  int _height;
+  @override get height {
+    structOnOriginalPointer((p) => _height = p.ref.height);
+    return _height;
+  }
+  @override set height(int value) {
+    _height = value;
+    structOnOriginalPointer((p) => p.ref.height = value);
+  }
   
-  @override
-  int mipmaps;
+  int _mipmaps;
+  @override get mipmaps {
+    structOnOriginalPointer((p) => _mipmaps = p.ref.mipmaps);
+    return _mipmaps;
+  }
+  @override set mipmaps(int value) {
+    _mipmaps = value;
+    structOnOriginalPointer((p) => p.ref.mipmaps = value);
+  }
   
-  @override
-  PixelFormat format;
+  PixelFormat _format;
+  @override get format {
+    structOnOriginalPointer((p) => _format = .fromValue(p.ref.format));
+    return _format;
+  }
+  @override set format(PixelFormat value) {
+    _format = value;
+    structOnOriginalPointer((p) => p.ref.format = value.value);
+  }
 
   TextureD({
     super.originalPointer,
-    this.id = 0,
-    this.width = 0,
-    this.height = 0,
-    this.mipmaps = 0,
-    this.format = .PIXELFORMAT_NONE,
-  });
+    int id = 0,
+    int width = 0,
+    int height = 0,
+    int mipmaps = 0,
+    PixelFormat format = .PIXELFORMAT_NONE,
+  }) :
+    _id = id,
+    _width = width,
+    _height = height,
+    _mipmaps = mipmaps,
+    _format = format;
 
   factory TextureD.zero() => .new();
-
-  @override
-  TextureD setC(TextureC o) {
-    id = o.id;
-    width = o.width;
-    height = o.height;
-    mipmaps = o.mipmaps;
-    format = .fromValue(o.format);
-    return this;
-  }
 
   @override
   TextureD setD(TextureD o) {
@@ -83,7 +113,10 @@ class TextureD extends StructD<TextureC, TextureD> with TextureBase<TextureD> {
   }
 
   @override
-  getReference(Pointer<TextureC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<TextureC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<TextureC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(TextureC p) {
@@ -92,6 +125,15 @@ class TextureD extends StructD<TextureC, TextureD> with TextureBase<TextureD> {
     p.height = height;
     p.mipmaps = mipmaps;
     p.format = format.value;
+  }
+
+  @override
+  void nativeReadFrom(TextureC p) {
+    id = p.id;
+    width = p.width;
+    height = p.height;
+    mipmaps = p.mipmaps;
+    format = .fromValue(p.format);
   }
 
   @override

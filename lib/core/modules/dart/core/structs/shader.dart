@@ -17,9 +17,7 @@ extension ShaderCEx on ShaderC {
 
   ShaderC setD(ShaderD o) {
     id = o.id;
-    o.structOnOriginalPointer((p) {
-      locs = p.ref.locs;
-    });
+    o.structOnOriginalPointer((p) => locs = p.ref.locs);
     if (locs.address != 0) {
       for (var i = 0; i < o.locs.length; i++) {
         locs[i] = o.locs[i];
@@ -38,32 +36,37 @@ extension ShaderCEx on ShaderC {
 }
 
 class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
-  @override
-  int id;
+  int _id;
+  @override get id {
+    structOnOriginalPointer((p) => _id = p.ref.id);
+    return _id;
+  }
+  @override set id(int value) {
+    _id = value;
+    structOnOriginalPointer((p) => p.ref.id = value);
+  }
   
-  @override
-  List<int> locs;
+  late NativeLiveListPointerInt _locs;
+  @override get locs {
+    structOnOriginalPointer((p) => _locs.ptr = p.ref.locs);
+    return _locs;
+  }
+  @override set locs(List<int> value) {
+    structOnOriginalPointer((p) => _locs.ptr = p.ref.locs);
+    _locs.inner = value;
+  }
 
   ShaderD({
     super.originalPointer,
-    this.id = 0,
+    int id = 0,
     List<int>? locs,
   }) :
-    locs = locs ?? [];
+    _id = id
+  {
+    _locs = .new(locs ?? .filled(shaderLocsCount, 0), originalPointer?.ref.locs);
+  }
 
   factory ShaderD.zero() => .new();
-
-  @override
-  ShaderD setC(ShaderC o) {
-    structOnOriginalPointer((p) {
-      p.ref.locs = o.locs;
-    });
-    id = o.id;
-    locs = o.locs.address != 0
-      ? .generate(shaderLocsCount, (i) => o.locs[i])
-      : .filled(shaderLocsCount, 0);
-    return this;
-  }
 
   @override
   ShaderD setD(ShaderD o) {
@@ -73,7 +76,10 @@ class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
   }
 
   @override
-  getReference(Pointer<ShaderC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<ShaderC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<ShaderC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ShaderC> p, String key) {
@@ -84,15 +90,21 @@ class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
   void nativeWriteInto(ShaderC p) {
     p.id = id;
 
-    structOnOriginalPointer((o) {
-      p.locs = o.ref.locs;
-    });
+    structOnOriginalPointer((o) => p.locs = o.ref.locs);
 
     if (p.locs.address != 0) {
       for (var i = 0; i < locs.length; i++) {
-        p.locs[i] = locs[i];
+        p.locs[i] = _locs.inner[i];
       }
     }
+  }
+
+  @override
+  void nativeReadFrom(ShaderC p) {
+    id = p.id;
+    locs = p.locs.address != 0
+      ? .generate(shaderLocsCount, (i) => p.locs[i])
+      : .filled(shaderLocsCount, 0);
   }
 
   @override

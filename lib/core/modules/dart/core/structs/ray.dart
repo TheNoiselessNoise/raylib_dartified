@@ -50,13 +50,6 @@ class RayD extends StructDLiteral<RayC, RayD> with RayBase<
   factory RayD.zero() => .new();
 
   @override
-  RayD setC(RayC o) {
-    position.setC(o.position);
-    direction.setC(o.direction);
-    return this;
-  }
-
-  @override
   RayD setD(RayD o) {
     position.setD(o.position);
     direction.setD(o.direction);
@@ -64,12 +57,21 @@ class RayD extends StructDLiteral<RayC, RayD> with RayBase<
   }
 
   @override
-  getReference(Pointer<RayC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<RayC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<RayC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(RayC p) {
     position.nativeWriteInto(p.position);
     direction.nativeWriteInto(p.direction);
+  }
+
+  @override
+  void nativeReadFrom(RayC p) {
+    position.nativeReadFrom(p.position);
+    direction.nativeReadFrom(p.direction);
   }
 
   @override

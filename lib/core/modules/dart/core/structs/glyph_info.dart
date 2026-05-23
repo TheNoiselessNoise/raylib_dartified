@@ -39,42 +39,71 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase<
   GlyphInfoD,
   ImageD
 > {
-  @override
-  int value;
+  int _value;
+  @override get value {
+    structOnOriginalPointer((p) => _value = p.ref.value);
+    return _value;
+  }
+  @override set value(int value) {
+    _value = value;
+    structOnOriginalPointer((p) => p.ref.value = value);
+  }
   
-  @override
-  int offsetX;
+  int _offsetX;
+  @override get offsetX {
+    structOnOriginalPointer((p) => _offsetX = p.ref.offsetX);
+    return _offsetX;
+  }
+  @override set offsetX(int value) {
+    _offsetX = value;
+    structOnOriginalPointer((p) => p.ref.offsetX = value);
+  }
   
-  @override
-  int offsetY;
+  int _offsetY;
+  @override get offsetY {
+    structOnOriginalPointer((p) => _offsetY = p.ref.offsetY);
+    return _offsetY;
+  }
+  @override set offsetY(int value) {
+    _offsetY = value;
+    structOnOriginalPointer((p) => p.ref.offsetY = value);
+  }
   
-  @override
-  int advanceX;
+  int _advanceX;
+  @override get advanceX {
+    structOnOriginalPointer((p) => _advanceX = p.ref.advanceX);
+    return _advanceX;
+  }
+  @override set advanceX(int value) {
+    _advanceX = value;
+    structOnOriginalPointer((p) => p.ref.advanceX = value);
+  }
   
-  @override
-  ImageD image;
+  ImageD _image;
+  @override get image {
+    structOnOriginalPointer((p) => _image.nativeReadFrom(p.ref.image));
+    return _image;
+  }
+  @override set image(ImageD value) {
+    _image = value;
+    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.image));
+  }
 
   GlyphInfoD({
     super.originalPointer,
-    this.value = 0,
-    this.offsetX = 0,
-    this.offsetY = 0,
-    this.advanceX = 0,
+    int value = 0,
+    int offsetX = 0,
+    int offsetY = 0,
+    int advanceX = 0,
     ImageD? image,
   }) :
-    image = image ?? .zero();
+    _value = value,
+    _offsetX = offsetX,
+    _offsetY = offsetY,
+    _advanceX = advanceX,
+    _image = image ?? .zero();
 
   factory GlyphInfoD.zero() => .new();
-
-  @override
-  GlyphInfoD setC(GlyphInfoC o) {
-    value = o.value;
-    offsetX = o.offsetX;
-    offsetY = o.offsetY;
-    advanceX = o.advanceX;
-    image.setC(o.image);
-    return this;
-  }
 
   @override
   GlyphInfoD setD(GlyphInfoD o) {
@@ -87,7 +116,10 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase<
   }
 
   @override
-  getReference(Pointer<GlyphInfoC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<GlyphInfoC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<GlyphInfoC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(GlyphInfoC p) {
@@ -96,6 +128,15 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase<
     p.offsetY = offsetY;
     p.advanceX = advanceX;
     image.nativeWriteInto(p.image);
+  }
+
+  @override
+  void nativeReadFrom(GlyphInfoC p) {
+    value = p.value;
+    offsetX = p.offsetX;
+    offsetY = p.offsetY;
+    advanceX = p.advanceX;
+    image.nativeReadFrom(p.image);
   }
 
   @override

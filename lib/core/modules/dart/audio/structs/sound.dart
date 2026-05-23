@@ -45,16 +45,6 @@ class SoundD extends StructD<SoundC, SoundD> with SoundBase<
   });
 
   @override
-  SoundD setC(SoundC o) {
-    structOnOriginalPointer((p) {
-      p.ref.stream.setC(o.stream);
-    });
-    stream.setC(o.stream);
-    frameCount = o.frameCount;
-    return this;
-  }
-
-  @override
   SoundD setD(SoundD o) {
     stream.setD(o.stream);
     frameCount = o.frameCount;
@@ -62,7 +52,10 @@ class SoundD extends StructD<SoundC, SoundD> with SoundBase<
   }
 
   @override
-  getReference(Pointer<SoundC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<SoundC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<SoundC> p, int index) => p[index];
 
   @override
   void structSyncInto(RaylibTemp temp, Pointer<SoundC> p, String key) {} // NOTE: do nothing
@@ -70,6 +63,15 @@ class SoundD extends StructD<SoundC, SoundD> with SoundBase<
   @override
   void nativeWriteInto(SoundC p)
     => throw UnsupportedError('SoundD: is raylib-owned; cannot write externally.');
+
+  @override
+  void nativeReadFrom(SoundC p) {
+    structOnOriginalPointer((o) {
+      o.ref.stream.setC(p.stream);
+    });
+    stream.nativeReadFrom(p.stream);
+    frameCount = p.frameCount;
+  }
 
   @override
   SoundD clone() => .new(

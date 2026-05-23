@@ -28,12 +28,12 @@ void main()
     if (!angleMode) startAngle = -v0.lineAngle(v1)*rl.RAD2DEG;
     if (angleMode) startAngle = 0.0;
 
-    v2.setC(rl.Core.GetMousePosition());
+    v2.nativeReadFrom(rl.Core.GetMousePosition());
 
     if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) angleMode = !angleMode;
     
     if(!angleMode && rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value))
-      v1.setC(rl.Core.GetMousePosition());
+      v1.nativeReadFrom(rl.Core.GetMousePosition());
 
     if (!angleMode)
     {

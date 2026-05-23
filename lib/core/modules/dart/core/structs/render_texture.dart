@@ -54,14 +54,6 @@ class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with
   factory RenderTextureD.zero() => .new();
 
   @override
-  RenderTextureD setC(RenderTextureC o) {
-    id = o.id;
-    texture.setC(o.texture);
-    depth.setC(o.depth);
-    return this;
-  }
-
-  @override
   RenderTextureD setD(RenderTextureD o) {
     id = o.id;
     texture = o.texture;
@@ -70,13 +62,23 @@ class RenderTextureD extends StructDLiteral<RenderTextureC, RenderTextureD> with
   }
 
   @override
-  getReference(Pointer<RenderTextureC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<RenderTextureC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<RenderTextureC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(RenderTextureC p) {
     p.id = id;
     texture.nativeWriteInto(p.texture);
     depth.nativeWriteInto(p.depth);
+  }
+
+  @override
+  void nativeReadFrom(RenderTextureC p) {
+    id = p.id;
+    texture.nativeReadFrom(p.texture);
+    depth.nativeReadFrom(p.depth);
   }
 
   @override

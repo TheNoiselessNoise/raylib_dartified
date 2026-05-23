@@ -51,8 +51,7 @@ void main()
 		  z: bb.min.z + (((bb.max.z - bb.min.z) / 2)),
     );
 
-		MatrixD matTranslate = .translate(-center.x, 0, -center.z);
-		models[i].transform.setD(matTranslate);
+		models[i].transform = .translate(-center.x, 0, -center.z);
 	}
 
 	int currentModel = 0;

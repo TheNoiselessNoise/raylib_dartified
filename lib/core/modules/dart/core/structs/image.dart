@@ -22,9 +22,7 @@ extension ImageCEx on ImageC {
   }
 
   ImageC setD(ImageD o) {
-    o.structOnOriginalPointer((p) {
-      data = p.ref.data;
-    });
+    o.structOnOriginalPointer((p) => data = p.ref.data);
     width = o.width;
     height = o.height;
     mipmaps = o.mipmaps;
@@ -43,33 +41,81 @@ extension ImageCEx on ImageC {
 }
 
 class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
-  @override
-  int width;
+  late Uint8List _data;
+  @override get data {
+    structOnOriginalPointer((p) {
+      if (p.ref.data.address != 0) {
+        _data = p.ref.data.cast<Uint8>().asTypedList(dataLength);
+      }
+    });
+    return _data;
+  }
+  @override set data(Uint8List value) {
+    _data = value;
+    structOnOriginalPointer((p) {
+      if (p.ref.data.address != 0) {
+        p.ref.data.cast<Uint8>().asTypedList(dataLength).setAll(0, value);
+      }
+    });
+  }
 
-  @override
-  int height;
+  int _width;
+  @override get width {
+    structOnOriginalPointer((p) => _width = p.ref.width);
+    return _width;
+  }
+  @override set width(int value) {
+    _width = value;
+    structOnOriginalPointer((p) => p.ref.width = value);
+  }
 
-  @override
-  int mipmaps;
+  int _height;
+  @override get height {
+    structOnOriginalPointer((p) => _height = p.ref.height);
+    return _height;
+  }
+  @override set height(int value) {
+    _height = value;
+    structOnOriginalPointer((p) => p.ref.height = value);
+  }
 
-  @override
-  PixelFormat format;
+  int _mipmaps;
+  @override get mipmaps {
+    structOnOriginalPointer((p) => _mipmaps = p.ref.mipmaps);
+    return _mipmaps;
+  }
+  @override set mipmaps(int value) {
+    _mipmaps = value;
+    structOnOriginalPointer((p) => p.ref.mipmaps = value);
+  }
 
-  @override
-  late Uint8List data;
+  PixelFormat _format;
+  @override get format {
+    structOnOriginalPointer((p) => _format = .fromValue(p.ref.format));
+    return _format;
+  }
+  @override set format(PixelFormat value) {
+    _format = value;
+    structOnOriginalPointer((p) => p.ref.format = value.value);
+  }
 
   @override
   int frameCount = 1; // normal image has only 1 frame
 
   ImageD({
     super.originalPointer,
-    this.width = 0,
-    this.height = 0,
-    this.mipmaps = 0,
-    this.format = .PIXELFORMAT_NONE,
     Uint8List? data,
-  }) {
-    this.data = data ?? Uint8List(dataLength);
+    int width = 0,
+    int height = 0,
+    int mipmaps = 0,
+    PixelFormat format = .PIXELFORMAT_NONE,
+  }) :
+    _width = width,
+    _height = height,
+    _mipmaps = mipmaps,
+    _format = format 
+  {
+    _data = data ?? Uint8List(dataLength);
   }
 
   factory ImageD.zero() => .new();
@@ -79,27 +125,9 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
   void structUpdateFrameCount(int frameCount) => structOnOriginalPointer((p) {
     if (this.frameCount != frameCount) {
       this.frameCount = frameCount;
-      data = p.ref.data.address != 0 ?
-        .fromList(p.ref.data.cast<Uint8>().asTypedList(dataLength)) :
-        Uint8List(dataLength);
+      structSyncFromMemory();
     }
   });
-
-  @override
-  ImageD setC(ImageC o) {
-    structOnOriginalPointer((p) {
-      p.ref.data = o.data;
-      p.ref.format = o.format;
-    });
-    width = o.width;
-    height = o.height;
-    mipmaps = o.mipmaps;
-    format = .fromValue(o.format);
-    data = o.data.address != 0 ?
-      .fromList(o.data.cast<Uint8>().asTypedList(dataLength)) :
-      Uint8List(dataLength);
-    return this;
-  }
 
   @override
   ImageD setD(ImageD o) {
@@ -107,12 +135,15 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
     height = o.height;
     mipmaps = o.mipmaps;
     format = o.format;
-    data = .fromList(o.data);
+    data.setAll(0, o.data);
     return this;
   }
 
   @override
-  getReference(Pointer<ImageC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<ImageC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<ImageC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
@@ -125,12 +156,21 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
     p.height = height;
     p.mipmaps = mipmaps;
     p.format = format.value;
-    if (p.data.address != 0 && data.isNotEmpty) {
+    if (p.data.address != 0) {
       assert(p.dataLength <= data.length);
-      for (int i = 0; i < p.dataLength; i++) {
-        p.data.cast<Uint8>()[i] = data[i];
-      }
+      p.data.cast<Uint8>().asTypedList(dataLength).setAll(0, data);
     }
+  }
+
+  @override
+  void nativeReadFrom(ImageC p) {
+    structOnOriginalPointer((o) => o.ref.data = p.data);
+    width = p.width;
+    height = p.height;
+    mipmaps = p.mipmaps;
+    format = .fromValue(p.format);
+
+    if (p.data.address != 0) data = p.data.cast<Uint8>().asTypedList(dataLength);
   }
 
   @override

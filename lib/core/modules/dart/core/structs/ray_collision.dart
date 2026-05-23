@@ -64,15 +64,6 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
   factory RayCollisionD.zero() => .new();
 
   @override
-  RayCollisionD setC(RayCollisionC o) {
-    hit = o.hit;
-    distance = o.distance;
-    point.setC(o.point);
-    normal.setC(o.normal);
-    return this;
-  }
-
-  @override
   RayCollisionD setD(RayCollisionD o) {
     hit = o.hit;
     distance = o.distance;
@@ -82,7 +73,10 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
   }
 
   @override
-  getReference(Pointer<RayCollisionC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<RayCollisionC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<RayCollisionC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(RayCollisionC p) {
@@ -90,6 +84,14 @@ class RayCollisionD extends StructDLiteral<RayCollisionC, RayCollisionD> with Ra
     p.distance = distance;
     point.nativeWriteInto(p.point);
     normal.nativeWriteInto(p.normal);
+  }
+
+  @override
+  void nativeReadFrom(RayCollisionC p) {
+    hit = p.hit;
+    distance = p.distance;
+    point.nativeReadFrom(p.point);
+    normal.nativeReadFrom(p.normal);
   }
 
   @override

@@ -112,6 +112,7 @@ final class RaylibApiStruct extends Copyable<RaylibApiStruct> {
   String get refCaptureMethod => 'rl.Temp.$tempVar.RefCapture';
   String get refUpdateMethod => 'rl.Temp.$tempVar.RefUpdate1';
   String get ptr => 'Pointer<$c>';
+  String get array => 'Array<$c>';
   String get ptrPtr => 'Pointer<Pointer<$c>>';
 }
 

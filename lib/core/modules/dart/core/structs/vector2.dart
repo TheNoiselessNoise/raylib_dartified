@@ -56,18 +56,24 @@ class Vector2D extends StructDLiteral<Vector2C, Vector2D> with Vector2Base<
   );
 
   @override
-  Vector2D setC(Vector2C o) => set(o.x, o.y);
-
-  @override
   Vector2D setD(Vector2D o) => set(o.x, o.y);
   
   @override
-  getReference(Pointer<Vector2C> p) => p.ref;
+  nativeGetIndexedReference(Pointer<Vector2C> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<Vector2C> p, int index) => p[index];
 
   @override
   void nativeWriteInto(Vector2C p) {
     p.x = x;
     p.y = y;
+  }
+
+  @override
+  void nativeReadFrom(Vector2C p) {
+    x = p.x;
+    y = p.y;
   }
 
   @override

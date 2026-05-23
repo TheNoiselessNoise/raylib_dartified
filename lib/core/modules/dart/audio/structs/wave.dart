@@ -61,9 +61,7 @@ extension WaveCEx on WaveC {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    o.structOnOriginalPointer((p) {
-      data = p.ref.data;
-    });
+    o.structOnOriginalPointer((p) => data = p.ref.data);
     if (data.address != 0) {
       _WaveUtils._dataSetList(data, o.data, sampleSize, waveLength);
     }
@@ -108,19 +106,6 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
   }
 
   @override
-  WaveD setC(WaveC o) {
-    structOnOriginalPointer((p) {
-      p.ref.data = o.data;
-    });
-    frameCount = o.frameCount;
-    sampleRate = o.sampleRate;
-    sampleSize = o.sampleSize;
-    channels = o.channels;
-    data = _WaveUtils._dataToBufferOrZero(o.data, sampleSize, waveLength);
-    return this;
-  }
-
-  @override
   WaveD setD(WaveD o) {
     frameCount = o.frameCount;
     sampleRate = o.sampleRate;
@@ -131,7 +116,10 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
   }
 
   @override
-  getReference(Pointer<WaveC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<WaveC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<WaveC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
@@ -154,6 +142,16 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
       assert(waveLength <= _WaveUtils._bufferLength(data, sampleSize));
       _WaveUtils._dataSetList(p.data, data, sampleSize, waveLength);
     }
+  }
+
+  @override
+  void nativeReadFrom(WaveC p) {
+    structOnOriginalPointer((o) => o.ref.data = p.data);
+    frameCount = p.frameCount;
+    sampleRate = p.sampleRate;
+    sampleSize = p.sampleSize;
+    channels = p.channels;
+    data = _WaveUtils._dataToBufferOrZero(p.data, sampleSize, waveLength);
   }
 
   @override

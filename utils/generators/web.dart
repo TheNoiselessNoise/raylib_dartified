@@ -1,7 +1,8 @@
-import '../validators/base.dart';
 import 'api_xml_reader.dart';
 import 'base.dart';
 import 'c2dart.dart';
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
 
 class WebModuleVisitor extends RecursiveAstVisitor<void> {
   List<MethodDeclaration> methods = [];
@@ -235,7 +236,7 @@ class WebGenerator extends Writable {
   }) {
     visitor = .new();
     webModuleWriter = .new(this);
-    validateFile(inputPath, [visitor]);
+    // validateFile(inputPath, [visitor]);
   }
 
   String generateFunctionList() => webModuleWriter.generateFunctionList();

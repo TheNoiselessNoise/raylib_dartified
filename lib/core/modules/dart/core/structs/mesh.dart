@@ -94,62 +94,194 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
   QuaternionD,
   Vector4D
 > {
-  @override
-  int vertexCount;
+  int _vertexCount;
+  @override get vertexCount {
+    structOnOriginalPointer((p) => _vertexCount = p.ref.vertexCount);
+    return _vertexCount;
+  }
+  @override set vertexCount(int value) {
+    _vertexCount = value;
+    structOnOriginalPointer((p) => p.ref.vertexCount = value);
+  }
   
-  @override
-  int triangleCount;
+  int _triangleCount;
+  @override get triangleCount {
+    structOnOriginalPointer((p) => _triangleCount = p.ref.triangleCount);
+    return _triangleCount;
+  }
+  @override set triangleCount(int value) {
+    _triangleCount = value;
+    structOnOriginalPointer((p) => p.ref.triangleCount = value);
+  }
   
-  @override
-  int boneCount;
+  int _boneCount;
+  @override get boneCount {
+    structOnOriginalPointer((p) => _boneCount = p.ref.boneCount);
+    return _boneCount;
+  }
+  @override set boneCount(int value) {
+    _boneCount = value;
+    structOnOriginalPointer((p) => p.ref.boneCount = value);
+  }
   
-  @override
-  List<double> vertices;
+  late NativeLiveListPointerFloat _vertices;
+  @override get vertices {
+    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    return _vertices;
+  }
+  @override set vertices(List<double> value) {
+    assert(value.length <= verticesCount);
+    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    _vertices.inner = value;
+  }
   
-  @override
-  List<double> texcoords;
+  late NativeLiveListPointerFloat _texcoords;
+  @override get texcoords {
+    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    return _texcoords;
+  }
+  @override set texcoords(List<double> value) {
+    assert(value.length <= texcoordsCount);
+    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    _texcoords.inner = value;
+  }
   
-  @override
-  List<double> texcoords2;
+  late NativeLiveListPointerFloat _texcoords2;
+  @override get texcoords2 {
+    structOnOriginalPointer((p) => _texcoords2.ptr = p.ref.texcoords2);
+    return _texcoords2;
+  }
+  @override set texcoords2(List<double> value) {
+    assert(value.length <= texcoords2Count);
+    structOnOriginalPointer((p) => _texcoords2.ptr = p.ref.texcoords2);
+    _texcoords2.inner = value;
+  }
   
-  @override
-  List<double> normals;
+  late NativeLiveListPointerFloat _normals;
+  @override get normals {
+    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    return _normals;
+  }
+  @override set normals(List<double> value) {
+    assert(value.length <= normalsCount);
+    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    _normals.inner = value;
+  }
   
-  @override
-  List<double> tangents;
+  late NativeLiveListPointerFloat _tangents;
+  @override get tangents {
+    structOnOriginalPointer((p) => _tangents.ptr = p.ref.tangents);
+    return _tangents;
+  }
+  @override set tangents(List<double> value) {
+    assert(value.length <= tangentsCount);
+    structOnOriginalPointer((p) => _tangents.ptr = p.ref.tangents);
+    _tangents.inner = value;
+  }
   
-  @override
-  List<int> colors;
+  late NativeLiveListPointerUnsignedChar _colors;
+  @override get colors {
+    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    return _colors;
+  }
+  @override set colors(List<int> value) {
+    assert(value.length <= colorsCount);
+    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    _colors.inner = value;
+  }
   
-  @override
-  List<int> indices;
+  late NativeLiveListPointerUnsignedShort _indices;
+  @override get indices {
+    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    return _indices;
+  }
+  @override set indices(List<int> value) {
+    assert(value.length <= indicesCount);
+    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    _indices.inner = value;
+  }
   
-  @override
-  List<double> animVertices;
+  late NativeLiveListPointerFloat _animVertices;
+  @override get animVertices {
+    structOnOriginalPointer((p) => _animVertices.ptr = p.ref.animVertices);
+    return _animVertices;
+  }
+  @override set animVertices(List<double> value) {
+    assert(value.length <= animVerticesCount);
+    structOnOriginalPointer((p) => _animVertices.ptr = p.ref.animVertices);
+    _animVertices.inner = value;
+  }
   
-  @override
-  List<double> animNormals;
+  late NativeLiveListPointerFloat _animNormals;
+  @override get animNormals {
+    structOnOriginalPointer((p) => _animNormals.ptr = p.ref.animNormals);
+    return _animNormals;
+  }
+  @override set animNormals(List<double> value) {
+    assert(value.length <= animNormalsCount);
+    structOnOriginalPointer((p) => _animNormals.ptr = p.ref.animNormals);
+    _animNormals.inner = value;
+  }
   
-  @override
-  List<int> boneIds;
+  late NativeLiveListPointerUnsignedChar _boneIds;
+  @override get boneIds {
+    structOnOriginalPointer((p) => _boneIds.ptr = p.ref.boneIds);
+    return _boneIds;
+  }
+  @override set boneIds(List<int> value) {
+    assert(value.length <= boneIdsCount);
+    structOnOriginalPointer((p) => _boneIds.ptr = p.ref.boneIds);
+    _boneIds.inner = value;
+  }
   
-  @override
-  List<double> boneWeights;
+  late NativeLiveListPointerFloat _boneWeights;
+  @override get boneWeights {
+    structOnOriginalPointer((p) => _boneWeights.ptr = p.ref.boneWeights);
+    return _boneWeights;
+  }
+  @override set boneWeights(List<double> value) {
+    assert(value.length <= boneWeightsCount);
+    structOnOriginalPointer((p) => _boneWeights.ptr = p.ref.boneWeights);
+    _boneWeights.inner = value;
+  }
   
-  @override
-  List<MatrixD> boneMatrices;
+  late NativeLiveListPointerStruct<MatrixC, MatrixD> _boneMatrices;
+  @override get boneMatrices {
+    structOnOriginalPointer((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    return _boneMatrices;
+  }
+  @override set boneMatrices(List<MatrixD> value) {
+    assert(value.length <= boneMatricesCount);
+    structOnOriginalPointer((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    _boneMatrices.inner = value;
+  }
   
-  @override
-  int vaoId;
+  int _vaoId;
+  @override get vaoId {
+    structOnOriginalPointer((p) => _vaoId = p.ref.vaoId);
+    return _vaoId;
+  }
+  @override set vaoId(int value) {
+    _vaoId = value;
+    structOnOriginalPointer((p) => p.ref.vaoId = value);
+  }
   
-  @override
-  List<int> vboId;
+  late NativeLiveListPointerUnsignedInt _vboId;
+  @override get vboId {
+    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    return _vboId;
+  }
+  @override set vboId(List<int> value) {
+    assert(value.length <= vboIdCount);
+    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    _vboId.inner = value;
+  }
 
   MeshD({
     super.originalPointer,
-    this.vertexCount = 0,
-    this.triangleCount = 0,
-    this.boneCount = 0,
+    int vertexCount = 0,
+    int triangleCount = 0,
+    int boneCount = 0,
     List<double>? vertices,
     List<double>? texcoords,
     List<double>? texcoords2,
@@ -162,64 +294,30 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     List<int>? boneIds,
     List<double>? boneWeights,
     List<MatrixD>? boneMatrices,
-    this.vaoId = 0,
+    int vaoId = 0,
     List<int>? vboId,
-  }):
-    vertices = vertices ?? [],
-    texcoords = texcoords ?? [],
-    texcoords2 = texcoords2 ?? [],
-    normals = normals ?? [],
-    tangents = tangents ?? [],
-    colors = colors ?? [],
-    indices = indices ?? [],
-    animVertices = animVertices ?? [],
-    animNormals = animNormals ?? [],
-    boneIds = boneIds ?? [],
-    boneWeights = boneWeights ?? [],
-    boneMatrices = boneMatrices ?? [],
-    vboId = vboId ?? [];
+  }) :
+    _vertexCount = vertexCount,
+    _triangleCount = triangleCount,
+    _boneCount = boneCount,
+    _vaoId = vaoId
+  {
+    _vertices = .new(vertices ?? [], originalPointer?.ref.vertices);
+    _texcoords = .new(texcoords ?? [], originalPointer?.ref.texcoords);
+    _texcoords2 = .new(texcoords2 ?? [], originalPointer?.ref.texcoords2);
+    _normals = .new(normals ?? [], originalPointer?.ref.normals);
+    _tangents = .new(tangents ?? [], originalPointer?.ref.tangents);
+    _colors = .new(colors ?? [], originalPointer?.ref.colors);
+    _indices = .new(indices ?? [], originalPointer?.ref.indices);
+    _animVertices = .new(animVertices ?? [], originalPointer?.ref.animVertices);
+    _animNormals = .new(animNormals ?? [], originalPointer?.ref.animNormals);
+    _boneIds = .new(boneIds ?? [], originalPointer?.ref.boneIds);
+    _boneWeights = .new(boneWeights ?? [], originalPointer?.ref.boneWeights);
+    _boneMatrices = .new(boneMatrices ?? [], originalPointer?.ref.boneMatrices);
+    _vboId = .new(vboId ?? [], originalPointer?.ref.vboId);
+  }
 
   factory MeshD.zero() => .new();
-
-  @override
-  MeshD setC(MeshC o) {
-    structOnOriginalPointer((p) {
-      p.ref.vertexCount = o.vertexCount;
-      p.ref.triangleCount = o.triangleCount;
-      p.ref.boneCount = o.boneCount;
-      p.ref.vertices = o.vertices;
-      p.ref.texcoords = o.texcoords;
-      p.ref.texcoords2 = o.texcoords2;
-      p.ref.normals = o.normals;
-      p.ref.tangents = o.tangents;
-      p.ref.colors = o.colors;
-      p.ref.indices = o.indices;
-      p.ref.animVertices = o.animVertices;
-      p.ref.animNormals = o.animNormals;
-      p.ref.boneIds = o.boneIds;
-      p.ref.boneWeights = o.boneWeights;
-      p.ref.boneMatrices = o.boneMatrices;
-      p.ref.vboId = o.vboId;
-    });
-    vertexCount = o.vertexCount;
-    triangleCount = o.triangleCount;
-    boneCount = o.boneCount;
-    vertices = vertexCount > 0 && o.vertices.address != 0 ? .generate(verticesCount, (i) => (o.vertices + i).value) : [];
-    texcoords = vertexCount > 0 && o.texcoords.address != 0 ? .generate(texcoordsCount, (i) => (o.texcoords + i).value) : [];
-    texcoords2 = vertexCount > 0 && o.texcoords2.address != 0 ? .generate(texcoords2Count, (i) => (o.texcoords2 + i).value) : [];
-    normals = vertexCount > 0 && o.normals.address != 0 ? .generate(normalsCount, (i) => (o.normals + i).value) : [];
-    tangents = vertexCount > 0 && o.tangents.address != 0 ? .generate(tangentsCount, (i) => (o.tangents + i).value) : [];
-    colors = vertexCount > 0 && o.colors.address != 0 ? .generate(colorsCount, (i) => (o.colors + i).value) : [];
-    indices = triangleCount > 0 && o.indices.address != 0 ? .generate(indicesCount, (i) => (o.indices + i).value) : [];
-    animVertices = vertexCount > 0 && o.animVertices.address != 0 ? .generate(animVerticesCount, (i) => (o.animVertices + i).value) : [];
-    animNormals = vertexCount > 0 && o.animNormals.address != 0 ? .generate(animNormalsCount, (i) => (o.animNormals + i).value) : [];
-    boneIds = vertexCount > 0 && o.boneIds.address != 0 ? .generate(boneIdsCount, (i) => (o.boneIds + i).value) : [];
-    boneWeights = vertexCount > 0 && o.boneWeights.address != 0 ? .generate(boneWeightsCount, (i) => (o.boneWeights + i).value) : [];
-    boneMatrices = o.boneMatrices.address != 0 ? .generate(boneMatricesCount, (i) => (o.boneMatrices + i).toD()) : [];
-    vaoId = o.vaoId;
-    vboId = .generate(vboIdCount, (i) => (o.vboId + i).value);
-    return this;
-  }
 
   @override
   MeshD setD(MeshD o) {
@@ -244,7 +342,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
   }
 
   @override
-  getReference(Pointer<MeshC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<MeshC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<MeshC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
@@ -295,81 +396,120 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
 
     if (p.vertices.address != 0) {
       for (int i = 0; i < vertices.length; i++) {
-        p.vertices[i] = vertices[i];
+        p.vertices[i] = _vertices.inner[i];
       }
     }
 
     if (p.texcoords.address != 0) {
       for (int i = 0; i < texcoords.length; i++) {
-        p.texcoords[i] = texcoords[i];
+        p.texcoords[i] = _texcoords.inner[i];
       }
     }
 
     if (p.texcoords2.address != 0) {
       for (int i = 0; i < texcoords2.length; i++) {
-        p.texcoords2[i] = texcoords2[i];
+        p.texcoords2[i] = _texcoords2.inner[i];
       }
     }
 
     if (p.normals.address != 0) {
       for (int i = 0; i < normals.length; i++) {
-        p.normals[i] = normals[i];
+        p.normals[i] = _normals.inner[i];
       }
     }
 
     if (p.tangents.address != 0) {
       for (int i = 0; i < tangents.length; i++) {
-        p.tangents[i] = tangents[i];
+        p.tangents[i] = _tangents.inner[i];
       }
     }
 
     if (p.colors.address != 0) {
       for (int i = 0; i < colors.length; i++) {
-        p.colors[i] = colors[i];
+        p.colors[i] = _colors.inner[i];
       }
     }
 
     if (p.indices.address != 0) {
       for (int i = 0; i < indices.length; i++) {
-        p.indices[i] = indices[i];
+        p.indices[i] = _indices.inner[i];
       }
     }
 
     if (p.animVertices.address != 0) {
       for (int i = 0; i < animVertices.length; i++) {
-        p.animVertices[i] = animVertices[i];
+        p.animVertices[i] = _animVertices.inner[i];
       }
     }
 
     if (p.animNormals.address != 0) {
       for (int i = 0; i < animNormals.length; i++) {
-        p.animNormals[i] = animNormals[i];
+        p.animNormals[i] = _animNormals.inner[i];
       }
     }
 
     if (p.boneIds.address != 0) {
       for (int i = 0; i < boneIds.length; i++) {
-        p.boneIds[i] = boneIds[i];
+        p.boneIds[i] = _boneIds.inner[i];
       }
     }
 
     if (p.boneWeights.address != 0) {
       for (int i = 0; i < boneWeights.length; i++) {
-        p.boneWeights[i] = boneWeights[i];
+        p.boneWeights[i] = _boneWeights.inner[i];
       }
     }
 
     if (p.boneMatrices.address != 0) {
       for (int i = 0; i < boneMatrices.length; i++) {
-        boneMatrices[i].nativeWriteInto((p.boneMatrices + i).ref);
+        _boneMatrices.inner[i].nativeWriteInto((p.boneMatrices + i).ref);
       }
     }
 
     if (p.vboId.address != 0) {
       for (int i = 0; i < vboId.length; i++) {
-        p.vboId[i] = vboId[i];
+        p.vboId[i] = _vboId.inner[i];
       }
     }
+  }
+
+  @override
+  void nativeReadFrom(MeshC p) {
+    structOnOriginalPointer((o) {
+      o.ref.vertexCount = p.vertexCount;
+      o.ref.triangleCount = p.triangleCount;
+      o.ref.boneCount = p.boneCount;
+      o.ref.vertices = p.vertices;
+      o.ref.texcoords = p.texcoords;
+      o.ref.texcoords2 = p.texcoords2;
+      o.ref.normals = p.normals;
+      o.ref.tangents = p.tangents;
+      o.ref.colors = p.colors;
+      o.ref.indices = p.indices;
+      o.ref.animVertices = p.animVertices;
+      o.ref.animNormals = p.animNormals;
+      o.ref.boneIds = p.boneIds;
+      o.ref.boneWeights = p.boneWeights;
+      o.ref.boneMatrices = p.boneMatrices;
+      o.ref.vboId = p.vboId;
+    });
+    vertexCount = p.vertexCount;
+    triangleCount = p.triangleCount;
+    boneCount = p.boneCount;
+    if (vertexCount > 0 && p.vertices.address != 0) vertices = .generate(verticesCount, (i) => (p.vertices + i).value);
+    if (vertexCount > 0 && p.texcoords.address != 0) texcoords = .generate(texcoordsCount, (i) => (p.texcoords + i).value);
+    if (vertexCount > 0 && p.texcoords2.address != 0) texcoords2 = .generate(texcoords2Count, (i) => (p.texcoords2 + i).value);
+    if (vertexCount > 0 && p.normals.address != 0) normals = .generate(normalsCount, (i) => (p.normals + i).value);
+    if (vertexCount > 0 && p.tangents.address != 0) tangents = .generate(tangentsCount, (i) => (p.tangents + i).value);
+    if (vertexCount > 0 && p.colors.address != 0) colors = .generate(colorsCount, (i) => (p.colors + i).value);
+    if (triangleCount > 0 && p.indices.address != 0) indices = .generate(indicesCount, (i) => (p.indices + i).value);
+    if (vertexCount > 0 && p.animVertices.address != 0) animVertices = .generate(animVerticesCount, (i) => (p.animVertices + i).value);
+    if (vertexCount > 0 && p.animNormals.address != 0) animNormals = .generate(animNormalsCount, (i) => (p.animNormals + i).value);
+    if (vertexCount > 0 && p.boneIds.address != 0) boneIds = .generate(boneIdsCount, (i) => (p.boneIds + i).value);
+    if (vertexCount > 0 && p.boneWeights.address != 0) boneWeights = .generate(boneWeightsCount, (i) => (p.boneWeights + i).value);
+    if (p.boneMatrices.address != 0) boneMatrices = .generate(boneMatricesCount, (i) => (p.boneMatrices + i).toD());
+    vaoId = p.vaoId;
+    if (p.vboId.address != 0) vboId = .generate(vboIdCount, (i) => (p.vboId + i).value);
   }
 
   @override

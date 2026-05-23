@@ -18,32 +18,32 @@ class Raylib with RaylibBase {
   @override
   void logError(Object? message) => logger.severe('[Raylib] $message');
 
-  @override RaylibTemp get Temp => module();
-  @override RaylibColors get Color => module();
-  @override RaylibEasings get Ease => module();
-  @override RaylibQuaternions get Quat => module();
-  @override RaylibMatrices get Matrix => module();
-  @override RaylibVectors get Vector => module();
+  @override late RaylibTemp Temp;
+  @override late RaylibColors Color;
+  @override late RaylibEasings Ease;
+  @override late RaylibQuaternions Quat;
+  @override late RaylibMatrices Matrix;
+  @override late RaylibVectors Vector;
 
-  RaylibAudio get Audio => module();
-  @override RaylibAudioD get AudioD => module();
-  RaylibCamera get Camera => module();
-  @override RaylibCameraD get CameraD => module();
-  RaylibCore get Core => module();
-  @override RaylibCoreD get CoreD => module();
+  late RaylibAudio Audio;
+  @override late RaylibAudioD AudioD;
+  late RaylibCamera Camera;
+  @override late RaylibCameraD CameraD;
+  late RaylibCore Core;
+  @override late RaylibCoreD CoreD;
   
   // NOTE: external modules may not be initialized at all
   //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
   //       LateInitializationError: Field 'Gui' has not been initialized.
   //       That's expected behavior!
-  RaylibGui get Gui => module();
-  @override RaylibGuiD get GuiD => module();
+  late RaylibGui Gui;
+  @override late RaylibGuiD GuiD;
   
-  RaylibLight get Light => module();
-  @override RaylibLightD get LightD => module();
-  RaylibRlgl get Rlgl => module();
-  @override RaylibRlglD get RlglD => module();
-  @override RaylibUtils get Utils => module();
+  late RaylibLight Light;
+  @override late RaylibLightD LightD;
+  late RaylibRlgl Rlgl;
+  @override late RaylibRlglD RlglD;
+  @override late RaylibUtils Utils;
 
   late final DynamicLibrary _dynCore;
   RaylibLookup get coreLookup => _dynCore.lookup;
@@ -108,27 +108,27 @@ class Raylib with RaylibBase {
     RaylibVector4Factories.zeroFactory = Vector4D.zero;
 
     // extensions
-    registerModule(RaylibTemp(this, options: tempOptions));
-    registerModule(RaylibColors(this));
-    registerModule(RaylibEasings(this));
-    registerModule(RaylibQuaternions(this));
-    registerModule(RaylibMatrices(this));
-    registerModule(RaylibVectors(this));
+    registerModule(RaylibTemp(this, options: tempOptions)); Temp = module();
+    registerModule(RaylibColors(this)); Color = module();
+    registerModule(RaylibEasings(this)); Ease = module();
+    registerModule(RaylibQuaternions(this)); Quat = module();
+    registerModule(RaylibMatrices(this)); Matrix = module();
+    registerModule(RaylibVectors(this)); Vector = module();
 
     // modules
-    registerModule(RaylibAudio(this));
-    registerModule(RaylibAudioD(this));
-    registerModule(RaylibCamera(this));
-    registerModule(RaylibCameraD(this));
-    registerModule(RaylibCore(this));
-    registerModule(RaylibCoreD(this));
-    registerModule(RaylibGui(this));
-    registerModule(RaylibGuiD(this));
-    registerModule(RaylibLight(this));
-    registerModule(RaylibLightD(this));
-    registerModule(RaylibRlgl(this));
-    registerModule(RaylibRlglD(this));
-    registerModule(RaylibUtils(this));
+    registerModule(RaylibAudio(this)); Audio = module();
+    registerModule(RaylibAudioD(this)); AudioD = module();
+    registerModule(RaylibCamera(this)); Camera = module();
+    registerModule(RaylibCameraD(this)); CameraD = module();
+    registerModule(RaylibCore(this)); Core = module();
+    registerModule(RaylibCoreD(this)); CoreD = module();
+    registerModule(RaylibGui(this)); Gui = module();
+    registerModule(RaylibGuiD(this)); GuiD = module();
+    registerModule(RaylibLight(this)); Light = module();
+    registerModule(RaylibLightD(this)); LightD = module();
+    registerModule(RaylibRlgl(this)); Rlgl = module();
+    registerModule(RaylibRlglD(this)); RlglD = module();
+    registerModule(RaylibUtils(this)); Utils = module();
   }
 
   // Custom dynamic libraries

@@ -7,7 +7,7 @@ extension VrDeviceInfoCPEx on Pointer<VrDeviceInfoC> {
 }
 
 extension VrDeviceInfoCEx on VrDeviceInfoC {
-  int get paramCount => VrDeviceInfoBase.BASE_paramCount;
+  int get paramsCount => VrDeviceInfoBase.BASE_paramsCount;
 
   VrDeviceInfoC setC(VrDeviceInfoC o) {
     hResolution = o.hResolution;
@@ -18,10 +18,10 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
     lensSeparationDistance = o.lensSeparationDistance;
     interpupillaryDistance = o.interpupillaryDistance;
 
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       lensDistortionValues[i] = o.lensDistortionValues[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       chromaAbCorrection[i] = o.chromaAbCorrection[i];
     }
     return this;
@@ -36,10 +36,10 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
     lensSeparationDistance = o.lensSeparationDistance;
     interpupillaryDistance = o.interpupillaryDistance;
 
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       lensDistortionValues[i] = o.lensDistortionValues[i];
     }
-    for (int i = 0; i < paramCount; i++) {
+    for (int i = 0; i < paramsCount; i++) {
       chromaAbCorrection[i] = o.chromaAbCorrection[i];
     }
     return this;
@@ -54,74 +54,129 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
     eyeToScreenDistance: eyeToScreenDistance,
     lensSeparationDistance: lensSeparationDistance,
     interpupillaryDistance: interpupillaryDistance,
-    lensDistortionValues: .generate(paramCount, (i) => lensDistortionValues[i]),
-    chromaAbCorrection: .generate(paramCount, (i) => chromaAbCorrection[i]),
+    lensDistortionValues: .generate(paramsCount, (i) => lensDistortionValues[i]),
+    chromaAbCorrection: .generate(paramsCount, (i) => chromaAbCorrection[i]),
   );
 }
 
 class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceInfoBase<VrDeviceInfoD> {
-  @override
-  int hResolution;
+  int _hResolution;
+  @override get hResolution {
+    structOnOriginalPointer((p) => _hResolution = p.ref.hResolution);
+    return _hResolution;
+  }
+  @override set hResolution(int value) {
+    _hResolution = value;
+    structOnOriginalPointer((p) => p.ref.hResolution = value);
+  }
   
-  @override
-  int vResolution;
+  int _vResolution;
+  @override get vResolution {
+    structOnOriginalPointer((p) => _vResolution = p.ref.vResolution);
+    return _vResolution;
+  }
+  @override set vResolution(int value) {
+    _vResolution = value;
+    structOnOriginalPointer((p) => p.ref.vResolution = value);
+  }
   
-  @override
-  double hScreenSize;
+  double _hScreenSize;
+  @override get hScreenSize {
+    structOnOriginalPointer((p) => _hScreenSize = p.ref.hScreenSize);
+    return _hScreenSize;
+  }
+  @override set hScreenSize(double value) {
+    _hScreenSize = value;
+    structOnOriginalPointer((p) => p.ref.hScreenSize = value);
+  }
   
-  @override
-  double vScreenSize;
+  double _vScreenSize;
+  @override get vScreenSize {
+    structOnOriginalPointer((p) => _vScreenSize = p.ref.vScreenSize);
+    return _vScreenSize;
+  }
+  @override set vScreenSize(double value) {
+    _vScreenSize = value;
+    structOnOriginalPointer((p) => p.ref.vScreenSize = value);
+  }
   
-  @override
-  double eyeToScreenDistance;
+  double _eyeToScreenDistance;
+  @override get eyeToScreenDistance {
+    structOnOriginalPointer((p) => _eyeToScreenDistance = p.ref.eyeToScreenDistance);
+    return _eyeToScreenDistance;
+  }
+  @override set eyeToScreenDistance(double value) {
+    _eyeToScreenDistance = value;
+    structOnOriginalPointer((p) => p.ref.eyeToScreenDistance = value);
+  }
   
-  @override
-  double lensSeparationDistance;
+  double _lensSeparationDistance;
+  @override get lensSeparationDistance {
+    structOnOriginalPointer((p) => _lensSeparationDistance = p.ref.lensSeparationDistance);
+    return _lensSeparationDistance;
+  }
+  @override set lensSeparationDistance(double value) {
+    _lensSeparationDistance = value;
+    structOnOriginalPointer((p) => p.ref.lensSeparationDistance = value);
+  }
   
-  @override
-  double interpupillaryDistance;
+  double _interpupillaryDistance;
+  @override get interpupillaryDistance {
+    structOnOriginalPointer((p) => _interpupillaryDistance = p.ref.interpupillaryDistance);
+    return _interpupillaryDistance;
+  }
+  @override set interpupillaryDistance(double value) {
+    _interpupillaryDistance = value;
+    structOnOriginalPointer((p) => p.ref.interpupillaryDistance = value);
+  }
   
-  @override
-  late List<double> lensDistortionValues;
+  late NativeLiveListArrayFloat _lensDistortionValues;
+  @override get lensDistortionValues {
+    structOnOriginalPointer((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
+    return _lensDistortionValues;
+  }
+  @override set lensDistortionValues(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
+    _lensDistortionValues.inner = value;
+  }
   
-  @override
-  late List<double> chromaAbCorrection;
+  late NativeLiveListArrayFloat _chromaAbCorrection;
+  @override get chromaAbCorrection {
+    structOnOriginalPointer((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
+    return _chromaAbCorrection;
+  }
+  @override set chromaAbCorrection(List<double> value) {
+    assert(value.length <= paramsCount);
+    structOnOriginalPointer((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
+    _chromaAbCorrection.inner = value;
+  }
 
   VrDeviceInfoD({
     super.originalPointer,
-    this.hResolution = 0,
-    this.vResolution = 0,
-    this.hScreenSize = 0,
-    this.vScreenSize = 0,
-    this.eyeToScreenDistance = 0,
-    this.lensSeparationDistance = 0,
-    this.interpupillaryDistance = 0,
+    int hResolution = 0,
+    int vResolution = 0,
+    double hScreenSize = 0,
+    double vScreenSize = 0,
+    double eyeToScreenDistance = 0,
+    double lensSeparationDistance = 0,
+    double interpupillaryDistance = 0,
     List<double>? lensDistortionValues,
     List<double>? chromaAbCorrection,
-  }) {
-    this.lensDistortionValues = lensDistortionValues ?? .filled(paramCount, 0);
-    this.chromaAbCorrection = chromaAbCorrection ?? .filled(paramCount, 0);
+  }) :
+    _hResolution = hResolution,
+    _vResolution = vResolution,
+    _hScreenSize = hScreenSize,
+    _vScreenSize = vScreenSize,
+    _eyeToScreenDistance = eyeToScreenDistance,
+    _lensSeparationDistance = lensSeparationDistance,
+    _interpupillaryDistance = interpupillaryDistance
+  {
+    _lensDistortionValues = .new(lensDistortionValues ?? .filled(paramsCount, 0), originalPointer?.ref.lensDistortionValues);
+    _chromaAbCorrection = .new(chromaAbCorrection ?? .filled(paramsCount, 0), originalPointer?.ref.chromaAbCorrection);
   }
 
   factory VrDeviceInfoD.zero() => .new();
-
-  @override
-  VrDeviceInfoD setC(VrDeviceInfoC o) {
-    structOnOriginalPointer((p) {
-      p.ref.lensDistortionValues = o.lensDistortionValues;
-      p.ref.chromaAbCorrection = o.chromaAbCorrection;
-    });
-    hResolution = o.hResolution;
-    vResolution = o.vResolution;
-    hScreenSize = o.hScreenSize;
-    vScreenSize = o.vScreenSize;
-    eyeToScreenDistance = o.eyeToScreenDistance;
-    lensSeparationDistance = o.lensSeparationDistance;
-    interpupillaryDistance = o.interpupillaryDistance;
-    lensDistortionValues = .generate(paramCount, (i) => o.lensDistortionValues[i]);
-    chromaAbCorrection = .generate(paramCount, (i) => o.chromaAbCorrection[i]);
-    return this;
-  }
 
   @override
   VrDeviceInfoD setD(VrDeviceInfoD o) {
@@ -138,7 +193,10 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
   }
 
   @override
-  getReference(Pointer<VrDeviceInfoC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<VrDeviceInfoC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<VrDeviceInfoC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(VrDeviceInfoC p) {
@@ -150,13 +208,30 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
     p.lensSeparationDistance = lensSeparationDistance;
     p.interpupillaryDistance = interpupillaryDistance;
 
-    for (int i = 0; i < paramCount; i++) {
-      p.lensDistortionValues[i] = lensDistortionValues[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.lensDistortionValues[i] = _lensDistortionValues.inner[i];
     }
 
-    for (int i = 0; i < paramCount; i++) {
-      p.chromaAbCorrection[i] = chromaAbCorrection[i];
+    for (int i = 0; i < paramsCount; i++) {
+      p.chromaAbCorrection[i] = _chromaAbCorrection.inner[i];
     }
+  }
+
+  @override
+  void nativeReadFrom(VrDeviceInfoC p) {
+    structOnOriginalPointer((o) {
+      o.ref.lensDistortionValues = p.lensDistortionValues;
+      o.ref.chromaAbCorrection = p.chromaAbCorrection;
+    });
+    hResolution = p.hResolution;
+    vResolution = p.vResolution;
+    hScreenSize = p.hScreenSize;
+    vScreenSize = p.vScreenSize;
+    eyeToScreenDistance = p.eyeToScreenDistance;
+    lensSeparationDistance = p.lensSeparationDistance;
+    interpupillaryDistance = p.interpupillaryDistance;
+    lensDistortionValues = .generate(paramsCount, (i) => p.lensDistortionValues[i]);
+    chromaAbCorrection = .generate(paramsCount, (i) => p.chromaAbCorrection[i]);
   }
 
   @override

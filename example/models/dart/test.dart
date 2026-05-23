@@ -33,16 +33,16 @@ void main()
 {
   final rl = findRaylib('raylib-5.5_linux_amd64/lib');
 
-  rl.Temp.debugSync(true);
-  rl.Temp.debugFree(true);
-
   rl.CoreD.InitWindow(screenWidth, screenHeight, "test");
 
-  final characterModel1 = rl.CoreD.LoadModel("../resources/models/gltf/greenman.glb");
+  final characterModel = rl.CoreD.LoadModel("../resources/models/gltf/greenman.glb");
 
-  dumpModel('characterModel1', characterModel1);
-  rl.Temp.Model$.PointerTo(characterModel1);
-  dumpModel('characterModel1', characterModel1);
+  dumpModel('characterModel', characterModel);
+  rl.Temp.Model$.PointerTo(characterModel);
+  dumpModel('characterModel', characterModel);
+
+  characterModel.materials[0].params[0] = 1;
+  characterModel.materials[0].maps[0] = .new();
 
   rl.CloseWindowAndDispose();
 }

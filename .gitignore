@@ -33,7 +33,6 @@ doc/api/
 
 # raylib_dartified project related
 
-experiments/
 utils/output/*.dart
 # `custom` examples are not in usable form
 example/custom/

@@ -35,8 +35,8 @@ extension FontCEx on FontC {
     glyphCount: glyphCount,
     glyphPadding: glyphPadding,
     texture: texture.toD(),
-    recs: .generate(glyphCount, (i) => recs[i].toD()),
-    glyphs: .generate(glyphCount, (i) => glyphs[i].toD()),
+    recs: .generate(glyphCount, (i) => (recs + i).toD()),
+    glyphs: .generate(glyphCount, (i) => (glyphs + i).toD()),
   );
 }
 
@@ -47,53 +47,87 @@ class FontD extends StructD<FontC, FontD> with FontBase<
   GlyphInfoD,
   ImageD
 > {
-  @override
-  int baseSize;
+  int _baseSize;
+  @override get baseSize {
+    structOnOriginalPointer((p) => _baseSize = p.ref.baseSize);
+    return _baseSize;
+  }
+  @override set baseSize(int value) {
+    _baseSize = value;
+    structOnOriginalPointer((p) => p.ref.baseSize = value);
+  }
   
-  @override
-  int glyphCount;
+  int _glyphCount;
+  @override get glyphCount {
+    structOnOriginalPointer((p) => _glyphCount = p.ref.glyphCount);
+    return _glyphCount;
+  }
+  @override set glyphCount(int value) {
+    _glyphCount = value;
+    structOnOriginalPointer((p) => p.ref.glyphCount = value);
+  }
   
-  @override
-  int glyphPadding;
+  int _glyphPadding;
+  @override get glyphPadding {
+    structOnOriginalPointer((p) => _glyphPadding = p.ref.glyphPadding);
+    return _glyphPadding;
+  }
+  @override set glyphPadding(int value) {
+    _glyphPadding = value;
+    structOnOriginalPointer((p) => p.ref.glyphPadding = value);
+  }
   
-  @override
-  TextureD texture;
+  TextureD _texture;
+  @override get texture {
+    structOnOriginalPointer((p) => _texture.nativeReadFrom(p.ref.texture));
+    return _texture;
+  }
+  @override set texture(TextureD value) {
+    _texture = value;
+    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.texture));
+  }
   
-  @override
-  List<RectangleD> recs;
+  late NativeLiveListPointerStruct<RectangleC, RectangleD> _recs;
+  @override get recs {
+    structOnOriginalPointer((p) => _recs.ptr = p.ref.recs);
+    return _recs;
+  }
+  @override set recs(List<RectangleD> value) {
+    assert(value.length <= glyphCount);
+    structOnOriginalPointer((p) => _recs.ptr = p.ref.recs);
+    _recs.inner = value;
+  }
   
-  @override
-  List<GlyphInfoD> glyphs;
+  late NativeLiveListPointerStruct<GlyphInfoC, GlyphInfoD> _glyphs;
+  @override get glyphs {
+    structOnOriginalPointer((p) => _glyphs.ptr = p.ref.glyphs);
+    return _glyphs;
+  }
+  @override set glyphs(List<GlyphInfoD> value) {
+    assert(value.length <= glyphCount);
+    structOnOriginalPointer((p) => _glyphs.ptr = p.ref.glyphs);
+    _glyphs.inner = value;
+  }
 
   FontD({
     super.originalPointer,
-    this.baseSize = 0,
-    this.glyphCount = 0,
-    this.glyphPadding = 0,
+    int baseSize = 0,
+    int glyphCount = 0,
+    int glyphPadding = 0,
     TextureD? texture,
     List<RectangleD>? recs,
     List<GlyphInfoD>? glyphs,
   }) :
-    texture = texture ?? .new(),
-    recs = recs ?? [],
-    glyphs = glyphs ?? [];
+    _baseSize = baseSize,
+    _glyphCount = glyphCount,
+    _glyphPadding = glyphPadding,
+    _texture = texture ?? .new()
+  {
+    _recs = .new(recs ?? [], originalPointer?.ref.recs);
+    _glyphs = .new(glyphs ?? [], originalPointer?.ref.glyphs);
+  }
 
   factory FontD.zero() => .new();
-
-  @override
-  FontD setC(FontC o) {
-    structOnOriginalPointer((p) {
-      p.ref.recs = o.recs;
-      p.ref.glyphs = o.glyphs;
-    });
-    baseSize = o.baseSize;
-    glyphCount = o.glyphCount;
-    glyphPadding = o.glyphPadding;
-    texture.setC(o.texture);
-    recs = .generate(o.glyphCount, (i) => o.recs[i].toD());
-    glyphs = .generate(o.glyphCount, (i) => o.glyphs[i].toD());
-    return this;
-  }
 
   @override
   FontD setD(FontD o) {
@@ -107,7 +141,10 @@ class FontD extends StructD<FontC, FontD> with FontBase<
   }
 
   @override
-  getReference(Pointer<FontC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<FontC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<FontC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
@@ -122,13 +159,32 @@ class FontD extends StructD<FontC, FontD> with FontBase<
     p.glyphPadding = glyphPadding;
     texture.nativeWriteInto(p.texture);
 
-    for (int i = 0; i < recs.length; i++) {
-      recs[i].nativeWriteInto((p.recs + i).ref);
+    if (p.recs.address != 0) {
+      for (int i = 0; i < recs.length; i++) {
+        _recs.inner[i].nativeWriteInto((p.recs + i).ref);
+      }
     }
     
-    for (int i = 0; i < glyphs.length; i++) {
-      glyphs[i].nativeWriteInto((p.glyphs + i).ref);
+    if (p.glyphs.address != 0) {
+      for (int i = 0; i < glyphs.length; i++) {
+        _glyphs.inner[i].nativeWriteInto((p.glyphs + i).ref);
+      }
     }
+  }
+
+  @override
+  void nativeReadFrom(FontC p) {
+    structOnOriginalPointer((o) {
+      o.ref.recs = p.recs;
+      o.ref.glyphs = p.glyphs;
+    });
+    baseSize = p.baseSize;
+    glyphCount = p.glyphCount;
+    glyphPadding = p.glyphPadding;
+    texture.nativeReadFrom(p.texture);
+
+    if (p.recs.address != 0) recs = .generate(p.glyphCount, (i) => (p.recs + i).toD());
+    if (p.glyphs.address != 0) glyphs = .generate(p.glyphCount, (i) => (p.glyphs + i).toD());
   }
 
   @override

@@ -61,23 +61,65 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
   TransformD,
   BoneInfoD
 > {
-  @override
-  MatrixD transform;
+  MatrixD _transform;
+  @override get transform {
+    structOnOriginalPointer((p) => _transform.nativeReadFrom(p.ref.transform));
+    return _transform;
+  }
+  @override set transform(MatrixD value) {
+    _transform = value;
+    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.transform));
+  }
   
-  @override
-  List<MeshD> meshes;
+  late NativeLiveListPointerStruct<MeshC, MeshD> _meshes;
+  @override get meshes {
+    structOnOriginalPointer((p) => _meshes.ptr = p.ref.meshes);
+    return _meshes;
+  }
+  @override set meshes(List<MeshD> value) {
+    structOnOriginalPointer((p) => _meshes.ptr = p.ref.meshes);
+    _meshes.inner = value;
+  }
   
-  @override
-  List<MaterialD> materials;
+  late NativeLiveListPointerStruct<MaterialC, MaterialD> _materials;
+  @override get materials {
+    structOnOriginalPointer((p) => _materials.ptr = p.ref.materials);
+    return _materials;
+  }
+  @override set materials(List<MaterialD> value) {
+    structOnOriginalPointer((p) => _materials.ptr = p.ref.materials);
+    _materials.inner = value;
+  }
   
-  @override
-  List<int> meshMaterial;
+  late NativeLiveListPointerInt _meshMaterial;
+  @override get meshMaterial {
+    structOnOriginalPointer((p) => _meshMaterial.ptr = p.ref.meshMaterial);
+    return _meshMaterial;
+  }
+  @override set meshMaterial(List<int> value) {
+    structOnOriginalPointer((p) => _meshMaterial.ptr = p.ref.meshMaterial);
+    _meshMaterial.inner = value;
+  }
   
-  @override
-  List<BoneInfoD> bones;
+  late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
+  @override get bones {
+    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    return _bones;
+  }
+  @override set bones(List<BoneInfoD> value) {
+    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    _bones.inner = value;
+  }
   
-  @override
-  List<TransformD> bindPose;
+  late NativeLiveListPointerStruct<TransformC, TransformD> _bindPose;
+  @override get bindPose {
+    structOnOriginalPointer((p) => _bindPose.ptr = p.ref.bindPose);
+    return _bindPose;
+  }
+  @override set bindPose(List<TransformD> value) {
+    structOnOriginalPointer((p) => _bindPose.ptr = p.ref.bindPose);
+    _bindPose.inner = value;
+  }
 
   ModelD({
     super.originalPointer,
@@ -88,32 +130,16 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     List<BoneInfoD>? bones,
     List<TransformD>? bindPose,
   }) :
-    transform = transform ?? .new(),
-    meshes = meshes ?? [],
-    materials = materials ?? [],
-    meshMaterial = meshMaterial ?? [],
-    bones = bones ?? [],
-    bindPose = bindPose ?? [];
+    _transform = transform ?? .new()
+  {
+    _meshes = .new(meshes ?? [], originalPointer?.ref.meshes);
+    _materials = .new(materials ?? [], originalPointer?.ref.materials);
+    _meshMaterial = .new(meshMaterial ?? [], originalPointer?.ref.meshMaterial);
+    _bones = .new(bones ?? [], originalPointer?.ref.bones);
+    _bindPose = .new(bindPose ?? [], originalPointer?.ref.bindPose);
+  }
 
   factory ModelD.zero() => .new();
-
-  @override
-  ModelD setC(ModelC o) {
-    structOnOriginalPointer((p) {
-      p.ref.meshes = o.meshes;
-      p.ref.materials = o.materials;
-      p.ref.meshMaterial = o.meshMaterial;
-      p.ref.bones = o.bones;
-      p.ref.bindPose = o.bindPose;
-    });
-    transform.setC(o.transform);
-    meshes = o.meshes.address != 0 ? .generate(o.meshCount, (i) => (o.meshes + i).toD()) : [];
-    materials = o.materials.address != 0 ? .generate(o.materialCount, (i) => (o.materials + i).toD()) : [];
-    meshMaterial = o.meshMaterial.address != 0 ? .generate(o.meshCount, (i) => o.meshMaterial[i]) : [];
-    bones = o.bones.address != 0 ? .generate(o.boneCount, (i) => (o.bones + i).toD()) : [];
-    bindPose = o.bindPose.address != 0 ? .generate(o.boneCount, (i) => (o.bindPose + i).toD()) : [];
-    return this;
-  }
 
   @override
   ModelD setD(ModelD o) {
@@ -127,7 +153,10 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
   }
 
   @override
-  getReference(Pointer<ModelC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<ModelC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<ModelC> p, int index) => p[index];
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
@@ -147,33 +176,50 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
 
     if (p.meshes.address != 0) {
       for (int i = 0; i < meshes.length; i++) {
-        meshes[i].nativeWriteInto((p.meshes + i).ref);
+        _meshes.inner[i].nativeWriteInto((p.meshes + i).ref);
       }
     }
 
     if (p.materials.address != 0) {
       for (int i = 0; i < materials.length; i++) {
-        materials[i].nativeWriteInto((p.materials + i).ref);
+        _materials.inner[i].nativeWriteInto((p.materials + i).ref);
       }
     }
 
     if (p.meshMaterial.address != 0) {
       for (int i = 0; i < meshMaterial.length; i++) {
-        p.meshMaterial[i] = meshMaterial[i];
+        p.meshMaterial[i] = _meshMaterial.inner[i];
       }
     }
 
     if (p.bones.address != 0) {
       for (int i = 0; i < bones.length; i++) {
-        bones[i].nativeWriteInto((p.bones + i).ref);
+        _bones.inner[i].nativeWriteInto((p.bones + i).ref);
       }
     }
 
     if (p.bindPose.address != 0) {
       for (int i = 0; i < bindPose.length; i++) {
-        bindPose[i].nativeWriteInto((p.bindPose + i).ref);
+        _bindPose.inner[i].nativeWriteInto((p.bindPose + i).ref);
       }
     }
+  }
+
+  @override
+  void nativeReadFrom(ModelC p) {
+    structOnOriginalPointer((o) {
+      o.ref.meshes = p.meshes;
+      o.ref.materials = p.materials;
+      o.ref.meshMaterial = p.meshMaterial;
+      o.ref.bones = p.bones;
+      o.ref.bindPose = p.bindPose;
+    });
+    transform.nativeReadFrom(p.transform);
+    if (p.meshes.address != 0) meshes = .generate(p.meshCount, (i) => (p.meshes + i).toD());
+    if (p.materials.address != 0) materials = .generate(p.materialCount, (i) => (p.materials + i).toD());
+    if (p.meshMaterial.address != 0) meshMaterial = .generate(p.meshCount, (i) => p.meshMaterial[i]);
+    if (p.bones.address != 0) bones = .generate(p.boneCount, (i) => (p.bones + i).toD());
+    if (p.bindPose.address != 0) bindPose = .generate(p.boneCount, (i) => (p.bindPose + i).toD());
   }
 
   @override

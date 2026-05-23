@@ -56,15 +56,13 @@ class RectangleD extends StructDLiteral<RectangleC, RectangleD> with RectangleBa
   );
 
   @override
-  RectangleD setC(RectangleC o) => set(o.x, o.y, o.width, o.height);
+  RectangleD setD(RectangleD o) => set(o.x, o.y, o.width, o.height);
 
   @override
-  RectangleD setD(RectangleD o) {
-    return set(o.x, o.y, o.width, o.height);
-  }
+  nativeGetIndexedReference(Pointer<RectangleC> p, int index) => (p + index).ref;
 
   @override
-  getReference(Pointer<RectangleC> p) => p.ref;
+  nativeGetIndexedArrayReference(Array<RectangleC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(RectangleC p) {
@@ -74,6 +72,13 @@ class RectangleD extends StructDLiteral<RectangleC, RectangleD> with RectangleBa
     p.height = height;
   }
 
+  @override
+  void nativeReadFrom(RectangleC p) {
+    x = p.x;
+    y = p.y;
+    width = p.width;
+    height = p.height;
+  }
 
   @override
   RectangleD clone() => .new(

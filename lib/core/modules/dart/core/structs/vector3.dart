@@ -60,19 +60,26 @@ class Vector3D extends StructDLiteral<Vector3C, Vector3D> with Vector3Base<
   );
 
   @override
-  Vector3D setC(Vector3C o) => set(o.x, o.y, o.z);
-
-  @override
   Vector3D setD(Vector3D o) => set(o.x, o.y, o.z);
 
   @override
-  getReference(Pointer<Vector3C> p) => p.ref;
+  nativeGetIndexedReference(Pointer<Vector3C> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<Vector3C> p, int index) => p[index];
 
   @override
   void nativeWriteInto(Vector3C p) {
     p.x = x;
     p.y = y;
     p.z = z;
+  }
+
+  @override
+  void nativeReadFrom(Vector3C p) {
+    x = p.x;
+    y = p.y;
+    z = p.z;
   }
 
   @override

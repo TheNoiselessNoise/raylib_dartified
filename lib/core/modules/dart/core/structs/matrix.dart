@@ -98,14 +98,6 @@ class MatrixD extends StructDLiteral<MatrixC, MatrixD> with MatrixBase<
   }
 
   @override
-  MatrixD setC(MatrixC o) => set(
-    o.m0, o.m1, o.m2, o.m3,
-    o.m4, o.m5, o.m6, o.m7,
-    o.m8, o.m9, o.m10, o.m11,
-    o.m12, o.m13, o.m14, o.m15,
-  );
-
-  @override
   MatrixD setD(MatrixD o) {
     return set(
       o.m0, o.m1, o.m2, o.m3,
@@ -116,7 +108,10 @@ class MatrixD extends StructDLiteral<MatrixC, MatrixD> with MatrixBase<
   }
 
   @override
-  getReference(Pointer<MatrixC> p) => p.ref;
+  nativeGetIndexedReference(Pointer<MatrixC> p, int index) => (p + index).ref;
+
+  @override
+  nativeGetIndexedArrayReference(Array<MatrixC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(MatrixC p) {
@@ -124,6 +119,14 @@ class MatrixD extends StructDLiteral<MatrixC, MatrixD> with MatrixBase<
     p.m4 = m4; p.m5 = m5; p.m6 = m6; p.m7 = m7;
     p.m8 = m8; p.m9 = m9; p.m10 = m10; p.m11 = m11;
     p.m12 = m12; p.m13 = m13; p.m14 = m14; p.m15 = m15;
+  }
+
+  @override
+  void nativeReadFrom(MatrixC p) {
+    m0 = p.m0; m1 = p.m1; m2 = p.m2; m3 = p.m3;
+    m4 = p.m4; m5 = p.m5; m6 = p.m6; m7 = p.m7;
+    m8 = p.m8; m9 = p.m9; m10 = p.m10; m11 = p.m11;
+    m12 = p.m12; m13 = p.m13; m14 = p.m14; m15 = p.m15;
   }
 
   @override

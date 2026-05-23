@@ -184,17 +184,15 @@ class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase<ColorD> {
   static ColorD NEONPURPLE = .color(188, 19, 254, 255);
   static ColorD NEONRED = .color(255, 7, 58, 255);
   static ColorD NEONCYAN = .color(0, 255, 230, 255);
+  
+  @override
+  ColorD setD(ColorD o) => set(o.r, o.g, o.b, o.a);
+  
+  @override
+  nativeGetIndexedReference(Pointer<ColorC> p, int index) => (p + index).ref;
 
   @override
-  ColorD setC(ColorC o) => set(o.r, o.g, o.b, o.a);
-  
-  @override
-  ColorD setD(ColorD o) {
-    return set(o.r, o.g, o.b, o.a);
-  }
-  
-  @override
-  getReference(Pointer<ColorC> p) => p.ref;
+  nativeGetIndexedArrayReference(Array<ColorC> p, int index) => p[index];
 
   @override
   void nativeWriteInto(ColorC p) {
@@ -202,6 +200,14 @@ class ColorD extends StructDLiteral<ColorC, ColorD> with ColorBase<ColorD> {
     p.g = g;
     p.b = b;
     p.a = a;
+  }
+
+  @override
+  void nativeReadFrom(ColorC p) {
+    r = p.r;
+    g = p.g;
+    b = p.b;
+    a = p.a;
   }
 
   @override

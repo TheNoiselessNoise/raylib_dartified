@@ -3728,7 +3728,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
       );
       final count = image.width * image.height;
       try {
-        return .generate(count, (i) => colors[i].toD());
+        return .generate(count, (i) => (colors + i).toD());
       } finally {
         rl.Core.UnloadImageColors(colors);
       }
@@ -3749,7 +3749,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         colorCount,
       );
       try {
-        return .generate(colorCount.value, (i) => colors[i].toD());
+        return .generate(colorCount.value, (i) => (colors + i).toD());
       } finally {
         rl.Core.UnloadImagePalette(colors);
       }
@@ -4986,18 +4986,15 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     ).toD(),
   );
 
-  // NOTE: REALLY HEAVY, example `text_draw_3d`, syncing the font for each character
-  //       So we skip the sync, possible undefined behavior may happen?
   @override
   int GetGlyphIndex(
     FontD font,
     num codepoint,
   ) => run(
     () => RaylibDebugLabels.GetGlyphIndex(font, codepoint),
-    () => disableSync(() => rl.Core.GetGlyphIndex(
-        rl.Temp.Font$.Ref1(font).ref,
-        codepoint.toInt(),
-      ),
+    () => rl.Core.GetGlyphIndex(
+      rl.Temp.Font$.Ref1(font).ref,
+      codepoint.toInt(),
     ),
   );
 
@@ -6026,7 +6023,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         rl.Temp.String$.ValueOrNull(fileName),
         materialCount,
       );
-      return .generate(materialCount.value, (i) => materials[i].toD());
+      return .generate(materialCount.value, (i) => (materials + i).toD());
     },
   );
     
@@ -6111,14 +6108,10 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     num frame,
   ) => run(
     () => RaylibDebugLabels.UpdateModelAnimation(model, anim, frame),
-    () => rl.Temp.Model$.RefUpdate1(model,
-      (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
-        (pma) => rl.Core.UpdateModelAnimation(
-          pm.ref,
-          pma.ref,
-          frame.toInt(),
-        ),
-      ),
+    () => rl.Core.UpdateModelAnimation(
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.ModelAnimation$.Ref1(anim).ref,
+      frame.toInt(),
     ),
   );
     
