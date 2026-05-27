@@ -14,7 +14,7 @@ extension SoundCEx on SoundC {
   }
 
   SoundC setD(SoundD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       stream.setC(p.ref.stream);
     });
     frameCount = o.frameCount;
@@ -66,7 +66,7 @@ class SoundD extends StructD<SoundC, SoundD> with SoundBase<
 
   @override
   void nativeReadFrom(SoundC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.stream.setC(p.stream);
     });
     stream.nativeReadFrom(p.stream);

@@ -31,7 +31,7 @@ RaylibRlglD get RlglD => Raylib.instance.RlglD;
 RaylibUtils get Utils => Raylib.instance.Utils;
 
 extension StringToRaylibC on String {
-  Pointer<Char> get toC => Raylib.instance.Temp.str(this);
+  Pointer<Char> get toC => Raylib.instance.Temp.String$.Value(this);
 }
 
 T registerModule<T extends RaylibModule>(T Function(Raylib rl) moduleLoader)

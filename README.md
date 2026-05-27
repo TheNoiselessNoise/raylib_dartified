@@ -25,7 +25,7 @@ In short: `ffigen` gets you the raw function table. This project gives you somet
 | **Linux** | ✅ | Primary development platform |
 | **Windows** | ✅ | Should work out of the box |
 | **macOS** | ❌ | See below |
-| **Web** | 🧪 | Under investigation |
+| **Web** | ❌ | See [`raylib_dartified_web`](https://pub.dev/packages/raylib_dartified_web) instead |
 | **Android** | ❓ | Not tested |
 | **iOS** | ❓ | Not tested, likely blocked |
 
@@ -40,12 +40,6 @@ Raylib (like most windowing/graphics libraries) requires OpenGL context creation
 > NSWindow should only be instantiated on the main thread!
 
 This is a [known issue in the Dart SDK](https://github.com/dart-lang/sdk/issues/38315) and is not something that can be fixed at the binding layer. A native shim that bootstraps the macOS event loop and schedules Dart execution accordingly would be required, which is currently out of scope.
-
----
-
-### Web
-
-Web support is being actively explored. Raylib itself compiles to WebAssembly via Emscripten, but bridging that with Dart FFI (which doesn't support Wasm interop in the traditional sense) requires a non-trivial approach. Some ideas are currently being prototyped.
 
 ---
 
@@ -121,83 +115,6 @@ See any `c` example in `example/<category>/c/`.
 
 Or start here: [core/c/core_basic_window.dart](example/core/c/core_basic_window.dart)
 
-### Advanced Loading & `RaylibTemp`
-
-Native allocations are unavoidable when working with FFI. This project introduces **`RaylibTemp`**, a managed temporary memory pool designed for high-performance, short-lived native structs.
-
-#### Why `RaylibTemp` exists
-
-* Avoids repeated `calloc` / `free`
-* Prevents memory leaks
-* Makes FFI-heavy loops predictable and fast
-* Allows both **rotating** (only for Strings) and **named** pointer slots
-
-### String Handling
-
-Raylib expects **null-terminated UTF-8 C strings**. Dart strings **are not automatically managed** when passed through FFI, so string handling requires special care.
-
-Any call that converts a Dart `String` into a native pointer **allocates native memory**. Dart **DOES NOT** track or free this memory for you.
-
-#### ❌ `.toUnsafeC()`
-
-```dart
-'Hello'.toUnsafeC()
-```
-
-* Allocates a new native UTF-8 string
-* **Does NOT free it automatically**
-* Safe only for **one-time or startup calls**
-* **Must not be used inside loops or per-frame code**
-
-This method exists purely for convenience and quick experiments.
-
-#### ✅ `rl.Temp.str()` or `rl.Temp.strAt()`
-
-For runtime and per-frame usage, use the temporary allocator:
-
-```dart
-rl.Core.DrawText(
-  rl.Temp.str(text),
-  50, 50, 30, rl.C.RAYWHITE,
-);
-```
-
-* Reuses native memory
-* Avoids per-frame allocations
-* Prevents memory leaks
-* Is automatically freed when `rl.dispose()` is called
-
-This is the **preferred and safest way** to pass strings to raylib during normal execution when using the raw FFI layer.
-
-### String slots
-
-`rl.Temp.str()` uses a **rotating slot system**, it maintains a fixed number of native string buffers and cycles through them in order. The slot count is configured via `RaylibTempOptions`:
-
-```dart
-final rl = Raylib(
-  core: '/absolute/path/to/libraylib.so',
-  gui: '/absolute/path/to/libraylib.so', // optional
-  tempOptions: RaylibTempOptions(
-    stringCount: 4, // default
-  ),
-);
-```
-
-If you call `rl.Temp.str()` more times than `stringCount` at a single call site, earlier strings will be silently overwritten, the rotating index wraps around and reuses the same slot. For example, with `stringCount: 4`, a fifth `str()` call overwrites the buffer used by the first.
-
-In practice, `rl.Temp.str()` alone is sufficient for the vast majority of use cases. The overwrite issue only arises when multiple strings need to be alive simultaneously within a single expression or function call, which is uncommon. `rl.Temp.strAt()` is a low-level escape hatch for that specific situation and you will rarely need to reach for it.
-
-When passing multiple strings to a single function call, you can use `rl.Temp.strAt(key, [text])` to pin each string to a specific slot and avoid unintended overwrites:
-
-```dart
-rl.Core.DrawTextEx(
-  font,
-  rl.Temp.strAt('label', label),
-  rl.Temp.strAt('suffix', suffix),
-  fontSize, spacing, rl.C.RAYWHITE,
-);
-```
-
 ## abbr.dart
 
 Since only one Raylib instance is allowed at a time, `abbr.dart` lets you skip one layer of namespacing and save some keystrokes. The `Raylib` instance remains accessible via `Raylib.instance`:
@@ -218,23 +135,6 @@ void main() {
 
   disposeRaylib();
 }
-```
-
-## Why `*C` Structs No Longer Have Math Methods
-
-The `*C` structs (`Vector2C`, `Vector3C`, `MatrixC`, etc.) previously exposed math methods such as `add`, `sub`, `scale`, `normalize`, and others, mirroring the full operation set available on the `*D` layer. These have been removed.
-
-The reason is simple: `dart:ffi` `Struct` subclasses cannot use mixins, which means all math on the C side had to be maintained separately and kept in sync by hand forever. Every time the math logic changed, it had to be updated in two places with no compiler help to catch drift. That is a maintenance liability with no real payoff, since the C layer is never the right place to do math anyway.
-
-All math, transformation, and utility logic now lives exclusively on the `*D` layer (`Vector2D`, `Vector3D`, `MatrixD`, etc.), which are proper Dart objects backed by a shared mixin hierarchy, a single source of truth for every mathematical operation.
-
-The `*C` structs are now what they always should have been: dumb, flat data containers that sit at the FFI boundary and expose only three operations: `setC`, `setD`, and `toD`.
-
-The intended pattern is:
-
-```dart
-// read from C, work in D, write back
-someCPtr.ref.setD(someCPtr.ref.toD().add(otherVec).scale(0.5));
 ```
 
 ## Safety Notes
@@ -280,7 +180,7 @@ WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11 dart run <example>
 ## See Also
 
 - [CHEATSHEET.md](CHEATSHEET.md)
-- [CODEGEN.md](CODEGEN.md)
+- [EXPLANATIONS.md](EXPLANATIONS.md)
 - [LIMITATIONS.md](LIMITATIONS.md)
 
 ## License

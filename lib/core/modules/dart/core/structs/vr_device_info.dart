@@ -62,93 +62,93 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
 class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceInfoBase<VrDeviceInfoD> {
   int _hResolution;
   @override get hResolution {
-    structOnOriginalPointer((p) => _hResolution = p.ref.hResolution);
+    structOnOp((p) => _hResolution = p.ref.hResolution);
     return _hResolution;
   }
   @override set hResolution(int value) {
     _hResolution = value;
-    structOnOriginalPointer((p) => p.ref.hResolution = value);
+    structOnOp((p) => p.ref.hResolution = value);
   }
   
   int _vResolution;
   @override get vResolution {
-    structOnOriginalPointer((p) => _vResolution = p.ref.vResolution);
+    structOnOp((p) => _vResolution = p.ref.vResolution);
     return _vResolution;
   }
   @override set vResolution(int value) {
     _vResolution = value;
-    structOnOriginalPointer((p) => p.ref.vResolution = value);
+    structOnOp((p) => p.ref.vResolution = value);
   }
   
   double _hScreenSize;
   @override get hScreenSize {
-    structOnOriginalPointer((p) => _hScreenSize = p.ref.hScreenSize);
+    structOnOp((p) => _hScreenSize = p.ref.hScreenSize);
     return _hScreenSize;
   }
   @override set hScreenSize(double value) {
     _hScreenSize = value;
-    structOnOriginalPointer((p) => p.ref.hScreenSize = value);
+    structOnOp((p) => p.ref.hScreenSize = value);
   }
   
   double _vScreenSize;
   @override get vScreenSize {
-    structOnOriginalPointer((p) => _vScreenSize = p.ref.vScreenSize);
+    structOnOp((p) => _vScreenSize = p.ref.vScreenSize);
     return _vScreenSize;
   }
   @override set vScreenSize(double value) {
     _vScreenSize = value;
-    structOnOriginalPointer((p) => p.ref.vScreenSize = value);
+    structOnOp((p) => p.ref.vScreenSize = value);
   }
   
   double _eyeToScreenDistance;
   @override get eyeToScreenDistance {
-    structOnOriginalPointer((p) => _eyeToScreenDistance = p.ref.eyeToScreenDistance);
+    structOnOp((p) => _eyeToScreenDistance = p.ref.eyeToScreenDistance);
     return _eyeToScreenDistance;
   }
   @override set eyeToScreenDistance(double value) {
     _eyeToScreenDistance = value;
-    structOnOriginalPointer((p) => p.ref.eyeToScreenDistance = value);
+    structOnOp((p) => p.ref.eyeToScreenDistance = value);
   }
   
   double _lensSeparationDistance;
   @override get lensSeparationDistance {
-    structOnOriginalPointer((p) => _lensSeparationDistance = p.ref.lensSeparationDistance);
+    structOnOp((p) => _lensSeparationDistance = p.ref.lensSeparationDistance);
     return _lensSeparationDistance;
   }
   @override set lensSeparationDistance(double value) {
     _lensSeparationDistance = value;
-    structOnOriginalPointer((p) => p.ref.lensSeparationDistance = value);
+    structOnOp((p) => p.ref.lensSeparationDistance = value);
   }
   
   double _interpupillaryDistance;
   @override get interpupillaryDistance {
-    structOnOriginalPointer((p) => _interpupillaryDistance = p.ref.interpupillaryDistance);
+    structOnOp((p) => _interpupillaryDistance = p.ref.interpupillaryDistance);
     return _interpupillaryDistance;
   }
   @override set interpupillaryDistance(double value) {
     _interpupillaryDistance = value;
-    structOnOriginalPointer((p) => p.ref.interpupillaryDistance = value);
+    structOnOp((p) => p.ref.interpupillaryDistance = value);
   }
   
   late NativeLiveListArrayFloat _lensDistortionValues;
   @override get lensDistortionValues {
-    structOnOriginalPointer((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
+    structOnOp((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
     return _lensDistortionValues;
   }
   @override set lensDistortionValues(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
+    structOnOp((p) => _lensDistortionValues.ptr = p.ref.lensDistortionValues);
     _lensDistortionValues.inner = value;
   }
   
   late NativeLiveListArrayFloat _chromaAbCorrection;
   @override get chromaAbCorrection {
-    structOnOriginalPointer((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
+    structOnOp((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
     return _chromaAbCorrection;
   }
   @override set chromaAbCorrection(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
+    structOnOp((p) => _chromaAbCorrection.ptr = p.ref.chromaAbCorrection);
     _chromaAbCorrection.inner = value;
   }
 
@@ -219,7 +219,7 @@ class VrDeviceInfoD extends StructD<VrDeviceInfoC, VrDeviceInfoD> with VrDeviceI
 
   @override
   void nativeReadFrom(VrDeviceInfoC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.lensDistortionValues = p.lensDistortionValues;
       o.ref.chromaAbCorrection = p.chromaAbCorrection;
     });

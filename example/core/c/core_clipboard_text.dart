@@ -23,7 +23,7 @@ void main() {
   ];
 
   String input = sampleTexts[0];
-  Pointer<Char> clipboardText = rl.Temp.strAt('clipboardText', input);
+  Pointer<Char> clipboardText = rl.Temp.String$.ValueAt('clipboardText', input);
 
   bool textBoxEditMode = false;
 

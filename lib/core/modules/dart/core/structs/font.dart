@@ -21,7 +21,7 @@ extension FontCEx on FontC {
     baseSize = o.baseSize;
     glyphCount = o.glyphCount;
     glyphPadding = o.glyphPadding;
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       texture = p.ref.texture;
       recs = p.ref.recs;
       glyphs = p.ref.glyphs;
@@ -49,63 +49,63 @@ class FontD extends StructD<FontC, FontD> with FontBase<
 > {
   int _baseSize;
   @override get baseSize {
-    structOnOriginalPointer((p) => _baseSize = p.ref.baseSize);
+    structOnOp((p) => _baseSize = p.ref.baseSize);
     return _baseSize;
   }
   @override set baseSize(int value) {
     _baseSize = value;
-    structOnOriginalPointer((p) => p.ref.baseSize = value);
+    structOnOp((p) => p.ref.baseSize = value);
   }
   
   int _glyphCount;
   @override get glyphCount {
-    structOnOriginalPointer((p) => _glyphCount = p.ref.glyphCount);
+    structOnOp((p) => _glyphCount = p.ref.glyphCount);
     return _glyphCount;
   }
   @override set glyphCount(int value) {
     _glyphCount = value;
-    structOnOriginalPointer((p) => p.ref.glyphCount = value);
+    structOnOp((p) => p.ref.glyphCount = value);
   }
   
   int _glyphPadding;
   @override get glyphPadding {
-    structOnOriginalPointer((p) => _glyphPadding = p.ref.glyphPadding);
+    structOnOp((p) => _glyphPadding = p.ref.glyphPadding);
     return _glyphPadding;
   }
   @override set glyphPadding(int value) {
     _glyphPadding = value;
-    structOnOriginalPointer((p) => p.ref.glyphPadding = value);
+    structOnOp((p) => p.ref.glyphPadding = value);
   }
   
   TextureD _texture;
   @override get texture {
-    structOnOriginalPointer((p) => _texture.nativeReadFrom(p.ref.texture));
+    structOnOp((p) => _texture.nativeReadFrom(p.ref.texture));
     return _texture;
   }
   @override set texture(TextureD value) {
     _texture = value;
-    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.texture));
+    structOnOp((p) => value.nativeWriteInto(p.ref.texture));
   }
   
   late NativeLiveListPointerStruct<RectangleC, RectangleD> _recs;
   @override get recs {
-    structOnOriginalPointer((p) => _recs.ptr = p.ref.recs);
+    structOnOp((p) => _recs.ptr = p.ref.recs);
     return _recs;
   }
   @override set recs(List<RectangleD> value) {
     assert(value.length <= glyphCount);
-    structOnOriginalPointer((p) => _recs.ptr = p.ref.recs);
+    structOnOp((p) => _recs.ptr = p.ref.recs);
     _recs.inner = value;
   }
   
   late NativeLiveListPointerStruct<GlyphInfoC, GlyphInfoD> _glyphs;
   @override get glyphs {
-    structOnOriginalPointer((p) => _glyphs.ptr = p.ref.glyphs);
+    structOnOp((p) => _glyphs.ptr = p.ref.glyphs);
     return _glyphs;
   }
   @override set glyphs(List<GlyphInfoD> value) {
     assert(value.length <= glyphCount);
-    structOnOriginalPointer((p) => _glyphs.ptr = p.ref.glyphs);
+    structOnOp((p) => _glyphs.ptr = p.ref.glyphs);
     _glyphs.inner = value;
   }
 
@@ -174,7 +174,7 @@ class FontD extends StructD<FontC, FontD> with FontBase<
 
   @override
   void nativeReadFrom(FontC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.recs = p.recs;
       o.ref.glyphs = p.glyphs;
     });

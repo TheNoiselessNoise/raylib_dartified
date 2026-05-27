@@ -10,14 +10,6 @@ part of '../raylib_dartified.dart';
              : 404 Bytes
 */
 
-class RaylibTempOptions {
-  final int stringCount;
-
-  const RaylibTempOptions({
-    this.stringCount = 4,
-  });
-}
-
 /// A slot-based temporary memory allocator for a single native type [C].
 ///
 /// Manages a named collection of `Pointer<C>` slots identified by string keys.
@@ -346,15 +338,7 @@ class NativeTypedDataListAlloc extends RaylibTempTypedDataListAllocator<
 }
 
 class RaylibTemp extends RaylibTempBase<Raylib> {
-  final RaylibTempOptions options;
-
-  RaylibTemp(super.lib, {
-    this.options = const RaylibTempOptions(),
-  }) {
-    _init();
-    _preAllocate();
-    _preAllocateReusables();
-  }
+  RaylibTemp(super.lib, { super.options });
 
   @override late NativeTypedDataListAlloc TypedDataList$;
 
@@ -502,10 +486,13 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   /// ====== INITIALIZATION ======
   /// ============================
 
-  void _init() {
-    if (options.stringCount > 0) {
-      logInfo('[TEMP] Allocating ${options.stringCount} String slots');
-    }
+  @override
+  void load() {
+    super.load();
+
+    _preAllocate();
+
+    _preAllocateReusables();
 
     TypedDataList$ = .new(this);
 
@@ -1525,9 +1512,6 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
     );
   }
 
-  Pointer<Char> str(String text) => String$.Value(text);
-  Pointer<Char> strAt(String key, [String? text]) => String$.ValueAt(key, text);
-
   @override
   void dispose() {
     super.dispose();
@@ -1538,6 +1522,8 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
     debugFreeInfo('Freeing preallocated reusable internals');
     _dePreAllocateReusables();
   }
+  
+  // NOTE: native-specific preallocated pointers, i don't like it much
 
   /// ======================================
   /// ====== PRE-ALLOCATED IMMUTABLES ======
@@ -1588,6 +1574,8 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
     calloc.free(_matZeroPtr);
     calloc.free(_matIdentityPtr);
   }
+
+  // NOTE: native-specific preallocated pointers, i don't like it much
 
   /// =====================================
   /// ====== PRE-ALLOCATED REUSABLES ======

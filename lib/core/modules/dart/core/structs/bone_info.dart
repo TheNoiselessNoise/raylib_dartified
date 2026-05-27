@@ -18,7 +18,7 @@ extension BoneInfoCEx on BoneInfoC {
 
   BoneInfoC setD(BoneInfoD o) {
     parent = o.parent;
-    o.structOnOriginalPointer((p) => name = p.ref.name);
+    o.structOnOp((p) => name = p.ref.name);
     return this;
   }
 
@@ -65,7 +65,7 @@ class BoneInfoD extends StructDLiteral<BoneInfoC, BoneInfoD> with BoneInfoBase<B
 
   @override
   void nativeReadFrom(BoneInfoC p) {
-    structOnOriginalPointer((o) => o.ref.name = p.name);
+    structOnOp((o) => o.ref.name = p.name);
     parent = p.parent;
     name = p.name.toDartString(nameLength);
   }

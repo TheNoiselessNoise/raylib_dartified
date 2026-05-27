@@ -61,7 +61,7 @@ extension WaveCEx on WaveC {
     sampleRate = o.sampleRate;
     sampleSize = o.sampleSize;
     channels = o.channels;
-    o.structOnOriginalPointer((p) => data = p.ref.data);
+    o.structOnOp((p) => data = p.ref.data);
     if (data.address != 0) {
       _WaveUtils._dataSetList(data, o.data, sampleSize, waveLength);
     }
@@ -146,7 +146,7 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
 
   @override
   void nativeReadFrom(WaveC p) {
-    structOnOriginalPointer((o) => o.ref.data = p.data);
+    structOnOp((o) => o.ref.data = p.data);
     frameCount = p.frameCount;
     sampleRate = p.sampleRate;
     sampleSize = p.sampleSize;

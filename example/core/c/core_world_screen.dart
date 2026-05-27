@@ -26,7 +26,7 @@ void main() {
   rl.Core.DisableCursor();
   rl.Core.SetTargetFPS(60);
 
-  final enemyString = rl.Temp.strAt('enemy', 'Enemy: 100/100');
+  final enemyString = rl.Temp.String$.ValueAt('enemy', 'Enemy: 100/100');
 
   while (!rl.Core.WindowShouldClose()) {
     rl.Core.UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);

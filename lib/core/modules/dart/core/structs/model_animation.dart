@@ -20,7 +20,7 @@ extension ModelAnimationCEx on ModelAnimationC {
   }
 
   ModelAnimationC setD(ModelAnimationD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       boneCount = p.ref.boneCount;
       frameCount = p.ref.frameCount;
       bones = p.ref.bones;
@@ -52,11 +52,11 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
   
   late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
   @override get bones {
-    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    structOnOp((p) => _bones.ptr = p.ref.bones);
     return _bones;
   }
   @override set bones(List<BoneInfoD> value) {
-    structOnOriginalPointer((p) {
+    structOnOp((p) {
       _bones.ptr = p.ref.bones;
       p.ref.boneCount = value.length;
     });
@@ -65,11 +65,11 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
   
   late NativeLiveListPointerPointerStruct<TransformC, TransformD> _framePoses;
   @override get framePoses {
-    structOnOriginalPointer((p) => _framePoses.ptr = p.ref.framePoses);
+    structOnOp((p) => _framePoses.ptr = p.ref.framePoses);
     return _framePoses;
   }
   @override set framePoses(List<List<TransformD>> value) {
-    structOnOriginalPointer((p) {
+    structOnOp((p) {
       _framePoses.ptr = p.ref.framePoses;
       p.ref.frameCount = value.length;
     });
@@ -81,13 +81,13 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
 
   String _name;
   @override get name {
-    structOnOriginalPointer((p) => _name = p.ref.name.toDartString(nameLength));
+    structOnOp((p) => _name = p.ref.name.toDartString(nameLength));
     return _name;
   }
   @override set name(String value) {
     assert(value.length <= nameLength);
     _name = value;
-    structOnOriginalPointer((p) => p.ref.name.setDartString(value, nameLength));
+    structOnOp((p) => p.ref.name.setDartString(value, nameLength));
   }
 
   ModelAnimationD({
@@ -157,7 +157,7 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
 
   @override
   void nativeReadFrom(ModelAnimationC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.bones = p.bones;
       o.ref.framePoses = p.framePoses;
       o.ref.name = p.name;

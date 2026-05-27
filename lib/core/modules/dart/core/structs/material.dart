@@ -21,7 +21,7 @@ extension MaterialCEx on MaterialC {
 
   MaterialC setD(MaterialD o) {
     shader.setD(o.shader);
-    o.structOnOriginalPointer((p) => maps = p.ref.maps);
+    o.structOnOp((p) => maps = p.ref.maps);
     if (maps.address != 0) {
       for (int i = 0; i < mapsCount; i++) {
         maps[i].setD(o.maps[i]);
@@ -52,33 +52,33 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
 > {
   ShaderD _shader;
   @override get shader {
-    structOnOriginalPointer((p) => _shader.nativeReadFrom(p.ref.shader));
+    structOnOp((p) => _shader.nativeReadFrom(p.ref.shader));
     return _shader;
   }
   @override set shader(ShaderD value) {
     _shader = value;
-    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.shader));
+    structOnOp((p) => value.nativeWriteInto(p.ref.shader));
   }
   
   late NativeLiveListPointerStruct<MaterialMapC, MaterialMapD> _maps;
   @override get maps {
-    structOnOriginalPointer((p) => _maps.ptr = p.ref.maps);
+    structOnOp((p) => _maps.ptr = p.ref.maps);
     return _maps;
   }
   @override set maps(List<MaterialMapD> value) {
     assert(value.length <= mapsCount);
-    structOnOriginalPointer((p) => _maps.ptr = p.ref.maps);
+    structOnOp((p) => _maps.ptr = p.ref.maps);
     _maps.inner = value;
   }
   
   late NativeLiveListArrayFloat _params;
   @override get params {
-    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    structOnOp((p) => _params.ptr = p.ref.params);
     return _params;
   }
   @override set params(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    structOnOp((p) => _params.ptr = p.ref.params);
     _params.inner = value;
   }
 
@@ -132,7 +132,7 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
 
   @override
   void nativeReadFrom(MaterialC p) {
-    structOnOriginalPointer((o) => o.ref.maps = p.maps);
+    structOnOp((o) => o.ref.maps = p.maps);
     shader.nativeReadFrom(p.shader);
     if (p.maps.address != 0) maps = .generate(mapsCount, (i) => (p.maps + i).toD());
     params = .generate(paramsCount, (i) => p.params[i]);

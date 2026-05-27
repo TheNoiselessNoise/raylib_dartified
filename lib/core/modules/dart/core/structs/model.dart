@@ -21,7 +21,7 @@ extension ModelCEx on ModelC {
   }
 
   ModelC setD(ModelD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       meshCount = p.ref.meshCount;
       materialCount = p.ref.materialCount;
       meshes = p.ref.meshes;
@@ -63,61 +63,61 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
 > {
   MatrixD _transform;
   @override get transform {
-    structOnOriginalPointer((p) => _transform.nativeReadFrom(p.ref.transform));
+    structOnOp((p) => _transform.nativeReadFrom(p.ref.transform));
     return _transform;
   }
   @override set transform(MatrixD value) {
     _transform = value;
-    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.transform));
+    structOnOp((p) => value.nativeWriteInto(p.ref.transform));
   }
   
   late NativeLiveListPointerStruct<MeshC, MeshD> _meshes;
   @override get meshes {
-    structOnOriginalPointer((p) => _meshes.ptr = p.ref.meshes);
+    structOnOp((p) => _meshes.ptr = p.ref.meshes);
     return _meshes;
   }
   @override set meshes(List<MeshD> value) {
-    structOnOriginalPointer((p) => _meshes.ptr = p.ref.meshes);
+    structOnOp((p) => _meshes.ptr = p.ref.meshes);
     _meshes.inner = value;
   }
   
   late NativeLiveListPointerStruct<MaterialC, MaterialD> _materials;
   @override get materials {
-    structOnOriginalPointer((p) => _materials.ptr = p.ref.materials);
+    structOnOp((p) => _materials.ptr = p.ref.materials);
     return _materials;
   }
   @override set materials(List<MaterialD> value) {
-    structOnOriginalPointer((p) => _materials.ptr = p.ref.materials);
+    structOnOp((p) => _materials.ptr = p.ref.materials);
     _materials.inner = value;
   }
   
   late NativeLiveListPointerInt _meshMaterial;
   @override get meshMaterial {
-    structOnOriginalPointer((p) => _meshMaterial.ptr = p.ref.meshMaterial);
+    structOnOp((p) => _meshMaterial.ptr = p.ref.meshMaterial);
     return _meshMaterial;
   }
   @override set meshMaterial(List<int> value) {
-    structOnOriginalPointer((p) => _meshMaterial.ptr = p.ref.meshMaterial);
+    structOnOp((p) => _meshMaterial.ptr = p.ref.meshMaterial);
     _meshMaterial.inner = value;
   }
   
   late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
   @override get bones {
-    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    structOnOp((p) => _bones.ptr = p.ref.bones);
     return _bones;
   }
   @override set bones(List<BoneInfoD> value) {
-    structOnOriginalPointer((p) => _bones.ptr = p.ref.bones);
+    structOnOp((p) => _bones.ptr = p.ref.bones);
     _bones.inner = value;
   }
   
   late NativeLiveListPointerStruct<TransformC, TransformD> _bindPose;
   @override get bindPose {
-    structOnOriginalPointer((p) => _bindPose.ptr = p.ref.bindPose);
+    structOnOp((p) => _bindPose.ptr = p.ref.bindPose);
     return _bindPose;
   }
   @override set bindPose(List<TransformD> value) {
-    structOnOriginalPointer((p) => _bindPose.ptr = p.ref.bindPose);
+    structOnOp((p) => _bindPose.ptr = p.ref.bindPose);
     _bindPose.inner = value;
   }
 
@@ -207,7 +207,7 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
 
   @override
   void nativeReadFrom(ModelC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.meshes = p.meshes;
       o.ref.materials = p.materials;
       o.ref.meshMaterial = p.meshMaterial;

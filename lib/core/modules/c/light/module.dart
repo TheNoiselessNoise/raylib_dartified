@@ -36,19 +36,19 @@ class RaylibLight extends RaylibModule<Raylib> {
 
     int index = _lights.length;
     light.ref.enabledLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.str("lights[$index].enabled"),
+      shader, rl.Temp.String$.Value("lights[$index].enabled"),
     );
     light.ref.typeLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.str("lights[$index].type"),
+      shader, rl.Temp.String$.Value("lights[$index].type"),
     );
     light.ref.positionLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.str("lights[$index].position"),
+      shader, rl.Temp.String$.Value("lights[$index].position"),
     );
     light.ref.targetLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.str("lights[$index].target"),
+      shader, rl.Temp.String$.Value("lights[$index].target"),
     );
     light.ref.colorLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.str("lights[$index].color"),
+      shader, rl.Temp.String$.Value("lights[$index].color"),
     );
 
     UpdateLightValues(shader, light.ref);

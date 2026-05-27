@@ -17,7 +17,7 @@ extension AudioStreamCEx on AudioStreamC {
   }
 
   AudioStreamC setD(AudioStreamD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       buffer = p.ref.buffer;
       processor = p.ref.processor;
     });
@@ -75,7 +75,7 @@ class AudioStreamD extends StructD<AudioStreamC, AudioStreamD> with AudioStreamB
 
   @override
   void nativeReadFrom(AudioStreamC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.buffer = p.buffer;
       o.ref.processor = p.processor;
     });

@@ -41,52 +41,52 @@ class GlyphInfoD extends StructD<GlyphInfoC, GlyphInfoD> with GlyphInfoBase<
 > {
   int _value;
   @override get value {
-    structOnOriginalPointer((p) => _value = p.ref.value);
+    structOnOp((p) => _value = p.ref.value);
     return _value;
   }
   @override set value(int value) {
     _value = value;
-    structOnOriginalPointer((p) => p.ref.value = value);
+    structOnOp((p) => p.ref.value = value);
   }
   
   int _offsetX;
   @override get offsetX {
-    structOnOriginalPointer((p) => _offsetX = p.ref.offsetX);
+    structOnOp((p) => _offsetX = p.ref.offsetX);
     return _offsetX;
   }
   @override set offsetX(int value) {
     _offsetX = value;
-    structOnOriginalPointer((p) => p.ref.offsetX = value);
+    structOnOp((p) => p.ref.offsetX = value);
   }
   
   int _offsetY;
   @override get offsetY {
-    structOnOriginalPointer((p) => _offsetY = p.ref.offsetY);
+    structOnOp((p) => _offsetY = p.ref.offsetY);
     return _offsetY;
   }
   @override set offsetY(int value) {
     _offsetY = value;
-    structOnOriginalPointer((p) => p.ref.offsetY = value);
+    structOnOp((p) => p.ref.offsetY = value);
   }
   
   int _advanceX;
   @override get advanceX {
-    structOnOriginalPointer((p) => _advanceX = p.ref.advanceX);
+    structOnOp((p) => _advanceX = p.ref.advanceX);
     return _advanceX;
   }
   @override set advanceX(int value) {
     _advanceX = value;
-    structOnOriginalPointer((p) => p.ref.advanceX = value);
+    structOnOp((p) => p.ref.advanceX = value);
   }
   
   ImageD _image;
   @override get image {
-    structOnOriginalPointer((p) => _image.nativeReadFrom(p.ref.image));
+    structOnOp((p) => _image.nativeReadFrom(p.ref.image));
     return _image;
   }
   @override set image(ImageD value) {
     _image = value;
-    structOnOriginalPointer((p) => value.nativeWriteInto(p.ref.image));
+    structOnOp((p) => value.nativeWriteInto(p.ref.image));
   }
 
   GlyphInfoD({

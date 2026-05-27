@@ -27,7 +27,7 @@ void main()
   final labels = rl.Temp.String$.Fill(
     key: 'labels',
     MAX_PIE_SLICES,
-    (i) => rl.Temp.strAt('label_$i', 'Slice $i')
+    (i) => rl.Temp.String$.ValueAt('label_$i', 'Slice $i')
   );
 
   List<bool> editingLabel = .generate(MAX_PIE_SLICES, (_) => false);

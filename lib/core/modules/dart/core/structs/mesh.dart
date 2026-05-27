@@ -43,7 +43,7 @@ extension MeshCEx on MeshC {
   }
 
   MeshC setD(MeshD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       vertexCount = p.ref.vertexCount;
       triangleCount = p.ref.triangleCount;
       vertices = p.ref.vertices;
@@ -96,184 +96,184 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
 > {
   int _vertexCount;
   @override get vertexCount {
-    structOnOriginalPointer((p) => _vertexCount = p.ref.vertexCount);
+    structOnOp((p) => _vertexCount = p.ref.vertexCount);
     return _vertexCount;
   }
   @override set vertexCount(int value) {
     _vertexCount = value;
-    structOnOriginalPointer((p) => p.ref.vertexCount = value);
+    structOnOp((p) => p.ref.vertexCount = value);
   }
   
   int _triangleCount;
   @override get triangleCount {
-    structOnOriginalPointer((p) => _triangleCount = p.ref.triangleCount);
+    structOnOp((p) => _triangleCount = p.ref.triangleCount);
     return _triangleCount;
   }
   @override set triangleCount(int value) {
     _triangleCount = value;
-    structOnOriginalPointer((p) => p.ref.triangleCount = value);
+    structOnOp((p) => p.ref.triangleCount = value);
   }
   
   int _boneCount;
   @override get boneCount {
-    structOnOriginalPointer((p) => _boneCount = p.ref.boneCount);
+    structOnOp((p) => _boneCount = p.ref.boneCount);
     return _boneCount;
   }
   @override set boneCount(int value) {
     _boneCount = value;
-    structOnOriginalPointer((p) => p.ref.boneCount = value);
+    structOnOp((p) => p.ref.boneCount = value);
   }
   
   late NativeLiveListPointerFloat _vertices;
   @override get vertices {
-    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    structOnOp((p) => _vertices.ptr = p.ref.vertices);
     return _vertices;
   }
   @override set vertices(List<double> value) {
     assert(value.length <= verticesCount);
-    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    structOnOp((p) => _vertices.ptr = p.ref.vertices);
     _vertices.inner = value;
   }
   
   late NativeLiveListPointerFloat _texcoords;
   @override get texcoords {
-    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    structOnOp((p) => _texcoords.ptr = p.ref.texcoords);
     return _texcoords;
   }
   @override set texcoords(List<double> value) {
     assert(value.length <= texcoordsCount);
-    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    structOnOp((p) => _texcoords.ptr = p.ref.texcoords);
     _texcoords.inner = value;
   }
   
   late NativeLiveListPointerFloat _texcoords2;
   @override get texcoords2 {
-    structOnOriginalPointer((p) => _texcoords2.ptr = p.ref.texcoords2);
+    structOnOp((p) => _texcoords2.ptr = p.ref.texcoords2);
     return _texcoords2;
   }
   @override set texcoords2(List<double> value) {
     assert(value.length <= texcoords2Count);
-    structOnOriginalPointer((p) => _texcoords2.ptr = p.ref.texcoords2);
+    structOnOp((p) => _texcoords2.ptr = p.ref.texcoords2);
     _texcoords2.inner = value;
   }
   
   late NativeLiveListPointerFloat _normals;
   @override get normals {
-    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    structOnOp((p) => _normals.ptr = p.ref.normals);
     return _normals;
   }
   @override set normals(List<double> value) {
     assert(value.length <= normalsCount);
-    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    structOnOp((p) => _normals.ptr = p.ref.normals);
     _normals.inner = value;
   }
   
   late NativeLiveListPointerFloat _tangents;
   @override get tangents {
-    structOnOriginalPointer((p) => _tangents.ptr = p.ref.tangents);
+    structOnOp((p) => _tangents.ptr = p.ref.tangents);
     return _tangents;
   }
   @override set tangents(List<double> value) {
     assert(value.length <= tangentsCount);
-    structOnOriginalPointer((p) => _tangents.ptr = p.ref.tangents);
+    structOnOp((p) => _tangents.ptr = p.ref.tangents);
     _tangents.inner = value;
   }
   
   late NativeLiveListPointerUnsignedChar _colors;
   @override get colors {
-    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    structOnOp((p) => _colors.ptr = p.ref.colors);
     return _colors;
   }
   @override set colors(List<int> value) {
     assert(value.length <= colorsCount);
-    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    structOnOp((p) => _colors.ptr = p.ref.colors);
     _colors.inner = value;
   }
   
   late NativeLiveListPointerUnsignedShort _indices;
   @override get indices {
-    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    structOnOp((p) => _indices.ptr = p.ref.indices);
     return _indices;
   }
   @override set indices(List<int> value) {
     assert(value.length <= indicesCount);
-    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    structOnOp((p) => _indices.ptr = p.ref.indices);
     _indices.inner = value;
   }
   
   late NativeLiveListPointerFloat _animVertices;
   @override get animVertices {
-    structOnOriginalPointer((p) => _animVertices.ptr = p.ref.animVertices);
+    structOnOp((p) => _animVertices.ptr = p.ref.animVertices);
     return _animVertices;
   }
   @override set animVertices(List<double> value) {
     assert(value.length <= animVerticesCount);
-    structOnOriginalPointer((p) => _animVertices.ptr = p.ref.animVertices);
+    structOnOp((p) => _animVertices.ptr = p.ref.animVertices);
     _animVertices.inner = value;
   }
   
   late NativeLiveListPointerFloat _animNormals;
   @override get animNormals {
-    structOnOriginalPointer((p) => _animNormals.ptr = p.ref.animNormals);
+    structOnOp((p) => _animNormals.ptr = p.ref.animNormals);
     return _animNormals;
   }
   @override set animNormals(List<double> value) {
     assert(value.length <= animNormalsCount);
-    structOnOriginalPointer((p) => _animNormals.ptr = p.ref.animNormals);
+    structOnOp((p) => _animNormals.ptr = p.ref.animNormals);
     _animNormals.inner = value;
   }
   
   late NativeLiveListPointerUnsignedChar _boneIds;
   @override get boneIds {
-    structOnOriginalPointer((p) => _boneIds.ptr = p.ref.boneIds);
+    structOnOp((p) => _boneIds.ptr = p.ref.boneIds);
     return _boneIds;
   }
   @override set boneIds(List<int> value) {
     assert(value.length <= boneIdsCount);
-    structOnOriginalPointer((p) => _boneIds.ptr = p.ref.boneIds);
+    structOnOp((p) => _boneIds.ptr = p.ref.boneIds);
     _boneIds.inner = value;
   }
   
   late NativeLiveListPointerFloat _boneWeights;
   @override get boneWeights {
-    structOnOriginalPointer((p) => _boneWeights.ptr = p.ref.boneWeights);
+    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
     return _boneWeights;
   }
   @override set boneWeights(List<double> value) {
     assert(value.length <= boneWeightsCount);
-    structOnOriginalPointer((p) => _boneWeights.ptr = p.ref.boneWeights);
+    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
     _boneWeights.inner = value;
   }
   
   late NativeLiveListPointerStruct<MatrixC, MatrixD> _boneMatrices;
   @override get boneMatrices {
-    structOnOriginalPointer((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
     return _boneMatrices;
   }
   @override set boneMatrices(List<MatrixD> value) {
     assert(value.length <= boneMatricesCount);
-    structOnOriginalPointer((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
     _boneMatrices.inner = value;
   }
   
   int _vaoId;
   @override get vaoId {
-    structOnOriginalPointer((p) => _vaoId = p.ref.vaoId);
+    structOnOp((p) => _vaoId = p.ref.vaoId);
     return _vaoId;
   }
   @override set vaoId(int value) {
     _vaoId = value;
-    structOnOriginalPointer((p) => p.ref.vaoId = value);
+    structOnOp((p) => p.ref.vaoId = value);
   }
   
   late NativeLiveListPointerUnsignedInt _vboId;
   @override get vboId {
-    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    structOnOp((p) => _vboId.ptr = p.ref.vboId);
     return _vboId;
   }
   @override set vboId(List<int> value) {
     assert(value.length <= vboIdCount);
-    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    structOnOp((p) => _vboId.ptr = p.ref.vboId);
     _vboId.inner = value;
   }
 
@@ -372,7 +372,7 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     p.boneCount = boneCount;
     p.vaoId = vaoId;
 
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       p.vertexCount = o.ref.vertexCount;
       p.triangleCount = o.ref.triangleCount;
       p.triangleCount = o.ref.triangleCount;
@@ -475,7 +475,7 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
 
   @override
   void nativeReadFrom(MeshC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.vertexCount = p.vertexCount;
       o.ref.triangleCount = p.triangleCount;
       o.ref.boneCount = p.boneCount;

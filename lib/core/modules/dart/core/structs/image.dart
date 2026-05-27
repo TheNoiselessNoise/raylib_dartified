@@ -22,7 +22,7 @@ extension ImageCEx on ImageC {
   }
 
   ImageC setD(ImageD o) {
-    o.structOnOriginalPointer((p) => data = p.ref.data);
+    o.structOnOp((p) => data = p.ref.data);
     width = o.width;
     height = o.height;
     mipmaps = o.mipmaps;
@@ -43,7 +43,7 @@ extension ImageCEx on ImageC {
 class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
   late Uint8List _data;
   @override get data {
-    structOnOriginalPointer((p) {
+    structOnOp((p) {
       if (p.ref.data.address != 0) {
         _data = p.ref.data.cast<Uint8>().asTypedList(dataLength);
       }
@@ -52,7 +52,7 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
   }
   @override set data(Uint8List value) {
     _data = value;
-    structOnOriginalPointer((p) {
+    structOnOp((p) {
       if (p.ref.data.address != 0) {
         p.ref.data.cast<Uint8>().asTypedList(dataLength).setAll(0, value);
       }
@@ -61,42 +61,42 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
 
   int _width;
   @override get width {
-    structOnOriginalPointer((p) => _width = p.ref.width);
+    structOnOp((p) => _width = p.ref.width);
     return _width;
   }
   @override set width(int value) {
     _width = value;
-    structOnOriginalPointer((p) => p.ref.width = value);
+    structOnOp((p) => p.ref.width = value);
   }
 
   int _height;
   @override get height {
-    structOnOriginalPointer((p) => _height = p.ref.height);
+    structOnOp((p) => _height = p.ref.height);
     return _height;
   }
   @override set height(int value) {
     _height = value;
-    structOnOriginalPointer((p) => p.ref.height = value);
+    structOnOp((p) => p.ref.height = value);
   }
 
   int _mipmaps;
   @override get mipmaps {
-    structOnOriginalPointer((p) => _mipmaps = p.ref.mipmaps);
+    structOnOp((p) => _mipmaps = p.ref.mipmaps);
     return _mipmaps;
   }
   @override set mipmaps(int value) {
     _mipmaps = value;
-    structOnOriginalPointer((p) => p.ref.mipmaps = value);
+    structOnOp((p) => p.ref.mipmaps = value);
   }
 
   PixelFormat _format;
   @override get format {
-    structOnOriginalPointer((p) => _format = .fromValue(p.ref.format));
+    structOnOp((p) => _format = .fromValue(p.ref.format));
     return _format;
   }
   @override set format(PixelFormat value) {
     _format = value;
-    structOnOriginalPointer((p) => p.ref.format = value.value);
+    structOnOp((p) => p.ref.format = value.value);
   }
 
   @override
@@ -122,7 +122,7 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
 
   // NOTE: for GIFs
   @override
-  void structUpdateFrameCount(int frameCount) => structOnOriginalPointer((p) {
+  void structUpdateFrameCount(int frameCount) => structOnOp((p) {
     if (this.frameCount != frameCount) {
       this.frameCount = frameCount;
       structSyncFromMemory();
@@ -164,7 +164,7 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
 
   @override
   void nativeReadFrom(ImageC p) {
-    structOnOriginalPointer((o) => o.ref.data = p.data);
+    structOnOp((o) => o.ref.data = p.data);
     width = p.width;
     height = p.height;
     mipmaps = p.mipmaps;

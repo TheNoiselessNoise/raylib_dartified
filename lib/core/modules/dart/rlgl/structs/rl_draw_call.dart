@@ -35,42 +35,42 @@ extension RlDrawCallCEx on RlDrawCallC {
 class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<RlDrawCallD> {
   int _mode;
   @override get mode {
-    structOnOriginalPointer((p) => _mode = p.ref.mode);
+    structOnOp((p) => _mode = p.ref.mode);
     return _mode;
   }
   @override set mode(int value) {
     _mode = value;
-    structOnOriginalPointer((p) => p.ref.mode = value);
+    structOnOp((p) => p.ref.mode = value);
   }
   
   int _vertexCount;
   @override get vertexCount {
-    structOnOriginalPointer((p) => _vertexCount = p.ref.vertexCount);
+    structOnOp((p) => _vertexCount = p.ref.vertexCount);
     return _vertexCount;
   }
   @override set vertexCount(int value) {
     _vertexCount = value;
-    structOnOriginalPointer((p) => p.ref.vertexCount = value);
+    structOnOp((p) => p.ref.vertexCount = value);
   }
   
   int _vertexAlignment;
   @override get vertexAlignment {
-    structOnOriginalPointer((p) => _vertexAlignment = p.ref.vertexAlignment);
+    structOnOp((p) => _vertexAlignment = p.ref.vertexAlignment);
     return _vertexAlignment;
   }
   @override set vertexAlignment(int value) {
     _vertexAlignment = value;
-    structOnOriginalPointer((p) => p.ref.vertexAlignment = value);
+    structOnOp((p) => p.ref.vertexAlignment = value);
   }
   
   int _textureId;
   @override get textureId {
-    structOnOriginalPointer((p) => _textureId = p.ref.textureId);
+    structOnOp((p) => _textureId = p.ref.textureId);
     return _textureId;
   }
   @override set textureId(int value) {
     _textureId = value;
-    structOnOriginalPointer((p) => p.ref.textureId = value);
+    structOnOp((p) => p.ref.textureId = value);
   }
 
   RlDrawCallD({

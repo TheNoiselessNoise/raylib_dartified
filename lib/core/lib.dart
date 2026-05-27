@@ -1,6 +1,6 @@
 part of 'raylib_dartified.dart';
 
-class Raylib with RaylibBase {
+class Raylib extends RaylibBase {
   static Raylib? _instance;
   static Raylib get instance {
     if (_instance == null) throw StateError('Raylib not initialized.');
@@ -51,28 +51,17 @@ class Raylib with RaylibBase {
   late final DynamicLibrary? _dynGui;
   RaylibLookup get guiLookup => _dynGui!.lookup;
 
-  late final RaylibTempOptions tempOptions;
-  @override late Random random;
-
   Raylib({
     required String core,
     String? gui,
-    RaylibTempOptions? tempOptions,
-    Random? random,
+    super.tempOptions,
+    super.random,
   }) {
     _dynCore = .open(core);
     _dynGui = gui != null ? .open(gui) : null;
-    this.tempOptions = tempOptions ?? .new();
-    this.random = random ?? .new();
 
     if (_instance != null) {
       throw StateError("There can only be one instance of a $runtimeType!");
-    }
-
-    if (this.tempOptions.stringCount < 4) {
-      throw StateError(
-        "Raylib expects at least 4 preallocated String slots, got ${this.tempOptions.stringCount}",
-      );
     }
 
     _instance = this;
@@ -162,6 +151,18 @@ class Raylib with RaylibBase {
   }
 }
 
+abstract class RaylibGame extends RaylibGameBase<Raylib> {}
+
+void runRaylib(RaylibGame game, {String? nativeLibPath}) {
+  final rl = findRaylib(nativeLibPath ?? 'raylib');
+  game.init(rl);
+  while (!game.shouldClose(rl)) {
+    game.loop(rl);
+  }
+  game.close(rl);
+  game.dispose(rl);
+}
+
 String _platformLib(String lib) {
   if (Platform.isWindows) return "$lib.dll";
   if (Platform.isLinux) return "lib$lib.so";
@@ -174,20 +175,7 @@ String? _platformLibPath(String directory, String name) {
   return File(tmpGuiPath).existsSync() ? tmpGuiPath : null;
 }
 
-Directory? findDirectory(String folder) {
-  var dir = Directory.current;
-
-  while (true) {
-    final current = Directory(path.join(dir.path, folder));
-    if (current.existsSync()) return current;
-
-    final parent = dir.parent;
-    if (parent.path == dir.path) return null;
-    dir = parent;
-  }
-}
-
-Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
+Raylib findRaylib(String folder, [RaylibTempBaseOptions? tempOptions]) {
   var dir = Directory.current;
 
   while (true) {

@@ -1,3 +1,9 @@
+## 5.5.3
+
+- Introduce into a family [raylib_dartified_base]
+- Split Vector4 and Quaternion
+- Cleaned up examples
+
 ## 5.5.2
 
 - Extended `RaylibTemp` and made it the main entrypoint to anything memory-related.

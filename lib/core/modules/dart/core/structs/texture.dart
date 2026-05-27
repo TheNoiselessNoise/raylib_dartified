@@ -38,52 +38,52 @@ extension TextureCEx on TextureC {
 class TextureD extends StructD<TextureC, TextureD> with TextureBase<TextureD> {
   int _id;
   @override get id {
-    structOnOriginalPointer((p) => _id = p.ref.id);
+    structOnOp((p) => _id = p.ref.id);
     return _id;
   }
   @override set id(int value) {
     _id = value;
-    structOnOriginalPointer((p) => p.ref.id = value);
+    structOnOp((p) => p.ref.id = value);
   }
   
   int _width;
   @override get width {
-    structOnOriginalPointer((p) => _width = p.ref.width);
+    structOnOp((p) => _width = p.ref.width);
     return _width;
   }
   @override set width(int value) {
     _width = value;
-    structOnOriginalPointer((p) => p.ref.width = value);
+    structOnOp((p) => p.ref.width = value);
   }
   
   int _height;
   @override get height {
-    structOnOriginalPointer((p) => _height = p.ref.height);
+    structOnOp((p) => _height = p.ref.height);
     return _height;
   }
   @override set height(int value) {
     _height = value;
-    structOnOriginalPointer((p) => p.ref.height = value);
+    structOnOp((p) => p.ref.height = value);
   }
   
   int _mipmaps;
   @override get mipmaps {
-    structOnOriginalPointer((p) => _mipmaps = p.ref.mipmaps);
+    structOnOp((p) => _mipmaps = p.ref.mipmaps);
     return _mipmaps;
   }
   @override set mipmaps(int value) {
     _mipmaps = value;
-    structOnOriginalPointer((p) => p.ref.mipmaps = value);
+    structOnOp((p) => p.ref.mipmaps = value);
   }
   
   PixelFormat _format;
   @override get format {
-    structOnOriginalPointer((p) => _format = .fromValue(p.ref.format));
+    structOnOp((p) => _format = .fromValue(p.ref.format));
     return _format;
   }
   @override set format(PixelFormat value) {
     _format = value;
-    structOnOriginalPointer((p) => p.ref.format = value.value);
+    structOnOp((p) => p.ref.format = value.value);
   }
 
   TextureD({

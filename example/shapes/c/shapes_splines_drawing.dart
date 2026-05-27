@@ -141,7 +141,7 @@ void main()
           rl.Core.DrawSplineSegmentBasis(
             points[i], points[i + 1],
             points[i + 2], points[i + 3],
-            splineThickness.value, rl.C.MAROON
+            splineThickness.value, rl.Color.MAROON
           );
         }
         */
@@ -156,7 +156,7 @@ void main()
           rl.Core.DrawSplineSegmentCatmullRom(
             points[i], points[i + 1],
             points[i + 2], points[i + 3],
-            splineThickness.value, rl.C.MAROON
+            splineThickness.value, rl.Color.MAROON
           );
         }
         */
@@ -180,7 +180,7 @@ void main()
           rl.Core.DrawSplineSegmentBezierCubic(
             pointsInterleaved[i], pointsInterleaved[i + 1],
             pointsInterleaved[i + 2], pointsInterleaved[i + 3],
-            splineThickness.value, rl.C.MAROON
+            splineThickness.value, rl.Color.MAROON
           );
         }
         */
@@ -197,7 +197,7 @@ void main()
           rl.Core.DrawLineEx(points[i + 1], p.end.ref, 1.0, rl.Color.LIGHTGRAY);
       
           rl.Core.DrawLineV(points[i], p.start.ref, rl.Color.GRAY);
-          // rl.Core.DrawLineV(p.start.ref, p.end.ref, rl.C.LIGHTGRAY);
+          // rl.Core.DrawLineV(p.start.ref, p.end.ref, rl.Color.LIGHTGRAY);
           rl.Core.DrawLineV(p.end.ref, points[i + 1], rl.Color.GRAY);
         }
       }

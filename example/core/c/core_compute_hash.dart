@@ -31,7 +31,7 @@ void main() {
   rl.Core.SetTargetFPS(60);
 
   String input = "The quick brown fox jumps over the lazy dog.";
-  Pointer<Char> textInput = rl.Temp.strAt('textInput', input);
+  Pointer<Char> textInput = rl.Temp.String$.ValueAt('textInput', input);
 
   bool textBoxEditMode = false;
   bool btnComputeHashes = false;

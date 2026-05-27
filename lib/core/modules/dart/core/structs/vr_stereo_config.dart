@@ -89,89 +89,89 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
 > {
   late NativeLiveListArrayStruct<MatrixC, MatrixD> _projection;
   @override get projection {
-    structOnOriginalPointer((p) => _projection.ptr = p.ref.projection);
+    structOnOp((p) => _projection.ptr = p.ref.projection);
     return _projection;
   }
   @override set projection(List<MatrixD> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _projection.ptr = p.ref.projection);
+    structOnOp((p) => _projection.ptr = p.ref.projection);
     _projection.inner = value;
   }
   
   late NativeLiveListArrayStruct<MatrixC, MatrixD> _viewOffset;
   @override get viewOffset {
-    structOnOriginalPointer((p) => _viewOffset.ptr = p.ref.viewOffset);
+    structOnOp((p) => _viewOffset.ptr = p.ref.viewOffset);
     return _viewOffset;
   }
   @override set viewOffset(List<MatrixD> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _viewOffset.ptr = p.ref.viewOffset);
+    structOnOp((p) => _viewOffset.ptr = p.ref.viewOffset);
     _viewOffset.inner = value;
   }
   
   late NativeLiveListArrayFloat _leftLensCenter;
   @override get leftLensCenter {
-    structOnOriginalPointer((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
+    structOnOp((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
     return _leftLensCenter;
   }
   @override set leftLensCenter(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
+    structOnOp((p) => _leftLensCenter.ptr = p.ref.leftLensCenter);
     _leftLensCenter.inner = value;
   }
   
   late NativeLiveListArrayFloat _rightLensCenter;
   @override get rightLensCenter {
-    structOnOriginalPointer((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
+    structOnOp((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
     return _rightLensCenter;
   }
   @override set rightLensCenter(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
+    structOnOp((p) => _rightLensCenter.ptr = p.ref.rightLensCenter);
     _rightLensCenter.inner = value;
   }
   
   late NativeLiveListArrayFloat _leftScreenCenter;
   @override get leftScreenCenter {
-    structOnOriginalPointer((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
+    structOnOp((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
     return _leftScreenCenter;
   }
   @override set leftScreenCenter(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
+    structOnOp((p) => _leftScreenCenter.ptr = p.ref.leftScreenCenter);
     _leftScreenCenter.inner = value;
   }
   
   late NativeLiveListArrayFloat _rightScreenCenter;
   @override get rightScreenCenter {
-    structOnOriginalPointer((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
+    structOnOp((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
     return _rightScreenCenter;
   }
   @override set rightScreenCenter(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
+    structOnOp((p) => _rightScreenCenter.ptr = p.ref.rightScreenCenter);
     _rightScreenCenter.inner = value;
   }
   
   late NativeLiveListArrayFloat _scale;
   @override get scale {
-    structOnOriginalPointer((p) => _scale.ptr = p.ref.scale);
+    structOnOp((p) => _scale.ptr = p.ref.scale);
     return _scale;
   }
   @override set scale(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _scale.ptr = p.ref.scale);
+    structOnOp((p) => _scale.ptr = p.ref.scale);
     _scale.inner = value;
   }
   
   late NativeLiveListArrayFloat _scaleIn;
   @override get scaleIn {
-    structOnOriginalPointer((p) => _scaleIn.ptr = p.ref.scaleIn);
+    structOnOp((p) => _scaleIn.ptr = p.ref.scaleIn);
     return _scaleIn;
   }
   @override set scaleIn(List<double> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _scaleIn.ptr = p.ref.scaleIn);
+    structOnOp((p) => _scaleIn.ptr = p.ref.scaleIn);
     _scaleIn.inner = value;
   }
 
@@ -247,7 +247,7 @@ class VrStereoConfigD extends StructD<VrStereoConfigC, VrStereoConfigD> with VrS
 
   @override
   void nativeReadFrom(VrStereoConfigC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.projection = p.projection;
       o.ref.viewOffset = p.viewOffset;
       o.ref.leftLensCenter = p.leftLensCenter;

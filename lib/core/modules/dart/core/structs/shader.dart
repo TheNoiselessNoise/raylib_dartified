@@ -17,7 +17,7 @@ extension ShaderCEx on ShaderC {
 
   ShaderC setD(ShaderD o) {
     id = o.id;
-    o.structOnOriginalPointer((p) => locs = p.ref.locs);
+    o.structOnOp((p) => locs = p.ref.locs);
     if (locs.address != 0) {
       for (var i = 0; i < o.locs.length; i++) {
         locs[i] = o.locs[i];
@@ -38,21 +38,21 @@ extension ShaderCEx on ShaderC {
 class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
   int _id;
   @override get id {
-    structOnOriginalPointer((p) => _id = p.ref.id);
+    structOnOp((p) => _id = p.ref.id);
     return _id;
   }
   @override set id(int value) {
     _id = value;
-    structOnOriginalPointer((p) => p.ref.id = value);
+    structOnOp((p) => p.ref.id = value);
   }
   
   late NativeLiveListPointerInt _locs;
   @override get locs {
-    structOnOriginalPointer((p) => _locs.ptr = p.ref.locs);
+    structOnOp((p) => _locs.ptr = p.ref.locs);
     return _locs;
   }
   @override set locs(List<int> value) {
-    structOnOriginalPointer((p) => _locs.ptr = p.ref.locs);
+    structOnOp((p) => _locs.ptr = p.ref.locs);
     _locs.inner = value;
   }
 
@@ -90,7 +90,7 @@ class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
   void nativeWriteInto(ShaderC p) {
     p.id = id;
 
-    structOnOriginalPointer((o) => p.locs = o.ref.locs);
+    structOnOp((o) => p.locs = o.ref.locs);
 
     if (p.locs.address != 0) {
       for (var i = 0; i < locs.length; i++) {

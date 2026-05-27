@@ -16,9 +16,9 @@ void main()
   rl.Core.SetWindowMonitor(0);
   rl.Core.SetTargetFPS(60);
 
-  final inGameText = rl.Temp.strAt("inGameText", "inGameText: I am also not leaking any memory!");
+  final inGameText = rl.Temp.String$.ValueAt("inGameText", "inGameText: I am also not leaking any memory!");
 
-  rl.Temp.strAt("inGameText2", "inGameText2: I am also not leaking any memory!");
+  rl.Temp.String$.ValueAt("inGameText2", "inGameText2: I am also not leaking any memory!");
 
   while (!rl.Core.WindowShouldClose())
   {
@@ -26,30 +26,30 @@ void main()
 
       rl.Core.ClearBackground(rl.Color.RAYWHITE);
 
-      // per-frame strings (we are inside while loop), you must use rl.Temp.str or rl.Temp.strAt
+      // per-frame strings (we are inside while loop), you must use rl.Temp.String$.Value or rl.Temp.String$.ValueAt
       // don't use .toUnsafeC() here, you will leak memory
       
       // WRONG!!!
-      // rl.Core.DrawText("toUnsafeC: I am leaking memory".toUnsafeC(), 50, 50, 20, rl.C.BLACK);
+      // rl.Core.DrawText("toUnsafeC: I am leaking memory".toUnsafeC(), 50, 50, 20, rl.Color.BLACK);
       
       // CORRECT!!!
       rl.Core.DrawText(
-        rl.Temp.str("rl.Temp.str: I am not leaking any memory!"),
+        rl.Temp.String$.Value("rl.Temp.str: I am not leaking any memory!"),
         50, 100, 20, rl.Color.BLACK
       );
 
       // CORRECT!!!
       rl.Core.DrawText(
-        rl.Temp.strAt("perFrameInGameText", "perFrameInGameText: I am also not leaking any memory!"),
+        rl.Temp.String$.ValueAt("perFrameInGameText", "perFrameInGameText: I am also not leaking any memory!"),
         50, 150, 20, rl.Color.BLACK
       );
-      // NOTE: we can reference rl.Temp.strAt("perFrameInGameText") later
+      // NOTE: we can reference rl.Temp.String$.ValueAt("perFrameInGameText") later
 
       // CORRECT!!!
       rl.Core.DrawText(inGameText, 50, 200, 20, rl.Color.BLACK);
 
       // CORRECT!!!
-      rl.Core.DrawText(rl.Temp.strAt('inGameText2'), 50, 250, 20, rl.Color.BLACK);
+      rl.Core.DrawText(rl.Temp.String$.ValueAt('inGameText2'), 50, 250, 20, rl.Color.BLACK);
 
       // NOTE: Raylib examples (only) comes with String.toC getter which relies on loaded Raylib instance
       // NOTE: It is used throughout the examples to save some typing :)

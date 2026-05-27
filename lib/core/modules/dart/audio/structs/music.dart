@@ -17,7 +17,7 @@ extension MusicCEx on MusicC {
   }
 
   MusicC setD(MusicD o) {
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       stream.setC(p.ref.stream);
       ctxData = p.ref.ctxData;
     });
@@ -84,7 +84,7 @@ class MusicD extends StructD<MusicC, MusicD> with MusicBase<
 
   @override
   void nativeReadFrom(MusicC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.stream.setC(p.stream);
       o.ref.ctxData = p.ctxData;
     });

@@ -38,32 +38,32 @@ extension AutomationEventCEx on AutomationEventC {
 class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with AutomationEventBase<AutomationEventD> {
   int _frame;
   @override get frame {
-    structOnOriginalPointer((p) => _frame = p.ref.frame);
+    structOnOp((p) => _frame = p.ref.frame);
     return _frame;
   }
   @override set frame(int value) {
     _frame = value;
-    structOnOriginalPointer((p) => p.ref.frame = value);
+    structOnOp((p) => p.ref.frame = value);
   }
 
   int _type;
   @override get type {
-    structOnOriginalPointer((p) => _type = p.ref.type);
+    structOnOp((p) => _type = p.ref.type);
     return _type;
   }
   @override set type(int value) {
     _type = value;
-    structOnOriginalPointer((p) => p.ref.type = value);
+    structOnOp((p) => p.ref.type = value);
   }
 
   late NativeLiveListArrayInt _params;
   @override get params {
-    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    structOnOp((p) => _params.ptr = p.ref.params);
     return _params;
   }
   @override set params(List<int> value) {
     assert(value.length <= paramsCount);
-    structOnOriginalPointer((p) => _params.ptr = p.ref.params);
+    structOnOp((p) => _params.ptr = p.ref.params);
     _params.inner = value;
   }
 

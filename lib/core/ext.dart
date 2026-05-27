@@ -17,7 +17,7 @@ mixin FEnum on Enum {
 }
 
 extension CString on String {
-  @Deprecated('Use rl.Temp.str() instead. toUnsafeC() leaks native memory.')
+  @Deprecated('Use rl.Temp.String\$.Value() instead. toUnsafeC() leaks native memory.')
   Pointer<U> toUnsafeC<U extends NativeType>() => toNativeUtf8().cast<U>();
 }
 

@@ -20,7 +20,7 @@ extension RlRenderBatchCEx on RlRenderBatchC {
   RlRenderBatchC setD(RlRenderBatchD o) {
     bufferCount = o.bufferCount;
     currentBuffer = o.currentBuffer;
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       vertexBuffer = p.ref.vertexBuffer;
       draws = p.ref.draws;
     });
@@ -61,62 +61,62 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
 > {
   int _bufferCount;
   @override get bufferCount {
-    structOnOriginalPointer((p) => _bufferCount = p.ref.bufferCount);
+    structOnOp((p) => _bufferCount = p.ref.bufferCount);
     return _bufferCount;
   }
   @override set bufferCount(int value) {
     _bufferCount = value;
-    structOnOriginalPointer((p) => p.ref.bufferCount = value);
+    structOnOp((p) => p.ref.bufferCount = value);
   }
   
   int _currentBuffer;
   @override get currentBuffer {
-    structOnOriginalPointer((p) => _currentBuffer = p.ref.currentBuffer);
+    structOnOp((p) => _currentBuffer = p.ref.currentBuffer);
     return _currentBuffer;
   }
   @override set currentBuffer(int value) {
     _currentBuffer = value;
-    structOnOriginalPointer((p) => p.ref.currentBuffer = value);
+    structOnOp((p) => p.ref.currentBuffer = value);
   }
   
   late NativeLiveListPointerStruct<RlVertexBufferC, RlVertexBufferD> _vertexBuffer;
   @override get vertexBuffer {
-    structOnOriginalPointer((p) => _vertexBuffer.ptr = p.ref.vertexBuffer);
+    structOnOp((p) => _vertexBuffer.ptr = p.ref.vertexBuffer);
     return _vertexBuffer;
   }
   @override set vertexBuffer(List<RlVertexBufferD> value) {
-    structOnOriginalPointer((p) => _vertexBuffer.ptr = p.ref.vertexBuffer);
+    structOnOp((p) => _vertexBuffer.ptr = p.ref.vertexBuffer);
     _vertexBuffer.inner = value;
   }
   
   late NativeLiveListPointerStruct<RlDrawCallC, RlDrawCallD> _draws;
   @override get draws {
-    structOnOriginalPointer((p) => _draws.ptr = p.ref.draws);
+    structOnOp((p) => _draws.ptr = p.ref.draws);
     return _draws;
   }
   @override set draws(List<RlDrawCallD> value) {
-    structOnOriginalPointer((p) => _draws.ptr = p.ref.draws);
+    structOnOp((p) => _draws.ptr = p.ref.draws);
     _draws.inner = value;
   }
   
   int _drawCounter;
   @override get drawCounter {
-    structOnOriginalPointer((p) => _drawCounter = p.ref.drawCounter);
+    structOnOp((p) => _drawCounter = p.ref.drawCounter);
     return _drawCounter;
   }
   @override set drawCounter(int value) {
     _drawCounter = value;
-    structOnOriginalPointer((p) => p.ref.drawCounter = value);
+    structOnOp((p) => p.ref.drawCounter = value);
   }
   
   double _currentDepth;
   @override get currentDepth {
-    structOnOriginalPointer((p) => _currentDepth = p.ref.currentDepth);
+    structOnOp((p) => _currentDepth = p.ref.currentDepth);
     return _currentDepth;
   }
   @override set currentDepth(double value) {
     _currentDepth = value;
-    structOnOriginalPointer((p) => p.ref.currentDepth = value);
+    structOnOp((p) => p.ref.currentDepth = value);
   }
 
   RlRenderBatchD({
@@ -184,7 +184,7 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
 
   @override
   void nativeReadFrom(RlRenderBatchC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.vertexBuffer = p.vertexBuffer;
       o.ref.draws = p.draws;
     });

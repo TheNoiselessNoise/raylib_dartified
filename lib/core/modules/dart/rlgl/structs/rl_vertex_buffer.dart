@@ -30,7 +30,7 @@ extension RlVertexBufferCEx on RlVertexBufferC {
 
   RlVertexBufferC setD(RlVertexBufferD o) {
     elementCount = o.elementCount;
-    o.structOnOriginalPointer((p) {
+    o.structOnOp((p) {
       vertices = p.ref.vertices;
       texcoords = p.ref.texcoords;
       normals = p.ref.normals;
@@ -95,87 +95,87 @@ extension RlVertexBufferCEx on RlVertexBufferC {
 class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlVertexBufferBase<RlVertexBufferD> {
   int _elementCount;
   @override get elementCount {
-    structOnOriginalPointer((p) => _elementCount = p.ref.elementCount);
+    structOnOp((p) => _elementCount = p.ref.elementCount);
     return _elementCount;
   }
   @override set elementCount(int value) {
     _elementCount = value;
-    structOnOriginalPointer((p) => p.ref.elementCount = value);
+    structOnOp((p) => p.ref.elementCount = value);
   }
 
   late NativeLiveListPointerFloat _vertices;
   @override get vertices {
-    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    structOnOp((p) => _vertices.ptr = p.ref.vertices);
     return _vertices;
   }
   @override set vertices(List<double> value) {
     assert(value.length <= verticesCount);
-    structOnOriginalPointer((p) => _vertices.ptr = p.ref.vertices);
+    structOnOp((p) => _vertices.ptr = p.ref.vertices);
     _vertices.inner = value;
   }
 
   late NativeLiveListPointerFloat _texcoords;
   @override get texcoords {
-    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    structOnOp((p) => _texcoords.ptr = p.ref.texcoords);
     return _texcoords;
   }
   @override set texcoords(List<double> value) {
     assert(value.length <= texcoordsCount);
-    structOnOriginalPointer((p) => _texcoords.ptr = p.ref.texcoords);
+    structOnOp((p) => _texcoords.ptr = p.ref.texcoords);
     _texcoords.inner = value;
   }
 
   late NativeLiveListPointerFloat _normals;
   @override get normals {
-    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    structOnOp((p) => _normals.ptr = p.ref.normals);
     return _normals;
   }
   @override set normals(List<double> value) {
     assert(value.length <= normalsCount);
-    structOnOriginalPointer((p) => _normals.ptr = p.ref.normals);
+    structOnOp((p) => _normals.ptr = p.ref.normals);
     _normals.inner = value;
   }
 
   late NativeLiveListPointerUnsignedChar _colors;
   @override get colors {
-    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    structOnOp((p) => _colors.ptr = p.ref.colors);
     return _colors;
   }
   @override set colors(List<int> value) {
     assert(value.length <= colorsCount);
-    structOnOriginalPointer((p) => _colors.ptr = p.ref.colors);
+    structOnOp((p) => _colors.ptr = p.ref.colors);
     _colors.inner = value;
   }
 
   late NativeLiveListPointerUnsignedInt _indices;
   @override get indices {
-    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    structOnOp((p) => _indices.ptr = p.ref.indices);
     return _indices;
   }
   @override set indices(List<int> value) {
     assert(value.length <= indicesCount);
-    structOnOriginalPointer((p) => _indices.ptr = p.ref.indices);
+    structOnOp((p) => _indices.ptr = p.ref.indices);
     _indices.inner = value;
   }
 
   int _vaoId;
   @override get vaoId {
-    structOnOriginalPointer((p) => _vaoId = p.ref.vaoId);
+    structOnOp((p) => _vaoId = p.ref.vaoId);
     return _vaoId;
   }
   @override set vaoId(int value) {
     _vaoId = value;
-    structOnOriginalPointer((p) => p.ref.vaoId = value);
+    structOnOp((p) => p.ref.vaoId = value);
   }
 
   late NativeLiveListArrayUnsignedInt _vboId;
   @override get vboId {
-    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    structOnOp((p) => _vboId.ptr = p.ref.vboId);
     return _vboId;
   }
   @override set vboId(List<int> value) {
     assert(value.length <= vboIdCount);
-    structOnOriginalPointer((p) => _vboId.ptr = p.ref.vboId);
+    structOnOp((p) => _vboId.ptr = p.ref.vboId);
     _vboId.inner = value;
   }
 
@@ -273,7 +273,7 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
 
   @override
   void nativeReadFrom(RlVertexBufferC p) {
-    structOnOriginalPointer((o) {
+    structOnOp((o) {
       o.ref.vertices = p.vertices;
       o.ref.texcoords = p.texcoords;
       o.ref.normals = p.normals;

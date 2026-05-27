@@ -23,6 +23,8 @@ abstract class AudioCallbackD extends CallbackD<
 
   factory AudioCallbackD.function(AudioCallbackFunctionD f, {String? name})
     => _AudioCallbackD(f, name: name);
+
+  // NOTE: no need for `friendly` factory
 }
 
 class _AudioCallbackD extends AudioCallbackD {
