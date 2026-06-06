@@ -28,9 +28,9 @@ void main()
         active: active,
         focus: focus,
       );
-      scrollIndex = newScrollIndex;
-      active = newActive;
-      focus = newFocus;
+      scrollIndex = newScrollIndex!;
+      active = newActive!;
+      focus = newFocus!;
       
       rl.CoreD.DrawText("SCROLL INDEX: $scrollIndex [ at ${keyNames[scrollIndex]} ]", 50, 280, 20, .BLACK);
 

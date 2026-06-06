@@ -16,7 +16,7 @@ extension RlDrawCallCEx on RlDrawCallC {
   }
 
   RlDrawCallC setD(RlDrawCallD o) {
-    mode = o.mode;
+    mode = o.mode.value;
     vertexCount = o.vertexCount;
     vertexAlignment = o.vertexAlignment;
     textureId = o.textureId;
@@ -25,7 +25,7 @@ extension RlDrawCallCEx on RlDrawCallC {
 
   RlDrawCallD toD([Pointer<RlDrawCallC>? ptr]) => .new(
     originalPointer: ptr,
-    mode: mode,
+    mode: .fromValue(mode),
     vertexCount: vertexCount,
     vertexAlignment: vertexAlignment,
     textureId: textureId,
@@ -33,14 +33,14 @@ extension RlDrawCallCEx on RlDrawCallC {
 }
 
 class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<RlDrawCallD> {
-  int _mode;
+  RlDrawMode _mode;
   @override get mode {
-    structOnOp((p) => _mode = p.ref.mode);
+    structOnOp((p) => _mode = .fromValue(p.ref.mode));
     return _mode;
   }
-  @override set mode(int value) {
+  @override set mode(RlDrawMode value) {
     _mode = value;
-    structOnOp((p) => p.ref.mode = value);
+    structOnOp((p) => p.ref.mode = value.value);
   }
   
   int _vertexCount;
@@ -75,7 +75,7 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<
 
   RlDrawCallD({
     super.originalPointer,
-    int mode = 0,
+    RlDrawMode mode = RlDrawMode.RL_NONE,
     int vertexCount = 0,
     int vertexAlignment = 0,
     int textureId = 0,
@@ -104,7 +104,7 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<
 
   @override
   void nativeWriteInto(RlDrawCallC p) {
-    p.mode = mode;
+    p.mode = mode.value;
     p.vertexCount = vertexCount;
     p.vertexAlignment = vertexAlignment;
     p.textureId = textureId;
@@ -112,7 +112,7 @@ class RlDrawCallD extends StructD<RlDrawCallC, RlDrawCallD> with RlDrawCallBase<
 
   @override
   void nativeReadFrom(RlDrawCallC p) {
-    mode = p.mode;
+    mode = .fromValue(p.mode);
     vertexCount = p.vertexCount;
     vertexAlignment = p.vertexAlignment;
     textureId = p.textureId;

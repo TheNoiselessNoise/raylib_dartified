@@ -940,20 +940,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
   
   @override
-  List<int> LoadRandomSequence(
-    int count,
-    int min,
-    int max,
-    [int? seed]
-  ) => run(
-    () => RaylibDebugLabels.LoadRandomSequence(count, min, max, seed),
-    () {
-      final random = Random(seed);
-      return .generate(count, (_) => min + random.nextInt(max - min + 1));
-    },
-  );
-    
-  @override
   void TakeScreenshot(
     String fileName,
   ) => run(
@@ -1276,6 +1262,16 @@ class RaylibCoreD extends RaylibCoreModuleBase<
       ),
     ),
   );
+
+  @override
+  void UnloadDirectoryFiles(
+    FilePathListD files,
+  ) => run(
+    () => RaylibDebugLabels.UnloadDirectoryFiles(files),
+    () => rl.Core.UnloadDirectoryFiles(
+      files.getOriginalPointerAndDispose().ref,
+    ),
+  );
     
   @override
   bool IsFileDropped() => run(
@@ -1324,7 +1320,9 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         data.length,
         compDataSize,
       );
-      return .fromList(rl.Temp.UnsignedChar$.asView(compData, compDataSize.value));
+      final newData = rl.Temp.UnsignedChar$.asTypedList(compData, compDataSize.value);
+      calloc.free(compData);
+      return newData;
     },
   );
 
@@ -1340,7 +1338,9 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         compData.length,
         dataSize,
       );
-      return .fromList(rl.Temp.UnsignedChar$.asView(data, dataSize.value));
+      final newData = rl.Temp.UnsignedChar$.asTypedList(data, dataSize.value);
+      calloc.free(data);
+      return newData;
     },
   );
 
@@ -1356,7 +1356,9 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         data.length,
         outputSize,
       );
-      return .fromList(rl.Temp.Char$.asView(outputData, outputSize.value));
+      final newData = rl.Temp.Char$.asTypedList(outputData, outputSize.value);
+      calloc.free(outputData);
+      return .fromList(newData);
     },
   );
 
@@ -1371,7 +1373,9 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         rl.Temp.Uint8$.Array(data).cast(),
         outputSize,
       );
-      return .fromList(rl.Temp.UnsignedChar$.asView(outputData, outputSize.value));
+      final newData = rl.Temp.UnsignedChar$.asTypedList(outputData, outputSize.value);
+      calloc.free(outputData);
+      return newData;
     },
   );
 

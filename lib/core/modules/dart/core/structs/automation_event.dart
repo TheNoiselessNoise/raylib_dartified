@@ -20,7 +20,7 @@ extension AutomationEventCEx on AutomationEventC {
 
   AutomationEventC setD(AutomationEventD o) {
     frame = o.frame;
-    type = o.type;
+    type = o.type.value;
     for (int i = 0; i < paramsCount; i++) {
       params[i] = o.params[i];
     }
@@ -30,7 +30,7 @@ extension AutomationEventCEx on AutomationEventC {
   AutomationEventD toD([Pointer<AutomationEventC>? ptr]) => .new(
     originalPointer: ptr,
     frame: frame,
-    type: type,
+    type: .fromValue(type),
     params: .generate(paramsCount, (i) => params[i]),
   );
 }
@@ -46,14 +46,14 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
     structOnOp((p) => p.ref.frame = value);
   }
 
-  int _type;
+  AutomationEventType _type;
   @override get type {
-    structOnOp((p) => _type = p.ref.type);
+    structOnOp((p) => _type = .fromValue(p.ref.type));
     return _type;
   }
-  @override set type(int value) {
+  @override set type(AutomationEventType value) {
     _type = value;
-    structOnOp((p) => p.ref.type = value);
+    structOnOp((p) => p.ref.type = value.value);
   }
 
   late NativeLiveListArrayInt _params;
@@ -70,7 +70,7 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
   AutomationEventD({
     super.originalPointer,
     int frame = 0,
-    int type = 0,
+    AutomationEventType type = .EVENT_NONE,
     List<int>? params,
   }) :
     _frame = frame,
@@ -96,12 +96,9 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
   nativeGetIndexedArrayReference(Array<AutomationEventC> p, int index) => p[index];
 
   @override
-  void structSyncInto(RaylibTemp temp, Pointer<AutomationEventC> p, String key) {} // NOTE: do nothing
-
-  @override
   void nativeWriteInto(AutomationEventC p) {
     p.frame = frame;
-    p.type = type;
+    p.type = type.value;
     for (int i = 0; i < paramsCount; i++) {
       p.params[i] = _params.inner[i];
     }
@@ -110,7 +107,7 @@ class AutomationEventD extends StructD<AutomationEventC, AutomationEventD> with 
   @override
   void nativeReadFrom(AutomationEventC p) {
     frame = p.frame;
-    type = p.type;
+    type = .fromValue(p.type);
     params = .generate(paramsCount, (i) => p.params[i]);
   }
 

@@ -1189,7 +1189,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlReadTexturePixels(id, width, height, format),
     () {
-      final size = rl.Utils.GetPixelDataSize(
+      final size = rl.CoreD.GetPixelDataSize(
         width.toInt(),
         height.toInt(),
         format,

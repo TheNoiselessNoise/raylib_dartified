@@ -1,3 +1,7 @@
+## 5.5.4
+
+- Support for `raylib_dartified_base` >= 5.5.2
+
 ## 5.5.3
 
 - Introduce into a family [raylib_dartified_base]

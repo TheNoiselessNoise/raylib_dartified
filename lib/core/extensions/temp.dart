@@ -14,7 +14,7 @@ part of '../raylib_dartified.dart';
 ///
 /// Manages a named collection of `Pointer<C>` slots identified by string keys.
 /// Each slot owns its allocation; slots are freed either manually via [Free]
-/// or automatically when [_dispose] is called.
+/// or automatically when [dispose] is called.
 ///
 /// Subclasses specialise this for literal values, structs, strings, etc.
 abstract class NativeAlloc<
@@ -79,6 +79,9 @@ abstract class NativeLitTypedListAlloc<
   late final List<X> Function(Pointer<C> ptr, int length) asDartList;
 
   @override
+  late final L Function(Pointer<C> ptr, int length) asTypedList;
+
+  @override
   final L Function(Iterable<X> list) fromList;
 
   @override
@@ -98,6 +101,7 @@ abstract class NativeLitTypedListAlloc<
     required this.fromBuffer,
   }) {
     asDartList = (ptr, length) => asView(ptr, length).toList().cast();
+    asTypedList = (ptr, length) => fromList(asDartList(ptr, length));
   }
 }
 
@@ -269,7 +273,7 @@ class NativeStructPtrAlloc<
 /// - **Anonymous slots** – a ring buffer of [slotCount] slots, cycled through
 ///   via [Value] without a key. Useful for transient strings within a single callsite.
 /// - **Keyed slots** – named slots allocated on demand via [ValueAt] and
-///   [Array], persisting until explicitly freed or [_dispose] is called.
+///   [Array], persisting until explicitly freed or [dispose] is called.
 ///
 /// String memory is managed with [malloc] and is grown in-place when the
 /// encoded UTF-8 length of a new string exceeds the current slot capacity,

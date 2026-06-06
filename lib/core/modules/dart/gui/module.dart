@@ -682,7 +682,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   );
 
   @override
-  (int result, int scrollIndex, int active) GuiListView(
+  (int result, int? scrollIndex, int? active) GuiListView(
     RectangleD bounds,
     String? text, {
       int? scrollIndex,
@@ -699,14 +699,18 @@ class RaylibGuiD extends RaylibGuiModuleBase<
         scrollIndexPtr,
         activePtr,
       );
-      return (result, scrollIndexPtr.value, activePtr.value);
+      return (
+        result,
+        scrollIndex == null ? null : scrollIndexPtr.value,
+        active == null ? null : activePtr.value,
+      );
     },
   );
 
   @override
-  (int result, int scrollIndex, int active, int focus) GuiListViewEx(
+  (int result, int? scrollIndex, int? active, int? focus) GuiListViewEx(
     RectangleD bounds,
-    List<String> text, {
+    List<String>? text, {
       int? scrollIndex,
       int? active,
       int? focus,
@@ -719,13 +723,18 @@ class RaylibGuiD extends RaylibGuiModuleBase<
       final focusPtr = rl.Temp.Int$.RefOrNull3(focus);
       final result = rl.Gui.GuiListViewEx(
         rl.Temp.Rectangle$.Ref1(bounds).ref,
-        rl.Temp.String$.Array(text),
-        text.length,
+        text == null ? nullptr : rl.Temp.String$.Array(text),
+        text?.length ?? 0,
         scrollIndexPtr,
         activePtr,
         focusPtr,
       );
-      return (result, scrollIndexPtr.value, activePtr.value, focusPtr.value);
+      return (
+        result,
+        scrollIndex == null ? null : scrollIndexPtr.value,
+        active == null ? null : activePtr.value,
+        focus == null ? null : focusPtr.value,
+      );
     },
   );
 

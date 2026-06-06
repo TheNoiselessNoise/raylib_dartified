@@ -4,7 +4,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ffi';
-import 'dart:math' show Random;
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:meta/meta.dart' show nonVirtual;
