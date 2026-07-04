@@ -1,3 +1,7 @@
+## 5.5.5
+
+- [BREAKING] renamed the entrypoint to `raylib_dartified`
+
 ## 5.5.4
 
 - Support for `raylib_dartified_base` >= 5.5.2

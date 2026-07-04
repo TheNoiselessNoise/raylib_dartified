@@ -2,16 +2,6 @@
 
 A **Dart-first**, modular set of **FFI bindings for [raylib](https://www.raylib.com/)**.
 
-> &nbsp;   
-> ⚠️ **Stability warning**
->
-> You should **not rely on regular git pulls or updates** to be non-breaking. If you use this project, consider vendoring or pinning a specific commit.
->
-> The API is **not stabilized**. Method signatures, type names, and module boundaries are subject to change without deprecation cycles. This applies especially to the `D` (Dart) layer, which is newer and less battle-tested than the raw FFI bindings.
->
-> In particular, the `D` (Dart) layer may still contain **undetected memory safety issues** - dangling pointers, double-free bugs, or ownership ambiguity that has not yet surfaced. The fact that all provided examples run correctly is not proof that the `D` layer is safe or correct in general. If you are doing anything non-trivial, audit the relevant `D` wrappers before trusting them.
-> &nbsp;
-
 This project exposes raylib in an idiomatic Dart API while staying very close to the original C design. Most bindings are generated using `ffigen`, but this project goes significantly beyond a raw `ffigen` output.
 
 In short: `ffigen` gets you the raw function table. This project gives you something you can actually use.
