@@ -3,133 +3,132 @@
 // Run it: dart run text_font_filters.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "text_font_filters".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_font_filters".toC);
+  SetTargetFPS(60);
 
   final msg = "Loaded Font";
 
-  final font = rl.Temp.Font$.At('font');
-  final fontTexture = rl.Temp.Texture$.At('fontTexture');
-  font.ref = rl.Core.LoadFontEx("../resources/KAISG.ttf".toC, 96, nullptr, 0);
+  final font = Font$.At('font');
+  final fontTexture = Texture$.At('fontTexture');
+  font.ref = LoadFontEx("../resources/KAISG.ttf".toC, 96, nullptr, 0);
   fontTexture.ref = font.ref.texture;
-  rl.Core.GenTextureMipmaps(fontTexture);
+  GenTextureMipmaps(fontTexture);
 
   double fontSize = font.ref.baseSize.toDouble();
-  final fontPosition = rl.Temp.Vector2$.At('fontPosition').set(40, screenHeight / 2 - 80);
-  final textSize = rl.Temp.Vector2$.At('textSize');
+  final fontPosition = Vector2$.At('fontPosition').set(40, screenHeight / 2 - 80);
+  final textSize = Vector2$.At('textSize');
 
   int currentFontFilter = TextureFilter.TEXTURE_FILTER_POINT.value;
-  rl.Core.SetTextureFilter(fontTexture.ref, currentFontFilter);
+  SetTextureFilter(fontTexture.ref, currentFontFilter);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    fontSize += rl.Core.GetMouseWheelMove()*4;
+    fontSize += GetMouseWheelMove()*4;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ONE.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_ONE.value)) {
       currentFontFilter = TextureFilter.TEXTURE_FILTER_POINT.value;
-      rl.Core.SetTextureFilter(fontTexture.ref, currentFontFilter);
+      SetTextureFilter(fontTexture.ref, currentFontFilter);
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_TWO.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_TWO.value)) {
       currentFontFilter = TextureFilter.TEXTURE_FILTER_BILINEAR.value;
-      rl.Core.SetTextureFilter(fontTexture.ref, currentFontFilter);
+      SetTextureFilter(fontTexture.ref, currentFontFilter);
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_THREE.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_THREE.value)) {
       currentFontFilter = TextureFilter.TEXTURE_FILTER_TRILINEAR.value;
-      rl.Core.SetTextureFilter(fontTexture.ref, currentFontFilter);
+      SetTextureFilter(fontTexture.ref, currentFontFilter);
     }
 
-    textSize.ref = rl.Core.MeasureTextEx(font.ref, msg.toC, fontSize, 0);
+    textSize.ref = MeasureTextEx(font.ref, msg.toC, fontSize, 0);
 
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)) {
+    if (IsKeyDown(KeyboardKey.KEY_LEFT.value)) {
       fontPosition.ref.x -= 10;
-    } else if (rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)) {
+    } else if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) {
       fontPosition.ref.x += 10;
     }
 
-    if (rl.Core.IsFileDropped()) {
-      final droppedFiles = rl.Core.LoadDroppedFiles();
+    if (IsFileDropped()) {
+      final droppedFiles = LoadDroppedFiles();
 
-      if (rl.Core.IsFileExtension(droppedFiles.paths[0], ".ttf".toC)) {
-        rl.Core.UnloadFont(font.ref);
+      if (IsFileExtension(droppedFiles.paths[0], ".ttf".toC)) {
+        UnloadFont(font.ref);
         
-        font.ref = rl.Core.LoadFontEx(droppedFiles.paths[0], fontSize.toInt(), nullptr, 0);
+        font.ref = LoadFontEx(droppedFiles.paths[0], fontSize.toInt(), nullptr, 0);
         fontTexture.ref = font.ref.texture;
-        rl.Core.GenTextureMipmaps(fontTexture);
+        GenTextureMipmaps(fontTexture);
       }
 
-      rl.Core.UnloadDroppedFiles(droppedFiles);
+      UnloadDroppedFiles(droppedFiles);
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "Use mouse wheel to change font size".toC,
-        20, 20, 10, rl.Color.GRAY
+        20, 20, 10, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Use KEY_RIGHT and KEY_LEFT to move text".toC,
-        20, 40, 10, rl.Color.GRAY
+        20, 40, 10, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Use 1, 2, 3 to change texture filter".toC,
-        20, 60, 10, rl.Color.GRAY
+        20, 60, 10, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Drop a new TTF font for dynamic loading".toC,
-        20, 80, 10, rl.Color.DARKGRAY
+        20, 80, 10, DARKGRAY
       );
 
-      rl.Core.DrawTextEx(font.ref, msg.toC, fontPosition.ref, fontSize, 0, rl.Color.BLACK);
+      DrawTextEx(font.ref, msg.toC, fontPosition.ref, fontSize, 0, BLACK);
 
-      rl.Core.DrawRectangle(0, screenHeight - 80, screenWidth, 80, rl.Color.LIGHTGRAY);
-      rl.Core.DrawText(
+      DrawRectangle(0, screenHeight - 80, screenWidth, 80, LIGHTGRAY);
+      DrawText(
         "Font size: ${fontSize.f2}".toC,
-        20, screenHeight - 50, 10, rl.Color.DARKGRAY
+        20, screenHeight - 50, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Text size: ${textSize.toD().format(2)}".toC,
-        20, screenHeight - 30, 10, rl.Color.DARKGRAY
+        20, screenHeight - 30, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "CURRENT TEXTURE FILTER:".toC,
-        250, 400, 20, rl.Color.GRAY
+        250, 400, 20, GRAY
       );
 
       if (currentFontFilter == TextureFilter.TEXTURE_FILTER_POINT.value) {
-        rl.Core.DrawText(
+        DrawText(
           "POINT".toC,
-          570, 400, 20, rl.Color.BLACK
+          570, 400, 20, BLACK
         );
       } else if (currentFontFilter == TextureFilter.TEXTURE_FILTER_BILINEAR.value) {
-        rl.Core.DrawText(
+        DrawText(
           "BILINEAR".toC,
-          570, 400, 20, rl.Color.BLACK
+          570, 400, 20, BLACK
         );
       } else if (currentFontFilter == TextureFilter.TEXTURE_FILTER_TRILINEAR.value) {
-        rl.Core.DrawText(
+        DrawText(
           "TRILINEAR".toC,
-          570, 400, 20, rl.Color.BLACK
+          570, 400, 20, BLACK
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadFont(font.ref);
+  UnloadFont(font.ref);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

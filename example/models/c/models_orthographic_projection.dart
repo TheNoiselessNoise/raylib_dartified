@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_orthographic_projection.c
 // Run it: dart run models_orthographic_projection.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,22 +11,21 @@ const double WIDTH_ORTHOGRAPHIC = 10.0;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_orthographic_projection".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "models_orthographic_projection".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(0, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = FOVY_PERSPECTIVE;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
       if (camera.ref.projection == CameraProjection.CAMERA_PERSPECTIVE.value)
       {
@@ -40,44 +39,44 @@ void main()
       }
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
-        rl.Core.DrawCube(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.Color.RED);
-        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, rl.Color.GOLD);
-        rl.Core.DrawCubeWires(rl.Temp.vec31(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, rl.Color.MAROON);
+        DrawCube(Vector3$.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, RED);
+        DrawCubeWires(Vector3$.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, GOLD);
+        DrawCubeWires(Vector3$.$1.set(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, MAROON);
 
-        rl.Core.DrawSphere(rl.Temp.vec31(-1.0, 0.0, -2.0), 1.0, rl.Color.GREEN);
-        rl.Core.DrawSphereWires(rl.Temp.vec31(1.0, 0.0, 2.0), 2.0, 16, 16, rl.Color.LIME);
+        DrawSphere(Vector3$.$1.set(-1.0, 0.0, -2.0), 1.0, GREEN);
+        DrawSphereWires(Vector3$.$1.set(1.0, 0.0, 2.0), 2.0, 16, 16, LIME);
 
-        rl.Core.DrawCylinder(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.Color.SKYBLUE);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, rl.Color.DARKBLUE);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, rl.Color.BROWN);
+        DrawCylinder(Vector3$.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, SKYBLUE);
+        DrawCylinderWires(Vector3$.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, DARKBLUE);
+        DrawCylinderWires(Vector3$.$1.set(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, BROWN);
 
-        rl.Core.DrawCylinder(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.Color.GOLD);
-        rl.Core.DrawCylinderWires(rl.Temp.vec31(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, rl.Color.PINK);
+        DrawCylinder(Vector3$.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, GOLD);
+        DrawCylinderWires(Vector3$.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, PINK);
 
-        rl.Core.DrawGrid(10, 1.0);
+        DrawGrid(10, 1.0);
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Press Spacebar to switch camera type".toC,
-        10, rl.Core.GetScreenHeight() - 30, 20, rl.Color.DARKGRAY
+        10, GetScreenHeight() - 30, 20, DARKGRAY
       );
 
       if (camera.ref.projection == CameraProjection.CAMERA_ORTHOGRAPHIC.value)
-        rl.Core.DrawText("ORTHOGRAPHIC".toC, 10, 40, 20, rl.Color.BLACK);
+        DrawText("ORTHOGRAPHIC".toC, 10, 40, 20, BLACK);
       else if (camera.ref.projection == CameraProjection.CAMERA_PERSPECTIVE.value)
-        rl.Core.DrawText("PERSPECTIVE".toC, 10, 40, 20, rl.Color.BLACK);
+        DrawText("PERSPECTIVE".toC, 10, 40, 20, BLACK);
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

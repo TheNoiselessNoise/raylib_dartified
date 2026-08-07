@@ -3,7 +3,7 @@
 // Run it: dart run models_point_rendering.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -12,70 +12,69 @@ const int MIN_POINTS = 1_000;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_point_rendering".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "models_point_rendering".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(3, 3, 3);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final position = rl.Temp.Vector3$.At('position');
+  final position = Vector3$.At('position');
   bool useDrawModelPoints = true;
   bool numPointsChanged = false;
   int numPoints = 1000;
     
-  var mesh = GenMeshPoints(rl, numPoints);
-  var model = rl.Core.LoadModelFromMesh(mesh);
+  var mesh = GenMeshPoints(numPoints);
+  var model = LoadModelFromMesh(mesh);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
+    UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
       useDrawModelPoints = !useDrawModelPoints;
     
     var newPoints = numPoints;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_UP.value))
+    if (IsKeyPressed(KeyboardKey.KEY_UP.value))
       newPoints = (numPoints*10 > MAX_POINTS) ? MAX_POINTS : numPoints*10;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_DOWN.value))
+    if (IsKeyPressed(KeyboardKey.KEY_DOWN.value))
       newPoints = (numPoints/10 < MIN_POINTS) ? MIN_POINTS : numPoints~/10;
     numPointsChanged = newPoints != numPoints;
     numPoints = newPoints;
 
     if (numPointsChanged) {
-      rl.Core.UnloadModel(model);
-      mesh = GenMeshPoints(rl, numPoints);
-      model = rl.Core.LoadModelFromMesh(mesh);
+      UnloadModel(model);
+      mesh = GenMeshPoints(numPoints);
+      model = LoadModelFromMesh(mesh);
       numPointsChanged = false;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.BLACK);
+      ClearBackground(BLACK);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
         if (useDrawModelPoints)
         {
-          rl.Core.DrawModelPoints(model, position.ref, 1.0, rl.Color.WHITE);
+          DrawModelPoints(model, position.ref, 1.0, WHITE);
         }
         else
         {
           for (int i = 0; i < numPoints; i++)
           {
-            rl.Core.DrawPoint3D(
-              rl.Temp.vec31(
+            DrawPoint3D(
+              Vector3$.$1.set(
                 mesh.vertices[i*3 + 0],
                 mesh.vertices[i*3 + 1],
                 mesh.vertices[i*3 + 2],
               ),
-              rl.Temp.color1(
+              Color$.$1.set(
                 mesh.colors[i*4 + 0],
                 mesh.colors[i*4 + 1],
                 mesh.colors[i*4 + 2],
@@ -85,50 +84,50 @@ void main()
           }
         }
 
-        rl.Core.DrawSphereWires(position.ref, 1.0, 10, 10, rl.Color.YELLOW);
+        DrawSphereWires(position.ref, 1.0, 10, 10, YELLOW);
           
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Point Count: $numPoints".toC,
-        20, screenHeight - 50, 40, rl.Color.WHITE
+        20, screenHeight - 50, 40, WHITE
       );
-      rl.Core.DrawText(
+      DrawText(
         "Up - increase points".toC,
-        20, 70, 20, rl.Color.WHITE
+        20, 70, 20, WHITE
       );
-      rl.Core.DrawText(
+      DrawText(
         "Down - decrease points".toC,
-        20, 100, 20, rl.Color.WHITE
+        20, 100, 20, WHITE
       );
-      rl.Core.DrawText(
+      DrawText(
         "Space - drawing function".toC,
-        20, 130, 20, rl.Color.WHITE
+        20, 130, 20, WHITE
       );
       
       if (useDrawModelPoints) {
-        rl.Core.DrawText(
+        DrawText(
           "Using: DrawModelPoints()".toC,
-          20, 160, 20, rl.Color.GREEN
+          20, 160, 20, GREEN
         );
       } else {
-        rl.Core.DrawText(
+        DrawText(
           "Using: DrawPoint3D()".toC,
-          20, 160, 20, rl.Color.RED
+          20, 160, 20, RED
         );
       }
       
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadModel(model);
+  UnloadModel(model);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-MeshC GenMeshPoints(Raylib rl, int numPoints)
+MeshC GenMeshPoints(int numPoints)
 {
   final vertices = <double>[];
   final colors = <int>[];
@@ -136,8 +135,8 @@ MeshC GenMeshPoints(Raylib rl, int numPoints)
   // https://en.wikipedia.org/wiki/Spherical_coordinate_system
   for (int i = 0; i < numPoints; i++)
   {
-    final theta = rl.PI*rl.rand();
-    final phi = 2.0*rl.PI*rl.rand();
+    final theta = PI*rl.rand();
+    final phi = 2.0*PI*rl.rand();
     final r = 10.0*rl.rand();
     
     vertices.addAll([
@@ -146,22 +145,33 @@ MeshC GenMeshPoints(Raylib rl, int numPoints)
       r*math.cos(theta),
     ]);
     
-    final color = rl.Core.ColorFromHSV(r*360.0, 1.0, 1.0);
+    final color = ColorFromHSV(r*360.0, 1.0, 1.0);
     colors.addAll([color.r, color.g, color.b, color.a]);
   }
 
   // Free the Mesh* so next Mesh$.At allocates a fresh zeroed struct.
   // Reusing the same pointer would leave stale vboId from UploadMesh
   // causing a double free on the next UnloadModel.
-  if (rl.Temp.Mesh$.Has('mesh')) rl.Temp.Mesh$.Free('mesh');
+  if (Mesh$.Has('mesh')) Mesh$.Free('mesh');
 
-  final mesh = rl.Temp.Mesh$.At('mesh'); 
+  final mesh = Mesh$.At('mesh'); 
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = numPoints;
-  mesh.ref.vertices = rl.Temp.Float32$.RawArray(vertices);
-  mesh.ref.colors = rl.Temp.UnsignedChar$.RawArray(colors);
+  mesh.ref.vertices = Float32$.RawArray(vertices);
+  mesh.ref.colors = UnsignedChar$.RawArray(colors);
 
-  rl.Core.UploadMesh(mesh, false);
+  UploadMesh(mesh, false);
 
   return mesh.ref;
+}
+
+void DrawModelPoints(ModelC model, Vector3C position, double scale, ColorC tint)
+{
+  rlEnablePointMode();
+  rlDisableBackfaceCulling();
+
+  DrawModel(model, position, scale, tint);
+
+  rlEnableBackfaceCulling();
+  rlDisablePointMode();
 }

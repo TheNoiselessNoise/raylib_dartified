@@ -1,15 +1,5 @@
 part of '../raylib_dartified.dart';
 
-/*
-  =============================================
-  ====== PRE-ALLOCATED MEMORY STATISTICS ======
-  =============================================
-   IMMUTABLES: 180 Bytes
-    REUSABLES: 224 Bytes
-  =============================================
-             : 404 Bytes
-*/
-
 /// A slot-based temporary memory allocator for a single native type [C].
 ///
 /// Manages a named collection of `Pointer<C>` slots identified by string keys.
@@ -61,6 +51,50 @@ class NativeLitAlloc<
     required this.literalSetterFunc,
     required this.indexSetterFunc,
   });
+
+  /// Fixed scratch slot holding a zero-initialized value of [C].
+  ///
+  /// This is effectively the native-memory equivalent of a Dart-layer
+  /// `.zero()` constructor (e.g. `Vector2D.zero()`), a cheap, shared,
+  /// always-zero buffer for call sites that just need to pass a zero value
+  /// without allocating.
+  ///
+  /// **Read-only by convention.** Because this slot is shared (via [At])
+  /// across every call site that touches [$zeroPtr], writing through it
+  /// permanently corrupts the "zero" invariant for everyone else using it,
+  /// there is no reset. Never write through this pointer; only read from it
+  /// or pass it where the callee treats it as `const`. If you need a
+  /// mutable zero-initialized buffer, use [$newPtr] (or write zero into
+  /// [$1Ptr]..[$4Ptr] yourself) instead.
+  Pointer<C> get $zeroPtr => At('__reusable__zero');
+
+  /// Reusable single-element scratch slot, mutable (unlike [$zeroPtr]).
+  Pointer<C> get $1Ptr => At('__reusable__1');
+  
+  /// Reusable single-element scratch slot, mutable (unlike [$zeroPtr]).
+  ///
+  /// Use when a call needs a second independent scratch pointer alongside
+  /// [$1Ptr] (e.g. writing two out-parameters in the same FFI call).
+  Pointer<C> get $2Ptr => At('__reusable__2');
+  
+  /// Reusable single-element scratch slot, mutable (unlike [$zeroPtr]).
+  ///
+  /// Use when a call needs a third independent scratch pointer alongside
+  /// [$2Ptr] (e.g. writing two out-parameters in the same FFI call).
+  Pointer<C> get $3Ptr => At('__reusable__3');
+  
+  /// Reusable single-element scratch slot, mutable (unlike [$zeroPtr]).
+  ///
+  /// Use when a call needs a fourth independent scratch pointer alongside
+  /// [$3Ptr] (e.g. writing two out-parameters in the same FFI call).
+  Pointer<C> get $4Ptr => At('__reusable__4');
+  
+  /// Fresh, independently-owned scratch pointer, unlike [$zeroPtr]..[$4Ptr].
+  ///
+  /// Each access gets its own slot via [AtUnique], keyed with a monotonic id,
+  /// so it is safe even when the same call site may be active multiple times
+  /// at once (recursion, re-entrant calls).
+  Pointer<C> get $newPtr => AtUnique(key: '__reusable__newptr');
 }
 
 /// Extends [NativeLitAlloc] with typed-list bulk copy support.
@@ -232,7 +266,66 @@ class NativeStructAlloc<
     writeIntoIndexedFunc = (ptr, i, v) => v.nativeWriteInto(indexerFunc(ptr, i));
     writeIntoFunc = (ptr, v) => v.nativeWriteInto(refFunc(ptr));
   }
+
+  /// Fixed scratch slot holding a zero-initialized [C] struct, by pointer.
+  ///
+  /// The native-memory equivalent of a Dart-layer `.zero()` constructor,
+  /// a cheap, shared buffer for call sites that just need to pass a zero
+  /// value without allocating. **Read-only by convention**: this slot is
+  /// shared (via [At]) across every call site that touches it, so writing
+  /// through it permanently corrupts the "zero" invariant for everyone else,
+  /// there is no reset. Use [$1Ptr]..[$4Ptr] or [$newPtr] for a mutable slot.
+  Pointer<C> get $zeroPtr => At('__reusable__zero');
+
+  /// [C] view of [$zeroPtr]. Same read-only convention applies: do not
+  /// mutate fields on this reference.
+  C get $zero => refFunc($zeroPtr);
+
+  /// Reusable single-element scratch slot, by pointer. Unlike [$zeroPtr],
+  /// this is expected to be written through, it's a fixed shared buffer,
+  /// not a zero-invariant one, so callers may freely overwrite its contents
+  /// between uses.
+  Pointer<C> get $1Ptr => At('__reusable__1');
+
+  /// [C] view of [$1Ptr].
+  C get $1 => refFunc($1Ptr);
+
+  /// Reusable single-element scratch slot, parallel to [$1Ptr] under a
+  /// distinct key. Use when a call needs a second independent scratch
+  /// struct alongside [$1]/[$1Ptr] (e.g. two out-parameters in one call).
+  Pointer<C> get $2Ptr => At('__reusable__2');
+
+  /// [C] view of [$2Ptr].
+  C get $2 => refFunc($2Ptr);
+
+  /// Reusable single-element scratch slot, parallel to [$1Ptr]/[$2Ptr].
+  Pointer<C> get $3Ptr => At('__reusable__3');
+
+  /// [C] view of [$3Ptr].
+  C get $3 => refFunc($3Ptr);
+
+  /// Reusable single-element scratch slot, parallel to [$1Ptr]..[$3Ptr].
+  ///
+  /// With [$1Ptr] through [$4Ptr] this gives up to four fixed scratch slots
+  /// (plus the read-only [$zeroPtr]) for call sites that need several
+  /// simultaneous native struct out-parameters without allocating a fresh
+  /// buffer each time.
+  Pointer<C> get $4Ptr => At('__reusable__4');
+
+  /// [C] view of [$4Ptr].
+  C get $4 => refFunc($4Ptr);
+
+  /// Fresh, independently-owned scratch pointer, unlike [$zeroPtr]/[$1Ptr]..[$4Ptr].
+  ///
+  /// Each access gets its own slot via [AtUnique], keyed with a monotonic id,
+  /// so it is safe even when the same call site may be active multiple times
+  /// at once (recursion, re-entrant calls).
+  Pointer<C> get $newPtr => AtUnique(key: '__reusable__newptr');
+
+  /// [C] view of [$newPtr].
+  C get $new => refFunc($newPtr);
 }
+
 
 /// A slot-based allocator for arrays of **pointers** to native structs of type [C].
 ///
@@ -292,6 +385,9 @@ final class NativeStringAlloc extends NativeAlloc<Char> with RaylibTempStringAll
   late final void Function(Pointer<Pointer<Char>> ptr) freePPFunc;
 
   @override
+  late final Pointer<Char> Function(String text, [int? bufferSize]) strAllocatorFunc;
+
+  @override
   late final Pointer<Pointer<Char>> Function(int count) ptrAllocatorFunc;
 
   @override
@@ -306,6 +402,14 @@ final class NativeStringAlloc extends NativeAlloc<Char> with RaylibTempStringAll
   ) {
     reset();
     freePPFunc = (ptr) => calloc.free(ptr);
+    strAllocatorFunc = (text, [bufferSize]) {
+      final bytes = utf8.encode(text);
+      final len = bytes.length + 1;
+      final bufSize = bufferSize != null ? (bufferSize > len ? bufferSize : len) : len;
+      final ptr = calloc<Uint8>(bufSize);
+      ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
+      return ptr.cast();
+    };
     ptrAllocatorFunc = (count) => calloc(ptrByteSize*count);
     indexSetterFunc = (ptrptr, i, ptr) => ptrptr[i] = ptr;
   }
@@ -341,8 +445,147 @@ class NativeTypedDataListAlloc extends RaylibTempTypedDataListAllocator<
   NativeTypedDataListAlloc(super.temp);
 }
 
+class NativeRaylibTempUtils extends RaylibTempUtilsBase<RaylibTemp, Pointer<Void>> {
+  NativeRaylibTempUtils(super.temp);
+
+  @override
+  Pointer<Void> realloc(Pointer<Void> oldPtr, int oldSize, int newSize) {
+  if (newSize == 0) {
+    if (oldPtr != nullptr) malloc.free(oldPtr);
+    return nullptr;
+  }
+
+  final newPtr = malloc<Uint8>(newSize);
+
+  if (oldPtr != nullptr) {
+    final copySize = oldSize < newSize ? oldSize : newSize;
+    if (copySize > 0) {
+      newPtr.asTypedList(copySize).setAll(0, oldPtr.cast<Uint8>().asTypedList(copySize));
+    }
+    malloc.free(oldPtr);
+  }
+
+  return newPtr.cast();
+}
+
+  @override
+  void memset(Pointer<Void> ptr, int value, int size)
+    => ptr.cast<Uint8>().asTypedList(size).fillRange(0, size, value);
+
+  @override
+  void memcpy(Pointer<Void> dest, Pointer<Void> src, int n) {
+    dest.cast<Uint8>().asTypedList(n).setAll(0, src.cast<Uint8>().asTypedList(n));
+  }
+
+  @override
+  int memcmp(Pointer<Void> a, Pointer<Void> b, int n) {
+    final pa = a.cast<Uint8>();
+    final pb = b.cast<Uint8>();
+
+    for (int i = 0; i < n; i++) {
+      final diff = pa[i] - pb[i];
+      if (diff != 0) return diff;
+    }
+
+    return 0;
+  }
+
+  @override
+  int strlen(Pointer<Void> ptr) {
+    final p = ptr.cast<Uint8>();
+
+    int i = 0;
+    for (; p[i] != 0; i++) {}
+
+    return i;
+  }
+
+  @override
+  int strcmp(Pointer<Void> a, Pointer<Void> b) {
+    final pa = a.cast<Uint8>();
+    final pb = b.cast<Uint8>();
+
+    int i = 0;
+    for (; pa[i] != 0 && pa[i] == pb[i]; i++) {}
+
+    return pa[i] - pb[i];
+  }
+
+  @override
+  void strcpy(Pointer<Void> dest, Pointer<Void> src) {
+    final d = dest.cast<Uint8>();
+    final s = src.cast<Uint8>();
+
+    int i = 0;
+    for (; s[i] != 0; i++) {
+      d[i] = s[i];
+    }
+    d[i] = 0;
+  }
+
+  @override
+  void strncpy(Pointer<Void> dest, Pointer<Void> src, int n) {
+    final d = dest.cast<Uint8>();
+    final s = src.cast<Uint8>();
+
+    int i = 0;
+    for (; i < n && s[i] != 0; i++) {
+      d[i] = s[i];
+    }
+    for (; i < n; i++) {
+      d[i] = 0;
+    }
+  }
+
+  @override
+  int strnlen(Pointer<Void> ptr, int maxLen) {
+    final p = ptr.cast<Uint8>();
+
+    int i = 0;
+    for (; i < maxLen && p[i] != 0; i++) {}
+
+    return i;
+  }
+
+  @override
+  void strncat(Pointer<Void> dest, Pointer<Void> src, int n) {
+    final d = dest.cast<Uint8>();
+    final s = src.cast<Uint8>();
+
+    int destEnd = 0;
+    while (d[destEnd] != 0) {
+      destEnd++;
+    }
+
+    int i = 0;
+    for (; i < n && s[i] != 0; i++) {
+      d[destEnd + i] = s[i];
+    }
+    d[destEnd + i] = 0;
+  }
+
+  @override
+  Pointer<Void> strstr(Pointer<Void> haystack, Pointer<Void> needle) {
+    final h = haystack.cast<Uint8>();
+    final n = needle.cast<Uint8>();
+
+    // empty needle matches at the start of haystack
+    if (n[0] == 0) return haystack;
+
+    for (int i = 0; h[i] != 0; i++) {
+      int j = 0;
+      for (; n[j] != 0 && h[i + j] == n[j]; j++) {}
+      if (n[j] == 0) return (h + i).cast<Void>();
+    }
+
+    return .fromAddress(0); // not found -> nullptr
+  }
+}
+
 class RaylibTemp extends RaylibTempBase<Raylib> {
   RaylibTemp(super.lib, { super.options });
+  
+  @override late NativeRaylibTempUtils Utils;
 
   @override late NativeTypedDataListAlloc TypedDataList$;
 
@@ -405,6 +648,8 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   @override late NativeStructPtrAlloc<FilePathListC, FilePathListD> Ptr$FilePathList$;
   @override late NativeStructAlloc<FontC, FontD> Font$;
   @override late NativeStructPtrAlloc<FontC, FontD> Ptr$Font$;
+  @override late NativeStructAlloc<GestureEventC, GestureEventD> GestureEvent$;
+  @override late NativeStructPtrAlloc<GestureEventC, GestureEventD> Ptr$GestureEvent$;
   @override late NativeStructAlloc<GlyphInfoC, GlyphInfoD> GlyphInfo$;
   @override late NativeStructPtrAlloc<GlyphInfoC, GlyphInfoD> Ptr$GlyphInfo$;
   @override late NativeStructAlloc<ImageC, ImageD> Image$;
@@ -423,6 +668,8 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   @override late NativeStructPtrAlloc<ModelC, ModelD> Ptr$Model$;
   @override late NativeStructAlloc<ModelAnimationC, ModelAnimationD> ModelAnimation$;
   @override late NativeStructPtrAlloc<ModelAnimationC, ModelAnimationD> Ptr$ModelAnimation$;
+  @override late NativeStructAlloc<ModelSkeletonC, ModelSkeletonD> ModelSkeleton$;
+  @override late NativeStructPtrAlloc<ModelSkeletonC, ModelSkeletonD> Ptr$ModelSkeleton$;
   @override late NativeStructAlloc<MusicC, MusicD> Music$;
   @override late NativeStructPtrAlloc<MusicC, MusicD> Ptr$Music$;
   @override late NativeStructAlloc<NPatchInfoC, NPatchInfoD> NPatchInfo$;
@@ -464,9 +711,9 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   @override late NativeStructAlloc<WaveC, WaveD> Wave$;
   @override late NativeStructPtrAlloc<WaveC, WaveD> Ptr$Wave$;
 
-  /// ===========================
-  /// ====== CUSTOM ALLOCS ======
-  /// ===========================
+  // ===========================
+  // ====== CUSTOM ALLOCS ======
+  // ===========================
 
   NativeLitAlloc<X, C> allocLit<X, C extends NativeType>(String key) =>
     getCustomAllocatorOrThrow(key) as NativeLitAlloc<X, C>;
@@ -486,17 +733,15 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   NativeStructPtrAlloc<C, D> allocStructPtr<C extends Struct, D extends StructD<C, D>>(String key) =>
     getCustomAllocatorOrThrow(key) as NativeStructPtrAlloc<C, D>;
 
-  /// ============================
-  /// ====== INITIALIZATION ======
-  /// ============================
+  // ============================
+  // ====== INITIALIZATION ======
+  // ============================
 
   @override
   void load() {
     super.load();
 
-    _preAllocate();
-
-    _preAllocateReusables();
+    Utils = .new(this);
 
     TypedDataList$ = .new(this);
 
@@ -964,6 +1209,25 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
       rawArrayFunc: Font$.RawArray,
     );
 
+    GestureEvent$ = .new(this, r'GestureEvent$',
+      byteSize:        sizeOf<GestureEventC>(),
+      allocatorFunc:   ([count = 1]) => calloc<GestureEventC>(count),
+      refFunc:         (ptr)         => ptr.ref,
+      setRefFunc:      (ptr, v)      => ptr..ref = v,
+      pointerToStruct: (ptr)         => ptr.toD(),
+      printerFunc:     (ptr)         => ptr.toD().signature(),
+      setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
+      indexerFunc:     (ptr, i)      => ptr[i],
+      indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
+      updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
+    );
+
+    Ptr$GestureEvent$ = .new(this, r'Ptr$GestureEvent$',
+      allocatorFunc: ([count = 1]) => calloc<Pointer<GestureEventC>>(count),
+      valueFunc: GestureEvent$.Value,
+      rawArrayFunc: GestureEvent$.RawArray,
+    );
+
     GlyphInfo$ = .new(this, r'GlyphInfo$',
       byteSize:        sizeOf<GlyphInfoC>(),
       allocatorFunc:   ([count = 1]) => calloc<GlyphInfoC>(count),
@@ -1133,6 +1397,25 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
       allocatorFunc: ([count = 1]) => calloc<Pointer<ModelAnimationC>>(count),
       valueFunc: ModelAnimation$.Value,
       rawArrayFunc: ModelAnimation$.RawArray,
+    );
+
+    ModelSkeleton$ = .new(this, r'ModelSkeleton$',
+      byteSize:        sizeOf<ModelSkeletonC>(),
+      allocatorFunc:   ([count = 1]) => calloc<ModelSkeletonC>(count),
+      refFunc:         (ptr)         => ptr.ref,
+      setRefFunc:      (ptr, v)      => ptr..ref = v,
+      pointerToStruct: (ptr)         => ptr.toD(),
+      printerFunc:     (ptr)         => ptr.toD().signature(),
+      setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
+      indexerFunc:     (ptr, i)      => ptr[i],
+      indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
+      updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
+    );
+
+    Ptr$ModelSkeleton$ = .new(this, r'Ptr$ModelSkeleton$',
+      allocatorFunc: ([count = 1]) => calloc<Pointer<ModelSkeletonC>>(count),
+      valueFunc: ModelSkeleton$.Value,
+      rawArrayFunc: ModelSkeleton$.RawArray,
     );
 
     Music$ = .new(this, r'Music$',
@@ -1514,267 +1797,5 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
       valueFunc: Wave$.Value,
       rawArrayFunc: Wave$.RawArray,
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    debugFreeInfo('Freeing preallocated internals');
-    _dePreAllocate();
-    
-    debugFreeInfo('Freeing preallocated reusable internals');
-    _dePreAllocateReusables();
-  }
-  
-  // NOTE: native-specific preallocated pointers, i don't like it much
-
-  /// ======================================
-  /// ====== PRE-ALLOCATED IMMUTABLES ======
-  /// ======================================
-  /// 1x  Vector2 => 1 * ( 2*float) => 1 * ( 2*4) =>  8 Bytes
-  /// 1x  Vector3 => 1 * ( 3*float) => 1 * ( 3*4) => 12 Bytes
-  /// 1x  Vector4 => 1 * ( 4*float) => 1 * ( 4*4) => 16 Bytes
-  /// 2x   Matrix => 2 * (16*float) => 2 * (16*4) => 128 Bytes
-  /// 1x     Quat => 1 * ( 4*float) => 1 * ( 4*4) => 16 Bytes
-  /// ====================================
-  /// Total preallocated memory: 180 Bytes
-  /// 
-  /// NOTE: We do not use slots to not make logs look suspicious
-  /// NOTE: Pointers are private, because 'immutables' are meant to be immutable
-  ///       (though you can mutate the references)
-  
-  late Pointer<Vector2C> _vec2ZeroPtr;
-  Vector2C get vec2Zero => _vec2ZeroPtr.ref;
-
-  late Pointer<Vector3C> _vec3ZeroPtr;
-  Vector3C get vec3Zero => _vec3ZeroPtr.ref;
-  
-  late Pointer<Vector4C> _vec4ZeroPtr;
-  Vector4C get vec4Zero => _vec4ZeroPtr.ref;
-  
-  late Pointer<MatrixC> _matZeroPtr;
-  MatrixC get matZero => _matZeroPtr.ref;
-  
-  late Pointer<MatrixC> _matIdentityPtr;
-  MatrixC get matIdentity => _matIdentityPtr.ref;
-  
-  late Pointer<QuaternionC> _quatIdentityPtr;
-  QuaternionC get quatIdentity => _quatIdentityPtr.ref;
-
-  void _preAllocate() {
-    _vec2ZeroPtr = calloc<Vector2C>();
-    _vec3ZeroPtr = calloc<Vector3C>();
-    _vec4ZeroPtr = calloc<Vector4C>();
-    _matZeroPtr = calloc<MatrixC>();
-    _matIdentityPtr = calloc<MatrixC>().setD(.identity());
-    _quatIdentityPtr = calloc<QuaternionC>().setD(.identity());
-  }
-
-  void _dePreAllocate() {
-    calloc.free(_vec2ZeroPtr);
-    calloc.free(_vec3ZeroPtr);
-    calloc.free(_vec4ZeroPtr);
-    calloc.free(_matZeroPtr);
-    calloc.free(_matIdentityPtr);
-  }
-
-  // NOTE: native-specific preallocated pointers, i don't like it much
-
-  /// =====================================
-  /// ====== PRE-ALLOCATED REUSABLES ======
-  /// =====================================
-  /// 4x   Vector2 => 4 * (2*float)         => 4 * (2*4) => 32 Bytes
-  /// 4x   Vector3 => 4 * (3*float)         => 4 * (3*4) => 48 Bytes
-  /// 4x   Vector4 => 4 * (4*float)         => 4 * (4*4) => 64 Bytes
-  /// 4x     Color => 4 * (4*unsigned char) => 4 * (4*1) => 16 Bytes
-  /// 4x Rectangle => 4 * (4*float)         => 4 * (4*4) => 64 Bytes
-  /// ====================================
-  /// Total preallocated memory: 224 Bytes
-  /// 
-  /// NOTE: We do not use slots to not make logs look suspicious
-
-  /// Vector2
-  
-  late Pointer<Vector2C> vec21Ptr;
-  Vector2C vec21([num? x, num? y])
-    => vec21Ptr.set(x ?? vec21Ptr.ref.x, y ?? vec21Ptr.ref.y).ref;
-  Vector2C vec21C(Vector2C o) => vec21(o.x, o.y);
-  Vector2C vec21D(Vector2D o) => vec21(o.x, o.y);
-
-  late Pointer<Vector2C> vec22Ptr;
-  Vector2C vec22([num? x, num? y])
-    => vec22Ptr.set(x ?? vec22Ptr.ref.x, y ?? vec22Ptr.ref.y).ref;
-  Vector2C vec22C(Vector2C o) => vec22(o.x, o.y);
-  Vector2C vec22D(Vector2D o) => vec22(o.x, o.y);
-
-  late Pointer<Vector2C> vec23Ptr;
-  Vector2C vec23([num? x, num? y])
-    => vec23Ptr.set(x ?? vec23Ptr.ref.x, y ?? vec23Ptr.ref.y).ref;
-  Vector2C vec23C(Vector2C o) => vec23(o.x, o.y);
-  Vector2C vec23D(Vector2D o) => vec23(o.x, o.y);
-
-  late Pointer<Vector2C> vec24Ptr;
-  Vector2C vec24([num? x, num? y])
-    => vec24Ptr.set(x ?? vec24Ptr.ref.x, y ?? vec24Ptr.ref.y).ref;
-  Vector2C vec24C(Vector2C o) => vec24(o.x, o.y);
-  Vector2C vec24D(Vector2D o) => vec24(o.x, o.y);
-
-  /// Vector3
-
-  late Pointer<Vector3C> vec31Ptr;
-  Vector3C vec31([num? x, num? y, num? z])
-    => vec31Ptr.set(x ?? vec31Ptr.ref.x, y ?? vec31Ptr.ref.y, z ?? vec31Ptr.ref.z).ref;
-  Vector3C vec31C(Vector3C o) => vec31(o.x, o.y, o.z);
-  Vector3C vec31D(Vector3D o) => vec31(o.x, o.y, o.z);
-    
-  late Pointer<Vector3C> vec32Ptr;
-  Vector3C vec32([num? x, num? y, num? z])
-    => vec32Ptr.set(x ?? vec32Ptr.ref.x, y ?? vec32Ptr.ref.y, z ?? vec32Ptr.ref.z).ref;
-  Vector3C vec32C(Vector3C o) => vec32(o.x, o.y, o.z);
-  Vector3C vec32D(Vector3D o) => vec32(o.x, o.y, o.z);
-
-  late Pointer<Vector3C> vec33Ptr;
-  Vector3C vec33([num? x, num? y, num? z])
-    => vec33Ptr.set(x ?? vec33Ptr.ref.x, y ?? vec33Ptr.ref.y, z ?? vec33Ptr.ref.z).ref;
-  Vector3C vec33C(Vector3C o) => vec33(o.x, o.y, o.z);
-  Vector3C vec33D(Vector3D o) => vec33(o.x, o.y, o.z);
-
-  late Pointer<Vector3C> vec34Ptr;
-  Vector3C vec34([num? x, num? y, num? z])
-    => vec34Ptr.set(x ?? vec34Ptr.ref.x, y ?? vec34Ptr.ref.y, z ?? vec34Ptr.ref.z).ref;
-  Vector3C vec34C(Vector3C o) => vec34(o.x, o.y, o.z);
-  Vector3C vec34D(Vector3D o) => vec34(o.x, o.y, o.z);
-
-  /// Vector4
-
-  late Pointer<Vector4C> vec41Ptr;
-  Vector4C vec41([num? x, num? y, num? z, num? w])
-    => vec41Ptr.set(x ?? vec41Ptr.ref.x, y ?? vec41Ptr.ref.y, z ?? vec41Ptr.ref.z, w ?? vec41Ptr.ref.w).ref;
-  Vector4C vec41C(Vector4C o) => vec41(o.x, o.y, o.z);
-  Vector4C vec41D(Vector4D o) => vec41(o.x, o.y, o.z);
-    
-  late Pointer<Vector4C> vec42Ptr;
-  Vector4C vec42([num? x, num? y, num? z, num? w])
-    => vec42Ptr.set(x ?? vec42Ptr.ref.x, y ?? vec42Ptr.ref.y, z ?? vec42Ptr.ref.z, w ?? vec42Ptr.ref.w).ref;
-  Vector4C vec42C(Vector4C o) => vec42(o.x, o.y, o.z);
-  Vector4C vec42D(Vector4D o) => vec42(o.x, o.y, o.z);
-
-  late Pointer<Vector4C> vec43Ptr;
-  Vector4C vec43([num? x, num? y, num? z, num? w])
-    => vec43Ptr.set(x ?? vec43Ptr.ref.x, y ?? vec43Ptr.ref.y, z ?? vec43Ptr.ref.z, w ?? vec43Ptr.ref.w).ref;
-  Vector4C vec43C(Vector4C o) => vec43(o.x, o.y, o.z);
-  Vector4C vec43D(Vector4D o) => vec43(o.x, o.y, o.z);
-
-  late Pointer<Vector4C> vec44Ptr;
-  Vector4C vec44([num? x, num? y, num? z, num? w])
-    => vec44Ptr.set(x ?? vec44Ptr.ref.x, y ?? vec44Ptr.ref.y, z ?? vec44Ptr.ref.z, w ?? vec44Ptr.ref.w).ref;
-  Vector4C vec44C(Vector4C o) => vec44(o.x, o.y, o.z);
-  Vector4C vec44D(Vector4D o) => vec44(o.x, o.y, o.z);
-
-  /// Color
-
-  late Pointer<ColorC> color1Ptr;
-  ColorC color1([num? r, num? g, num? b, num? a])
-    => color1Ptr.set(r ?? color1Ptr.ref.r, g ?? color1Ptr.ref.g, b ?? color1Ptr.ref.b, a ?? color1Ptr.ref.a).ref;
-  ColorC color1C(ColorC o) => color1(o.r, o.g, o.b, o.a);
-  ColorC color1D(ColorD o) => color1(o.r, o.g, o.b, o.a);
-
-  late Pointer<ColorC> color2Ptr;
-  ColorC color2([num? r, num? g, num? b, num? a])
-    => color2Ptr.set(r ?? color2Ptr.ref.r, g ?? color2Ptr.ref.g, b ?? color2Ptr.ref.b, a ?? color2Ptr.ref.a).ref;
-  ColorC color2C(ColorC o) => color2(o.r, o.g, o.b, o.a);
-  ColorC color2D(ColorD o) => color2(o.r, o.g, o.b, o.a);
-
-  late Pointer<ColorC> color3Ptr;
-  ColorC color3([num? r, num? g, num? b, num? a])
-    => color3Ptr.set(r ?? color3Ptr.ref.r, g ?? color3Ptr.ref.g, b ?? color3Ptr.ref.b, a ?? color3Ptr.ref.a).ref;
-  ColorC color3C(ColorC o) => color3(o.r, o.g, o.b, o.a);
-  ColorC color3D(ColorD o) => color3(o.r, o.g, o.b, o.a);
-
-  late Pointer<ColorC> color4Ptr;
-  ColorC color4([num? r, num? g, num? b, num? a])
-    => color4Ptr.set(r ?? color4Ptr.ref.r, g ?? color4Ptr.ref.g, b ?? color4Ptr.ref.b, a ?? color4Ptr.ref.a).ref;
-  ColorC color4C(ColorC o) => color4(o.r, o.g, o.b, o.a);
-  ColorC color4D(ColorD o) => color4(o.r, o.g, o.b, o.a);
-
-  /// Rectangle
-
-  late Pointer<RectangleC> rect1Ptr;
-  RectangleC rect1([num? x, num? y, num? w, num? h])
-    => rect1Ptr.set(x ?? rect1Ptr.ref.x, y ?? rect1Ptr.ref.y, w ?? rect1Ptr.ref.width, h ?? rect1Ptr.ref.height).ref;
-  RectangleC rect1C(RectangleC o) => rect1(o.x, o.y, o.width, o.height);
-  RectangleC rect1D(RectangleD o) => rect1(o.x, o.y, o.width, o.height);
-
-  late Pointer<RectangleC> rect2Ptr;
-  RectangleC rect2([num? x, num? y, num? w, num? h])
-    => rect2Ptr.set(x ?? rect2Ptr.ref.x, y ?? rect2Ptr.ref.y, w ?? rect2Ptr.ref.width, h ?? rect2Ptr.ref.height).ref;
-  RectangleC rect2C(RectangleC o) => rect2(o.x, o.y, o.width, o.height);
-  RectangleC rect2D(RectangleD o) => rect2(o.x, o.y, o.width, o.height);
-
-  late Pointer<RectangleC> rect3Ptr;
-  RectangleC rect3([num? x, num? y, num? w, num? h])
-    => rect3Ptr.set(x ?? rect3Ptr.ref.x, y ?? rect3Ptr.ref.y, w ?? rect3Ptr.ref.width, h ?? rect3Ptr.ref.height).ref;
-  RectangleC rect3C(RectangleC o) => rect3(o.x, o.y, o.width, o.height);
-  RectangleC rect3D(RectangleD o) => rect3(o.x, o.y, o.width, o.height);
-
-  late Pointer<RectangleC> rect4Ptr;
-  RectangleC rect4([num? x, num? y, num? w, num? h])
-    => rect4Ptr.set(x ?? rect4Ptr.ref.x, y ?? rect4Ptr.ref.y, w ?? rect4Ptr.ref.width, h ?? rect4Ptr.ref.height).ref;
-  RectangleC rect4C(RectangleC o) => rect4(o.x, o.y, o.width, o.height);
-  RectangleC rect4D(RectangleD o) => rect4(o.x, o.y, o.width, o.height);
-
-  void _preAllocateReusables() {
-    vec21Ptr = calloc<Vector2C>();
-    vec22Ptr = calloc<Vector2C>();
-    vec23Ptr = calloc<Vector2C>();
-    vec24Ptr = calloc<Vector2C>();
-
-    vec31Ptr = calloc<Vector3C>();
-    vec32Ptr = calloc<Vector3C>();
-    vec33Ptr = calloc<Vector3C>();
-    vec34Ptr = calloc<Vector3C>();
-    
-    vec41Ptr = calloc<Vector4C>();
-    vec42Ptr = calloc<Vector4C>();
-    vec43Ptr = calloc<Vector4C>();
-    vec44Ptr = calloc<Vector4C>();
-    
-    color1Ptr = calloc<ColorC>();
-    color2Ptr = calloc<ColorC>();
-    color3Ptr = calloc<ColorC>();
-    color4Ptr = calloc<ColorC>();
-    
-    rect1Ptr = calloc<RectangleC>();
-    rect2Ptr = calloc<RectangleC>();
-    rect3Ptr = calloc<RectangleC>();
-    rect4Ptr = calloc<RectangleC>();
-  }
-
-  void _dePreAllocateReusables() {
-    calloc.free(vec21Ptr);
-    calloc.free(vec22Ptr);
-    calloc.free(vec23Ptr);
-    calloc.free(vec24Ptr);
-
-    calloc.free(vec31Ptr);
-    calloc.free(vec32Ptr);
-    calloc.free(vec33Ptr);
-    calloc.free(vec34Ptr);
-    
-    calloc.free(vec41Ptr);
-    calloc.free(vec42Ptr);
-    calloc.free(vec43Ptr);
-    calloc.free(vec44Ptr);
-    
-    calloc.free(color1Ptr);
-    calloc.free(color2Ptr);
-    calloc.free(color3Ptr);
-    calloc.free(color4Ptr);
-
-    calloc.free(rect1Ptr);
-    calloc.free(rect2Ptr);
-    calloc.free(rect3Ptr);
-    calloc.free(rect4Ptr);
   }
 }

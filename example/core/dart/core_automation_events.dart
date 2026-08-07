@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_automation_events.c
 // Run it: dart run core_automation_events.dart
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -32,11 +32,10 @@ class EnvElement {
 }
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_automation_events');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_automation_events");
+  SetTargetFPS(60);
 
   final player = Player();
   player.position.set(400, 280);
@@ -57,8 +56,8 @@ void main() {
   camera.rotation = 0.0;
   camera.zoom = 1.0;
   
-  var aelist = rl.CoreD.LoadAutomationEventList(null);
-  rl.CoreD.SetAutomationEventList(aelist);
+  var aelist = LoadAutomationEventList(null);
+  SetAutomationEventList(aelist);
   bool eventRecording = false;
   bool eventPlaying = false;
   
@@ -66,17 +65,17 @@ void main() {
   int playFrameCounter = 0;
   int currentPlayFrame = 0;
 
-  while (!rl.CoreD.WindowShouldClose()) {
+  while (!WindowShouldClose()) {
     double deltaTime = 0.015;//GetFrameTime();
        
-    if (rl.CoreD.IsFileDropped())
+    if (IsFileDropped())
     {
-      final droppedFiles = rl.CoreD.LoadDroppedFiles();
+      final droppedFiles = LoadDroppedFiles();
 
-      if (rl.CoreD.IsFileExtension(droppedFiles.paths[0], ".txt;.rae"))
+      if (IsFileExtension(droppedFiles.paths[0], ".txt;.rae"))
       {
-        rl.CoreD.UnloadAutomationEventList(aelist);
-        aelist = rl.CoreD.LoadAutomationEventList(droppedFiles.paths[0]);
+        UnloadAutomationEventList(aelist);
+        aelist = LoadAutomationEventList(droppedFiles.paths[0]);
         
         eventRecording = false;
         
@@ -95,9 +94,9 @@ void main() {
       }
     }
 
-    if (rl.CoreD.IsKeyDown(.KEY_LEFT)) player.position.x -= PLAYER_HOR_SPD*deltaTime;
-    if (rl.CoreD.IsKeyDown(.KEY_RIGHT)) player.position.x += PLAYER_HOR_SPD*deltaTime;
-    if (rl.CoreD.IsKeyDown(.KEY_SPACE) && player.canJump)
+    if (IsKeyDown(.KEY_LEFT)) player.position.x -= PLAYER_HOR_SPD*deltaTime;
+    if (IsKeyDown(.KEY_RIGHT)) player.position.x += PLAYER_HOR_SPD*deltaTime;
+    if (IsKeyDown(.KEY_SPACE) && player.canJump)
     {
       player.speed = -PLAYER_JUMP_SPD;
       player.canJump = false;
@@ -129,7 +128,7 @@ void main() {
     }
     else player.canJump = true;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_R))
+    if (IsKeyPressed(.KEY_R))
     {
       player.position.set(400, 280);
       player.speed = 0;
@@ -145,7 +144,7 @@ void main() {
     {
       while (playFrameCounter == aelist.events[currentPlayFrame].frame)
       {
-        rl.CoreD.PlayAutomationEvent(aelist.events[currentPlayFrame]);
+        PlayAutomationEvent(aelist.events[currentPlayFrame]);
         currentPlayFrame++;
 
         if (currentPlayFrame == aelist.count)
@@ -154,7 +153,7 @@ void main() {
           currentPlayFrame = 0;
           playFrameCounter = 0;
 
-          rl.CoreD.TraceLog(.LOG_INFO, "FINISH PLAYING!");
+          TraceLog(.LOG_INFO, "FINISH PLAYING!");
           break;
         }
       }
@@ -166,7 +165,7 @@ void main() {
     camera.offset.set(screenWidth/2.0, screenHeight/2.0);
     double minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
 
-    camera.zoom += (rl.CoreD.GetMouseWheelMove()*0.05);
+    camera.zoom += (GetMouseWheelMove()*0.05);
     if (camera.zoom > 3.0) camera.zoom = 3.0;
     else if (camera.zoom < 0.25) camera.zoom = 0.25;
 
@@ -179,36 +178,36 @@ void main() {
       maxY = math.max(element.rect.y + element.rect.height, maxY);
     }
 
-    final max = rl.CoreD.GetWorldToScreen2D(.vec2(maxX, maxY), camera);
-    final min = rl.CoreD.GetWorldToScreen2D(.vec2(minX, minY), camera);
+    final max = GetWorldToScreen2D(.vec2(maxX, maxY), camera);
+    final min = GetWorldToScreen2D(.vec2(minX, minY), camera);
 
     if (max.x < screenWidth) camera.offset.x = screenWidth - (max.x - screenWidth/2);
     if (max.y < screenHeight) camera.offset.y = screenHeight - (max.y - screenHeight/2);
     if (min.x > 0) camera.offset.x = screenWidth/2 - min.x;
     if (min.y > 0) camera.offset.y = screenHeight/2 - min.y;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_S))
+    if (IsKeyPressed(.KEY_S))
     {
       if (!eventPlaying)
       {
         if (eventRecording)
         {
-          rl.CoreD.StopAutomationEventRecording();
+          StopAutomationEventRecording();
           eventRecording = false;
           
-          rl.CoreD.ExportAutomationEventList(aelist, "automation.rae");
+          ExportAutomationEventList(aelist, "automation.rae");
           
-          rl.CoreD.TraceLog(.LOG_INFO, "RECORDED FRAMES: ${aelist.count}");
+          TraceLog(.LOG_INFO, "RECORDED FRAMES: ${aelist.count}");
         }
         else 
         {
-          rl.CoreD.SetAutomationEventBaseFrame(180);
-          rl.CoreD.StartAutomationEventRecording();
+          SetAutomationEventBaseFrame(180);
+          StartAutomationEventRecording();
           eventRecording = true;
         }
       }
     }
-    else if (rl.CoreD.IsKeyPressed(.KEY_A))
+    else if (IsKeyPressed(.KEY_A))
     {
       if (!eventRecording && (aelist.count > 0))
       {
@@ -230,62 +229,62 @@ void main() {
     if (eventRecording || eventPlaying) frameCounter++;
     else frameCounter = 0;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.LIGHTGRAY);
+      ClearBackground(.LIGHTGRAY);
 
-      rl.CoreD.BeginMode2D(camera);
+      BeginMode2D(camera);
 
         for (int i = 0; i < envElements.length; i++)
         {
-          rl.CoreD.DrawRectangleRec(envElements[i].rect, envElements[i].color);
+          DrawRectangleRec(envElements[i].rect, envElements[i].color);
         }
 
-        rl.CoreD.DrawRectangleRec(.rect(player.position.x - 20, player.position.y - 40, 40, 40), .RED);
+        DrawRectangleRec(.rect(player.position.x - 20, player.position.y - 40, 40, 40), .RED);
 
-      rl.CoreD.EndMode2D();
+      EndMode2D();
       
-      rl.CoreD.DrawRectangle(10, 10, 290, 145, rl.CoreD.Fade(.SKYBLUE, 0.5));
-      rl.CoreD.DrawRectangleLines(10, 10, 290, 145, rl.CoreD.Fade(.BLUE, 0.8));
+      DrawRectangle(10, 10, 290, 145, Fade(.SKYBLUE, 0.5));
+      DrawRectangleLines(10, 10, 290, 145, Fade(.BLUE, 0.8));
 
-      rl.CoreD.DrawText("Controls:", 20, 20, 10, .BLACK);
-      rl.CoreD.DrawText("- RIGHT | LEFT: Player movement", 30, 40, 10, .DARKGRAY);
-      rl.CoreD.DrawText("- SPACE: Player jump", 30, 60, 10, .DARKGRAY);
-      rl.CoreD.DrawText("- R: Reset game state", 30, 80, 10, .DARKGRAY);
+      DrawText("Controls:", 20, 20, 10, .BLACK);
+      DrawText("- RIGHT | LEFT: Player movement", 30, 40, 10, .DARKGRAY);
+      DrawText("- SPACE: Player jump", 30, 60, 10, .DARKGRAY);
+      DrawText("- R: Reset game state", 30, 80, 10, .DARKGRAY);
 
-      rl.CoreD.DrawText("- S: START/STOP RECORDING INPUT EVENTS", 30, 110, 10, .BLACK);
-      rl.CoreD.DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS", 30, 130, 10, .BLACK);
+      DrawText("- S: START/STOP RECORDING INPUT EVENTS", 30, 110, 10, .BLACK);
+      DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS", 30, 130, 10, .BLACK);
 
       if (eventRecording)
       {
-        rl.CoreD.DrawRectangle(10, 160, 290, 30, rl.CoreD.Fade(.RED, 0.3));
-        rl.CoreD.DrawRectangleLines(10, 160, 290, 30, rl.CoreD.Fade(.MAROON, 0.8));
-        rl.CoreD.DrawCircle(30, 175, 10, .MAROON);
+        DrawRectangle(10, 160, 290, 30, Fade(.RED, 0.3));
+        DrawRectangleLines(10, 160, 290, 30, Fade(.MAROON, 0.8));
+        DrawCircle(30, 175, 10, .MAROON);
 
-        if (((frameCounter/15)%2) == 1) rl.CoreD.DrawText(
+        if (((frameCounter/15)%2) == 1) DrawText(
           "RECORDING EVENTS... [${aelist.count}]",
           50, 170, 10, .MAROON
         );
       }
       else if (eventPlaying)
       {
-        rl.CoreD.DrawRectangle(10, 160, 290, 30, rl.CoreD.Fade(.LIME, 0.3));
-        rl.CoreD.DrawRectangleLines(10, 160, 290, 30, rl.CoreD.Fade(.DARKGREEN, 0.8));
-        rl.CoreD.DrawTriangle(
+        DrawRectangle(10, 160, 290, 30, Fade(.LIME, 0.3));
+        DrawRectangleLines(10, 160, 290, 30, Fade(.DARKGREEN, 0.8));
+        DrawTriangle(
           .vec2(20, 155 + 10),
           .vec2(20, 155 + 30),
           .vec2(40, 155 + 20),
           .DARKGREEN
         );
 
-        if (((frameCounter/15)%2) == 1) rl.CoreD.DrawText(
+        if (((frameCounter/15)%2) == 1) DrawText(
           "PLAYING RECORDED EVENTS... [$currentPlayFrame]",
           50, 170, 10, .DARKGREEN
         );
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

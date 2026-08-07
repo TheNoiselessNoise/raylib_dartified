@@ -3,82 +3,81 @@
 // Run it: dart run textures_image_text.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_text".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_text".toC);
+  SetTargetFPS(60);
 
-  final parrots = rl.Temp.Image$.At('parrots');
-  parrots.ref = rl.Core.LoadImage("../resources/parrots.png".toC);
+  final parrots = Image$.At('parrots');
+  parrots.ref = LoadImage("../resources/parrots.png".toC);
 
-  final font = rl.Core.LoadFontEx("../resources/KAISG.ttf".toC, 64, nullptr, 0);
+  final font = LoadFontEx("../resources/KAISG.ttf".toC, 64, nullptr, 0);
 
-  rl.Core.ImageDrawTextEx(
+  ImageDrawTextEx(
     parrots,
     font,
     "[Parrots font drawing]".toC,
-    rl.Temp.vec21(20.0, 20.0),
+    Vector2$.$1.set(20.0, 20.0),
     font.baseSize.toDouble(),
     0.0,
-    rl.Color.RED
+    RED
   );
 
-  final texture = rl.Core.LoadTextureFromImage(parrots.ref);
-  rl.Core.UnloadImage(parrots.ref);
+  final texture = LoadTextureFromImage(parrots.ref);
+  UnloadImage(parrots.ref);
 
-  final position = rl.Temp.Vector2$.At('position').set(
+  final position = Vector2$.At('position').set(
     screenWidth/2 - texture.width/2,
     screenHeight/2 - texture.height/2 - 20
   );
 
   bool showFont = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    showFont = rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value);
+    showFont = IsKeyDown(KeyboardKey.KEY_SPACE.value);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       if (!showFont)
       {
-        rl.Core.DrawTextureV(texture, position.ref, rl.Color.WHITE);
+        DrawTextureV(texture, position.ref, WHITE);
 
-        rl.Core.DrawTextEx(
+        DrawTextEx(
           font,
           "[Parrots font drawing]".toC,
-          rl.Temp.vec21(position.ref.x + 20, position.ref.y + 20 + 280),
+          Vector2$.$1.set(position.ref.x + 20, position.ref.y + 20 + 280),
           font.baseSize.toDouble(),
           0.0,
-          rl.Color.WHITE
+          WHITE
         );
       }
-      else rl.Core.DrawTexture(
+      else DrawTexture(
         font.texture,
         (screenWidth/2 - font.texture.width/2).toInt(),
         50,
-        rl.Color.BLACK
+        BLACK
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "PRESS SPACE to SHOW FONT ATLAS USED".toC,
-        290, 420, 10, rl.Color.DARKGRAY
+        290, 420, 10, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
-  rl.Core.UnloadFont(font);
+  UnloadTexture(texture);
+  UnloadFont(font);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

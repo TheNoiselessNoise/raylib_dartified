@@ -3,7 +3,7 @@
 // Run it: dart run shaders_color_correction.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,66 +11,65 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_color_correction".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_color_correction".toC);
+  SetTargetFPS(60);
 
   List<TextureC> textures = [
-    rl.Core.LoadTexture("../resources/parrots.png".toC),
-    rl.Core.LoadTexture("../resources/cat.png".toC),
-    rl.Core.LoadTexture("../resources/mandrill.png".toC),
-    rl.Core.LoadTexture("../resources/fudesumi.png".toC),
+    LoadTexture("../resources/parrots.png".toC),
+    LoadTexture("../resources/cat.png".toC),
+    LoadTexture("../resources/mandrill.png".toC),
+    LoadTexture("../resources/fudesumi.png".toC),
   ];
 
-  ShaderC shader = rl.Core.LoadShader(
+  ShaderC shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/color_correction.fs".toC,
   );
 
-  final imageIndex = rl.Temp.Int$.At('imageIndex');
+  final imageIndex = Int$.At('imageIndex');
   int resetButtonClicked = 0;
 
-  final contrast = rl.Temp.Float32$.At('contrast');
-  final saturation = rl.Temp.Float32$.At('saturation');
-  final brightness = rl.Temp.Float32$.At('brightness');
+  final contrast = Float32$.At('contrast');
+  final saturation = Float32$.At('saturation');
+  final brightness = Float32$.At('brightness');
 
-  int contrastLoc = rl.Core.GetShaderLocation(shader, "contrast".toC);
-  int saturationLoc = rl.Core.GetShaderLocation(shader, "saturation".toC);
-  int brightnessLoc = rl.Core.GetShaderLocation(shader, "brightness".toC);
+  int contrastLoc = GetShaderLocation(shader, "contrast".toC);
+  int saturationLoc = GetShaderLocation(shader, "saturation".toC);
+  int brightnessLoc = GetShaderLocation(shader, "brightness".toC);
 
   void updateShaderValues() {
-    rl.Core.SetShaderValue(shader, contrastLoc,
-      rl.Temp.Float32$.Value(contrast.value).cast(),
+    SetShaderValue(shader, contrastLoc,
+      Float32$.Value(contrast.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
-    rl.Core.SetShaderValue(shader, saturationLoc,
-      rl.Temp.Float32$.Value(saturation.value).cast(),
+    SetShaderValue(shader, saturationLoc,
+      Float32$.Value(saturation.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
-    rl.Core.SetShaderValue(shader, brightnessLoc,
-      rl.Temp.Float32$.Value(brightness.value).cast(),
+    SetShaderValue(shader, brightnessLoc,
+      Float32$.Value(brightness.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   }
 
   updateShaderValues();
 
-  final lineColor = rl.Temp.Color$.At('lineColor').set(218, 218, 218, 255);
-  final rectColor = rl.Temp.Color$.At('rectColor').set(232, 232, 232, 255);
+  final lineColor = Color$.At('lineColor').set(218, 218, 218, 255);
+  final rectColor = Color$.At('rectColor').set(232, 232, 232, 255);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ONE.value)) imageIndex.value = 0;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_TWO.value)) imageIndex.value = 1;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_THREE.value)) imageIndex.value = 2;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_FOUR.value)) imageIndex.value = 3;
+    if (IsKeyPressed(KeyboardKey.KEY_ONE.value)) imageIndex.value = 0;
+    else if (IsKeyPressed(KeyboardKey.KEY_TWO.value)) imageIndex.value = 1;
+    else if (IsKeyPressed(KeyboardKey.KEY_THREE.value)) imageIndex.value = 2;
+    else if (IsKeyPressed(KeyboardKey.KEY_FOUR.value)) imageIndex.value = 3;
 
     if (
-      rl.Core.IsKeyPressed(KeyboardKey.KEY_R.value) ||
+      IsKeyPressed(KeyboardKey.KEY_R.value) ||
       resetButtonClicked.toBool()
     ) {
       contrast.value = 0;
@@ -80,76 +79,76 @@ void main()
 
     updateShaderValues();
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.Core.DrawTexture(
+        DrawTexture(
           textures[imageIndex.value],
           (580/2 - textures[imageIndex.value].width/2).toInt(),
           (screenHeight/2 - textures[imageIndex.value].height/2).toInt(),
-          rl.Color.WHITE
+          WHITE
         );
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawLine(580, 0, 580, screenHeight, lineColor.ref);
-      rl.Core.DrawRectangle(580, 0, screenWidth, screenHeight, rectColor.ref);
+      DrawLine(580, 0, 580, screenHeight, lineColor.ref);
+      DrawRectangle(580, 0, screenWidth, screenHeight, rectColor.ref);
 
-      rl.Core.DrawText(
+      DrawText(
         "Color Correction".toC,
-        585, 40, 20, rl.Color.GRAY
+        585, 40, 20, GRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Picture".toC,
-        602, 75, 10, rl.Color.GRAY
+        602, 75, 10, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Press [1] - [4] to Change Picture".toC,
-        600, 230, 8, rl.Color.GRAY
+        600, 230, 8, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Press [R] to Reset Values".toC,
-        600, 250, 8, rl.Color.GRAY
+        600, 250, 8, GRAY
       );
 
-      rl.Gui.GuiToggleGroup(
-        rl.Temp.rect1(645, 70, 20, 20),
+      GuiToggleGroup(
+        Rectangle$.$1.set(645, 70, 20, 20),
         "1;2;3;4".toC, imageIndex
       );
 
-      rl.Gui.GuiSliderBar(
-        rl.Temp.rect1(645, 100, 120, 20),
+      GuiSliderBar(
+        Rectangle$.$1.set(645, 100, 120, 20),
         "Contrast".toC, contrast.value.f0.toC,
         contrast, -100.0, 100.0
       );
       
-      rl.Gui.GuiSliderBar(
-        rl.Temp.rect1(645, 130, 120, 20),
+      GuiSliderBar(
+        Rectangle$.$1.set(645, 130, 120, 20),
         "Saturation".toC, saturation.value.f0.toC,
         saturation, -100.0, 100.0
       );
       
-      rl.Gui.GuiSliderBar(
-        rl.Temp.rect1(645, 160, 120, 20),
+      GuiSliderBar(
+        Rectangle$.$1.set(645, 160, 120, 20),
         "Brightness".toC, brightness.value.f0.toC,
         brightness, -100.0, 100.0
       );
 
-      resetButtonClicked = rl.Gui.GuiButton(
-        rl.Temp.rect1(645, 190, 40, 20),
+      resetButtonClicked = GuiButton(
+        Rectangle$.$1.set(645, 190, 40, 20),
         "Reset".toC
       );
 
-      rl.Core.DrawFPS(710, 10);
+      DrawFPS(710, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
+  UnloadShader(shader);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -1,22 +1,21 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_bouncing_ball.c
 // Run it: dart run shapes_bouncing_ball.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_bouncing_ball");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+  InitWindow(screenWidth, screenHeight, "shapes_bouncing_ball");
+  SetTargetFPS(60);
 
   final Vector2D ballPosition = .vec2(
-    rl.CoreD.GetScreenWidth()/2.0, rl.CoreD.GetScreenHeight()/2.0
+    GetScreenWidth()/2.0, GetScreenHeight()/2.0
   );
   final Vector2D ballSpeed = .vec2(5.0, 4.0);
   int ballRadius = 20;
@@ -24,9 +23,9 @@ void main()
   bool pause = false;
   int framesCounter = 0;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) pause = !pause;
+    if (IsKeyPressed(.KEY_SPACE)) pause = !pause;
 
     if (!pause)
     {
@@ -34,34 +33,34 @@ void main()
       ballPosition.y += ballSpeed.y;
 
       if (
-        (ballPosition.x >= (rl.CoreD.GetScreenWidth() - ballRadius)) ||
+        (ballPosition.x >= (GetScreenWidth() - ballRadius)) ||
         (ballPosition.x <= ballRadius)
       ) ballSpeed.x *= -1.0;
       
       if (
-        (ballPosition.y >= (rl.CoreD.GetScreenHeight() - ballRadius)) ||
+        (ballPosition.y >= (GetScreenHeight() - ballRadius)) ||
         (ballPosition.y <= ballRadius)
       ) ballSpeed.y *= -1.0;
     }
     else framesCounter++;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawCircleV(ballPosition, ballRadius.toDouble(), .MAROON);
-      rl.CoreD.DrawText(
+      DrawCircleV(ballPosition, ballRadius, .MAROON);
+      DrawText(
         "PRESS SPACE to PAUSE BALL MOVEMENT",
-        10, rl.CoreD.GetScreenHeight() - 25, 20, .LIGHTGRAY
+        10, GetScreenHeight() - 25, 20, .LIGHTGRAY
       );
 
       if (pause && ((framesCounter/30)%2 == 0))
-        rl.CoreD.DrawText("PAUSED", 350, 200, 30, .GRAY);
+        DrawText("PAUSED", 350, 200, 30, .GRAY);
 
-      rl.CoreD.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

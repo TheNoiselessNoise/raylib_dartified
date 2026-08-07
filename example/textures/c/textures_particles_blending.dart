@@ -3,7 +3,7 @@
 // Run it: dart run textures_particles_blending.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -29,37 +29,36 @@ class Particle {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_particles_blending".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_particles_blending".toC);
+  SetTargetFPS(60);
 
   final mouseTail = <Particle>[];
 
   for (int i = 0; i < MAX_PARTICLES; i++)
   {
     mouseTail.add(Particle(
-      position: rl.Temp.Vector2$.At('position_$i').ref,
-      color: rl.Temp.Color$.At('color_$i').set(
-        rl.Core.GetRandomValue(0, 255),
-        rl.Core.GetRandomValue(0, 255),
-        rl.Core.GetRandomValue(0, 255),
+      position: Vector2$.At('position_$i').ref,
+      color: Color$.At('color_$i').set(
+        GetRandomValue(0, 255),
+        GetRandomValue(0, 255),
+        GetRandomValue(0, 255),
         255,
       ).ref,
       alpha: 1.0,
-      size: rl.Core.GetRandomValue(1, 30)/20.0,
-      rotation: rl.Core.GetRandomValue(0, 360).toDouble(),
+      size: GetRandomValue(1, 30)/20.0,
+      rotation: GetRandomValue(0, 360).toDouble(),
       active: false,
     ));
   }
 
-  final smoke = rl.Core.LoadTexture("../resources/spark_flame.png".toC);
+  final smoke = LoadTexture("../resources/spark_flame.png".toC);
 
   double gravity = 3.0;
   int blending = BlendMode.BLEND_ALPHA.value;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     for (int i = 0; i < MAX_PARTICLES; i++)
     {
@@ -67,7 +66,7 @@ void main()
       {
         mouseTail[i].active = true;
         mouseTail[i].alpha = 1.0;
-        mouseTail[i].position.setC(rl.Core.GetMousePosition());
+        mouseTail[i].position.setC(GetMousePosition());
         i = MAX_PARTICLES;
       }
     }
@@ -85,67 +84,67 @@ void main()
       }
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
       if (blending == BlendMode.BLEND_ALPHA.value)
         blending = BlendMode.BLEND_ADDITIVE.value;
       else blending = BlendMode.BLEND_ALPHA.value;
     }
     
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.DARKGRAY);
+      ClearBackground(DARKGRAY);
 
-      rl.Core.BeginBlendMode(blending);
+      BeginBlendMode(blending);
 
         for (int i = 0; i < MAX_PARTICLES; i++)
         {
           if (!mouseTail[i].active) continue;
           
-          rl.Core.DrawTexturePro(
+          DrawTexturePro(
             smoke,
-            rl.Temp.rect1(
+            Rectangle$.$1.set(
               0.0, 0.0,
               smoke.width, smoke.height
             ),
-            rl.Temp.rect2(
+            Rectangle$.$2.set(
               mouseTail[i].position.x, mouseTail[i].position.y,
               smoke.width*mouseTail[i].size, smoke.height*mouseTail[i].size
             ),
-            rl.Temp.vec21(
+            Vector2$.$1.set(
               smoke.width*mouseTail[i].size/2.0,
               smoke.height*mouseTail[i].size/2.0
             ),
             mouseTail[i].rotation,
-            rl.Core.Fade(mouseTail[i].color, mouseTail[i].alpha)
+            Fade(mouseTail[i].color, mouseTail[i].alpha)
           );
         }
 
-      rl.Core.EndBlendMode();
+      EndBlendMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "PRESS SPACE to CHANGE BLENDING MODE".toC,
-        180, 20, 20, rl.Color.BLACK
+        180, 20, 20, BLACK
       );
 
       if (blending == BlendMode.BLEND_ALPHA.value) {
-        rl.Core.DrawText(
+        DrawText(
           "ALPHA BLENDING".toC,
-          290, screenHeight - 40, 20, rl.Color.BLACK
+          290, screenHeight - 40, 20, BLACK
         );
       }
       else
       {
-        rl.Core.DrawText(
+        DrawText(
           "ADDITIVE BLENDING".toC,
-          280, screenHeight - 40, 20, rl.Color.RAYWHITE
+          280, screenHeight - 40, 20, RAYWHITE
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(smoke);
+  UnloadTexture(smoke);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

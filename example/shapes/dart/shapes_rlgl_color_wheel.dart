@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_rlgl_color_wheel.c
 // Run it: dart run shapes_rlgl_color_wheel.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -9,12 +9,11 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_rlgl_color_wheel");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+  InitWindow(screenWidth, screenHeight, "shapes_rlgl_color_wheel");
+  SetTargetFPS(60);
 
   const int pointsMin = 3;
   const int pointsMax = 256;
@@ -31,13 +30,13 @@ void main()
   bool settingColor = false;
   RlDrawMode renderType = .RL_TRIANGLES;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    triangleCount += rl.CoreD.GetMouseWheelMove().toInt();
-    triangleCount = rl.Clamp(triangleCount, pointsMin, pointsMax).toInt();
+    triangleCount += GetMouseWheelMove().toInt();
+    triangleCount = Clamp(triangleCount, pointsMin, pointsMax).toInt();
 
     final RectangleD sliderRectangle = .rect(42.0, 16.0 + 64.0 + 45.0, 64.0, 16.0);
-    final mousePosition = rl.CoreD.GetMousePosition();
+    final mousePosition = GetMousePosition();
 
     bool sliderHover = (
       mousePosition.x >= sliderRectangle.x &&
@@ -46,17 +45,17 @@ void main()
       mousePosition.y < sliderRectangle.y + sliderRectangle.height
     );
 
-    if (rl.CoreD.IsKeyDown(.KEY_LEFT_CONTROL) && rl.CoreD.IsKeyDown(.KEY_C))
+    if (IsKeyDown(.KEY_LEFT_CONTROL) && IsKeyDown(.KEY_C))
     {
-      if (rl.CoreD.IsKeyPressed(.KEY_C))
+      if (IsKeyPressed(.KEY_C))
       {
-        rl.CoreD.SetClipboardText(
+        SetClipboardText(
           "#${color.r.hexPad()}${color.g.hexPad()}${color.b.hexPad()}"
         );
       }
     }
 
-    if (rl.CoreD.IsKeyDown(.KEY_UP))
+    if (IsKeyDown(.KEY_UP))
     {
       pointScale *= 1.025;
 
@@ -70,7 +69,7 @@ void main()
       }
     }
 
-    if (rl.CoreD.IsKeyDown(.KEY_DOWN))
+    if (IsKeyDown(.KEY_DOWN))
     {
       pointScale *= 0.975;
 
@@ -84,65 +83,65 @@ void main()
       }
 
       double distance = center.distance(circlePosition) / pointScale;
-      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / rl.PI + 1) / 2;
+      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
 
       if (distance > 1.0)
       {
         circlePosition = .vec2(
-          math.sin(angle*(rl.PI*2.0))*pointScale,
-          -math.cos(angle*(rl.PI*2.0))*pointScale
+          math.sin(angle*(PI*2.0))*pointScale,
+          -math.cos(angle*(PI*2.0))*pointScale
         ).add(center);
       }
     }
 
-    if (rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) && rl.CoreD.GetMousePosition().distance(center) <= pointScale + 10.0)
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) && GetMousePosition().distance(center) <= pointScale + 10.0)
     {
       settingColor = true;
     }
 
-    if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) settingColor = false;
+    if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) settingColor = false;
 
-    if (sliderHover && rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) sliderClicked = true;
-    if (sliderClicked && rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) sliderClicked = false;
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) renderType = .RL_LINES;
-    if (rl.CoreD.IsKeyReleased(.KEY_SPACE)) renderType = .RL_TRIANGLES;
+    if (sliderHover && IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) sliderClicked = true;
+    if (sliderClicked && IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) sliderClicked = false;
+    if (IsKeyPressed(.KEY_SPACE)) renderType = .RL_LINES;
+    if (IsKeyReleased(.KEY_SPACE)) renderType = .RL_TRIANGLES;
 
     if (settingColor || sliderClicked)
     {
-      if (settingColor) circlePosition = rl.CoreD.GetMousePosition();
+      if (settingColor) circlePosition = GetMousePosition();
 
       double distance = center.distance(circlePosition)/pointScale;
 
-      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / rl.PI + 1) / 2;
+      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
       if (settingColor && distance > 1.0) {
         circlePosition = .vec2(
-          math.sin(angle*(rl.PI*2.0))*pointScale,
-          -math.cos(angle*(rl.PI*2.0))*pointScale
+          math.sin(angle*(PI*2.0))*pointScale,
+          -math.cos(angle*(PI*2.0))*pointScale
         ).add(center);
       }
 
       double angle360 = angle*360.0;
-      double valueActual = rl.Clamp(distance, 0.0, 1.0);
-      color = rl.CoreD.ColorLerp(
+      double valueActual = Clamp(distance, 0.0, 1.0);
+      color = ColorLerp(
         .color(
           value*255.0,
           value*255.0,
           value*255.0,
           255
         ),
-        rl.CoreD.ColorFromHSV(angle360, rl.Clamp(distance, 0.0, 1.0), 1.0),
+        ColorFromHSV(angle360, Clamp(distance, 0.0, 1.0), 1.0),
         valueActual,
       );
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-    rl.CoreD.ClearBackground(.RAYWHITE);
+    ClearBackground(.RAYWHITE);
 
-    rl.RlglD.rlBegin(renderType);
+    rlBegin(renderType);
     for (int i = 0; i < triangleCount; i++)
     {
-      double angleOffset = ((rl.PI*2.0)/triangleCount);
+      double angleOffset = ((PI*2.0)/triangleCount);
       double angle = angleOffset*i;
       double angleOffsetCalculated = (i + 1)*angleOffset;
 
@@ -152,40 +151,40 @@ void main()
       final position = center.add(offset);
       final position2 = center.add(offset2);
 
-      double angleNonRadian = (angle/(2.0*rl.PI))*360.0;
-      double angleNonRadianOffset = (angleOffset/(2.0*rl.PI))*360.0;
+      double angleNonRadian = (angle/(2.0*PI))*360.0;
+      double angleNonRadianOffset = (angleOffset/(2.0*PI))*360.0;
 
-      final currentColor = rl.CoreD.ColorFromHSV(angleNonRadian, 1.0, 1.0);
-      final offsetColor = rl.CoreD.ColorFromHSV(angleNonRadian + angleNonRadianOffset, 1.0, 1.0);
+      final currentColor = ColorFromHSV(angleNonRadian, 1.0, 1.0);
+      final offsetColor = ColorFromHSV(angleNonRadian + angleNonRadianOffset, 1.0, 1.0);
 
       if (renderType == .RL_TRIANGLES)
       {
-        rl.RlglD.rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
-        rl.RlglD.rlVertex2f(position.x, position.y);
-        rl.RlglD.rlColor4f(value, value, value, 1.0);
-        rl.RlglD.rlVertex2f(center.x, center.y);
-        rl.RlglD.rlColor4ub(offsetColor.r, offsetColor.g, offsetColor.b, offsetColor.a);
-        rl.RlglD.rlVertex2f(position2.x, position2.y);
+        rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+        rlVertex2f(position.x, position.y);
+        rlColor4f(value, value, value, 1.0);
+        rlVertex2f(center.x, center.y);
+        rlColor4ub(offsetColor.r, offsetColor.g, offsetColor.b, offsetColor.a);
+        rlVertex2f(position2.x, position2.y);
       }
       else if (renderType == .RL_LINES)
       {
-        rl.RlglD.rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
-        rl.RlglD.rlVertex2f(position.x, position.y);
+        rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+        rlVertex2f(position.x, position.y);
         
         final ColorD white = .WHITE;
-        rl.RlglD.rlColor4ub(white.r, white.g, white.b, white.a);
-        rl.RlglD.rlVertex2f(center.x, center.y);
+        rlColor4ub(white.r, white.g, white.b, white.a);
+        rlVertex2f(center.x, center.y);
 
-        rl.RlglD.rlVertex2f(center.x, center.y);
-        rl.RlglD.rlColor4ub(offsetColor.r, offsetColor.g, offsetColor.b, offsetColor.a);
-        rl.RlglD.rlVertex2f(position2.x, position2.y);
+        rlVertex2f(center.x, center.y);
+        rlColor4ub(offsetColor.r, offsetColor.g, offsetColor.b, offsetColor.a);
+        rlVertex2f(position2.x, position2.y);
 
-        rl.RlglD.rlVertex2f(position2.x, position2.y);
-        rl.RlglD.rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
-        rl.RlglD.rlVertex2f(position.x, position.y);
+        rlVertex2f(position2.x, position2.y);
+        rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+        rlVertex2f(position.x, position.y);
       }
     }
-    rl.RlglD.rlEnd();
+    rlEnd();
 
     ColorD handleColor = .BLACK;
 
@@ -194,18 +193,18 @@ void main()
       handleColor = .DARKGRAY;
     }
 
-    rl.CoreD.DrawCircleLinesV(circlePosition, 4.0, handleColor);
+    DrawCircleLinesV(circlePosition, 4.0, handleColor);
 
-    rl.CoreD.DrawRectangleV(
+    DrawRectangleV(
       .vec2(8, 8),
       .vec2(64, 64),
       color,
     );
 
-    rl.CoreD.DrawRectangleLinesEx(
+    DrawRectangleLinesEx(
       .rect(8, 8, 64, 64),
       2,
-      rl.CoreD.ColorLerp(color, .BLACK, 0.5),
+      ColorLerp(color, .BLACK, 0.5),
     );
 
     StringBuffer sb = StringBuffer('#');
@@ -216,31 +215,31 @@ void main()
     sb.write([color.r, color.g, color.b].join(', '));
     sb.write(')');
 
-    rl.CoreD.DrawText(
+    DrawText(
       sb.toString(),
       8, 8 + 64 + 8, 20, .DARKGRAY
     );
 
     ColorD copyColor = .DARKGRAY;
     int offset = 0;
-    if (rl.CoreD.IsKeyDown(.KEY_LEFT_CONTROL) && rl.CoreD.IsKeyDown(.KEY_C))
+    if (IsKeyDown(.KEY_LEFT_CONTROL) && IsKeyDown(.KEY_C))
     {
       copyColor = .DARKGREEN;
       offset = 4;
     }
 
-    rl.CoreD.DrawText(
+    DrawText(
       "press ctrl+c to copy!",
       8, 425 - offset, 20, copyColor
     );
 
-    rl.CoreD.DrawText(
+    DrawText(
       "triangle count: $triangleCount",
       8, 395, 20, .DARKGRAY
     );
 
     { // GUI
-      var (result, newValue) = rl.GuiD.GuiSliderBar(
+      var (result, newValue) = GuiSliderBar(
         sliderRectangle,
         "value: ",
         "",
@@ -251,10 +250,10 @@ void main()
       value = newValue;
     }
 
-    rl.CoreD.DrawFPS(64 + 16, 8);
+    DrawFPS(64 + 16, 8);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_model_shader.c
 // Run it: dart run shaders_model_shader.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -10,13 +10,12 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_model_shader");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
-  rl.CoreD.DisableCursor();
+  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+  InitWindow(screenWidth, screenHeight, "shaders_model_shader");
+  SetTargetFPS(60);
+  DisableCursor();
 
   final camera = Camera3DD(
     position: .vec3(4, 4, 4),
@@ -26,10 +25,10 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  final model = rl.CoreD.LoadModel("../resources/models/watermill.obj");
-  final texture = rl.CoreD.LoadTexture("../resources/models/watermill_diffuse.png");
+  final model = LoadModel("../resources/models/watermill.obj");
+  final texture = LoadTexture("../resources/models/watermill_diffuse.png");
 
-  final shader = rl.CoreD.LoadShader(
+  final shader = LoadShader(
     null,
     "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs",
   );
@@ -37,35 +36,35 @@ void main()
   model.materials[0].shader = shader;
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.UpdateCamera(camera, .CAMERA_FREE);
+    UpdateCamera(camera, .CAMERA_FREE);
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginMode3D(camera);
+      BeginMode3D(camera);
 
-        rl.CoreD.DrawModel(model, .zero(), 0.2, .WHITE);
+        DrawModel(model, .zero(), 0.2, .WHITE);
 
-        rl.CoreD.DrawGrid(10, 1.0);
+        DrawGrid(10, 1.0);
 
-      rl.CoreD.EndMode3D();
+      EndMode3D();
 
-      rl.CoreD.DrawText(
+      DrawText(
         "(c) Watermill 3D model by Alberto Cano",
         screenWidth - 210, screenHeight - 20, 10, .GRAY
       );
 
-      rl.CoreD.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadShader(shader);
-  rl.CoreD.UnloadTexture(texture);
-  rl.CoreD.UnloadModel(model);
+  UnloadShader(shader);
+  UnloadTexture(texture);
+  UnloadModel(model);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

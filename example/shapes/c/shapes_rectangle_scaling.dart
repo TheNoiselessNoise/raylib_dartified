@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_rectangle_scaling.c
 // Run it: dart run shapes_rectangle_scaling.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -10,32 +10,31 @@ const double MOUSE_SCALE_MARK_SIZE = 12;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_rectangle_scaling".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_rectangle_scaling".toC);
+  SetTargetFPS(60);
 
-  final rec = rl.Temp.Rectangle$.At('rec').set(100, 100, 200, 80);
-  final mousePosition = rl.Temp.Vector2$.At('mousePosition');
+  final rec = Rectangle$.At('rec').set(100, 100, 200, 80);
+  final mousePosition = Vector2$.At('mousePosition');
 
   bool mouseScaleReady = false;
   bool mouseScaleMode = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    mousePosition.setC(rl.Core.GetMousePosition());
+    mousePosition.setC(GetMousePosition());
 
-    if (rl.Core.CheckCollisionPointRec(
+    if (CheckCollisionPointRec(
       mousePosition.ref,
-      rl.Temp.rect1(
+      Rectangle$.$1.set(
         rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE,
         rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE,
         MOUSE_SCALE_MARK_SIZE, MOUSE_SCALE_MARK_SIZE
       )
     )) {
       mouseScaleReady = true;
-      if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) mouseScaleMode = true;
+      if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) mouseScaleMode = true;
     }
     else mouseScaleReady = false;
 
@@ -49,38 +48,38 @@ void main()
       if (rec.ref.width < MOUSE_SCALE_MARK_SIZE) rec.ref.width = MOUSE_SCALE_MARK_SIZE;
       if (rec.ref.height < MOUSE_SCALE_MARK_SIZE) rec.ref.height = MOUSE_SCALE_MARK_SIZE;
       
-      if (rec.ref.width > (rl.Core.GetScreenWidth() - rec.ref.x))
-        rec.ref.width = rl.Core.GetScreenWidth() - rec.ref.x;
-      if (rec.ref.height > (rl.Core.GetScreenHeight() - rec.ref.y))
-        rec.ref.height = rl.Core.GetScreenHeight() - rec.ref.y;
+      if (rec.ref.width > (GetScreenWidth() - rec.ref.x))
+        rec.ref.width = GetScreenWidth() - rec.ref.x;
+      if (rec.ref.height > (GetScreenHeight() - rec.ref.y))
+        rec.ref.height = GetScreenHeight() - rec.ref.y;
 
-      if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) mouseScaleMode = false;
+      if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) mouseScaleMode = false;
     }
     
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "Scale rectangle dragging from bottom-right corner!".toC,
-        10, 10, 20, rl.Color.GRAY
+        10, 10, 20, GRAY
       );
 
-      rl.Core.DrawRectangleRec(rec.ref, rl.Core.Fade(rl.Color.GREEN, 0.5));
+      DrawRectangleRec(rec.ref, Fade(GREEN, 0.5));
 
       if (mouseScaleReady)
       {
-        rl.Core.DrawRectangleLinesEx(rec.ref, 1, rl.Color.RED);
-        rl.Core.DrawTriangle(
-          rl.Temp.vec21(rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE, rec.ref.y + rec.ref.height),
-          rl.Temp.vec22(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height),
-          rl.Temp.vec23(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE),
-          rl.Color.RED
+        DrawRectangleLinesEx(rec.ref, 1, RED);
+        DrawTriangle(
+          Vector2$.$1.set(rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE, rec.ref.y + rec.ref.height),
+          Vector2$.$2.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height),
+          Vector2$.$3.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE),
+          RED
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

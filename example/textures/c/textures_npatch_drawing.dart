@@ -3,30 +3,29 @@
 // Run it: dart run textures_npatch_drawing.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_npatch_drawing".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_npatch_drawing".toC);
+  SetTargetFPS(60);
 
-  final nPatchTexture = rl.Core.LoadTexture("../resources/ninepatch_button.png".toC);
+  final nPatchTexture = LoadTexture("../resources/ninepatch_button.png".toC);
 
-  final mousePosition = rl.Temp.Vector2$.At('mousePosition');
-  final origin = rl.Temp.Vector2$.At('origin');
+  final mousePosition = Vector2$.At('mousePosition');
+  final origin = Vector2$.At('origin');
 
-  final dstRec1 = rl.Temp.Rectangle$.At('dstRec1').set(480.0, 160.0, 32.0, 32.0);
-  final dstRec2 = rl.Temp.Rectangle$.At('dstRec2').set(160.0, 160.0, 32.0, 32.0);
-  final dstRecH = rl.Temp.Rectangle$.At('dstRecH').set(160.0, 93.0, 32.0, 32.0);
-  final dstRecV = rl.Temp.Rectangle$.At('dstRecV').set(92.0, 160.0, 32.0, 32.0);
+  final dstRec1 = Rectangle$.At('dstRec1').set(480.0, 160.0, 32.0, 32.0);
+  final dstRec2 = Rectangle$.At('dstRec2').set(160.0, 160.0, 32.0, 32.0);
+  final dstRecH = Rectangle$.At('dstRecH').set(160.0, 93.0, 32.0, 32.0);
+  final dstRecV = Rectangle$.At('dstRecV').set(92.0, 160.0, 32.0, 32.0);
 
-  final ninePatchInfo1 = rl.Temp.NPatchInfo$.At('ninePatchInfo1');
+  final ninePatchInfo1 = NPatchInfo$.At('ninePatchInfo1');
   ninePatchInfo1.ref.source.set(0.0, 0.0, 64.0, 64.0);
   ninePatchInfo1.ref.left = 12;
   ninePatchInfo1.ref.top = 40;
@@ -34,7 +33,7 @@ void main()
   ninePatchInfo1.ref.bottom = 12;
   ninePatchInfo1.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
-  final ninePatchInfo2 = rl.Temp.NPatchInfo$.At('ninePatchInfo2');
+  final ninePatchInfo2 = NPatchInfo$.At('ninePatchInfo2');
   ninePatchInfo2.ref.source.set(0.0, 128.0, 64.0, 64.0);
   ninePatchInfo2.ref.left = 16;
   ninePatchInfo2.ref.top = 16;
@@ -42,7 +41,7 @@ void main()
   ninePatchInfo2.ref.bottom = 16;
   ninePatchInfo2.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
-  final h3PatchInfo = rl.Temp.NPatchInfo$.At('h3PatchInfo');
+  final h3PatchInfo = NPatchInfo$.At('h3PatchInfo');
   h3PatchInfo.ref.source.set(0.0, 64.0, 64.0, 64.0);
   h3PatchInfo.ref.left = 8;
   h3PatchInfo.ref.top = 8;
@@ -50,7 +49,7 @@ void main()
   h3PatchInfo.ref.bottom = 8;
   h3PatchInfo.ref.layout = NPatchLayout.NPATCH_THREE_PATCH_HORIZONTAL.value;
 
-  final v3PatchInfo = rl.Temp.NPatchInfo$.At('v3PatchInfo');
+  final v3PatchInfo = NPatchInfo$.At('v3PatchInfo');
   v3PatchInfo.ref.source.set(0.0, 192.0, 64.0, 64.0);
   v3PatchInfo.ref.left = 6;
   v3PatchInfo.ref.top = 6;
@@ -58,9 +57,9 @@ void main()
   v3PatchInfo.ref.bottom = 6;
   v3PatchInfo.ref.layout = NPatchLayout.NPATCH_THREE_PATCH_VERTICAL.value;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    mousePosition.setC(rl.Core.GetMousePosition());
+    mousePosition.setC(GetMousePosition());
 
     dstRec1.ref.width = mousePosition.ref.x - dstRec1.ref.x;
     dstRec1.ref.height = mousePosition.ref.y - dstRec1.ref.y;
@@ -78,31 +77,31 @@ void main()
     if (dstRecH.ref.width < 1.0) dstRecH.ref.width = 1.0;
     if (dstRecV.ref.height < 1.0) dstRecV.ref.height = 1.0;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo2.ref, dstRec2.ref, origin.ref, 0.0, rl.Color.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, ninePatchInfo1.ref, dstRec1.ref, origin.ref, 0.0, rl.Color.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, h3PatchInfo.ref, dstRecH.ref, origin.ref, 0.0, rl.Color.WHITE);
-      rl.Core.DrawTextureNPatch(nPatchTexture, v3PatchInfo.ref, dstRecV.ref, origin.ref, 0.0, rl.Color.WHITE);
+      DrawTextureNPatch(nPatchTexture, ninePatchInfo2.ref, dstRec2.ref, origin.ref, 0.0, WHITE);
+      DrawTextureNPatch(nPatchTexture, ninePatchInfo1.ref, dstRec1.ref, origin.ref, 0.0, WHITE);
+      DrawTextureNPatch(nPatchTexture, h3PatchInfo.ref, dstRecH.ref, origin.ref, 0.0, WHITE);
+      DrawTextureNPatch(nPatchTexture, v3PatchInfo.ref, dstRecV.ref, origin.ref, 0.0, WHITE);
 
-      rl.Core.DrawRectangleLines(5, 88, 74, 266, rl.Color.BLUE);
-      rl.Core.DrawTexture(nPatchTexture, 10, 93, rl.Color.WHITE);
-      rl.Core.DrawText(
+      DrawRectangleLines(5, 88, 74, 266, BLUE);
+      DrawTexture(nPatchTexture, 10, 93, WHITE);
+      DrawText(
         "TEXTURE".toC,
-        15, 360, 10, rl.Color.DARKGRAY
+        15, 360, 10, DARKGRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Move the mouse to stretch or shrink the n-patches".toC,
-        10, 20, 20, rl.Color.DARKGRAY
+        10, 20, 20, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(nPatchTexture);
+  UnloadTexture(nPatchTexture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

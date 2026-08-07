@@ -4,7 +4,7 @@
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -13,67 +13,66 @@ double exponent = 1.0;
 late Pointer<Float> averageVolume;
 
 void main() async {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  averageVolume = rl.Temp.Float32$.At('averageVolume', 400);
+  averageVolume = Float32$.At('averageVolume', 400);
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "audio_mixed_processor".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "audio_mixed_processor".toC);
+  SetTargetFPS(60);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
   final ProcessAudio = NativeCallable<AudioCallbackFunctionC>.listener(ProcessAudioCallback);
-  rl.Audio.AttachAudioMixedProcessor(ProcessAudio.nativeFunction);
+  AttachAudioMixedProcessor(ProcessAudio.nativeFunction);
 
-  final music = rl.Audio.LoadMusicStream("../resources/country.mp3".toC);
-  final sound = rl.Audio.LoadSound("../resources/coin.wav".toC);
+  final music = LoadMusicStream("../resources/country.mp3".toC);
+  final sound = LoadSound("../resources/coin.wav".toC);
 
-  rl.Audio.PlayMusicStream(music);
+  PlayMusicStream(music);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Audio.UpdateMusicStream(music);
+    UpdateMusicStream(music);
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_LEFT.value)) exponent -= 0.05;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) exponent += 0.05;
+    if (IsKeyPressed(KeyboardKey.KEY_LEFT.value)) exponent -= 0.05;
+    if (IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) exponent += 0.05;
 
     if (exponent <= 0.5) exponent = 0.5;
     if (exponent >= 3.0) exponent = 3.0;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) rl.Audio.PlaySound(sound);
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value)) PlaySound(sound);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, rl.Color.LIGHTGRAY);
+      DrawText("MUSIC SHOULD BE PLAYING!".toC, 255, 150, 20, LIGHTGRAY);
 
-      rl.Core.DrawText("EXPONENT = ${exponent.f2}".toC, 215, 180, 20, rl.Color.LIGHTGRAY);
+      DrawText("EXPONENT = ${exponent.f2}".toC, 215, 180, 20, LIGHTGRAY);
 
-      rl.Core.DrawRectangle(199, 199, 402, 34, rl.Color.LIGHTGRAY);
+      DrawRectangle(199, 199, 402, 34, LIGHTGRAY);
       for (int i = 0; i < 400; i++)
       {
-        rl.Core.DrawLine(201 + i, 232 - (averageVolume[i] * 32).toInt(), 201 + i, 232, rl.Color.MAROON);
+        DrawLine(201 + i, 232 - (averageVolume[i] * 32).toInt(), 201 + i, 232, MAROON);
       }
-      rl.Core.DrawRectangleLines(199, 199, 402, 34, rl.Color.GRAY);
+      DrawRectangleLines(199, 199, 402, 34, GRAY);
 
-      rl.Core.DrawText("PRESS SPACE TO PLAY OTHER SOUND".toC, 200, 250, 20, rl.Color.LIGHTGRAY);
-      rl.Core.DrawText("USE LEFT AND RIGHT ARROWS TO ALTER DISTORTION".toC, 140, 280, 20, rl.Color.LIGHTGRAY);
+      DrawText("PRESS SPACE TO PLAY OTHER SOUND".toC, 200, 250, 20, LIGHTGRAY);
+      DrawText("USE LEFT AND RIGHT ARROWS TO ALTER DISTORTION".toC, 140, 280, 20, LIGHTGRAY);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
     await Future.delayed(Duration.zero);
   }
 
-  rl.Audio.UnloadMusicStream(music);
-  rl.Audio.DetachAudioMixedProcessor(ProcessAudio.nativeFunction);
+  UnloadMusicStream(music);
+  DetachAudioMixedProcessor(ProcessAudio.nativeFunction);
   ProcessAudio.close();
 
-  rl.Audio.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void ProcessAudioCallback(Pointer<Void> buffer, int frames)

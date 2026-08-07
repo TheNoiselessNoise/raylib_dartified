@@ -3,7 +3,7 @@
 // Run it: dart run shaders_texture_waves.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,27 +11,26 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_texture_waves".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_texture_waves".toC);
+  SetTargetFPS(60);
 
-  final texture = rl.Core.LoadTexture("../resources/space.png".toC);
+  final texture = LoadTexture("../resources/space.png".toC);
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/wave.fs".toC,
   );
 
-  int sizeLoc = rl.Core.GetShaderLocation(shader, "size".toC);
-  int secondsLoc = rl.Core.GetShaderLocation(shader, "seconds".toC);
-  int freqXLoc = rl.Core.GetShaderLocation(shader, "freqX".toC);
-  int freqYLoc = rl.Core.GetShaderLocation(shader, "freqY".toC);
-  int ampXLoc = rl.Core.GetShaderLocation(shader, "ampX".toC);
-  int ampYLoc = rl.Core.GetShaderLocation(shader, "ampY".toC);
-  int speedXLoc = rl.Core.GetShaderLocation(shader, "speedX".toC);
-  int speedYLoc = rl.Core.GetShaderLocation(shader, "speedY".toC);
+  int sizeLoc = GetShaderLocation(shader, "size".toC);
+  int secondsLoc = GetShaderLocation(shader, "seconds".toC);
+  int freqXLoc = GetShaderLocation(shader, "freqX".toC);
+  int freqYLoc = GetShaderLocation(shader, "freqY".toC);
+  int ampXLoc = GetShaderLocation(shader, "ampX".toC);
+  int ampYLoc = GetShaderLocation(shader, "ampY".toC);
+  int speedXLoc = GetShaderLocation(shader, "speedX".toC);
+  int speedYLoc = GetShaderLocation(shader, "speedY".toC);
 
   double freqX = 25.0;
   double freqY = 25.0;
@@ -40,63 +39,63 @@ void main()
   double speedX = 8.0;
   double speedY = 8.0;
 
-  final screenSize = [ rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight() ];
-  rl.Core.SetShaderValue(shader, sizeLoc,
-    rl.Temp.Float32$.Array(screenSize).cast(),
+  final screenSize = [ GetScreenWidth(), GetScreenHeight() ];
+  SetShaderValue(shader, sizeLoc,
+    Float32$.Array(screenSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
-  rl.Core.SetShaderValue(shader, freqXLoc,
-    rl.Temp.Float32$.Value(freqX).cast(),
+  SetShaderValue(shader, freqXLoc,
+    Float32$.Value(freqX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
-  rl.Core.SetShaderValue(shader, freqYLoc,
-    rl.Temp.Float32$.Value(freqY).cast(),
+  SetShaderValue(shader, freqYLoc,
+    Float32$.Value(freqY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
-  rl.Core.SetShaderValue(shader, ampXLoc,
-    rl.Temp.Float32$.Value(ampX).cast(),
+  SetShaderValue(shader, ampXLoc,
+    Float32$.Value(ampX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
-  rl.Core.SetShaderValue(shader, ampYLoc,
-    rl.Temp.Float32$.Value(ampY).cast(),
+  SetShaderValue(shader, ampYLoc,
+    Float32$.Value(ampY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
-  rl.Core.SetShaderValue(shader, speedXLoc,
-    rl.Temp.Float32$.Value(speedX).cast(),
+  SetShaderValue(shader, speedXLoc,
+    Float32$.Value(speedX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
-  rl.Core.SetShaderValue(shader, speedYLoc,
-    rl.Temp.Float32$.Value(speedY).cast(),
+  SetShaderValue(shader, speedYLoc,
+    Float32$.Value(speedY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
 
   double seconds = 0.0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    seconds += rl.Core.GetFrameTime();
+    seconds += GetFrameTime();
 
-    rl.Core.SetShaderValue(shader, secondsLoc,
-      rl.Temp.Float32$.Value(seconds).cast(),
+    SetShaderValue(shader, secondsLoc,
+      Float32$.Value(seconds).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.Core.DrawTexture(texture, 0, 0, rl.Color.WHITE);
-        rl.Core.DrawTexture(texture, texture.width, 0, rl.Color.WHITE);
+        DrawTexture(texture, 0, 0, WHITE);
+        DrawTexture(texture, texture.width, 0, WHITE);
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
-  rl.Core.UnloadTexture(texture);
+  UnloadShader(shader);
+  UnloadTexture(texture);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

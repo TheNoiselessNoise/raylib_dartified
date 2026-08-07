@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_generation.c
 // Run it: dart run textures_image_generation.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -16,76 +16,75 @@ class TexInfo {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_image_generation");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_generation");
+  SetTargetFPS(60);
 
-  final verticalGradient = rl.CoreD.GenImageGradientLinear(screenWidth, screenHeight, 0, .RED, .BLUE);
-  final horizontalGradient = rl.CoreD.GenImageGradientLinear(screenWidth, screenHeight, 90, .RED, .BLUE);
-  final diagonalGradient = rl.CoreD.GenImageGradientLinear(screenWidth, screenHeight, 45, .RED, .BLUE);
-  final radialGradient = rl.CoreD.GenImageGradientRadial(screenWidth, screenHeight, 0.0, .WHITE, .BLACK);
-  final squareGradient = rl.CoreD.GenImageGradientSquare(screenWidth, screenHeight, 0.0, .WHITE, .BLACK);
-  final checked = rl.CoreD.GenImageChecked(screenWidth, screenHeight, 32, 32, .RED, .BLUE);
-  final whiteNoise = rl.CoreD.GenImageWhiteNoise(screenWidth, screenHeight, 0.5);
-  final perlinNoise = rl.CoreD.GenImagePerlinNoise(screenWidth, screenHeight, 50, 50, 4.0);
-  final cellular = rl.CoreD.GenImageCellular(screenWidth, screenHeight, 32);
+  final verticalGradient = GenImageGradientLinear(screenWidth, screenHeight, 0, .RED, .BLUE);
+  final horizontalGradient = GenImageGradientLinear(screenWidth, screenHeight, 90, .RED, .BLUE);
+  final diagonalGradient = GenImageGradientLinear(screenWidth, screenHeight, 45, .RED, .BLUE);
+  final radialGradient = GenImageGradientRadial(screenWidth, screenHeight, 0.0, .WHITE, .BLACK);
+  final squareGradient = GenImageGradientSquare(screenWidth, screenHeight, 0.0, .WHITE, .BLACK);
+  final checked = GenImageChecked(screenWidth, screenHeight, 32, 32, .RED, .BLUE);
+  final whiteNoise = GenImageWhiteNoise(screenWidth, screenHeight, 0.5);
+  final perlinNoise = GenImagePerlinNoise(screenWidth, screenHeight, 50, 50, 4.0);
+  final cellular = GenImageCellular(screenWidth, screenHeight, 32);
 
   final textures = <TexInfo>[
-    TexInfo("VERTICAL GRADIENT", rl.CoreD.LoadTextureFromImage(verticalGradient), .RAYWHITE),
-    TexInfo("HORIZONTAL GRADIENT", rl.CoreD.LoadTextureFromImage(horizontalGradient), .RAYWHITE),
-    TexInfo("DIAGONAL GRADIENT", rl.CoreD.LoadTextureFromImage(diagonalGradient), .RAYWHITE),
-    TexInfo("RADIAL GRADIENT", rl.CoreD.LoadTextureFromImage(radialGradient), .LIGHTGRAY),
-    TexInfo("SQUARE GRADIENT", rl.CoreD.LoadTextureFromImage(squareGradient), .LIGHTGRAY),
-    TexInfo("CHECKED", rl.CoreD.LoadTextureFromImage(checked), .RAYWHITE),
-    TexInfo("WHITE NOISE", rl.CoreD.LoadTextureFromImage(whiteNoise), .RED),
-    TexInfo("PERLIN NOISE", rl.CoreD.LoadTextureFromImage(perlinNoise), .RED),
-    TexInfo("CELLULAR", rl.CoreD.LoadTextureFromImage(cellular), .RAYWHITE),
+    TexInfo("VERTICAL GRADIENT", LoadTextureFromImage(verticalGradient), .RAYWHITE),
+    TexInfo("HORIZONTAL GRADIENT", LoadTextureFromImage(horizontalGradient), .RAYWHITE),
+    TexInfo("DIAGONAL GRADIENT", LoadTextureFromImage(diagonalGradient), .RAYWHITE),
+    TexInfo("RADIAL GRADIENT", LoadTextureFromImage(radialGradient), .LIGHTGRAY),
+    TexInfo("SQUARE GRADIENT", LoadTextureFromImage(squareGradient), .LIGHTGRAY),
+    TexInfo("CHECKED", LoadTextureFromImage(checked), .RAYWHITE),
+    TexInfo("WHITE NOISE", LoadTextureFromImage(whiteNoise), .RED),
+    TexInfo("PERLIN NOISE", LoadTextureFromImage(perlinNoise), .RED),
+    TexInfo("CELLULAR", LoadTextureFromImage(cellular), .RAYWHITE),
   ];
 
-  rl.CoreD.UnloadImage(verticalGradient);
-  rl.CoreD.UnloadImage(horizontalGradient);
-  rl.CoreD.UnloadImage(diagonalGradient);
-  rl.CoreD.UnloadImage(radialGradient);
-  rl.CoreD.UnloadImage(squareGradient);
-  rl.CoreD.UnloadImage(checked);
-  rl.CoreD.UnloadImage(whiteNoise);
-  rl.CoreD.UnloadImage(perlinNoise);
-  rl.CoreD.UnloadImage(cellular);
+  UnloadImage(verticalGradient);
+  UnloadImage(horizontalGradient);
+  UnloadImage(diagonalGradient);
+  UnloadImage(radialGradient);
+  UnloadImage(squareGradient);
+  UnloadImage(checked);
+  UnloadImage(whiteNoise);
+  UnloadImage(perlinNoise);
+  UnloadImage(cellular);
 
   int currentTexture = 0;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     if (
-      rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) ||
-      rl.CoreD.IsKeyPressed(.KEY_RIGHT)
+      IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) ||
+      IsKeyPressed(.KEY_RIGHT)
     ) {
       currentTexture = (currentTexture + 1)%textures.length;
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       final texInfo = textures[currentTexture];
 
-      rl.CoreD.DrawTexture(texInfo.tex, 0, 0, .WHITE);
+      DrawTexture(texInfo.tex, 0, 0, .WHITE);
 
-      rl.CoreD.DrawRectangle(30, 400, 325, 30, rl.CoreD.Fade(.SKYBLUE, 0.5));
-      rl.CoreD.DrawRectangleLines(30, 400, 325, 30, rl.CoreD.Fade(.WHITE, 0.5));
-      rl.CoreD.DrawText(
+      DrawRectangle(30, 400, 325, 30, Fade(.SKYBLUE, 0.5));
+      DrawRectangleLines(30, 400, 325, 30, Fade(.WHITE, 0.5));
+      DrawText(
         "MOUSE LEFT BUTTON to CYCLE PROCEDURAL TEXTURES",
         40, 410, 10, .WHITE
       );
 
-      rl.CoreD.DrawText(texInfo.name, 20, 10, 20, texInfo.textColor);
+      DrawText(texInfo.name, 20, 10, 20, texInfo.textColor);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  textures.forEach((info) => rl.CoreD.UnloadTexture(info.tex));
+  textures.forEach((info) => UnloadTexture(info.tex));
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

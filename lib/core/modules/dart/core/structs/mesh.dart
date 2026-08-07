@@ -14,11 +14,10 @@ extension MeshCEx on MeshC {
   int get tangentsCount => MeshBase.BASE_tangentsCount(vertexCount);
   int get colorsCount => MeshBase.BASE_colorsCount(vertexCount);
   int get indicesCount => MeshBase.BASE_indicesCount(triangleCount);
+  int get boneIndicesCount => MeshBase.BASE_boneIndicesCount(vertexCount);
+  int get boneWeightsCount => MeshBase.BASE_boneWeightsCount(vertexCount);
   int get animVerticesCount => MeshBase.BASE_animVerticesCount(vertexCount);
   int get animNormalsCount => MeshBase.BASE_animNormalsCount(vertexCount);
-  int get boneIdsCount => MeshBase.BASE_boneIdsCount(vertexCount);
-  int get boneWeightsCount => MeshBase.BASE_boneWeightsCount(vertexCount);
-  int get boneMatricesCount => MeshBase.BASE_boneMatricesCount(boneCount);
   int get vboIdCount => MeshBase.BASE_vboIdCount;
 
   MeshC setC(MeshC o) {
@@ -31,12 +30,11 @@ extension MeshCEx on MeshC {
     tangents = o.tangents;
     colors = o.colors;
     indices = o.indices;
+    boneCount = o.boneCount;
+    boneIndices = o.boneIndices;
+    boneWeights = o.boneWeights;
     animVertices = o.animVertices;
     animNormals = o.animNormals;
-    boneIds = o.boneIds;
-    boneWeights = o.boneWeights;
-    boneMatrices = o.boneMatrices;
-    boneCount = o.boneCount;
     vaoId = o.vaoId;
     vboId = o.vboId;
     return this;
@@ -53,12 +51,11 @@ extension MeshCEx on MeshC {
       tangents = p.ref.tangents;
       colors = p.ref.colors;
       indices = p.ref.indices;
+      boneCount = p.ref.boneCount;
+      boneIndices = p.ref.boneIndices;
+      boneWeights = p.ref.boneWeights;
       animVertices = p.ref.animVertices;
       animNormals = p.ref.animNormals;
-      boneIds = p.ref.boneIds;
-      boneWeights = p.ref.boneWeights;
-      boneMatrices = p.ref.boneMatrices;
-      boneCount = p.ref.boneCount;
       vaoId = p.ref.vaoId;
       vboId = p.ref.vboId;
     });
@@ -77,11 +74,10 @@ extension MeshCEx on MeshC {
     tangents: tangents.address != 0 ? .generate(tangentsCount, (i) => (tangents + i).value) : [],
     colors: colors.address != 0 ? .generate(colorsCount, (i) => (colors + i).value) : [],
     indices: indices.address != 0 ? .generate(indicesCount, (i) => (indices + i).value) : [],
+    boneIndices: boneIndices.address != 0 ? .generate(boneIndicesCount, (i) => (boneIndices + i).value) : [],
+    boneWeights: boneWeights.address != 0 ? .generate(boneWeightsCount, (i) => (boneWeights + i).value) : [],
     animVertices: animVertices.address != 0 ? .generate(animVerticesCount, (i) => (animVertices + i).value) : [],
     animNormals: animNormals.address != 0 ? .generate(animNormalsCount, (i) => (animNormals + i).value) : [],
-    boneIds: boneIds.address != 0 ? .generate(boneIdsCount, (i) => (boneIds + i).value) : [],
-    boneWeights: boneWeights.address != 0 ? .generate(boneWeightsCount, (i) => (boneWeights + i).value) : [],
-    boneMatrices: boneMatrices.address != 0 ? .generate(boneMatricesCount, (i) => (boneMatrices + i).toD()) : [],
     vaoId: vaoId,
     vboId: vboId.address != 0 ? .generate(vboIdCount, (i) => (vboId + i).value) : [],
   );
@@ -200,6 +196,28 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     structOnOp((p) => _indices.ptr = p.ref.indices);
     _indices.inner = value;
   }
+
+  late NativeLiveListPointerUnsignedChar _boneIndices;
+  @override get boneIndices {
+    structOnOp((p) => _boneIndices.ptr = p.ref.boneIndices);
+    return _boneIndices;
+  }
+  @override set boneIndices(List<int> value) {
+    assert(value.length <= boneIndicesCount);
+    structOnOp((p) => _boneIndices.ptr = p.ref.boneIndices);
+    _boneIndices.inner = value;
+  }
+  
+  late NativeLiveListPointerFloat _boneWeights;
+  @override get boneWeights {
+    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
+    return _boneWeights;
+  }
+  @override set boneWeights(List<double> value) {
+    assert(value.length <= boneWeightsCount);
+    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
+    _boneWeights.inner = value;
+  }
   
   late NativeLiveListPointerFloat _animVertices;
   @override get animVertices {
@@ -221,39 +239,6 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     assert(value.length <= animNormalsCount);
     structOnOp((p) => _animNormals.ptr = p.ref.animNormals);
     _animNormals.inner = value;
-  }
-  
-  late NativeLiveListPointerUnsignedChar _boneIds;
-  @override get boneIds {
-    structOnOp((p) => _boneIds.ptr = p.ref.boneIds);
-    return _boneIds;
-  }
-  @override set boneIds(List<int> value) {
-    assert(value.length <= boneIdsCount);
-    structOnOp((p) => _boneIds.ptr = p.ref.boneIds);
-    _boneIds.inner = value;
-  }
-  
-  late NativeLiveListPointerFloat _boneWeights;
-  @override get boneWeights {
-    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
-    return _boneWeights;
-  }
-  @override set boneWeights(List<double> value) {
-    assert(value.length <= boneWeightsCount);
-    structOnOp((p) => _boneWeights.ptr = p.ref.boneWeights);
-    _boneWeights.inner = value;
-  }
-  
-  late NativeLiveListPointerStruct<MatrixC, MatrixD> _boneMatrices;
-  @override get boneMatrices {
-    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
-    return _boneMatrices;
-  }
-  @override set boneMatrices(List<MatrixD> value) {
-    assert(value.length <= boneMatricesCount);
-    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
-    _boneMatrices.inner = value;
   }
   
   int _vaoId;
@@ -289,11 +274,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     List<double>? tangents,
     List<int>? colors,
     List<int>? indices,
+    List<int>? boneIndices,
+    List<double>? boneWeights,
     List<double>? animVertices,
     List<double>? animNormals,
-    List<int>? boneIds,
-    List<double>? boneWeights,
-    List<MatrixD>? boneMatrices,
     int vaoId = 0,
     List<int>? vboId,
   }) :
@@ -309,11 +293,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     _tangents = .new(tangents ?? [], originalPointer?.ref.tangents);
     _colors = .new(colors ?? [], originalPointer?.ref.colors);
     _indices = .new(indices ?? [], originalPointer?.ref.indices);
+    _boneIndices = .new(boneIndices ?? [], originalPointer?.ref.boneIndices);
+    _boneWeights = .new(boneWeights ?? [], originalPointer?.ref.boneWeights);
     _animVertices = .new(animVertices ?? [], originalPointer?.ref.animVertices);
     _animNormals = .new(animNormals ?? [], originalPointer?.ref.animNormals);
-    _boneIds = .new(boneIds ?? [], originalPointer?.ref.boneIds);
-    _boneWeights = .new(boneWeights ?? [], originalPointer?.ref.boneWeights);
-    _boneMatrices = .new(boneMatrices ?? [], originalPointer?.ref.boneMatrices);
     _vboId = .new(vboId ?? [], originalPointer?.ref.vboId);
   }
 
@@ -331,11 +314,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     tangents = .from(o.tangents);
     colors = .from(o.colors);
     indices = .from(o.indices);
+    boneIndices = .from(o.boneIndices);
+    boneWeights = .from(o.boneWeights);
     animVertices = .from(o.animVertices);
     animNormals = .from(o.animNormals);
-    boneIds = .from(o.boneIds);
-    boneWeights = .from(o.boneWeights);
-    boneMatrices = o.boneMatrices.map((x) => x.clone()).toList();
     vaoId = o.vaoId;
     vboId = .from(o.vboId);
     return this;
@@ -356,11 +338,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     p.ref.tangents = tangents.isNotEmpty ? temp.Float32$.RawArray(tangents) : nullptr;
     p.ref.colors = colors.isNotEmpty ? temp.UnsignedChar$.RawArray(colors) : nullptr;
     p.ref.indices = indices.isNotEmpty ? temp.UnsignedShort$.RawArray(indices) : nullptr;
+    p.ref.boneIndices = boneIndices.isNotEmpty ? temp.UnsignedChar$.RawArray(boneIndices) : nullptr;
+    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float32$.RawArray(boneWeights) : nullptr;
     p.ref.animVertices = animVertices.isNotEmpty ? temp.Float32$.RawArray(animVertices) : nullptr;
     p.ref.animNormals = animNormals.isNotEmpty ? temp.Float32$.RawArray(animNormals) : nullptr;
-    p.ref.boneIds = boneIds.isNotEmpty ? temp.UnsignedChar$.RawArray(boneIds) : nullptr;
-    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float32$.RawArray(boneWeights) : nullptr;
-    p.ref.boneMatrices = boneMatrices.isNotEmpty ? temp.Matrix$.RawArray(boneMatrices) : nullptr;
     p.ref.vboId = nullptr;
   }
 
@@ -386,11 +367,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
       p.tangents = o.ref.tangents;
       p.colors = o.ref.colors;
       p.indices = o.ref.indices;
+      p.boneIndices = o.ref.boneIndices;
+      p.boneWeights = o.ref.boneWeights;
       p.animVertices = o.ref.animVertices;
       p.animNormals = o.ref.animNormals;
-      p.boneIds = o.ref.boneIds;
-      p.boneWeights = o.ref.boneWeights;
-      p.boneMatrices = o.ref.boneMatrices;
       p.vboId = o.ref.vboId;
     });
 
@@ -436,21 +416,9 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
       }
     }
 
-    if (p.animVertices.address != 0) {
-      for (int i = 0; i < animVertices.length; i++) {
-        p.animVertices[i] = _animVertices.inner[i];
-      }
-    }
-
-    if (p.animNormals.address != 0) {
-      for (int i = 0; i < animNormals.length; i++) {
-        p.animNormals[i] = _animNormals.inner[i];
-      }
-    }
-
-    if (p.boneIds.address != 0) {
-      for (int i = 0; i < boneIds.length; i++) {
-        p.boneIds[i] = _boneIds.inner[i];
+    if (p.boneIndices.address != 0) {
+      for (int i = 0; i < boneIndices.length; i++) {
+        p.boneIndices[i] = _boneIndices.inner[i];
       }
     }
 
@@ -460,9 +428,15 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
       }
     }
 
-    if (p.boneMatrices.address != 0) {
-      for (int i = 0; i < boneMatrices.length; i++) {
-        _boneMatrices.inner[i].nativeWriteInto((p.boneMatrices + i).ref);
+    if (p.animVertices.address != 0) {
+      for (int i = 0; i < animVertices.length; i++) {
+        p.animVertices[i] = _animVertices.inner[i];
+      }
+    }
+
+    if (p.animNormals.address != 0) {
+      for (int i = 0; i < animNormals.length; i++) {
+        p.animNormals[i] = _animNormals.inner[i];
       }
     }
 
@@ -486,11 +460,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
       o.ref.tangents = p.tangents;
       o.ref.colors = p.colors;
       o.ref.indices = p.indices;
+      o.ref.boneIndices = p.boneIndices;
+      o.ref.boneWeights = p.boneWeights;
       o.ref.animVertices = p.animVertices;
       o.ref.animNormals = p.animNormals;
-      o.ref.boneIds = p.boneIds;
-      o.ref.boneWeights = p.boneWeights;
-      o.ref.boneMatrices = p.boneMatrices;
       o.ref.vboId = p.vboId;
     });
     vertexCount = p.vertexCount;
@@ -503,11 +476,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     if (vertexCount > 0 && p.tangents.address != 0) tangents = .generate(tangentsCount, (i) => (p.tangents + i).value);
     if (vertexCount > 0 && p.colors.address != 0) colors = .generate(colorsCount, (i) => (p.colors + i).value);
     if (triangleCount > 0 && p.indices.address != 0) indices = .generate(indicesCount, (i) => (p.indices + i).value);
+    if (vertexCount > 0 && p.boneIndices.address != 0) boneIndices = .generate(boneIndicesCount, (i) => (p.boneIndices + i).value);
+    if (vertexCount > 0 && p.boneWeights.address != 0) boneWeights = .generate(boneWeightsCount, (i) => (p.boneWeights + i).value);
     if (vertexCount > 0 && p.animVertices.address != 0) animVertices = .generate(animVerticesCount, (i) => (p.animVertices + i).value);
     if (vertexCount > 0 && p.animNormals.address != 0) animNormals = .generate(animNormalsCount, (i) => (p.animNormals + i).value);
-    if (vertexCount > 0 && p.boneIds.address != 0) boneIds = .generate(boneIdsCount, (i) => (p.boneIds + i).value);
-    if (vertexCount > 0 && p.boneWeights.address != 0) boneWeights = .generate(boneWeightsCount, (i) => (p.boneWeights + i).value);
-    if (p.boneMatrices.address != 0) boneMatrices = .generate(boneMatricesCount, (i) => (p.boneMatrices + i).toD());
     vaoId = p.vaoId;
     if (p.vboId.address != 0) vboId = .generate(vboIdCount, (i) => (p.vboId + i).value);
   }
@@ -525,11 +497,10 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
     tangents: .from(tangents),
     colors: .from(colors),
     indices: .from(indices),
+    boneIndices: .from(boneIndices),
+    boneWeights: .from(boneWeights),
     animVertices: .from(animVertices),
     animNormals: .from(animNormals),
-    boneIds: .from(boneIds),
-    boneWeights: .from(boneWeights),
-    boneMatrices: boneMatrices.map((x) => x.clone()).toList(),
     vaoId: vaoId,
     vboId: .from(vboId),
   );

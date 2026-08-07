@@ -2,7 +2,7 @@ part of '../../../raylib_dartified.dart';
 
 // NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
 
-class RaylibLight extends RaylibModule<Raylib> {
+class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Raylib> {
   final List<Pointer<LightC>> _lights = [];
 
   final Pointer<Int8> _lightInt8ValuePtr = calloc<Int8>();
@@ -12,6 +12,7 @@ class RaylibLight extends RaylibModule<Raylib> {
   RaylibLight(super.rl);
 
   @override
+  @DoNotAbbreviate()
   void dispose() {
     super.dispose();
     _lights.forEach(calloc.free);

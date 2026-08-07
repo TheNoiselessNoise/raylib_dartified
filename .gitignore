@@ -33,19 +33,11 @@ doc/api/
 
 # raylib_dartified project related
 
-utils/output/*.dart
 # `custom` examples are not in usable form
 example/custom/
 # raylib resources (you can copy-paste them)
 example/*/resources/
-# built example library
-utils/resources/mylib/libmylib.so
-# generated example module
-utils/resources/mylib/output/*.dart
-# raylib itself
-raylib-5.5*/
 # Markdown is better
 CHEATSHEET*html
 # something
-COMMIT
-TODO
+DEV.md

@@ -2,45 +2,44 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_loading.c
 // Run it: dart run textures_image_loading.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_loading".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_loading".toC);
+  SetTargetFPS(60);
 
-  final image = rl.Core.LoadImage("../resources/raylib_logo.png".toC);
-  final texture = rl.Core.LoadTextureFromImage(image);
-  rl.Core.UnloadImage(image);
+  final image = LoadImage("../resources/raylib_logo.png".toC);
+  final texture = LoadTextureFromImage(image);
+  UnloadImage(image);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTexture(
+      DrawTexture(
         texture,
         (screenWidth/2 - texture.width/2).toInt(),
         (screenHeight/2 - texture.height/2).toInt(),
-        rl.Color.WHITE
+        WHITE
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "this IS a texture loaded from an image!".toC,
-        300, 370, 10, rl.Color.GRAY
+        300, 370, 10, GRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
+  UnloadTexture(texture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

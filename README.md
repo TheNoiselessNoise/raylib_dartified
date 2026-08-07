@@ -55,7 +55,7 @@ Place the compiled library in a folder anywhere in your project tree (or a paren
 Then pass the folder path to `findRaylib`:
 
 ```dart
-final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+final rl = findRaylib('raylib-6.0_linux_amd64/lib');
 ```
 
 This walks **up from the current working directory** until it finds a folder matching that name, so the path is relative and does not need to be absolute. If `raygui` is present in the same folder it will be loaded automatically; if not, it is silently skipped.
@@ -105,22 +105,41 @@ See any `c` example in `example/<category>/c/`.
 
 Or start here: [core/c/core_basic_window.dart](example/core/c/core_basic_window.dart)
 
-## abbr.dart
+## abbr/c.dart | abbr/dart.dart
 
-Since only one Raylib instance is allowed at a time, `abbr.dart` lets you skip one layer of namespacing and save some keystrokes. The `Raylib` instance remains accessible via `Raylib.instance`:
+`abbr/dart.dart` and `abbr/c.dart` drop the module namespace (`CoreD.`, `TextD.`, ...) entirely, so calls read exactly like the raylib API itself, no prefixes, no indirection.
+
+- **`abbr/dart.dart`** exposes the Dart-layer (dartified) API: idiomatic types, no manual memory management.
+- **`abbr/c.dart`** exposes the raw FFI-layer API 1:1 native signatures, `Pointer`s, manual allocation/freeing, for when you want to talk to raylib exactly as C does.
+
+Pick one per file (mixing both in the same scope will collide on names).
 
 ```dart
-import 'package:raylib_dartified/raylib.dart';
-import 'package:raylib_dartified/abbr.dart';
+import 'package:raylib_dartified/raylib_dartified.dart';
+import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {
-  // Either of these works:
   findRaylib('path/to/raylib');
-  // Raylib(
-  //   core: '/absolute/path/to/libraylib.so',
-  // )
 
-  CoreD.InitWindow(800, 600, 'Title');
+  InitWindow(800, 600, 'Title');
+  SetTargetFPS(60);
+  // ... and so on, exactly like the raylib C API
+
+  disposeRaylib();
+}
+```
+
+Or, working directly against the FFI layer:
+
+```dart
+import 'package:raylib_dartified/raylib_dartified.dart';
+import 'package:raylib_dartified/abbr/c.dart';
+
+void main() {
+  findRaylib('path/to/raylib');
+
+  InitWindow(800, 600, 'Title'.toC);
+  SetTargetFPS(60);
   // ... and so on
 
   disposeRaylib();

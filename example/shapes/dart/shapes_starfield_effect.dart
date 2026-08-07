@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_starfield_effect.c
 // Run it: dart run shapes_starfield_effect.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -9,13 +9,12 @@ const int STAR_COUNT = 7;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_starfield_effect");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_starfield_effect");
+  SetTargetFPS(60);
 
-  final bgColor = rl.CoreD.ColorLerp(.DARKBLUE, .BLACK, 0.69);
+  final bgColor = ColorLerp(.DARKBLUE, .BLACK, 0.69);
   double speed = 10.0/9.0;
   bool drawLines = true;
 
@@ -24,22 +23,22 @@ void main()
 
   for (int i = 0; i < STAR_COUNT; i++) {
     stars.add(.vec3(
-      rl.CoreD.GetRandomValue(-screenWidth / 2, screenWidth / 2),
-      rl.CoreD.GetRandomValue(-screenHeight / 2, screenHeight / 2),
+      GetRandomValue(-screenWidth / 2, screenWidth / 2),
+      GetRandomValue(-screenHeight / 2, screenHeight / 2),
       1.0,
     ));
   }
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final mouseMove = rl.CoreD.GetMouseWheelMove();
+    final mouseMove = GetMouseWheelMove();
     if (mouseMove != 0) speed += 2.0*mouseMove/9.0;
     if (speed < 0.0) speed = 0.1;
     else if (speed > 2.0) speed = 2.0;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) drawLines = !drawLines;
+    if (IsKeyPressed(.KEY_SPACE)) drawLines = !drawLines;
 
-    final dt = rl.CoreD.GetFrameTime();
+    final dt = GetFrameTime();
     for (int i = 0; i < STAR_COUNT; i++)
     {
       stars[i].z -= dt*speed;
@@ -50,15 +49,15 @@ void main()
       if ((stars[i].z < 0.0) || (starsScreenPos[i].x < 0) || (starsScreenPos[i].y < 0.0) ||
         (starsScreenPos[i].x > screenWidth) || (starsScreenPos[i].y > screenHeight))
       {
-        stars[i].x = rl.CoreD.GetRandomValue(-screenWidth / 2, screenWidth / 2).toDouble();
-        stars[i].y = rl.CoreD.GetRandomValue(-screenHeight / 2, screenHeight / 2).toDouble();
+        stars[i].x = GetRandomValue(-screenWidth / 2, screenWidth / 2).toDouble();
+        stars[i].y = GetRandomValue(-screenHeight / 2, screenHeight / 2).toDouble();
         stars[i].z = 1.0;
       }
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(bgColor);
+      ClearBackground(bgColor);
 
       for (int i = 0; i < STAR_COUNT; i++)
       {
@@ -66,7 +65,7 @@ void main()
 
         if (drawLines)
         {
-          final t = rl.Clamp(stars[i].z + 1.0/32.0, 0.0, 1.0);
+          final t = Clamp(stars[i].z + 1.0/32.0, 0.0, 1.0);
 
           if ((t - stars[i].z) > 1e-3)
           {
@@ -75,31 +74,31 @@ void main()
               screenHeight*0.5 + stars[i].y/t,
             );
 
-            rl.CoreD.DrawLineV(startPos, starScreenPos, .RAYWHITE);
+            DrawLineV(startPos, starScreenPos, .RAYWHITE);
           }
         }
         else
         {
-          final radius = rl.Lerp(stars[i].z, 1.0, 5.0);
+          final radius = Lerp(stars[i].z, 1.0, 5.0);
 
-          rl.CoreD.DrawCircleV(starScreenPos, radius, .RAYWHITE);
+          DrawCircleV(starScreenPos, radius, .RAYWHITE);
         }
       }
 
-      rl.CoreD.DrawText(
+      DrawText(
         "[MOUSE WHEEL] Current Speed: ${9.0*speed/2.0}",
         10, 40, 20, .RAYWHITE
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "[SPACE] Current draw mode: ${drawLines ? "Lines" : "Circles"}",
         10, 70, 20, .RAYWHITE
       );
 
-      rl.CoreD.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

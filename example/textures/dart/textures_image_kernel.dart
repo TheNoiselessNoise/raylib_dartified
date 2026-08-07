@@ -2,20 +2,19 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_kernel.c
 // Run it: dart run textures_image_kernel.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_image_kernel");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_kernel");
+  SetTargetFPS(60);
 
-  final image = rl.CoreD.LoadImage("../resources/cat.png");
+  final image = LoadImage("../resources/cat.png");
 
   final gaussiankernel = [
     1.0, 2.0, 1.0,
@@ -39,53 +38,53 @@ void main()
   NormalizeKernel(sharpenkernel);
   NormalizeKernel(sobelkernel);
 
-  final catSharpend = rl.CoreD.ImageCopy(image);
-  rl.CoreD.ImageKernelConvolution(catSharpend, sharpenkernel);
+  final catSharpend = ImageCopy(image);
+  ImageKernelConvolution(catSharpend, sharpenkernel);
 
-  final catSobel = rl.CoreD.ImageCopy(image);
-  rl.CoreD.ImageKernelConvolution(catSobel, sobelkernel);
+  final catSobel = ImageCopy(image);
+  ImageKernelConvolution(catSobel, sobelkernel);
 
-  final catGaussian = rl.CoreD.ImageCopy(image);
+  final catGaussian = ImageCopy(image);
   
   for (int i = 0; i < 6; i++) {
-    rl.CoreD.ImageKernelConvolution(catGaussian, gaussiankernel);
+    ImageKernelConvolution(catGaussian, gaussiankernel);
   }
 
-  rl.CoreD.ImageCrop(image, .rect(0, 0, 200, 450));
-  rl.CoreD.ImageCrop(catGaussian, .rect(0, 0, 200, 450));
-  rl.CoreD.ImageCrop(catSobel, .rect(0, 0, 200, 450));
-  rl.CoreD.ImageCrop(catSharpend, .rect(0, 0, 200, 450));
+  ImageCrop(image, .rect(0, 0, 200, 450));
+  ImageCrop(catGaussian, .rect(0, 0, 200, 450));
+  ImageCrop(catSobel, .rect(0, 0, 200, 450));
+  ImageCrop(catSharpend, .rect(0, 0, 200, 450));
   
-  final texture = rl.CoreD.LoadTextureFromImage(image);
-  final catSharpendTexture = rl.CoreD.LoadTextureFromImage(catSharpend);
-  final catSobelTexture = rl.CoreD.LoadTextureFromImage(catSobel);
-  final catGaussianTexture = rl.CoreD.LoadTextureFromImage(catGaussian);
+  final texture = LoadTextureFromImage(image);
+  final catSharpendTexture = LoadTextureFromImage(catSharpend);
+  final catSobelTexture = LoadTextureFromImage(catSobel);
+  final catGaussianTexture = LoadTextureFromImage(catGaussian);
   
-  rl.CoreD.UnloadImage(image);
-  rl.CoreD.UnloadImage(catGaussian);
-  rl.CoreD.UnloadImage(catSobel);
-  rl.CoreD.UnloadImage(catSharpend);
+  UnloadImage(image);
+  UnloadImage(catGaussian);
+  UnloadImage(catSobel);
+  UnloadImage(catSharpend);
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawTexture(catSharpendTexture, 0, 0, .WHITE);
-      rl.CoreD.DrawTexture(catSobelTexture, 200, 0, .WHITE);
-      rl.CoreD.DrawTexture(catGaussianTexture, 400, 0, .WHITE);
-      rl.CoreD.DrawTexture(texture, 600, 0, .WHITE);
+      DrawTexture(catSharpendTexture, 0, 0, .WHITE);
+      DrawTexture(catSobelTexture, 200, 0, .WHITE);
+      DrawTexture(catGaussianTexture, 400, 0, .WHITE);
+      DrawTexture(texture, 600, 0, .WHITE);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadTexture(texture);
-  rl.CoreD.UnloadTexture(catGaussianTexture);
-  rl.CoreD.UnloadTexture(catSobelTexture);
-  rl.CoreD.UnloadTexture(catSharpendTexture);
+  UnloadTexture(texture);
+  UnloadTexture(catGaussianTexture);
+  UnloadTexture(catSobelTexture);
+  UnloadTexture(catSharpendTexture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void NormalizeKernel(List<double> kernel)

@@ -2,19 +2,23 @@
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_loading_m3d.c
 // Run it: dart run models_loading_m3d.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+
+// WARNING: This example uses CPU skinning.
+// It requires raylib to be built with `SUPPORT_GPU_SKINNING=0` (the raylib default).
+// If your raylib build has SUPPORT_GPU_SKINNING=1, the model will render frozen in
+// bind pose with no errors.
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "models_loading_m3d");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
-  rl.CoreD.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "models_loading_m3d");
+  SetTargetFPS(60);
+  DisableCursor();
 
   final camera = Camera3DD(
     position: .vec3(1.5, 1.5, 1.5),
@@ -31,49 +35,49 @@ void main()
   bool drawSkeleton = true;
   bool animPlaying = false;
 
-  final model = rl.CoreD.LoadModel(modelFileName);
+  final model = LoadModel(modelFileName);
 
   int animFrameCounter = 0, animId = 0;
-  final anims = rl.CoreD.LoadModelAnimations(modelFileName);
+  final anims = LoadModelAnimations(modelFileName);
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.UpdateCamera(camera, .CAMERA_FIRST_PERSON);
+    UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
     if (anims.isNotEmpty)
     {
-      if (rl.CoreD.IsKeyDown(.KEY_SPACE) || rl.CoreD.IsKeyPressed(.KEY_N))
+      if (IsKeyDown(.KEY_SPACE) || IsKeyPressed(.KEY_N))
       {
         animFrameCounter++;
 
-        if (animFrameCounter >= anims[animId].frameCount) animFrameCounter = 0;
+        if (animFrameCounter >= anims[animId].keyframeCount) animFrameCounter = 0;
 
-        rl.CoreD.UpdateModelAnimation(model, anims[animId], animFrameCounter);
+        UpdateModelAnimation(model, anims[animId], animFrameCounter);
         animPlaying = true;
       }
 
-      if (rl.CoreD.IsKeyPressed(.KEY_C))
+      if (IsKeyPressed(.KEY_C))
       {
         animFrameCounter = 0;
         animId++;
 
         if (animId >= anims.length) animId = 0;
-        rl.CoreD.UpdateModelAnimation(model, anims[animId], 0);
+        UpdateModelAnimation(model, anims[animId], 0);
         animPlaying = true;
       }
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_B)) drawSkeleton = !drawSkeleton;
+    if (IsKeyPressed(.KEY_B)) drawSkeleton = !drawSkeleton;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_M)) drawMesh = !drawMesh;
+    if (IsKeyPressed(.KEY_M)) drawMesh = !drawMesh;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginMode3D(camera);
+      BeginMode3D(camera);
 
-        if (drawMesh) rl.CoreD.DrawModel(model, position, 1.0, .WHITE);
+        if (drawMesh) DrawModel(model, position, 1.0, .WHITE);
 
         if (drawSkeleton)
         {
@@ -81,26 +85,26 @@ void main()
           {
             if (!animPlaying || anims.isEmpty)
             {
-              rl.CoreD.DrawCube(model.bindPose[i].translation, 0.04, 0.04, 0.04, .RED);
+              DrawCube(model.skeleton.bindPose[i].translation, 0.04, 0.04, 0.04, .RED);
 
-              if (model.bones[i].parent >= 0)
+              if (model.skeleton.bones[i].parent >= 0)
               {
-                rl.CoreD.DrawLine3D(
-                  model.bindPose[i].translation,
-                  model.bindPose[model.bones[i].parent].translation,
+                DrawLine3D(
+                  model.skeleton.bindPose[i].translation,
+                  model.skeleton.bindPose[model.skeleton.bones[i].parent].translation,
                   .RED
                 );
               }
             }
             else
             {
-              rl.CoreD.DrawCube(anims[animId].framePoses[animFrameCounter][i].translation, 0.05, 0.05, 0.05, .RED);
+              DrawCube(anims[animId].keyframePoses[animFrameCounter][i].translation, 0.05, 0.05, 0.05, .RED);
 
-              if (anims[animId].bones[i].parent >= 0)
+              if (model.skeleton.bones[i].parent >= 0)
               {
-                rl.CoreD.DrawLine3D(
-                  anims[animId].framePoses[animFrameCounter][i].translation,
-                  anims[animId].framePoses[animFrameCounter][anims[animId].bones[i].parent].translation,
+                DrawLine3D(
+                  anims[animId].keyframePoses[animFrameCounter][i].translation,
+                  anims[animId].keyframePoses[animFrameCounter][model.skeleton.bones[i].parent].translation,
                   .RED
                 );
               }
@@ -108,36 +112,36 @@ void main()
           }
         }
 
-        rl.CoreD.DrawGrid(10, 1.0);
+        DrawGrid(10, 1.0);
 
-      rl.CoreD.EndMode3D();
+      EndMode3D();
 
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS SPACE to PLAY MODEL ANIMATION",
-        10, rl.CoreD.GetScreenHeight() - 80, 10, .MAROON
+        10, GetScreenHeight() - 80, 10, .MAROON
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS N to STEP ONE ANIMATION FRAME",
-        10, rl.CoreD.GetScreenHeight() - 60, 10, .DARKGRAY
+        10, GetScreenHeight() - 60, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS C to CYCLE THROUGH ANIMATIONS",
-        10, rl.CoreD.GetScreenHeight() - 40, 10, .DARKGRAY
+        10, GetScreenHeight() - 40, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS M to toggle MESH, B to toggle SKELETON DRAWING",
-        10, rl.CoreD.GetScreenHeight() - 20, 10, .DARKGRAY
+        10, GetScreenHeight() - 20, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "(c) CesiumMan model by KhronosGroup",
-        rl.CoreD.GetScreenWidth() - 210, rl.CoreD.GetScreenHeight() - 20, 10, .GRAY
+        GetScreenWidth() - 210, GetScreenHeight() - 20, 10, .GRAY
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadModelAnimations(anims);
-  rl.CoreD.UnloadModel(model);
+  UnloadModelAnimations(anims);
+  UnloadModel(model);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

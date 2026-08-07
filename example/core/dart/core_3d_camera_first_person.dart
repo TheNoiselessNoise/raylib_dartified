@@ -1,14 +1,14 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_camera_first_person.c
 // Run it: dart run core_3d_camera_first_person.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int MAX_COLUMNS = 20;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
   final camera = Camera3DD(
     position: .vec3(0, 2, 4),
@@ -23,49 +23,48 @@ void main() {
   final positions = <Vector3D>[];
 
   final colors = List.generate(MAX_COLUMNS, (i) {
-    heights.add(rl.CoreD.GetRandomValue(1, 12).toDouble());
+    heights.add(GetRandomValue(1, 12).toDouble());
     
     positions.add(.vec3(
-      rl.CoreD.GetRandomValue(-15, 15),
+      GetRandomValue(-15, 15),
       heights[i] / 2,
-      rl.CoreD.GetRandomValue(-15, 15),
+      GetRandomValue(-15, 15),
     ));
 
     return ColorD(
-      r: rl.CoreD.GetRandomValue(20, 255),
-      g: rl.CoreD.GetRandomValue(10, 55),
+      r: GetRandomValue(20, 255),
+      g: GetRandomValue(10, 55),
       b: 30,
       a: 255,
     );
   });
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_3d_camera_first_person');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
-  rl.CoreD.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "core_3d_camera_first_person");
+  SetTargetFPS(60);
+  DisableCursor();
 
-  while (!rl.CoreD.WindowShouldClose()) {
-    if (rl.CoreD.IsKeyPressed(.KEY_ONE)) {
+  while (!WindowShouldClose()) {
+    if (IsKeyPressed(.KEY_ONE)) {
       cameraMode = .CAMERA_FREE;
       camera.up.set(0, 1, 0);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_TWO)) {
+    if (IsKeyPressed(.KEY_TWO)) {
       cameraMode = .CAMERA_FIRST_PERSON;
       camera.up.set(0, 1, 0);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_THREE)) {
+    if (IsKeyPressed(.KEY_THREE)) {
       cameraMode = .CAMERA_THIRD_PERSON;
       camera.up.set(0, 1, 0);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_FOUR)) {
+    if (IsKeyPressed(.KEY_FOUR)) {
       cameraMode = .CAMERA_ORBITAL;
       camera.up.set(0, 1, 0);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_P)) {
+    if (IsKeyPressed(.KEY_P)) {
       if (camera.projection == .CAMERA_PERSPECTIVE) {
         cameraMode = .CAMERA_THIRD_PERSON;
         camera.position.set(0, 2, -100);
@@ -73,8 +72,8 @@ void main() {
         camera.up.set(0, 1, 0);
         camera.projection = .CAMERA_ORTHOGRAPHIC;
         camera.fovy = 20;
-        rl.CameraD.CameraYaw(camera, -135*rl.DEG2RAD, true);
-        rl.CameraD.CameraPitch(camera, -45*rl.DEG2RAD, true, true, false);
+        CameraYaw(camera, -135*rl.DEG2RAD, true);
+        CameraPitch(camera, -45*rl.DEG2RAD, true, true, false);
       } else if (camera.projection == .CAMERA_ORTHOGRAPHIC) {
         cameraMode = .CAMERA_THIRD_PERSON;
         camera.position.set(0, 2, 10);
@@ -85,85 +84,85 @@ void main() {
       }
     }
 
-    rl.CoreD.UpdateCamera(camera, cameraMode);
+    UpdateCamera(camera, cameraMode);
 
-    double up = ((rl.CoreD.IsKeyDown(.KEY_W) || rl.CoreD.IsKeyDown(.KEY_UP)).toInt()) * 0.1;
-    double down = ((rl.CoreD.IsKeyDown(.KEY_S) || rl.CoreD.IsKeyDown(.KEY_DOWN)).toInt()) * 0.1;
-    double right = ((rl.CoreD.IsKeyDown(.KEY_D) || rl.CoreD.IsKeyDown(.KEY_RIGHT)).toInt()) * 0.1;
-    double left = ((rl.CoreD.IsKeyDown(.KEY_A) || rl.CoreD.IsKeyDown(.KEY_LEFT)).toInt()) * 0.1;
+    double up = ((IsKeyDown(.KEY_W) || IsKeyDown(.KEY_UP)).toInt()) * 0.1;
+    double down = ((IsKeyDown(.KEY_S) || IsKeyDown(.KEY_DOWN)).toInt()) * 0.1;
+    double right = ((IsKeyDown(.KEY_D) || IsKeyDown(.KEY_RIGHT)).toInt()) * 0.1;
+    double left = ((IsKeyDown(.KEY_A) || IsKeyDown(.KEY_LEFT)).toInt()) * 0.1;
 
-    final delta = rl.CoreD.GetMouseDelta();
+    final delta = GetMouseDelta();
 
-    rl.CoreD.UpdateCameraPro(
+    UpdateCameraPro(
       camera,
       .vec3(up - down, right - left, 0),
       .vec3(delta.x*0.05, delta.y*0.05, 0),
-      rl.CoreD.GetMouseWheelMove()*2
+      GetMouseWheelMove()*2
     );
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginMode3D(camera);
+      BeginMode3D(camera);
 
-        rl.CoreD.DrawPlane(
+        DrawPlane(
           .vec3(0, 0, 0),
           .vec2(32, 32),
           .LIGHTGRAY,
         );
 
-        rl.CoreD.DrawCube(
+        DrawCube(
           .vec3(-16, 2.5, 0),
           1, 5, 32, .BLUE
         );
 
-        rl.CoreD.DrawCube(
+        DrawCube(
           .vec3(16, 2.5, 0),
           1, 5, 32, .LIME
         );
 
-        rl.CoreD.DrawCube(
+        DrawCube(
           .vec3(0, 2.5, 16),
           32, 5, 1, .GOLD
         );
 
         for (int i = 0; i < MAX_COLUMNS; i++) {
-          rl.CoreD.DrawCube(positions[i], 2, heights[i], 2, colors[i]);
-          rl.CoreD.DrawCubeWires(positions[i], 2, heights[i], 2, .MAROON);
+          DrawCube(positions[i], 2, heights[i], 2, colors[i]);
+          DrawCubeWires(positions[i], 2, heights[i], 2, .MAROON);
         }
 
         if (cameraMode == .CAMERA_THIRD_PERSON) {
-          rl.CoreD.DrawCube(camera.target, 0.5, 0.5, 0.5, .PURPLE);
-          rl.CoreD.DrawCubeWires(camera.target, 0.5, 0.5, 0.5, .DARKPURPLE);
+          DrawCube(camera.target, 0.5, 0.5, 0.5, .PURPLE);
+          DrawCubeWires(camera.target, 0.5, 0.5, 0.5, .DARKPURPLE);
         }
 
-      rl.CoreD.EndMode3D();
+      EndMode3D();
 
-      rl.CoreD.DrawRectangle(5, 5, 330, 100, rl.CoreD.Fade(.SKYBLUE, 0.5));
-      rl.CoreD.DrawRectangleLines(5, 5, 330, 100, .BLUE);
+      DrawRectangle(5, 5, 330, 100, Fade(.SKYBLUE, 0.5));
+      DrawRectangleLines(5, 5, 330, 100, .BLUE);
 
-      rl.CoreD.DrawText("Camera controls:", 15, 15, 10, .BLACK);
-      rl.CoreD.DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, .BLACK);
-      rl.CoreD.DrawText("- Look around: arrow keys or mouse", 15, 45, 10, .BLACK);
-      rl.CoreD.DrawText("- Camera mode keys: 1, 2, 3, 4", 15, 60, 10, .BLACK);
-      rl.CoreD.DrawText("- Zoom keys: num-plus, num-minus or mouse scroll", 15, 75, 10, .BLACK);
-      rl.CoreD.DrawText("- Camera projection key: P", 15, 90, 10, .BLACK);
+      DrawText("Camera controls:", 15, 15, 10, .BLACK);
+      DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, .BLACK);
+      DrawText("- Look around: arrow keys or mouse", 15, 45, 10, .BLACK);
+      DrawText("- Camera mode keys: 1, 2, 3, 4", 15, 60, 10, .BLACK);
+      DrawText("- Zoom keys: num-plus, num-minus or mouse scroll", 15, 75, 10, .BLACK);
+      DrawText("- Camera projection key: P", 15, 90, 10, .BLACK);
 
-      rl.CoreD.DrawRectangle(600, 5, 195, 100, rl.CoreD.Fade(.SKYBLUE, 0.5));
-      rl.CoreD.DrawRectangleLines(600, 5, 195, 100, .BLUE);
+      DrawRectangle(600, 5, 195, 100, Fade(.SKYBLUE, 0.5));
+      DrawRectangleLines(600, 5, 195, 100, .BLUE);
 
-      rl.CoreD.DrawText("Camera status:", 610, 15, 10, .BLACK);
+      DrawText("Camera status:", 610, 15, 10, .BLACK);
 
-      rl.CoreD.DrawText("- Mode: ${cameraMode.name}", 610, 30, 10, .BLACK);
-      rl.CoreD.DrawText("- Projection: ${camera.projection.name}", 610, 45, 10, .BLACK);
+      DrawText("- Mode: ${cameraMode.name}", 610, 30, 10, .BLACK);
+      DrawText("- Projection: ${camera.projection.name}", 610, 45, 10, .BLACK);
       
-      rl.CoreD.DrawText("- Position: ${camera.position.format(3)}", 610, 60, 10, .BLACK);
-      rl.CoreD.DrawText("- Target: ${camera.target.format(3)}", 610, 75, 10, .BLACK);
-      rl.CoreD.DrawText("- Up: ${camera.up.format(3)}", 610, 90, 10, .BLACK);
+      DrawText("- Position: ${camera.position.format(3)}", 610, 60, 10, .BLACK);
+      DrawText("- Target: ${camera.target.format(3)}", 610, 75, 10, .BLACK);
+      DrawText("- Up: ${camera.up.format(3)}", 610, 90, 10, .BLACK);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

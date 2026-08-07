@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_double_pendulum.c
 // Run it: dart run shapes_double_pendulum.dart
-import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -12,12 +11,11 @@ const double G = 9.81;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_WINDOW_HIGHDPI.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_double_pendulum".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_WINDOW_HIGHDPI.value);
+  InitWindow(screenWidth, screenHeight, "shapes_double_pendulum".toC);
+  SetTargetFPS(60);
 
   double l1 = 15.0, m1 = 0.2, theta1 = rl.DEG2RAD*170, w1 = 0;
   double l2 = 15.0, m2 = 0.1, theta2 = rl.DEG2RAD*0, w2 = 0;
@@ -34,12 +32,12 @@ void main()
   double lineThick = 20, trailThick = 2;
   double fateAlpha = 0.01;
 
-  final target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
-  rl.Core.SetTextureFilter(target.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
+  final target = LoadRenderTexture(screenWidth, screenHeight);
+  SetTextureFilter(target.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final dt = rl.Core.GetFrameTime();
+    final dt = GetFrameTime();
     final step = dt/SIMULATION_STEPS, step2 = step*step;
 
     for (int i = 0; i < SIMULATION_STEPS; i++)
@@ -73,51 +71,51 @@ void main()
     currentPosition.x += screenWidth/2;
     currentPosition.y += screenHeight/2 - 100;
 
-    rl.Core.BeginTextureMode(target);
-      rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Core.Fade(rl.Color.BLACK, fateAlpha));
+    BeginTextureMode(target);
+      DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, fateAlpha));
 
-      rl.Core.DrawCircleV(rl.Temp.vec21Ptr.setD(previousPosition).ref, trailThick, rl.Color.RED);
-      rl.Core.DrawLineEx(
-        rl.Temp.vec21Ptr.setD(previousPosition).ref,
-        rl.Temp.vec22Ptr.setD(currentPosition).ref,
-        trailThick*2, rl.Color.RED
+      DrawCircleV(Vector2$.$1.setD(previousPosition), trailThick, RED);
+      DrawLineEx(
+        Vector2$.$1.setD(previousPosition),
+        Vector2$.$2.setD(currentPosition),
+        trailThick*2, RED
       );
-    rl.Core.EndTextureMode();
+    EndTextureMode();
 
     previousPosition = currentPosition;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.BLACK);
+      ClearBackground(BLACK);
 
-      rl.Core.DrawTextureRec(
+      DrawTextureRec(
         target.texture,
-        rl.Temp.rect1(0, 0, target.texture.width.toDouble(), -target.texture.height.toDouble()),
-        rl.Temp.vec21(0, 0),
-        rl.Color.WHITE
+        Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
+        Vector2$.$1.set(0, 0),
+        WHITE
       );
 
-      rl.Core.DrawRectanglePro(
-        rl.Temp.rect1(screenWidth/2.0, screenHeight/2.0 - 100, 10*l1, lineThick),
-        rl.Temp.vec21(0, lineThick*0.5),
+      DrawRectanglePro(
+        Rectangle$.$1.set(screenWidth/2.0, screenHeight/2.0 - 100, 10*l1, lineThick),
+        Vector2$.$1.set(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta1,
-        rl.Color.RAYWHITE
+        RAYWHITE
       );
 
       final endpoint1 = CalculatePendulumEndPoint(l1, theta1);
-      rl.Core.DrawRectanglePro(
-        rl.Temp.rect1(screenWidth/2.0 + endpoint1.x, screenHeight/2.0 - 100 + endpoint1.y, 10*l2, lineThick),
-        rl.Temp.vec21(0, lineThick*0.5),
+      DrawRectanglePro(
+        Rectangle$.$1.set(screenWidth/2.0 + endpoint1.x, screenHeight/2.0 - 100 + endpoint1.y, 10*l2, lineThick),
+        Vector2$.$1.set(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta2,
-        rl.Color.RAYWHITE
+        RAYWHITE
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadRenderTexture(target);
+  UnloadRenderTexture(target);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 Vector2D CalculatePendulumEndPoint(double l, double theta)

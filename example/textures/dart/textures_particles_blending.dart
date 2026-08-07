@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_particles_blending.c
 // Run it: dart run textures_particles_blending.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -28,11 +28,10 @@ class Particle {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_particles_blending");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_particles_blending");
+  SetTargetFPS(60);
 
   final mouseTail = <Particle>[];
 
@@ -41,24 +40,24 @@ void main()
     mouseTail.add(Particle(
       position: .zero(),
       color: .color(
-        rl.CoreD.GetRandomValue(0, 255),
-        rl.CoreD.GetRandomValue(0, 255),
-        rl.CoreD.GetRandomValue(0, 255),
+        GetRandomValue(0, 255),
+        GetRandomValue(0, 255),
+        GetRandomValue(0, 255),
         255,
       ),
       alpha: 1.0,
-      size: rl.CoreD.GetRandomValue(1, 30)/20.0,
-      rotation: rl.CoreD.GetRandomValue(0, 360).toDouble(),
+      size: GetRandomValue(1, 30)/20.0,
+      rotation: GetRandomValue(0, 360).toDouble(),
       active: false,
     ));
   }
 
-  final smoke = rl.CoreD.LoadTexture("../resources/spark_flame.png");
+  final smoke = LoadTexture("../resources/spark_flame.png");
 
   double gravity = 3.0;
   BlendMode blending = .BLEND_ALPHA;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     for (int i = 0; i < MAX_PARTICLES; i++)
     {
@@ -66,7 +65,7 @@ void main()
       {
         mouseTail[i].active = true;
         mouseTail[i].alpha = 1.0;
-        mouseTail[i].position = rl.CoreD.GetMousePosition();
+        mouseTail[i].position = GetMousePosition();
         i = MAX_PARTICLES;
       }
     }
@@ -84,24 +83,24 @@ void main()
       }
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE))
+    if (IsKeyPressed(.KEY_SPACE))
     {
       if (blending == .BLEND_ALPHA)
         blending = .BLEND_ADDITIVE;
       else blending = .BLEND_ALPHA;
     }
     
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.DARKGRAY);
+      ClearBackground(.DARKGRAY);
 
-      rl.CoreD.BeginBlendMode(blending);
+      BeginBlendMode(blending);
 
         for (int i = 0; i < MAX_PARTICLES; i++)
         {
           if (!mouseTail[i].active) continue;
           
-          rl.CoreD.DrawTexturePro(
+          DrawTexturePro(
             smoke,
             .rect(
               0.0, 0.0,
@@ -116,35 +115,35 @@ void main()
               smoke.height*mouseTail[i].size/2.0
             ),
             mouseTail[i].rotation,
-            rl.CoreD.Fade(mouseTail[i].color, mouseTail[i].alpha)
+            Fade(mouseTail[i].color, mouseTail[i].alpha)
           );
         }
 
-      rl.CoreD.EndBlendMode();
+      EndBlendMode();
 
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS SPACE to CHANGE BLENDING MODE",
         180, 20, 20, .BLACK
       );
 
       if (blending == .BLEND_ALPHA) {
-        rl.CoreD.DrawText(
+        DrawText(
           "ALPHA BLENDING",
           290, screenHeight - 40, 20, .BLACK
         );
       }
       else
       {
-        rl.CoreD.DrawText(
+        DrawText(
           "ADDITIVE BLENDING",
           280, screenHeight - 40, 20, .RAYWHITE
         );
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadTexture(smoke);
+  UnloadTexture(smoke);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

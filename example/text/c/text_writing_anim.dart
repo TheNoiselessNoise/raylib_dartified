@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_writing_anim.c
 // Run it: dart run text_writing_anim.dart
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -10,46 +10,45 @@ const int MAX_INPUT_CHARS = 9;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "text_writing_anim".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_writing_anim".toC);
+  SetTargetFPS(60);
 
   String message = "This sample illustrates a text writing\nanimation effect! Check it out! ;)";
 
   int framesCounter = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value)) framesCounter += 8;
+    if (IsKeyDown(KeyboardKey.KEY_SPACE.value)) framesCounter += 8;
     else framesCounter++;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ENTER.value)) framesCounter = 0;
+    if (IsKeyPressed(KeyboardKey.KEY_ENTER.value)) framesCounter = 0;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       int length = math.min((framesCounter/10).toInt(), message.length);
 
-      rl.Core.DrawText(
+      DrawText(
         message.substring(0, length).toC,
-        210, 160, 20, rl.Color.MAROON
+        210, 160, 20, MAROON
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "PRESS [ENTER] to RESTART!".toC,
-        240, 260, 20, rl.Color.LIGHTGRAY
+        240, 260, 20, LIGHTGRAY
       );
       
-      rl.Core.DrawText(
+      DrawText(
         "HOLD [SPACE] to SPEED UP!".toC,
-        239, 300, 20, rl.Color.LIGHTGRAY
+        239, 300, 20, LIGHTGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

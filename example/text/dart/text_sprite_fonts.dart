@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_sprite_fonts.c
 // Run it: dart run text_sprite_fonts.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -36,7 +36,7 @@ void main()
   assert(fontPaths.length == messages.length);
   assert(fontPaths.length == spacings.length);
 
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
   final List<ColorD> colors = [
     .MAROON, .ORANGE, .DARKGREEN, .DARKBLUE,
@@ -44,15 +44,14 @@ void main()
   ];
   assert(fontPaths.length == colors.length);
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "text_sprite_fonts");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_sprite_fonts");
+  SetTargetFPS(60);
   
-  final fonts = fontPaths.map((path) => rl.CoreD.LoadFont(path)).toList();
+  final fonts = fontPaths.map((path) => LoadFont(path)).toList();
 
   final positions = <Vector2D>[];
   for (int i = 0; i < fontPaths.length; i++) {
-    final fontSize = rl.CoreD.MeasureTextEx(
+    final fontSize = MeasureTextEx(
       fonts[i],
       messages[i],
       fonts[i].baseSize*2,
@@ -68,21 +67,21 @@ void main()
   positions[4].y += 2;
   positions[7].y -= 8;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawText(
+      DrawText(
         "free sprite fonts included with raylib",
         220, 20, 20, .DARKGRAY
       );
-      rl.CoreD.DrawLine(220, 50, 600, 50, .DARKGRAY);
+      DrawLine(220, 50, 600, 50, .DARKGRAY);
 
       for (int i = 0; i < fontPaths.length; i++)
       {
-        rl.CoreD.DrawTextEx(
+        DrawTextEx(
           fonts[i],
           messages[i],
           positions[i], 
@@ -92,12 +91,12 @@ void main()
         );
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
   for (int i = 0; i < fontPaths.length; i++) {
-    rl.CoreD.UnloadFont(fonts[i]);
+    UnloadFont(fonts[i]);
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

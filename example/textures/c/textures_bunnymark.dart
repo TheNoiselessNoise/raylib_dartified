@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_bunnymark.c
 // Run it: dart run textures_bunnymark.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -23,33 +23,32 @@ class Bunny {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_bunnymark".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(120);
+  InitWindow(screenWidth, screenHeight, "textures_bunnymark".toC);
+  SetTargetFPS(120);
 
-  final texBunny = rl.Core.LoadTexture("../resources/wabbit_alpha.png".toC);
+  final texBunny = LoadTexture("../resources/wabbit_alpha.png".toC);
   final bunnies = <Bunny>[];
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
+    if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
     {
       for (int i = 0; i < 100; i++)
       {
         if (bunnies.length < MAX_BUNNIES)
         {
           bunnies.add(.new(
-            position: rl.Core.GetMousePosition().toD(),
+            position: GetMousePosition().toD(),
             speed: .new(
-              x: rl.Core.GetRandomValue(-250, 250)/60.0,
-              y: rl.Core.GetRandomValue(-250, 250)/60.0,
+              x: GetRandomValue(-250, 250)/60.0,
+              y: GetRandomValue(-250, 250)/60.0,
             ),
             color: .new(
-              r: rl.Core.GetRandomValue(50, 240),
-              g: rl.Core.GetRandomValue(80, 240),
-              b: rl.Core.GetRandomValue(100, 240),
+              r: GetRandomValue(50, 240),
+              g: GetRandomValue(80, 240),
+              b: GetRandomValue(100, 240),
               a: 255,
             ),
           ));
@@ -62,43 +61,43 @@ void main()
       bunnies[i].position.x += bunnies[i].speed.x;
       bunnies[i].position.y += bunnies[i].speed.y;
 
-      if (((bunnies[i].position.x + texBunny.width/2) > rl.Core.GetScreenWidth()) ||
+      if (((bunnies[i].position.x + texBunny.width/2) > GetScreenWidth()) ||
           ((bunnies[i].position.x + texBunny.width/2) < 0)) bunnies[i].speed.x *= -1;
-      if (((bunnies[i].position.y + texBunny.height/2) > rl.Core.GetScreenHeight()) ||
+      if (((bunnies[i].position.y + texBunny.height/2) > GetScreenHeight()) ||
           ((bunnies[i].position.y + texBunny.height/2 - 40) < 0)) bunnies[i].speed.y *= -1;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       for (int i = 0; i < bunnies.length; i++)
       {
         // NOTE: ~50 FPS with all 50000 bunnies
-        rl.Core.DrawTexture(
+        DrawTexture(
           texBunny,
           bunnies[i].position.x.toInt(),
           bunnies[i].position.y.toInt(),
-          rl.Temp.color1D(bunnies[i].color),
+          Color$.$1.setD(bunnies[i].color),
         );
       }
 
-      rl.Core.DrawRectangle(0, 0, screenWidth, 40, rl.Color.BLACK);
-      rl.Core.DrawText(
+      DrawRectangle(0, 0, screenWidth, 40, BLACK);
+      DrawText(
         "bunnies: ${bunnies.length}".toC,
-        120, 10, 20, rl.Color.GREEN
+        120, 10, 20, GREEN
       );
-      rl.Core.DrawText(
+      DrawText(
         "batched draw calls: ${1 + bunnies.length/MAX_BATCH_ELEMENTS}".toC,
-        320, 10, 20, rl.Color.MAROON
+        320, 10, 20, MAROON
       );
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texBunny);
+  UnloadTexture(texBunny);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

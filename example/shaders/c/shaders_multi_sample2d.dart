@@ -3,7 +3,7 @@
 // Run it: dart run shaders_multi_sample2d.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,66 +11,65 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_multi_sample2d".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_multi_sample2d".toC);
+  SetTargetFPS(60);
 
-  final imRed = rl.Core.GenImageColor(800, 450, rl.Temp.color1(255, 0, 0, 255));
-  final texRed = rl.Core.LoadTextureFromImage(imRed);
-  rl.Core.UnloadImage(imRed);
+  final imRed = GenImageColor(800, 450, Color$.$1.set(255, 0, 0, 255));
+  final texRed = LoadTextureFromImage(imRed);
+  UnloadImage(imRed);
 
-  final imBlue = rl.Core.GenImageColor(800, 450, rl.Temp.color1(0, 0, 255, 255));
-  final texBlue = rl.Core.LoadTextureFromImage(imBlue);
-  rl.Core.UnloadImage(imBlue);
+  final imBlue = GenImageColor(800, 450, Color$.$1.set(0, 0, 255, 255));
+  final texBlue = LoadTextureFromImage(imBlue);
+  UnloadImage(imBlue);
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/color_mix.fs".toC,
   );
 
-  int texBlueLoc = rl.Core.GetShaderLocation(shader, "texture1".toC);
-  int dividerLoc = rl.Core.GetShaderLocation(shader, "divider".toC);
+  int texBlueLoc = GetShaderLocation(shader, "texture1".toC);
+  int dividerLoc = GetShaderLocation(shader, "divider".toC);
 
   double dividerValue = 0.5;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)) dividerValue += 0.01;
-    else if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)) dividerValue -= 0.01;
+    if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) dividerValue += 0.01;
+    else if (IsKeyDown(KeyboardKey.KEY_LEFT.value)) dividerValue -= 0.01;
 
     if (dividerValue < 0.0) dividerValue = 0.0;
     else if (dividerValue > 1.0) dividerValue = 1.0;
 
-    rl.Core.SetShaderValue(shader, dividerLoc,
-      rl.Temp.Float32$.Value(dividerValue).cast(),
+    SetShaderValue(shader, dividerLoc,
+      Float32$.Value(dividerValue).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.Core.SetShaderValueTexture(shader, texBlueLoc, texBlue);
+        SetShaderValueTexture(shader, texBlueLoc, texBlue);
 
-        rl.Core.DrawTexture(texRed, 0, 0, rl.Color.WHITE);
+        DrawTexture(texRed, 0, 0, WHITE);
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "Use KEY_LEFT/KEY_RIGHT to move texture mixing in shader!".toC,
-        80, rl.Core.GetScreenHeight() - 40, 20, rl.Color.RAYWHITE
+        80, GetScreenHeight() - 40, 20, RAYWHITE
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
-  rl.Core.UnloadTexture(texRed);
-  rl.Core.UnloadTexture(texBlue);
+  UnloadShader(shader);
+  UnloadTexture(texRed);
+  UnloadTexture(texBlue);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

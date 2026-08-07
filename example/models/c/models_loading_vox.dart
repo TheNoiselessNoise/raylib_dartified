@@ -3,7 +3,7 @@
 // Run it: dart run models_loading_vox.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,13 +11,12 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_loading_vox".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "models_loading_vox".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -36,16 +35,16 @@ void main()
 
 	for (int i = 0; i < MAX_VOX_FILES; i++)
 	{
-		double t0 = rl.Core.GetTime() * 1000.0;
-		models.add(rl.Core.LoadModel(voxFileNames[i].toC));
-		double t1 = rl.Core.GetTime() * 1000.0;
+		double t0 = GetTime() * 1000.0;
+		models.add(LoadModel(voxFileNames[i].toC));
+		double t1 = GetTime() * 1000.0;
 
-		rl.Core.TraceLog(
+		TraceLog(
       TraceLogLevel.LOG_WARNING.value,
       "[${voxFileNames[i]}] File loaded in ${(t1 - t0).f3} ms".toC,
     );
 
-		final bb = rl.Core.GetModelBoundingBox(models[i]);
+		final bb = GetModelBoundingBox(models[i]);
 
     final Vector3D center = .new(
       x: bb.min.x + (((bb.max.x - bb.min.x) / 2)),
@@ -58,17 +57,17 @@ void main()
 
 	int currentModel = 0;
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/voxel_lighting.vs".toC,
 		"../resources/shaders/glsl$GLSL_VERSION/voxel_lighting.fs".toC,
   );
 
 	shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    rl.Core.GetShaderLocation(shader, "viewPos".toC);
+    GetShaderLocation(shader, "viewPos".toC);
 
-	rl.Core.SetShaderValue(shader,
-    rl.Core.GetShaderLocation(shader, "ambient".toC),
-    rl.Temp.Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+	SetShaderValue(shader,
+    GetShaderLocation(shader, "ambient".toC),
+    Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
@@ -82,32 +81,32 @@ void main()
 	}
 
   final lights = <LightC>[
-    rl.Light.CreateLight(
+    CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(-20, 20, -20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
+      Vector3$.$1.set(-20, 20, -20), Vector3$.$zero, GRAY, shader
     ),
-    rl.Light.CreateLight(
+    CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(20, -20, 20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
+      Vector3$.$1.set(20, -20, 20), Vector3$.$zero, GRAY, shader
     ),
-    rl.Light.CreateLight(
+    CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(-20, 20, 20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
+      Vector3$.$1.set(-20, 20, 20), Vector3$.$zero, GRAY, shader
     ),
-    rl.Light.CreateLight(
+    CreateLight(
       LightType.LIGHT_POINT.value,
-      rl.Temp.vec31(20, -20, -20), rl.Temp.vec3Zero, rl.Color.GRAY, shader
+      Vector3$.$1.set(20, -20, -20), Vector3$.$zero, GRAY, shader
     ),
   ];
 
-  final modelpos = rl.Temp.Vector3$.At('modelpos');
-	final camerarot = rl.Temp.Vector3$.At('camerarot');
+  final modelpos = Vector3$.At('modelpos');
+	final camerarot = Vector3$.At('camerarot');
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_MIDDLE.value))
+    if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_MIDDLE.value))
 		{
-			final mouseDelta = rl.Core.GetMouseDelta();
+			final mouseDelta = GetMouseDelta();
 			camerarot.ref.x = mouseDelta.x * 0.05;
 			camerarot.ref.y = mouseDelta.y * 0.05;
 		}
@@ -117,77 +116,77 @@ void main()
 			camerarot.ref.y = 0;
 		}
 
-    double x = (rl.Core.IsKeyDown(KeyboardKey.KEY_W.value) || rl.Core.IsKeyDown(KeyboardKey.KEY_UP.value)).toInt() * 0.1 -
-      (rl.Core.IsKeyDown(KeyboardKey.KEY_S.value) || rl.Core.IsKeyDown(KeyboardKey.KEY_DOWN.value)).toInt() * 0.1;
+    double x = (IsKeyDown(KeyboardKey.KEY_W.value) || IsKeyDown(KeyboardKey.KEY_UP.value)).toInt() * 0.1 -
+      (IsKeyDown(KeyboardKey.KEY_S.value) || IsKeyDown(KeyboardKey.KEY_DOWN.value)).toInt() * 0.1;
 
-    double y = (rl.Core.IsKeyDown(KeyboardKey.KEY_D.value) || rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)).toInt() * 0.1 -
-      (rl.Core.IsKeyDown(KeyboardKey.KEY_A.value) || rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)).toInt() * 0.1;
+    double y = (IsKeyDown(KeyboardKey.KEY_D.value) || IsKeyDown(KeyboardKey.KEY_RIGHT.value)).toInt() * 0.1 -
+      (IsKeyDown(KeyboardKey.KEY_A.value) || IsKeyDown(KeyboardKey.KEY_LEFT.value)).toInt() * 0.1;
 
-		rl.Core.UpdateCameraPro(camera,
-      rl.Temp.vec31(x, y, 0.0),
+		UpdateCameraPro(camera,
+      Vector3$.$1.set(x, y, 0.0),
 			camerarot.ref,
-			rl.Core.GetMouseWheelMove() * -2.0
+			GetMouseWheelMove() * -2.0
     );
 
-		if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+		if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
       currentModel = (currentModel + 1) % MAX_VOX_FILES;
     }
 
-    rl.Core.SetShaderValue(shader,
+    SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      rl.Temp.vec31Ptr.setC(camera.ref.position).cast(),
+      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
 		for (int i = 0; i < lights.length; i++) {
-      rl.Light.UpdateLightValues(shader, lights[i]);
+      UpdateLightValues(shader, lights[i]);
     }
 
-		rl.Core.BeginDrawing();
+		BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
-      rl.Core.DrawModel(models[currentModel], modelpos.ref, 1.0, rl.Color.WHITE);
-      rl.Core.DrawGrid(10, 1.0);
+      DrawModel(models[currentModel], modelpos.ref, 1.0, WHITE);
+      DrawGrid(10, 1.0);
 
       for (int i = 0; i < lights.length; i++)
       {
         if (lights[i].enabled) {
-          rl.Core.DrawSphereEx(lights[i].position, 0.2, 8, 8, lights[i].color);
+          DrawSphereEx(lights[i].position, 0.2, 8, 8, lights[i].color);
         }
         else
         {
-          rl.Core.DrawSphereWires(lights[i].position, 0.2, 8, 8, rl.Core.ColorAlpha(lights[i].color, 0.3));
+          DrawSphereWires(lights[i].position, 0.2, 8, 8, ColorAlpha(lights[i].color, 0.3));
         }
       }
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawRectangle(10, 400, 340, 60, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(10, 400, 340, 60, rl.Core.Fade(rl.Color.DARKBLUE, 0.5));
-      rl.Core.DrawText(
+      DrawRectangle(10, 400, 340, 60, Fade(SKYBLUE, 0.5));
+      DrawRectangleLines(10, 400, 340, 60, Fade(DARKBLUE, 0.5));
+      DrawText(
         "MOUSE LEFT BUTTON to CYCLE VOX MODELS".toC,
-        40, 410, 10, rl.Color.BLUE
+        40, 410, 10, BLUE
       );
-      rl.Core.DrawText(
+      DrawText(
         "MOUSE MIDDLE BUTTON to ZOOM OR ROTATE CAMERA".toC,
-        40, 420, 10, rl.Color.BLUE
+        40, 420, 10, BLUE
       );
-      rl.Core.DrawText(
+      DrawText(
         "UP-DOWN-LEFT-RIGHT KEYS to MOVE CAMERA".toC,
-        40, 430, 10, rl.Color.BLUE
+        40, 430, 10, BLUE
       );
-      rl.Core.DrawText(
-        "File: ${rl.Core.GetFileName(voxFileNames[currentModel].toC).toD}".toC,
-        10, 10, 20, rl.Color.GRAY
+      DrawText(
+        "File: ${GetFileName(voxFileNames[currentModel].toC).toD}".toC,
+        10, 10, 20, GRAY
       );
 
-		rl.Core.EndDrawing();
+		EndDrawing();
   }
 
-  models.forEach(rl.Core.UnloadModel);
+  models.forEach(UnloadModel);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

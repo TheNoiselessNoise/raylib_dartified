@@ -3,7 +3,7 @@
 // Run it: dart run shaders_hot_reloading.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,25 +11,24 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_hot_reloading".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_hot_reloading".toC);
+  SetTargetFPS(60);
 
   String fragShaderFileName = "../resources/shaders/glsl$GLSL_VERSION/reload.fs";
-  int fragShaderFileModTime = rl.Core.GetFileModTime(fragShaderFileName.toC);
+  int fragShaderFileModTime = GetFileModTime(fragShaderFileName.toC);
 
-  var shader = rl.Core.LoadShader(nullptr, fragShaderFileName.toC);
+  var shader = LoadShader(nullptr, fragShaderFileName.toC);
 
-  int resolutionLoc = rl.Core.GetShaderLocation(shader, "resolution".toC);
-  int mouseLoc = rl.Core.GetShaderLocation(shader, "mouse".toC);
-  int timeLoc = rl.Core.GetShaderLocation(shader, "time".toC);
+  int resolutionLoc = GetShaderLocation(shader, "resolution".toC);
+  int mouseLoc = GetShaderLocation(shader, "mouse".toC);
+  int timeLoc = GetShaderLocation(shader, "time".toC);
 
   final resolution = [ screenWidth, screenHeight ];
   void updateShaderResolution() {
-    rl.Core.SetShaderValue(shader, resolutionLoc,
-      rl.Temp.Float32$.Array(resolution).cast(),
+    SetShaderValue(shader, resolutionLoc,
+      Float32$.Array(resolution).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderResolution();
@@ -37,37 +36,37 @@ void main()
   double totalTime = 0.0;
   bool shaderAutoReloading = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    totalTime += rl.Core.GetFrameTime();
-    final mouse = rl.Core.GetMousePosition();
+    totalTime += GetFrameTime();
+    final mouse = GetMousePosition();
 
-    rl.Core.SetShaderValue(shader, timeLoc,
-      rl.Temp.Float32$.Value(totalTime).cast(),
+    SetShaderValue(shader, timeLoc,
+      Float32$.Value(totalTime).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
     
-    rl.Core.SetShaderValue(shader, mouseLoc,
-      rl.Temp.vec21Ptr.setC(mouse).cast(),
+    SetShaderValue(shader, mouseLoc,
+      Vector2$.$1Ptr.setC(mouse).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
 
-    if (shaderAutoReloading || (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)))
+    if (shaderAutoReloading || (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)))
     {
-      final currentFragShaderModTime = rl.Core.GetFileModTime(fragShaderFileName.toC);
+      final currentFragShaderModTime = GetFileModTime(fragShaderFileName.toC);
 
       if (currentFragShaderModTime != fragShaderFileModTime)
       {
-        var updatedShader = rl.Core.LoadShader(nullptr, fragShaderFileName.toC);
+        var updatedShader = LoadShader(nullptr, fragShaderFileName.toC);
 
-        if (updatedShader.id != rl.Rlgl.rlGetShaderIdDefault())
+        if (updatedShader.id != rlGetShaderIdDefault())
         {
-          rl.Core.UnloadShader(shader);
+          UnloadShader(shader);
           shader = updatedShader;
 
-          resolutionLoc = rl.Core.GetShaderLocation(shader, "resolution".toC);
-          mouseLoc = rl.Core.GetShaderLocation(shader, "mouse".toC);
-          timeLoc = rl.Core.GetShaderLocation(shader, "time".toC);
+          resolutionLoc = GetShaderLocation(shader, "resolution".toC);
+          mouseLoc = GetShaderLocation(shader, "mouse".toC);
+          timeLoc = GetShaderLocation(shader, "time".toC);
 
           updateShaderResolution();
         }
@@ -76,35 +75,35 @@ void main()
       }
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_A.value)) shaderAutoReloading = !shaderAutoReloading;
+    if (IsKeyPressed(KeyboardKey.KEY_A.value)) shaderAutoReloading = !shaderAutoReloading;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
-        rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.WHITE);
-      rl.Core.EndShaderMode();
+      BeginShaderMode(shader);
+        DrawRectangle(0, 0, screenWidth, screenHeight, WHITE);
+      EndShaderMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "PRESS [A] to TOGGLE SHADER AUTOLOADING: ${shaderAutoReloading ? "AUTO" : "MANUAL"}".toC,
-        10, 10, 10, shaderAutoReloading ? rl.Color.RED : rl.Color.BLACK
+        10, 10, 10, shaderAutoReloading ? RED : BLACK
       );
-      if (!shaderAutoReloading) rl.Core.DrawText(
+      if (!shaderAutoReloading) DrawText(
         "MOUSE CLICK to SHADER RE-LOADING".toC,
-        10, 30, 10, rl.Color.BLACK
+        10, 30, 10, BLACK
       );
 
       final date = DateTime.fromMillisecondsSinceEpoch(fragShaderFileModTime * 1000);
-      rl.Core.DrawText(
+      DrawText(
         "Shader last modification: $date".toC,
-        10, 430, 10, rl.Color.BLACK
+        10, 430, 10, BLACK
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
+  UnloadShader(shader);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

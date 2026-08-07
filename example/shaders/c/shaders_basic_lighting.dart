@@ -3,7 +3,7 @@
 // Run it: dart run shaders_basic_lighting.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,112 +11,111 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_basic_lighting".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
+  InitWindow(screenWidth, screenHeight, "shaders_basic_lighting".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(2, 4, 6);
   camera.ref.target.set(0, 0.5, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/lighting.vs".toC,
     "../resources/shaders/glsl$GLSL_VERSION/lighting.fs".toC,
   );
 
   shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    rl.Core.GetShaderLocation(shader, "viewPos".toC);
+    GetShaderLocation(shader, "viewPos".toC);
 
-  rl.Core.SetShaderValue(shader,
-    rl.Core.GetShaderLocation(shader, "ambient".toC),
-    rl.Temp.Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+  SetShaderValue(shader,
+    GetShaderLocation(shader, "ambient".toC),
+    Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
   );
 
   List<LightC> lights = [];
 
-  lights.add(rl.Light.CreateLight(
+  lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, -2), rl.Temp.vec3Zero, rl.Color.YELLOW, shader
+    Vector3$.$1.set(-2, 1, -2), Vector3$.$zero, YELLOW, shader
   ));
 
-  lights.add(rl.Light.CreateLight(
+  lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, 2), rl.Temp.vec3Zero, rl.Color.RED, shader
+    Vector3$.$1.set(2, 1, 2), Vector3$.$zero, RED, shader
   ));
 
-  lights.add(rl.Light.CreateLight(
+  lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(-2, 1, 2), rl.Temp.vec3Zero, rl.Color.GREEN, shader
+    Vector3$.$1.set(-2, 1, 2), Vector3$.$zero, GREEN, shader
   ));
 
-  lights.add(rl.Light.CreateLight(
+  lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    rl.Temp.vec31(2, 1, -2), rl.Temp.vec3Zero, rl.Color.BLUE, shader
+    Vector3$.$1.set(2, 1, -2), Vector3$.$zero, BLUE, shader
   ));
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
+    UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
-    rl.Core.SetShaderValue(shader,
+    SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      rl.Temp.vec31Ptr.setC(camera.ref.position).cast(),
+      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_Y.value)) lights[0].enabled = !lights[0].enabled;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_R.value)) lights[1].enabled = !lights[1].enabled;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_G.value)) lights[2].enabled = !lights[2].enabled;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_B.value)) lights[3].enabled = !lights[3].enabled;
+    if (IsKeyPressed(KeyboardKey.KEY_Y.value)) lights[0].enabled = !lights[0].enabled;
+    if (IsKeyPressed(KeyboardKey.KEY_R.value)) lights[1].enabled = !lights[1].enabled;
+    if (IsKeyPressed(KeyboardKey.KEY_G.value)) lights[2].enabled = !lights[2].enabled;
+    if (IsKeyPressed(KeyboardKey.KEY_B.value)) lights[3].enabled = !lights[3].enabled;
 
     for (int i = 0; i < lights.length; i++) {
-      rl.Light.UpdateLightValues(shader, lights[i]);
+      UpdateLightValues(shader, lights[i]);
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
-        rl.Core.BeginShaderMode(shader);
+        BeginShaderMode(shader);
 
-          rl.Core.DrawPlane(rl.Temp.vec3Zero, rl.Temp.vec21(10, 10), rl.Color.WHITE);
-          rl.Core.DrawCube(rl.Temp.vec3Zero, 2, 4, 2, rl.Color.WHITE);
+          DrawPlane(Vector3$.$zero, Vector2$.$1.set(10, 10), WHITE);
+          DrawCube(Vector3$.$zero, 2, 4, 2, WHITE);
 
-        rl.Core.EndShaderMode();
+        EndShaderMode();
 
         for (int i = 0; i < lights.length; i++) {
           if (lights[i].enabled) {
-            rl.Core.DrawSphereEx(lights[i].position, 0.2, 8, 8, lights[i].color);
+            DrawSphereEx(lights[i].position, 0.2, 8, 8, lights[i].color);
           } else {
-            final color = rl.Core.ColorAlpha(lights[i].color, 0.3);
-            rl.Core.DrawSphereWires(lights[i].position, 0.2, 8, 8, color);
+            final color = ColorAlpha(lights[i].color, 0.3);
+            DrawSphereWires(lights[i].position, 0.2, 8, 8, color);
           }
         }
 
-        rl.Core.DrawGrid(10, 1);
+        DrawGrid(10, 1);
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-      rl.Core.DrawText(
+      DrawText(
         "Use keys [Y][R][G][B] to toggle lights".toC,
-        10, 40, 20, rl.Color.DARKGRAY
+        10, 40, 20, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
+  UnloadShader(shader);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

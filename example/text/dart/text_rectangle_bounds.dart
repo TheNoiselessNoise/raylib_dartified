@@ -1,18 +1,17 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
 // Run it: dart run text_rectangle_bounds.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "text_rectangle_bounds");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_rectangle_bounds");
+  SetTargetFPS(60);
 
   String text =
     "Text cannot escape\tthis container\t...word wrap also works when active so here's "
@@ -38,23 +37,23 @@ void main()
 
   Vector2D lastMouse = .zero();
   ColorD borderColor = .MAROON;
-  final font = rl.CoreD.GetFontDefault();
+  final font = GetFontDefault();
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE))
+    if (IsKeyPressed(.KEY_SPACE))
       wordWrap = !wordWrap;
 
-    final mouse = rl.CoreD.GetMousePosition();
+    final mouse = GetMousePosition();
 
-    if (rl.CoreD.CheckCollisionPointRec(mouse, container))
-      borderColor = rl.CoreD.Fade(.MAROON, 0.4);
+    if (CheckCollisionPointRec(mouse, container))
+      borderColor = Fade(.MAROON, 0.4);
     else if (!resizing)
       borderColor = .MAROON;
 
     if (resizing)
     {
-      if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT))
+      if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT))
         resizing = false;
 
       final width = container.width + (mouse.x - lastMouse.x);
@@ -66,8 +65,8 @@ void main()
     else
     {
       if (
-        rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT) &&
-        rl.CoreD.CheckCollisionPointRec(mouse, resizer)
+        IsMouseButtonDown(.MOUSE_BUTTON_LEFT) &&
+        CheckCollisionPointRec(mouse, resizer)
       ) resizing = true;
     }
 
@@ -76,14 +75,13 @@ void main()
 
     lastMouse = mouse;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawRectangleLinesEx(container, 3, borderColor);
+      DrawRectangleLinesEx(container, 3, borderColor);
 
       DrawTextBoxed(
-        rl,
         font,
         text,
         .rect(
@@ -96,43 +94,42 @@ void main()
         .GRAY
       );
 
-      rl.CoreD.DrawRectangleRec(resizer, borderColor);
+      DrawRectangleRec(resizer, borderColor);
 
-      rl.CoreD.DrawRectangle(0, screenHeight - 54, screenWidth, 54, .GRAY);
+      DrawRectangle(0, screenHeight - 54, screenWidth, 54, .GRAY);
 
-      rl.CoreD.DrawRectangleRec(
+      DrawRectangleRec(
         .rect(382.0, screenHeight - 34.0, 12.0, 12.0),
         .MAROON
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Word Wrap: ",
         313, screenHeight-115, 20, .BLACK
       );
       
-      rl.CoreD.DrawText(
+      DrawText(
         wordWrap ? "ON" : "OFF",
         447, screenHeight - 115, 20, .RED
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Press [SPACE] to toggle word wrap",
         218, screenHeight - 86, 20, .GRAY
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Click hold & drag the    to resize the container",
         155, screenHeight - 38, 20, .RAYWHITE
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void DrawTextBoxed(
-  Raylib rl,
   FontD font,
   String text,
   RectangleD rec,
@@ -141,7 +138,7 @@ void DrawTextBoxed(
   bool wordWrap,
   ColorD tint,
 ) => DrawTextBoxedSelectable(
-  rl, font, text, rec, fontSize, spacing,
+  font, text, rec, fontSize, spacing,
   wordWrap, tint, 0, 0, .WHITE, .WHITE
 );
 
@@ -152,7 +149,6 @@ State nextState(State current) => switch (current) {
 };
 
 void DrawTextBoxedSelectable(
-  Raylib rl,
   FontD font,
   String text,
   RectangleD rec,
@@ -178,8 +174,8 @@ void DrawTextBoxedSelectable(
 
   for (int i = 0, k = 0; i < text.length; i++, k++)
   {
-    var (codepoint, codepointSize) = rl.CoreD.GetCodepoint(text[i]);
-    int index = rl.CoreD.GetGlyphIndex(font, codepoint);
+    var (codepoint, codepointSize) = GetCodepoint(text[i]);
+    int index = GetGlyphIndex(font, codepoint);
 
     if (codepoint == 0x3f) codepointSize = 1;
     i += codepointSize - 1;
@@ -253,7 +249,7 @@ void DrawTextBoxedSelectable(
         bool isGlyphSelected = false;
         if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
         {
-          rl.CoreD.DrawRectangleRec(
+          DrawRectangleRec(
             .rect(
               rec.x + textOffsetX - 1, rec.y + textOffsetY,
               glyphWidth, font.baseSize*scaleFactor,
@@ -265,7 +261,7 @@ void DrawTextBoxedSelectable(
 
         if ((codepoint != ' '.ch) && (codepoint != '\t'.ch))
         {
-          rl.CoreD.DrawTextCodepoint(
+          DrawTextCodepoint(
             font,
             codepoint,
             .vec2(rec.x + textOffsetX, rec.y + textOffsetY),

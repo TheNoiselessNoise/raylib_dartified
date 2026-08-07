@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_ball_physics.c
 // Run it: dart run shapes_ball_physics.dart
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -43,11 +43,10 @@ double hypot(double x, double y) {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_ball_physics");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_ball_physics");
+  SetTargetFPS(60);
 
   List<Ball> balls = [
     .new(
@@ -66,12 +65,12 @@ void main()
   Vector2D pressOffset = .zero();
   double gravity = 100;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    double delta = rl.CoreD.GetFrameTime();
-    final mousePos = rl.CoreD.GetMousePosition();
+    double delta = GetFrameTime();
+    final mousePos = GetMousePosition();
 
-    if (rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
       for (final ball in balls) {
         pressOffset.x = mousePos.x - ball.pos.x;
         pressOffset.y = mousePos.y - ball.pos.y;
@@ -84,7 +83,7 @@ void main()
       }
     }
 
-    if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) {
+    if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) {
       if (grabbedBall != null) {
         grabbedBall.grabbed = false;
         grabbedBall = null;
@@ -92,27 +91,27 @@ void main()
     }
 
     if (
-      rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT) ||
+      IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT) ||
       (
-        rl.CoreD.IsKeyDown(.KEY_LEFT_CONTROL) &&
-        rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)
+        IsKeyDown(.KEY_LEFT_CONTROL) &&
+        IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)
       )
     ) {
       if (balls.length < MAX_BALLS) {
         balls.add(.new(
           pos: mousePos,
           vel: .vec2(
-            rl.CoreD.GetRandomValue(-300, 300),
-            rl.CoreD.GetRandomValue(-300, 300),
+            GetRandomValue(-300, 300),
+            GetRandomValue(-300, 300),
           ),
           ppos: .zero(),
-          radius: 20 + rl.CoreD.GetRandomValue(0, 30).toDouble(),
+          radius: 20 + GetRandomValue(0, 30).toDouble(),
           friction: 0.99,
           elasticity: 0.9,
           color: .color(
-            rl.CoreD.GetRandomValue(0, 255),
-            rl.CoreD.GetRandomValue(0, 255),
-            rl.CoreD.GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
             255,
           ),
           grabbed: false
@@ -120,18 +119,18 @@ void main()
       }
     }
 
-    if (rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_MIDDLE)) {
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_MIDDLE)) {
       for (final ball in balls) {
         if (!ball.grabbed) {
           ball.vel = .vec2(
-            rl.CoreD.GetRandomValue(-2000, 2000),
-            rl.CoreD.GetRandomValue(-2000, 2000),
+            GetRandomValue(-2000, 2000),
+            GetRandomValue(-2000, 2000),
           );
         }
       }
     }
 
-    gravity += rl.CoreD.GetMouseWheelMove()*5;
+    gravity += GetMouseWheelMove()*5;
 
     for (final ball in balls) {
       if (!ball.grabbed) {
@@ -168,42 +167,42 @@ void main()
       }
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       for (final ball in balls) {
-        rl.CoreD.DrawCircleV(ball.pos, ball.radius, ball.color);
-        rl.CoreD.DrawCircleLinesV(ball.pos, ball.radius, .BLACK);
+        DrawCircleV(ball.pos, ball.radius, ball.color);
+        DrawCircleLinesV(ball.pos, ball.radius, .BLACK);
       }
 
-      rl.CoreD.DrawText(
+      DrawText(
         "grab a ball by pressing with the mouse and throw it by releasing",
         10, 10, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "right click to create new balls (keep left control pressed to create a lot)",
         10, 30, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "use mouse wheel to change gravity",
         10, 50, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "middle click to shake",
         10, 70, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "BALL COUNT: ${balls.length}",
-        10, rl.CoreD.GetScreenHeight() - 70, 20, .BLACK
+        10, GetScreenHeight() - 70, 20, .BLACK
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "GRAVITY: ${gravity.f2}",
-        10, rl.CoreD.GetScreenHeight() - 40, 20, .BLACK
+        10, GetScreenHeight() - 40, 20, .BLACK
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -2,45 +2,44 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_collision_area.c
 // Run it: dart run shapes_collision_area.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_collision_area".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_collision_area".toC);
+  SetTargetFPS(60);
 
-  final boxA = rl.Temp.Rectangle$.At('boxA').set(
-    10, rl.Core.GetScreenHeight()/2.0 - 50, 200, 100
+  final boxA = Rectangle$.At('boxA').set(
+    10, GetScreenHeight()/2.0 - 50, 200, 100
   );
   int boxASpeedX = 4;
 
-  final boxB = rl.Temp.Rectangle$.At('boxB').set(
-    rl.Core.GetScreenWidth()/2.0 - 30, rl.Core.GetScreenHeight()/2.0 - 30, 60, 60
+  final boxB = Rectangle$.At('boxB').set(
+    GetScreenWidth()/2.0 - 30, GetScreenHeight()/2.0 - 30, 60, 60
   );
 
-  final boxCollision = rl.Temp.Rectangle$.At('boxCollision');
+  final boxCollision = Rectangle$.At('boxCollision');
 
   int screenUpperLimit = 40;
 
   bool pause = false;
   bool collision = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final w = rl.Core.GetScreenWidth(), h = rl.Core.GetScreenHeight();
+    final w = GetScreenWidth(), h = GetScreenHeight();
 
     if (!pause) boxA.ref.x += boxASpeedX;
 
     if (((boxA.ref.x + boxA.ref.width) >= w) || (boxA.ref.x <= 0)) boxASpeedX *= -1;
 
-    boxB.ref.x = rl.Core.GetMouseX() - boxB.ref.width/2;
-    boxB.ref.y = rl.Core.GetMouseY() - boxB.ref.height/2;
+    boxB.ref.x = GetMouseX() - boxB.ref.width/2;
+    boxB.ref.y = GetMouseY() - boxB.ref.height/2;
 
     if ((boxB.ref.x + boxB.ref.width) >= w) boxB.ref.x = w - boxB.ref.width;
     else if (boxB.ref.x <= 0) boxB.ref.x = 0;
@@ -48,47 +47,47 @@ void main()
     if ((boxB.ref.y + boxB.ref.height) >= h) boxB.ref.y = h - boxB.ref.height;
     else if (boxB.ref.y <= screenUpperLimit) boxB.ref.y = screenUpperLimit.toDouble();
 
-    collision = rl.Core.CheckCollisionRecs(boxA.ref, boxB.ref);
+    collision = CheckCollisionRecs(boxA.ref, boxB.ref);
 
-    if (collision) boxCollision.setC(rl.Core.GetCollisionRec(boxA.ref, boxB.ref));
+    if (collision) boxCollision.setC(GetCollisionRec(boxA.ref, boxB.ref));
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) pause = !pause;
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value)) pause = !pause;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawRectangle(0, 0, screenWidth, screenUpperLimit, collision ? rl.Color.RED : rl.Color.BLACK);
+      DrawRectangle(0, 0, screenWidth, screenUpperLimit, collision ? RED : BLACK);
 
-      rl.Core.DrawRectangleRec(boxA.ref, rl.Color.GOLD);
-      rl.Core.DrawRectangleRec(boxB.ref, rl.Color.BLUE);
+      DrawRectangleRec(boxA.ref, GOLD);
+      DrawRectangleRec(boxB.ref, BLUE);
 
       if (collision)
       {
-        rl.Core.DrawRectangleRec(boxCollision.ref, rl.Color.LIME);
+        DrawRectangleRec(boxCollision.ref, LIME);
 
-        rl.Core.DrawText(
+        DrawText(
           "COLLISION!".toC,
-          (w/2 - rl.Core.MeasureText("COLLISION!".toC, 20)/2).toInt(),
+          (w/2 - MeasureText("COLLISION!".toC, 20)/2).toInt(),
           (screenUpperLimit/2 - 10).toInt(),
-          20, rl.Color.BLACK
+          20, BLACK
         );
 
-        rl.Core.DrawText(
+        DrawText(
           "Collision Area: ${boxCollision.ref.width*boxCollision.ref.height}".toC,
-          (w/2 - 100).toInt(), screenUpperLimit + 10, 20, rl.Color.BLACK
+          (w/2 - 100).toInt(), screenUpperLimit + 10, 20, BLACK
         );
       }
 
-      rl.Core.DrawText(
+      DrawText(
         "Press SPACE to PAUSE/RESUME".toC,
-        20, screenHeight - 35, 20, rl.Color.LIGHTGRAY
+        20, screenHeight - 35, 20, LIGHTGRAY
       );
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

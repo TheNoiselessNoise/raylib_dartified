@@ -1,12 +1,10 @@
 // Custom example, there's no original equivalent
 // Run it: dart run core_file_callbacks.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
-
-late Raylib rl;
 
 class TestResult {
   final String name;
@@ -33,24 +31,24 @@ Pointer<UnsignedChar> LoadFileDataFunction(
   lfdResult.assertIt(fileName.toD == 'LoadFileData');
   const dummyDataSize = 8;
   dataSize.value = dummyDataSize;
-  final data = rl.Temp.UnsignedChar$.At('lfd_${fileName.toD}', dummyDataSize);
+  final data = UnsignedChar$.At('lfd_${fileName.toD}', dummyDataSize);
   for (int i = 0; i < dummyDataSize ~/ 2; i++) data[i] = 1;
   return data;
 }
 
 TestResult testLoadFileData() {
   final cb = NativeCallable<LoadFileDataCallbackFunctionC>.isolateLocal(LoadFileDataFunction);
-  rl.Core.SetLoadFileDataCallback(cb.nativeFunction);
+  SetLoadFileDataCallback(cb.nativeFunction);
 
-  final dataSize = rl.Temp.Int$.At('lfd_size');
-  final data = rl.Core.LoadFileData('LoadFileData'.toC, dataSize);
+  final dataSize = Int$.At('lfd_size');
+  final data = LoadFileData('LoadFileData'.toC, dataSize);
 
   final bytes = List.generate(dataSize.value, (i) => data[i]);
   lfdResult.assertIt(dataSize.value == 8, 'expected size 8, got ${dataSize.value}');
   lfdResult.assertIt(bytes.join(',') == '1,1,1,1,0,0,0,0', 'unexpected bytes: ${bytes.join(",")}');
 
   cb.close();
-  rl.Core.SetLoadFileDataCallback(nullptr);
+  SetLoadFileDataCallback(nullptr);
   return lfdResult;
 }
 
@@ -72,20 +70,20 @@ bool SaveFileDataFunction(
 
 TestResult testSaveFileData() {
   final cb = NativeCallable<SaveFileDataCallbackFunctionC>.isolateLocal(SaveFileDataFunction, exceptionalReturn: false);
-  rl.Core.SetSaveFileDataCallback(cb.nativeFunction);
+  SetSaveFileDataCallback(cb.nativeFunction);
 
   const count = 6;
-  final buf = rl.Temp.UnsignedChar$.At('sfd_buf', count);
+  final buf = UnsignedChar$.At('sfd_buf', count);
   for (int i = 0; i < count; i++) buf[i] = (i + 1) * 10;
 
-  final ok = rl.Core.SaveFileData('SaveFileData'.toC, buf.cast(), count);
+  final ok = SaveFileData('SaveFileData'.toC, buf.cast(), count);
 
   sfdResult.assertIt(ok, 'SaveFileData returned false');
   sfdResult.assertIt(_savedDataSize == count, 'expected size $count, got $_savedDataSize');
   sfdResult.assertIt(_savedDataBytes.join(',') == '10,20,30,40,50,60', 'unexpected bytes: ${_savedDataBytes.join(",")}');
 
   cb.close();
-  rl.Core.SetSaveFileDataCallback(nullptr);
+  SetSaveFileDataCallback(nullptr);
   return sfdResult;
 }
 
@@ -94,20 +92,20 @@ final TestResult lftResult = TestResult('LoadFileText');
 Pointer<Char> LoadFileTextFunction(Pointer<Char> fileName) {
   lftResult.assertIt(fileName.toD == 'LoadFileText');
   const text = 'hello raylib';
-  return rl.Temp.String$.ValueAt('lft_${fileName.toD}', text);
+  return String$.ValueAt('lft_${fileName.toD}', text);
 }
 
 TestResult testLoadFileText() {
   final cb = NativeCallable<LoadFileTextCallbackFunctionC>.isolateLocal(LoadFileTextFunction);
-  rl.Core.SetLoadFileTextCallback(cb.nativeFunction);
+  SetLoadFileTextCallback(cb.nativeFunction);
 
-  final text = rl.Core.LoadFileText('LoadFileText'.toC);
+  final text = LoadFileText('LoadFileText'.toC);
   final dart = text.toD;
 
   lftResult.assertIt(dart == 'hello raylib', 'expected "hello raylib", got "$dart"');
 
   cb.close();
-  rl.Core.SetLoadFileTextCallback(nullptr);
+  SetLoadFileTextCallback(nullptr);
   return lftResult;
 }
 
@@ -125,24 +123,23 @@ bool SaveFileTextFunction(
 
 TestResult testSaveFileText() {
   final cb = NativeCallable<SaveFileTextCallbackFunctionC>.isolateLocal(SaveFileTextFunction, exceptionalReturn: false);
-  rl.Core.SetSaveFileTextCallback(cb.nativeFunction);
+  SetSaveFileTextCallback(cb.nativeFunction);
 
-  final ok = rl.Core.SaveFileText('SaveFileText'.toC, 'greetings'.toC);
+  final ok = SaveFileText('SaveFileText'.toC, 'greetings'.toC);
 
   sftResult.assertIt(ok, 'SaveFileText returned false');
   sftResult.assertIt(_savedText == 'greetings', 'expected "greetings", got "$_savedText"');
 
   cb.close();
-  rl.Core.SetSaveFileTextCallback(nullptr);
+  SetSaveFileTextCallback(nullptr);
   return sftResult;
 }
 
 void main() {
-  rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_file_callbacks'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_file_callbacks".toC);
+  SetTargetFPS(60);
 
   results.add(testLoadFileData());
   results.add(testSaveFileData());
@@ -155,16 +152,16 @@ void main() {
   failedTest.assertIt(false, 'This test is failing on purpose');
   results.add(failedTest);
 
-  while (!rl.Core.WindowShouldClose()) {
-    rl.Core.BeginDrawing();
-    rl.Core.ClearBackground(rl.Color.RAYWHITE);
+  while (!WindowShouldClose()) {
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
 
     DrawTestResults(allPassed);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void DrawTestResults(bool allPassed) {
@@ -175,62 +172,62 @@ void DrawTestResults(bool allPassed) {
   const int fontSize = 18;
   const int smallFont = 13;
 
-  final headerColor = allPassed ? rl.Color.DARKGREEN : rl.Color.MAROON;
+  final headerColor = allPassed ? DARKGREEN : MAROON;
   final headerText  = allPassed ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
-  rl.Core.DrawText(headerText.toC, padX, padY, 24, headerColor);
+  DrawText(headerText.toC, padX, padY, 24, headerColor);
 
-  rl.Core.DrawLine(padX, padY + 34, screenWidth - padX, padY + 34, rl.Color.LIGHTGRAY);
+  DrawLine(padX, padY + 34, screenWidth - padX, padY + 34, LIGHTGRAY);
 
   for (int i = 0; i < results.length; i++) {
     final r   = results[i];
     final y   = padY + 44 + i * rowH;
-    final bg  = r.passed ? rl.Temp.color1(220, 255, 220, 255) : rl.Temp.color1(255, 220, 220, 255);
-    final dot = r.passed ? rl.Color.GREEN : rl.Color.RED;
+    final bg  = r.passed ? Color$.$1.set(220, 255, 220, 255) : Color$.$1.set(255, 220, 220, 255);
+    final dot = r.passed ? GREEN : RED;
 
-    rl.Core.DrawRectangle(padX, y, screenWidth - padX * 2, rowH - 4, bg);
-    rl.Core.DrawRectangleLines(padX, y, screenWidth - padX * 2, rowH - 4, dot);
+    DrawRectangle(padX, y, screenWidth - padX * 2, rowH - 4, bg);
+    DrawRectangleLines(padX, y, screenWidth - padX * 2, rowH - 4, dot);
 
-    rl.Core.DrawCircle(padX + iconW ~/ 2, y + (rowH - 4) ~/ 2, 13, dot);
+    DrawCircle(padX + iconW ~/ 2, y + (rowH - 4) ~/ 2, 13, dot);
 
     final signSize = 20;
     final signX = padX + iconW ~/ 2 - signSize ~/ 2;
     final signY = y + (rowH - 4) ~/ 2 - signSize ~/ 2;
 
     if (r.passed) {
-      DrawCheckmark(signX, signY, signSize, rl.Color.WHITE);
+      DrawCheckmark(signX, signY, signSize, WHITE);
     } else {
-      DrawXSign(signX, signY, signSize, rl.Color.WHITE);
+      DrawXSign(signX, signY, signSize, WHITE);
     }
 
-    rl.Core.DrawText(r.name.toC, padX + iconW + 10, y + 7, fontSize, rl.Color.BLACK);
+    DrawText(r.name.toC, padX + iconW + 10, y + 7, fontSize, BLACK);
 
     final detail = r.detail.length > 72 ? '${r.detail.substring(0, 69)}...' : r.detail;
-    rl.Core.DrawText(detail.toC, padX + iconW + 10, y + 28, smallFont, rl.Color.DARKGRAY);
+    DrawText(detail.toC, padX + iconW + 10, y + 28, smallFont, DARKGRAY);
   }
 }
 
 void DrawCheckmark(int x, int y, int size, ColorC color) {
-  rl.Core.DrawLineEx(
-    rl.Temp.vec21(x + size * 0.15, y + size * 0.50),
-    rl.Temp.vec22(x + size * 0.40, y + size * 0.75),
+  DrawLineEx(
+    Vector2$.$1.set(x + size * 0.15, y + size * 0.50),
+    Vector2$.$2.set(x + size * 0.40, y + size * 0.75),
     size * 0.15, color,
   );
-  rl.Core.DrawLineEx(
-    rl.Temp.vec21(x + size * 0.40, y + size * 0.75),
-    rl.Temp.vec22(x + size * 0.85, y + size * 0.20),
+  DrawLineEx(
+    Vector2$.$1.set(x + size * 0.40, y + size * 0.75),
+    Vector2$.$2.set(x + size * 0.85, y + size * 0.20),
     size * 0.15, color,
   );
 }
 
 void DrawXSign(int x, int y, int size, ColorC color) {
-  rl.Core.DrawLineEx(
-    rl.Temp.vec21(x + size * 0.20, y + size * 0.20),
-    rl.Temp.vec22(x + size * 0.80, y + size * 0.80),
+  DrawLineEx(
+    Vector2$.$1.set(x + size * 0.20, y + size * 0.20),
+    Vector2$.$2.set(x + size * 0.80, y + size * 0.80),
     size * 0.15, color,
   );
-  rl.Core.DrawLineEx(
-    rl.Temp.vec21(x + size * 0.80, y + size * 0.20),
-    rl.Temp.vec22(x + size * 0.20, y + size * 0.80),
+  DrawLineEx(
+    Vector2$.$1.set(x + size * 0.80, y + size * 0.20),
+    Vector2$.$2.set(x + size * 0.20, y + size * 0.80),
     size * 0.15, color,
   );
 }

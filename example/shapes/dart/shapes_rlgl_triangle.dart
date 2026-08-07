@@ -1,19 +1,18 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_rlgl_triangle.c
 // Run it: dart run shapes_rlgl_triangle.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_rlgl_triangle");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+  InitWindow(screenWidth, screenHeight, "shapes_rlgl_triangle");
+  SetTargetFPS(60);
 
   final startingPositions = <Vector2D>[
     .vec2(400, 150),
@@ -31,18 +30,18 @@ void main()
   bool linesMode = false;
   double handleRadius = 8;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final mousePos = rl.CoreD.GetMousePosition();
+    final mousePos = GetMousePosition();
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) {
+    if (IsKeyPressed(.KEY_SPACE)) {
       linesMode = !linesMode;
     }
 
     for (int i = 0; i < 3; i++) {
       if (
-        rl.CoreD.CheckCollisionPointCircle(mousePos, trianglePositions[i], handleRadius) &&
-        rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT)
+        CheckCollisionPointCircle(mousePos, trianglePositions[i], handleRadius) &&
+        IsMouseButtonDown(.MOUSE_BUTTON_LEFT)
       ) {
         triangleIndex = i;
         break;
@@ -50,98 +49,98 @@ void main()
     }
 
     if (triangleIndex != -1) {
-      final mouseDelta = rl.CoreD.GetMouseDelta();
+      final mouseDelta = GetMouseDelta();
       trianglePositions[triangleIndex].x += mouseDelta.x;
       trianglePositions[triangleIndex].y += mouseDelta.y;
     }
 
-    if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) {
+    if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) {
       triangleIndex = -1;
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_LEFT)) {
-      rl.RlglD.rlEnableBackfaceCulling();
+    if (IsKeyPressed(.KEY_LEFT)) {
+      rlEnableBackfaceCulling();
     }
-    if (rl.CoreD.IsKeyPressed(.KEY_RIGHT)) {
-      rl.RlglD.rlDisableBackfaceCulling();
+    if (IsKeyPressed(.KEY_RIGHT)) {
+      rlDisableBackfaceCulling();
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_R)) {
+    if (IsKeyPressed(.KEY_R)) {
       trianglePositions[0] = startingPositions[0].clone();
       trianglePositions[1] = startingPositions[1].clone();
       trianglePositions[2] = startingPositions[2].clone();
-      rl.RlglD.rlEnableBackfaceCulling();
+      rlEnableBackfaceCulling();
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       if (linesMode) {
-        rl.RlglD.rlBegin(.RL_LINES);
-          rl.RlglD.rlColor4ub(255, 0, 0, 255);
+        rlBegin(.RL_LINES);
+          rlColor4ub(255, 0, 0, 255);
 
-          rl.RlglD.rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
-          rl.RlglD.rlColor4ub(0, 255, 0, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
+          rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
+          rlColor4ub(0, 255, 0, 255);
+          rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
 
-          rl.RlglD.rlColor4ub(0, 255, 0, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
-          rl.RlglD.rlColor4ub(0, 0, 255, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
+          rlColor4ub(0, 255, 0, 255);
+          rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
+          rlColor4ub(0, 0, 255, 255);
+          rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
 
-          rl.RlglD.rlColor4ub(0, 0, 255, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
-          rl.RlglD.rlColor4ub(255, 0, 0, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
-        rl.RlglD.rlEnd();
+          rlColor4ub(0, 0, 255, 255);
+          rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
+          rlColor4ub(255, 0, 0, 255);
+          rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
+        rlEnd();
       } else {
-        rl.RlglD.rlBegin(.RL_TRIANGLES);
-          rl.RlglD.rlColor4ub(255, 0, 0, 255);
+        rlBegin(.RL_TRIANGLES);
+          rlColor4ub(255, 0, 0, 255);
 
-          rl.RlglD.rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
-          rl.RlglD.rlColor4ub(0, 255, 0, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
-          rl.RlglD.rlColor4ub(0, 0, 255, 255);
-          rl.RlglD.rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
-        rl.RlglD.rlEnd();
+          rlVertex2f(trianglePositions[0].x, trianglePositions[0].y);
+          rlColor4ub(0, 255, 0, 255);
+          rlVertex2f(trianglePositions[1].x, trianglePositions[1].y);
+          rlColor4ub(0, 0, 255, 255);
+          rlVertex2f(trianglePositions[2].x, trianglePositions[2].y);
+        rlEnd();
       }
 
       for (int i = 0; i < 3; i++) {
-        if (rl.CoreD.CheckCollisionPointCircle(mousePos, trianglePositions[i], handleRadius)) {
-          rl.CoreD.DrawCircleV(
+        if (CheckCollisionPointCircle(mousePos, trianglePositions[i], handleRadius)) {
+          DrawCircleV(
             trianglePositions[i],
             handleRadius,
-            rl.CoreD.ColorAlpha(.DARKGRAY, 0.5)
+            ColorAlpha(.DARKGRAY, 0.5)
           );
         }
 
         if (i == triangleIndex) {
-          rl.CoreD.DrawCircleV(trianglePositions[i], handleRadius, .DARKGRAY);
+          DrawCircleV(trianglePositions[i], handleRadius, .DARKGRAY);
         }
 
-        rl.CoreD.DrawCircleLinesV(trianglePositions[i], handleRadius, .BLACK);
+        DrawCircleLinesV(trianglePositions[i], handleRadius, .BLACK);
       }
 
-      rl.CoreD.DrawText(
+      DrawText(
         "SPACE: Toggle lines mode",
         10, 10, 20, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "LEFT-RIGHT: Toggle backface culling",
         10, 40, 20, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "MOUSE: Click and drag vertex points",
         10, 70, 20, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "R: Reset triangle to start positions",
         10, 100, 20, .DARKGRAY
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

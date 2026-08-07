@@ -3,7 +3,7 @@
 // Run it: dart run core_2d_camera_platformer.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 class Player {
   Vector2D position;
@@ -39,14 +39,13 @@ late Pointer<Vector2C> minVec;
 late Pointer<Vector2C> maxVec;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  minVec = rl.Temp.Vector2$.At('minVec');
-  maxVec = rl.Temp.Vector2$.At('maxVec');
+  minVec = Vector2$.At('minVec');
+  maxVec = Vector2$.At('maxVec');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_2d_camera_platformer'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_2d_camera_platformer".toC);
+  SetTargetFPS(60);
 
   Player player = Player(
     position: .vec2(400, 280),
@@ -55,14 +54,14 @@ void main() {
   );
 
   List<EnvItem> envItems = [
-    EnvItem(rect: .rect(0, 0, 1000, 400), blocking: false, color: rl.Color.LIGHTGRAY),
-    EnvItem(rect: .rect(0, 400, 1000, 200), blocking: true, color: rl.Color.GRAY),
-    EnvItem(rect: .rect(300, 200, 400, 10), blocking: true, color: rl.Color.GRAY),
-    EnvItem(rect: .rect(250, 300, 100, 10), blocking: true, color: rl.Color.GRAY),
-    EnvItem(rect: .rect(650, 300, 100, 10), blocking: true, color: rl.Color.GRAY)
+    EnvItem(rect: .rect(0, 0, 1000, 400), blocking: false, color: LIGHTGRAY),
+    EnvItem(rect: .rect(0, 400, 1000, 200), blocking: true, color: GRAY),
+    EnvItem(rect: .rect(300, 200, 400, 10), blocking: true, color: GRAY),
+    EnvItem(rect: .rect(250, 300, 100, 10), blocking: true, color: GRAY),
+    EnvItem(rect: .rect(650, 300, 100, 10), blocking: true, color: GRAY)
   ];
 
-  List<void Function(Raylib, Pointer<Camera2DC>, Player, List<EnvItem>, double)> cameraUpdaters = [
+  List<void Function(Pointer<Camera2DC>, Player, List<EnvItem>, double)> cameraUpdaters = [
     UpdateCameraCenter,
     UpdateCameraCenterInsideMap,
     UpdateCameraCenterSmoothFollow,
@@ -78,7 +77,7 @@ void main() {
     "Player push camera on getting too close to screen edge"
   ];
 
-  final camera = rl.Temp.Camera2D$.At('camera');
+  final camera = Camera2D$.$newPtr;
   camera.ref.target.setD(player.position);
   camera.ref.offset.setD(.vec2(screenWidth/2, screenHeight/2));
   camera.ref.rotation = 0;
@@ -86,72 +85,72 @@ void main() {
 
   int cameraOption = 1;
 
-  while (!rl.Core.WindowShouldClose()) {
-    double deltaTime = rl.Core.GetFrameTime();
+  while (!WindowShouldClose()) {
+    double deltaTime = GetFrameTime();
 
-    UpdatePlayer(rl, player, envItems, deltaTime);
+    UpdatePlayer(player, envItems, deltaTime);
 
-    camera.ref.zoom += (rl.Core.GetMouseWheelMove()*0.05);
+    camera.ref.zoom += (GetMouseWheelMove()*0.05);
 
     if (camera.ref.zoom > 3.0) camera.ref.zoom = 3.0;
     else if (camera.ref.zoom < 0.25) camera.ref.zoom = 0.25;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_R.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_R.value)) {
       camera.ref.zoom = 1;
       player.position = .vec2(400, 280);
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_C.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_C.value)) {
       cameraOption = (cameraOption + 1) % cameraUpdaters.length;
     }
 
-    cameraUpdaters[cameraOption](rl, camera, player, envItems, deltaTime);
+    cameraUpdaters[cameraOption](camera, player, envItems, deltaTime);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode2D(camera.ref);
+      BeginMode2D(camera.ref);
 
         for (int i = 0; i < envItems.length; i++) {
-          rl.Core.DrawRectangleRec(
-            rl.Temp.rect1D(envItems[i].rect),
+          DrawRectangleRec(
+            Rectangle$.$1.setD(envItems[i].rect),
             envItems[i].color
           );
         }
 
-        rl.Core.DrawRectangleRec(
-          rl.Temp.rect1(player.position.x - 20, player.position.y - 40, 40, 40),
-          rl.Color.RED
+        DrawRectangleRec(
+          Rectangle$.$1.set(player.position.x - 20, player.position.y - 40, 40, 40),
+          RED
         );
 
-        rl.Core.DrawCircleV(rl.Temp.vec21D(player.position), 5, rl.Color.GOLD);
+        DrawCircleV(Vector2$.$1.setD(player.position), 5, GOLD);
 
-      rl.Core.EndMode2D();
+      EndMode2D();
 
-      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- Right/Left to move".toC, 40, 40, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("- Space to jump".toC, 40, 60, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom".toC, 40, 80, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("- C to change camera mode".toC, 40, 100, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("Current camera mode:".toC, 20, 120, 10, rl.Color.BLACK);
-      rl.Core.DrawText(cameraDescriptions[cameraOption].toC, 40, 140, 10, rl.Color.DARKGRAY);
+      DrawText("Controls:".toC, 20, 20, 10, BLACK);
+      DrawText("- Right/Left to move".toC, 40, 40, 10, DARKGRAY);
+      DrawText("- Space to jump".toC, 40, 60, 10, DARKGRAY);
+      DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom".toC, 40, 80, 10, DARKGRAY);
+      DrawText("- C to change camera mode".toC, 40, 100, 10, DARKGRAY);
+      DrawText("Current camera mode:".toC, 20, 120, 10, BLACK);
+      DrawText(cameraDescriptions[cameraOption].toC, 40, 140, 10, DARKGRAY);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void UpdatePlayer(Raylib rl, Player player, List<EnvItem> envItems, double delta)
+void UpdatePlayer(Player player, List<EnvItem> envItems, double delta)
 {
-  if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)) {
+  if (IsKeyDown(KeyboardKey.KEY_LEFT.value)) {
     player.position.x -= PLAYER_HOR_SPD*delta;
   }
-  if (rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)) {
+  if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) {
     player.position.x += PLAYER_HOR_SPD*delta;
   }
-  if (rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value) && player.canJump)
+  if (IsKeyDown(KeyboardKey.KEY_SPACE.value) && player.canJump)
   {
     player.speed = -PLAYER_JUMP_SPD;
     player.canJump = false;
@@ -186,12 +185,12 @@ void UpdatePlayer(Raylib rl, Player player, List<EnvItem> envItems, double delta
   }
 }
 
-void UpdateCameraCenter(Raylib rl, Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenter(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   camera.ref.offset.set(screenWidth/2, screenHeight/2);
   camera.ref.target.setD(player.position);
 }
 
-void UpdateCameraCenterInsideMap(Raylib rl, Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenterInsideMap(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   camera.ref.target.setD(player.position);
   camera.ref.offset.set(screenWidth/2, screenHeight/2);
   double minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
@@ -206,15 +205,15 @@ void UpdateCameraCenterInsideMap(Raylib rl, Pointer<Camera2DC> camera, Player pl
 
   maxVec.set(maxX, maxY);
   minVec.set(minX, minY);
-  final max = rl.Core.GetWorldToScreen2D(maxVec.ref, camera.ref);
-  final min = rl.Core.GetWorldToScreen2D(minVec.ref, camera.ref);
+  final max = GetWorldToScreen2D(maxVec.ref, camera.ref);
+  final min = GetWorldToScreen2D(minVec.ref, camera.ref);
   if (max.x < screenWidth) camera.ref.offset.x = screenWidth - (max.x - screenWidth/2);
   if (max.y < screenHeight) camera.ref.offset.y = screenHeight - (max.y - screenHeight/2);
   if (min.x > 0) camera.ref.offset.x = screenWidth/2 - min.x;
   if (min.y > 0) camera.ref.offset.y = screenHeight/2 - min.y;
 }
 
-void UpdateCameraCenterSmoothFollow(Raylib rl, Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenterSmoothFollow(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   double minSpeed = 30;
   double minEffectLength = 10;
   double fractionSpeed = 0.8;
@@ -235,7 +234,7 @@ void UpdateCameraCenterSmoothFollow(Raylib rl, Pointer<Camera2DC> camera, Player
 
 bool eveningOut = false;
 double evenOutTarget = 0;
-void UpdateCameraEvenOutOnLanding(Raylib rl, Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraEvenOutOnLanding(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   double evenOutSpeed = 700;
 
   camera.ref.offset.set(screenWidth/2.0, screenHeight/2.0);
@@ -274,20 +273,20 @@ void UpdateCameraEvenOutOnLanding(Raylib rl, Pointer<Camera2DC> camera, Player p
   }
 }
 
-void UpdateCameraPlayerBoundsPush(Raylib rl, Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraPlayerBoundsPush(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   final Vector2D bbox = .vec2(0.2, 0.2);
 
-  final minVec = rl.Temp.Vector2$.At('UpdateCameraPlayerBoundsPush_minVec').set(
+  final minVec = Vector2$.At('UpdateCameraPlayerBoundsPush_minVec').set(
     (1 - bbox.x)*0.5*screenWidth,
     (1 - bbox.y)*0.5*screenHeight
   );
-  final maxVec = rl.Temp.Vector2$.At('UpdateCameraPlayerBoundsPush_maxVec').set(
+  final maxVec = Vector2$.At('UpdateCameraPlayerBoundsPush_maxVec').set(
     (1 + bbox.x)*0.5*screenWidth,
     (1 + bbox.y)*0.5*screenHeight
   );
 
-  final bboxWorldMin = rl.Core.GetWorldToScreen2D(minVec.ref, camera.ref);
-  final bboxWorldMax = rl.Core.GetWorldToScreen2D(maxVec.ref, camera.ref);
+  final bboxWorldMin = GetWorldToScreen2D(minVec.ref, camera.ref);
+  final bboxWorldMax = GetWorldToScreen2D(maxVec.ref, camera.ref);
 
   camera.ref.offset.set((1 - bbox.x)*0.5*screenWidth, (1 - bbox.y)*0.5*screenHeight);
   

@@ -3,7 +3,7 @@
 // Run it: dart run audio_sound_multi.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,44 +11,43 @@ const int MAX_SOUNDS = 10;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "audio_sound_multi".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "audio_sound_multi".toC);
+  SetTargetFPS(60);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
   int currentSound = 0;
-  final soundArray = rl.Temp.Sound$.FillWith(MAX_SOUNDS, (ptr, i) => switch(i) {
-    0 => rl.Audio.LoadSound("../resources/sound.wav".toC),
-    _ => rl.Audio.LoadSoundAlias(ptr[0]),
+  final soundArray = Sound$.FillWith(MAX_SOUNDS, (ptr, i) => switch(i) {
+    0 => LoadSound("../resources/sound.wav".toC),
+    _ => LoadSoundAlias(ptr[0]),
   });
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
-      rl.Audio.PlaySound(soundArray[currentSound]);
+      PlaySound(soundArray[currentSound]);
       currentSound++;
       if (currentSound >= MAX_SOUNDS)
         currentSound = 0;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText("Press SPACE to PLAY a WAV sound!".toC, 200, 180, 20, rl.Color.LIGHTGRAY);
+      DrawText("Press SPACE to PLAY a WAV sound!".toC, 200, 180, 20, LIGHTGRAY);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
   for (int i = 1; i < MAX_SOUNDS; i++)
-    rl.Audio.UnloadSoundAlias(soundArray[i]);
-  rl.Audio.UnloadSound(soundArray[0]);
+    UnloadSoundAlias(soundArray[i]);
+  UnloadSound(soundArray[0]);
 
-  rl.Audio.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

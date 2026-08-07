@@ -1,32 +1,31 @@
 // Custom example, there's no original equivalent
 // Run it: dart run tab_bar.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(800, 450, "tab_bar");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(800, 450, "tab_bar");
+  SetTargetFPS(60);
 
   final tabs = <String>["one", "two", "three"];
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.WHITE);
+      ClearBackground(.WHITE);
 
-      final (result, active) = rl.GuiD.GuiTabBar(
+      final (result, active) = GuiTabBar(
         .rect(24, 24, 120, 30),
         tabs,
       );
 
-      rl.CoreD.DrawText("CURRENT TAB: ${tabs[active]}", 50, 300, 20, .BLACK);
+      DrawText("CURRENT TAB: ${tabs[active]}", 50, 300, 20, .BLACK);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

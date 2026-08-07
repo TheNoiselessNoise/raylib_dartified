@@ -3,102 +3,101 @@
 // Run it: dart run core_2d_camera_mouse_zoom.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = rl.Temp.Camera2D$.At('camera');
+  final camera = Camera2D$.$newPtr;
   camera.ref.zoom = 1;
 
   int zoomMode = 0;
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_2d_camera_mouse_zoom'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_2d_camera_mouse_zoom".toC);
+  SetTargetFPS(60);
 
-  while (!rl.Core.WindowShouldClose()) {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ONE.value)) {
+  while (!WindowShouldClose()) {
+    if (IsKeyPressed(KeyboardKey.KEY_ONE.value)) {
       zoomMode = 0;
-    } else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_TWO.value)) {
+    } else if (IsKeyPressed(KeyboardKey.KEY_TWO.value)) {
       zoomMode = 1;
     }
 
-    if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)) {
-      final delta = rl.Core.GetMouseDelta();
+    if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+      final delta = GetMouseDelta();
       final finalDelta = delta.toD().scale(-1/camera.ref.zoom);
       camera.ref.target.setD(camera.ref.target.toD().add(finalDelta));
     }
 
     if (zoomMode == 0) {
-      double wheel = rl.Core.GetMouseWheelMove();
+      double wheel = GetMouseWheelMove();
       if (wheel != 0) {
-        final mouseWorldPos = rl.Core.GetScreenToWorld2D(rl.Core.GetMousePosition(), camera.ref);
-        camera.ref.offset.setC(rl.Core.GetMousePosition());
+        final mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera.ref);
+        camera.ref.offset.setC(GetMousePosition());
         camera.ref.target = mouseWorldPos;
         double scale = 0.2*wheel;
-        camera.ref.zoom = rl.Clamp(math.exp(math.log(camera.ref.zoom)+scale), 0.125, 64);
+        camera.ref.zoom = Clamp(math.exp(math.log(camera.ref.zoom)+scale), 0.125, 64);
       }
     } else {
-      if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
-        final mouseWorldPos = rl.Core.GetScreenToWorld2D(rl.Core.GetMousePosition(), camera.ref);
-        camera.ref.offset = rl.Core.GetMousePosition();
+      if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
+        final mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera.ref);
+        camera.ref.offset = GetMousePosition();
         camera.ref.target = mouseWorldPos;
       }
 
-      if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
-        double deltaX = rl.Core.GetMouseDelta().x;
+      if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
+        double deltaX = GetMouseDelta().x;
         double scale = 0.005*deltaX;
-        camera.ref.zoom = rl.Clamp(math.exp(math.log(camera.ref.zoom)+scale), 0.125, 64);
+        camera.ref.zoom = Clamp(math.exp(math.log(camera.ref.zoom)+scale), 0.125, 64);
       }
     }
 
-    rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+    BeginDrawing();
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode2D(camera.ref);
-        rl.Rlgl.rlPushMatrix();
-          rl.Rlgl.rlTranslatef(0, 25*50, 0);
-          rl.Rlgl.rlRotatef(90, 1, 0, 0);
-          rl.Core.DrawGrid(100, 50);
-        rl.Rlgl.rlPopMatrix();
+      BeginMode2D(camera.ref);
+        rlPushMatrix();
+          rlTranslatef(0, 25*50, 0);
+          rlRotatef(90, 1, 0, 0);
+          DrawGrid(100, 50);
+        rlPopMatrix();
 
-        rl.Core.DrawCircle(rl.Core.GetScreenWidth()~/2, rl.Core.GetScreenHeight()~/2, 50, rl.Color.MAROON);
-      rl.Core.EndMode2D();
+        DrawCircle(GetScreenWidth()~/2, GetScreenHeight()~/2, 50, MAROON);
+      EndMode2D();
 
-      rl.Core.DrawCircleV(rl.Core.GetMousePosition(), 4, rl.Color.DARKGRAY);
+      DrawCircleV(GetMousePosition(), 4, DARKGRAY);
 
-      final textPos = rl.Core.GetMousePosition().toD().add(.vec2(-44, -24));
+      final textPos = GetMousePosition().toD().add(.vec2(-44, -24));
 
-      rl.Core.DrawTextEx(
-        rl.Core.GetFontDefault(),
-        "[${rl.Core.GetMouseX()}, ${rl.Core.GetMouseY()}]".toC,
-        rl.Temp.vec21D(textPos),
-        20, 2, rl.Color.BLACK,
+      DrawTextEx(
+        GetFontDefault(),
+        "[${GetMouseX()}, ${GetMouseY()}]".toC,
+        Vector2$.$1.setD(textPos),
+        20, 2, BLACK,
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "[1][2] Select mouse zoom mode (Wheel or Move)".toC,
-        20, 20, 20, rl.Color.DARKGRAY
+        20, 20, 20, DARKGRAY
       );
 
       if (zoomMode == 0) {
-        rl.Core.DrawText(
+        DrawText(
           "Mouse left button drag to move, mouse wheel to zoom".toC,
-          20, 50, 20, rl.Color.DARKGRAY
+          20, 50, 20, DARKGRAY
         );
       } else {
-        rl.Core.DrawText(
+        DrawText(
           "Mouse left button drag to move, mouse press and move to zoom".toC,
-          20, 50, 20, rl.Color.DARKGRAY
+          20, 50, 20, DARKGRAY
         ); 
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

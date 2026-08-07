@@ -159,7 +159,7 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
 
   /// Syncs Dart-side fields into the already-allocated native pointer [p].
   ///
-  /// Called by [Allocator.PointerTo] when [originalPointer] is set. The default implementation
+  /// Called by [NativeStructAlloc.PointerTo] when [originalPointer] is set. The default implementation
   /// delegates to [nativeWriteInto]; override only when sync and full allocation
   /// differ (e.g. to skip re-allocating nested pointers).
   @override
@@ -169,8 +169,7 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
   /// Writes all fields into the native struct at [p], allocating nested pointers
   /// into [temp] under [key] as needed.
   ///
-  /// Called after [allocatePointer] to populate the zeroed memory (or reuse). For structs
-  /// with no nested pointers this is typically equivalent to `writeInto(p.ref)`.
+  /// For structs with no nested pointers this is typically equivalent to `nativeWriteInto(nativeGetReference(p))`.
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<C> p, String key)
     => nativeWriteInto(nativeGetReference(p));
@@ -186,7 +185,7 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
     => nativeReadFrom(nativeGetReference(p));
 
   /// Writes all fields directly into the native struct reference [p].
-  /// For nested structs, use `writeInto` as well.
+  /// For nested structs, use `nativeWriteInto` as well.
   void nativeWriteInto(C p);
 
   void nativeReadFrom(C p);
@@ -205,12 +204,10 @@ abstract class StructD<C extends Struct, D extends StructD<C, D>> extends Raylib
 
 /// A [StructD] for value-type structs that are always passed by value.
 ///
-/// Subclasses never own an [originalPointer]. [toC] always allocates a
-/// fresh [RaylibTemp] slot (or reuses) and writes into it. Typical examples are `Vector2`,
-/// `Color`, `Rectangle`: small flat structs that raylib accepts and returns
+/// Subclasses never own an [originalPointer].
+/// Typical examples are `Vector2`, `Color`, `Rectangle`:
+/// small flat structs that raylib accepts and returns
 /// by value rather than by pointer.
-///
-/// Implementations of [structAllocateInto] should simply redirect to `writeInto(p.ref)`.
 abstract class StructDLiteral<C extends Struct, D extends StructD<C, D>> extends StructD<C, D> {
   StructDLiteral({
     super.originalPointer,
@@ -224,8 +221,8 @@ abstract class StructDLiteral<C extends Struct, D extends StructD<C, D>> extends
 ///
 /// Constructed directly from a `Pointer<C>` (e.g. when iterating over a native
 /// array), a `StructDView` exposes the live native memory through [ref] but
-/// refuses all write operations. Attempting to call [setC], [setD],
-/// [nativeAllocator], [structAllocateInto], or [nativeWriteInto] throws [UnsupportedError].
+/// refuses all write operations. Attempting to call [setD],
+/// [structAllocateInto], or [nativeWriteInto] throws [UnsupportedError].
 ///
 /// [structSyncInto] is a deliberate no-op, views never push changes back into native
 /// memory.

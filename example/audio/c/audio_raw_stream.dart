@@ -4,7 +4,7 @@
 // WARNING: NO SOUND, see LIMITATIONS.md
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -16,45 +16,42 @@ double audioFrequency = 440.0;
 double oldFrequency = 1.0;
 double sineIdx = 0.0;
 
-late Raylib rl;
-
 void main() async {
-  rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "audio_raw_stream".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(30);
+  InitWindow(screenWidth, screenHeight, "audio_raw_stream".toC);
+  SetTargetFPS(30);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
-  rl.Audio.SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
+  SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
 
-  final stream = rl.Audio.LoadAudioStream(44100, 16, 1);
+  final stream = LoadAudioStream(44100, 16, 1);
 
   final AudioInputCallback = NativeCallable<AudioCallbackFunctionC>.listener(AudioInputCallbackCallback);
-  rl.Audio.SetAudioStreamCallback(stream, AudioInputCallback.nativeFunction);
+  SetAudioStreamCallback(stream, AudioInputCallback.nativeFunction);
 
-  final data = rl.Temp.Short$.At('data', MAX_SAMPLES);
+  final data = Short$.At('data', MAX_SAMPLES);
 
-  rl.Audio.PlayAudioStream(stream);
+  PlayAudioStream(stream);
 
-  final mousePosition = rl.Temp.Vector2$.At('mousePosition').set(-100.0, -100.0);
+  final mousePosition = Vector2$.At('mousePosition').set(-100.0, -100.0);
 
   int waveLength = 1;
 
-  final position = rl.Temp.Vector2$.At('position').set(0, 0);
+  final position = Vector2$.At('position').set(0, 0);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    mousePosition.setC(rl.Core.GetMousePosition());
+    mousePosition.setC(GetMousePosition());
 
-    if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
+    if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
     {
       final fp = mousePosition.ref.y;
       frequency = 40.0 + fp;
 
       final pan = mousePosition.ref.x / screenWidth;
-      rl.Audio.SetAudioStreamPan(stream, pan);
+      SetAudioStreamPan(stream, pan);
     }
 
     if (frequency != oldFrequency)
@@ -65,7 +62,7 @@ void main() async {
 
       for (int i = 0; i < waveLength*2; i++)
       {
-        data[i] = (math.sin(((2*rl.PI*i/waveLength)))*32000).toInt();
+        data[i] = (math.sin(((2*PI*i/waveLength)))*32000).toInt();
       }
       for (int j = waveLength*2; j < MAX_SAMPLES; j++)
       {
@@ -75,33 +72,33 @@ void main() async {
       oldFrequency = frequency;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText("sine frequency: ${frequency.toInt()}".toC, rl.Core.GetScreenWidth() - 220, 10, 20, rl.Color.RED);
-      rl.Core.DrawText("click mouse button to change frequency or pan".toC, 10, 10, 20, rl.Color.DARKGRAY);
+      DrawText("sine frequency: ${frequency.toInt()}".toC, GetScreenWidth() - 220, 10, 20, RED);
+      DrawText("click mouse button to change frequency or pan".toC, 10, 10, 20, DARKGRAY);
 
       for (int i = 0; i < screenWidth; i++)
       {
         position.ref.x = i.toDouble();
         position.ref.y = 250 + 50*data[i*MAX_SAMPLES~/screenWidth]/32000.0;
 
-        rl.Core.DrawPixelV(position.ref, rl.Color.RED);
+        DrawPixelV(position.ref, RED);
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
     await Future.delayed(Duration.zero);
   }
 
-  rl.Audio.UnloadAudioStream(stream);
+  UnloadAudioStream(stream);
   AudioInputCallback.close();
 
-  rl.Audio.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void AudioInputCallbackCallback(Pointer<Void> buffer, int frames)
@@ -113,7 +110,7 @@ void AudioInputCallbackCallback(Pointer<Void> buffer, int frames)
 
   for (int i = 0; i < frames; i++)
   {
-    d[i] = (32000.0*math.sin(2*rl.PI*sineIdx)).toInt();
+    d[i] = (32000.0*math.sin(2*PI*sineIdx)).toInt();
     sineIdx += incr;
     if (sineIdx > 1.0) sineIdx -= 1.0;
   }

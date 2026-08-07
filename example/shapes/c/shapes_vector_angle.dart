@@ -2,18 +2,17 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_vector_angle.c
 // Run it: dart run shapes_vector_angle.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_vector_angle".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_vector_angle".toC);
+  SetTargetFPS(60);
 
   Vector2D v0 = .vec2(screenWidth/2.0, screenHeight/2.0);
   Vector2D v1 = v0.add(.vec2(100.0, 80.0));
@@ -22,19 +21,19 @@ void main()
   double angle = 0.0;
   bool angleMode = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     double startangle = 0.0;
 
     if (!angleMode) startangle = -v0.lineAngle(v1)*rl.RAD2DEG;
     if (angleMode) startangle = 0.0;
 
-    v2 = rl.Core.GetMousePosition().toD();
+    v2 = GetMousePosition().toD();
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) angleMode = !angleMode;
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value)) angleMode = !angleMode;
 
-    if ((!angleMode) && rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value))
-      v1 = rl.Core.GetMousePosition().toD();
+    if ((!angleMode) && IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value))
+      v1 = GetMousePosition().toD();
 
     if (!angleMode)
     {
@@ -48,74 +47,74 @@ void main()
       angle = v0.lineAngle(v2)*rl.RAD2DEG;
     }
 
-    final startPos = rl.Temp.Vector2$.At('startPos').setD(v0);
-    final endPos = rl.Temp.Vector2$.At('endPos');
+    final startPos = Vector2$.At('startPos').setD(v0);
+    final endPos = Vector2$.At('endPos');
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       if (!angleMode)
       {
-        rl.Core.DrawText(
+        DrawText(
           "MODE 0: Angle between V1 and V2".toC,
-          10, 10, 20, rl.Color.BLACK
+          10, 10, 20, BLACK
         );
-        rl.Core.DrawText(
+        DrawText(
           "Right Click to Move V2".toC,
-          10, 30, 20, rl.Color.DARKGRAY
+          10, 30, 20, DARKGRAY
         );
 
-        rl.Core.DrawLineEx(startPos.ref, endPos.setD(v1).ref, 2.0, rl.Color.BLACK);
-        rl.Core.DrawLineEx(startPos.ref, endPos.setD(v2).ref, 2.0, rl.Color.RED);
+        DrawLineEx(startPos.ref, endPos.setD(v1).ref, 2.0, BLACK);
+        DrawLineEx(startPos.ref, endPos.setD(v2).ref, 2.0, RED);
 
-        rl.Core.DrawCircleSector(
+        DrawCircleSector(
           startPos.ref, 40.0, startangle,
           startangle + angle, 32,
-          rl.Core.Fade(rl.Color.GREEN, 0.6),
+          Fade(GREEN, 0.6),
         );
       }
       else if (angleMode)
       {
-        rl.Core.DrawText(
+        DrawText(
           "MODE 1: Angle formed by line V1 to V2".toC,
-          10, 10, 20, rl.Color.BLACK
+          10, 10, 20, BLACK
         );
 
-        rl.Core.DrawLine(0, screenHeight~/2, screenWidth, screenHeight~/2, rl.Color.LIGHTGRAY);
-        rl.Core.DrawLineEx(startPos.ref, endPos.setD(v2).ref, 2.0, rl.Color.RED);
+        DrawLine(0, screenHeight~/2, screenWidth, screenHeight~/2, LIGHTGRAY);
+        DrawLineEx(startPos.ref, endPos.setD(v2).ref, 2.0, RED);
 
-        rl.Core.DrawCircleSector(
+        DrawCircleSector(
           startPos.ref, 40.0, startangle,
           startangle - angle, 32,
-          rl.Core.Fade(rl.Color.GREEN, 0.6)
+          Fade(GREEN, 0.6)
         );
       }
 
-      rl.Core.DrawText("v0".toC, v0.x.toInt(), v0.y.toInt(), 10, rl.Color.DARKGRAY);
+      DrawText("v0".toC, v0.x.toInt(), v0.y.toInt(), 10, DARKGRAY);
 
       if (!angleMode && v0.sub(v1).y > 0.0)
-        rl.Core.DrawText("v1".toC, v1.x.toInt(), (v1.y-10).toInt(), 10, rl.Color.DARKGRAY);
+        DrawText("v1".toC, v1.x.toInt(), (v1.y-10).toInt(), 10, DARKGRAY);
       if (!angleMode && v0.sub(v1).y < 0.0)
-        rl.Core.DrawText("v1".toC, v1.x.toInt(), v1.y.toInt(), 10, rl.Color.DARKGRAY);
+        DrawText("v1".toC, v1.x.toInt(), v1.y.toInt(), 10, DARKGRAY);
 
       if (angleMode)
-        rl.Core.DrawText("v1".toC, (v0.x + 40).toInt(), v0.y.toInt(), 10, rl.Color.DARKGRAY);
+        DrawText("v1".toC, (v0.x + 40).toInt(), v0.y.toInt(), 10, DARKGRAY);
 
-      rl.Core.DrawText("v2".toC, (v2.x-10).toInt(), (v2.y-10).toInt(), 10, rl.Color.DARKGRAY);
+      DrawText("v2".toC, (v2.x-10).toInt(), (v2.y-10).toInt(), 10, DARKGRAY);
 
-      rl.Core.DrawText(
+      DrawText(
         "Press SPACE to change MODE".toC,
-        460, 10, 20, rl.Color.DARKGRAY
+        460, 10, 20, DARKGRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "ANGLE: ${angle.f2}".toC,
-        10, 70, 20, rl.Color.LIME
+        10, 70, 20, LIME
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -4,7 +4,7 @@
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int    MONO                          = 1;
 const int    SAMPLE_RATE                   = 44100;
@@ -62,52 +62,51 @@ late Pointer<Vector4C> renderFrameVec4;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  renderFrameVec4 = rl.Temp.Vector4$.At('renderFrame')
+  renderFrameVec4 = Vector4$.At('renderFrame')
     .set(UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL);
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer".toC);
+  SetTargetFPS(60);
 
-  final textureSource = rl.Temp.Rectangle$.At('textureSource');
-  final texturePosition = rl.Temp.Vector2$.At('texturePosition');
+  final textureSource = Rectangle$.At('textureSource');
+  final texturePosition = Vector2$.At('texturePosition');
 
-  final fftImagePtr = rl.Temp.Image$.At('fftImage');
-  fftImagePtr.ref = rl.Core.GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, rl.Color.WHITE);
-  final fftTexture = rl.Core.LoadTextureFromImage(fftImagePtr.ref);
-  final bufferA = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
-  final iResolution = rl.Temp.Vector2$.At('iResolution').set(screenWidth, screenHeight);
+  final fftImagePtr = Image$.At('fftImage');
+  fftImagePtr.ref = GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, WHITE);
+  final fftTexture = LoadTextureFromImage(fftImagePtr.ref);
+  final bufferA = LoadRenderTexture(screenWidth, screenHeight);
+  final iResolution = Vector2$.At('iResolution').set(screenWidth, screenHeight);
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/fft.fs".toC
   );
 
-  int iResolutionLocation = rl.Core.GetShaderLocation(
+  int iResolutionLocation = GetShaderLocation(
     shader, "iResolution".toC
   );
-  int iChannel0Location = rl.Core.GetShaderLocation(
+  int iChannel0Location = GetShaderLocation(
     shader, "iChannel0".toC
   );
-  rl.Core.SetShaderValue(
+  SetShaderValue(
     shader,
     iResolutionLocation,
     iResolution.cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
   );
-  rl.Core.SetShaderValueTexture(shader, iChannel0Location, fftTexture);
+  SetShaderValueTexture(shader, iChannel0Location, fftTexture);
 
-  rl.Audio.InitAudioDevice();
-  rl.Audio.SetAudioStreamBufferSizeDefault(AUDIO_STREAM_RING_BUFFER_SIZE);
+  InitAudioDevice();
+  SetAudioStreamBufferSizeDefault(AUDIO_STREAM_RING_BUFFER_SIZE);
 
-  final wavePtr = rl.Temp.Wave$.At('wavePtr');
-  wavePtr.ref = rl.Audio.LoadWave("../resources/country.mp3".toC);
-  rl.Audio.WaveFormat(wavePtr, SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
+  final wavePtr = Wave$.At('wavePtr');
+  wavePtr.ref = LoadWave("../resources/country.mp3".toC);
+  WaveFormat(wavePtr, SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
 
-  final audioStream = rl.Audio.LoadAudioStream(SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
-  rl.Audio.PlayAudioStream(audioStream);
+  final audioStream = LoadAudioStream(SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
+  PlayAudioStream(audioStream);
 
   int fftHistoryLen = (FFT_HISTORICAL_SMOOTHING_DUR/WINDOW_TIME).ceil() + 1;
 
@@ -125,12 +124,12 @@ void main()
   int wavCursor = 0;
   final wavPCM16 = wavePtr.ref.data.cast<Short>();
 
-  final chunkSamples = rl.Temp.Int16$.At('chunkSamples', AUDIO_STREAM_RING_BUFFER_SIZE);
-  final audioSamples = rl.Temp.Float32$.At('audioSamples', FFT_WINDOW_SIZE);
+  final chunkSamples = Int16$.At('chunkSamples', AUDIO_STREAM_RING_BUFFER_SIZE);
+  final audioSamples = Float32$.At('audioSamples', FFT_WINDOW_SIZE);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    while (rl.Audio.IsAudioStreamProcessed(audioStream)) {
+    while (IsAudioStreamProcessed(audioStream)) {
       for (int i = 0; i < AUDIO_STREAM_RING_BUFFER_SIZE; i++) {
         int left = (wavePtr.ref.channels == 2) ? wavPCM16[wavCursor*2 + 0] : wavPCM16[wavCursor];
         int right = (wavePtr.ref.channels == 2) ? wavPCM16[wavCursor*2 + 1] : left;
@@ -139,7 +138,7 @@ void main()
         if (++wavCursor >= wavePtr.ref.frameCount) wavCursor = 0;
       }
 
-      rl.Audio.UpdateAudioStream(
+      UpdateAudioStream(
         audioStream,
         chunkSamples.cast(),
         AUDIO_STREAM_RING_BUFFER_SIZE
@@ -150,36 +149,36 @@ void main()
       }
     }
 
-    CaptureFrame(rl, fft, audioSamples);
-    RenderFrame(rl, fft, fftImagePtr);
-    rl.Core.UpdateTexture(fftTexture, fftImagePtr.ref.data);
+    CaptureFrame(fft, audioSamples);
+    RenderFrame(fft, fftImagePtr);
+    UpdateTexture(fftTexture, fftImagePtr.ref.data);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
-        rl.Core.SetShaderValueTexture(shader, iChannel0Location, fftTexture);
+      BeginShaderMode(shader);
+        SetShaderValueTexture(shader, iChannel0Location, fftTexture);
 
         textureSource.set(0, 0, screenWidth, -screenHeight);
-        rl.Core.DrawTextureRec(bufferA.texture, textureSource.ref, texturePosition.ref, rl.Color.WHITE);
-      rl.Core.EndShaderMode();
+        DrawTextureRec(bufferA.texture, textureSource.ref, texturePosition.ref, WHITE);
+      EndShaderMode();
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
-  rl.Core.UnloadRenderTexture(bufferA);
-  rl.Core.UnloadTexture(fftTexture);
-  rl.Core.UnloadImage(fftImagePtr.ref);
-  rl.Audio.UnloadAudioStream(audioStream);
-  rl.Audio.UnloadWave(wavePtr.ref);
-  rl.Audio.CloseAudioDevice();
+  UnloadShader(shader);
+  UnloadRenderTexture(bufferA);
+  UnloadTexture(fftTexture);
+  UnloadImage(fftImagePtr.ref);
+  UnloadAudioStream(audioStream);
+  UnloadWave(wavePtr.ref);
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void CooleyTukeyFFTSlow(Raylib rl, List<FFTComplex> spectrum, int n) {
+void CooleyTukeyFFTSlow(List<FFTComplex> spectrum, int n) {
   int j = 0;
   for (int i = 1; i < n - 1; i++) {
     int bit = n >> 1;
@@ -196,7 +195,7 @@ void CooleyTukeyFFTSlow(Raylib rl, List<FFTComplex> spectrum, int n) {
   }
 
   for (int len = 2; len <= n; len <<= 1) {
-    double angle = -2*rl.PI/len;
+    double angle = -2*PI/len;
     FFTComplex twiddleUnit = FFTComplex(math.cos(angle), math.sin(angle));
     for (int i = 0; i < n; i += len) {
       FFTComplex twiddleCurrent = FFTComplex(1, 1);
@@ -221,15 +220,15 @@ void CooleyTukeyFFTSlow(Raylib rl, List<FFTComplex> spectrum, int n) {
   }
 }
 
-void CaptureFrame(Raylib rl, FFTData fftData, Pointer<Float> audioSamples) {
+void CaptureFrame(FFTData fftData, Pointer<Float> audioSamples) {
   for (int i = 0; i < FFT_WINDOW_SIZE; i++) {
-    double x = (2*rl.PI*i)/(FFT_WINDOW_SIZE - 1);
+    double x = (2*PI*i)/(FFT_WINDOW_SIZE - 1);
     double blackmanWeight = 0.42 - 0.5*math.cos(x) + 0.08*math.cos(2*x);
     fftData.workBuffer[i].real = audioSamples[i]*blackmanWeight;
     fftData.workBuffer[i].imaginary = 0;
   }
 
-  CooleyTukeyFFTSlow(rl, fftData.workBuffer, FFT_WINDOW_SIZE);
+  CooleyTukeyFFTSlow(fftData.workBuffer, FFT_WINDOW_SIZE);
   fftData.spectrum = .from(fftData.workBuffer);
 
   List<double> smoothedSpectrum = .filled(BUFFER_SIZE, 0);
@@ -244,17 +243,17 @@ void CaptureFrame(Raylib rl, FFTData fftData, Pointer<Float> audioSamples) {
 
     double db = math.log(math.max(smoothedMagnitude, 1e-40))*DB_TO_LINEAR_SCALE;
     double normalized = (db - MIN_DECIBELS)*INVERSE_DECIBEL_RANGE;
-    smoothedSpectrum[bin] = rl.Clamp(normalized, 0, 1);
+    smoothedSpectrum[bin] = Clamp(normalized, 0, 1);
   }
 
-  fftData.lastFftTime = rl.Core.GetTime();
+  fftData.lastFftTime = GetTime();
   fftData.fftHistory[fftData.historyPos] = .from(smoothedSpectrum);
   fftData.historyPos = (fftData.historyPos + 1) % fftData.fftHistoryLen;
 }
 
-void RenderFrame(Raylib rl, FFTData fftData, Pointer<ImageC> fftImage) {
+void RenderFrame(FFTData fftData, Pointer<ImageC> fftImage) {
   double framesSinceTapback = (fftData.tapbackPos/WINDOW_TIME).floorToDouble();
-  framesSinceTapback = rl.Clamp(framesSinceTapback, 0, fftData.fftHistoryLen - 1);
+  framesSinceTapback = Clamp(framesSinceTapback, 0, fftData.fftHistoryLen - 1);
 
   int historyPosition = (fftData.historyPos - 1 - framesSinceTapback.toInt()) % fftData.fftHistoryLen;
   if (historyPosition < 0) historyPosition += fftData.fftHistoryLen;
@@ -262,6 +261,6 @@ void RenderFrame(Raylib rl, FFTData fftData, Pointer<ImageC> fftImage) {
   final amplitude = fftData.fftHistory[historyPosition];
   for (int bin = 0; bin < BUFFER_SIZE; bin++) {
     renderFrameVec4.ref.x = amplitude[bin];
-    rl.Core.ImageDrawPixel(fftImage, bin, FFT_ROW, rl.Core.ColorFromNormalized(renderFrameVec4.ref));
+    ImageDrawPixel(fftImage, bin, FFT_ROW, ColorFromNormalized(renderFrameVec4.ref));
   }
 }

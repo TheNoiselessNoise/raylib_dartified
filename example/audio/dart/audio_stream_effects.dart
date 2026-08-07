@@ -4,7 +4,7 @@
 // WARNING: expects resources from the raylib source
 // WARNING: NO EFFECTS, see LIMITATIONS.md
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -51,23 +51,19 @@ AudioCallbackD AudioProcessEffectDelay = .function((buffer, frames) {
 });
 
 void main() async {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.AudioD.debug(true);
-  rl.AudioD.debugFilter((c) => c.contains('AudioStreamProcessor'));
+  InitWindow(screenWidth, screenHeight, "audio_stream_effects");
+  SetTargetFPS(60);
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_stream_effects");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitAudioDevice();
 
-  rl.AudioD.InitAudioDevice();
-
-  final music = rl.AudioD.LoadMusicStream("../resources/country.mp3");
+  final music = LoadMusicStream("../resources/country.mp3");
 
   delayBufferSize = 48000*2;
-  delayBuffer = rl.Temp.Float32$.At('delayBuffer', delayBufferSize);
+  delayBuffer = Float32$.At('delayBuffer', delayBufferSize);
 
-  rl.AudioD.PlayMusicStream(music);
+  PlayMusicStream(music);
 
   double timePlayed = 0.0;
   bool pause = false;
@@ -75,67 +71,67 @@ void main() async {
   bool enableEffectLPF = false;
   bool enableEffectDelay = false;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.AudioD.UpdateMusicStream(music);
+    UpdateMusicStream(music);
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE))
+    if (IsKeyPressed(.KEY_SPACE))
     {
-      rl.AudioD.StopMusicStream(music);
-      rl.AudioD.PlayMusicStream(music);
+      StopMusicStream(music);
+      PlayMusicStream(music);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_P))
+    if (IsKeyPressed(.KEY_P))
     {
       pause = !pause;
 
-      if (pause) rl.AudioD.PauseMusicStream(music);
-      else rl.AudioD.ResumeMusicStream(music);
+      if (pause) PauseMusicStream(music);
+      else ResumeMusicStream(music);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_F))
+    if (IsKeyPressed(.KEY_F))
     {
       enableEffectLPF = !enableEffectLPF;
-      if (enableEffectLPF) rl.AudioD.AttachAudioStreamProcessor(music.stream, AudioProcessEffectLPF);
-      else rl.AudioD.DetachAudioStreamProcessor(music.stream, AudioProcessEffectLPF, keepAlive: true);
+      if (enableEffectLPF) AttachAudioStreamProcessor(music.stream, AudioProcessEffectLPF);
+      else DetachAudioStreamProcessor(music.stream, AudioProcessEffectLPF, keepAlive: true);
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_D))
+    if (IsKeyPressed(.KEY_D))
     {
       enableEffectDelay = !enableEffectDelay;
-      if (enableEffectDelay) rl.AudioD.AttachAudioStreamProcessor(music.stream, AudioProcessEffectDelay);
-      else rl.AudioD.DetachAudioStreamProcessor(music.stream, AudioProcessEffectDelay, keepAlive: true);
+      if (enableEffectDelay) AttachAudioStreamProcessor(music.stream, AudioProcessEffectDelay);
+      else DetachAudioStreamProcessor(music.stream, AudioProcessEffectDelay, keepAlive: true);
     }
     
-    timePlayed = rl.AudioD.GetMusicTimePlayed(music)/rl.AudioD.GetMusicTimeLength(music);
+    timePlayed = GetMusicTimePlayed(music)/GetMusicTimeLength(music);
 
     if (timePlayed > 1.0) timePlayed = 1.0;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawText("MUSIC SHOULD BE PLAYING!", 245, 150, 20, .LIGHTGRAY);
+      DrawText("MUSIC SHOULD BE PLAYING!", 245, 150, 20, .LIGHTGRAY);
 
-      rl.CoreD.DrawRectangle(200, 180, 400, 12, .LIGHTGRAY);
-      rl.CoreD.DrawRectangle(200, 180, (timePlayed*400.0).toInt(), 12, .MAROON);
-      rl.CoreD.DrawRectangleLines(200, 180, 400, 12, .GRAY);
+      DrawRectangle(200, 180, 400, 12, .LIGHTGRAY);
+      DrawRectangle(200, 180, (timePlayed*400.0).toInt(), 12, .MAROON);
+      DrawRectangleLines(200, 180, 400, 12, .GRAY);
 
-      rl.CoreD.DrawText("PRESS SPACE TO RESTART MUSIC", 215, 230, 20, .LIGHTGRAY);
-      rl.CoreD.DrawText("PRESS P TO PAUSE/RESUME MUSIC", 208, 260, 20, .LIGHTGRAY);
+      DrawText("PRESS SPACE TO RESTART MUSIC", 215, 230, 20, .LIGHTGRAY);
+      DrawText("PRESS P TO PAUSE/RESUME MUSIC", 208, 260, 20, .LIGHTGRAY);
       
-      rl.CoreD.DrawText("PRESS F TO TOGGLE LPF EFFECT: ${enableEffectLPF ? "ON" : "OFF"}", 200, 320, 20, .GRAY);
-      rl.CoreD.DrawText("PRESS D TO TOGGLE DELAY EFFECT: ${enableEffectDelay ? "ON" : "OFF"}", 180, 350, 20, .GRAY);
+      DrawText("PRESS F TO TOGGLE LPF EFFECT: ${enableEffectLPF ? "ON" : "OFF"}", 200, 320, 20, .GRAY);
+      DrawText("PRESS D TO TOGGLE DELAY EFFECT: ${enableEffectDelay ? "ON" : "OFF"}", 180, 350, 20, .GRAY);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
     await Future.delayed(Duration.zero);
   }
 
-  rl.AudioD.UnloadMusicStream(music);
+  UnloadMusicStream(music);
 
-  rl.AudioD.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -3,7 +3,7 @@
 // Run it: dart run textures_textured_curve.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -24,15 +24,14 @@ Vector2D? curveSelectedPoint;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.SetConfigFlags([.FLAG_VSYNC_HINT, .FLAG_MSAA_4X_HINT]);
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_textured_curve");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  SetConfigFlags([.FLAG_VSYNC_HINT, .FLAG_MSAA_4X_HINT]);
+  InitWindow(screenWidth, screenHeight, "textures_textured_curve");
+  SetTargetFPS(60);
 
-  texRoad = rl.CoreD.LoadTexture("../resources/road.png");
-  rl.CoreD.SetTextureFilter(texRoad, .TEXTURE_FILTER_BILINEAR);
+  texRoad = LoadTexture("../resources/road.png");
+  SetTextureFilter(texRoad, .TEXTURE_FILTER_BILINEAR);
 
   curveStartPosition = .vec2(80, 100);
   curveStartPositionTangent = .vec2(100, 300);
@@ -40,41 +39,41 @@ void main()
   curveEndPosition = .vec2(700, 350);
   curveEndPositionTangent = .vec2(600, 100);
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) showCurve = !showCurve;
-    if (rl.CoreD.IsKeyPressed(.KEY_UP)) curveWidth += 2;
-    if (rl.CoreD.IsKeyPressed(.KEY_DOWN)) curveWidth -= 2;
+    if (IsKeyPressed(.KEY_SPACE)) showCurve = !showCurve;
+    if (IsKeyPressed(.KEY_UP)) curveWidth += 2;
+    if (IsKeyPressed(.KEY_DOWN)) curveWidth -= 2;
     if (curveWidth < 2) curveWidth = 2;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_LEFT)) curveSegments -= 2;
-    if (rl.CoreD.IsKeyPressed(.KEY_RIGHT)) curveSegments += 2;
+    if (IsKeyPressed(.KEY_LEFT)) curveSegments -= 2;
+    if (IsKeyPressed(.KEY_RIGHT)) curveSegments += 2;
 
     if (curveSegments < 2) curveSegments = 2;
 
-    if (!rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT)) curveSelectedPoint = null;
+    if (!IsMouseButtonDown(.MOUSE_BUTTON_LEFT)) curveSelectedPoint = null;
 
     if (curveSelectedPoint case Vector2D point) {
-      point.setD(point.add(rl.CoreD.GetMouseDelta()));
+      point.setD(point.add(GetMouseDelta()));
     }
 
-    final mouse = rl.CoreD.GetMousePosition();
-    if (rl.CoreD.CheckCollisionPointCircle(mouse, curveStartPosition, 6))
+    final mouse = GetMousePosition();
+    if (CheckCollisionPointCircle(mouse, curveStartPosition, 6))
       curveSelectedPoint = curveStartPosition;
-    else if (rl.CoreD.CheckCollisionPointCircle(mouse, curveStartPositionTangent, 6))
+    else if (CheckCollisionPointCircle(mouse, curveStartPositionTangent, 6))
       curveSelectedPoint = curveStartPositionTangent;
-    else if (rl.CoreD.CheckCollisionPointCircle(mouse, curveEndPosition, 6))
+    else if (CheckCollisionPointCircle(mouse, curveEndPosition, 6))
       curveSelectedPoint = curveEndPosition;
-    else if (rl.CoreD.CheckCollisionPointCircle(mouse, curveEndPositionTangent, 6))
+    else if (CheckCollisionPointCircle(mouse, curveEndPositionTangent, 6))
       curveSelectedPoint = curveEndPositionTangent;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      DrawTexturedCurve(rl);
+      DrawTexturedCurve();
 
-      if (showCurve) rl.CoreD.DrawSplineSegmentBezierCubic(
+      if (showCurve) DrawSplineSegmentBezierCubic(
         curveStartPosition,
         curveEndPosition,
         curveStartPositionTangent,
@@ -83,48 +82,48 @@ void main()
         .BLUE
       );
 
-      rl.CoreD.DrawLineV(curveStartPosition, curveStartPositionTangent, .SKYBLUE);
-      rl.CoreD.DrawLineV(curveStartPositionTangent, curveEndPositionTangent, rl.CoreD.Fade(.LIGHTGRAY, 0.4));
-      rl.CoreD.DrawLineV(curveEndPosition, curveEndPositionTangent, .PURPLE);
+      DrawLineV(curveStartPosition, curveStartPositionTangent, .SKYBLUE);
+      DrawLineV(curveStartPositionTangent, curveEndPositionTangent, Fade(.LIGHTGRAY, 0.4));
+      DrawLineV(curveEndPosition, curveEndPositionTangent, .PURPLE);
       
-      if (rl.CoreD.CheckCollisionPointCircle(mouse, curveStartPosition, 6))
-        rl.CoreD.DrawCircleV(curveStartPosition, 7, .YELLOW);
-      rl.CoreD.DrawCircleV(curveStartPosition, 5, .RED);
+      if (CheckCollisionPointCircle(mouse, curveStartPosition, 6))
+        DrawCircleV(curveStartPosition, 7, .YELLOW);
+      DrawCircleV(curveStartPosition, 5, .RED);
 
-      if (rl.CoreD.CheckCollisionPointCircle(mouse, curveStartPositionTangent, 6))
-        rl.CoreD.DrawCircleV(curveStartPositionTangent, 7, .YELLOW);
-      rl.CoreD.DrawCircleV(curveStartPositionTangent, 5, .MAROON);
+      if (CheckCollisionPointCircle(mouse, curveStartPositionTangent, 6))
+        DrawCircleV(curveStartPositionTangent, 7, .YELLOW);
+      DrawCircleV(curveStartPositionTangent, 5, .MAROON);
 
-      if (rl.CoreD.CheckCollisionPointCircle(mouse, curveEndPosition, 6))
-        rl.CoreD.DrawCircleV(curveEndPosition, 7, .YELLOW);
-      rl.CoreD.DrawCircleV(curveEndPosition, 5, .GREEN);
+      if (CheckCollisionPointCircle(mouse, curveEndPosition, 6))
+        DrawCircleV(curveEndPosition, 7, .YELLOW);
+      DrawCircleV(curveEndPosition, 5, .GREEN);
 
-      if (rl.CoreD.CheckCollisionPointCircle(mouse, curveEndPositionTangent, 6))
-        rl.CoreD.DrawCircleV(curveEndPositionTangent, 7, .YELLOW);
-      rl.CoreD.DrawCircleV(curveEndPositionTangent, 5, .DARKGREEN);
+      if (CheckCollisionPointCircle(mouse, curveEndPositionTangent, 6))
+        DrawCircleV(curveEndPositionTangent, 7, .YELLOW);
+      DrawCircleV(curveEndPositionTangent, 5, .DARKGREEN);
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Drag points to move curve, press SPACE to show/hide base curve",
         10, 10, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "Curve width: $curveWidth (Use UP and DOWN to adjust)",
         10, 30, 10, .DARKGRAY
       );
-      rl.CoreD.DrawText(
+      DrawText(
         "Curve segments: $curveSegments (Use LEFT and RIGHT to adjust)",
         10, 50, 10, .DARKGRAY
       );
         
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadTexture(texRoad);
+  UnloadTexture(texRoad);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void DrawTexturedCurve(Raylib rl)
+void DrawTexturedCurve()
 {
   final step = 1.0/curveSegments;
 
@@ -170,23 +169,23 @@ void DrawTexturedCurve(Raylib rl)
     final currentPosNormal = current.add(normal.scale(curveWidth));
     final currentNegNormal = current.add(normal.scale(-curveWidth));
 
-    rl.RlglD.rlSetTexture(texRoad.id);
-    rl.RlglD.rlBegin(.RL_QUADS);
-      rl.RlglD.rlColor4ub(255,255,255,255);
-      rl.RlglD.rlNormal3f(0.0, 0.0, 1.0);
+    rlSetTexture(texRoad.id);
+    rlBegin(.RL_QUADS);
+      rlColor4ub(255,255,255,255);
+      rlNormal3f(0.0, 0.0, 1.0);
 
-      rl.RlglD.rlTexCoord2f(0, previousV);
-      rl.RlglD.rlVertex2f(prevNegNormal.x, prevNegNormal.y);
+      rlTexCoord2f(0, previousV);
+      rlVertex2f(prevNegNormal.x, prevNegNormal.y);
 
-      rl.RlglD.rlTexCoord2f(1, previousV);
-      rl.RlglD.rlVertex2f(prevPosNormal.x, prevPosNormal.y);
+      rlTexCoord2f(1, previousV);
+      rlVertex2f(prevPosNormal.x, prevPosNormal.y);
 
-      rl.RlglD.rlTexCoord2f(1, v);
-      rl.RlglD.rlVertex2f(currentPosNormal.x, currentPosNormal.y);
+      rlTexCoord2f(1, v);
+      rlVertex2f(currentPosNormal.x, currentPosNormal.y);
 
-      rl.RlglD.rlTexCoord2f(0, v);
-      rl.RlglD.rlVertex2f(currentNegNormal.x, currentNegNormal.y);
-    rl.RlglD.rlEnd();
+      rlTexCoord2f(0, v);
+      rlVertex2f(currentNegNormal.x, currentNegNormal.y);
+    rlEnd();
 
     previous.setD(current);
     previousTangent.setD(normal);

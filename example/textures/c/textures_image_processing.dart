@@ -3,7 +3,7 @@
 // Run it: dart run textures_image_processing.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -27,38 +27,37 @@ enum ImageProcess {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_processing".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_processing".toC);
+  SetTargetFPS(60);
 
-  final imOrigin = rl.Temp.Image$.At('imOrigin');
-  imOrigin.ref = rl.Core.LoadImage("../resources/parrots.png".toC);
-  rl.Core.ImageFormat(imOrigin, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value);
-  final texture = rl.Core.LoadTextureFromImage(imOrigin.ref);
+  final imOrigin = Image$.At('imOrigin');
+  imOrigin.ref = LoadImage("../resources/parrots.png".toC);
+  ImageFormat(imOrigin, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value);
+  final texture = LoadTextureFromImage(imOrigin.ref);
 
-  final imCopy = rl.Temp.Image$.At('imCopy');
-  imCopy.ref = rl.Core.ImageCopy(imOrigin.ref);
+  final imCopy = Image$.At('imCopy');
+  imCopy.ref = ImageCopy(imOrigin.ref);
 
   ImageProcess currentProcess = .NONE;
   bool textureReload = false;
   int mouseHoverRec = -1;
 
-  final toggleRecs = rl.Temp.Rectangle$.FillInto(
+  final toggleRecs = Rectangle$.FillInto(
     ImageProcess.values.length,
     (i, r) => r.set(40.0, 50 + 32*i, 150.0, 30.0),
   );
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     for (final (i, process) in ImageProcess.values.indexed)
     {
-      if (rl.Core.CheckCollisionPointRec(rl.Core.GetMousePosition(), toggleRecs[i]))
+      if (CheckCollisionPointRec(GetMousePosition(), toggleRecs[i]))
       {
         mouseHoverRec = i;
 
-        if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
+        if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
         {
           currentProcess = process;
           textureReload = true;
@@ -68,12 +67,12 @@ void main()
       else mouseHoverRec = -1;
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_DOWN.value))
+    if (IsKeyPressed(KeyboardKey.KEY_DOWN.value))
     {
       currentProcess = currentProcess.next;
       textureReload = true;
     }
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_UP.value))
+    else if (IsKeyPressed(KeyboardKey.KEY_UP.value))
     {
       currentProcess = currentProcess.prev;
       textureReload = true;
@@ -81,84 +80,84 @@ void main()
 
     if (textureReload)
     {
-      rl.Core.UnloadImage(imCopy.ref);
-      imCopy.ref = rl.Core.ImageCopy(imOrigin.ref);
+      UnloadImage(imCopy.ref);
+      imCopy.ref = ImageCopy(imOrigin.ref);
 
       switch (currentProcess)
       {
-        case .COLOR_GRAYSCALE: rl.Core.ImageColorGrayscale(imCopy); break;
-        case .COLOR_TINT: rl.Core.ImageColorTint(imCopy, rl.Color.GREEN); break;
-        case .COLOR_INVERT: rl.Core.ImageColorInvert(imCopy); break;
-        case .COLOR_CONTRAST: rl.Core.ImageColorContrast(imCopy, -40); break;
-        case .COLOR_BRIGHTNESS: rl.Core.ImageColorBrightness(imCopy, -80); break;
-        case .GAUSSIAN_BLUR: rl.Core.ImageBlurGaussian(imCopy, 10); break;
-        case .FLIP_VERTICAL: rl.Core.ImageFlipVertical(imCopy); break;
-        case .FLIP_HORIZONTAL: rl.Core.ImageFlipHorizontal(imCopy); break;
+        case .COLOR_GRAYSCALE: ImageColorGrayscale(imCopy); break;
+        case .COLOR_TINT: ImageColorTint(imCopy, GREEN); break;
+        case .COLOR_INVERT: ImageColorInvert(imCopy); break;
+        case .COLOR_CONTRAST: ImageColorContrast(imCopy, -40); break;
+        case .COLOR_BRIGHTNESS: ImageColorBrightness(imCopy, -80); break;
+        case .GAUSSIAN_BLUR: ImageBlurGaussian(imCopy, 10); break;
+        case .FLIP_VERTICAL: ImageFlipVertical(imCopy); break;
+        case .FLIP_HORIZONTAL: ImageFlipHorizontal(imCopy); break;
         default: break;
       }
 
-      final pixels = rl.Core.LoadImageColors(imCopy.ref);
-      rl.Core.UpdateTexture(texture, pixels.cast());
-      rl.Core.UnloadImageColors(pixels);
+      final pixels = LoadImageColors(imCopy.ref);
+      UpdateTexture(texture, pixels.cast());
+      UnloadImageColors(pixels);
 
       textureReload = false;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "IMAGE PROCESSING:".toC,
-        40, 30, 10, rl.Color.DARKGRAY
+        40, 30, 10, DARKGRAY
       );
 
       for (final (i, process) in ImageProcess.values.indexed)
       {
-        rl.Core.DrawRectangleRec(
+        DrawRectangleRec(
           toggleRecs[i],
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.SKYBLUE : rl.Color.LIGHTGRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? SKYBLUE : LIGHTGRAY
         );
         
-        rl.Core.DrawRectangleLines(
+        DrawRectangleLines(
           toggleRecs[i].x.toInt(),
           toggleRecs[i].y.toInt(),
           toggleRecs[i].width.toInt(),
           toggleRecs[i].height.toInt(),
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.BLUE : rl.Color.GRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? BLUE : GRAY
         );
 
         final processText = ImageProcess.values[i].name.toC;
-        rl.Core.DrawText(
+        DrawText(
           processText,
-          (toggleRecs[i].x + toggleRecs[i].width/2 - rl.Core.MeasureText(processText, 10)/2).toInt(),
+          (toggleRecs[i].x + toggleRecs[i].width/2 - MeasureText(processText, 10)/2).toInt(),
           (toggleRecs[i].y + 11).toInt(),
           10,
-          ((process == currentProcess) || (i == mouseHoverRec)) ? rl.Color.DARKBLUE : rl.Color.DARKGRAY
+          ((process == currentProcess) || (i == mouseHoverRec)) ? DARKBLUE : DARKGRAY
         );
       }
 
-      rl.Core.DrawTexture(
+      DrawTexture(
         texture,
         screenWidth - texture.width - 60,
         (screenHeight/2 - texture.height/2).toInt(),
-        rl.Color.WHITE
+        WHITE
       );
       
-      rl.Core.DrawRectangleLines(
+      DrawRectangleLines(
         screenWidth - texture.width - 60,
         (screenHeight/2 - texture.height/2).toInt(),
         texture.width,
         texture.height,
-        rl.Color.BLACK
+        BLACK
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
-  rl.Core.UnloadImage(imOrigin.ref);
-  rl.Core.UnloadImage(imCopy.ref);
+  UnloadTexture(texture);
+  UnloadImage(imOrigin.ref);
+  UnloadImage(imCopy.ref);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

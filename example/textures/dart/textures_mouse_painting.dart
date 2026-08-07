@@ -1,14 +1,14 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_mouse_painting.c
 // Run it: dart run textures_mouse_painting.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
   final colors = <ColorD>[
     .RAYWHITE, .YELLOW, .GOLD, .ORANGE,
@@ -40,61 +40,60 @@ void main()
   bool showSaveMessage = false;
   int saveMessageCounter = 0;
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_mouse_painting");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(120);
+  InitWindow(screenWidth, screenHeight, "textures_mouse_painting");
+  SetTargetFPS(120);
 
-  final target = rl.CoreD.LoadRenderTexture(screenWidth, screenHeight);
+  final target = LoadRenderTexture(screenWidth, screenHeight);
 
-  rl.CoreD.BeginTextureMode(target);
-  rl.CoreD.ClearBackground(colors[0]);
-  rl.CoreD.EndTextureMode();
+  BeginTextureMode(target);
+  ClearBackground(colors[0]);
+  EndTextureMode();
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final mousePos = rl.CoreD.GetMousePosition();
+    final mousePos = GetMousePosition();
 
-    if (rl.CoreD.IsKeyPressed(.KEY_RIGHT)) colorSelected++;
-    else if (rl.CoreD.IsKeyPressed(.KEY_LEFT)) colorSelected--;
+    if (IsKeyPressed(.KEY_RIGHT)) colorSelected++;
+    else if (IsKeyPressed(.KEY_LEFT)) colorSelected--;
 
     if (colorSelected >= colors.length) colorSelected = colors.length - 1;
     else if (colorSelected < 0) colorSelected = 0;
 
     for (int i = 0; i < colors.length; i++) {
-      if (rl.CoreD.CheckCollisionPointRec(mousePos, colorsRecs[i])) {
+      if (CheckCollisionPointRec(mousePos, colorsRecs[i])) {
         colorMouseHover = i;
         break;
       }
       else colorMouseHover = -1;
     }
 
-    if ((colorMouseHover >= 0) && rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
+    if ((colorMouseHover >= 0) && IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
       colorSelected = colorMouseHover;
       colorSelectedPrev = colorSelected;
     }
 
-    brushSize += rl.CoreD.GetMouseWheelMove()*5;
+    brushSize += GetMouseWheelMove()*5;
     if (brushSize < 2) brushSize = 2;
     if (brushSize > 50) brushSize = 50;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_C)) {
-      rl.CoreD.BeginTextureMode(target);
-      rl.CoreD.ClearBackground(colors[0]);
-      rl.CoreD.EndTextureMode();
+    if (IsKeyPressed(.KEY_C)) {
+      BeginTextureMode(target);
+      ClearBackground(colors[0]);
+      EndTextureMode();
     }
 
     if (
-      rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT) ||
-      (rl.CoreD.GetGestureDetected() == .GESTURE_DRAG)
+      IsMouseButtonDown(.MOUSE_BUTTON_LEFT) ||
+      (GetGestureDetected() == .GESTURE_DRAG)
     ) {
-      rl.CoreD.BeginTextureMode(target);
+      BeginTextureMode(target);
       if (mousePos.y > 50) {
-        rl.CoreD.DrawCircle(mousePos.x, mousePos.y, brushSize, colors[colorSelected]);
+        DrawCircle(mousePos.x, mousePos.y, brushSize, colors[colorSelected]);
       }
-      rl.CoreD.EndTextureMode();
+      EndTextureMode();
     }
 
-    if (rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) {
+    if (IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) {
       if (!mouseWasPressed) {
         colorSelectedPrev = colorSelected;
         colorSelected = 0;
@@ -102,26 +101,26 @@ void main()
 
       mouseWasPressed = true;
 
-      rl.CoreD.BeginTextureMode(target);
+      BeginTextureMode(target);
       if (mousePos.y > 50) {
-        rl.CoreD.DrawCircle(mousePos.x, mousePos.y, brushSize, colors[0]);
+        DrawCircle(mousePos.x, mousePos.y, brushSize, colors[0]);
       }
-      rl.CoreD.EndTextureMode();
-    } else if (rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_RIGHT) && mouseWasPressed) {
+      EndTextureMode();
+    } else if (IsMouseButtonReleased(.MOUSE_BUTTON_RIGHT) && mouseWasPressed) {
       colorSelected = colorSelectedPrev;
       mouseWasPressed = false;
     }
 
-    btnSaveMouseHover = rl.CoreD.CheckCollisionPointRec(mousePos, btnSaveRec);
+    btnSaveMouseHover = CheckCollisionPointRec(mousePos, btnSaveRec);
 
     if (
-      (btnSaveMouseHover && rl.CoreD.IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) ||
-      rl.CoreD.IsKeyPressed(.KEY_S)
+      (btnSaveMouseHover && IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) ||
+      IsKeyPressed(.KEY_S)
     ) {
-      final image = rl.CoreD.LoadImageFromTexture(target.texture);
-      rl.CoreD.ImageFlipVertical(image);
-      rl.CoreD.ExportImage(image, "my_amazing_texture_painting.png");
-      rl.CoreD.UnloadImage(image);
+      final image = LoadImageFromTexture(target.texture);
+      ImageFlipVertical(image);
+      ExportImage(image, "my_amazing_texture_painting.png");
+      UnloadImage(image);
       showSaveMessage = true;
     }
 
@@ -133,11 +132,11 @@ void main()
       }
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawTextureRec(
+      DrawTextureRec(
         target.texture,
         .rect(
           0, 0,
@@ -149,26 +148,26 @@ void main()
 
       if (mousePos.y > 50)
       {
-        if (rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) {
-          rl.CoreD.DrawCircleLines(mousePos.x, mousePos.y, brushSize, .GRAY);
+        if (IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) {
+          DrawCircleLines(mousePos.x, mousePos.y, brushSize, .GRAY);
         } else {
-          rl.CoreD.DrawCircle(rl.CoreD.GetMouseX(), rl.CoreD.GetMouseY(), brushSize, colors[colorSelected]);
+          DrawCircle(GetMouseX(), GetMouseY(), brushSize, colors[colorSelected]);
         }
       }
 
-      rl.CoreD.DrawRectangle(0, 0, rl.CoreD.GetScreenWidth(), 50, .RAYWHITE);
-      rl.CoreD.DrawLine(0, 50, rl.CoreD.GetScreenWidth(), 50, .LIGHTGRAY);
+      DrawRectangle(0, 0, GetScreenWidth(), 50, .RAYWHITE);
+      DrawLine(0, 50, GetScreenWidth(), 50, .LIGHTGRAY);
 
       for (int i = 0; i < colors.length; i++) {
-        rl.CoreD.DrawRectangleRec(colorsRecs[i], colors[i]);
+        DrawRectangleRec(colorsRecs[i], colors[i]);
       }
-      rl.CoreD.DrawRectangleLines(10, 10, 30, 30, .LIGHTGRAY);
+      DrawRectangleLines(10, 10, 30, 30, .LIGHTGRAY);
 
       if (colorMouseHover >= 0) {
-        rl.CoreD.DrawRectangleRec(colorsRecs[colorMouseHover], rl.CoreD.Fade(.WHITE, 0.6));
+        DrawRectangleRec(colorsRecs[colorMouseHover], Fade(.WHITE, 0.6));
       }
 
-      rl.CoreD.DrawRectangleLinesEx(
+      DrawRectangleLinesEx(
         .rect(
           colorsRecs[colorSelected].x - 2,
           colorsRecs[colorSelected].y - 2,
@@ -178,20 +177,20 @@ void main()
         2, .BLACK
       );
 
-      rl.CoreD.DrawRectangleLinesEx(btnSaveRec, 2, btnSaveMouseHover ? .RED : .BLACK);
-      rl.CoreD.DrawText("SAVE!", 755, 20, 10, btnSaveMouseHover ? .RED : .BLACK);
+      DrawRectangleLinesEx(btnSaveRec, 2, btnSaveMouseHover ? .RED : .BLACK);
+      DrawText("SAVE!", 755, 20, 10, btnSaveMouseHover ? .RED : .BLACK);
 
       if (showSaveMessage)
       {
-        rl.CoreD.DrawRectangle(0, 0, rl.CoreD.GetScreenWidth(), rl.CoreD.GetScreenHeight(), rl.CoreD.Fade(.RAYWHITE, 0.8));
-        rl.CoreD.DrawRectangle(0, 150, rl.CoreD.GetScreenWidth(), 80, .BLACK);
-        rl.CoreD.DrawText("IMAGE SAVED!", 150, 180, 20, .RAYWHITE);
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(.RAYWHITE, 0.8));
+        DrawRectangle(0, 150, GetScreenWidth(), 80, .BLACK);
+        DrawText("IMAGE SAVED!", 150, 180, 20, .RAYWHITE);
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadRenderTexture(target);
+  UnloadRenderTexture(target);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

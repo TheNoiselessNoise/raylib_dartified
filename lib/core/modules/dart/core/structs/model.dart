@@ -14,9 +14,9 @@ extension ModelCEx on ModelC {
     meshes = o.meshes;
     materials = o.materials;
     meshMaterial = o.meshMaterial;
-    boneCount = o.boneCount;
-    bones = o.bones;
-    bindPose = o.bindPose;
+    skeleton.setC(o.skeleton);
+    currentPose = o.currentPose;
+    boneMatrices = o.boneMatrices;
     return this;
   }
 
@@ -27,11 +27,11 @@ extension ModelCEx on ModelC {
       meshes = p.ref.meshes;
       materials = p.ref.materials;
       meshMaterial = p.ref.meshMaterial;
-      boneCount = p.ref.boneCount;
-      bones = p.ref.bones;
-      bindPose = p.ref.bindPose;
+      currentPose = p.ref.currentPose;
+      boneMatrices = p.ref.boneMatrices;
     });
     transform.setD(o.transform);
+    skeleton.setD(o.skeleton);
     return this;
   }
 
@@ -41,8 +41,9 @@ extension ModelCEx on ModelC {
     meshes: .generate(meshCount, (i) => (meshes + i).toD()),
     materials: .generate(materialCount, (i) => (materials + i).toD()),
     meshMaterial: .generate(meshCount, (i) => meshMaterial[i]),
-    bones: .generate(boneCount, (i) => (bones + i).toD()),
-    bindPose: .generate(boneCount, (i) =>  (bindPose + i).toD()),
+    skeleton: skeleton.toD(),
+    currentPose: .generate(skeleton.boneCount, (i) => (currentPose + i).toD()),
+    boneMatrices: .generate(skeleton.boneCount, (i) => (boneMatrices + i).toD()),
   );
 }
 
@@ -59,7 +60,8 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
   TextureD,
   ColorD,
   TransformD,
-  BoneInfoD
+  BoneInfoD,
+  ModelSkeletonD
 > {
   MatrixD _transform;
   @override get transform {
@@ -100,25 +102,35 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     structOnOp((p) => _meshMaterial.ptr = p.ref.meshMaterial);
     _meshMaterial.inner = value;
   }
+
+  ModelSkeletonD _skeleton;
+  @override get skeleton {
+    structOnOp((p) => _skeleton.nativeReadFrom(p.ref.skeleton));
+    return _skeleton;
+  }
+  @override set skeleton(ModelSkeletonD value) {
+    _skeleton = value;
+    structOnOp((p) => value.nativeWriteInto(p.ref.skeleton));
+  }
   
-  late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
-  @override get bones {
-    structOnOp((p) => _bones.ptr = p.ref.bones);
-    return _bones;
+  late NativeLiveListPointerStruct<TransformC, TransformD> _currentPose;
+  @override get currentPose {
+    structOnOp((p) => _currentPose.ptr = p.ref.currentPose);
+    return _currentPose;
   }
-  @override set bones(List<BoneInfoD> value) {
-    structOnOp((p) => _bones.ptr = p.ref.bones);
-    _bones.inner = value;
+  @override set currentPose(List<TransformD> value) {
+    structOnOp((p) => _currentPose.ptr = p.ref.currentPose);
+    _currentPose.inner = value;
   }
   
-  late NativeLiveListPointerStruct<TransformC, TransformD> _bindPose;
-  @override get bindPose {
-    structOnOp((p) => _bindPose.ptr = p.ref.bindPose);
-    return _bindPose;
+  late NativeLiveListPointerStruct<MatrixC, MatrixD> _boneMatrices;
+  @override get boneMatrices {
+    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    return _boneMatrices;
   }
-  @override set bindPose(List<TransformD> value) {
-    structOnOp((p) => _bindPose.ptr = p.ref.bindPose);
-    _bindPose.inner = value;
+  @override set boneMatrices(List<MatrixD> value) {
+    structOnOp((p) => _boneMatrices.ptr = p.ref.boneMatrices);
+    _boneMatrices.inner = value;
   }
 
   ModelD({
@@ -127,16 +139,18 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     List<MeshD>? meshes,
     List<MaterialD>? materials,
     List<int>? meshMaterial,
-    List<BoneInfoD>? bones,
-    List<TransformD>? bindPose,
+    ModelSkeletonD? skeleton,
+    List<TransformD>? currentPose,
+    List<MatrixD>? boneMatrices,
   }) :
-    _transform = transform ?? .new()
+    _transform = transform ?? .new(),
+    _skeleton = skeleton ?? .new()
   {
     _meshes = .new(meshes ?? [], originalPointer?.ref.meshes);
     _materials = .new(materials ?? [], originalPointer?.ref.materials);
     _meshMaterial = .new(meshMaterial ?? [], originalPointer?.ref.meshMaterial);
-    _bones = .new(bones ?? [], originalPointer?.ref.bones);
-    _bindPose = .new(bindPose ?? [], originalPointer?.ref.bindPose);
+    _currentPose = .new(currentPose ?? [], originalPointer?.ref.currentPose);
+    _boneMatrices = .new(boneMatrices ?? [], originalPointer?.ref.boneMatrices);
   }
 
   factory ModelD.zero() => .new();
@@ -147,8 +161,9 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     meshes = .from(o.meshes);
     materials = .from(o.materials);
     meshMaterial = .from(o.meshMaterial);
-    bones = .from(o.bones);
-    bindPose = .from(o.bindPose);
+    skeleton.setD(o.skeleton);
+    currentPose = .from(o.currentPose);
+    boneMatrices = .from(o.boneMatrices);
     return this;
   }
 
@@ -163,8 +178,8 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     p.ref.meshes = temp.Mesh$.Array(meshes, key: '${key}_meshes');
     p.ref.materials = temp.Material$.Array(materials, key: '${key}_materials');
     p.ref.meshMaterial = temp.Int$.Array(meshMaterial, key: '${key}_meshMaterial');
-    p.ref.bones = temp.BoneInfo$.Array(bones, key: '${key}_bones');
-    p.ref.bindPose = temp.Transform$.Array(bindPose, key: '${key}_bindPose');
+    p.ref.currentPose = temp.Transform$.Array(currentPose, key: '${key}_currentPose');
+    p.ref.boneMatrices = temp.Matrix$.Array(boneMatrices, key: '${key}_boneMatrices');
   }
 
   @override
@@ -172,7 +187,6 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     transform.nativeWriteInto(p.transform);
     p.meshCount = meshes.length;
     p.materialCount = materials.length;
-    p.boneCount = bones.length;
 
     if (p.meshes.address != 0) {
       for (int i = 0; i < meshes.length; i++) {
@@ -192,15 +206,17 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
       }
     }
 
-    if (p.bones.address != 0) {
-      for (int i = 0; i < bones.length; i++) {
-        _bones.inner[i].nativeWriteInto((p.bones + i).ref);
+    skeleton.nativeWriteInto(p.skeleton);
+
+    if (p.currentPose.address != 0) {
+      for (int i = 0; i < currentPose.length; i++) {
+        _currentPose.inner[i].nativeWriteInto((p.currentPose + i).ref);
       }
     }
 
-    if (p.bindPose.address != 0) {
-      for (int i = 0; i < bindPose.length; i++) {
-        _bindPose.inner[i].nativeWriteInto((p.bindPose + i).ref);
+    if (p.boneMatrices.address != 0) {
+      for (int i = 0; i < boneMatrices.length; i++) {
+        _boneMatrices.inner[i].nativeWriteInto((p.boneMatrices + i).ref);
       }
     }
   }
@@ -211,15 +227,16 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
       o.ref.meshes = p.meshes;
       o.ref.materials = p.materials;
       o.ref.meshMaterial = p.meshMaterial;
-      o.ref.bones = p.bones;
-      o.ref.bindPose = p.bindPose;
+      o.ref.currentPose = p.currentPose;
+      o.ref.boneMatrices = p.boneMatrices;
     });
     transform.nativeReadFrom(p.transform);
     if (p.meshes.address != 0) meshes = .generate(p.meshCount, (i) => (p.meshes + i).toD());
     if (p.materials.address != 0) materials = .generate(p.materialCount, (i) => (p.materials + i).toD());
     if (p.meshMaterial.address != 0) meshMaterial = .generate(p.meshCount, (i) => p.meshMaterial[i]);
-    if (p.bones.address != 0) bones = .generate(p.boneCount, (i) => (p.bones + i).toD());
-    if (p.bindPose.address != 0) bindPose = .generate(p.boneCount, (i) => (p.bindPose + i).toD());
+    skeleton.nativeReadFrom(p.skeleton);
+    if (p.currentPose.address != 0) currentPose = .generate(p.skeleton.boneCount, (i) => (p.currentPose + i).toD());
+    if (p.boneMatrices.address != 0) boneMatrices = .generate(p.skeleton.boneCount, (i) => (p.boneMatrices + i).toD());
   }
 
   @override
@@ -229,7 +246,8 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
     meshes: meshes.map((x) => x.clone()).toList(),
     materials: materials.map((x) => x.clone()).toList(),
     meshMaterial: .from(meshMaterial),
-    bones: bones.map((x) => x.clone()).toList(),
-    bindPose: bindPose.map((x) => x.clone()).toList(),
+    skeleton: skeleton.clone(),
+    currentPose: currentPose.map((x) => x.clone()).toList(),
+    boneMatrices: boneMatrices.map((x) => x.clone()).toList(),
   );
 }

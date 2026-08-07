@@ -2,24 +2,23 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_text.c
 // Run it: dart run textures_image_text.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_image_text");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_text");
+  SetTargetFPS(60);
 
-  final parrots = rl.CoreD.LoadImage("../resources/parrots.png");
+  final parrots = LoadImage("../resources/parrots.png");
 
-  final font = rl.CoreD.LoadFontEx("../resources/KAISG.ttf", 64);
+  final font = LoadFontEx("../resources/KAISG.ttf", 64);
 
-  rl.CoreD.ImageDrawTextEx(
+  ImageDrawTextEx(
     parrots,
     font,
     "[Parrots font drawing]",
@@ -29,8 +28,8 @@ void main()
     .RED
   );
 
-  final texture = rl.CoreD.LoadTextureFromImage(parrots);
-  rl.CoreD.UnloadImage(parrots);
+  final texture = LoadTextureFromImage(parrots);
+  UnloadImage(parrots);
 
   final Vector2D position = .vec2(
     screenWidth/2 - texture.width/2,
@@ -39,19 +38,19 @@ void main()
 
   bool showFont = false;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    showFont = rl.CoreD.IsKeyDown(.KEY_SPACE);
+    showFont = IsKeyDown(.KEY_SPACE);
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       if (!showFont)
       {
-        rl.CoreD.DrawTextureV(texture, position, .WHITE);
+        DrawTextureV(texture, position, .WHITE);
 
-        rl.CoreD.DrawTextEx(
+        DrawTextEx(
           font,
           "[Parrots font drawing]",
           .vec2(position.x + 20, position.y + 20 + 280),
@@ -60,23 +59,23 @@ void main()
           .WHITE
         );
       }
-      else rl.CoreD.DrawTexture(
+      else DrawTexture(
         font.texture,
         screenWidth/2 - font.texture.width/2,
         50,
         .BLACK
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "PRESS SPACE to SHOW FONT ATLAS USED",
         290, 420, 10, .DARKGRAY
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadTexture(texture);
-  rl.CoreD.UnloadFont(font);
+  UnloadTexture(texture);
+  UnloadFont(font);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

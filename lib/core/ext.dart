@@ -1,10 +1,5 @@
 part of 'raylib_dartified.dart';
 
-class DoNotValidate {
-  final String reason;
-  const DoNotValidate([this.reason = '']);
-}
-
 mixin FEnum on Enum {
   int get value;
 
@@ -18,7 +13,14 @@ mixin FEnum on Enum {
 
 extension CString on String {
   @Deprecated('Use rl.Temp.String\$.Value() instead. toUnsafeC() leaks native memory.')
-  Pointer<U> toUnsafeC<U extends NativeType>() => toNativeUtf8().cast<U>();
+  Pointer<U> toUnsafeC<U extends NativeType>([int? size]) {
+    final bytes = utf8.encode(this);
+    final len = bytes.length + 1;
+    final bufSize = size != null ? (size > len ? size : len) : len;
+    final ptr = calloc<Uint8>(bufSize);
+    ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
+    return ptr.cast<U>();
+  }
 }
 
 extension CharCodeString on String {
@@ -67,7 +69,7 @@ extension BoolAsInt on bool {
   int operator -(int other) => toInt() - other;
   int operator *(int other) => toInt() * other;
   double operator /(int other) => toInt() / other;
-  
+
   bool operator <(int other) => toInt() < other;
   bool operator >(int other) => toInt() > other;
   bool operator <=(int other) => toInt() <= other;

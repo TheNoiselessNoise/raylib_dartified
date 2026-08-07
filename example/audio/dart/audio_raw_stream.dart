@@ -4,7 +4,7 @@
 // WARNING: NO SOUND, see LIMITATIONS.md
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -17,19 +17,18 @@ double oldFrequency = 1.0;
 double sineIdx = 0.0;
 
 void main() async {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "audio_raw_stream");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(30);
+  InitWindow(screenWidth, screenHeight, "audio_raw_stream");
+  SetTargetFPS(30);
 
-  rl.AudioD.InitAudioDevice();
+  InitAudioDevice();
 
-  rl.AudioD.SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
+  SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
 
-  final stream = rl.AudioD.LoadAudioStream(44100, 16, 1);
+  final stream = LoadAudioStream(44100, 16, 1);
 
-  rl.AudioD.SetAudioStreamCallback(stream, .function((buffer, frames) {
+  SetAudioStreamCallback(stream, .function((buffer, frames) {
     audioFrequency = frequency + (audioFrequency - frequency)*0.95;
 
     final incr = audioFrequency/44100.0;
@@ -37,15 +36,15 @@ void main() async {
 
     for (int i = 0; i < frames; i++)
     {
-      d[i] = (32000.0*math.sin(2*rl.PI*sineIdx)).toInt();
+      d[i] = (32000.0*math.sin(2*PI*sineIdx)).toInt();
       sineIdx += incr;
       if (sineIdx > 1.0) sineIdx -= 1.0;
     }
   }));
 
-  final data = rl.Temp.Short$.At('data', MAX_SAMPLES);
+  final data = Short$.At('data', MAX_SAMPLES);
 
-  rl.AudioD.PlayAudioStream(stream);
+  PlayAudioStream(stream);
 
   Vector2D mousePosition = .vec2(-100.0, -100.0);
 
@@ -53,17 +52,17 @@ void main() async {
 
   final Vector2D position = .vec2(0, 0);
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    mousePosition = rl.CoreD.GetMousePosition();
+    mousePosition = GetMousePosition();
 
-    if (rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonDown(.MOUSE_BUTTON_LEFT))
     {
       final fp = mousePosition.y;
       frequency = 40.0 + fp;
 
       final pan = mousePosition.x / screenWidth;
-      rl.AudioD.SetAudioStreamPan(stream, pan);
+      SetAudioStreamPan(stream, pan);
     }
 
     if (frequency != oldFrequency)
@@ -74,7 +73,7 @@ void main() async {
 
       for (int i = 0; i < waveLength*2; i++)
       {
-        data[i] = (math.sin(((2*rl.PI*i/waveLength)))*32000).toInt();
+        data[i] = (math.sin(((2*PI*i/waveLength)))*32000).toInt();
       }
       for (int j = waveLength*2; j < MAX_SAMPLES; j++)
       {
@@ -84,30 +83,30 @@ void main() async {
       oldFrequency = frequency;
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawText("sine frequency: ${frequency.toInt()}", rl.CoreD.GetScreenWidth() - 220, 10, 20, .RED);
-      rl.CoreD.DrawText("click mouse button to change frequency or pan", 10, 10, 20, .DARKGRAY);
+      DrawText("sine frequency: ${frequency.toInt()}", GetScreenWidth() - 220, 10, 20, .RED);
+      DrawText("click mouse button to change frequency or pan", 10, 10, 20, .DARKGRAY);
 
       for (int i = 0; i < screenWidth; i++)
       {
         position.x = i.toDouble();
         position.y = 250 + 50*data[i*MAX_SAMPLES~/screenWidth]/32000.0;
 
-        rl.CoreD.DrawPixelV(position, .RED);
+        DrawPixelV(position, .RED);
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
     await Future.delayed(Duration.zero);
   }
 
-  rl.AudioD.UnloadAudioStream(stream);
+  UnloadAudioStream(stream);
 
-  rl.AudioD.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

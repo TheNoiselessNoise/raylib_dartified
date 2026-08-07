@@ -2,78 +2,77 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_lines_bezier.c
 // Run it: dart run shapes_lines_bezier.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_lines_bezier".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
+  InitWindow(screenWidth, screenHeight, "shapes_lines_bezier".toC);
+  SetTargetFPS(60);
 
-  final startPoint = rl.Temp.Vector2$.At('startPoint').set(30, 30);
-  final endPoint = rl.Temp.Vector2$.At('endPoint').set(screenWidth - 30, screenHeight - 30);
+  final startPoint = Vector2$.At('startPoint').set(30, 30);
+  final endPoint = Vector2$.At('endPoint').set(screenWidth - 30, screenHeight - 30);
   bool moveStartPoint = false;
   bool moveEndPoint = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final mouse = rl.Core.GetMousePosition();
+    final mouse = GetMousePosition();
 
     if (
-      rl.Core.CheckCollisionPointCircle(mouse, startPoint.ref, 10.0) &&
-      rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)
+      CheckCollisionPointCircle(mouse, startPoint.ref, 10.0) &&
+      IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)
     ) moveStartPoint = true;
     
     else if (
-      rl.Core.CheckCollisionPointCircle(mouse, endPoint.ref, 10.0) &&
-      rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)
+      CheckCollisionPointCircle(mouse, endPoint.ref, 10.0) &&
+      IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)
     ) moveEndPoint = true;
 
     if (moveStartPoint)
     {
       startPoint.setC(mouse);
-      if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
+      if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
         moveStartPoint = false;
     }
 
     if (moveEndPoint)
     {
       endPoint.setC(mouse);
-      if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
+      if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
         moveEndPoint = false;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "MOVE START-END POINTS WITH MOUSE".toC,
-        15, 20, 20, rl.Color.GRAY
+        15, 20, 20, GRAY
       );
 
-      rl.Core.DrawLineBezier(startPoint.ref, endPoint.ref, 4.0, rl.Color.BLUE);
+      DrawLineBezier(startPoint.ref, endPoint.ref, 4.0, BLUE);
       
-      rl.Core.DrawCircleV(
+      DrawCircleV(
         startPoint.ref,
-        rl.Core.CheckCollisionPointCircle(mouse, startPoint.ref, 10.0) ? 14.0 : 8.0,
-        moveStartPoint ? rl.Color.RED : rl.Color.BLUE
+        CheckCollisionPointCircle(mouse, startPoint.ref, 10.0) ? 14.0 : 8.0,
+        moveStartPoint ? RED : BLUE
       );
 
-      rl.Core.DrawCircleV(
+      DrawCircleV(
         endPoint.ref,
-        rl.Core.CheckCollisionPointCircle(mouse, endPoint.ref, 10.0) ? 14.0 : 8.0,
-        moveEndPoint ? rl.Color.RED : rl.Color.BLUE
+        CheckCollisionPointCircle(mouse, endPoint.ref, 10.0) ? 14.0 : 8.0,
+        moveEndPoint ? RED : BLUE
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

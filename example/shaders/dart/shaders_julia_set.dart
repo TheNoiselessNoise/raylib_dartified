@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_julia_set.c
 // Run it: dart run shaders_julia_set.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -22,64 +22,63 @@ const double startingZoom = 0.75;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_julia_set");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_julia_set");
+  SetTargetFPS(60);
 
-  final shader = rl.CoreD.LoadShader(
+  final shader = LoadShader(
     null,
     "../resources/shaders/glsl$GLSL_VERSION/julia_set.fs",
   );
 
-  final target = rl.CoreD.LoadRenderTexture(rl.CoreD.GetScreenWidth(), rl.CoreD.GetScreenHeight());
+  final target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
   
   List<double> c = [ pointsOfInterest[0][0], pointsOfInterest[0][1] ];
 
   List<double> offset = [ 0.0, 0.0 ];
   double zoom = startingZoom;
 
-  int cLoc = rl.CoreD.GetShaderLocation(shader, "c");
-  int zoomLoc = rl.CoreD.GetShaderLocation(shader, "zoom");
-  int offsetLoc = rl.CoreD.GetShaderLocation(shader, "offset");
+  int cLoc = GetShaderLocation(shader, "c");
+  int zoomLoc = GetShaderLocation(shader, "zoom");
+  int offsetLoc = GetShaderLocation(shader, "offset");
 
-  void updateShaderC() => rl.CoreD.SetShaderValue(
+  void updateShaderC() => SetShaderValue(
     shader, cLoc, c, .SHADER_UNIFORM_VEC2,
   ); updateShaderC();
 
-  void updateShaderZoom() => rl.CoreD.SetShaderValue(
+  void updateShaderZoom() => SetShaderValue(
     shader, zoomLoc, [zoom], .SHADER_UNIFORM_FLOAT,
   ); updateShaderZoom();
 
-  void updateShaderOffset() => rl.CoreD.SetShaderValue(
+  void updateShaderOffset() => SetShaderValue(
     shader, offsetLoc, offset, .SHADER_UNIFORM_VEC2,
   ); updateShaderOffset();
 
   int incrementSpeed = 0;
   bool showControls = true;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     if (
-      rl.CoreD.IsKeyPressed(.KEY_ONE) ||
-      rl.CoreD.IsKeyPressed(.KEY_TWO) ||
-      rl.CoreD.IsKeyPressed(.KEY_THREE) ||
-      rl.CoreD.IsKeyPressed(.KEY_FOUR) ||
-      rl.CoreD.IsKeyPressed(.KEY_FIVE) ||
-      rl.CoreD.IsKeyPressed(.KEY_SIX)
+      IsKeyPressed(.KEY_ONE) ||
+      IsKeyPressed(.KEY_TWO) ||
+      IsKeyPressed(.KEY_THREE) ||
+      IsKeyPressed(.KEY_FOUR) ||
+      IsKeyPressed(.KEY_FIVE) ||
+      IsKeyPressed(.KEY_SIX)
     ) {
-      if (rl.CoreD.IsKeyPressed(.KEY_ONE)) c = [ pointsOfInterest[0][0], pointsOfInterest[0][1] ];
-      else if (rl.CoreD.IsKeyPressed(.KEY_TWO)) c = [ pointsOfInterest[1][0], pointsOfInterest[1][1] ];
-      else if (rl.CoreD.IsKeyPressed(.KEY_THREE)) c = [ pointsOfInterest[2][0], pointsOfInterest[2][1] ];
-      else if (rl.CoreD.IsKeyPressed(.KEY_FOUR)) c = [ pointsOfInterest[3][0], pointsOfInterest[3][1] ];
-      else if (rl.CoreD.IsKeyPressed(.KEY_FIVE)) c = [ pointsOfInterest[4][0], pointsOfInterest[4][1] ];
-      else if (rl.CoreD.IsKeyPressed(.KEY_SIX)) c = [ pointsOfInterest[5][0], pointsOfInterest[5][1] ];
+      if (IsKeyPressed(.KEY_ONE)) c = [ pointsOfInterest[0][0], pointsOfInterest[0][1] ];
+      else if (IsKeyPressed(.KEY_TWO)) c = [ pointsOfInterest[1][0], pointsOfInterest[1][1] ];
+      else if (IsKeyPressed(.KEY_THREE)) c = [ pointsOfInterest[2][0], pointsOfInterest[2][1] ];
+      else if (IsKeyPressed(.KEY_FOUR)) c = [ pointsOfInterest[3][0], pointsOfInterest[3][1] ];
+      else if (IsKeyPressed(.KEY_FIVE)) c = [ pointsOfInterest[4][0], pointsOfInterest[4][1] ];
+      else if (IsKeyPressed(.KEY_SIX)) c = [ pointsOfInterest[5][0], pointsOfInterest[5][1] ];
 
       updateShaderC();
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_R))
+    if (IsKeyPressed(.KEY_R))
     {
       zoom = startingZoom;
       updateShaderZoom();
@@ -89,84 +88,84 @@ void main()
       updateShaderOffset();
     }
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) incrementSpeed = 0;
-    if (rl.CoreD.IsKeyPressed(.KEY_F1)) showControls = !showControls;
+    if (IsKeyPressed(.KEY_SPACE)) incrementSpeed = 0;
+    if (IsKeyPressed(.KEY_F1)) showControls = !showControls;
 
-    if (rl.CoreD.IsKeyPressed(.KEY_RIGHT)) incrementSpeed++;
-    else if (rl.CoreD.IsKeyPressed(.KEY_LEFT)) incrementSpeed--;
+    if (IsKeyPressed(.KEY_RIGHT)) incrementSpeed++;
+    else if (IsKeyPressed(.KEY_LEFT)) incrementSpeed--;
 
     if (
-      rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT) ||
-      rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)
+      IsMouseButtonDown(.MOUSE_BUTTON_LEFT) ||
+      IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)
     ) {
-      zoom *= rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_LEFT)? zoomSpeed : 1.0/zoomSpeed;
+      zoom *= IsMouseButtonDown(.MOUSE_BUTTON_LEFT)? zoomSpeed : 1.0/zoomSpeed;
       updateShaderZoom();
 
-      final mousePos = rl.CoreD.GetMousePosition();
+      final mousePos = GetMousePosition();
       final Vector2D offsetVelocity = .zero();
 
       offsetVelocity.x = (mousePos.x/screenWidth - 0.5)*offsetSpeedMul/zoom;
       offsetVelocity.y = (mousePos.y/screenHeight - 0.5)*offsetSpeedMul/zoom;
 
-      offset[0] += rl.CoreD.GetFrameTime()*offsetVelocity.x;
-      offset[1] += rl.CoreD.GetFrameTime()*offsetVelocity.y;
+      offset[0] += GetFrameTime()*offsetVelocity.x;
+      offset[1] += GetFrameTime()*offsetVelocity.y;
       updateShaderOffset();
     }
 
-    final dc = rl.CoreD.GetFrameTime()*incrementSpeed*0.0005;
+    final dc = GetFrameTime()*incrementSpeed*0.0005;
     c[0] += dc;
     c[1] += dc;
     updateShaderC();
 
-    rl.CoreD.BeginTextureMode(target);
-      rl.CoreD.ClearBackground(.BLACK);
+    BeginTextureMode(target);
+      ClearBackground(.BLACK);
 
-      rl.CoreD.DrawRectangle(0, 0, rl.CoreD.GetScreenWidth(), rl.CoreD.GetScreenHeight(), .BLACK);
-    rl.CoreD.EndTextureMode();
+      DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), .BLACK);
+    EndTextureMode();
         
-    rl.CoreD.BeginDrawing();
-      rl.CoreD.ClearBackground(.BLACK);
+    BeginDrawing();
+      ClearBackground(.BLACK);
 
-      rl.CoreD.BeginShaderMode(shader);
-        rl.CoreD.DrawTextureEx(
+      BeginShaderMode(shader);
+        DrawTextureEx(
           target.texture,
           .zero(),
           0.0, 1.0, .WHITE
         );
-      rl.CoreD.EndShaderMode();
+      EndShaderMode();
 
       if (showControls)
       {
-        rl.CoreD.DrawText(
+        DrawText(
           "Press Mouse buttons right/left to zoom in/out and move",
           10, 15, 10, .RAYWHITE
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Press KEY_F1 to toggle these controls",
           10, 30, 10, .RAYWHITE
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Press KEYS [1 - 6] to change point of interest",
           10, 45, 10, .RAYWHITE
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Press KEY_LEFT | KEY_RIGHT to change speed",
           10, 60, 10, .RAYWHITE
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Press KEY_SPACE to stop movement animation",
           10, 75, 10, .RAYWHITE
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Press KEY_R to recenter the camera",
           10, 90, 10, .RAYWHITE
         );
       }
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadShader(shader);
-  rl.CoreD.UnloadRenderTexture(target);
+  UnloadShader(shader);
+  UnloadRenderTexture(target);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

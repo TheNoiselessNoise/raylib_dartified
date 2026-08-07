@@ -3,7 +3,7 @@
 // Run it: dart run shapes_ball_physics.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -44,11 +44,10 @@ double hypot(double x, double y) {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_ball_physics".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_ball_physics".toC);
+  SetTargetFPS(60);
 
   List<Ball> balls = [
     Ball(
@@ -58,24 +57,24 @@ void main()
       radius: 40,
       friction: 0.99,
       elasticity: 0.9,
-      color: rl.Color.BLUE.toD(),
+      color: BLUE.toD(),
       grabbed: false,
     )
   ];
 
   Ball? grabbedBall;
-  final pressOffset = rl.Temp.Vector2$.At('pressOffset');
+  final pressOffset = Vector2$.At('pressOffset');
   double gravity = 100;
 
-  final ballColor = rl.Temp.Color$.At('ballColor');
-  final ballPosition = rl.Temp.Vector2$.At('ballPosition');
+  final ballColor = Color$.At('ballColor');
+  final ballPosition = Vector2$.At('ballPosition');
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    double delta = rl.Core.GetFrameTime();
-    final mousePos = rl.Core.GetMousePosition();
+    double delta = GetFrameTime();
+    final mousePos = GetMousePosition();
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
       for (final ball in balls) {
         pressOffset.ref.x = mousePos.x - ball.pos.x;
         pressOffset.ref.y = mousePos.y - ball.pos.y;
@@ -88,7 +87,7 @@ void main()
       }
     }
 
-    if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+    if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) {
       if (grabbedBall != null) {
         grabbedBall.grabbed = false;
         grabbedBall = null;
@@ -96,27 +95,27 @@ void main()
     }
 
     if (
-      rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value) ||
+      IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value) ||
       (
-        rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) &&
-        rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value)
+        IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) &&
+        IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT.value)
       )
     ) {
       if (balls.length < MAX_BALLS) {
         balls.add(Ball(
           pos: mousePos.toD(),
           vel: .vec2(
-            rl.Core.GetRandomValue(-300, 300).toDouble(),
-            rl.Core.GetRandomValue(-300, 300).toDouble(),
+            GetRandomValue(-300, 300).toDouble(),
+            GetRandomValue(-300, 300).toDouble(),
           ),
           ppos: .zero(),
-          radius: 20 + rl.Core.GetRandomValue(0, 30).toDouble(),
+          radius: 20 + GetRandomValue(0, 30).toDouble(),
           friction: 0.99,
           elasticity: 0.9,
           color: .color(
-            rl.Core.GetRandomValue(0, 255),
-            rl.Core.GetRandomValue(0, 255),
-            rl.Core.GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
+            GetRandomValue(0, 255),
             255,
           ),
           grabbed: false
@@ -124,18 +123,18 @@ void main()
       }
     }
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_MIDDLE.value)) {
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_MIDDLE.value)) {
       for (final ball in balls) {
         if (!ball.grabbed) {
           ball.vel = .vec2(
-            rl.Core.GetRandomValue(-2000, 2000).toDouble(),
-            rl.Core.GetRandomValue(-2000, 2000).toDouble(),
+            GetRandomValue(-2000, 2000).toDouble(),
+            GetRandomValue(-2000, 2000).toDouble(),
           );
         }
       }
     }
 
-    gravity += rl.Core.GetMouseWheelMove()*5;
+    gravity += GetMouseWheelMove()*5;
 
     for (final ball in balls) {
       if (!ball.grabbed) {
@@ -172,44 +171,44 @@ void main()
       }
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       for (final ball in balls) {
         ballPosition.setD(ball.pos);
         ballColor.setD(ball.color);
-        rl.Core.DrawCircleV(ballPosition.ref, ball.radius, ballColor.ref);
-        rl.Core.DrawCircleLinesV(ballPosition.ref, ball.radius, rl.Color.BLACK);
+        DrawCircleV(ballPosition.ref, ball.radius, ballColor.ref);
+        DrawCircleLinesV(ballPosition.ref, ball.radius, BLACK);
       }
 
-      rl.Core.DrawText(
+      DrawText(
         "grab a ball by pressing with the mouse and throw it by releasing".toC,
-        10, 10, 10, rl.Color.DARKGRAY
+        10, 10, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "right click to create new balls (keep left control pressed to create a lot)".toC,
-        10, 30, 10, rl.Color.DARKGRAY
+        10, 30, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "use mouse wheel to change gravity".toC,
-        10, 50, 10, rl.Color.DARKGRAY
+        10, 50, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "middle click to shake".toC,
-        10, 70, 10, rl.Color.DARKGRAY
+        10, 70, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "BALL COUNT: ${balls.length}".toC,
-        10, rl.Core.GetScreenHeight() - 70, 20, rl.Color.BLACK
+        10, GetScreenHeight() - 70, 20, BLACK
       );
-      rl.Core.DrawText(
+      DrawText(
         "GRAVITY: ${gravity.f2}".toC,
-        10, rl.Core.GetScreenHeight() - 40, 20, rl.Color.BLACK
+        10, GetScreenHeight() - 40, 20, BLACK
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

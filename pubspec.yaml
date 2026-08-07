@@ -2,6 +2,7 @@ name: raylib_dartified
 description: Dart-native Raylib bindings that don't make you feel like you're writing C.
 version: 5.5.4
 repository: https://github.com/TheNoiselessNoise/raylib_dartified
+publish_to: none
 
 environment:
   sdk: ^3.10.7
@@ -11,7 +12,9 @@ dependencies:
   meta: ^1.17.0
   logging: ^1.3.0
   path: ^1.9.1
-  raylib_dartified_base: '>=5.5.0 <6.0.0'
+  # raylib_dartified_base: '>=5.5.0 <6.0.0'
+  raylib_dartified_base:
+    path: ../raylib_dartified_base
 
 dev_dependencies:
   lints: ^6.0.0

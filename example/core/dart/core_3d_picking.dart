@@ -1,17 +1,16 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_picking.c
 // Run it: dart run core_3d_picking.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_3d_picking');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_3d_picking");
+  SetTargetFPS(60);
 
   final camera = Camera3DD(
     position: .vec3(10, 10, 10),
@@ -27,21 +26,21 @@ void main() {
   final ray = RayD();
   final collision = RayCollisionD();
 
-  while (!rl.CoreD.WindowShouldClose()) {
-    if (rl.CoreD.IsCursorHidden())
-      rl.CoreD.UpdateCamera(camera, .CAMERA_FIRST_PERSON);
+  while (!WindowShouldClose()) {
+    if (IsCursorHidden())
+      UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
-    if (rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT))
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT))
     {
-      if (rl.CoreD.IsCursorHidden()) rl.CoreD.EnableCursor();
-      else rl.CoreD.DisableCursor();
+      if (IsCursorHidden()) EnableCursor();
+      else DisableCursor();
     }
 
-    if (rl.CoreD.IsMouseButtonPressed(.MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT))
     {
       if (!collision.hit)
       {
-        ray.setD(rl.CoreD.GetScreenToWorldRay(rl.CoreD.GetMousePosition(), camera));
+        ray.setD(GetScreenToWorldRay(GetMousePosition(), camera));
 
         final BoundingBoxD bbox = .new(
           min: cubePosition.sub(cubeSize.divideBy(2)),
@@ -49,77 +48,77 @@ void main() {
         );
 
         // Check collision between ray and box
-        collision.setD(rl.CoreD.GetRayCollisionBox(ray, bbox));
+        collision.setD(GetRayCollisionBox(ray, bbox));
       }
       else collision.hit = false;
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginMode3D(camera);
+      BeginMode3D(camera);
 
         if (collision.hit)
         {
-          rl.CoreD.DrawCube(
+          DrawCube(
             cubePosition,
             cubeSize.x, cubeSize.y, cubeSize.z, .RED
           );
           
-          rl.CoreD.DrawCubeWires(
+          DrawCubeWires(
             cubePosition,
             cubeSize.x, cubeSize.y, cubeSize.z, .MAROON
           );
 
-          rl.CoreD.DrawCubeWires(
+          DrawCubeWires(
             cubePosition,
             cubeSize.x + 0.2, cubeSize.y + 0.2, cubeSize.z + 0.2, .GREEN
           );
         }
         else
         {
-          rl.CoreD.DrawCube(
+          DrawCube(
             cubePosition,
             cubeSize.x, cubeSize.y, cubeSize.z, .GRAY
           );
           
-          rl.CoreD.DrawCubeWires(
+          DrawCubeWires(
             cubePosition,
             cubeSize.x, cubeSize.y, cubeSize.z, .DARKGRAY
           );
         }
 
-        rl.CoreD.DrawRay(ray, .MAROON);
-        rl.CoreD.DrawGrid(10, 1.0);
+        DrawRay(ray, .MAROON);
+        DrawGrid(10, 1.0);
 
-      rl.CoreD.EndMode3D();
+      EndMode3D();
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Try clicking on the box with your mouse!",
         240, 10, 20, .DARKGRAY
       );
 
       if (collision.hit) {
         final boxSelected = "BOX SELECTED";
-        rl.CoreD.DrawText(
+        DrawText(
           boxSelected,
-          (screenWidth - rl.CoreD.MeasureText(boxSelected, 30))~/2,
+          (screenWidth - MeasureText(boxSelected, 30))~/2,
           screenHeight*0.1,
           30,
           .GREEN
         );
       }
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Right click mouse to toggle camera controls",
         10, 430, 10, .GRAY
       );
 
-      rl.CoreD.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

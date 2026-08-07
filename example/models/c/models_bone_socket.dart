@@ -3,7 +3,7 @@
 // Run it: dart run models_bone_socket.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -14,85 +14,84 @@ const int BONE_SOCKET_HAND_L = 2;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_bone_socket".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
-  rl.Core.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "models_bone_socket".toC);
+  SetTargetFPS(60);
+  DisableCursor();
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(5.0, 5.0, 5.0);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final characterModel = rl.Core.LoadModel("../resources/models/gltf/greenman.glb".toC);
+  final characterModel = LoadModel("../resources/models/gltf/greenman.glb".toC);
   final equipModel = <ModelC>[
-    rl.Core.LoadModel("../resources/models/gltf/greenman_hat.glb".toC),
-    rl.Core.LoadModel("../resources/models/gltf/greenman_sword.glb".toC),
-    rl.Core.LoadModel("../resources/models/gltf/greenman_shield.glb".toC),
+    LoadModel("../resources/models/gltf/greenman_hat.glb".toC),
+    LoadModel("../resources/models/gltf/greenman_sword.glb".toC),
+    LoadModel("../resources/models/gltf/greenman_shield.glb".toC),
   ];
   final showEquip = List.filled(BONE_SOCKETS, true);
 
-  final animsCount = rl.Temp.Int$.At('animsCount');
+  final animsCount = Int$.At('animsCount');
   int animIndex = 0;
   int animCurrentFrame = 0;
-  final modelAnimations = rl.Core.LoadModelAnimations(
+  final modelAnimations = LoadModelAnimations(
     "../resources/models/gltf/greenman.glb".toC,
     animsCount
   );
 
   final boneSocketIndex = List.filled(BONE_SOCKETS, -1);
 
-  for (int i = 0; i < characterModel.boneCount; i++)
+  for (int i = 0; i < characterModel.skeleton.boneCount; i++)
   {
-    if (characterModel.bones[i].nameString == "socket_hat")
+    if (characterModel.skeleton.bones[i].nameString == "socket_hat")
     {
       boneSocketIndex[BONE_SOCKET_HAT] = i;
       continue;
     }
     
-    if (characterModel.bones[i].nameString == "socket_hand_R")
+    if (characterModel.skeleton.bones[i].nameString == "socket_hand_R")
     {
       boneSocketIndex[BONE_SOCKET_HAND_R] = i;
       continue;
     }
     
-    if (characterModel.bones[i].nameString == "socket_hand_L")
+    if (characterModel.skeleton.bones[i].nameString == "socket_hand_L")
     {
       boneSocketIndex[BONE_SOCKET_HAND_L] = i;
       continue;
     }
   }
 
-  final position = rl.Temp.Vector3$.At('position').set(0.0, 0.0, 0.0);
+  final position = Vector3$.At('position').set(0.0, 0.0, 0.0);
   int angle = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);
+    UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);
     
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_F.value)) angle = (angle + 1)%360;
-    else if (rl.Core.IsKeyDown(KeyboardKey.KEY_H.value)) angle = (360 + angle - 1)%360;
+    if (IsKeyDown(KeyboardKey.KEY_F.value)) angle = (angle + 1)%360;
+    else if (IsKeyDown(KeyboardKey.KEY_H.value)) angle = (360 + angle - 1)%360;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_T.value)) animIndex = (animIndex + 1)%animsCount.value;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_G.value)) animIndex = (animIndex + animsCount.value - 1)%animsCount.value;
+    if (IsKeyPressed(KeyboardKey.KEY_T.value)) animIndex = (animIndex + 1)%animsCount.value;
+    else if (IsKeyPressed(KeyboardKey.KEY_G.value)) animIndex = (animIndex + animsCount.value - 1)%animsCount.value;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ONE.value)) showEquip[BONE_SOCKET_HAT] = !showEquip[BONE_SOCKET_HAT];
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_TWO.value)) showEquip[BONE_SOCKET_HAND_R] = !showEquip[BONE_SOCKET_HAND_R];
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_THREE.value)) showEquip[BONE_SOCKET_HAND_L] = !showEquip[BONE_SOCKET_HAND_L];
+    if (IsKeyPressed(KeyboardKey.KEY_ONE.value)) showEquip[BONE_SOCKET_HAT] = !showEquip[BONE_SOCKET_HAT];
+    if (IsKeyPressed(KeyboardKey.KEY_TWO.value)) showEquip[BONE_SOCKET_HAND_R] = !showEquip[BONE_SOCKET_HAND_R];
+    if (IsKeyPressed(KeyboardKey.KEY_THREE.value)) showEquip[BONE_SOCKET_HAND_L] = !showEquip[BONE_SOCKET_HAND_L];
     
     final anim = modelAnimations[animIndex];
-    animCurrentFrame = (animCurrentFrame + 1)%anim.frameCount;
-    rl.Core.UpdateModelAnimation(characterModel, anim, animCurrentFrame);
+    animCurrentFrame = (animCurrentFrame + 1)%anim.keyframeCount;
+    UpdateModelAnimation(characterModel, anim, animCurrentFrame.toDouble());
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
         final QuaternionD characterRotate = .fromAxisAngle(.vec3(0.0, 1.0, 0.0), angle*rl.DEG2RAD);
         
         final MatrixD characterTransform = .fromQuaternion(characterRotate)
@@ -100,8 +99,8 @@ void main()
 
         characterModel.transform.setD(characterTransform);
 
-        rl.Core.UpdateModelAnimation(characterModel, anim, animCurrentFrame);
-        rl.Core.DrawMesh(
+        UpdateModelAnimation(characterModel, anim, animCurrentFrame.toDouble());
+        DrawMesh(
           characterModel.meshes[0],
           characterModel.materials[1],
           characterModel.transform
@@ -111,8 +110,8 @@ void main()
         {
           if (!showEquip[i]) continue;
 
-          final transform = anim.framePoses[animCurrentFrame][boneSocketIndex[i]];
-          final inRotation = characterModel.bindPose[boneSocketIndex[i]].rotation.toD();
+          final transform = anim.keyframePoses[animCurrentFrame][boneSocketIndex[i]];
+          final inRotation = characterModel.skeleton.bindPose[boneSocketIndex[i]].rotation.toD();
           final outRotation = transform.rotation.toD();
 
           final rotate = outRotation.mul(inRotation.invert());
@@ -120,35 +119,35 @@ void main()
             .mul(.translateVector3(transform.translation.toD()))
             .mul(characterTransform);
           
-          rl.Core.DrawMesh(
+          DrawMesh(
             equipModel[i].meshes[0],
             equipModel[i].materials[1],
-            rl.Temp.Matrix$.Value(matrixTransform).ref,
+            Matrix$.Value(matrixTransform).ref,
           );
         }
 
-        rl.Core.DrawGrid(10, 1.0);
-      rl.Core.EndMode3D();
+        DrawGrid(10, 1.0);
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Use the T/G to switch animation".toC,
-        10, 10, 20, rl.Color.GRAY
+        10, 10, 20, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Use the F/H to rotate character left/right".toC,
-        10, 35, 20, rl.Color.GRAY
+        10, 35, 20, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Use the 1,2,3 to toggle shown of hat, sword and shield".toC,
-        10, 60, 20, rl.Color.GRAY
+        10, 60, 20, GRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadModelAnimations(modelAnimations, animsCount.value);
-  rl.Core.UnloadModel(characterModel);
-  equipModel.forEach(rl.Core.UnloadModel);
+  UnloadModelAnimations(modelAnimations, animsCount.value);
+  UnloadModel(characterModel);
+  equipModel.forEach(UnloadModel);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

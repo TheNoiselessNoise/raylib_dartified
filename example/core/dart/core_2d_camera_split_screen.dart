@@ -1,18 +1,17 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_2d_camera_split_screen.c
 // Run it: dart run core_2d_camera_split_screen.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 440;
 const int PLAYER_SIZE = 40;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_2d_camera_split_screen');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_2d_camera_split_screen");
+  SetTargetFPS(60);
 
   final RectangleD player1 = .rect(200, 200, PLAYER_SIZE, PLAYER_SIZE);
   final RectangleD player2 = .rect(250, 200, PLAYER_SIZE, PLAYER_SIZE);
@@ -31,33 +30,33 @@ void main() {
     zoom: 1.0,
   );
 
-  final screenCamera1 = rl.CoreD.LoadRenderTexture(screenWidth~/2, screenHeight);
-  final screenCamera2 = rl.CoreD.LoadRenderTexture(screenWidth~/2, screenHeight);
+  final screenCamera1 = LoadRenderTexture(screenWidth~/2, screenHeight);
+  final screenCamera2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
   final RectangleD splitScreenRect = .rect(0.0, 0.0, screenCamera1.texture.width, -screenCamera1.texture.height);
 
-  while (!rl.CoreD.WindowShouldClose()) {
-    if (rl.CoreD.IsKeyDown(.KEY_S)) player1.y += 3.0;
-    else if (rl.CoreD.IsKeyDown(.KEY_W)) player1.y -= 3.0;
-    if (rl.CoreD.IsKeyDown(.KEY_D)) player1.x += 3.0;
-    else if (rl.CoreD.IsKeyDown(.KEY_A)) player1.x -= 3.0;
+  while (!WindowShouldClose()) {
+    if (IsKeyDown(.KEY_S)) player1.y += 3.0;
+    else if (IsKeyDown(.KEY_W)) player1.y -= 3.0;
+    if (IsKeyDown(.KEY_D)) player1.x += 3.0;
+    else if (IsKeyDown(.KEY_A)) player1.x -= 3.0;
 
-    if (rl.CoreD.IsKeyDown(.KEY_UP)) player2.y -= 3.0;
-    else if (rl.CoreD.IsKeyDown(.KEY_DOWN)) player2.y += 3.0;
-    if (rl.CoreD.IsKeyDown(.KEY_RIGHT)) player2.x += 3.0;
-    else if (rl.CoreD.IsKeyDown(.KEY_LEFT)) player2.x -= 3.0;
+    if (IsKeyDown(.KEY_UP)) player2.y -= 3.0;
+    else if (IsKeyDown(.KEY_DOWN)) player2.y += 3.0;
+    if (IsKeyDown(.KEY_RIGHT)) player2.x += 3.0;
+    else if (IsKeyDown(.KEY_LEFT)) player2.x -= 3.0;
 
     camera1.target.set(player1.x, player1.y);
     camera2.target.set(player2.x, player2.y);
 
-    rl.CoreD.BeginTextureMode(screenCamera1);
-      rl.CoreD.ClearBackground(.RAYWHITE);
+    BeginTextureMode(screenCamera1);
+      ClearBackground(.RAYWHITE);
       
-      rl.CoreD.BeginMode2D(camera1);
+      BeginMode2D(camera1);
       
         for (int i = 0; i < screenWidth/PLAYER_SIZE + 1; i++)
         {
-          rl.CoreD.DrawLineV(
+          DrawLineV(
             .vec2(PLAYER_SIZE*i, 0),
             .vec2(PLAYER_SIZE*i, screenHeight),
             .LIGHTGRAY
@@ -66,7 +65,7 @@ void main() {
 
         for (int i = 0; i < screenHeight/PLAYER_SIZE + 1; i++)
         {
-          rl.CoreD.DrawLineV(
+          DrawLineV(
             .vec2(0, PLAYER_SIZE*i),
             .vec2(screenWidth, PLAYER_SIZE*i),
             .LIGHTGRAY
@@ -77,7 +76,7 @@ void main() {
         {
           for (int j = 0; j < screenHeight/PLAYER_SIZE; j++)
           {
-            rl.CoreD.DrawText(
+            DrawText(
               "[$i,$j]",
               10 + PLAYER_SIZE*i,
               15 + PLAYER_SIZE*j,
@@ -87,23 +86,23 @@ void main() {
           }
         }
 
-        rl.CoreD.DrawRectangleRec(player1, .RED);
-        rl.CoreD.DrawRectangleRec(player2, .BLUE);
-      rl.CoreD.EndMode2D();
+        DrawRectangleRec(player1, .RED);
+        DrawRectangleRec(player2, .BLUE);
+      EndMode2D();
       
-      rl.CoreD.DrawRectangle(0, 0, rl.CoreD.GetScreenWidth()~/2, 30, rl.CoreD.Fade(.RAYWHITE, 0.6));
-      rl.CoreD.DrawText("PLAYER1: W/S/A/D to move", 10, 10, 10, .MAROON);
+      DrawRectangle(0, 0, GetScreenWidth()~/2, 30, Fade(.RAYWHITE, 0.6));
+      DrawText("PLAYER1: W/S/A/D to move", 10, 10, 10, .MAROON);
         
-    rl.CoreD.EndTextureMode();
+    EndTextureMode();
 
-    rl.CoreD.BeginTextureMode(screenCamera2);
-      rl.CoreD.ClearBackground(.RAYWHITE);
+    BeginTextureMode(screenCamera2);
+      ClearBackground(.RAYWHITE);
       
-      rl.CoreD.BeginMode2D(camera2);
+      BeginMode2D(camera2);
       
         for (int i = 0; i < screenWidth/PLAYER_SIZE + 1; i++)
         {
-          rl.CoreD.DrawLineV(
+          DrawLineV(
             .vec2(PLAYER_SIZE*i, 0),
             .vec2(PLAYER_SIZE*i, screenHeight),
             .LIGHTGRAY
@@ -112,7 +111,7 @@ void main() {
 
         for (int i = 0; i < screenHeight/PLAYER_SIZE + 1; i++)
         {
-          rl.CoreD.DrawLineV(
+          DrawLineV(
             .vec2(0, PLAYER_SIZE*i),
             .vec2(screenWidth, PLAYER_SIZE*i),
             .LIGHTGRAY
@@ -123,7 +122,7 @@ void main() {
         {
           for (int j = 0; j < screenHeight/PLAYER_SIZE; j++)
           {
-            rl.CoreD.DrawText(
+            DrawText(
               "[$i,$j]",
               10 + PLAYER_SIZE*i,
               15 + PLAYER_SIZE*j,
@@ -133,39 +132,39 @@ void main() {
           }
         }
 
-        rl.CoreD.DrawRectangleRec(player1, .RED);
-        rl.CoreD.DrawRectangleRec(player2, .BLUE);
+        DrawRectangleRec(player1, .RED);
+        DrawRectangleRec(player2, .BLUE);
           
-      rl.CoreD.EndMode2D();
+      EndMode2D();
       
-      rl.CoreD.DrawRectangle(0, 0, rl.CoreD.GetScreenWidth()~/2, 30, rl.CoreD.Fade(.RAYWHITE, 0.6));
-      rl.CoreD.DrawText("PLAYER2: UP/DOWN/LEFT/RIGHT to move", 10, 10, 10, .DARKBLUE);
+      DrawRectangle(0, 0, GetScreenWidth()~/2, 30, Fade(.RAYWHITE, 0.6));
+      DrawText("PLAYER2: UP/DOWN/LEFT/RIGHT to move", 10, 10, 10, .DARKBLUE);
         
-    rl.CoreD.EndTextureMode();
+    EndTextureMode();
 
-    rl.CoreD.BeginDrawing();
-      rl.CoreD.ClearBackground(.BLACK);
+    BeginDrawing();
+      ClearBackground(.BLACK);
       
-      rl.CoreD.DrawTextureRec(
+      DrawTextureRec(
         screenCamera1.texture,
         splitScreenRect,
         .vec2(0, 0),
         .WHITE
       );
 
-      rl.CoreD.DrawTextureRec(
+      DrawTextureRec(
         screenCamera2.texture,
         splitScreenRect,
         .vec2(screenWidth/2.0, 0),
         .WHITE
       );
       
-      rl.CoreD.DrawRectangle(rl.CoreD.GetScreenWidth()~/2 - 2, 0, 4, rl.CoreD.GetScreenHeight(), .LIGHTGRAY);
-    rl.CoreD.EndDrawing();
+      DrawRectangle(GetScreenWidth()~/2 - 2, 0, 4, GetScreenHeight(), .LIGHTGRAY);
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadRenderTexture(screenCamera1);
-  rl.CoreD.UnloadRenderTexture(screenCamera2);
+  UnloadRenderTexture(screenCamera1);
+  UnloadRenderTexture(screenCamera2);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -17,6 +17,7 @@ class RaylibAudioD extends RaylibAudioModuleBase<
   RaylibAudioD(super.rl);
 
   @override
+  @DoNotAbbreviate()
   void dispose() {
     super.dispose();
 

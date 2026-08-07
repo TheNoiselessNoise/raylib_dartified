@@ -3,74 +3,73 @@
 // Run it: dart run textures_srcrec_dstrec.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_srcrec_dstrec".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_srcrec_dstrec".toC);
+  SetTargetFPS(60);
 
-  final scarfy = rl.Core.LoadTexture("../resources/scarfy.png".toC);
+  final scarfy = LoadTexture("../resources/scarfy.png".toC);
 
   int frameWidth = (scarfy.width/6).toInt();
   int frameHeight = scarfy.height;
 
-  final sourceRec = rl.Temp.Rectangle$.At('sourceRec').set(
+  final sourceRec = Rectangle$.At('sourceRec').set(
     0.0, 0.0,
     frameWidth, frameHeight
   );
 
-  final destRec = rl.Temp.Rectangle$.At('destRec').set(
+  final destRec = Rectangle$.At('destRec').set(
     screenWidth/2.0, screenHeight/2.0,
     frameWidth*2.0, frameHeight*2.0
   );
 
-  final origin = rl.Temp.Vector2$.At('origin').set(frameWidth, frameHeight);
+  final origin = Vector2$.At('origin').set(frameWidth, frameHeight);
 
   int rotation = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     rotation++;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTexturePro(
+      DrawTexturePro(
         scarfy,
         sourceRec.ref, destRec.ref, origin.ref,
         rotation.toDouble(),
-        rl.Color.WHITE
+        WHITE
       );
 
-      rl.Core.DrawLine(
+      DrawLine(
         destRec.ref.x.toInt(), 0,
         destRec.ref.x.toInt(), screenHeight,
-        rl.Color.GRAY
+        GRAY
       );
       
-      rl.Core.DrawLine(
+      DrawLine(
         0, destRec.ref.y.toInt(),
         screenWidth, destRec.ref.y.toInt(),
-        rl.Color.GRAY
+        GRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "(c) Scarfy sprite by Eiden Marsal".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
+        screenWidth - 200, screenHeight - 20, 10, GRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(scarfy);
+  UnloadTexture(scarfy);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

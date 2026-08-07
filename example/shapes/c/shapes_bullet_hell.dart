@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_bullet_hell.c
 // Run it: dart run shapes_bullet_hell.dart
-import '../../base.dart';
+import '../../base_c.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -24,18 +24,17 @@ class Bullet {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_bullet_hell".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_bullet_hell".toC);
+  SetTargetFPS(60);
 
   List<Bullet> bullets = [];
   int bulletDisabledCount = 0;
   int bulletRadius = 10;
   double bulletSpeed = 3.0;
   int bulletRows = 6;
-  List<ColorC> bulletColor = [ rl.Color.RED, rl.Color.BLUE ];
+  List<ColorC> bulletColor = [ RED, BLUE ];
 
   double baseDirection = 0;
   int angleIncrement = 5;
@@ -44,18 +43,18 @@ void main()
 
   double magicCircleRotation = 0;
 
-  RenderTextureC bulletTexture = rl.Core.LoadRenderTexture(24, 24);
+  RenderTextureC bulletTexture = LoadRenderTexture(24, 24);
 
-  rl.Core.BeginTextureMode(bulletTexture);
-    rl.Core.DrawCircle(12, 12, bulletRadius.toDouble(), rl.Color.WHITE);
-    rl.Core.DrawCircleLines(12, 12, bulletRadius.toDouble(), rl.Color.BLACK);
-  rl.Core.EndTextureMode();
+  BeginTextureMode(bulletTexture);
+    DrawCircle(12, 12, bulletRadius.toDouble(), WHITE);
+    DrawCircleLines(12, 12, bulletRadius.toDouble(), BLACK);
+  EndTextureMode();
 
   bool drawInPerformanceMode = true;
 
-  final color = rl.Temp.color1(0, 0, 0, 200);
+  final color = Color$.$1.set(0, 0, 0, 200);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     if (bullets.length >= MAX_BULLETS) {
       bullets.clear();
@@ -105,47 +104,47 @@ void main()
       }
     }
 
-    if ((rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value) || rl.Core.IsKeyPressed(KeyboardKey.KEY_D.value)) && (bulletRows < 359)) bulletRows++;
-    if ((rl.Core.IsKeyPressed(KeyboardKey.KEY_LEFT.value) || rl.Core.IsKeyPressed(KeyboardKey.KEY_A.value)) && (bulletRows > 1)) bulletRows--;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_UP.value) || rl.Core.IsKeyPressed(KeyboardKey.KEY_W.value)) bulletSpeed += 0.25;
-    if ((rl.Core.IsKeyPressed(KeyboardKey.KEY_DOWN.value) || rl.Core.IsKeyPressed(KeyboardKey.KEY_S.value)) && (bulletSpeed > 0.50)) bulletSpeed -= 0.25;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_Z.value) && (spawnCooldown > 1)) spawnCooldown--;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_X.value)) spawnCooldown++;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_ENTER.value)) drawInPerformanceMode = !drawInPerformanceMode;
+    if ((IsKeyPressed(KeyboardKey.KEY_RIGHT.value) || IsKeyPressed(KeyboardKey.KEY_D.value)) && (bulletRows < 359)) bulletRows++;
+    if ((IsKeyPressed(KeyboardKey.KEY_LEFT.value) || IsKeyPressed(KeyboardKey.KEY_A.value)) && (bulletRows > 1)) bulletRows--;
+    if (IsKeyPressed(KeyboardKey.KEY_UP.value) || IsKeyPressed(KeyboardKey.KEY_W.value)) bulletSpeed += 0.25;
+    if ((IsKeyPressed(KeyboardKey.KEY_DOWN.value) || IsKeyPressed(KeyboardKey.KEY_S.value)) && (bulletSpeed > 0.50)) bulletSpeed -= 0.25;
+    if (IsKeyPressed(KeyboardKey.KEY_Z.value) && (spawnCooldown > 1)) spawnCooldown--;
+    if (IsKeyPressed(KeyboardKey.KEY_X.value)) spawnCooldown++;
+    if (IsKeyPressed(KeyboardKey.KEY_ENTER.value)) drawInPerformanceMode = !drawInPerformanceMode;
 
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyDown(KeyboardKey.KEY_SPACE.value))
     {
       angleIncrement += 1;
       angleIncrement %= 360;
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_C.value))
+    if (IsKeyPressed(KeyboardKey.KEY_C.value))
     {
       bullets.clear();
       bulletDisabledCount = 0;
     }
 
-    rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+    BeginDrawing();
+      ClearBackground(RAYWHITE);
 
       magicCircleRotation++;
-      rl.Core.DrawRectanglePro(
-        rl.Temp.rect1(screenWidth/2, screenHeight/2, 120, 120),
-        rl.Temp.vec21(60.0, 60.0),
+      DrawRectanglePro(
+        Rectangle$.$1.set(screenWidth/2, screenHeight/2, 120, 120),
+        Vector2$.$1.set(60.0, 60.0),
         magicCircleRotation,
-        rl.Color.PURPLE
+        PURPLE
       );  
 
-      rl.Core.DrawRectanglePro(
-        rl.Temp.rect1(screenWidth/2, screenHeight/2, 120, 120),
-        rl.Temp.vec21(60.0, 60.0),
+      DrawRectanglePro(
+        Rectangle$.$1.set(screenWidth/2, screenHeight/2, 120, 120),
+        Vector2$.$1.set(60.0, 60.0),
         magicCircleRotation + 45,
-        rl.Color.PURPLE
+        PURPLE
       );
 
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 70, rl.Color.BLACK);
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 50, rl.Color.BLACK);
-      rl.Core.DrawCircleLines(screenWidth~/2, screenHeight~/2, 30, rl.Color.BLACK);
+      DrawCircleLines(screenWidth~/2, screenHeight~/2, 70, BLACK);
+      DrawCircleLines(screenWidth~/2, screenHeight~/2, 50, BLACK);
+      DrawCircleLines(screenWidth~/2, screenHeight~/2, 30, BLACK);
 
       if (drawInPerformanceMode)
       {
@@ -153,7 +152,7 @@ void main()
         {
           if (!bullets[i].disabled)
           {
-            rl.Core.DrawTexture(
+            DrawTexture(
               bulletTexture.texture,
               (bullets[i].position.x - bulletTexture.texture.width*0.5).toInt(),
               (bullets[i].position.y - bulletTexture.texture.height*0.5).toInt(),
@@ -168,75 +167,75 @@ void main()
         {
           if (!bullets[i].disabled)
           {
-            rl.Core.DrawCircleV(
-              rl.Temp.vec21D(bullets[i].position),
+            DrawCircleV(
+              Vector2$.$1.setD(bullets[i].position),
               bulletRadius.toDouble(),
               bullets[i].color
             );
-            rl.Core.DrawCircleLinesV(
-              rl.Temp.vec21D(bullets[i].position),
+            DrawCircleLinesV(
+              Vector2$.$1.setD(bullets[i].position),
               bulletRadius.toDouble(),
-              rl.Color.BLACK
+              BLACK
             );
           }
         }
       }
 
-      rl.Core.DrawRectangle(10, 10, 280, 150, color);
+      DrawRectangle(10, 10, 280, 150, color);
       
-      rl.Core.DrawText(
+      DrawText(
         "Controls:".toC,
-        20, 20, 10, rl.Color.LIGHTGRAY
+        20, 20, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- Right/Left or A/D: Change rows number".toC,
-        40, 40, 10, rl.Color.LIGHTGRAY
+        40, 40, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- Up/Down or W/S: Change bullet speed".toC,
-        40, 60, 10, rl.Color.LIGHTGRAY
+        40, 60, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- Z or X: Change spawn cooldown".toC,
-        40, 80, 10, rl.Color.LIGHTGRAY
+        40, 80, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- Space (Hold): Change the angle increment".toC,
-        40, 100, 10, rl.Color.LIGHTGRAY
+        40, 100, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- Enter: Switch draw method (Performance)".toC,
-        40, 120, 10, rl.Color.LIGHTGRAY
+        40, 120, 10, LIGHTGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "- C: Clear bullets".toC,
-        40, 140, 10, rl.Color.LIGHTGRAY
+        40, 140, 10, LIGHTGRAY
       );
 
-      rl.Core.DrawRectangle(610, 10, 170, 30, color);
+      DrawRectangle(610, 10, 170, 30, color);
 
       if (drawInPerformanceMode) {
-        rl.Core.DrawText(
+        DrawText(
           "Draw method: DrawTexture(*)".toC,
-          620, 20, 10, rl.Color.GREEN
+          620, 20, 10, GREEN
         );
       } else {
-        rl.Core.DrawText(
+        DrawText(
           "Draw method: DrawCircle(*)".toC,
-          620, 20, 10, rl.Color.RED
+          620, 20, 10, RED
         );
       }
 
-      rl.Core.DrawRectangle(135, 410, 530, 30, color);
-      rl.Core.DrawText(
-        "[ FPS: ${rl.Core.GetFPS()}, Bullets: ${bullets.length - bulletDisabledCount}, Rows: $bulletRows, Bullet speed: ${bulletSpeed.f2}, Angle increment per frame: $angleIncrement, Cooldown: ${spawnCooldown.f0} ]".toC,
-        155, 420, 10, rl.Color.GREEN
+      DrawRectangle(135, 410, 530, 30, color);
+      DrawText(
+        "[ FPS: ${GetFPS()}, Bullets: ${bullets.length - bulletDisabledCount}, Rows: $bulletRows, Bullet speed: ${bulletSpeed.f2}, Angle increment per frame: $angleIncrement, Cooldown: ${spawnCooldown.f0} ]".toC,
+        155, 420, 10, GREEN
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadRenderTexture(bulletTexture);
+  UnloadRenderTexture(bulletTexture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

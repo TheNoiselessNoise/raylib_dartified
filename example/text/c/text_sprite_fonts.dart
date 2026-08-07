@@ -3,7 +3,7 @@
 // Run it: dart run text_sprite_fonts.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -37,26 +37,25 @@ void main()
   assert(fontPaths.length == messages.length);
   assert(fontPaths.length == spacings.length);
 
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
   final List<ColorC> colors = [
-    rl.Color.MAROON, rl.Color.ORANGE, rl.Color.DARKGREEN, rl.Color.DARKBLUE,
-    rl.Color.DARKPURPLE, rl.Color.LIME, rl.Color.GOLD, rl.Color.RED
+    MAROON, ORANGE, DARKGREEN, DARKBLUE,
+    DARKPURPLE, LIME, GOLD, RED
   ];
   assert(fontPaths.length == colors.length);
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "text_sprite_fonts".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_sprite_fonts".toC);
+  SetTargetFPS(60);
   
-  final fonts = rl.Temp.Font$.At('fonts', fontPaths.length);
+  final fonts = Font$.At('fonts', fontPaths.length);
   for (int i = 0; i < fontPaths.length; i++) {
-    fonts[i] = rl.Core.LoadFont(fontPaths[i].toC);
+    fonts[i] = LoadFont(fontPaths[i].toC);
   }
 
-  final positions = rl.Temp.Vector2$.At('positions', fontPaths.length);
+  final positions = Vector2$.At('positions', fontPaths.length);
   for (int i = 0; i < fontPaths.length; i++) {
-    final fontSize = rl.Core.MeasureTextEx(
+    final fontSize = MeasureTextEx(
       fonts[i],
       messages[i].toC,
       fonts[i].baseSize*2,
@@ -70,21 +69,21 @@ void main()
   positions[4].y += 2;
   positions[7].y -= 8;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "free sprite fonts included with raylib".toC,
-        220, 20, 20, rl.Color.DARKGRAY
+        220, 20, 20, DARKGRAY
       );
-      rl.Core.DrawLine(220, 50, 600, 50, rl.Color.DARKGRAY);
+      DrawLine(220, 50, 600, 50, DARKGRAY);
 
       for (int i = 0; i < fontPaths.length; i++)
       {
-        rl.Core.DrawTextEx(
+        DrawTextEx(
           fonts[i],
           messages[i].toC,
           positions[i], 
@@ -94,12 +93,12 @@ void main()
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
   for (int i = 0; i < fontPaths.length; i++) {
-    rl.Core.UnloadFont(fonts[i]);
+    UnloadFont(fonts[i]);
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

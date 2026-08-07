@@ -3,96 +3,95 @@
 // Run it: dart run textures_image_channel.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_channel".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_channel".toC);
+  SetTargetFPS(60);
 
-  final fudesumiImage = rl.Core.LoadImage("../resources/fudesumi.png".toC);
+  final fudesumiImage = LoadImage("../resources/fudesumi.png".toC);
 
-  final imageAlpha = rl.Temp.Image$.At('imageAlpha');
-  imageAlpha.ref = rl.Core.ImageFromChannel(fudesumiImage, 3);
-  rl.Core.ImageAlphaMask(imageAlpha, imageAlpha.ref);
+  final imageAlpha = Image$.At('imageAlpha');
+  imageAlpha.ref = ImageFromChannel(fudesumiImage, 3);
+  ImageAlphaMask(imageAlpha, imageAlpha.ref);
 
-  final imageRed = rl.Temp.Image$.At('imageRed');
-  imageRed.ref = rl.Core.ImageFromChannel(fudesumiImage, 0);
-  rl.Core.ImageAlphaMask(imageRed, imageAlpha.ref);
+  final imageRed = Image$.At('imageRed');
+  imageRed.ref = ImageFromChannel(fudesumiImage, 0);
+  ImageAlphaMask(imageRed, imageAlpha.ref);
 
-  final imageGreen = rl.Temp.Image$.At('imageGreen');
-  imageGreen.ref = rl.Core.ImageFromChannel(fudesumiImage, 1);
-  rl.Core.ImageAlphaMask(imageGreen, imageAlpha.ref);
+  final imageGreen = Image$.At('imageGreen');
+  imageGreen.ref = ImageFromChannel(fudesumiImage, 1);
+  ImageAlphaMask(imageGreen, imageAlpha.ref);
 
-  final imageBlue = rl.Temp.Image$.At('imageBlue');
-  imageBlue.ref = rl.Core.ImageFromChannel(fudesumiImage, 2);
-  rl.Core.ImageAlphaMask(imageBlue, imageAlpha.ref);
+  final imageBlue = Image$.At('imageBlue');
+  imageBlue.ref = ImageFromChannel(fudesumiImage, 2);
+  ImageAlphaMask(imageBlue, imageAlpha.ref);
 
-  final backgroundImage = rl.Core.GenImageChecked(
+  final backgroundImage = GenImageChecked(
     screenWidth, screenHeight,
     (screenWidth/20).toInt(), (screenHeight/20).toInt(),
-    rl.Color.ORANGE, rl.Color.YELLOW
+    ORANGE, YELLOW
   );
 
-  final fudesumiTexture = rl.Core.LoadTextureFromImage(fudesumiImage);
-  final textureAlpha = rl.Core.LoadTextureFromImage(imageAlpha.ref);
-  final textureRed = rl.Core.LoadTextureFromImage(imageRed.ref);
-  final textureGreen = rl.Core.LoadTextureFromImage(imageGreen.ref);
-  final textureBlue = rl.Core.LoadTextureFromImage(imageBlue.ref);
-  final backgroundTexture = rl.Core.LoadTextureFromImage(backgroundImage);
+  final fudesumiTexture = LoadTextureFromImage(fudesumiImage);
+  final textureAlpha = LoadTextureFromImage(imageAlpha.ref);
+  final textureRed = LoadTextureFromImage(imageRed.ref);
+  final textureGreen = LoadTextureFromImage(imageGreen.ref);
+  final textureBlue = LoadTextureFromImage(imageBlue.ref);
+  final backgroundTexture = LoadTextureFromImage(backgroundImage);
 
-  rl.Core.UnloadImage(fudesumiImage);
-  rl.Core.UnloadImage(imageAlpha.ref);
-  rl.Core.UnloadImage(imageRed.ref);
-  rl.Core.UnloadImage(imageGreen.ref);
-  rl.Core.UnloadImage(imageBlue.ref);
-  rl.Core.UnloadImage(backgroundImage);
+  UnloadImage(fudesumiImage);
+  UnloadImage(imageAlpha.ref);
+  UnloadImage(imageRed.ref);
+  UnloadImage(imageGreen.ref);
+  UnloadImage(imageBlue.ref);
+  UnloadImage(backgroundImage);
 
-  final fudesumiRec = rl.Temp.Rectangle$.At('fudesumiRec')
+  final fudesumiRec = Rectangle$.At('fudesumiRec')
     .set(0, 0, fudesumiImage.width, fudesumiImage.height);
 
-  final fudesumiPos = rl.Temp.Rectangle$.At('fudesumiPos')
+  final fudesumiPos = Rectangle$.At('fudesumiPos')
     .set(50, 10, fudesumiImage.width*0.8, fudesumiImage.height*0.8);
   
-  final redPos = rl.Temp.Rectangle$.At('redPos')
+  final redPos = Rectangle$.At('redPos')
     .set(410, 10, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final greenPos = rl.Temp.Rectangle$.At('greenPos')
+  final greenPos = Rectangle$.At('greenPos')
     .set(600, 10, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final bluePos = rl.Temp.Rectangle$.At('bluePos')
+  final bluePos = Rectangle$.At('bluePos')
     .set(410, 230, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final alphaPos = rl.Temp.Rectangle$.At('alphaPos')
+  final alphaPos = Rectangle$.At('alphaPos')
     .set(600, 230, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.DrawTexture(backgroundTexture, 0, 0, rl.Color.WHITE);
-      rl.Core.DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, rl.Temp.vec2Zero, 0, rl.Color.WHITE);
+      DrawTexture(backgroundTexture, 0, 0, WHITE);
+      DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, Vector2$.$zero, 0, WHITE);
 
-      rl.Core.DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, rl.Temp.vec2Zero, 0, rl.Color.RED);
-      rl.Core.DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, rl.Temp.vec2Zero, 0, rl.Color.GREEN);
-      rl.Core.DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, rl.Temp.vec2Zero, 0, rl.Color.BLUE);
-      rl.Core.DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, rl.Temp.vec2Zero, 0, rl.Color.WHITE);
+      DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, Vector2$.$zero, 0, RED);
+      DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, Vector2$.$zero, 0, GREEN);
+      DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, Vector2$.$zero, 0, BLUE);
+      DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, Vector2$.$zero, 0, WHITE);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(backgroundTexture);
-  rl.Core.UnloadTexture(fudesumiTexture);
-  rl.Core.UnloadTexture(textureRed);
-  rl.Core.UnloadTexture(textureGreen);
-  rl.Core.UnloadTexture(textureBlue);
-  rl.Core.UnloadTexture(textureAlpha);
+  UnloadTexture(backgroundTexture);
+  UnloadTexture(fudesumiTexture);
+  UnloadTexture(textureRed);
+  UnloadTexture(textureGreen);
+  UnloadTexture(textureBlue);
+  UnloadTexture(textureAlpha);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

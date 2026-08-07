@@ -4,7 +4,7 @@
 import 'dart:ffi';
 import 'dart:math' as math;
 import 'package:ffi/ffi.dart';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -35,11 +35,10 @@ final class EnvElement extends Struct {
 }
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_automation_events'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_automation_events".toC);
+  SetTargetFPS(60);
 
   final player = calloc<Player>();
   player.ref.position.set(400, 280);
@@ -47,21 +46,21 @@ void main() {
   player.ref.canJump = false;
   
   final envElements = calloc<EnvElement>(MAX_ENVIRONMENT_ELEMENTS);
-  envElements[0].set(  0,   0, 1000, 400, false, rl.Color.LIGHTGRAY);
-  envElements[1].set(  0, 400, 1000, 200,  true, rl.Color.GRAY);
-  envElements[2].set(300, 200,  400,  10,  true, rl.Color.GRAY);
-  envElements[3].set(250, 300,  100,  10,  true, rl.Color.GRAY);
-  envElements[4].set(650, 300,  100,  10,  true, rl.Color.GRAY);
+  envElements[0].set(  0,   0, 1000, 400, false, LIGHTGRAY);
+  envElements[1].set(  0, 400, 1000, 200,  true, GRAY);
+  envElements[2].set(300, 200,  400,  10,  true, GRAY);
+  envElements[3].set(250, 300,  100,  10,  true, GRAY);
+  envElements[4].set(650, 300,  100,  10,  true, GRAY);
 
-  final camera = rl.Temp.Camera2D$.At('camera');
+  final camera = Camera2D$.$newPtr;
   camera.ref.target = player.ref.position;
   camera.ref.offset.set(screenWidth/2.0, screenHeight/2.0);
   camera.ref.rotation = 0.0;
   camera.ref.zoom = 1.0;
   
-  final aelist = rl.Temp.AutomationEventList$.At('aelist');
-  aelist.ref = rl.Core.LoadAutomationEventList(nullptr);
-  rl.Core.SetAutomationEventList(aelist);
+  final aelist = AutomationEventList$.At('aelist');
+  aelist.ref = LoadAutomationEventList(nullptr);
+  SetAutomationEventList(aelist);
   bool eventRecording = false;
   bool eventPlaying = false;
   
@@ -69,17 +68,17 @@ void main() {
   int playFrameCounter = 0;
   int currentPlayFrame = 0;
 
-  while (!rl.Core.WindowShouldClose()) {
+  while (!WindowShouldClose()) {
     double deltaTime = 0.015;//GetFrameTime();
        
-    if (rl.Core.IsFileDropped())
+    if (IsFileDropped())
     {
-      final droppedFiles = rl.Core.LoadDroppedFiles();
+      final droppedFiles = LoadDroppedFiles();
 
-      if (rl.Core.IsFileExtension(droppedFiles.paths[0], ".txt;.rae".toC))
+      if (IsFileExtension(droppedFiles.paths[0], ".txt;.rae".toC))
       {
-        rl.Core.UnloadAutomationEventList(aelist.ref);
-        aelist.ref = rl.Core.LoadAutomationEventList(droppedFiles.paths[0]);
+        UnloadAutomationEventList(aelist.ref);
+        aelist.ref = LoadAutomationEventList(droppedFiles.paths[0]);
         
         eventRecording = false;
         
@@ -97,12 +96,12 @@ void main() {
         camera.ref.zoom = 1.0;
       }
 
-      rl.Core.UnloadDroppedFiles(droppedFiles);
+      UnloadDroppedFiles(droppedFiles);
     }
 
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)) player.ref.position.x -= PLAYER_HOR_SPD*deltaTime;
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)) player.ref.position.x += PLAYER_HOR_SPD*deltaTime;
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_SPACE.value) && player.ref.canJump)
+    if (IsKeyDown(KeyboardKey.KEY_LEFT.value)) player.ref.position.x -= PLAYER_HOR_SPD*deltaTime;
+    if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) player.ref.position.x += PLAYER_HOR_SPD*deltaTime;
+    if (IsKeyDown(KeyboardKey.KEY_SPACE.value) && player.ref.canJump)
     {
       player.ref.speed = -PLAYER_JUMP_SPD;
       player.ref.canJump = false;
@@ -134,7 +133,7 @@ void main() {
     }
     else player.ref.canJump = true;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_R.value))
+    if (IsKeyPressed(KeyboardKey.KEY_R.value))
     {
       player.ref.position.set(400, 280);
       player.ref.speed = 0;
@@ -150,7 +149,7 @@ void main() {
     {
       while (playFrameCounter == aelist.ref.events[currentPlayFrame].frame)
       {
-        rl.Core.PlayAutomationEvent(aelist.ref.events[currentPlayFrame]);
+        PlayAutomationEvent(aelist.ref.events[currentPlayFrame]);
         currentPlayFrame++;
 
         if (currentPlayFrame == aelist.ref.count)
@@ -159,7 +158,7 @@ void main() {
           currentPlayFrame = 0;
           playFrameCounter = 0;
 
-          rl.Core.TraceLog(
+          TraceLog(
             TraceLogLevel.LOG_INFO.value,
             "FINISH PLAYING!".toC
           );
@@ -174,7 +173,7 @@ void main() {
     camera.ref.offset.set(screenWidth/2.0, screenHeight/2.0);
     double minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
 
-    camera.ref.zoom += (rl.Core.GetMouseWheelMove()*0.05);
+    camera.ref.zoom += (GetMouseWheelMove()*0.05);
     if (camera.ref.zoom > 3.0) camera.ref.zoom = 3.0;
     else if (camera.ref.zoom < 0.25) camera.ref.zoom = 0.25;
 
@@ -187,39 +186,39 @@ void main() {
       maxY = math.max(element.rect.y + element.rect.height, maxY);
     }
 
-    final max = rl.Core.GetWorldToScreen2D(rl.Temp.vec21(maxX, maxY), camera.ref);
-    final min = rl.Core.GetWorldToScreen2D(rl.Temp.vec21(minX, minY), camera.ref);
+    final max = GetWorldToScreen2D(Vector2$.$1.set(maxX, maxY), camera.ref);
+    final min = GetWorldToScreen2D(Vector2$.$1.set(minX, minY), camera.ref);
 
     if (max.x < screenWidth) camera.ref.offset.x = screenWidth - (max.x - screenWidth/2);
     if (max.y < screenHeight) camera.ref.offset.y = screenHeight - (max.y - screenHeight/2);
     if (min.x > 0) camera.ref.offset.x = screenWidth/2 - min.x;
     if (min.y > 0) camera.ref.offset.y = screenHeight/2 - min.y;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_S.value))
+    if (IsKeyPressed(KeyboardKey.KEY_S.value))
     {
       if (!eventPlaying)
       {
         if (eventRecording)
         {
-          rl.Core.StopAutomationEventRecording();
+          StopAutomationEventRecording();
           eventRecording = false;
           
-          rl.Core.ExportAutomationEventList(aelist.ref, "automation.rae".toC);
+          ExportAutomationEventList(aelist.ref, "automation.rae".toC);
           
-          rl.Core.TraceLog(
+          TraceLog(
             TraceLogLevel.LOG_INFO.value,
             "RECORDED FRAMES: ${aelist.ref.count}".toC
           );
         }
         else 
         {
-          rl.Core.SetAutomationEventBaseFrame(180);
-          rl.Core.StartAutomationEventRecording();
+          SetAutomationEventBaseFrame(180);
+          StartAutomationEventRecording();
           eventRecording = true;
         }
       }
     }
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_A.value))
+    else if (IsKeyPressed(KeyboardKey.KEY_A.value))
     {
       if (!eventRecording && (aelist.ref.count > 0))
       {
@@ -241,65 +240,65 @@ void main() {
     if (eventRecording || eventPlaying) frameCounter++;
     else frameCounter = 0;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.LIGHTGRAY);
+      ClearBackground(LIGHTGRAY);
 
-      rl.Core.BeginMode2D(camera.ref);
+      BeginMode2D(camera.ref);
 
         for (int i = 0; i < MAX_ENVIRONMENT_ELEMENTS; i++)
         {
-          rl.Core.DrawRectangleRec(envElements[i].rect, envElements[i].color);
+          DrawRectangleRec(envElements[i].rect, envElements[i].color);
         }
 
-        rl.Core.DrawRectangleRec(rl.Temp.rect1(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), rl.Color.RED);
+        DrawRectangleRec(Rectangle$.$1.set(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), RED);
 
-      rl.Core.EndMode2D();
+      EndMode2D();
       
-      rl.Core.DrawRectangle(10, 10, 290, 145, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(10, 10, 290, 145, rl.Core.Fade(rl.Color.BLUE, 0.8));
+      DrawRectangle(10, 10, 290, 145, Fade(SKYBLUE, 0.5));
+      DrawRectangleLines(10, 10, 290, 145, Fade(BLUE, 0.8));
 
-      rl.Core.DrawText("Controls:".toC, 20, 20, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- RIGHT | LEFT: Player movement".toC, 30, 40, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("- SPACE: Player jump".toC, 30, 60, 10, rl.Color.DARKGRAY);
-      rl.Core.DrawText("- R: Reset game state".toC, 30, 80, 10, rl.Color.DARKGRAY);
+      DrawText("Controls:".toC, 20, 20, 10, BLACK);
+      DrawText("- RIGHT | LEFT: Player movement".toC, 30, 40, 10, DARKGRAY);
+      DrawText("- SPACE: Player jump".toC, 30, 60, 10, DARKGRAY);
+      DrawText("- R: Reset game state".toC, 30, 80, 10, DARKGRAY);
 
-      rl.Core.DrawText("- S: START/STOP RECORDING INPUT EVENTS".toC, 30, 110, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS".toC, 30, 130, 10, rl.Color.BLACK);
+      DrawText("- S: START/STOP RECORDING INPUT EVENTS".toC, 30, 110, 10, BLACK);
+      DrawText("- A: REPLAY LAST RECORDED INPUT EVENTS".toC, 30, 130, 10, BLACK);
 
       if (eventRecording)
       {
-        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.Color.RED, 0.3));
-        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.Color.MAROON, 0.8));
-        rl.Core.DrawCircle(30, 175, 10, rl.Color.MAROON);
+        DrawRectangle(10, 160, 290, 30, Fade(RED, 0.3));
+        DrawRectangleLines(10, 160, 290, 30, Fade(MAROON, 0.8));
+        DrawCircle(30, 175, 10, MAROON);
 
-        if (((frameCounter/15)%2) == 1) rl.Core.DrawText(
+        if (((frameCounter/15)%2) == 1) DrawText(
           "RECORDING EVENTS... [${aelist.ref.count}]".toC,
-          50, 170, 10, rl.Color.MAROON
+          50, 170, 10, MAROON
         );
       }
       else if (eventPlaying)
       {
-        rl.Core.DrawRectangle(10, 160, 290, 30, rl.Core.Fade(rl.Color.LIME, 0.3));
-        rl.Core.DrawRectangleLines(10, 160, 290, 30, rl.Core.Fade(rl.Color.DARKGREEN, 0.8));
-        rl.Core.DrawTriangle(
-          rl.Temp.vec21(20, 155 + 10),
-          rl.Temp.vec22(20, 155 + 30),
-          rl.Temp.vec23(40, 155 + 20),
-          rl.Color.DARKGREEN
+        DrawRectangle(10, 160, 290, 30, Fade(LIME, 0.3));
+        DrawRectangleLines(10, 160, 290, 30, Fade(DARKGREEN, 0.8));
+        DrawTriangle(
+          Vector2$.$1.set(20, 155 + 10),
+          Vector2$.$2.set(20, 155 + 30),
+          Vector2$.$3.set(40, 155 + 20),
+          DARKGREEN
         );
 
-        if (((frameCounter/15)%2) == 1) rl.Core.DrawText(
+        if (((frameCounter/15)%2) == 1) DrawText(
           "PLAYING RECORDED EVENTS... [$currentPlayFrame]".toC,
-          50, 170, 10, rl.Color.DARKGREEN
+          50, 170, 10, DARKGREEN
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
   calloc.free(player);
   calloc.free(envElements);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

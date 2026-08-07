@@ -3,48 +3,47 @@
 // Run it: dart run shapes_following_eyes.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_following_eyes".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_following_eyes".toC);
+  SetTargetFPS(60);
 
-  final scleraLeftPosition = rl.Temp.Vector2$.At('scleraLeftPosition').set(
-    rl.Core.GetScreenWidth()/2.0 - 100.0,
-    rl.Core.GetScreenHeight()/2.0
+  final scleraLeftPosition = Vector2$.At('scleraLeftPosition').set(
+    GetScreenWidth()/2.0 - 100.0,
+    GetScreenHeight()/2.0
   );
-  final scleraRightPosition = rl.Temp.Vector2$.At('scleraRightPosition').set(
-    rl.Core.GetScreenWidth()/2.0 + 100.0,
-    rl.Core.GetScreenHeight()/2.0
+  final scleraRightPosition = Vector2$.At('scleraRightPosition').set(
+    GetScreenWidth()/2.0 + 100.0,
+    GetScreenHeight()/2.0
   );
   double scleraRadius = 80;
 
-  final irisLeftPosition = rl.Temp.Vector2$.At('irisLeftPosition').set(
-    rl.Core.GetScreenWidth()/2.0 - 100.0,
-    rl.Core.GetScreenHeight()/2.0
+  final irisLeftPosition = Vector2$.At('irisLeftPosition').set(
+    GetScreenWidth()/2.0 - 100.0,
+    GetScreenHeight()/2.0
   );
-  final irisRightPosition = rl.Temp.Vector2$.At('irisRightPosition').set(
-    rl.Core.GetScreenWidth()/2.0 + 100.0,
-    rl.Core.GetScreenHeight()/2.0
+  final irisRightPosition = Vector2$.At('irisRightPosition').set(
+    GetScreenWidth()/2.0 + 100.0,
+    GetScreenHeight()/2.0
   );
   double irisRadius = 24;
 
   double angle = 0.0;
   double dx = 0.0, dy = 0.0, dxx = 0.0, dyy = 0.0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    irisLeftPosition.setC(rl.Core.GetMousePosition());
-    irisRightPosition.setC(rl.Core.GetMousePosition());
+    irisLeftPosition.setC(GetMousePosition());
+    irisRightPosition.setC(GetMousePosition());
 
-    if (!rl.Core.CheckCollisionPointCircle(irisLeftPosition.ref, scleraLeftPosition.ref, scleraRadius - irisRadius))
+    if (!CheckCollisionPointCircle(irisLeftPosition.ref, scleraLeftPosition.ref, scleraRadius - irisRadius))
     {
       dx = irisLeftPosition.ref.x - scleraLeftPosition.ref.x;
       dy = irisLeftPosition.ref.y - scleraLeftPosition.ref.y;
@@ -58,7 +57,7 @@ void main()
       irisLeftPosition.ref.y = scleraLeftPosition.ref.y + dyy;
     }
 
-    if (!rl.Core.CheckCollisionPointCircle(irisRightPosition.ref, scleraRightPosition.ref, scleraRadius - irisRadius))
+    if (!CheckCollisionPointCircle(irisRightPosition.ref, scleraRightPosition.ref, scleraRadius - irisRadius))
     {
       dx = irisRightPosition.ref.x - scleraRightPosition.ref.x;
       dy = irisRightPosition.ref.y - scleraRightPosition.ref.y;
@@ -72,22 +71,22 @@ void main()
       irisRightPosition.ref.y = scleraRightPosition.ref.y + dyy;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawCircleV(scleraLeftPosition.ref, scleraRadius, rl.Color.LIGHTGRAY);
-      rl.Core.DrawCircleV(irisLeftPosition.ref, irisRadius, rl.Color.BROWN);
-      rl.Core.DrawCircleV(irisLeftPosition.ref, 10, rl.Color.BLACK);
+      DrawCircleV(scleraLeftPosition.ref, scleraRadius, LIGHTGRAY);
+      DrawCircleV(irisLeftPosition.ref, irisRadius, BROWN);
+      DrawCircleV(irisLeftPosition.ref, 10, BLACK);
 
-      rl.Core.DrawCircleV(scleraRightPosition.ref, scleraRadius, rl.Color.LIGHTGRAY);
-      rl.Core.DrawCircleV(irisRightPosition.ref, irisRadius, rl.Color.DARKGREEN);
-      rl.Core.DrawCircleV(irisRightPosition.ref, 10, rl.Color.BLACK);
+      DrawCircleV(scleraRightPosition.ref, scleraRadius, LIGHTGRAY);
+      DrawCircleV(irisRightPosition.ref, irisRadius, DARKGREEN);
+      DrawCircleV(irisRightPosition.ref, 10, BLACK);
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

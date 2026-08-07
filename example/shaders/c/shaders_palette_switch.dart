@@ -3,7 +3,7 @@
 // Run it: dart run shaders_palette_switch.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -45,61 +45,60 @@ const palettes = <String, List<int>>{
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_palette_switch".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_palette_switch".toC);
+  SetTargetFPS(60);
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/palette_switch.fs".toC,
   );
 
-  int paletteLoc = rl.Core.GetShaderLocation(shader, "palette".toC);
+  int paletteLoc = GetShaderLocation(shader, "palette".toC);
 
   int currentPalette = 0;
   int lineHeight = screenHeight~/COLORS_PER_PALETTE;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) currentPalette++;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_LEFT.value)) currentPalette--;
+    if (IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) currentPalette++;
+    else if (IsKeyPressed(KeyboardKey.KEY_LEFT.value)) currentPalette--;
 
     if (currentPalette >= palettes.length) currentPalette = 0;
     else if (currentPalette < 0) currentPalette = palettes.length - 1;
 
-    rl.Core.SetShaderValueV(
+    SetShaderValueV(
       shader,
       paletteLoc,
-      rl.Temp.Int$.Array(palettes.values.elementAt(currentPalette)).cast(),
+      Int$.Array(palettes.values.elementAt(currentPalette)).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_IVEC3.value,
       COLORS_PER_PALETTE
     );
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
         for (int i = 0; i < COLORS_PER_PALETTE; i++)
         {
-          rl.Core.DrawRectangle(0, lineHeight*i, rl.Core.GetScreenWidth(), lineHeight, rl.Temp.color1(i, i, i, 255));
+          DrawRectangle(0, lineHeight*i, GetScreenWidth(), lineHeight, Color$.$1.set(i, i, i, 255));
         }
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawText("< >".toC, 10, 10, 30, rl.Color.DARKBLUE);
-      rl.Core.DrawText("CURRENT PALETTE:".toC, 60, 15, 20, rl.Color.RAYWHITE);
-      rl.Core.DrawText(palettes.keys.elementAt(currentPalette).toC, 300, 15, 20, rl.Color.RED);
+      DrawText("< >".toC, 10, 10, 30, DARKBLUE);
+      DrawText("CURRENT PALETTE:".toC, 60, 15, 20, RAYWHITE);
+      DrawText(palettes.keys.elementAt(currentPalette).toC, 300, 15, 20, RED);
 
-      rl.Core.DrawFPS(700, 15);
+      DrawFPS(700, 15);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
+  UnloadShader(shader);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

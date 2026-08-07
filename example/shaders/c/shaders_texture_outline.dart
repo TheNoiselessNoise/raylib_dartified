@@ -3,7 +3,7 @@
 // Run it: dart run shaders_texture_outline.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,15 +11,14 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_texture_outline".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_texture_outline".toC);
+  SetTargetFPS(60);
 
-  final texture = rl.Core.LoadTexture("../resources/fudesumi.png".toC);
+  final texture = LoadTexture("../resources/fudesumi.png".toC);
 
-  final shdrOutline = rl.Core.LoadShader(
+  final shdrOutline = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/outline.fs".toC,
   );
@@ -28,68 +27,68 @@ void main()
   final outlineColor = [ 1.0, 0.0, 0.0, 1.0 ];
   final textureSize = [ texture.width, texture.height ];
 
-  int outlineSizeLoc = rl.Core.GetShaderLocation(shdrOutline, "outlineSize".toC);
-  int outlineColorLoc = rl.Core.GetShaderLocation(shdrOutline, "outlineColor".toC);
-  int textureSizeLoc = rl.Core.GetShaderLocation(shdrOutline, "textureSize".toC);
+  int outlineSizeLoc = GetShaderLocation(shdrOutline, "outlineSize".toC);
+  int outlineColorLoc = GetShaderLocation(shdrOutline, "outlineColor".toC);
+  int textureSizeLoc = GetShaderLocation(shdrOutline, "textureSize".toC);
 
   void updateShaderOutlineSize() {
-    rl.Core.SetShaderValue(shdrOutline, outlineSizeLoc,
-      rl.Temp.Float32$.Value(outlineSize).cast(),
+    SetShaderValue(shdrOutline, outlineSizeLoc,
+      Float32$.Value(outlineSize).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderOutlineSize();
 
-  rl.Core.SetShaderValue(shdrOutline, outlineColorLoc,
-    rl.Temp.Float32$.Array(outlineColor).cast(),
+  SetShaderValue(shdrOutline, outlineColorLoc,
+    Float32$.Array(outlineColor).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
-  rl.Core.SetShaderValue(shdrOutline, textureSizeLoc,
-    rl.Temp.Float32$.Array(textureSize).cast(),
+  SetShaderValue(shdrOutline, textureSizeLoc,
+    Float32$.Array(textureSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    outlineSize += rl.Core.GetMouseWheelMove();
+    outlineSize += GetMouseWheelMove();
     if (outlineSize < 1.0) outlineSize = 1.0;
 
     updateShaderOutlineSize();
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shdrOutline);
+      BeginShaderMode(shdrOutline);
 
-        rl.Core.DrawTexture(texture,
-          (rl.Core.GetScreenWidth()/2 - texture.width/2).toInt(),
+        DrawTexture(texture,
+          (GetScreenWidth()/2 - texture.width/2).toInt(),
           -30,
-          rl.Color.WHITE
+          WHITE
         );
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "Shader-based\ntexture\noutline".toC,
-        10, 10, 20, rl.Color.GRAY
+        10, 10, 20, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Scroll mouse wheel to\nchange outline size".toC,
-        10, 72, 20, rl.Color.GRAY
+        10, 72, 20, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Outline size: $outlineSize px".toC,
-        10, 120, 20, rl.Color.MAROON
+        10, 120, 20, MAROON
       );
 
-      rl.Core.DrawFPS(710, 10);
+      DrawFPS(710, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
-  rl.Core.UnloadShader(shdrOutline);
+  UnloadTexture(texture);
+  UnloadShader(shdrOutline);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_texture_waves.c
 // Run it: dart run shaders_texture_waves.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -10,27 +10,26 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shaders_texture_waves");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_texture_waves");
+  SetTargetFPS(60);
 
-  final texture = rl.CoreD.LoadTexture("../resources/space.png");
+  final texture = LoadTexture("../resources/space.png");
 
-  final shader = rl.CoreD.LoadShader(
+  final shader = LoadShader(
     null,
     "../resources/shaders/glsl$GLSL_VERSION/wave.fs",
   );
 
-  int sizeLoc = rl.CoreD.GetShaderLocation(shader, "size");
-  int secondsLoc = rl.CoreD.GetShaderLocation(shader, "seconds");
-  int freqXLoc = rl.CoreD.GetShaderLocation(shader, "freqX");
-  int freqYLoc = rl.CoreD.GetShaderLocation(shader, "freqY");
-  int ampXLoc = rl.CoreD.GetShaderLocation(shader, "ampX");
-  int ampYLoc = rl.CoreD.GetShaderLocation(shader, "ampY");
-  int speedXLoc = rl.CoreD.GetShaderLocation(shader, "speedX");
-  int speedYLoc = rl.CoreD.GetShaderLocation(shader, "speedY");
+  int sizeLoc = GetShaderLocation(shader, "size");
+  int secondsLoc = GetShaderLocation(shader, "seconds");
+  int freqXLoc = GetShaderLocation(shader, "freqX");
+  int freqYLoc = GetShaderLocation(shader, "freqY");
+  int ampXLoc = GetShaderLocation(shader, "ampX");
+  int ampYLoc = GetShaderLocation(shader, "ampY");
+  int speedXLoc = GetShaderLocation(shader, "speedX");
+  int speedYLoc = GetShaderLocation(shader, "speedY");
 
   double freqX = 25.0;
   double freqY = 25.0;
@@ -39,63 +38,63 @@ void main()
   double speedX = 8.0;
   double speedY = 8.0;
 
-  final screenSize = [ rl.CoreD.GetScreenWidth(), rl.CoreD.GetScreenHeight() ];
-  rl.CoreD.SetShaderValue(shader, sizeLoc,
+  final screenSize = [ GetScreenWidth(), GetScreenHeight() ];
+  SetShaderValue(shader, sizeLoc,
     screenSize,
     .SHADER_UNIFORM_VEC2,
   );
-  rl.CoreD.SetShaderValue(shader, freqXLoc,
+  SetShaderValue(shader, freqXLoc,
     [freqX],
     .SHADER_UNIFORM_FLOAT,
   );
-  rl.CoreD.SetShaderValue(shader, freqYLoc,
+  SetShaderValue(shader, freqYLoc,
     [freqY],
     .SHADER_UNIFORM_FLOAT,
   );
-  rl.CoreD.SetShaderValue(shader, ampXLoc,
+  SetShaderValue(shader, ampXLoc,
     [ampX],
     .SHADER_UNIFORM_FLOAT,
   );
-  rl.CoreD.SetShaderValue(shader, ampYLoc,
+  SetShaderValue(shader, ampYLoc,
     [ampY],
     .SHADER_UNIFORM_FLOAT,
   );
-  rl.CoreD.SetShaderValue(shader, speedXLoc,
+  SetShaderValue(shader, speedXLoc,
     [speedX],
     .SHADER_UNIFORM_FLOAT,
   );
-  rl.CoreD.SetShaderValue(shader, speedYLoc,
+  SetShaderValue(shader, speedYLoc,
     [speedY],
     .SHADER_UNIFORM_FLOAT,
   );
 
   double seconds = 0.0;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    seconds += rl.CoreD.GetFrameTime();
+    seconds += GetFrameTime();
 
-    rl.CoreD.SetShaderValue(shader, secondsLoc,
+    SetShaderValue(shader, secondsLoc,
       [seconds],
       .SHADER_UNIFORM_FLOAT,
     );
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.CoreD.DrawTexture(texture, 0, 0, .WHITE);
-        rl.CoreD.DrawTexture(texture, texture.width, 0, .WHITE);
+        DrawTexture(texture, 0, 0, .WHITE);
+        DrawTexture(texture, texture.width, 0, .WHITE);
 
-      rl.CoreD.EndShaderMode();
+      EndShaderMode();
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadShader(shader);
-  rl.CoreD.UnloadTexture(texture);
+  UnloadShader(shader);
+  UnloadTexture(texture);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

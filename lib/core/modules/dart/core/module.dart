@@ -16,6 +16,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   ColorD,
   FilePathListD,
   FontD,
+  GestureEventD,
   GlyphInfoD,
   ImageD,
   MaterialD,
@@ -24,6 +25,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   MeshD,
   ModelD,
   ModelAnimationD,
+  ModelSkeletonD,
   NPatchInfoD,
   QuaternionD,
   RayD,
@@ -50,6 +52,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   RaylibCoreD(super.rl);
   
   @override
+  @DoNotAbbreviate()
   void dispose() {
     super.dispose();
     LoadFileDataCallbackD.disposeRegistry();
@@ -580,7 +583,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => rl.Core.EndScissorMode(),
   );
     
-  // TODO: untested, no VR hardware
   @override
   void BeginVrStereoMode(
     VrStereoConfigD config,
@@ -591,14 +593,12 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     ),
   );
     
-  // TODO: untested, no VR hardware
   @override
   void EndVrStereoMode() => run(
     () => RaylibDebugLabels.EndVrStereoMode(),
     () => rl.Core.EndVrStereoMode(),
   );
     
-  // TODO: untested, no VR hardware
   @override
   VrStereoConfigD LoadVrStereoConfig(
     VrDeviceInfoD device,
@@ -612,7 +612,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     ),
   );
     
-  // TODO: untested, no VR hardware
   @override
   void UnloadVrStereoConfig(
     VrStereoConfigD config,
@@ -721,6 +720,11 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         .SHADER_UNIFORM_IVEC2 ||
         .SHADER_UNIFORM_IVEC3 ||
         .SHADER_UNIFORM_IVEC4 => rl.Temp.Int$.Array(value),
+
+        .SHADER_UNIFORM_UINT   ||
+        .SHADER_UNIFORM_UIVEC2 ||
+        .SHADER_UNIFORM_UIVEC3 ||
+        .SHADER_UNIFORM_UIVEC4 => rl.Temp.UnsignedInt$.Array(value),
         
         .SHADER_UNIFORM_SAMPLER2D => rl.Temp.Int$.Array(value),
       };
@@ -938,6 +942,25 @@ class RaylibCoreD extends RaylibCoreModuleBase<
       max.toInt(),
     ),
   );
+
+  @override
+  List<int> LoadRandomSequence(
+    num count,
+    num min,
+    num max,
+  ) => run(
+    () => RaylibDebugLabels.LoadRandomSequence(count, min, max),
+    () {
+      final seq = rl.Core.LoadRandomSequence(
+        count.toInt(),
+        min.toInt(),
+        max.toInt(),
+      );
+      final List<int> values = .generate(count.toInt(), (i) => seq[i]);
+      rl.Core.UnloadRandomSequence(seq);
+      return values;
+    },
+  );
   
   @override
   void TakeScreenshot(
@@ -1088,6 +1111,78 @@ class RaylibCoreD extends RaylibCoreModuleBase<
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
+
+  @override
+  int FileRename(
+    String fileName,
+    String fileRename,
+  ) => run(
+    () => RaylibDebugLabels.FileRename(fileName, fileRename),
+    () => rl.Core.FileRename(
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.String$.ValueOrNull(fileRename),
+    ),
+  );
+  
+  @override
+  int FileRemove(
+    String fileName,
+  ) => run(
+    () => RaylibDebugLabels.FileRemove(fileName),
+    () => rl.Core.FileRemove(
+      rl.Temp.String$.ValueOrNull(fileName),
+    ),
+  );
+  
+  @override
+  int FileCopy(
+    String srcPath,
+    String dstPath,
+  ) => run(
+    () => RaylibDebugLabels.FileCopy(srcPath, dstPath),
+    () => rl.Core.FileCopy(
+      rl.Temp.String$.ValueOrNull(srcPath),
+      rl.Temp.String$.ValueOrNull(dstPath),
+    ),
+  );
+  
+  @override
+  int FileMove(
+    String srcPath,
+    String dstPath,
+  ) => run(
+    () => RaylibDebugLabels.FileMove(srcPath, dstPath),
+    () => rl.Core.FileMove(
+      rl.Temp.String$.ValueOrNull(srcPath),
+      rl.Temp.String$.ValueOrNull(dstPath),
+    ),
+  );
+  
+  @override
+  int FileTextReplace(
+    String fileName,
+    String search,
+    String replacement,
+  ) => run(
+    () => RaylibDebugLabels.FileTextReplace(fileName, search, replacement),
+    () => rl.Core.FileTextReplace(
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.String$.ValueOrNull(search),
+      rl.Temp.String$.ValueOrNull(replacement),
+    ),
+  );
+  
+  @override
+  int FileTextFindIndex(
+    String fileName,
+    String search,
+  ) => run(
+    () => RaylibDebugLabels.FileTextFindIndex(fileName, search),
+    () => rl.Core.FileTextFindIndex(
+      rl.Temp.String$.ValueOrNull(fileName),
+      rl.Temp.String$.ValueOrNull(search),
+    ),
+  );
     
   @override
   bool FileExists(
@@ -1159,6 +1254,30 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => rl.Core.GetFileNameWithoutExt(
       rl.Temp.String$.ValueOrNull(filePath),
     ).toD,
+  );
+
+  @override
+  int GetDirectoryFileCount(
+    String dirPath, 
+  ) => run(
+    () => RaylibDebugLabels.GetDirectoryFileCount(dirPath),
+    () => rl.Core.GetDirectoryFileCount(
+      rl.Temp.String$.ValueOrNull(dirPath),
+    ),
+  );
+  
+  @override
+  int GetDirectoryFileCountEx(
+    String basePath,
+    String filter,
+    bool scanSubdirs,
+  ) => run(
+    () => RaylibDebugLabels.GetDirectoryFileCountEx(basePath, filter, scanSubdirs),
+    () => rl.Core.GetDirectoryFileCountEx(
+      rl.Temp.String$.ValueOrNull(basePath),
+      rl.Temp.String$.ValueOrNull(filter),
+      scanSubdirs,
+    ),
   );
 
   @override
@@ -1370,7 +1489,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () {
       final outputSize = rl.Temp.Int$.Ref1();
       final outputData = rl.Core.DecodeDataBase64(
-        rl.Temp.Uint8$.Array(data).cast(),
+        rl.Temp.Int8$.Array(data).cast(),
         outputSize,
       );
       final newData = rl.Temp.UnsignedChar$.asTypedList(outputData, outputSize.value);
@@ -1415,6 +1534,20 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         data.length,
       ),
       rl.Utils.sha1Uint32HashLength,
+    )),
+  );
+
+  @override
+  Uint8List ComputeSHA256(
+    Uint8List data,
+  ) => run(
+    () => RaylibDebugLabels.ComputeSHA256(data),
+    () => .fromList(rl.Temp.UnsignedInt$.ToBEBytes(
+      rl.Core.ComputeSHA256(
+        rl.Temp.Uint8$.Array(data).cast(),
+        data.length,
+      ),
+      rl.Utils.sha256Uint32HashLength,
     )),
   );
     
@@ -1531,6 +1664,14 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   ) => run(
     () => RaylibDebugLabels.IsKeyUp(key),
     () => rl.Core.IsKeyUp(key.value),
+  );
+
+  @override
+  String GetKeyName(
+    KeyboardKey key,
+  ) => run(
+    () => RaylibDebugLabels.GetKeyName(key),
+    () => rl.Core.GetKeyName(key.value).toD,
   );
 
   @override
@@ -1866,6 +2007,22 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => RaylibDebugLabels.GetGesturePinchAngle(),
     () => rl.Core.GetGesturePinchAngle(),
   );
+
+  @override
+  void ProcessGestureEvent(
+    GestureEventD event,
+  ) => run(
+    () => RaylibDebugLabels.ProcessGestureEvent(event),
+    () => rl.Core.ProcessGestureEvent(
+      rl.Temp.GestureEvent$.Ref1(event).ref,
+    ),
+  );
+  
+  @override
+  void UpdateGestures() => run(
+    () => RaylibDebugLabels.UpdateGestures(),
+    () => rl.Core.UpdateGestures(),
+  );
     
   @override
   void UpdateCamera(
@@ -2024,6 +2181,24 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
 
   @override
+  void DrawLineDashed(
+    Vector2D startPos,
+    Vector2D endPos,
+    num dashSize,
+    num spaceSize,
+    ColorD color,
+  ) => run(
+    () => RaylibDebugLabels.DrawLineDashed(startPos, endPos, dashSize, spaceSize, color),
+    () => rl.Core.DrawLineDashed(
+      rl.Temp.Vector2$.Ref1(startPos).ref,
+      rl.Temp.Vector2$.Ref2(endPos).ref,
+      dashSize.toInt(),
+      spaceSize.toInt(),
+      rl.Temp.Color$.Ref1(color).ref,
+    ),
+  );
+
+  @override
   void DrawCircle(
     num centerX,
     num centerY,
@@ -2081,16 +2256,14 @@ class RaylibCoreD extends RaylibCoreModuleBase<
 
   @override
   void DrawCircleGradient(
-    num centerX,
-    num centerY,
+    Vector2D center,
     num radius,
     ColorD inner,
     ColorD outer,
   ) => run(
-    () => RaylibDebugLabels.DrawCircleGradient(centerX, centerY, radius, inner, outer),
+    () => RaylibDebugLabels.DrawCircleGradient(center, radius, inner, outer),
     () => rl.Core.DrawCircleGradient(
-      centerX.toInt(),
-      centerY.toInt(),
+      rl.Temp.Vector2$.Ref1(center).ref,
       radius.toDouble(),
       rl.Temp.Color$.Ref1(inner).ref,
       rl.Temp.Color$.Ref2(outer).ref,
@@ -2160,6 +2333,22 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
 
   @override
+  void DrawEllipseV(
+    Vector2D center,
+    num radiusH,
+    num radiusV,
+    ColorD color,
+  ) => run(
+    () => RaylibDebugLabels.DrawEllipseV(center, radiusH, radiusV, color),
+    () => rl.Core.DrawEllipseV(
+      rl.Temp.Vector2$.Ref1(center).ref,
+      radiusH.toDouble(),
+      radiusV.toDouble(),
+      rl.Temp.Color$.Ref1(color).ref,
+    ),
+  );
+
+  @override
   void DrawEllipseLines(
     num centerX,
     num centerY,
@@ -2171,6 +2360,22 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => rl.Core.DrawEllipseLines(
       centerX.toInt(),
       centerY.toInt(),
+      radiusH.toDouble(),
+      radiusV.toDouble(),
+      rl.Temp.Color$.Ref1(color).ref,
+    ),
+  );
+
+  @override
+  void DrawEllipseLinesV(
+    Vector2D center,
+    num radiusH,
+    num radiusV,
+    ColorD color,
+  ) => run(
+    () => RaylibDebugLabels.DrawEllipseLinesV(center, radiusH, radiusV, color),
+    () => rl.Core.DrawEllipseLinesV(
+      rl.Temp.Vector2$.Ref1(center).ref,
       radiusH.toDouble(),
       radiusV.toDouble(),
       rl.Temp.Color$.Ref1(color).ref,
@@ -4744,7 +4949,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     ),
   );
 
-  // TODO: ON NEW RAYLIB RELEASE - add glyphCount, now it defaults to 95
   @override
   List<GlyphInfoD> LoadFontData(
     Uint8List fileData,
@@ -4755,7 +4959,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   ) => run(
     () => RaylibDebugLabels.LoadFontData(fileData, fontSize, codepoints, codepointCount, type),
     () {
-      // final glyphCount = _int1();
+      final glyphCount = rl.Temp.Int$.Ref1();
       final glyphs = rl.Core.LoadFontData(
         rl.Temp.UnsignedChar$.Array(fileData),
         fileData.length,
@@ -4763,11 +4967,10 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         codepoints == null ? nullptr : rl.Temp.Int$.Array(codepoints),
         codepointCount?.toInt() ?? codepoints?.length ?? 0,
         type.value,
-        // glyphCount,
+        glyphCount,
       );
       final requestedCount = (codepointCount == null || codepointCount == 0) 
-        // ? codepoints?.length ?? glyphCount.value 
-        ? codepoints?.length ?? 95 
+        ? codepoints?.length ?? glyphCount.value 
         : codepointCount.toInt();
       return .generate(requestedCount, (i) => (glyphs + i).toD());
     },
@@ -4991,6 +5194,23 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
 
   @override
+  Vector2D MeasureTextCodepoints(
+    FontD font,
+    Int32List codepoints,
+    num fontSize,
+    num spacing,
+  ) => run(
+    () => RaylibDebugLabels.MeasureTextCodepoints(font, codepoints, fontSize, spacing),
+    () => rl.Core.MeasureTextCodepoints(
+      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.Int$.Array(codepoints),
+      codepoints.length,
+      fontSize.toDouble(),
+      spacing.toDouble(),
+    ).toD(),
+  );
+
+  @override
   int GetGlyphIndex(
     FontD font,
     num codepoint,
@@ -5130,6 +5350,370 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         size,
       );
       return (text.toD, size.value);
+    },
+  );
+
+  @override
+  List<String> LoadTextLines(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextLength(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final lineCountPtr = calloc<Int>();
+      try {
+        final linesPtr = rl.Core.LoadTextLines(textPtr, lineCountPtr);
+        final List<String> lines = .generate(lineCountPtr.value, (i) => linesPtr[i].toD);
+        rl.Core.UnloadTextLines(linesPtr, lineCountPtr.value);
+        return lines;
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(lineCountPtr);
+      }
+    },
+  );
+  
+  @override
+  bool TextIsEqual(
+    String text1,
+    String text2,
+  ) => run(
+    () => RaylibDebugLabels.TextIsEqual(text1, text2),
+    () {
+      final text1Ptr = rl.Temp.String$.RawValue(text1);
+      final text2Ptr = rl.Temp.String$.RawValue(text2);
+      try {
+        return rl.Core.TextIsEqual(text1Ptr, text2Ptr);
+      } finally {
+        calloc.free(text1Ptr);
+        calloc.free(text2Ptr);
+      }
+    },
+  );
+
+  @override
+  int TextLength(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextLength(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextLength(textPtr);
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+
+  @override
+  String TextSubtext(
+    String text,
+    int position,
+    int length,
+  ) => run(
+    () => RaylibDebugLabels.TextSubtext(text, position, length),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextSubtext(textPtr, position, length).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+
+  @override
+  String TextRemoveSpaces(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextRemoveSpaces(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextRemoveSpaces(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+
+  @override
+  String GetTextBetween(
+    String text,
+    String begin,
+    String end,
+  ) => run(
+    () => RaylibDebugLabels.GetTextBetween(text, begin, end),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final beginPtr = rl.Temp.String$.RawValue(begin);
+      final endPtr = rl.Temp.String$.RawValue(end);
+      try {
+        return rl.Core.GetTextBetween(textPtr, beginPtr, endPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(beginPtr);
+        calloc.free(endPtr);
+      }
+    },
+  );
+
+  @override
+  String TextReplace(
+    String text,
+    String search,
+    String replacement,
+  ) => run(
+    () => RaylibDebugLabels.TextReplace(text, search, replacement),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final searchPtr = rl.Temp.String$.RawValue(search);
+      final replacementPtr = rl.Temp.String$.RawValue(replacement);
+      try {
+        // NOTE: uses Alloc variant so we are not limited by the static buffer
+        final resultPtr = rl.Core.TextReplaceAlloc(textPtr, searchPtr, replacementPtr);
+        final result = resultPtr.toD;
+        calloc.free(resultPtr);
+        return result;
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(searchPtr);
+        calloc.free(replacementPtr);
+      }
+    },
+  );
+
+  @override
+  String TextReplaceBetween(
+    String text,
+    String begin,
+    String end,
+    String replacement,
+  ) => run(
+    () => RaylibDebugLabels.TextReplaceBetween(text, begin, end, replacement),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final beginPtr = rl.Temp.String$.RawValue(begin);
+      final endPtr = rl.Temp.String$.RawValue(end);
+      final replacementPtr = rl.Temp.String$.RawValue(replacement);
+      try {
+        // NOTE: uses Alloc variant so we are not limited by the static buffer
+        final resultPtr = rl.Core.TextReplaceBetweenAlloc(textPtr, beginPtr, endPtr, replacementPtr);
+        final result = resultPtr.toD;
+        calloc.free(resultPtr);
+        return result;
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(beginPtr);
+        calloc.free(endPtr);
+        calloc.free(replacementPtr);
+      }
+    },
+  );
+
+  @override
+  String TextInsert(
+    String text,
+    String insert,
+    int position,
+  ) => run(
+    () => RaylibDebugLabels.TextInsert(text, insert, position),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final insertPtr = rl.Temp.String$.RawValue(insert);
+      try {
+        // NOTE: uses Alloc variant so we are not limited by the static buffer
+        final resultPtr = rl.Core.TextInsertAlloc(textPtr, insertPtr, position);
+        final result = resultPtr.toD;
+        calloc.free(resultPtr);
+        return result;
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(insertPtr);
+      }
+    },
+  );
+
+  @override
+  String TextJoin(
+    List<String> textList,
+    String delimiter,
+  ) => run(
+    () => RaylibDebugLabels.TextJoin(textList, delimiter),
+    () {
+      final textListPtr = rl.Temp.String$.RawPtr(textList.length);
+      final delimiterPtr = rl.Temp.String$.RawValue(delimiter);
+
+      try {
+        for (final (i, text) in textList.indexed) {
+          textListPtr[i] = rl.Temp.String$.RawValue(text);
+        }
+
+        return rl.Core.TextJoin(textListPtr, textList.length, delimiterPtr).toD;
+      } finally {
+        for (final (i, _) in textList.indexed) {
+          calloc.free(textListPtr[i]);
+        }
+        calloc.free(textListPtr);
+        calloc.free(delimiterPtr);
+      }
+    },
+  );
+
+  @override
+  List<String> TextSplit(
+    String text,
+    String delimiter,
+  ) => run(
+    () => RaylibDebugLabels.TextSplit(text, delimiter),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final countPtr = calloc<Int>();
+      try {
+        final delimiterChar = delimiter.isEmpty ? 0 : delimiter.codeUnitAt(0);
+        final partsPtr = rl.Core.TextSplit(textPtr, delimiterChar, countPtr);
+        return .generate(countPtr.value, (i) => partsPtr[i].toD);
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(countPtr);
+      }
+    },
+  );
+
+  @override
+  String TextAppend(
+    String text,
+    String append,
+  ) => run(
+    () => RaylibDebugLabels.TextAppend(text, append),
+    // NOTE: not calling rl.Core.TextAppend here. The native version writes into
+    // `text`'s buffer at a caller-tracked position, assuming extra headroom beyond
+    // its current length, a C-buffer contract that doesn't translate to immutable
+    // Dart Strings and risks a real overflow if faked. Reimplemented directly instead.
+    () => text + append,
+  );
+
+  @override
+  int TextFindIndex(
+    String text,
+    String search,
+  ) => run(
+    () => RaylibDebugLabels.TextFindIndex(text, search),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      final searchPtr = rl.Temp.String$.RawValue(search);
+      try {
+        return rl.Core.TextFindIndex(textPtr, searchPtr);
+      } finally {
+        calloc.free(textPtr);
+        calloc.free(searchPtr);
+      }
+    },
+  );
+
+  @override
+  String TextToUpper(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToUpper(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToUpper(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+  
+  @override
+  String TextToLower(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToLower(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToLower(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+  
+  @override
+  String TextToPascal(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToPascal(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToPascal(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+  
+  @override
+  String TextToSnake(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToSnake(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToSnake(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+  
+  @override
+  String TextToCamel(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToCamel(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToCamel(textPtr).toD;
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+
+  @override
+  int TextToInteger(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToInteger(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToInteger(textPtr);
+      } finally {
+        calloc.free(textPtr);
+      }
+    },
+  );
+  
+  @override
+  double TextToFloat(
+    String text,
+  ) => run(
+    () => RaylibDebugLabels.TextToFloat(text),
+    () {
+      final textPtr = rl.Temp.String$.RawValue(text);
+      try {
+        return rl.Core.TextToFloat(textPtr);
+      } finally {
+        calloc.free(textPtr);
+      }
     },
   );
     
@@ -5607,42 +6191,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
     
   @override
-  void DrawModelPoints(
-    ModelD model,
-    Vector3D position,
-    num scale,
-    ColorD tint,
-  ) => run(
-    () => RaylibDebugLabels.DrawModelPoints(model, position, scale, tint),
-    () => rl.Core.DrawModelPoints(
-      rl.Temp.Model$.Ref1(model).ref,
-      rl.Temp.Vector3$.Ref1(position).ref,
-      scale.toDouble(),
-      rl.Temp.Color$.Ref1(tint).ref,
-    ),
-  );
-    
-  @override
-  void DrawModelPointsEx(
-    ModelD model,
-    Vector3D position,
-    Vector3D rotationAxis,
-    num rotationAngle,
-    Vector3D scale,
-    ColorD tint,
-  ) => run(
-    () => RaylibDebugLabels.DrawModelPointsEx(model, position, rotationAxis, rotationAngle, scale, tint),
-    () => rl.Core.DrawModelPointsEx(
-      rl.Temp.Model$.Ref1(model).ref,
-      rl.Temp.Vector3$.Ref1(position).ref,
-      rl.Temp.Vector3$.Ref2(rotationAxis).ref,
-      rotationAngle.toDouble(),
-      rl.Temp.Vector3$.Ref3(scale).ref,
-      rl.Temp.Color$.Ref1(tint).ref,
-    ),
-  );
-    
-  @override
   void DrawBoundingBox(
     BoundingBoxD box,
     ColorD color,
@@ -6091,7 +6639,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   );
     
   @override
-  List<ModelAnimationD> LoadModelAnimations(
+  NativeLiveListPointerStruct<ModelAnimationC, ModelAnimationD> LoadModelAnimations(
     String fileName,
   ) => run(
     () => RaylibDebugLabels.LoadModelAnimations(fileName),
@@ -6101,7 +6649,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         rl.Temp.String$.ValueOrNull(fileName),
         animCount,
       );
-      return .generate(animCount.value, (i) => (anims + i).toD());
+      return .new(.generate(animCount.value, (i) => (anims + i).toD()), anims);
     },
   );
     
@@ -6112,47 +6660,46 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     num frame,
   ) => run(
     () => RaylibDebugLabels.UpdateModelAnimation(model, anim, frame),
-    () => rl.Core.UpdateModelAnimation(
-      rl.Temp.Model$.Ref1(model).ref,
-      rl.Temp.ModelAnimation$.Ref1(anim).ref,
-      frame.toInt(),
-    ),
-  );
-    
-  @override
-  void UpdateModelAnimationBones(
-    ModelD model,
-    ModelAnimationD anim,
-    num frame,
-  ) => run(
-    () => RaylibDebugLabels.UpdateModelAnimationBones(model, anim, frame),
     () => rl.Temp.Model$.RefUpdate1(model,
-      (pm) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
-        (pma) => rl.Core.UpdateModelAnimationBones(
-          pm.ref,
-          pma.ref,
-          frame.toInt(),
+      (p) => rl.Temp.ModelAnimation$.RefUpdate1(anim,
+        (a) => rl.Core.UpdateModelAnimation(
+          p.ref,
+          a.ref,
+          frame.toDouble(),
         ),
       ),
     ),
   );
     
   @override
-  void UnloadModelAnimation(
-    ModelAnimationD anim,
+  void UpdateModelAnimationEx(
+    ModelD model,
+    ModelAnimationD animA,
+    num frameA,
+    ModelAnimationD animB,
+    num frameB,
+    num blend,
   ) => run(
-    () => RaylibDebugLabels.UnloadModelAnimation(anim),
-    () => rl.Core.UnloadModelAnimation(
-      rl.Temp.ModelAnimation$.Ref1(anim).ref,
+    () => RaylibDebugLabels.UpdateModelAnimationEx(model, animA, frameA, animB, frameB, blend),
+    () => rl.Core.UpdateModelAnimationEx(
+      rl.Temp.Model$.Ref1(model).ref,
+      rl.Temp.ModelAnimation$.Ref1(animA).ref,
+      frameA.toDouble(),
+      rl.Temp.ModelAnimation$.Ref2(animB).ref,
+      frameB.toDouble(),
+      blend.toDouble(),
     ),
   );
     
   @override
   void UnloadModelAnimations(
-    List<ModelAnimationD> animations,
+    NativeLiveListPointerStruct<ModelAnimationC, ModelAnimationD> animations,
   ) => run(
     () => RaylibDebugLabels.UnloadModelAnimations(animations),
-    () => animations.forEach(UnloadModelAnimation),
+    () => rl.Core.UnloadModelAnimations(
+      animations.ptr!,
+      animations.length,
+    ),
   );
     
   @override

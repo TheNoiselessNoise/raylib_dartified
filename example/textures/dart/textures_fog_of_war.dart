@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_fog_of_war.c
 // Run it: dart run textures_fog_of_war.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int MAP_TILE_SIZE = 32;
 const int PLAYER_SIZE = 16;
@@ -25,11 +25,10 @@ class ExampleMap {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "textures_fog_of_war");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_fog_of_war");
+  SetTargetFPS(60);
 
   final map = ExampleMap();
   map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
@@ -41,15 +40,15 @@ void main()
   int playerTileX = 0;
   int playerTileY = 0;
 
-  final fogOfWar = rl.CoreD.LoadRenderTexture(map.tilesX, map.tilesY);
-  rl.CoreD.SetTextureFilter(fogOfWar.texture, .TEXTURE_FILTER_BILINEAR);
+  final fogOfWar = LoadRenderTexture(map.tilesX, map.tilesY);
+  SetTextureFilter(fogOfWar.texture, .TEXTURE_FILTER_BILINEAR);
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.CoreD.IsKeyDown(.KEY_RIGHT)) playerPosition.x += 5;
-    if (rl.CoreD.IsKeyDown(.KEY_LEFT)) playerPosition.x -= 5;
-    if (rl.CoreD.IsKeyDown(.KEY_DOWN)) playerPosition.y += 5;
-    if (rl.CoreD.IsKeyDown(.KEY_UP)) playerPosition.y -= 5;
+    if (IsKeyDown(.KEY_RIGHT)) playerPosition.x += 5;
+    if (IsKeyDown(.KEY_LEFT)) playerPosition.x -= 5;
+    if (IsKeyDown(.KEY_DOWN)) playerPosition.y += 5;
+    if (IsKeyDown(.KEY_UP)) playerPosition.y -= 5;
 
     if (playerPosition.x < 0) {
       playerPosition.x = 0;
@@ -85,62 +84,62 @@ void main()
       }
     }
 
-    rl.CoreD.BeginTextureMode(fogOfWar);
-      rl.CoreD.ClearBackground(.BLANK);
+    BeginTextureMode(fogOfWar);
+      ClearBackground(.BLANK);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
           if (map.tileFog[y*map.tilesX+x] == 0) {
-            rl.CoreD.DrawRectangle(x, y, 1, 1, .BLACK);
+            DrawRectangle(x, y, 1, 1, .BLACK);
           } else if (map.tileFog[y*map.tilesX+x] == 2) {
-            rl.CoreD.DrawRectangle(x, y, 1, 1, rl.CoreD.Fade(.BLACK, 0.8));
+            DrawRectangle(x, y, 1, 1, Fade(.BLACK, 0.8));
           }
         }
       }
-    rl.CoreD.EndTextureMode();
+    EndTextureMode();
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
-          rl.CoreD.DrawRectangle(
+          DrawRectangle(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            map.tileIds[y*map.tilesX+x] == 0 ? .BLUE : rl.CoreD.Fade(.BLUE, 0.9),
+            map.tileIds[y*map.tilesX+x] == 0 ? .BLUE : Fade(.BLUE, 0.9),
           );
-          rl.CoreD.DrawRectangleLines(
+          DrawRectangleLines(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            rl.CoreD.Fade(.DARKBLUE, 0.5),
+            Fade(.DARKBLUE, 0.5),
           );
         }
       }
 
-      rl.CoreD.DrawRectangleV(playerPosition, .vec2(PLAYER_SIZE, PLAYER_SIZE), .RED);
+      DrawRectangleV(playerPosition, .vec2(PLAYER_SIZE, PLAYER_SIZE), .RED);
 
-      rl.CoreD.DrawTexturePro(
+      DrawTexturePro(
         fogOfWar.texture,
         .rect(0, 0, fogOfWar.texture.width, -fogOfWar.texture.height),
         .rect(0, 0, map.tilesX*MAP_TILE_SIZE, map.tilesY*MAP_TILE_SIZE),
         .zero(), 0, .WHITE,
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Current tile: [$playerTileX, $playerTileY]",
         10, 10, 20, .RAYWHITE
       );
       
-      rl.CoreD.DrawText(
+      DrawText(
         "ARROW KEYS to move",
         10, screenHeight-25, 20, .RAYWHITE
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadRenderTexture(fogOfWar);
+  UnloadRenderTexture(fogOfWar);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

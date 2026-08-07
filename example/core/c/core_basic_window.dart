@@ -1,29 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_basic_window.c
 // Run it: dart run core_basic_window.dart
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_basic_window'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_basic_window".toC);
+  SetTargetFPS(60);
 
-  while (!rl.Core.WindowShouldClose()) {
-    rl.Core.BeginDrawing();
+  while (!WindowShouldClose()) {
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
-      rl.Core.DrawText(
+      ClearBackground(RAYWHITE);
+      DrawText(
         "Congrats! You created your first window!".toC,
-        190, 200, 20, rl.Color.LIGHTGRAY
+        190, 200, 20, LIGHTGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -2,34 +2,33 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_easings_box.c
 // Run it: dart run shapes_easings_box.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_easings_box".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_easings_box".toC);
+  SetTargetFPS(60);
 
-  final rec = rl.Temp.Rectangle$.At('rec').set(screenWidth / 2, -100, 100, 100);
+  final rec = Rectangle$.At('rec').set(screenWidth / 2, -100, 100, 100);
   double rotation = 0;
   double alpha = 1;
   int state = 0;
   int framesCounter = 0;
 
   void reset() {
-    rec.set(rl.Core.GetScreenWidth() / 2, -100, 100, 100);
+    rec.set(GetScreenWidth() / 2, -100, 100, 100);
     rotation = 0;
     alpha = 1;
     state = 0;
     framesCounter = 0;
   }
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     switch (state) {
       case 0: {
@@ -40,7 +39,7 @@ void main()
         rec.ref.y = rl.Ease.EaseElasticOut(
           framesCounter.toDouble(),
           -100,
-          rl.Core.GetScreenHeight() / 2 + 100,
+          GetScreenHeight() / 2 + 100,
           120
         );
 
@@ -57,7 +56,7 @@ void main()
         );
 
         rec.ref.width = rl.Ease.EaseBounceOut(
-          framesCounter.toDouble(), 100, rl.Core.GetScreenWidth().toDouble(), 120
+          framesCounter.toDouble(), 100, GetScreenWidth().toDouble(), 120
         );
 
         if (framesCounter >= 120) {
@@ -80,7 +79,7 @@ void main()
         framesCounter++;
 
         rec.ref.height = rl.Ease.EaseCircOut(
-          framesCounter.toDouble(), 10, rl.Core.GetScreenWidth().toDouble(), 120
+          framesCounter.toDouble(), 10, GetScreenWidth().toDouble(), 120
         );
 
         if (framesCounter >= 120) {
@@ -103,33 +102,33 @@ void main()
       default: break;
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) {
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value)) {
       reset();
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
       
-      rl.Core.DrawRectanglePro(
+      DrawRectanglePro(
         rec.ref,
-        rl.Temp.vec21(
+        Vector2$.$1.set(
           rec.ref.width / 2,
           rec.ref.height / 2
         ),
         rotation,
-        rl.Core.Fade(rl.Color.BLACK, alpha),
+        Fade(BLACK, alpha),
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "PRESS [SPACE] TO RESET BOX ANIMATION!".toC,
         10,
-        rl.Core.GetScreenHeight() - 25, 20,
-        rl.Color.LIGHTGRAY
+        GetScreenHeight() - 25, 20,
+        LIGHTGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

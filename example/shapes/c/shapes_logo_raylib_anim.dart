@@ -1,18 +1,17 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_logo_raylib_anim.c
 // Run it: dart run shapes_logo_raylib_anim.dart
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_logo_raylib_anim".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_logo_raylib_anim".toC);
+  SetTargetFPS(60);
 
   int logoPositionX = screenWidth~/2 - 128;
   int logoPositionY = screenHeight~/2 - 128;
@@ -31,7 +30,7 @@ void main()
 
   String text = "raylib";
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     if (state == 0)
     {
@@ -81,7 +80,7 @@ void main()
     }
     else if (state == 4)
     {
-      if (rl.Core.IsKeyPressed(KeyboardKey.KEY_R.value))
+      if (IsKeyPressed(KeyboardKey.KEY_R.value))
       {
         framesCounter = 0;
         lettersCount = 0;
@@ -97,56 +96,56 @@ void main()
       }
     }
 
-    final w = rl.Core.GetScreenWidth(), h = rl.Core.GetScreenHeight();
+    final w = GetScreenWidth(), h = GetScreenHeight();
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       if (state == 0)
       {
-        if ((framesCounter/15)%2 == 0) rl.Core.DrawRectangle(
-          logoPositionX, logoPositionY, 16, 16, rl.Color.BLACK
+        if ((framesCounter/15)%2 == 0) DrawRectangle(
+          logoPositionX, logoPositionY, 16, 16, BLACK
         );
       }
       else if (state == 1)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Color.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.Color.BLACK);
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
+        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
       }
       else if (state == 2)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Color.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, rl.Color.BLACK);
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
+        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
 
-        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, rl.Color.BLACK);
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.Color.BLACK);
+        DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, BLACK);
+        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, BLACK);
       }
       else if (state == 3)
       {
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, rl.Core.Fade(rl.Color.BLACK, alpha));
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, rl.Core.Fade(rl.Color.BLACK, alpha));
+        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, Fade(BLACK, alpha));
+        DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, Fade(BLACK, alpha));
 
-        rl.Core.DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, rl.Core.Fade(rl.Color.BLACK, alpha));
-        rl.Core.DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, rl.Core.Fade(rl.Color.BLACK, alpha));
+        DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, Fade(BLACK, alpha));
+        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, Fade(BLACK, alpha));
 
-        rl.Core.DrawRectangle(w~/2 - 112, h~/2 - 112, 224, 224, rl.Core.Fade(rl.Color.RAYWHITE, alpha));
+        DrawRectangle(w~/2 - 112, h~/2 - 112, 224, 224, Fade(RAYWHITE, alpha));
 
-        rl.Core.DrawText(
+        DrawText(
           text.substring(0, lettersCount).toC,
-          w~/2 - 44, h~/2 + 48, 50, rl.Core.Fade(rl.Color.BLACK, alpha)
+          w~/2 - 44, h~/2 + 48, 50, Fade(BLACK, alpha)
         );
       }
       else if (state == 4)
       {
-        rl.Core.DrawText(
+        DrawText(
           "[R] REPLAY".toC,
-          340, 200, 20, rl.Color.GRAY
+          340, 200, 20, GRAY
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

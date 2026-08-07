@@ -9,6 +9,7 @@ part of '../../../raylib_dartified.dart';
 //     );
 // typedef TraceLogCallback =
 //     Pointer<NativeFunction<TraceLogCallbackFunction>>;
+
 typedef LoadFileDataCallbackFunctionC =
     Pointer<UnsignedChar> Function(
       Pointer<Char> fileName,
@@ -16,6 +17,7 @@ typedef LoadFileDataCallbackFunctionC =
     );
 typedef LoadFileDataCallbackC =
     Pointer<NativeFunction<LoadFileDataCallbackFunctionC>>;
+
 typedef SaveFileDataCallbackFunctionC =
     Bool Function(
       Pointer<Char> fileName,
@@ -24,10 +26,12 @@ typedef SaveFileDataCallbackFunctionC =
     );
 typedef SaveFileDataCallbackC =
     Pointer<NativeFunction<SaveFileDataCallbackFunctionC>>;
+
 typedef LoadFileTextCallbackFunctionC =
     Pointer<Char> Function(Pointer<Char> fileName);
 typedef LoadFileTextCallbackC =
     Pointer<NativeFunction<LoadFileTextCallbackFunctionC>>;
+
 typedef SaveFileTextCallbackFunctionC =
     Bool Function(
       Pointer<Char> fileName,
@@ -35,6 +39,7 @@ typedef SaveFileTextCallbackFunctionC =
     );
 typedef SaveFileTextCallbackC =
     Pointer<NativeFunction<SaveFileTextCallbackFunctionC>>;
+
 typedef AudioCallbackFunctionC =
     Void Function(Pointer<Void> bufferData, UnsignedInt frames);
 typedef AudioCallbackC = Pointer<NativeFunction<AudioCallbackFunctionC>>;
@@ -329,18 +334,16 @@ final class MeshC extends Struct {
 
   external Pointer<UnsignedShort> indices;
 
-  external Pointer<Float> animVertices;
+  @Int()
+  external int boneCount;
 
-  external Pointer<Float> animNormals;
-
-  external Pointer<UnsignedChar> boneIds;
+  external Pointer<UnsignedChar> boneIndices;
 
   external Pointer<Float> boneWeights;
 
-  external Pointer<MatrixC> boneMatrices;
+  external Pointer<Float> animVertices;
 
-  @Int()
-  external int boneCount;
+  external Pointer<Float> animNormals;
 
   @UnsignedInt()
   external int vaoId;
@@ -389,6 +392,15 @@ final class BoneInfoC extends Struct {
   external int parent;
 }
 
+final class ModelSkeletonC extends Struct {
+  @Int()
+  external int boneCount;
+
+  external Pointer<BoneInfoC> bones;
+
+  external Pointer<TransformC> bindPose;
+}
+
 final class ModelC extends Struct {
   external MatrixC transform;
 
@@ -404,27 +416,24 @@ final class ModelC extends Struct {
 
   external Pointer<Int> meshMaterial;
 
-  @Int()
-  external int boneCount;
+  external ModelSkeletonC skeleton;
 
-  external Pointer<BoneInfoC> bones;
+  external Pointer<TransformC> currentPose;
 
-  external Pointer<TransformC> bindPose;
+  external Pointer<MatrixC> boneMatrices;
 }
 
 final class ModelAnimationC extends Struct {
+  @Array.multi([32])
+  external Array<Char> name;
+
   @Int()
   external int boneCount;
 
   @Int()
-  external int frameCount;
+  external int keyframeCount;
 
-  external Pointer<BoneInfoC> bones;
-
-  external Pointer<Pointer<TransformC>> framePoses;
-
-  @Array.multi([32])
-  external Array<Char> name;
+  external Pointer<Pointer<TransformC>> keyframePoses;
 }
 
 final class VrDeviceInfoC extends Struct {
@@ -484,9 +493,6 @@ final class VrStereoConfigC extends Struct {
 
 final class FilePathListC extends Struct {
   @UnsignedInt()
-  external int capacity;
-
-  @UnsignedInt()
   external int count;
 
   external Pointer<Pointer<Char>> paths;
@@ -511,4 +517,18 @@ final class AutomationEventListC extends Struct {
   external int count;
 
   external Pointer<AutomationEventC> events;
+}
+
+final class GestureEventC extends Struct {
+  @Int()
+  external int touchAction;
+
+  @Int()
+  external int pointCount;
+
+  @Array.multi([8])
+  external Array<Int> pointId;
+
+  @Array.multi([8])
+  external Array<Vector2C> position;
 }

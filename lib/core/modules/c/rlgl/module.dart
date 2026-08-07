@@ -350,6 +350,31 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
   late final _rlDisableVertexAttribute = _rlDisableVertexAttributePtr
       .asFunction<void Function(int)>();
 
+  void rlEnableStatePointer(
+    int vertexAttribType,
+    Pointer<Void> buffer,
+  ) {
+    return _rlEnableStatePointer(vertexAttribType, buffer);
+  }
+
+  late final _rlEnableStatePointerPtr = rl
+      .coreLookup<
+        NativeFunction<Void Function(Int, Pointer<Void>)>
+      >('rlEnableStatePointer');
+  late final _rlEnableStatePointer = _rlEnableStatePointerPtr
+      .asFunction<void Function(int, Pointer<Void>)>();
+
+  void rlDisableStatePointer(int vertexAttribType) {
+    return _rlDisableStatePointer(vertexAttribType);
+  }
+
+  late final _rlDisableStatePointerPtr = rl
+      .coreLookup<NativeFunction<Void Function(Int)>>(
+        'rlDisableStatePointer',
+      );
+  late final _rlDisableStatePointer = _rlDisableStatePointerPtr
+      .asFunction<void Function(int)>();
+
   void rlActiveTextureSlot(int slot) {
     return _rlActiveTextureSlot(slot);
   }
@@ -644,15 +669,6 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
   late final _rlScissor = _rlScissorPtr
       .asFunction<void Function(int, int, int, int)>();
 
-  void rlEnableWireMode() {
-    return _rlEnableWireMode();
-  }
-
-  late final _rlEnableWireModePtr = rl
-      .coreLookup<NativeFunction<Void Function()>>('rlEnableWireMode');
-  late final _rlEnableWireMode = _rlEnableWireModePtr
-      .asFunction<void Function()>();
-
   void rlEnablePointMode() {
     return _rlEnablePointMode();
   }
@@ -660,6 +676,44 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
   late final _rlEnablePointModePtr = rl
       .coreLookup<NativeFunction<Void Function()>>('rlEnablePointMode');
   late final _rlEnablePointMode = _rlEnablePointModePtr
+      .asFunction<void Function()>();
+
+  void rlDisablePointMode() {
+    return _rlDisablePointMode();
+  }
+
+  late final _rlDisablePointModePtr = rl
+      .coreLookup<NativeFunction<Void Function()>>('rlDisablePointMode');
+  late final _rlDisablePointMode = _rlDisablePointModePtr
+      .asFunction<void Function()>();
+
+  void rlSetPointSize(double size) {
+    return _rlSetPointSize(size);
+  }
+
+  late final _rlSetPointSizePtr = rl
+      .coreLookup<NativeFunction<Void Function(Float)>>(
+        'rlSetPointSize',
+      );
+  late final _rlSetPointSize = _rlSetPointSizePtr
+      .asFunction<void Function(double)>();
+
+  double rlGetPointSize() {
+    return _rlGetPointSize();
+  }
+
+  late final _rlGetPointSizePtr = rl
+      .coreLookup<NativeFunction<Float Function()>>('rlGetPointSize');
+  late final _rlGetPointSize = _rlGetPointSizePtr
+      .asFunction<double Function()>();
+
+  void rlEnableWireMode() {
+    return _rlEnableWireMode();
+  }
+
+  late final _rlEnableWireModePtr = rl
+      .coreLookup<NativeFunction<Void Function()>>('rlEnableWireMode');
+  late final _rlEnableWireMode = _rlEnableWireModePtr
       .asFunction<void Function()>();
 
   void rlDisableWireMode() {
@@ -837,6 +891,19 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
       );
   late final _rlLoadExtensions = _rlLoadExtensionsPtr
       .asFunction<void Function(Pointer<Void>)>();
+
+  Pointer<Void> rlGetProcAddress(Pointer<Char> procName) {
+    return _rlGetProcAddress(procName);
+  }
+
+  late final _rlGetProcAddressPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Void> Function(Pointer<Char>)
+        >
+      >('rlGetProcAddress');
+  late final _rlGetProcAddress = _rlGetProcAddressPtr
+      .asFunction<Pointer<Void> Function(Pointer<Char>)>();
 
   int rlGetVersion() {
     return _rlGetVersion();
@@ -1382,38 +1449,109 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
   late final _rlUnloadFramebuffer = _rlUnloadFramebufferPtr
       .asFunction<void Function(int)>();
 
-  int rlLoadShaderCode(Pointer<Char> vsCode, Pointer<Char> fsCode) {
-    return _rlLoadShaderCode(vsCode, fsCode);
+  void rlCopyFramebuffer(
+    int x,
+    int y,
+    int width,
+    int height,
+    int format,
+    Pointer<Void> pixels,
+  ) {
+    return _rlCopyFramebuffer(x, y, width, height, format, pixels);
   }
 
-  late final _rlLoadShaderCodePtr = rl
+  late final _rlCopyFramebufferPtr = rl
       .coreLookup<
-        NativeFunction<UnsignedInt Function(Pointer<Char>, Pointer<Char>)>
-      >('rlLoadShaderCode');
-  late final _rlLoadShaderCode = _rlLoadShaderCodePtr
-      .asFunction<int Function(Pointer<Char>, Pointer<Char>)>();
+        NativeFunction<
+          Void Function(
+            Int,
+            Int,
+            Int,
+            Int,
+            Int,
+            Pointer<Void>,
+          )
+        >
+      >('rlCopyFramebuffer');
+  late final _rlCopyFramebuffer = _rlCopyFramebufferPtr
+      .asFunction<
+        void Function(int, int, int, int, int, Pointer<Void>)
+      >();
 
-  int rlCompileShader(Pointer<Char> shaderCode, int type) {
-    return _rlCompileShader(shaderCode, type);
+  void rlResizeFramebuffer(int width, int height) {
+    return _rlResizeFramebuffer(width, height);
   }
 
-  late final _rlCompileShaderPtr = rl
-      .coreLookup<NativeFunction<UnsignedInt Function(Pointer<Char>, Int)>>(
-        'rlCompileShader',
+  late final _rlResizeFramebufferPtr = rl
+      .coreLookup<NativeFunction<Void Function(Int, Int)>>(
+        'rlResizeFramebuffer',
       );
-  late final _rlCompileShader = _rlCompileShaderPtr
+  late final _rlResizeFramebuffer = _rlResizeFramebufferPtr
+      .asFunction<void Function(int, int)>();
+
+  int rlLoadShader(Pointer<Char> code, int type) {
+    return _rlLoadShader(code, type);
+  }
+
+  late final _rlLoadShaderPtr = rl
+      .coreLookup<
+        NativeFunction<
+          UnsignedInt Function(Pointer<Char>, Int)
+        >
+      >('rlLoadShader');
+  late final _rlLoadShader = _rlLoadShaderPtr
       .asFunction<int Function(Pointer<Char>, int)>();
 
-  int rlLoadShaderProgram(int vShaderId, int fShaderId) {
-    return _rlLoadShaderProgram(vShaderId, fShaderId);
+  int rlLoadShaderProgram(
+    Pointer<Char> vsCode,
+    Pointer<Char> fsCode,
+  ) {
+    return _rlLoadShaderProgram(vsCode, fsCode);
   }
 
   late final _rlLoadShaderProgramPtr = rl
       .coreLookup<
-        NativeFunction<UnsignedInt Function(UnsignedInt, UnsignedInt)>
+        NativeFunction<
+          UnsignedInt Function(Pointer<Char>, Pointer<Char>)
+        >
       >('rlLoadShaderProgram');
   late final _rlLoadShaderProgram = _rlLoadShaderProgramPtr
+      .asFunction<int Function(Pointer<Char>, Pointer<Char>)>();
+
+  int rlLoadShaderProgramEx(int vsId, int fsId) {
+    return _rlLoadShaderProgramEx(vsId, fsId);
+  }
+
+  late final _rlLoadShaderProgramExPtr = rl
+      .coreLookup<
+        NativeFunction<
+          UnsignedInt Function(UnsignedInt, UnsignedInt)
+        >
+      >('rlLoadShaderProgramEx');
+  late final _rlLoadShaderProgramEx = _rlLoadShaderProgramExPtr
       .asFunction<int Function(int, int)>();
+
+  int rlLoadShaderProgramCompute(int csId) {
+    return _rlLoadShaderProgramCompute(csId);
+  }
+
+  late final _rlLoadShaderProgramComputePtr = rl
+      .coreLookup<NativeFunction<UnsignedInt Function(UnsignedInt)>>(
+        'rlLoadShaderProgramCompute',
+      );
+  late final _rlLoadShaderProgramCompute = _rlLoadShaderProgramComputePtr
+      .asFunction<int Function(int)>();
+
+  void rlUnloadShader(int id) {
+    return _rlUnloadShader(id);
+  }
+
+  late final _rlUnloadShaderPtr = rl
+      .coreLookup<NativeFunction<Void Function(UnsignedInt)>>(
+        'rlUnloadShader',
+      );
+  late final _rlUnloadShader = _rlUnloadShaderPtr
+      .asFunction<void Function(int)>();
 
   void rlUnloadShaderProgram(int id) {
     return _rlUnloadShaderProgram(id);
@@ -1507,17 +1645,6 @@ class RaylibRlgl extends RaylibModule<Raylib> with RaylibRlglModuleExtras<Raylib
       );
   late final _rlSetShader = _rlSetShaderPtr
       .asFunction<void Function(int, Pointer<Int>)>();
-
-  int rlLoadComputeShaderProgram(int shaderId) {
-    return _rlLoadComputeShaderProgram(shaderId);
-  }
-
-  late final _rlLoadComputeShaderProgramPtr = rl
-      .coreLookup<NativeFunction<UnsignedInt Function(UnsignedInt)>>(
-        'rlLoadComputeShaderProgram',
-      );
-  late final _rlLoadComputeShaderProgram = _rlLoadComputeShaderProgramPtr
-      .asFunction<int Function(int)>();
 
   void rlComputeShaderDispatch(int groupX, int groupY, int groupZ) {
     return _rlComputeShaderDispatch(groupX, groupY, groupZ);

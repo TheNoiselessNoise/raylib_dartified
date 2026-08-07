@@ -2,40 +2,39 @@
 // https://github.com/raysan5/raygui/blob/master/examples/portable_window/portable_window.c
 // Run it: dart run portable_window.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 600;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final mousePosition = rl.Temp.Vector2$.At('mousePosition');
-  final windowPosition = rl.Temp.Vector2$.At('windowPosition').set(500, 200);
-  final panOffset = rl.Temp.Vector2$.At('panOffset');
+  final mousePosition = Vector2$.At('mousePosition');
+  final windowPosition = Vector2$.At('windowPosition').set(500, 200);
+  final panOffset = Vector2$.At('panOffset');
   bool dragWindow = false;
   bool exitWindow = false;
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_WINDOW_UNDECORATED.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "portable_window".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetWindowPosition(windowPosition.ref.x.toInt(), windowPosition.ref.y.toInt());
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_WINDOW_UNDECORATED.value);
+  InitWindow(screenWidth, screenHeight, "portable_window".toC);
+  SetWindowPosition(windowPosition.ref.x.toInt(), windowPosition.ref.y.toInt());
+  SetTargetFPS(60);
 
-  while (!exitWindow && !rl.Core.WindowShouldClose())
+  while (!exitWindow && !WindowShouldClose())
   {
-    mousePosition.setC(rl.Core.GetMousePosition());
+    mousePosition.setC(GetMousePosition());
 
     if (
-      rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value) &&
+      IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value) &&
       !dragWindow
     ) {
-      if (rl.Core.CheckCollisionPointRec(
+      if (CheckCollisionPointRec(
         mousePosition.ref,
-        rl.Temp.rect1(0, 0, screenWidth, 20),
+        Rectangle$.$1.set(0, 0, screenWidth, 20),
       )) {
-        windowPosition.setC(rl.Core.GetWindowPosition());
+        windowPosition.setC(GetWindowPosition());
         dragWindow = true;
         panOffset.ref = mousePosition.ref;
       }
@@ -45,36 +44,36 @@ void main()
       windowPosition.ref.x += (mousePosition.ref.x - panOffset.ref.x);
       windowPosition.ref.y += (mousePosition.ref.y - panOffset.ref.y);
 
-      rl.Core.SetWindowPosition(
+      SetWindowPosition(
         windowPosition.ref.x.toInt(),
         windowPosition.ref.y.toInt(),
       );
 
-      if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+      if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value)) {
         dragWindow = false;
       }
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      exitWindow = rl.Gui.GuiWindowBox(
-        rl.Temp.rect1(0, 0, screenWidth, screenHeight),
+      exitWindow = GuiWindowBox(
+        Rectangle$.$1.set(0, 0, screenWidth, screenHeight),
         "#198# PORTABLE WINDOW".toC,
       ).toBool();
 
-      rl.Core.DrawText(
+      DrawText(
         "Mouse Position: ${mousePosition.toD().format()}".toC,
-        10, 40, 10, rl.Color.DARKGRAY
+        10, 40, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Window Position: ${windowPosition.toD().format()}".toC,
-        10, 60, 10, rl.Color.DARKGRAY
+        10, 60, 10, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

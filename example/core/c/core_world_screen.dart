@@ -2,34 +2,33 @@
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_world_screen.c
 // Run it: dart run core_world_screen.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final cubePosition = rl.Temp.Vector3$.At('cubePosition');
-  final cubeScreenPosition = rl.Temp.Vector2$.At('cubeScreenPosition');
-  final worldPosition = rl.Temp.Vector3$.At('worldPosition');
+  final cubePosition = Vector3$.At('cubePosition');
+  final cubeScreenPosition = Vector2$.At('cubeScreenPosition');
+  final worldPosition = Vector3$.At('worldPosition');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_world_screen'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.DisableCursor();
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_world_screen".toC);
+  DisableCursor();
+  SetTargetFPS(60);
 
-  final enemyString = rl.Temp.String$.ValueAt('enemy', 'Enemy: 100/100');
+  final enemyString = String$.ValueAt('enemy', 'Enemy: 100/100');
 
-  while (!rl.Core.WindowShouldClose()) {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);
+  while (!WindowShouldClose()) {
+    UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);
 
     worldPosition.set(
       cubePosition.ref.x,
@@ -37,42 +36,42 @@ void main() {
       cubePosition.ref.z,
     );
 
-    cubeScreenPosition.ref = rl.Core.GetWorldToScreen(worldPosition.ref, camera.ref);
+    cubeScreenPosition.ref = GetWorldToScreen(worldPosition.ref, camera.ref);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-    rl.Core.ClearBackground(rl.Color.RAYWHITE);
+    ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawCube(cubePosition.ref, 2, 2, 2, rl.Color.RED);
-        rl.Core.DrawCubeWires(cubePosition.ref, 2, 2, 2, rl.Color.MAROON);
+      BeginMode3D(camera.ref);
+        DrawCube(cubePosition.ref, 2, 2, 2, RED);
+        DrawCubeWires(cubePosition.ref, 2, 2, 2, MAROON);
 
-        rl.Core.DrawGrid(10, 1);
-      rl.Core.EndMode3D();
+        DrawGrid(10, 1);
+      EndMode3D();
 
       int cubeX = cubeScreenPosition.ref.x.toInt();
       int cubeY = cubeScreenPosition.ref.y.toInt();
 
-      rl.Core.DrawText(
+      DrawText(
         enemyString,
-        cubeX - rl.Core.MeasureText(enemyString, 20) ~/ 2,
+        cubeX - MeasureText(enemyString, 20) ~/ 2,
         cubeY,
         20,
-        rl.Color.BLACK,
+        BLACK,
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Cube position in screen space coordinates: [$cubeX, $cubeY]".toC,
-        10, 10, 20, rl.Color.LIME,
+        10, 10, 20, LIME,
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Text 2d should be always on top of the cube".toC,
-        10, 40, 20, rl.Color.GRAY,
+        10, 40, 20, GRAY,
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

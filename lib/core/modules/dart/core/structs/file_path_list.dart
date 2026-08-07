@@ -19,9 +19,6 @@ class FilePathListD extends StructDView<FilePathListC, FilePathListD> with FileP
   List<String> _cachedPaths = [];
 
   @override
-  int get capacity => ref.capacity;
-  
-  @override
   int get count => ref.count;
   
   @override

@@ -3,7 +3,7 @@
 // Run it: dart run core_3d_camera_fps.dart
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 class Body {
   Vector3D position;
@@ -49,14 +49,13 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_3d_camera_fps'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
-  rl.Core.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "core_3d_camera_fps".toC);
+  SetTargetFPS(60);
+  DisableCursor();
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(
     player.position.x,
     player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -65,27 +64,27 @@ void main() {
   camera.ref.fovy = 60;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  UpdateCameraFPS(rl, camera);
+  UpdateCameraFPS(camera);
 
-  while (!rl.Core.WindowShouldClose()) {
-    final mouseDelta = rl.Core.GetMouseDelta();
+  while (!WindowShouldClose()) {
+    final mouseDelta = GetMouseDelta();
     lookRotation.x -= mouseDelta.x*sensitivity.x;
     lookRotation.y += mouseDelta.y*sensitivity.y;
 
     int sideway = (
-      rl.Core.IsKeyDown(KeyboardKey.KEY_D.value).toInt() -
-      rl.Core.IsKeyDown(KeyboardKey.KEY_A.value).toInt()
+      IsKeyDown(KeyboardKey.KEY_D.value).toInt() -
+      IsKeyDown(KeyboardKey.KEY_A.value).toInt()
     );
     int forward = (
-      rl.Core.IsKeyDown(KeyboardKey.KEY_W.value).toInt() -
-      rl.Core.IsKeyDown(KeyboardKey.KEY_S.value).toInt()
+      IsKeyDown(KeyboardKey.KEY_W.value).toInt() -
+      IsKeyDown(KeyboardKey.KEY_S.value).toInt()
     );
-    bool crouching = rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value);
-    bool jumping = rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value);
-    UpdateBody(rl, player, lookRotation.x, sideway, forward, jumping, crouching);
+    bool crouching = IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value);
+    bool jumping = IsKeyPressed(KeyboardKey.KEY_SPACE.value);
+    UpdateBody(player, lookRotation.x, sideway, forward, jumping, crouching);
 
-    double delta = rl.Core.GetFrameTime();
-    headLerp = rl.Lerp(headLerp, (crouching ? CROUCH_HEIGHT : STAND_HEIGHT), 20*delta);
+    double delta = GetFrameTime();
+    headLerp = Lerp(headLerp, (crouching ? CROUCH_HEIGHT : STAND_HEIGHT), 20*delta);
     camera.ref.position.set(
       player.position.x,
       player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -94,43 +93,43 @@ void main() {
 
     if (player.isGrounded && ((forward != 0) || (sideway != 0))) {
       headTimer += delta*3;
-      walkLerp = rl.Lerp(walkLerp, 1, 10*delta);
-      camera.ref.fovy = rl.Lerp(camera.ref.fovy, 55, 5*delta);
+      walkLerp = Lerp(walkLerp, 1, 10*delta);
+      camera.ref.fovy = Lerp(camera.ref.fovy, 55, 5*delta);
     } else {
-      walkLerp = rl.Lerp(walkLerp, 0, 10*delta);
-      camera.ref.fovy = rl.Lerp(camera.ref.fovy, 60, 5*delta);
+      walkLerp = Lerp(walkLerp, 0, 10*delta);
+      camera.ref.fovy = Lerp(camera.ref.fovy, 60, 5*delta);
     }
 
-    lean.x = rl.Lerp(lean.x, sideway*0.02, 10*delta);
-    lean.y = rl.Lerp(lean.y, forward*0.015, 10*delta);
+    lean.x = Lerp(lean.x, sideway*0.02, 10*delta);
+    lean.y = Lerp(lean.y, forward*0.015, 10*delta);
 
-    UpdateCameraFPS(rl, camera);
+    UpdateCameraFPS(camera);
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
-        DrawLevel(rl);
-      rl.Core.EndMode3D();
+      BeginMode3D(camera.ref);
+        DrawLevel();
+      EndMode3D();
 
-      rl.Core.DrawRectangle(5, 5, 330, 75, rl.Core.Fade(rl.Color.SKYBLUE, 0.5));
-      rl.Core.DrawRectangleLines(5, 5, 330, 75, rl.Color.BLUE);
+      DrawRectangle(5, 5, 330, 75, Fade(SKYBLUE, 0.5));
+      DrawRectangleLines(5, 5, 330, 75, BLUE);
 
-      rl.Core.DrawText("Camera controls:".toC, 15, 15, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl".toC, 15, 30, 10, rl.Color.BLACK);
-      rl.Core.DrawText("- Look around: arrow keys or mouse".toC, 15, 45, 10, rl.Color.BLACK);
+      DrawText("Camera controls:".toC, 15, 15, 10, BLACK);
+      DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl".toC, 15, 30, 10, BLACK);
+      DrawText("- Look around: arrow keys or mouse".toC, 15, 45, 10, BLACK);
 
       double velLen = Vector2D.vec2(player.velocity.x, player.velocity.z).length;
-      rl.Core.DrawText("- Velocity Len: (${velLen.f3})".toC, 15, 60, 10, rl.Color.BLACK);
+      DrawText("- Velocity Len: (${velLen.f3})".toC, 15, 60, 10, BLACK);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void UpdateCameraFPS(Raylib rl, Pointer<Camera3DC> camera)
+void UpdateCameraFPS(Pointer<Camera3DC> camera)
 {
   final Vector3D up = .vec3(0.0, 1.0, 0.0);
   final Vector3D targetOffset = .vec3(0.0, 0.0, -1.0);
@@ -149,11 +148,11 @@ void UpdateCameraFPS(Raylib rl, Pointer<Camera3DC> camera)
   Vector3D right = yaw.crossProduct(up).normalize();
 
   double pitchAngle = -lookRotation.y - lean.y;
-  pitchAngle = rl.Clamp(pitchAngle, -rl.PI/2 + 0.0001, rl.PI/2 - 0.0001);
+  pitchAngle = Clamp(pitchAngle, -PI/2 + 0.0001, PI/2 - 0.0001);
   Vector3D pitch = yaw.rotateByAxisAngle(right, pitchAngle);
 
-  double headSin = math.sin(headTimer*rl.PI);
-  double headCos = math.cos(headTimer*rl.PI);
+  double headSin = math.sin(headTimer*PI);
+  double headCos = math.cos(headTimer*PI);
   final double stepRotation = 0.01;
   camera.ref.up.setD(up.rotateByAxisAngle(pitch, headSin*stepRotation + lean.x));
 
@@ -173,7 +172,7 @@ void UpdateCameraFPS(Raylib rl, Pointer<Camera3DC> camera)
   );
 }
 
-void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)
+void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)
 {
   Vector2D input = .vec2(side, -forward);
 
@@ -181,7 +180,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
     if ((side != 0) && (forward != 0)) input = input.normalize();
   }
 
-  double delta = rl.Core.GetFrameTime();
+  double delta = GetFrameTime();
 
   if (!body.isGrounded) body.velocity.y -= GRAVITY*delta;
 
@@ -190,8 +189,8 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
     body.velocity.y = JUMP_FORCE;
     body.isGrounded = false;
 
-    //rl.Audio.SetSoundPitch(fxJump, 1.0 + (rl.Core.GetRandomValue(-100, 100)*0.001));
-    //rl.Audio.PlaySound(fxJump);
+    //SetSoundPitch(fxJump, 1.0 + (GetRandomValue(-100, 100)*0.001));
+    //PlaySound(fxJump);
   }
 
   final Vector3D front = .vec3(math.sin(rot), 0, math.cos(rot));
@@ -213,7 +212,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
   double speed = hvel.dotProduct(body.dir);
 
   double maxSpeed = (crouchHold? CROUCH_SPEED : MAX_SPEED);
-  double accel = rl.Clamp(maxSpeed - speed, 0, MAX_ACCEL*delta);
+  double accel = Clamp(maxSpeed - speed, 0, MAX_ACCEL*delta);
   hvel.x += body.dir.x*accel;
   hvel.z += body.dir.z*accel;
 
@@ -232,12 +231,12 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
   }
 }
 
-void DrawLevel(Raylib rl)
+void DrawLevel()
 {
   final int floorExtent = 25;
   final double tileSize = 5.0;
 
-  final towerColor = rl.Temp.color1(150, 200, 200, 255);
+  final towerColor = Color$.$1.set(150, 200, 200, 255);
 
   for (int y = -floorExtent; y < floorExtent; y++)
   {
@@ -245,42 +244,42 @@ void DrawLevel(Raylib rl)
     {
       if ((y & 1) != 0 && (x & 1) != 0)
       {
-        rl.Core.DrawPlane(
-          rl.Temp.vec31(x*tileSize, 0.0, y*tileSize),
-          rl.Temp.vec21(tileSize, tileSize),
+        DrawPlane(
+          Vector3$.$1.set(x*tileSize, 0.0, y*tileSize),
+          Vector2$.$1.set(tileSize, tileSize),
           towerColor
         );
       }
       else if ((y & 1) == 0 && (x & 1) == 0)
       {
-        rl.Core.DrawPlane(
-          rl.Temp.vec31(x*tileSize, 0.0, y*tileSize),
-          rl.Temp.vec21(tileSize, tileSize),
-          rl.Color.LIGHTGRAY
+        DrawPlane(
+          Vector3$.$1.set(x*tileSize, 0.0, y*tileSize),
+          Vector2$.$1.set(tileSize, tileSize),
+          LIGHTGRAY
         );
       }
     }
   }
 
-  final towerSize = rl.Temp.vec31(16.0, 32.0, 16.0);
-  final towerPos = rl.Temp.vec32(16.0, 16.0, 16.0);
+  final towerSize = Vector3$.$1.set(16.0, 32.0, 16.0);
+  final towerPos = Vector3$.$2.set(16.0, 16.0, 16.0);
 
-  rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
+  DrawCubeV(towerPos, towerSize, towerColor);
+  DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
   towerPos.x *= -1;
-  rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
+  DrawCubeV(towerPos, towerSize, towerColor);
+  DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
   towerPos.z *= -1;
-  rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
+  DrawCubeV(towerPos, towerSize, towerColor);
+  DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
   towerPos.x *= -1;
-  rl.Core.DrawCubeV(towerPos, towerSize, towerColor);
-  rl.Core.DrawCubeWiresV(towerPos, towerSize, rl.Color.DARKBLUE);
+  DrawCubeV(towerPos, towerSize, towerColor);
+  DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
   towerPos.set(300.0, 300.0, 0.0);
   towerColor.set(255, 0, 0, 255);
-  rl.Core.DrawSphere(towerPos, 100.0, towerColor);
+  DrawSphere(towerPos, 100.0, towerColor);
 }

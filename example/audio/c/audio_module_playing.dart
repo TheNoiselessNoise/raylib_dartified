@@ -4,7 +4,7 @@
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -23,20 +23,19 @@ final class CircleWave extends Struct {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "audio_module_playing".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
+  InitWindow(screenWidth, screenHeight, "audio_module_playing".toC);
+  SetTargetFPS(60);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
   final colors = <ColorC>[
-    rl.Color.ORANGE, rl.Color.RED, rl.Color.GOLD, rl.Color.LIME,
-    rl.Color.BLUE, rl.Color.VIOLET, rl.Color.BROWN, rl.Color.LIGHTGRAY,
-    rl.Color.PINK, rl.Color.YELLOW, rl.Color.GREEN, rl.Color.SKYBLUE,
-    rl.Color.PURPLE, rl.Color.BEIGE
+    ORANGE, RED, GOLD, LIME,
+    BLUE, VIOLET, BROWN, LIGHTGRAY,
+    PINK, YELLOW, GREEN, SKYBLUE,
+    PURPLE, BEIGE
   ];
 
   final circles = calloc<CircleWave>(MAX_CIRCLES);
@@ -44,47 +43,47 @@ void main()
   for (int i = MAX_CIRCLES - 1; i >= 0; i--)
   {
     circles[i].alpha = 0.0;
-    circles[i].radius = rl.Core.GetRandomValue(10, 40).toDouble();
-    circles[i].position.x = rl.Core.GetRandomValue(circles[i].radius.toInt(), (screenWidth - circles[i].radius).toInt()).toDouble();
-    circles[i].position.y = rl.Core.GetRandomValue(circles[i].radius.toInt(), (screenHeight - circles[i].radius).toInt()).toDouble();
-    circles[i].speed = rl.Core.GetRandomValue(1, 100)/2000.0;
-    circles[i].color = colors[rl.Core.GetRandomValue(0, 13)];
+    circles[i].radius = GetRandomValue(10, 40).toDouble();
+    circles[i].position.x = GetRandomValue(circles[i].radius.toInt(), (screenWidth - circles[i].radius).toInt()).toDouble();
+    circles[i].position.y = GetRandomValue(circles[i].radius.toInt(), (screenHeight - circles[i].radius).toInt()).toDouble();
+    circles[i].speed = GetRandomValue(1, 100)/2000.0;
+    circles[i].color = colors[GetRandomValue(0, 13)];
   }
 
-  final music = rl.Audio.LoadMusicStream("../resources/mini1111.xm".toC);
+  final music = LoadMusicStream("../resources/mini1111.xm".toC);
   music.looping = false;
   double pitch = 1.0;
 
-  rl.Audio.PlayMusicStream(music);
+  PlayMusicStream(music);
 
   double timePlayed = 0.0;
   bool pause = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Audio.UpdateMusicStream(music);
+    UpdateMusicStream(music);
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
-      rl.Audio.StopMusicStream(music);
-      rl.Audio.PlayMusicStream(music);
+      StopMusicStream(music);
+      PlayMusicStream(music);
       pause = false;
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_P.value))
+    if (IsKeyPressed(KeyboardKey.KEY_P.value))
     {
       pause = !pause;
 
-      if (pause) rl.Audio.PauseMusicStream(music);
-      else rl.Audio.ResumeMusicStream(music);
+      if (pause) PauseMusicStream(music);
+      else ResumeMusicStream(music);
     }
 
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_DOWN.value)) pitch -= 0.01;
-    else if (rl.Core.IsKeyDown(KeyboardKey.KEY_UP.value)) pitch += 0.01;
+    if (IsKeyDown(KeyboardKey.KEY_DOWN.value)) pitch -= 0.01;
+    else if (IsKeyDown(KeyboardKey.KEY_UP.value)) pitch += 0.01;
 
-    rl.Audio.SetMusicPitch(music, pitch);
+    SetMusicPitch(music, pitch);
 
-    timePlayed = rl.Audio.GetMusicTimePlayed(music)/rl.Audio.GetMusicTimeLength(music)*(screenWidth - 40);
+    timePlayed = GetMusicTimePlayed(music)/GetMusicTimeLength(music)*(screenWidth - 40);
 
     for (int i = MAX_CIRCLES - 1; (i >= 0) && !pause; i--)
     {
@@ -96,43 +95,43 @@ void main()
       if (circles[i].alpha <= 0.0)
       {
         circles[i].alpha = 0.0;
-        circles[i].radius = rl.Core.GetRandomValue(10, 40).toDouble();
-        circles[i].position.x = rl.Core.GetRandomValue(circles[i].radius.toInt(), (screenWidth - circles[i].radius).toInt()).toDouble();
-        circles[i].position.y = rl.Core.GetRandomValue(circles[i].radius.toInt(), (screenHeight - circles[i].radius).toInt()).toDouble();
-        circles[i].speed = rl.Core.GetRandomValue(1, 100)/2000.0;
-        circles[i].color = colors[rl.Core.GetRandomValue(0, 13)];
+        circles[i].radius = GetRandomValue(10, 40).toDouble();
+        circles[i].position.x = GetRandomValue(circles[i].radius.toInt(), (screenWidth - circles[i].radius).toInt()).toDouble();
+        circles[i].position.y = GetRandomValue(circles[i].radius.toInt(), (screenHeight - circles[i].radius).toInt()).toDouble();
+        circles[i].speed = GetRandomValue(1, 100)/2000.0;
+        circles[i].color = colors[GetRandomValue(0, 13)];
       }
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       for (int i = MAX_CIRCLES - 1; i >= 0; i--)
       {
-        rl.Core.DrawCircleV(
+        DrawCircleV(
           circles[i].position,
           circles[i].radius,
-          rl.Core.Fade(circles[i].color, circles[i].alpha)
+          Fade(circles[i].color, circles[i].alpha)
         );
       }
 
-      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.Color.LIGHTGRAY);
-      rl.Core.DrawRectangle(20, screenHeight - 20 - 12, timePlayed.toInt(), 12, rl.Color.MAROON);
-      rl.Core.DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, rl.Color.GRAY);
+      DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, LIGHTGRAY);
+      DrawRectangle(20, screenHeight - 20 - 12, timePlayed.toInt(), 12, MAROON);
+      DrawRectangleLines(20, screenHeight - 20 - 12, screenWidth - 40, 12, GRAY);
 
-      rl.Core.DrawRectangle(20, 20, 425, 145, rl.Color.WHITE);
-      rl.Core.DrawRectangleLines(20, 20, 425, 145, rl.Color.GRAY);
-      rl.Core.DrawText("PRESS SPACE TO RESTART MUSIC".toC, 40, 40, 20, rl.Color.BLACK);
-      rl.Core.DrawText("PRESS P TO PAUSE/RESUME".toC, 40, 70, 20, rl.Color.BLACK);
-      rl.Core.DrawText("PRESS UP/DOWN TO CHANGE SPEED".toC, 40, 100, 20, rl.Color.BLACK);
-      rl.Core.DrawText("SPEED: ${pitch.f2}".toC, 40, 130, 20, rl.Color.MAROON);
+      DrawRectangle(20, 20, 425, 145, WHITE);
+      DrawRectangleLines(20, 20, 425, 145, GRAY);
+      DrawText("PRESS SPACE TO RESTART MUSIC".toC, 40, 40, 20, BLACK);
+      DrawText("PRESS P TO PAUSE/RESUME".toC, 40, 70, 20, BLACK);
+      DrawText("PRESS UP/DOWN TO CHANGE SPEED".toC, 40, 100, 20, BLACK);
+      DrawText("SPEED: ${pitch.f2}".toC, 40, 130, 20, MAROON);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Audio.UnloadMusicStream(music);
-  rl.Audio.CloseAudioDevice();
+  UnloadMusicStream(music);
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

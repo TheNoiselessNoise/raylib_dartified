@@ -1230,6 +1230,110 @@ class RaylibCore extends RaylibModule<Raylib> {
       _SaveFileTextPtr.asFunction<
         bool Function(Pointer<Char>, Pointer<Char>)
       >();
+    
+  int FileRename(
+    Pointer<Char> fileName,
+    Pointer<Char> fileRename,
+  ) {
+    return _FileRename(fileName, fileRename);
+  }
+
+  late final _FileRenamePtr = rl
+      .coreLookup<
+        NativeFunction<
+          Int Function(Pointer<Char>, Pointer<Char>)
+        >
+      >('FileRename');
+  late final _FileRename =
+      _FileRenamePtr.asFunction<
+        int Function(Pointer<Char>, Pointer<Char>)
+      >();
+
+  int FileRemove(Pointer<Char> fileName) {
+    return _FileRemove(fileName);
+  }
+
+  late final _FileRemovePtr = rl
+      .coreLookup<NativeFunction<Int Function(Pointer<Char>)>>(
+        'FileRemove',
+      );
+  late final _FileRemove =
+      _FileRemovePtr.asFunction<int Function(Pointer<Char>)>();
+
+  int FileCopy(Pointer<Char> srcPath, Pointer<Char> dstPath) {
+    return _FileCopy(srcPath, dstPath);
+  }
+
+  late final _FileCopyPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Int Function(Pointer<Char>, Pointer<Char>)
+        >
+      >('FileCopy');
+  late final _FileCopy =
+      _FileCopyPtr.asFunction<
+        int Function(Pointer<Char>, Pointer<Char>)
+      >();
+
+  int FileMove(Pointer<Char> srcPath, Pointer<Char> dstPath) {
+    return _FileMove(srcPath, dstPath);
+  }
+
+  late final _FileMovePtr = rl
+      .coreLookup<
+        NativeFunction<
+          Int Function(Pointer<Char>, Pointer<Char>)
+        >
+      >('FileMove');
+  late final _FileMove =
+      _FileMovePtr.asFunction<
+        int Function(Pointer<Char>, Pointer<Char>)
+      >();
+
+  int FileTextReplace(
+    Pointer<Char> fileName,
+    Pointer<Char> search,
+    Pointer<Char> replacement,
+  ) {
+    return _FileTextReplace(fileName, search, replacement);
+  }
+
+  late final _FileTextReplacePtr = rl
+      .coreLookup<
+        NativeFunction<
+          Int Function(
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+          )
+        >
+      >('FileTextReplace');
+  late final _FileTextReplace =
+      _FileTextReplacePtr.asFunction<
+        int Function(
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+        )
+      >();
+
+  int FileTextFindIndex(
+    Pointer<Char> fileName,
+    Pointer<Char> search,
+  ) {
+    return _FileTextFindIndex(fileName, search);
+  }
+
+  late final _FileTextFindIndexPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Int Function(Pointer<Char>, Pointer<Char>)
+        >
+      >('FileTextFindIndex');
+  late final _FileTextFindIndex =
+      _FileTextFindIndexPtr.asFunction<
+        int Function(Pointer<Char>, Pointer<Char>)
+      >();
 
   bool FileExists(Pointer<Char> fileName) {
     return _FileExists(fileName);
@@ -1306,6 +1410,42 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _GetFileNameWithoutExt =
       _GetFileNameWithoutExtPtr.asFunction<
         Pointer<Char> Function(Pointer<Char>)
+      >();
+
+  int GetDirectoryFileCount(Pointer<Char> dirPath) {
+    return _GetDirectoryFileCount(dirPath);
+  }
+
+  late final _GetDirectoryFileCountPtr = rl
+      .coreLookup<
+        NativeFunction<UnsignedInt Function(Pointer<Char>)>
+      >('GetDirectoryFileCount');
+  late final _GetDirectoryFileCount =
+      _GetDirectoryFileCountPtr.asFunction<
+        int Function(Pointer<Char>)
+      >();
+
+  int GetDirectoryFileCountEx(
+    Pointer<Char> basePath,
+    Pointer<Char> filter,
+    bool scanSubdirs,
+  ) {
+    return _GetDirectoryFileCountEx(basePath, filter, scanSubdirs);
+  }
+
+  late final _GetDirectoryFileCountExPtr = rl
+      .coreLookup<
+        NativeFunction<
+          UnsignedInt Function(
+            Pointer<Char>,
+            Pointer<Char>,
+            Bool,
+          )
+        >
+      >('GetDirectoryFileCountEx');
+  late final _GetDirectoryFileCountEx =
+      _GetDirectoryFileCountExPtr.asFunction<
+        int Function(Pointer<Char>, Pointer<Char>, bool)
       >();
 
   Pointer<Char> GetDirectoryPath(Pointer<Char> filePath) {
@@ -1541,7 +1681,7 @@ class RaylibCore extends RaylibModule<Raylib> {
       >();
 
   Pointer<UnsignedChar> DecodeDataBase64(
-    Pointer<UnsignedChar> data,
+    Pointer<Char> data,
     Pointer<Int> outputSize,
   ) {
     return _DecodeDataBase64(data, outputSize);
@@ -1550,12 +1690,12 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _DecodeDataBase64Ptr = rl
       .coreLookup<
         NativeFunction<
-          Pointer<UnsignedChar> Function(Pointer<UnsignedChar>, Pointer<Int>)
+          Pointer<UnsignedChar> Function(Pointer<Char>, Pointer<Int>)
         >
       >('DecodeDataBase64');
   late final _DecodeDataBase64 =
       _DecodeDataBase64Ptr.asFunction<
-        Pointer<UnsignedChar> Function(Pointer<UnsignedChar>, Pointer<Int>)
+        Pointer<UnsignedChar> Function(Pointer<Char>, Pointer<Int>)
       >();
 
   int ComputeCRC32(Pointer<UnsignedChar> data, int dataSize) {
@@ -1597,6 +1737,30 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _ComputeSHA1 =
       _ComputeSHA1Ptr.asFunction<
         Pointer<UnsignedInt> Function(Pointer<UnsignedChar>, int)
+      >();
+
+  Pointer<UnsignedInt> ComputeSHA256(
+    Pointer<UnsignedChar> data,
+    int dataSize,
+  ) {
+    return _ComputeSHA256(data, dataSize);
+  }
+
+  late final _ComputeSHA256Ptr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<UnsignedInt> Function(
+            Pointer<UnsignedChar>,
+            Int,
+          )
+        >
+      >('ComputeSHA256');
+  late final _ComputeSHA256 =
+      _ComputeSHA256Ptr.asFunction<
+        Pointer<UnsignedInt> Function(
+          Pointer<UnsignedChar>,
+          int,
+        )
       >();
 
   AutomationEventListC LoadAutomationEventList(Pointer<Char> fileName) {
@@ -1741,6 +1905,17 @@ class RaylibCore extends RaylibModule<Raylib> {
     'IsKeyUp',
   );
   late final _IsKeyUp = _IsKeyUpPtr.asFunction<bool Function(int)>();
+
+  Pointer<Char> GetKeyName(int key) {
+    return _GetKeyName(key);
+  }
+
+  late final _GetKeyNamePtr = rl
+      .coreLookup<NativeFunction<Pointer<Char> Function(Int)>>(
+        'GetKeyName',
+      );
+  late final _GetKeyName =
+      _GetKeyNamePtr.asFunction<Pointer<Char> Function(int)>();
 
   int GetKeyPressed() {
     return _GetKeyPressed();
@@ -2136,6 +2311,25 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _GetGesturePinchAngle =
       _GetGesturePinchAnglePtr.asFunction<double Function()>();
 
+  void ProcessGestureEvent(GestureEventC event) {
+    return _ProcessGestureEvent(event);
+  }
+
+  late final _ProcessGestureEventPtr = rl
+      .coreLookup<NativeFunction<Void Function(GestureEventC)>>(
+        'ProcessGestureEvent',
+      );
+  late final _ProcessGestureEvent =
+      _ProcessGestureEventPtr.asFunction<void Function(GestureEventC)>();
+
+  void UpdateGestures() {
+    return _UpdateGestures();
+  }
+
+  late final _UpdateGesturesPtr = rl
+      .coreLookup<NativeFunction<Void Function()>>('UpdateGestures');
+  late final _UpdateGestures = _UpdateGesturesPtr.asFunction<void Function()>();
+
   void UpdateCamera(Pointer<Camera3DC> camera, int mode) {
     return _UpdateCamera(camera, mode);
   }
@@ -2295,6 +2489,27 @@ class RaylibCore extends RaylibModule<Raylib> {
         void Function(Vector2C, Vector2C, double, ColorC)
       >();
 
+  void DrawLineDashed(
+    Vector2C startPos,
+    Vector2C endPos,
+    int dashSize,
+    int spaceSize,
+    ColorC color,
+  ) {
+    return _DrawLineDashed(startPos, endPos, dashSize, spaceSize, color);
+  }
+
+  late final _DrawLineDashedPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Void Function(Vector2C, Vector2C, Int, Int, ColorC)
+        >
+      >('DrawLineDashed');
+  late final _DrawLineDashed =
+      _DrawLineDashedPtr.asFunction<
+        void Function(Vector2C, Vector2C, int, int, ColorC)
+      >();
+
   void DrawCircle(int centerX, int centerY, double radius, ColorC color) {
     return _DrawCircle(centerX, centerY, radius, color);
   }
@@ -2365,22 +2580,21 @@ class RaylibCore extends RaylibModule<Raylib> {
       >();
 
   void DrawCircleGradient(
-    int centerX,
-    int centerY,
+    Vector2C center,
     double radius,
     ColorC inner,
     ColorC outer,
   ) {
-    return _DrawCircleGradient(centerX, centerY, radius, inner, outer);
+    return _DrawCircleGradient(center, radius, inner, outer);
   }
 
   late final _DrawCircleGradientPtr = rl
-      .coreLookup<
-        NativeFunction<Void Function(Int, Int, Float, ColorC, ColorC)>
-      >('DrawCircleGradient');
+      .coreLookup<NativeFunction<Void Function(Vector2C, Float, ColorC, ColorC)>>(
+        'DrawCircleGradient'
+      );
   late final _DrawCircleGradient =
       _DrawCircleGradientPtr.asFunction<
-        void Function(int, int, double, ColorC, ColorC)
+        void Function(Vector2C, double, ColorC, ColorC)
       >();
 
   void DrawCircleV(Vector2C center, double radius, ColorC color) {
@@ -2437,6 +2651,26 @@ class RaylibCore extends RaylibModule<Raylib> {
         void Function(int, int, double, double, ColorC)
       >();
 
+  void DrawEllipseV(
+    Vector2C center,
+    double radiusH,
+    double radiusV,
+    ColorC color,
+  ) {
+    return _DrawEllipseV(center, radiusH, radiusV, color);
+  }
+
+  late final _DrawEllipseVPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Void Function(Vector2C, Float, Float, ColorC)
+        >
+      >('DrawEllipseV');
+  late final _DrawEllipseV =
+      _DrawEllipseVPtr.asFunction<
+        void Function(Vector2C, double, double, ColorC)
+      >();
+
   void DrawEllipseLines(
     int centerX,
     int centerY,
@@ -2454,6 +2688,26 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _DrawEllipseLines =
       _DrawEllipseLinesPtr.asFunction<
         void Function(int, int, double, double, ColorC)
+      >();
+
+  void DrawEllipseLinesV(
+    Vector2C center,
+    double radiusH,
+    double radiusV,
+    ColorC color,
+  ) {
+    return _DrawEllipseLinesV(center, radiusH, radiusV, color);
+  }
+
+  late final _DrawEllipseLinesVPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Void Function(Vector2C, Float, Float, ColorC)
+        >
+      >('DrawEllipseLinesV');
+  late final _DrawEllipseLinesV =
+      _DrawEllipseLinesVPtr.asFunction<
+        void Function(Vector2C, double, double, ColorC)
       >();
 
   void DrawRing(
@@ -5079,7 +5333,6 @@ class RaylibCore extends RaylibModule<Raylib> {
       .coreLookup<NativeFunction<Bool Function(FontC)>>('IsFontValid');
   late final _IsFontValid = _IsFontValidPtr.asFunction<bool Function(FontC)>();
 
-  // TODO: ON NEW RAYLIB RELEASE - add glyphCount, now it defaults to 95
   Pointer<GlyphInfoC> LoadFontData(
     Pointer<UnsignedChar> fileData,
     int dataSize,
@@ -5087,7 +5340,7 @@ class RaylibCore extends RaylibModule<Raylib> {
     Pointer<Int> codepoints,
     int codepointCount,
     int type,
-    // Pointer<Int> glyphCount,
+    Pointer<Int> glyphCount,
   ) {
     return _LoadFontData(
       fileData,
@@ -5096,7 +5349,7 @@ class RaylibCore extends RaylibModule<Raylib> {
       codepoints,
       codepointCount,
       type,
-      // glyphCount,
+      glyphCount,
     );
   }
 
@@ -5110,7 +5363,7 @@ class RaylibCore extends RaylibModule<Raylib> {
             Pointer<Int>,
             Int,
             Int,
-            // Pointer<Int>,
+            Pointer<Int>,
           )
         >
       >('LoadFontData');
@@ -5123,7 +5376,7 @@ class RaylibCore extends RaylibModule<Raylib> {
           Pointer<Int>,
           int,
           int,
-          // Pointer<Int>,
+          Pointer<Int>,
         )
       >();
 
@@ -5388,6 +5641,33 @@ class RaylibCore extends RaylibModule<Raylib> {
         Vector2C Function(FontC, Pointer<Char>, double, double)
       >();
 
+  Vector2C MeasureTextCodepoints(
+    FontC font,
+    Pointer<Int> codepoints,
+    int length,
+    double fontSize,
+    double spacing,
+  ) {
+    return _MeasureTextCodepoints(font, codepoints, length, fontSize, spacing);
+  }
+
+  late final _MeasureTextCodepointsPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Vector2C Function(
+            FontC,
+            Pointer<Int>,
+            Int,
+            Float,
+            Float,
+          )
+        >
+      >('MeasureTextCodepoints');
+  late final _MeasureTextCodepoints =
+      _MeasureTextCodepointsPtr.asFunction<
+        Vector2C Function(FontC, Pointer<Int>, int, double, double)
+      >();
+
   int GetGlyphIndex(FontC font, int codepoint) {
     return _GetGlyphIndex(font, codepoint);
   }
@@ -5524,6 +5804,45 @@ class RaylibCore extends RaylibModule<Raylib> {
         Pointer<Char> Function(int, Pointer<Int>)
       >();
 
+  Pointer<Pointer<Char>> LoadTextLines(
+    Pointer<Char> text,
+    Pointer<Int> count,
+  ) {
+    return _LoadTextLines(text, count);
+  }
+
+  late final _LoadTextLinesPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Pointer<Char>> Function(
+            Pointer<Char>,
+            Pointer<Int>,
+          )
+        >
+      >('LoadTextLines');
+  late final _LoadTextLines =
+      _LoadTextLinesPtr.asFunction<
+        Pointer<Pointer<Char>> Function(
+          Pointer<Char>,
+          Pointer<Int>,
+        )
+      >();
+
+  void UnloadTextLines(Pointer<Pointer<Char>> text, int lineCount) {
+    return _UnloadTextLines(text, lineCount);
+  }
+
+  late final _UnloadTextLinesPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Void Function(Pointer<Pointer<Char>>, Int)
+        >
+      >('UnloadTextLines');
+  late final _UnloadTextLines =
+      _UnloadTextLinesPtr.asFunction<
+        void Function(Pointer<Pointer<Char>>, int)
+      >();
+
   int TextCopy(Pointer<Char> dst, Pointer<Char> src) {
     return _TextCopy(dst, src);
   }
@@ -5581,6 +5900,48 @@ class RaylibCore extends RaylibModule<Raylib> {
         Pointer<Char> Function(Pointer<Char>, int, int)
       >();
 
+  Pointer<Char> TextRemoveSpaces(Pointer<Char> text) {
+    return _TextRemoveSpaces(text);
+  }
+
+  late final _TextRemoveSpacesPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(Pointer<Char>)
+        >
+      >('TextRemoveSpaces');
+  late final _TextRemoveSpaces =
+      _TextRemoveSpacesPtr.asFunction<
+        Pointer<Char> Function(Pointer<Char>)
+      >();
+
+  Pointer<Char> GetTextBetween(
+    Pointer<Char> text,
+    Pointer<Char> begin,
+    Pointer<Char> end,
+  ) {
+    return _GetTextBetween(text, begin, end);
+  }
+
+  late final _GetTextBetweenPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+          )
+        >
+      >('GetTextBetween');
+  late final _GetTextBetween =
+      _GetTextBetweenPtr.asFunction<
+        Pointer<Char> Function(
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+        )
+      >();
+
   Pointer<Char> TextReplace(
     Pointer<Char> text,
     Pointer<Char> replace,
@@ -5600,6 +5961,85 @@ class RaylibCore extends RaylibModule<Raylib> {
         Pointer<Char> Function(Pointer<Char>, Pointer<Char>, Pointer<Char>)
       >();
 
+  Pointer<Char> TextReplaceAlloc(
+    Pointer<Char> text,
+    Pointer<Char> replace,
+    Pointer<Char> by,
+  ) {
+    return _TextReplaceAlloc(text, replace, by);
+  }
+
+  late final _TextReplaceAllocPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(Pointer<Char>, Pointer<Char>, Pointer<Char>)
+        >
+      >('TextReplaceAlloc');
+  late final _TextReplaceAlloc =
+      _TextReplaceAllocPtr.asFunction<
+        Pointer<Char> Function(Pointer<Char>, Pointer<Char>, Pointer<Char>)
+      >();
+
+  Pointer<Char> TextReplaceBetween(
+    Pointer<Char> text,
+    Pointer<Char> begin,
+    Pointer<Char> end,
+    Pointer<Char> replacement,
+  ) {
+    return _TextReplaceBetween(text, begin, end, replacement);
+  }
+
+  late final _TextReplaceBetweenPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+          )
+        >
+      >('TextReplaceBetween');
+  late final _TextReplaceBetween =
+      _TextReplaceBetweenPtr.asFunction<
+        Pointer<Char> Function(
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+        )
+      >();
+
+  Pointer<Char> TextReplaceBetweenAlloc(
+    Pointer<Char> text,
+    Pointer<Char> begin,
+    Pointer<Char> end,
+    Pointer<Char> replacement,
+  ) {
+    return _TextReplaceBetweenAlloc(text, begin, end, replacement);
+  }
+
+  late final _TextReplaceBetweenAllocPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+            Pointer<Char>,
+          )
+        >
+      >('TextReplaceBetweenAlloc');
+  late final _TextReplaceBetweenAlloc =
+      _TextReplaceBetweenAllocPtr.asFunction<
+        Pointer<Char> Function(
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+          Pointer<Char>,
+        )
+      >();
+
   Pointer<Char> TextInsert(
     Pointer<Char> text,
     Pointer<Char> insert,
@@ -5616,6 +6056,25 @@ class RaylibCore extends RaylibModule<Raylib> {
       >('TextInsert');
   late final _TextInsert =
       _TextInsertPtr.asFunction<
+        Pointer<Char> Function(Pointer<Char>, Pointer<Char>, int)
+      >();
+
+  Pointer<Char> TextInsertAlloc(
+    Pointer<Char> text,
+    Pointer<Char> insert,
+    int position,
+  ) {
+    return _TextInsertAlloc(text, insert, position);
+  }
+
+  late final _TextInsertAllocPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Pointer<Char> Function(Pointer<Char>, Pointer<Char>, Int)
+        >
+      >('TextInsertAlloc');
+  late final _TextInsertAlloc =
+      _TextInsertAllocPtr.asFunction<
         Pointer<Char> Function(Pointer<Char>, Pointer<Char>, int)
       >();
 
@@ -6266,53 +6725,6 @@ class RaylibCore extends RaylibModule<Raylib> {
         void Function(ModelC, Vector3C, Vector3C, double, Vector3C, ColorC)
       >();
 
-  void DrawModelPoints(
-    ModelC model,
-    Vector3C position,
-    double scale,
-    ColorC tint,
-  ) {
-    return _DrawModelPoints(model, position, scale, tint);
-  }
-
-  late final _DrawModelPointsPtr = rl
-      .coreLookup<
-        NativeFunction<Void Function(ModelC, Vector3C, Float, ColorC)>
-      >('DrawModelPoints');
-  late final _DrawModelPoints =
-      _DrawModelPointsPtr.asFunction<
-        void Function(ModelC, Vector3C, double, ColorC)
-      >();
-
-  void DrawModelPointsEx(
-    ModelC model,
-    Vector3C position,
-    Vector3C rotationAxis,
-    double rotationAngle,
-    Vector3C scale,
-    ColorC tint,
-  ) {
-    return _DrawModelPointsEx(
-      model,
-      position,
-      rotationAxis,
-      rotationAngle,
-      scale,
-      tint,
-    );
-  }
-
-  late final _DrawModelPointsExPtr = rl
-      .coreLookup<
-        NativeFunction<
-          Void Function(ModelC, Vector3C, Vector3C, Float, Vector3C, ColorC)
-        >
-      >('DrawModelPointsEx');
-  late final _DrawModelPointsEx =
-      _DrawModelPointsExPtr.asFunction<
-        void Function(ModelC, Vector3C, Vector3C, double, Vector3C, ColorC)
-      >();
-
   void DrawBoundingBox(BoundingBoxC box, ColorC color) {
     return _DrawBoundingBox(box, color);
   }
@@ -6750,42 +7162,54 @@ class RaylibCore extends RaylibModule<Raylib> {
         Pointer<ModelAnimationC> Function(Pointer<Char>, Pointer<Int>)
       >();
 
-  void UpdateModelAnimation(ModelC model, ModelAnimationC anim, int frame) {
+  void UpdateModelAnimation(ModelC model, ModelAnimationC anim, double frame) {
     return _UpdateModelAnimation(model, anim, frame);
   }
 
   late final _UpdateModelAnimationPtr = rl
-      .coreLookup<NativeFunction<Void Function(ModelC, ModelAnimationC, Int)>>(
-        'UpdateModelAnimation',
-      );
+      .coreLookup<
+        NativeFunction<Void Function(ModelC, ModelAnimationC, Float)>
+      >('UpdateModelAnimation');
   late final _UpdateModelAnimation =
       _UpdateModelAnimationPtr.asFunction<
-        void Function(ModelC, ModelAnimationC, int)
+        void Function(ModelC, ModelAnimationC, double)
       >();
 
-  void UpdateModelAnimationBones(ModelC model, ModelAnimationC anim, int frame) {
-    return _UpdateModelAnimationBones(model, anim, frame);
+  void UpdateModelAnimationEx(
+    ModelC model,
+    ModelAnimationC animA,
+    double frameA,
+    ModelAnimationC animB,
+    double frameB,
+    double blend,
+  ) {
+    return _UpdateModelAnimationEx(model, animA, frameA, animB, frameB, blend);
   }
 
-  late final _UpdateModelAnimationBonesPtr = rl
-      .coreLookup<NativeFunction<Void Function(ModelC, ModelAnimationC, Int)>>(
-        'UpdateModelAnimationBones',
-      );
-  late final _UpdateModelAnimationBones =
-      _UpdateModelAnimationBonesPtr.asFunction<
-        void Function(ModelC, ModelAnimationC, int)
+  late final _UpdateModelAnimationExPtr = rl
+      .coreLookup<
+        NativeFunction<
+          Void Function(
+            ModelC,
+            ModelAnimationC,
+            Float,
+            ModelAnimationC,
+            Float,
+            Float,
+          )
+        >
+      >('UpdateModelAnimationEx');
+  late final _UpdateModelAnimationEx =
+      _UpdateModelAnimationExPtr.asFunction<
+        void Function(
+          ModelC,
+          ModelAnimationC,
+          double,
+          ModelAnimationC,
+          double,
+          double,
+        )
       >();
-
-  void UnloadModelAnimation(ModelAnimationC anim) {
-    return _UnloadModelAnimation(anim);
-  }
-
-  late final _UnloadModelAnimationPtr = rl
-      .coreLookup<NativeFunction<Void Function(ModelAnimationC)>>(
-        'UnloadModelAnimation',
-      );
-  late final _UnloadModelAnimation =
-      _UnloadModelAnimationPtr.asFunction<void Function(ModelAnimationC)>();
 
   void UnloadModelAnimations(
     Pointer<ModelAnimationC> animations,

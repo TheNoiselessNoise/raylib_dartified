@@ -4,7 +4,7 @@
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -25,120 +25,119 @@ Pointer<Vector2C> curveSelectedPoint = nullptr;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(
+  SetConfigFlags(
     ConfigFlags.FLAG_VSYNC_HINT.value |
     ConfigFlags.FLAG_MSAA_4X_HINT.value
   );
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_textured_curve".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_textured_curve".toC);
+  SetTargetFPS(60);
 
-  texRoad = rl.Core.LoadTexture("../resources/road.png".toC);
-  rl.Core.SetTextureFilter(texRoad, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
+  texRoad = LoadTexture("../resources/road.png".toC);
+  SetTextureFilter(texRoad, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  curveStartPosition = rl.Temp.Vector2$.At('curveStartPosition').set(80, 100);
-  curveStartPositionTangent = rl.Temp.Vector2$.At('curveStartPositionTangent').set(100, 300);
+  curveStartPosition = Vector2$.At('curveStartPosition').set(80, 100);
+  curveStartPositionTangent = Vector2$.At('curveStartPositionTangent').set(100, 300);
 
-  curveEndPosition = rl.Temp.Vector2$.At('curveEndPosition').set(700, 350);
-  curveEndPositionTangent = rl.Temp.Vector2$.At('curveEndPositionTangent').set(600, 100);
+  curveEndPosition = Vector2$.At('curveEndPosition').set(700, 350);
+  curveEndPositionTangent = Vector2$.At('curveEndPositionTangent').set(600, 100);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value)) showCurve = !showCurve;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_EQUAL.value)) curveWidth += 2;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_MINUS.value)) curveWidth -= 2;
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value)) showCurve = !showCurve;
+    if (IsKeyPressed(KeyboardKey.KEY_EQUAL.value)) curveWidth += 2;
+    if (IsKeyPressed(KeyboardKey.KEY_MINUS.value)) curveWidth -= 2;
     if (curveWidth < 2) curveWidth = 2;
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_LEFT.value)) curveSegments -= 2;
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) curveSegments += 2;
+    if (IsKeyPressed(KeyboardKey.KEY_LEFT.value)) curveSegments -= 2;
+    if (IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) curveSegments += 2;
 
     if (curveSegments < 2) curveSegments = 2;
 
-    if (!rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)) curveSelectedPoint = nullptr;
+    if (!IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)) curveSelectedPoint = nullptr;
 
     if (curveSelectedPoint.address != 0) {
-      curveSelectedPoint.setD(curveSelectedPoint.toD().add(rl.Core.GetMouseDelta().toD()));
+      curveSelectedPoint.setD(curveSelectedPoint.toD().add(GetMouseDelta().toD()));
     }
 
-    final mouse = rl.Core.GetMousePosition();
-    if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPosition.ref, 6))
+    final mouse = GetMousePosition();
+    if (CheckCollisionPointCircle(mouse, curveStartPosition.ref, 6))
       curveSelectedPoint = curveStartPosition;
-    else if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPositionTangent.ref, 6))
+    else if (CheckCollisionPointCircle(mouse, curveStartPositionTangent.ref, 6))
       curveSelectedPoint = curveStartPositionTangent;
-    else if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPosition.ref, 6))
+    else if (CheckCollisionPointCircle(mouse, curveEndPosition.ref, 6))
       curveSelectedPoint = curveEndPosition;
-    else if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPositionTangent.ref, 6))
+    else if (CheckCollisionPointCircle(mouse, curveEndPositionTangent.ref, 6))
       curveSelectedPoint = curveEndPositionTangent;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      DrawTexturedCurve(rl);
+      DrawTexturedCurve();
       
-      if (showCurve) rl.Core.DrawSplineSegmentBezierCubic(
+      if (showCurve) DrawSplineSegmentBezierCubic(
         curveStartPosition.ref,
         curveEndPosition.ref,
         curveStartPositionTangent.ref,
         curveEndPositionTangent.ref,
         2,
-        rl.Color.BLUE
+        BLUE
       );
 
-      rl.Core.DrawLineV(curveStartPosition.ref, curveStartPositionTangent.ref, rl.Color.SKYBLUE);
-      rl.Core.DrawLineV(curveStartPositionTangent.ref, curveEndPositionTangent.ref, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.4));
-      rl.Core.DrawLineV(curveEndPosition.ref, curveEndPositionTangent.ref, rl.Color.PURPLE);
+      DrawLineV(curveStartPosition.ref, curveStartPositionTangent.ref, SKYBLUE);
+      DrawLineV(curveStartPositionTangent.ref, curveEndPositionTangent.ref, Fade(LIGHTGRAY, 0.4));
+      DrawLineV(curveEndPosition.ref, curveEndPositionTangent.ref, PURPLE);
       
-      if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPosition.ref, 6))
-        rl.Core.DrawCircleV(curveStartPosition.ref, 7, rl.Color.YELLOW);
-      rl.Core.DrawCircleV(curveStartPosition.ref, 5, rl.Color.RED);
+      if (CheckCollisionPointCircle(mouse, curveStartPosition.ref, 6))
+        DrawCircleV(curveStartPosition.ref, 7, YELLOW);
+      DrawCircleV(curveStartPosition.ref, 5, RED);
 
-      if (rl.Core.CheckCollisionPointCircle(mouse, curveStartPositionTangent.ref, 6))
-        rl.Core.DrawCircleV(curveStartPositionTangent.ref, 7, rl.Color.YELLOW);
-      rl.Core.DrawCircleV(curveStartPositionTangent.ref, 5, rl.Color.MAROON);
+      if (CheckCollisionPointCircle(mouse, curveStartPositionTangent.ref, 6))
+        DrawCircleV(curveStartPositionTangent.ref, 7, YELLOW);
+      DrawCircleV(curveStartPositionTangent.ref, 5, MAROON);
 
-      if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPosition.ref, 6))
-        rl.Core.DrawCircleV(curveEndPosition.ref, 7, rl.Color.YELLOW);
-      rl.Core.DrawCircleV(curveEndPosition.ref, 5, rl.Color.GREEN);
+      if (CheckCollisionPointCircle(mouse, curveEndPosition.ref, 6))
+        DrawCircleV(curveEndPosition.ref, 7, YELLOW);
+      DrawCircleV(curveEndPosition.ref, 5, GREEN);
 
-      if (rl.Core.CheckCollisionPointCircle(mouse, curveEndPositionTangent.ref, 6))
-        rl.Core.DrawCircleV(curveEndPositionTangent.ref, 7, rl.Color.YELLOW);
-      rl.Core.DrawCircleV(curveEndPositionTangent.ref, 5, rl.Color.DARKGREEN);
+      if (CheckCollisionPointCircle(mouse, curveEndPositionTangent.ref, 6))
+        DrawCircleV(curveEndPositionTangent.ref, 7, YELLOW);
+      DrawCircleV(curveEndPositionTangent.ref, 5, DARKGREEN);
 
-      rl.Core.DrawText(
+      DrawText(
         "Drag points to move curve, press SPACE to show/hide base curve".toC,
-        10, 10, 10, rl.Color.DARKGRAY
+        10, 10, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Curve width: $curveWidth (Use + and - to adjust)".toC,
-        10, 30, 10, rl.Color.DARKGRAY
+        10, 30, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Curve segments: $curveSegments (Use LEFT and RIGHT to adjust)".toC,
-        10, 50, 10, rl.Color.DARKGRAY
+        10, 50, 10, DARKGRAY
       );
         
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texRoad);
+  UnloadTexture(texRoad);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void DrawTexturedCurve(Raylib rl)
+void DrawTexturedCurve()
 {
   final step = 1.0/curveSegments;
 
-  final previous = rl.Temp.Vector2$.At('previous').setC(curveStartPosition.ref);
-  final previousTangent = rl.Temp.Vector2$.At('previousTangent');
+  final previous = Vector2$.At('previous').setC(curveStartPosition.ref);
+  final previousTangent = Vector2$.At('previousTangent');
   double previousV = 0;
 
   bool tangentSet = false;
 
-  final current = rl.Temp.Vector2$.At('current');
+  final current = Vector2$.At('current');
   double t = 0.0;
 
   for (int i = 1; i <= curveSegments; i++)
@@ -153,12 +152,12 @@ void DrawTexturedCurve(Raylib rl)
     current.ref.y = a*curveStartPosition.ref.y + b*curveStartPositionTangent.ref.y + c*curveEndPositionTangent.ref.y + d*curveEndPosition.ref.y;
     current.ref.x = a*curveStartPosition.ref.x + b*curveStartPositionTangent.ref.x + c*curveEndPositionTangent.ref.x + d*curveEndPosition.ref.x;
 
-    final delta = rl.Temp.Vector2$.At('delta').set(
+    final delta = Vector2$.At('delta').set(
       current.ref.x - previous.ref.x,
       current.ref.y - previous.ref.y
     );
 
-    final normal = rl.Temp.Vector2$.At('normal').setD(
+    final normal = Vector2$.At('normal').setD(
       .vec2(-delta.ref.y, delta.ref.x).normalize()
     );
 
@@ -176,23 +175,23 @@ void DrawTexturedCurve(Raylib rl)
     final currentPosNormal = current.toD().add(normal.toD().scale(curveWidth));
     final currentNegNormal = current.toD().add(normal.toD().scale(-curveWidth));
 
-    rl.Rlgl.rlSetTexture(texRoad.id);
-    rl.Rlgl.rlBegin(RlDrawMode.RL_QUADS.value);
-      rl.Rlgl.rlColor4ub(255,255,255,255);
-      rl.Rlgl.rlNormal3f(0.0, 0.0, 1.0);
+    rlSetTexture(texRoad.id);
+    rlBegin(RlDrawMode.RL_QUADS.value);
+      rlColor4ub(255,255,255,255);
+      rlNormal3f(0.0, 0.0, 1.0);
 
-      rl.Rlgl.rlTexCoord2f(0, previousV);
-      rl.Rlgl.rlVertex2f(prevNegNormal.x, prevNegNormal.y);
+      rlTexCoord2f(0, previousV);
+      rlVertex2f(prevNegNormal.x, prevNegNormal.y);
 
-      rl.Rlgl.rlTexCoord2f(1, previousV);
-      rl.Rlgl.rlVertex2f(prevPosNormal.x, prevPosNormal.y);
+      rlTexCoord2f(1, previousV);
+      rlVertex2f(prevPosNormal.x, prevPosNormal.y);
 
-      rl.Rlgl.rlTexCoord2f(1, v);
-      rl.Rlgl.rlVertex2f(currentPosNormal.x, currentPosNormal.y);
+      rlTexCoord2f(1, v);
+      rlVertex2f(currentPosNormal.x, currentPosNormal.y);
 
-      rl.Rlgl.rlTexCoord2f(0, v);
-      rl.Rlgl.rlVertex2f(currentNegNormal.x, currentNegNormal.y);
-    rl.Rlgl.rlEnd();
+      rlTexCoord2f(0, v);
+      rlVertex2f(currentNegNormal.x, currentNegNormal.y);
+    rlEnd();
 
     previous.setC(current.ref);
     previousTangent.setC(normal.ref);

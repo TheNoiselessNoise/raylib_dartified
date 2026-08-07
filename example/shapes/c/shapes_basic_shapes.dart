@@ -2,68 +2,67 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_basic_shapes.c
 // Run it: dart run shapes_basic_shapes.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_basic_shapes".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_basic_shapes".toC);
+  SetTargetFPS(60);
 
   double rotation = 0.0;
 
-  final v1 = rl.Temp.Vector2$.At('v1');
-  final v2 = rl.Temp.Vector2$.At('v2');
-  final v3 = rl.Temp.Vector2$.At('v3');
+  final v1 = Vector2$.At('v1');
+  final v2 = Vector2$.At('v2');
+  final v3 = Vector2$.At('v3');
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     rotation += 0.2;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "some basic shapes available on raylib".toC,
-        20, 20, 20, rl.Color.DARKGRAY
+        20, 20, 20, DARKGRAY
       );
 
-      rl.Core.DrawCircle((screenWidth/5).toInt(), 120, 35, rl.Color.DARKBLUE);
-      rl.Core.DrawCircleGradient((screenWidth/5).toInt(), 220, 60, rl.Color.GREEN, rl.Color.SKYBLUE);
-      rl.Core.DrawCircleLines((screenWidth/5).toInt(), 340, 80, rl.Color.DARKBLUE);
+      DrawCircle((screenWidth/5).toInt(), 120, 35, DARKBLUE);
+      DrawCircleGradient(v1.set(screenWidth/5, 220).ref, 60, GREEN, SKYBLUE);
+      DrawCircleLines((screenWidth/5).toInt(), 340, 80, DARKBLUE);
 
-      rl.Core.DrawRectangle((screenWidth/4 * 2 - 60).toInt(), 100, 120, 60, rl.Color.RED);
-      rl.Core.DrawRectangleGradientH((screenWidth/4 * 2 - 90).toInt(), 170, 180, 130, rl.Color.MAROON, rl.Color.GOLD);
-      rl.Core.DrawRectangleLines((screenWidth/4 * 2 - 40).toInt(), 320, 80, 60, rl.Color.ORANGE);
+      DrawRectangle((screenWidth/4 * 2 - 60).toInt(), 100, 120, 60, RED);
+      DrawRectangleGradientH((screenWidth/4 * 2 - 90).toInt(), 170, 180, 130, MAROON, GOLD);
+      DrawRectangleLines((screenWidth/4 * 2 - 40).toInt(), 320, 80, 60, ORANGE);
 
-      rl.Core.DrawTriangle(
+      DrawTriangle(
         v1.set(screenWidth/4.0 * 3.0, 80.0).ref,
         v2.set(screenWidth/4.0 * 3.0 - 60.0, 150.0).ref,
         v3.set(screenWidth/4.0 * 3.0 + 60.0, 150.0).ref,
-        rl.Color.VIOLET
+        VIOLET
       );
 
-      rl.Core.DrawTriangleLines(
+      DrawTriangleLines(
         v1.set(screenWidth/4.0 * 3.0, 160.0).ref,
         v2.set(screenWidth/4.0 * 3.0 - 20.0, 230.0).ref,
         v3.set(screenWidth/4.0 * 3.0 + 20.0, 230.0).ref,
-        rl.Color.DARKBLUE
+        DARKBLUE
       );
 
-      rl.Core.DrawPoly(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 80, rotation, rl.Color.BROWN);
-      rl.Core.DrawPolyLines(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 90, rotation, rl.Color.BROWN);
-      rl.Core.DrawPolyLinesEx(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 85, rotation, 6, rl.Color.BEIGE);
+      DrawPoly(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 80, rotation, BROWN);
+      DrawPolyLines(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 90, rotation, BROWN);
+      DrawPolyLinesEx(v1.set(screenWidth/4.0 * 3, 330).ref, 6, 85, rotation, 6, BEIGE);
 
-      rl.Core.DrawLine(18, 42, screenWidth - 18, 42, rl.Color.BLACK);
+      DrawLine(18, 42, screenWidth - 18, 42, BLACK);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_top_down_lights.c
 // Run it: dart run shapes_top_down_lights.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -51,118 +51,117 @@ late List<LightInfo> lights;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shapes_top_down_lights".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_top_down_lights".toC);
+  SetTargetFPS(60);
 
   lights = .generate(MAX_LIGHTS, (i) => .new(
-    position: rl.Temp.Vector2$.At('light_position_$i'),
-    mask: rl.Temp.RenderTexture$.At('light_mask_$i'),
-    bounds: rl.Temp.Rectangle$.At('light_bounds_$i'),
+    position: Vector2$.At('light_position_$i'),
+    mask: RenderTexture$.At('light_mask_$i'),
+    bounds: Rectangle$.At('light_bounds_$i'),
     shadows: .generate(MAX_SHADOWS, (j) => .new(
-      vertices: rl.Temp.Vector2$.At('light_shadows_${i}_vertices_$j', 4)
+      vertices: Vector2$.At('light_shadows_${i}_vertices_$j', 4)
     ))
   ));
 
-  final boxes = rl.Temp.Rectangle$.FillInto(key: 'boxes', MAX_BOXES, (i, r) => switch (i) {
+  final boxes = Rectangle$.FillInto(key: 'boxes', MAX_BOXES, (i, r) => switch (i) {
     0 => r.set(150, 80, 40, 40),
     1 => r.set(1200, 700, 40, 40),
     2 => r.set(200, 600, 40, 40),
     3 => r.set(1000, 50, 40, 40),
     4 => r.set(500, 350, 40, 40),
     _ => r.set(
-      rl.Core.GetRandomValue(0, rl.Core.GetScreenWidth()),
-      rl.Core.GetRandomValue(0, rl.Core.GetScreenHeight()),
-      rl.Core.GetRandomValue(10, 100),
-      rl.Core.GetRandomValue(10, 100)
+      GetRandomValue(0, GetScreenWidth()),
+      GetRandomValue(0, GetScreenHeight()),
+      GetRandomValue(10, 100),
+      GetRandomValue(10, 100)
     ),
   });
 
-  final img = rl.Core.GenImageChecked(64, 64, 32, 32, rl.Color.DARKBROWN, rl.Color.DARKGRAY);
-  final backgroundTexture = rl.Core.LoadTextureFromImage(img);
-  rl.Core.UnloadImage(img);
+  final img = GenImageChecked(64, 64, 32, 32, DARKBROWN, DARKGRAY);
+  final backgroundTexture = LoadTextureFromImage(img);
+  UnloadImage(img);
 
-  final lightMask = rl.Core.LoadRenderTexture(rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight());
+  final lightMask = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-  SetupLight(rl, 0, 600, 400, 300);
+  SetupLight(0, 600, 400, 300);
   int nextLight = 1;
 
   bool showLines = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    final mousePos = rl.Core.GetMousePosition();
-    final w = rl.Core.GetScreenWidth(), h = rl.Core.GetScreenHeight();
+    final mousePos = GetMousePosition();
+    final w = GetScreenWidth(), h = GetScreenHeight();
 
-    if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
+    if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
       MoveLight(0, mousePos.x, mousePos.y);
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value) && (nextLight < MAX_LIGHTS))
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value) && (nextLight < MAX_LIGHTS))
     {
-      SetupLight(rl, nextLight, mousePos.x, mousePos.y, 200);
+      SetupLight(nextLight, mousePos.x, mousePos.y, 200);
       nextLight++;
     }
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_F1.value)) showLines = !showLines;
+    if (IsKeyPressed(KeyboardKey.KEY_F1.value)) showLines = !showLines;
 
     bool dirtyLights = false;
     for (int i = 0; i < MAX_LIGHTS; i++)
     {
-      if (UpdateLight(rl, i, boxes)) dirtyLights = true;
+      if (UpdateLight(i, boxes)) dirtyLights = true;
     }
 
     if (dirtyLights)
     {
-      rl.Core.BeginTextureMode(lightMask);
+      BeginTextureMode(lightMask);
 
-        rl.Core.ClearBackground(rl.Color.BLACK);
+        ClearBackground(BLACK);
 
-        rl.Rlgl.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
-        rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
+        rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
+        rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
-          if (lights[i].active) rl.Core.DrawTextureRec(
+          if (lights[i].active) DrawTextureRec(
             lights[i].mask.ref.texture,
-            rl.Temp.rect1(0, 0, w, -h),
-            rl.Temp.vec21(0, 0),
-            rl.Color.WHITE,
+            Rectangle$.$1.set(0, 0, w, -h),
+            Vector2$.$1.set(0, 0),
+            WHITE,
           );
         }
 
-        rl.Rlgl.rlDrawRenderBatchActive();
+        rlDrawRenderBatchActive();
 
-        rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
+        rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
 
-      rl.Core.EndTextureMode();
+      EndTextureMode();
     }
       
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.BLACK);
+      ClearBackground(BLACK);
 
-      rl.Core.DrawTextureRec(
+      DrawTextureRec(
         backgroundTexture,
-        rl.Temp.rect1(0, 0, w, h),
-        rl.Temp.vec21(0, 0),
-        rl.Color.WHITE,
+        Rectangle$.$1.set(0, 0, w, h),
+        Vector2$.$1.set(0, 0),
+        WHITE,
       );
       
-      rl.Core.DrawTextureRec(
+      DrawTextureRec(
         lightMask.texture,
-        rl.Temp.rect1(0, 0, w, -h),
-        rl.Temp.vec21(0, 0),
-        rl.Core.ColorAlpha(rl.Color.WHITE, showLines ? 0.75 : 1.0),
+        Rectangle$.$1.set(0, 0, w, -h),
+        Vector2$.$1.set(0, 0),
+        ColorAlpha(WHITE, showLines ? 0.75 : 1.0),
       );
 
       for (int i = 0; i < MAX_LIGHTS; i++)
       {
-        if (lights[i].active) rl.Core.DrawCircle(
+        if (lights[i].active) DrawCircle(
           lights[i].position.ref.x.toInt(),
           lights[i].position.ref.y.toInt(),
-          10, (i == 0) ? rl.Color.YELLOW : rl.Color.WHITE,
+          10, (i == 0) ? YELLOW : WHITE,
         );
       }
 
@@ -170,49 +169,49 @@ void main()
       {
         for (int s = 0; s < lights[0].shadowCount; s++)
         {
-          rl.Core.DrawTriangleFan(lights[0].shadows[s].vertices, 4, rl.Color.DARKPURPLE);
+          DrawTriangleFan(lights[0].shadows[s].vertices, 4, DARKPURPLE);
         }
 
         for (int b = 0; b < MAX_BOXES; b++)
         {
-          if (rl.Core.CheckCollisionRecs(boxes[b], lights[0].bounds.ref))
-            rl.Core.DrawRectangleRec(boxes[b], rl.Color.PURPLE);
+          if (CheckCollisionRecs(boxes[b], lights[0].bounds.ref))
+            DrawRectangleRec(boxes[b], PURPLE);
 
-          rl.Core.DrawRectangleLines(
+          DrawRectangleLines(
             boxes[b].x.toInt(), boxes[b].y.toInt(),
             boxes[b].width.toInt(), boxes[b].height.toInt(),
-            rl.Color.DARKBLUE
+            DARKBLUE
           );
         }
 
-        rl.Core.DrawText(
+        DrawText(
           "(F1) Hide Shadow Volumes".toC,
-          10, 50, 10, rl.Color.GREEN
+          10, 50, 10, GREEN
         );
       }
       else
       {
-        rl.Core.DrawText(
+        DrawText(
           "(F1) Show Shadow Volumes".toC,
-          10, 50, 10, rl.Color.GREEN
+          10, 50, 10, GREEN
         );
       }
 
-      rl.Core.DrawFPS(screenWidth - 80, 10);
-      rl.Core.DrawText("Drag to move light #1".toC, 10, 10, 10, rl.Color.DARKGREEN);
-      rl.Core.DrawText("Right click to add new light".toC, 10, 30, 10, rl.Color.DARKGREEN);
+      DrawFPS(screenWidth - 80, 10);
+      DrawText("Drag to move light #1".toC, 10, 10, 10, DARKGREEN);
+      DrawText("Right click to add new light".toC, 10, 30, 10, DARKGREEN);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(backgroundTexture);
-  rl.Core.UnloadRenderTexture(lightMask);
+  UnloadTexture(backgroundTexture);
+  UnloadRenderTexture(lightMask);
   for (int i = 0; i < MAX_LIGHTS; i++)
   {
-    if (lights[i].active) rl.Core.UnloadRenderTexture(lights[i].mask.ref);
+    if (lights[i].active) UnloadRenderTexture(lights[i].mask.ref);
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
 void MoveLight(int slot, double x, double y)
@@ -245,45 +244,45 @@ void ComputeShadowVolumeForEdge(int slot, Vector2C sp, Vector2C ep)
   lights[slot].shadowCount++;
 }
 
-void DrawLightMask(Raylib rl, int slot)
+void DrawLightMask(int slot)
 {
-  rl.Core.BeginTextureMode(lights[slot].mask.ref);
+  BeginTextureMode(lights[slot].mask.ref);
 
-    rl.Core.ClearBackground(rl.Color.WHITE);
+    ClearBackground(WHITE);
 
-    rl.Rlgl.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
-    rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
+    rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MIN);
+    rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
 
-    if (lights[slot].valid) rl.Core.DrawCircleGradient(
-      lights[slot].position.ref.x.toInt(), lights[slot].position.ref.y.toInt(),
+    if (lights[slot].valid) DrawCircleGradient(
+      Vector2$.$1.set(lights[slot].position.ref.x, lights[slot].position.ref.y),
       lights[slot].outerRadius,
-      rl.Core.ColorAlpha(rl.Color.WHITE, 0),
-      rl.Color.WHITE
+      ColorAlpha(WHITE, 0),
+      WHITE
     );
     
-    rl.Rlgl.rlDrawRenderBatchActive();
+    rlDrawRenderBatchActive();
 
-    rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
-    rl.Rlgl.rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MAX);
-    rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
+    rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
+    rlSetBlendFactors(RLGL_SRC_ALPHA, RLGL_SRC_ALPHA, RLGL_MAX);
+    rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
 
     for (int i = 0; i < lights[slot].shadowCount; i++)
     {
-      rl.Core.DrawTriangleFan(lights[slot].shadows[i].vertices, 4, rl.Color.WHITE);
+      DrawTriangleFan(lights[slot].shadows[i].vertices, 4, WHITE);
     }
 
-    rl.Rlgl.rlDrawRenderBatchActive();
+    rlDrawRenderBatchActive();
     
-    rl.Rlgl.rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
+    rlSetBlendMode(BlendMode.BLEND_ALPHA.value);
 
-  rl.Core.EndTextureMode();
+  EndTextureMode();
 }
 
-void SetupLight(Raylib rl, int slot, double x, double y, double radius)
+void SetupLight(int slot, double x, double y, double radius)
 {
   lights[slot].active = true;
   lights[slot].valid = false;
-  lights[slot].mask.ref = rl.Core.LoadRenderTexture(rl.Core.GetScreenWidth(), rl.Core.GetScreenHeight());
+  lights[slot].mask.ref = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
   lights[slot].outerRadius = radius;
 
   lights[slot].bounds.ref.width = radius * 2;
@@ -291,10 +290,10 @@ void SetupLight(Raylib rl, int slot, double x, double y, double radius)
 
   MoveLight(slot, x, y);
 
-  DrawLightMask(rl, slot);
+  DrawLightMask(slot);
 }
 
-bool UpdateLight(Raylib rl, int slot, Pointer<RectangleC> boxes)
+bool UpdateLight(int slot, Pointer<RectangleC> boxes)
 {
   if (!lights[slot].active || !lights[slot].dirty) return false;
 
@@ -304,12 +303,12 @@ bool UpdateLight(Raylib rl, int slot, Pointer<RectangleC> boxes)
 
   for (int i = 0; i < MAX_BOXES; i++)
   {
-    if (rl.Core.CheckCollisionPointRec(lights[slot].position.ref, boxes[i])) return false;
+    if (CheckCollisionPointRec(lights[slot].position.ref, boxes[i])) return false;
 
-    if (!rl.Core.CheckCollisionRecs(lights[slot].bounds.ref, boxes[i])) continue;
+    if (!CheckCollisionRecs(lights[slot].bounds.ref, boxes[i])) continue;
 
-    final sp = rl.Temp.vec21(boxes[i].x, boxes[i].y);
-    final ep = rl.Temp.vec22(boxes[i].x + boxes[i].width, boxes[i].y);
+    final sp = Vector2$.$1.set(boxes[i].x, boxes[i].y);
+    final ep = Vector2$.$2.set(boxes[i].x + boxes[i].width, boxes[i].y);
 
     if (lights[slot].position.ref.y > ep.y) ComputeShadowVolumeForEdge(slot, sp, ep);
 
@@ -334,7 +333,7 @@ bool UpdateLight(Raylib rl, int slot, Pointer<RectangleC> boxes)
 
   lights[slot].valid = true;
 
-  DrawLightMask(rl, slot);
+  DrawLightMask(slot);
 
   return true;
 }

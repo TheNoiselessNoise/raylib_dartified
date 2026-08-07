@@ -2,48 +2,47 @@
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_picking.c
 // Run it: dart run core_3d_picking.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_3d_picking'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_3d_picking".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final cubePosition = rl.Temp.Vector3$.At('cubePosition').set(0, 1, 0);
-  final cubeSize = rl.Temp.Vector3$.At('cubeSize').set(2, 2, 2);
+  final cubePosition = Vector3$.At('cubePosition').set(0, 1, 0);
+  final cubeSize = Vector3$.At('cubeSize').set(2, 2, 2);
 
-  final ray = rl.Temp.Ray$.At('ray');
-  final collision = rl.Temp.RayCollision$.At('rayCollision');
+  final ray = Ray$.At('ray');
+  final collision = RayCollision$.At('rayCollision');
 
-  while (!rl.Core.WindowShouldClose()) {
-    if (rl.Core.IsCursorHidden())
-      rl.Core.UpdateCamera(camera, CameraMode.CAMERA_FIRST_PERSON.value);
+  while (!WindowShouldClose()) {
+    if (IsCursorHidden())
+      UpdateCamera(camera, CameraMode.CAMERA_FIRST_PERSON.value);
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value))
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value))
     {
-      if (rl.Core.IsCursorHidden()) rl.Core.EnableCursor();
-      else rl.Core.DisableCursor();
+      if (IsCursorHidden()) EnableCursor();
+      else DisableCursor();
     }
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value))
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value))
     {
       if (!collision.ref.hit)
       {
-        ray.ref = rl.Core.GetScreenToWorldRay(rl.Core.GetMousePosition(), camera.ref);
+        ray.ref = GetScreenToWorldRay(GetMousePosition(), camera.ref);
 
-        final bbox = rl.Temp.BoundingBox$.At('collision');
+        final bbox = BoundingBox$.At('collision');
         
         bbox.ref.min.set(
           cubePosition.ref.x - cubeSize.ref.x/2,
@@ -58,77 +57,77 @@ void main() {
         );
 
         // Check collision between ray and box
-        collision.ref = rl.Core.GetRayCollisionBox(ray.ref, bbox.ref);
+        collision.ref = GetRayCollisionBox(ray.ref, bbox.ref);
       }
       else collision.ref.hit = false;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
         if (collision.ref.hit)
         {
-          rl.Core.DrawCube(
+          DrawCube(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.RED
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, RED
           );
           
-          rl.Core.DrawCubeWires(
+          DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.MAROON
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, MAROON
           );
 
-          rl.Core.DrawCubeWires(
+          DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x + 0.2, cubeSize.ref.y + 0.2, cubeSize.ref.z + 0.2, rl.Color.GREEN
+            cubeSize.ref.x + 0.2, cubeSize.ref.y + 0.2, cubeSize.ref.z + 0.2, GREEN
           );
         }
         else
         {
-          rl.Core.DrawCube(
+          DrawCube(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.GRAY
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, GRAY
           );
           
-          rl.Core.DrawCubeWires(
+          DrawCubeWires(
             cubePosition.ref,
-            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, rl.Color.DARKGRAY
+            cubeSize.ref.x, cubeSize.ref.y, cubeSize.ref.z, DARKGRAY
           );
         }
 
-        rl.Core.DrawRay(ray.ref, rl.Color.MAROON);
-        rl.Core.DrawGrid(10, 1.0);
+        DrawRay(ray.ref, MAROON);
+        DrawGrid(10, 1.0);
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Try clicking on the box with your mouse!".toC,
-        240, 10, 20, rl.Color.DARKGRAY
+        240, 10, 20, DARKGRAY
       );
 
       if (collision.ref.hit) {
         final boxSelected = "BOX SELECTED".toC;
-        rl.Core.DrawText(
+        DrawText(
           boxSelected,
-          (screenWidth - rl.Core.MeasureText(boxSelected, 30))~/2,
+          (screenWidth - MeasureText(boxSelected, 30))~/2,
           (screenHeight*0.1).toInt(),
           30,
-          rl.Color.GREEN
+          GREEN
         );
       }
 
-      rl.Core.DrawText(
+      DrawText(
         "Right click mouse to toggle camera controls".toC,
-        10, 430, 10, rl.Color.GRAY
+        10, 430, 10, GRAY
       );
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

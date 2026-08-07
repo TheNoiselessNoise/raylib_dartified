@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_fog_of_war.c
 // Run it: dart run textures_fog_of_war.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int MAP_TILE_SIZE = 32;
 const int PLAYER_SIZE = 16;
@@ -26,11 +26,10 @@ class ExampleMap {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_fog_of_war".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_fog_of_war".toC);
+  SetTargetFPS(60);
 
   final map = ExampleMap();
   map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
@@ -38,22 +37,22 @@ void main()
   map.tileIds = .filled(map.tilesX*map.tilesY, 0);
   map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
-  final textureSrc = rl.Temp.Rectangle$.At('textureSrc');
-  final textureDst = rl.Temp.Rectangle$.At('textureDst');
+  final textureSrc = Rectangle$.At('textureSrc');
+  final textureDst = Rectangle$.At('textureDst');
 
-  final playerPosition = rl.Temp.Vector2$.At('playerPosition');
+  final playerPosition = Vector2$.At('playerPosition');
   int playerTileX = 0;
   int playerTileY = 0;
 
-  final fogOfWar = rl.Core.LoadRenderTexture(map.tilesX, map.tilesY);
-  rl.Core.SetTextureFilter(fogOfWar.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
+  final fogOfWar = LoadRenderTexture(map.tilesX, map.tilesY);
+  SetTextureFilter(fogOfWar.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_RIGHT.value)) playerPosition.ref.x += 5;
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_LEFT.value)) playerPosition.ref.x -= 5;
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_DOWN.value)) playerPosition.ref.y += 5;
-    if (rl.Core.IsKeyDown(KeyboardKey.KEY_UP.value)) playerPosition.ref.y -= 5;
+    if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) playerPosition.ref.x += 5;
+    if (IsKeyDown(KeyboardKey.KEY_LEFT.value)) playerPosition.ref.x -= 5;
+    if (IsKeyDown(KeyboardKey.KEY_DOWN.value)) playerPosition.ref.y += 5;
+    if (IsKeyDown(KeyboardKey.KEY_UP.value)) playerPosition.ref.y -= 5;
 
     if (playerPosition.ref.x < 0) {
       playerPosition.ref.x = 0;
@@ -89,43 +88,43 @@ void main()
       }
     }
 
-    rl.Core.BeginTextureMode(fogOfWar);
-      rl.Core.ClearBackground(rl.Color.BLANK);
+    BeginTextureMode(fogOfWar);
+      ClearBackground(BLANK);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
           if (map.tileFog[y*map.tilesX+x] == 0) {
-            rl.Core.DrawRectangle(x, y, 1, 1, rl.Color.BLACK);
+            DrawRectangle(x, y, 1, 1, BLACK);
           } else if (map.tileFog[y*map.tilesX+x] == 2) {
-            rl.Core.DrawRectangle(x, y, 1, 1, rl.Core.Fade(rl.Color.BLACK, 0.8));
+            DrawRectangle(x, y, 1, 1, Fade(BLACK, 0.8));
           }
         }
       }
-    rl.Core.EndTextureMode();
+    EndTextureMode();
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       for (int y = 0; y < map.tilesY; y++) {
         for (int x = 0; x < map.tilesX; x++) {
-          rl.Core.DrawRectangle(
+          DrawRectangle(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            map.tileIds[y*map.tilesX+x] == 0 ? rl.Color.BLUE : rl.Core.Fade(rl.Color.BLUE, 0.9),
+            map.tileIds[y*map.tilesX+x] == 0 ? BLUE : Fade(BLUE, 0.9),
           );
-          rl.Core.DrawRectangleLines(
+          DrawRectangleLines(
             x*MAP_TILE_SIZE, y*MAP_TILE_SIZE,
             MAP_TILE_SIZE, MAP_TILE_SIZE,
-            rl.Core.Fade(rl.Color.DARKBLUE, 0.5),
+            Fade(DARKBLUE, 0.5),
           );
         }
       }
 
-      rl.Core.DrawRectangleV(
+      DrawRectangleV(
         playerPosition.ref,
-        rl.Temp.vec21(PLAYER_SIZE, PLAYER_SIZE),
-        rl.Color.RED
+        Vector2$.$1.set(PLAYER_SIZE, PLAYER_SIZE),
+        RED
       );
 
       textureSrc.set(
@@ -138,29 +137,29 @@ void main()
         map.tilesX*MAP_TILE_SIZE, map.tilesY*MAP_TILE_SIZE
       );
       
-      rl.Core.DrawTexturePro(
+      DrawTexturePro(
         fogOfWar.texture,
         textureSrc.ref,
         textureDst.ref,
-        rl.Temp.vec21(0, 0),
+        Vector2$.$1.set(0, 0),
         0,
-        rl.Color.WHITE,
+        WHITE,
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Current tile: [$playerTileX, $playerTileY]".toC,
-        10, 10, 20, rl.Color.RAYWHITE
+        10, 10, 20, RAYWHITE
       );
       
-      rl.Core.DrawText(
+      DrawText(
         "ARROW KEYS to move".toC,
-        10, screenHeight-25, 20, rl.Color.RAYWHITE
+        10, screenHeight-25, 20, RAYWHITE
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadRenderTexture(fogOfWar);
+  UnloadRenderTexture(fogOfWar);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

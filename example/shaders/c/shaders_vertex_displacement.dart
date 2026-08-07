@@ -3,7 +3,7 @@
 // Run it: dart run shaders_vertex_displacement.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,81 +11,80 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_vertex_displacement".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
-  rl.Core.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "shaders_vertex_displacement".toC);
+  SetTargetFPS(60);
+  DisableCursor();
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(20.0, 5.0, -20.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 60;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/vertex_displacement.vs".toC,
     "../resources/shaders/glsl$GLSL_VERSION/vertex_displacement.fs".toC,
   );
 
-  final perlinNoiseImage = rl.Core.GenImagePerlinNoise(512, 512, 0, 0, 1.0);
-  final perlinNoiseMap = rl.Core.LoadTextureFromImage(perlinNoiseImage);
-  rl.Core.UnloadImage(perlinNoiseImage);
+  final perlinNoiseImage = GenImagePerlinNoise(512, 512, 0, 0, 1.0);
+  final perlinNoiseMap = LoadTextureFromImage(perlinNoiseImage);
+  UnloadImage(perlinNoiseImage);
 
-  int perlinNoiseMapLoc = rl.Core.GetShaderLocation(shader, "perlinNoiseMap".toC);
-  rl.Rlgl.rlEnableShader(shader.id);
-  rl.Rlgl.rlActiveTextureSlot(1);
-  rl.Rlgl.rlEnableTexture(perlinNoiseMap.id);
-  rl.Rlgl.rlSetUniformSampler(perlinNoiseMapLoc, 1);
+  int perlinNoiseMapLoc = GetShaderLocation(shader, "perlinNoiseMap".toC);
+  rlEnableShader(shader.id);
+  rlActiveTextureSlot(1);
+  rlEnableTexture(perlinNoiseMap.id);
+  rlSetUniformSampler(perlinNoiseMapLoc, 1);
   
-  final planeMesh = rl.Core.GenMeshPlane(50, 50, 50, 50);
-  final planeModel = rl.Core.LoadModelFromMesh(planeMesh);
+  final planeMesh = GenMeshPlane(50, 50, 50, 50);
+  final planeModel = LoadModelFromMesh(planeMesh);
   planeModel.materials[0].shader = shader;
 
   double time = 0.0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_FREE.value);
+    UpdateCamera(camera, CameraMode.CAMERA_FREE.value);
 
-    time += rl.Core.GetFrameTime();
-    rl.Core.SetShaderValue(shader,
-      rl.Core.GetShaderLocation(shader, "time".toC),
-      rl.Temp.Float32$.Value(time).cast(),
+    time += GetFrameTime();
+    SetShaderValue(shader,
+      GetShaderLocation(shader, "time".toC),
+      Float32$.Value(time).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
-        rl.Core.BeginShaderMode(shader);
-          rl.Core.DrawModel(
+        BeginShaderMode(shader);
+          DrawModel(
             planeModel,
-            rl.Temp.vec31(0.0, 0.0, 0.0),
+            Vector3$.$1.set(0.0, 0.0, 0.0),
             1.0,
-            rl.Temp.color1(255, 255, 255, 255),
+            Color$.$1.set(255, 255, 255, 255),
           );
-        rl.Core.EndShaderMode();
+        EndShaderMode();
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Vertex displacement".toC,
-        10, 10, 20, rl.Color.DARKGRAY
+        10, 10, 20, DARKGRAY
       );
-      rl.Core.DrawFPS(10, 40);
+      DrawFPS(10, 40);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
-  rl.Core.UnloadModel(planeModel);
-  rl.Core.UnloadTexture(perlinNoiseMap);
+  UnloadShader(shader);
+  UnloadModel(planeModel);
+  UnloadTexture(perlinNoiseMap);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

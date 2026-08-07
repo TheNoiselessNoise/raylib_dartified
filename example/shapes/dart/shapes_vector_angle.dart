@@ -1,18 +1,17 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_vector_angle.c
 // Run it: dart run shapes_vector_angle.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "shapes_vector_angle");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shapes_vector_angle");
+  SetTargetFPS(60);
 
   Vector2D v0 = .vec2(screenWidth/2.0, screenHeight/2.0);
   Vector2D v1 = v0.add(.vec2(100.0, 80.0));
@@ -21,19 +20,19 @@ void main()
   double angle = 0.0;
   bool angleMode = false;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     double startangle = 0.0;
 
     if (!angleMode) startangle = -v0.lineAngle(v1)*rl.RAD2DEG;
     if (angleMode) startangle = 0.0;
 
-    v2 = rl.CoreD.GetMousePosition();
+    v2 = GetMousePosition();
 
-    if (rl.CoreD.IsKeyPressed(.KEY_SPACE)) angleMode = !angleMode;
+    if (IsKeyPressed(.KEY_SPACE)) angleMode = !angleMode;
 
-    if ((!angleMode) && rl.CoreD.IsMouseButtonDown(.MOUSE_BUTTON_RIGHT))
-      v1 = rl.CoreD.GetMousePosition();
+    if ((!angleMode) && IsMouseButtonDown(.MOUSE_BUTTON_RIGHT))
+      v1 = GetMousePosition();
 
     if (!angleMode)
     {
@@ -47,74 +46,74 @@ void main()
       angle = v0.lineAngle(v2)*rl.RAD2DEG;
     }
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
       if (!angleMode)
       {
-        rl.CoreD.DrawText(
+        DrawText(
           "MODE 0: Angle between V1 and V2",
           10, 10, 20, .BLACK
         );
-        rl.CoreD.DrawText(
+        DrawText(
           "Right Click to Move V2",
           10, 30, 20, .DARKGRAY
         );
 
-        rl.CoreD.DrawLineEx(v0, v1, 2.0, .BLACK);
+        DrawLineEx(v0, v1, 2.0, .BLACK);
         
-        rl.CoreD.DrawLineEx(v0, v2, 2.0, .RED);
+        DrawLineEx(v0, v2, 2.0, .RED);
 
-        rl.CoreD.DrawCircleSector(
+        DrawCircleSector(
           v0,
           40.0, startangle,
           startangle + angle, 32,
-          rl.CoreD.Fade(.GREEN, 0.6),
+          Fade(.GREEN, 0.6),
         );
       }
       else if (angleMode)
       {
-        rl.CoreD.DrawText(
+        DrawText(
           "MODE 1: Angle formed by line V1 to V2",
           10, 10, 20, .BLACK
         );
 
-        rl.CoreD.DrawLine(0, screenHeight~/2, screenWidth, screenHeight~/2, .LIGHTGRAY);
-        rl.CoreD.DrawLineEx(v0, v2, 2.0, .RED);
+        DrawLine(0, screenHeight~/2, screenWidth, screenHeight~/2, .LIGHTGRAY);
+        DrawLineEx(v0, v2, 2.0, .RED);
 
-        rl.CoreD.DrawCircleSector(
+        DrawCircleSector(
           v0,
           40.0, startangle,
           startangle - angle, 32,
-          rl.CoreD.Fade(.GREEN, 0.6)
+          Fade(.GREEN, 0.6)
         );
       }
 
-      rl.CoreD.DrawText("v0", v0.x, v0.y, 10, .DARKGRAY);
+      DrawText("v0", v0.x, v0.y, 10, .DARKGRAY);
 
       if (!angleMode && v0.sub(v1).y > 0.0)
-        rl.CoreD.DrawText("v1", v1.x, v1.y-10, 10, .DARKGRAY);
+        DrawText("v1", v1.x, v1.y-10, 10, .DARKGRAY);
       if (!angleMode && v0.sub(v1).y < 0.0)
-        rl.CoreD.DrawText("v1", v1.x, v1.y, 10, .DARKGRAY);
+        DrawText("v1", v1.x, v1.y, 10, .DARKGRAY);
 
       if (angleMode)
-        rl.CoreD.DrawText("v1", v0.x+40, v0.y, 10, .DARKGRAY);
+        DrawText("v1", v0.x+40, v0.y, 10, .DARKGRAY);
 
-      rl.CoreD.DrawText("v2", v2.x-10, v2.y-10, 10, .DARKGRAY);
+      DrawText("v2", v2.x-10, v2.y-10, 10, .DARKGRAY);
 
-      rl.CoreD.DrawText(
+      DrawText(
         "Press SPACE to change MODE",
         460, 10, 20, .DARKGRAY
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "ANGLE: ${angle.f2}",
         10, 70, 20, .LIME
       );
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

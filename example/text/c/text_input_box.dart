@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_input_box.c
 // Run it: dart run text_input_box.dart
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -10,31 +10,30 @@ const int MAX_INPUT_CHARS = 9;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "text_input_box".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_input_box".toC);
+  SetTargetFPS(60);
 
   String name = '';
 
-  final textBox = rl.Temp.Rectangle$.At('textBox').set(screenWidth/2.0 - 100, 180, 225, 50);
+  final textBox = Rectangle$.At('textBox').set(screenWidth/2.0 - 100, 180, 225, 50);
   bool mouseOnText = false;
 
   int framesCounter = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.CheckCollisionPointRec(rl.Core.GetMousePosition(), textBox.ref))
+    if (CheckCollisionPointRec(GetMousePosition(), textBox.ref))
       mouseOnText = true;
     else
       mouseOnText = false;
 
     if (mouseOnText)
     {
-      rl.Core.SetMouseCursor(MouseCursor.MOUSE_CURSOR_IBEAM.value);
+      SetMouseCursor(MouseCursor.MOUSE_CURSOR_IBEAM.value);
 
-      int key = rl.Core.GetCharPressed();
+      int key = GetCharPressed();
 
       while (key > 0)
       {
@@ -43,62 +42,62 @@ void main()
           name += String.fromCharCode(key);
         }
 
-        key = rl.Core.GetCharPressed();
+        key = GetCharPressed();
       }
 
-      if (rl.Core.IsKeyPressed(KeyboardKey.KEY_BACKSPACE.value) && name.isNotEmpty)
+      if (IsKeyPressed(KeyboardKey.KEY_BACKSPACE.value) && name.isNotEmpty)
       {
         name = name.substring(0, name.length - 1);
       }
     }
-    else rl.Core.SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT.value);
+    else SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT.value);
 
     if (mouseOnText) framesCounter++;
     else framesCounter = 0;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "PLACE MOUSE OVER INPUT BOX!".toC,
-        240, 140, 20, rl.Color.GRAY
+        240, 140, 20, GRAY
       );
 
-      rl.Core.DrawRectangleRec(textBox.ref, rl.Color.LIGHTGRAY);
-      rl.Core.DrawRectangleLines(
+      DrawRectangleRec(textBox.ref, LIGHTGRAY);
+      DrawRectangleLines(
         textBox.ref.x.toInt(), textBox.ref.y.toInt(),
         textBox.ref.width.toInt(), textBox.ref.height.toInt(),
-        mouseOnText ? rl.Color.RED : rl.Color.DARKGRAY
+        mouseOnText ? RED : DARKGRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         name.toC,
-        (textBox.ref.x + 5).toInt(), (textBox.ref.y + 8).toInt(), 40, rl.Color.MAROON
+        (textBox.ref.x + 5).toInt(), (textBox.ref.y + 8).toInt(), 40, MAROON
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "INPUT CHARS: ${name.length}/$MAX_INPUT_CHARS".toC,
-        315, 250, 20, rl.Color.DARKGRAY
+        315, 250, 20, DARKGRAY
       );
 
       if (mouseOnText)
       {
         if (name.length < MAX_INPUT_CHARS)
         {
-          if (((framesCounter/20)%2) == 0) rl.Core.DrawText(
+          if (((framesCounter/20)%2) == 0) DrawText(
             "_".toC,
-            (textBox.ref.x + 8 + rl.Core.MeasureText(name.toC, 40)).toInt(), (textBox.ref.y + 12).toInt(), 40, rl.Color.MAROON
+            (textBox.ref.x + 8 + MeasureText(name.toC, 40)).toInt(), (textBox.ref.y + 12).toInt(), 40, MAROON
           );
         }
-        else rl.Core.DrawText(
+        else DrawText(
           "Press BACKSPACE to delete chars...".toC,
-          230, 300, 20, rl.Color.GRAY
+          230, 300, 20, GRAY
         );
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

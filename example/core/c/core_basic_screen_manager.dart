@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_basic_screen_manager.c
 // Run it: dart run core_basic_screen_manager.dart
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -17,13 +17,12 @@ GameScreen currentScreen = .logo;
 int framesCounter = 0;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, 'core_basic_screen_manager'.toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "core_basic_screen_manager".toC);
+  SetTargetFPS(60);
 
-  while (!rl.Core.WindowShouldClose()) {
+  while (!WindowShouldClose()) {
     switch (currentScreen) {
       case .logo:
         framesCounter++;
@@ -35,83 +34,83 @@ void main() {
         break;
       case .title:
         if (
-          rl.Core.IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
-          rl.Core.IsGestureDetected(Gesture.GESTURE_TAP.value)
+          IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
+          IsGestureDetected(Gesture.GESTURE_TAP.value)
         ) {
           currentScreen = .gameplay;
         }
         break;
       case .gameplay:
         if (
-          rl.Core.IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
-          rl.Core.IsGestureDetected(Gesture.GESTURE_TAP.value)
+          IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
+          IsGestureDetected(Gesture.GESTURE_TAP.value)
         ) {
           currentScreen = .ending;
         }
         break;
       case .ending:
         if (
-          rl.Core.IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
-          rl.Core.IsGestureDetected(Gesture.GESTURE_TAP.value)
+          IsKeyPressed(KeyboardKey.KEY_ENTER.value) ||
+          IsGestureDetected(Gesture.GESTURE_TAP.value)
         ) {
           currentScreen = .title;
         }
         break;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       switch(currentScreen)
       {
         case .logo:
-          rl.Core.DrawText(
+          DrawText(
             "LOGO SCREEN".toC,
-            20, 20, 40, rl.Color.LIGHTGRAY
+            20, 20, 40, LIGHTGRAY
           );
-          rl.Core.DrawText(
+          DrawText(
             "WAIT for 2 SECONDS...".toC,
-            290, 220, 20, rl.Color.GRAY
+            290, 220, 20, GRAY
           );
           break;
         case .title:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.GREEN);
-          rl.Core.DrawText(
+          DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
+          DrawText(
             "TITLE SCREEN".toC,
-            20, 20, 40, rl.Color.DARKGREEN
+            20, 20, 40, DARKGREEN
           );
-          rl.Core.DrawText(
+          DrawText(
             "PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN".toC,
-            120, 220, 20, rl.Color.DARKGREEN
+            120, 220, 20, DARKGREEN
           );
           break;
         case .gameplay:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.PURPLE);
-          rl.Core.DrawText(
+          DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
+          DrawText(
             "GAMEPLAY SCREEN".toC,
-            20, 20, 40, rl.Color.MAROON
+            20, 20, 40, MAROON
           );
-          rl.Core.DrawText(
+          DrawText(
             "PRESS ENTER or TAP to JUMP to ENDING SCREEN".toC,
-            130, 220, 20, rl.Color.MAROON
+            130, 220, 20, MAROON
           );
           break;
         case .ending:
-          rl.Core.DrawRectangle(0, 0, screenWidth, screenHeight, rl.Color.BLUE);
-          rl.Core.DrawText(
+          DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
+          DrawText(
             "ENDING SCREEN".toC,
-            20, 20, 40, rl.Color.DARKBLUE
+            20, 20, 40, DARKBLUE
           );
-          rl.Core.DrawText(
+          DrawText(
             "PRESS ENTER or TAP to RETURN to TITLE SCREEN".toC,
-            120, 220, 20, rl.Color.DARKBLUE
+            120, 220, 20, DARKBLUE
           );
           break;
       }
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -3,72 +3,71 @@
 // Run it: dart run models_loading.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_loading".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
-  rl.Core.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "models_loading".toC);
+  SetTargetFPS(60);
+  DisableCursor();
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(50, 50, 50);
   camera.ref.target.set(0, 10, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  var model = rl.Core.LoadModel("../resources/models/obj/castle.obj".toC);
-  var texture = rl.Core.LoadTexture("../resources/models/obj/castle_diffuse.png".toC);
+  var model = LoadModel("../resources/models/obj/castle.obj".toC);
+  var texture = LoadTexture("../resources/models/obj/castle_diffuse.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final position = rl.Temp.Vector3$.At('position');
-  var bounds = rl.Core.GetMeshBoundingBox(model.meshes[0]);
+  final position = Vector3$.At('position');
+  var bounds = GetMeshBoundingBox(model.meshes[0]);
 
   bool selected = false;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_FIRST_PERSON.value);
+    UpdateCamera(camera, CameraMode.CAMERA_FIRST_PERSON.value);
 
-    if (rl.Core.IsFileDropped()) {
-      final droppedFiles = rl.Core.LoadDroppedFiles();
+    if (IsFileDropped()) {
+      final droppedFiles = LoadDroppedFiles();
 
       if (droppedFiles.count == 1) {
         if (
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".obj".toC) ||
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".gltf".toC) ||
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".glb".toC) ||
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".vox".toC) ||
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".iqm".toC) ||
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".m3d".toC)
+          IsFileExtension(droppedFiles.paths[0], ".obj".toC) ||
+          IsFileExtension(droppedFiles.paths[0], ".gltf".toC) ||
+          IsFileExtension(droppedFiles.paths[0], ".glb".toC) ||
+          IsFileExtension(droppedFiles.paths[0], ".vox".toC) ||
+          IsFileExtension(droppedFiles.paths[0], ".iqm".toC) ||
+          IsFileExtension(droppedFiles.paths[0], ".m3d".toC)
         ) {
-          rl.Core.UnloadModel(model);
-          model = rl.Core.LoadModel(droppedFiles.paths[0]);
+          UnloadModel(model);
+          model = LoadModel(droppedFiles.paths[0]);
           model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
-          bounds = rl.Core.GetMeshBoundingBox(model.meshes[0]);
+          bounds = GetMeshBoundingBox(model.meshes[0]);
         } else if (
-          rl.Core.IsFileExtension(droppedFiles.paths[0], ".png".toC)
+          IsFileExtension(droppedFiles.paths[0], ".png".toC)
         ) {
-          rl.Core.UnloadTexture(texture);
-          texture = rl.Core.LoadTexture(droppedFiles.paths[0]);
+          UnloadTexture(texture);
+          texture = LoadTexture(droppedFiles.paths[0]);
           model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
         }
       }
 
-      rl.Core.UnloadDroppedFiles(droppedFiles);
+      UnloadDroppedFiles(droppedFiles);
     }
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
-      final mousePos = rl.Core.GetMousePosition();
-      final ray = rl.Core.GetScreenToWorldRay(mousePos, camera.ref);
-      final collision = rl.Core.GetRayCollisionBox(ray, bounds);
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value)) {
+      final mousePos = GetMousePosition();
+      final ray = GetScreenToWorldRay(mousePos, camera.ref);
+      final collision = GetRayCollisionBox(ray, bounds);
       if (collision.hit) {
         selected = !selected;
       } else {
@@ -76,39 +75,39 @@ void main()
       }
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
+      BeginMode3D(camera.ref);
 
-        rl.Core.DrawModel(model, position.ref, 1.0, rl.Color.WHITE);
-        rl.Core.DrawGrid(20, 10.0);
+        DrawModel(model, position.ref, 1.0, WHITE);
+        DrawGrid(20, 10.0);
         if (selected) {
-          rl.Core.DrawBoundingBox(bounds, rl.Color.GREEN);
+          DrawBoundingBox(bounds, GREEN);
         }
 
-      rl.Core.EndMode3D();
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Drag & drop model to load mesh/texture.".toC,
-        10, screenHeight - 20, 10, rl.Color.DARKGRAY
+        10, screenHeight - 20, 10, DARKGRAY
       );
 
       if (selected) {
-        rl.Core.DrawText(
+        DrawText(
           "MODEL SELECTED".toC,
-          screenWidth - 110, 10, 10, rl.Color.GREEN
+          screenWidth - 110, 10, 10, GREEN
         );
       }
 
-      rl.Core.DrawFPS(10, 10);
+      DrawFPS(10, 10);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
-  rl.Core.UnloadModel(model);
+  UnloadTexture(texture);
+  UnloadModel(model);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

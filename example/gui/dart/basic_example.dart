@@ -1,32 +1,31 @@
 // Custom example, there's no original equivalent
 // Run it: dart run basic_example.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(400, 200, "basic_example");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(400, 200, "basic_example");
+  SetTargetFPS(60);
 
   bool showMessageBox = false;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      final style = rl.GuiD.GuiGetStyle(.DEFAULT, GuiDefaultProperty.BACKGROUND_COLOR);
-      rl.CoreD.ClearBackground(rl.CoreD.GetColor(style));
+      final style = GuiGetStyle(.DEFAULT, GuiDefaultProperty.BACKGROUND_COLOR);
+      ClearBackground(GetColor(style));
 
-      if (rl.GuiD.GuiButton(
+      if (GuiButton(
         .rect(24, 24, 120, 30),
         "#191#Show Message"
       ) != 0) showMessageBox = true;
 
       if (showMessageBox)
       {
-        int result = rl.GuiD.GuiMessageBox(
+        int result = GuiMessageBox(
           .rect(85, 70, 250, 100),
           "#191#Message Box",
           "Hi! This is a message!",
@@ -38,8 +37,8 @@ void main()
         }
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -3,7 +3,7 @@
 // Run it: dart run textures_sprite_explosion.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -12,40 +12,39 @@ const int NUM_LINES = 5;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_sprite_explosion".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_sprite_explosion".toC);
+  SetTargetFPS(60);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
-  final fxBoom = rl.Audio.LoadSound("../resources/boom.wav".toC);
+  final fxBoom = LoadSound("../resources/boom.wav".toC);
 
-  final explosion = rl.Core.LoadTexture("../resources/explosion.png".toC);
+  final explosion = LoadTexture("../resources/explosion.png".toC);
 
   final frameWidth = explosion.width/NUM_FRAMES_PER_LINE;
   final frameHeight = explosion.height/NUM_LINES;
   int currentFrame = 0;
   int currentLine = 0;
 
-  final frameRec = rl.Temp.Rectangle$.At('frameRec').set(0, 0, frameWidth, frameHeight);
-  final position = rl.Temp.Vector2$.At('position').set(0.0, 0.0);
+  final frameRec = Rectangle$.At('frameRec').set(0, 0, frameWidth, frameHeight);
+  final position = Vector2$.At('position').set(0.0, 0.0);
 
   bool active = false;
   int framesCounter = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) && !active)
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) && !active)
     {
-      position.setC(rl.Core.GetMousePosition());
+      position.setC(GetMousePosition());
       active = true;
 
       position.ref.x -= frameWidth/2.0;
       position.ref.y -= frameHeight/2.0;
 
-      rl.Audio.PlaySound(fxBoom);
+      PlaySound(fxBoom);
     }
 
     if (active)
@@ -75,20 +74,20 @@ void main()
     frameRec.ref.x = frameWidth*currentFrame;
     frameRec.ref.y = frameHeight*currentLine;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       if (active)
-        rl.Core.DrawTextureRec(explosion, frameRec.ref, position.ref, rl.Color.WHITE);
+        DrawTextureRec(explosion, frameRec.ref, position.ref, WHITE);
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(explosion);
-  rl.Audio.UnloadSound(fxBoom);
+  UnloadTexture(explosion);
+  UnloadSound(fxBoom);
 
-  rl.Audio.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

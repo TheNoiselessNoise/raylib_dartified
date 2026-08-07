@@ -3,7 +3,7 @@
 // Run it: dart run shaders_shapes_textures.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -11,84 +11,83 @@ const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_shapes_textures".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "shaders_shapes_textures".toC);
+  SetTargetFPS(60);
 
-  final fudesumi = rl.Core.LoadTexture("../resources/fudesumi.png".toC);
+  final fudesumi = LoadTexture("../resources/fudesumi.png".toC);
 
-  final shader = rl.Core.LoadShader(
+  final shader = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs".toC,
   );
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawText(
+      DrawText(
         "USING DEFAULT SHADER".toC,
-        20, 40, 10, rl.Color.RED
+        20, 40, 10, RED
       );
 
-      rl.Core.DrawCircle(80, 120, 35, rl.Color.DARKBLUE);
-      rl.Core.DrawCircleGradient(80, 220, 60, rl.Color.GREEN, rl.Color.SKYBLUE);
-      rl.Core.DrawCircleLines(80, 340, 80, rl.Color.DARKBLUE);
+      DrawCircle(80, 120, 35, DARKBLUE);
+      DrawCircleGradient(Vector2$.$1.set(80, 220), 60, GREEN, SKYBLUE);
+      DrawCircleLines(80, 340, 80, DARKBLUE);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.Core.DrawText(
+        DrawText(
           "USING CUSTOM SHADER".toC,
-          190, 40, 10, rl.Color.RED
+          190, 40, 10, RED
         );
 
-        rl.Core.DrawRectangle(250 - 60, 90, 120, 60, rl.Color.RED);
-        rl.Core.DrawRectangleGradientH(250 - 90, 170, 180, 130, rl.Color.MAROON, rl.Color.GOLD);
-        rl.Core.DrawRectangleLines(250 - 40, 320, 80, 60, rl.Color.ORANGE);
+        DrawRectangle(250 - 60, 90, 120, 60, RED);
+        DrawRectangleGradientH(250 - 90, 170, 180, 130, MAROON, GOLD);
+        DrawRectangleLines(250 - 40, 320, 80, 60, ORANGE);
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "USING DEFAULT SHADER".toC,
-        370, 40, 10, rl.Color.RED
+        370, 40, 10, RED
       );
 
-      rl.Core.DrawTriangle(
-        rl.Temp.vec21(430, 80),
-        rl.Temp.vec22(430 - 60, 150),
-        rl.Temp.vec23(430 + 60, 150),
-        rl.Color.VIOLET
+      DrawTriangle(
+        Vector2$.$1.set(430, 80),
+        Vector2$.$2.set(430 - 60, 150),
+        Vector2$.$3.set(430 + 60, 150),
+        VIOLET
       );
 
-      rl.Core.DrawTriangleLines(
-        rl.Temp.vec21(430, 160),
-        rl.Temp.vec22(430 - 20, 230),
-        rl.Temp.vec23(430 + 20, 230),
-        rl.Color.DARKBLUE
+      DrawTriangleLines(
+        Vector2$.$1.set(430, 160),
+        Vector2$.$2.set(430 - 20, 230),
+        Vector2$.$3.set(430 + 20, 230),
+        DARKBLUE
       );
 
-      rl.Core.DrawPoly(rl.Temp.vec21(430, 320), 6, 80, 0, rl.Color.BROWN);
+      DrawPoly(Vector2$.$1.set(430, 320), 6, 80, 0, BROWN);
 
-      rl.Core.BeginShaderMode(shader);
+      BeginShaderMode(shader);
 
-        rl.Core.DrawTexture(fudesumi, 500, -30, rl.Color.WHITE);
+        DrawTexture(fudesumi, 500, -30, WHITE);
 
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "(c) Fudesumi sprite by Eiden Marsal".toC,
-        380, screenHeight - 20, 10, rl.Color.GRAY
+        380, screenHeight - 20, 10, GRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadShader(shader);
-  rl.Core.UnloadTexture(fudesumi);
+  UnloadShader(shader);
+  UnloadTexture(fudesumi);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

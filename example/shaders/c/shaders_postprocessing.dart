@@ -3,7 +3,7 @@
 // Run it: dart run shaders_postprocessing.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int GLSL_VERSION = 330;
 const int screenWidth = 800;
@@ -32,102 +32,101 @@ enum PostproShader {
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
-  rl.Core.InitWindow(screenWidth, screenHeight, "shaders_postprocessing".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT.value);
+  InitWindow(screenWidth, screenHeight, "shaders_postprocessing".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(2.0, 3.0, 2.0);
   camera.ref.target.set(0.0, 1.0, 0.0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final model = rl.Core.LoadModel("../resources/models/church.obj".toC);
-  final texture = rl.Core.LoadTexture("../resources/models/church_diffuse.png".toC);
+  final model = LoadModel("../resources/models/church.obj".toC);
+  final texture = LoadTexture("../resources/models/church_diffuse.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
   final shaders = <PostproShader, ShaderC>{
-    .GRAYSCALE: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs".toC),
-    .POSTERIZATION: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/posterization.fs".toC),
-    .DREAM_VISION: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/dream_vision.fs".toC),
-    .PIXELIZER: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/pixelizer.fs".toC),
-    .CROSS_HATCHING: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/cross_hatching.fs".toC),
-    .CROSS_STITCHING: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/cross_stitching.fs".toC),
-    .PREDATOR_VIEW: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/predator.fs".toC),
-    .SCANLINES: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/scanlines.fs".toC),
-    .FISHEYE: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/fisheye.fs".toC),
-    .SOBEL: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/sobel.fs".toC),
-    .BLOOM: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/bloom.fs".toC),
-    .BLUR: rl.Core.LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/blur.fs".toC),
+    .GRAYSCALE: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs".toC),
+    .POSTERIZATION: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/posterization.fs".toC),
+    .DREAM_VISION: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/dream_vision.fs".toC),
+    .PIXELIZER: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/pixelizer.fs".toC),
+    .CROSS_HATCHING: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/cross_hatching.fs".toC),
+    .CROSS_STITCHING: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/cross_stitching.fs".toC),
+    .PREDATOR_VIEW: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/predator.fs".toC),
+    .SCANLINES: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/scanlines.fs".toC),
+    .FISHEYE: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/fisheye.fs".toC),
+    .SOBEL: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/sobel.fs".toC),
+    .BLOOM: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/bloom.fs".toC),
+    .BLUR: LoadShader(nullptr, "../resources/shaders/glsl$GLSL_VERSION/blur.fs".toC),
   };
 
   PostproShader currentShader = .GRAYSCALE;
 
-  final target = rl.Core.LoadRenderTexture(screenWidth, screenHeight);
+  final target = LoadRenderTexture(screenWidth, screenHeight);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
+    UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) currentShader = currentShader.next;
-    else if (rl.Core.IsKeyPressed(KeyboardKey.KEY_LEFT.value)) currentShader = currentShader.prev;
+    if (IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) currentShader = currentShader.next;
+    else if (IsKeyPressed(KeyboardKey.KEY_LEFT.value)) currentShader = currentShader.prev;
 
     if (currentShader.index >= shaders.length) currentShader = .values[0];
     else if (currentShader.index < 0) currentShader = .values[shaders.length - 1];
 
-    rl.Core.BeginTextureMode(target);
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+    BeginTextureMode(target);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, rl.Temp.vec3Zero, 0.1, rl.Color.WHITE);
-        rl.Core.DrawGrid(10, 1.0);
-      rl.Core.EndMode3D();
-    rl.Core.EndTextureMode();
+      BeginMode3D(camera.ref);
+        DrawModel(model, Vector3$.$zero, 0.1, WHITE);
+        DrawGrid(10, 1.0);
+      EndMode3D();
+    EndTextureMode();
     
-    rl.Core.BeginDrawing();
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+    BeginDrawing();
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginShaderMode(shaders[currentShader]!);
-        rl.Core.DrawTextureRec(
+      BeginShaderMode(shaders[currentShader]!);
+        DrawTextureRec(
           target.texture,
-          rl.Temp.rect1(0, 0, target.texture.width, -target.texture.height),
-          rl.Temp.vec21(0, 0),
-          rl.Color.WHITE
+          Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
+          Vector2$.$1.set(0, 0),
+          WHITE
         );
-      rl.Core.EndShaderMode();
+      EndShaderMode();
 
-      rl.Core.DrawRectangle(0, 9, 580, 30, rl.Core.Fade(rl.Color.LIGHTGRAY, 0.7));
+      DrawRectangle(0, 9, 580, 30, Fade(LIGHTGRAY, 0.7));
 
-      rl.Core.DrawText(
+      DrawText(
         "(c) Church 3D model by Alberto Cano".toC,
-        screenWidth - 200, screenHeight - 20, 10, rl.Color.GRAY
+        screenWidth - 200, screenHeight - 20, 10, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "CURRENT POSTPRO SHADER:".toC,
-        10, 15, 20, rl.Color.BLACK
+        10, 15, 20, BLACK
       );
-      rl.Core.DrawText(
+      DrawText(
         currentShader.name.toC,
-        330, 15, 20, rl.Color.RED
+        330, 15, 20, RED
       );
-      rl.Core.DrawText(
+      DrawText(
         "< >".toC,
-        540, 10, 30, rl.Color.DARKBLUE
+        540, 10, 30, DARKBLUE
       );
       
-      rl.Core.DrawFPS(700, 15);
-    rl.Core.EndDrawing();
+      DrawFPS(700, 15);
+    EndDrawing();
   }
 
-  shaders.values.forEach(rl.Core.UnloadShader);
+  shaders.values.forEach(UnloadShader);
 
-  rl.Core.UnloadTexture(texture);
-  rl.Core.UnloadModel(model);
-  rl.Core.UnloadRenderTexture(target);
+  UnloadTexture(texture);
+  UnloadModel(model);
+  UnloadRenderTexture(target);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

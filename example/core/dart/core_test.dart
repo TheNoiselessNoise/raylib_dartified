@@ -1,24 +1,23 @@
 // Custom example, there's no original equivalent
 // Run it: dart run core_test.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'Live Image Data');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "Live Image Data");
+  SetTargetFPS(60);
 
-  final image = rl.CoreD.LoadImage('../resources/xyzt.jpg');
-  rl.CoreD.ImageResize(image, 256, 256);
-  final texture = rl.CoreD.LoadTextureFromImage(image);
+  final image = LoadImage('../resources/xyzt.jpg');
+  ImageResize(image, 256, 256);
+  final texture = LoadTextureFromImage(image);
 
   int scanY = 0;
 
-  while (!rl.CoreD.WindowShouldClose()) {
+  while (!WindowShouldClose()) {
     // Paint a red scanline into image.data
     final pixels = image.data; // Uint8List, RGBA layout
     const w = 256;
@@ -36,16 +35,16 @@ void main() {
 
     scanY = (scanY + 1) % 256;
 
-    rl.CoreD.UpdateTexture(texture, pixels);
+    UpdateTexture(texture, pixels);
 
-    rl.CoreD.BeginDrawing();
-      rl.CoreD.ClearBackground(.RAYWHITE);
-      rl.CoreD.DrawTexture(texture, 50, 50, .WHITE);
-    rl.CoreD.EndDrawing();
+    BeginDrawing();
+      ClearBackground(.RAYWHITE);
+      DrawTexture(texture, 50, 50, .WHITE);
+    EndDrawing();
   }
 
-  rl.CoreD.UnloadTexture(texture);
-  rl.CoreD.UnloadImage(image);
+  UnloadTexture(texture);
+  UnloadImage(image);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

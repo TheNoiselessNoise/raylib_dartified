@@ -3,69 +3,71 @@
 // Run it: dart run models_loading_gltf.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "models_loading_gltf".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "models_loading_gltf".toC);
+  SetTargetFPS(60);
 
-  final camera = rl.Temp.Camera3D$.At('camera');
+  final camera = Camera3D$.$newPtr;
   camera.ref.position.set(6, 6, 6);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final model = rl.Core.LoadModel("../resources/models/gltf/robot.glb".toC);
-  final position = rl.Temp.Vector3$.At('position');
+  final model = LoadModel("../resources/models/gltf/robot.glb".toC);
+  final position = Vector3$.At('position');
   
-  final animsCount = rl.Temp.Int$.At('animsCount');
-  int animIndex = 0;
+  final animsCount = Int$.At('animsCount');
+  int animIndex = 10;
   int animCurrentFrame = 0;
-  final modelAnimations = rl.Core.LoadModelAnimations("../resources/models/gltf/robot.glb".toC, animsCount);
+  final anims = LoadModelAnimations(
+    "../resources/models/gltf/robot.glb".toC,
+    animsCount
+  );
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
+    UpdateCamera(camera, CameraMode.CAMERA_ORBITAL.value);
 
-    if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value))
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value))
       animIndex = (animIndex + 1) % animsCount.value;
-    else if (rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value))
+    else if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value))
       animIndex = (animIndex + animsCount.value - 1) % animsCount.value;
 
-    final anim = modelAnimations[animIndex];
-    animCurrentFrame = (animCurrentFrame + 1) % anim.frameCount;
-    rl.Core.UpdateModelAnimation(model, anim, animCurrentFrame);
+    final anim = anims[animIndex];
+    animCurrentFrame = (animCurrentFrame + 1) % anim.keyframeCount;
+    UpdateModelAnimation(model, anim, animCurrentFrame.toDouble());
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.BeginMode3D(camera.ref);
-        rl.Core.DrawModel(model, position.ref, 1.0, rl.Color.WHITE);
-        rl.Core.DrawGrid(10, 1.0);
-      rl.Core.EndMode3D();
+      BeginMode3D(camera.ref);
+        DrawModel(model, position.ref, 1.0, WHITE);
+        DrawGrid(10, 1.0);
+      EndMode3D();
 
-      rl.Core.DrawText(
+      DrawText(
         "Use the LEFT/RIGHT mouse buttons to switch animation".toC,
-        10, 10, 20, rl.Color.GRAY
+        10, 10, 20, GRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Animation: ${anim.nameString}".toC,
-        10, rl.Core.GetScreenHeight() - 20, 10, rl.Color.DARKGRAY
+        10, GetScreenHeight() - 20, 10, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadModel(model);
+  UnloadModel(model);
   
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

@@ -1,26 +1,26 @@
 // Custom example, there's no original equivalent
 // Run it: dart run list_view.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(800, 450, "tab_bar");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(800, 450, "tab_bar");
+  SetTargetFPS(60);
 
   String value = 'Hello, World!';
 
   bool? secretViewActive = false;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.WHITE);
+      ClearBackground(.WHITE);
 
-      final (result, newValue, newSecretViewActive) = rl.GuiD.GuiTextInputBox(
+      int result;
+      (result, value, secretViewActive!) = GuiTextInputBox(
         .rect(50, 50, 200, 120),
         'Title', // title, can be null
         'Some message', // message, can be null
@@ -29,14 +29,12 @@ void main()
         255, // textMaxSize
         secretViewActive, // secretViewActive, boolean, can be null
       );
-      value = newValue;
-      secretViewActive = newSecretViewActive;
 
-      rl.CoreD.DrawText("RESULT: $result (0 = X button, 1 = OK button)", 50, 200, 20, .BLACK);
-      rl.CoreD.DrawText("VALUE: $value", 50, 230, 20, .BLACK);
+      DrawText("RESULT: $result (0 = X button, 1 = OK button)", 50, 200, 20, .BLACK);
+      DrawText("VALUE: $value", 50, 230, 20, .BLACK);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

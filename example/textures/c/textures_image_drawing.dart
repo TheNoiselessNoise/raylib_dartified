@@ -3,87 +3,86 @@
 // Run it: dart run textures_image_drawing.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_drawing".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_drawing".toC);
+  SetTargetFPS(60);
 
-  final cat = rl.Temp.Image$.At('cat');
-  cat.ref = rl.Core.LoadImage("../resources/cat.png".toC);
-  rl.Core.ImageCrop(cat, rl.Temp.rect1(100, 10, 280, 380));
-  rl.Core.ImageFlipHorizontal(cat);
-  rl.Core.ImageResize(cat, 150, 200);
+  final cat = Image$.At('cat');
+  cat.ref = LoadImage("../resources/cat.png".toC);
+  ImageCrop(cat, Rectangle$.$1.set(100, 10, 280, 380));
+  ImageFlipHorizontal(cat);
+  ImageResize(cat, 150, 200);
 
-  final parrots = rl.Temp.Image$.At('parrots');
-  parrots.ref = rl.Core.LoadImage("../resources/parrots.png".toC);
+  final parrots = Image$.At('parrots');
+  parrots.ref = LoadImage("../resources/parrots.png".toC);
 
-  rl.Core.ImageDraw(
+  ImageDraw(
     parrots, cat.ref,
-    rl.Temp.rect1(0, 0, cat.ref.width, cat.ref.height),
-    rl.Temp.rect2(30, 40, cat.ref.width*1.5, cat.ref.height*1.5),
-    rl.Color.WHITE
+    Rectangle$.$1.set(0, 0, cat.ref.width, cat.ref.height),
+    Rectangle$.$2.set(30, 40, cat.ref.width*1.5, cat.ref.height*1.5),
+    WHITE
   );
 
-  rl.Core.ImageCrop(
+  ImageCrop(
     parrots,
-    rl.Temp.rect1(0, 50, parrots.ref.width, parrots.ref.height - 100),
+    Rectangle$.$1.set(0, 50, parrots.ref.width, parrots.ref.height - 100),
   );
 
-  rl.Core.ImageDrawPixel(parrots, 10, 10, rl.Color.RAYWHITE);
-  rl.Core.ImageDrawCircleLines(parrots, 10, 10, 5, rl.Color.RAYWHITE);
-  rl.Core.ImageDrawRectangle(parrots, 5, 20, 10, 10, rl.Color.RAYWHITE);
+  ImageDrawPixel(parrots, 10, 10, RAYWHITE);
+  ImageDrawCircleLines(parrots, 10, 10, 5, RAYWHITE);
+  ImageDrawRectangle(parrots, 5, 20, 10, 10, RAYWHITE);
 
-  rl.Core.UnloadImage(cat.ref);
+  UnloadImage(cat.ref);
 
-  final font = rl.Core.LoadFont("../resources/custom_jupiter_crash.png".toC);
+  final font = LoadFont("../resources/custom_jupiter_crash.png".toC);
 
-  rl.Core.ImageDrawTextEx(
+  ImageDrawTextEx(
     parrots, font,
     "PARROTS & CAT".toC,
-    rl.Temp.vec21(300, 230),
+    Vector2$.$1.set(300, 230),
     font.baseSize.toDouble(),
     -2,
-    rl.Color.WHITE
+    WHITE
   );
 
-  rl.Core.UnloadFont(font);
+  UnloadFont(font);
 
-  final texture = rl.Core.LoadTextureFromImage(parrots.ref);
-  rl.Core.UnloadImage(parrots.ref);
+  final texture = LoadTextureFromImage(parrots.ref);
+  UnloadImage(parrots.ref);
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
       int x = (screenWidth/2 - texture.width/2).toInt();
       int y = (screenHeight/2 - texture.height/2 - 40).toInt();
 
-      rl.Core.DrawTexture(texture, x, y, rl.Color.WHITE);
-      rl.Core.DrawRectangleLines(x, y, texture.width, texture.height, rl.Color.DARKGRAY);
+      DrawTexture(texture, x, y, WHITE);
+      DrawRectangleLines(x, y, texture.width, texture.height, DARKGRAY);
 
-      rl.Core.DrawText(
+      DrawText(
         "We are drawing only one texture from various images composed!".toC,
-        240, 350, 10, rl.Color.DARKGRAY
+        240, 350, 10, DARKGRAY
       );
-      rl.Core.DrawText(
+      DrawText(
         "Source images have been cropped, scaled, flipped and copied one over the other.".toC,
-        190, 370, 10, rl.Color.DARKGRAY
+        190, 370, 10, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(texture);
+  UnloadTexture(texture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

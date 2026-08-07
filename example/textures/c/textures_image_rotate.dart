@@ -3,67 +3,66 @@
 // Run it: dart run textures_image_rotate.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_image_rotate".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_image_rotate".toC);
+  SetTargetFPS(60);
 
-  final image45 = rl.Temp.Image$.At('image45');
-  image45.ref = rl.Core.LoadImage("../resources/raylib_logo.png".toC);
-  final image90 = rl.Temp.Image$.At('image90');
-  image90.ref = rl.Core.LoadImage("../resources/raylib_logo.png".toC);
-  final imageNeg90 = rl.Temp.Image$.At('imageNeg90');
-  imageNeg90.ref = rl.Core.LoadImage("../resources/raylib_logo.png".toC);
+  final image45 = Image$.At('image45');
+  image45.ref = LoadImage("../resources/raylib_logo.png".toC);
+  final image90 = Image$.At('image90');
+  image90.ref = LoadImage("../resources/raylib_logo.png".toC);
+  final imageNeg90 = Image$.At('imageNeg90');
+  imageNeg90.ref = LoadImage("../resources/raylib_logo.png".toC);
 
-  rl.Core.ImageRotate(image45, 45);
-  rl.Core.ImageRotate(image90, 90);
-  rl.Core.ImageRotate(imageNeg90, -90);
+  ImageRotate(image45, 45);
+  ImageRotate(image90, 90);
+  ImageRotate(imageNeg90, -90);
 
   final textures = [
-    rl.Core.LoadTextureFromImage(image45.ref),
-    rl.Core.LoadTextureFromImage(image90.ref),
-    rl.Core.LoadTextureFromImage(imageNeg90.ref),
+    LoadTextureFromImage(image45.ref),
+    LoadTextureFromImage(image90.ref),
+    LoadTextureFromImage(imageNeg90.ref),
   ];
 
   int currentTexture = 0;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
     if (
-      rl.Core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) ||
-      rl.Core.IsKeyPressed(KeyboardKey.KEY_RIGHT.value)
+      IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value) ||
+      IsKeyPressed(KeyboardKey.KEY_RIGHT.value)
     ) {
       currentTexture = (currentTexture + 1)%textures.length;
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTexture(
+      DrawTexture(
         textures[currentTexture],
         (screenWidth/2 - textures[currentTexture].width/2).toInt(),
         (screenHeight/2 - textures[currentTexture].height/2).toInt(),
-        rl.Color.WHITE
+        WHITE
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Press LEFT MOUSE BUTTON to rotate the image clockwise".toC,
-        250, 420, 10, rl.Color.DARKGRAY
+        250, 420, 10, DARKGRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  textures.forEach(rl.Core.UnloadTexture);
+  textures.forEach(UnloadTexture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

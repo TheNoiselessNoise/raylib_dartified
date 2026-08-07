@@ -3,7 +3,7 @@
 // Run it: dart run textures_sprite_button.dart
 // WARNING: expects resources from the raylib source
 import 'dart:ffi';
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,23 +11,22 @@ const int NUM_FRAMES = 3;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_sprite_button".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_sprite_button".toC);
+  SetTargetFPS(60);
 
-  rl.Audio.InitAudioDevice();
+  InitAudioDevice();
 
-  final fxButton = rl.Audio.LoadSound("../resources/buttonfx.wav".toC);
-  final button = rl.Core.LoadTexture("../resources/button.png".toC);
+  final fxButton = LoadSound("../resources/buttonfx.wav".toC);
+  final button = LoadTexture("../resources/button.png".toC);
 
   final frameHeight = button.height/NUM_FRAMES;
-  final sourceRec = rl.Temp.Rectangle$.At('sourceRec').set(
+  final sourceRec = Rectangle$.At('sourceRec').set(
     0, 0, button.width, frameHeight
   );
 
-  final btnBounds = rl.Temp.Rectangle$.At('btnBounds').set(
+  final btnBounds = Rectangle$.At('btnBounds').set(
     screenWidth/2.0 - button.width/2.0,
     screenHeight/2.0 - button.height/NUM_FRAMES/2.0,
     button.width,
@@ -37,50 +36,50 @@ void main()
   int btnState = 0;
   bool btnAction = false;
 
-  final mousePoint = rl.Temp.Vector2$.At('mousePoint');
+  final mousePoint = Vector2$.At('mousePoint');
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    mousePoint.setC(rl.Core.GetMousePosition());
+    mousePoint.setC(GetMousePosition());
     btnAction = false;
 
-    if (rl.Core.CheckCollisionPointRec(mousePoint.ref, btnBounds.ref))
+    if (CheckCollisionPointRec(mousePoint.ref, btnBounds.ref))
     {
-      if (rl.Core.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
+      if (IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value))
         btnState = 2;
       else
         btnState = 1;
 
-      if (rl.Core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
+      if (IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT.value))
         btnAction = true;
     }
     else btnState = 0;
 
     if (btnAction)
     {
-      rl.Audio.PlaySound(fxButton);
+      PlaySound(fxButton);
     }
 
     sourceRec.ref.y = btnState*frameHeight;
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTextureRec(
+      DrawTextureRec(
         button,
         sourceRec.ref,
-        rl.Temp.vec21(btnBounds.ref.x, btnBounds.ref.y),
-        rl.Color.WHITE
+        Vector2$.$1.set(btnBounds.ref.x, btnBounds.ref.y),
+        WHITE
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(button);
-  rl.Audio.UnloadSound(fxButton);
+  UnloadTexture(button);
+  UnloadSound(fxButton);
 
-  rl.Audio.CloseAudioDevice();
+  CloseAudioDevice();
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

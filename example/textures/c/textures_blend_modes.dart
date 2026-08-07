@@ -2,80 +2,79 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_blend_modes.c
 // Run it: dart run textures_blend_modes.dart
 // WARNING: expects resources from the raylib source
-import '../../base.dart';
+import '../../base_c.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.Core.InitWindow(screenWidth, screenHeight, "textures_blend_modes".toC);
-  rl.Core.SetWindowMonitor(0);
-  rl.Core.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "textures_blend_modes".toC);
+  SetTargetFPS(60);
 
-  final bgImage = rl.Core.LoadImage("../resources/cyberpunk_street_background.png".toC);
-  final bgTexture = rl.Core.LoadTextureFromImage(bgImage);
+  final bgImage = LoadImage("../resources/cyberpunk_street_background.png".toC);
+  final bgTexture = LoadTextureFromImage(bgImage);
 
-  final fgImage = rl.Core.LoadImage("../resources/cyberpunk_street_foreground.png".toC);
-  final fgTexture = rl.Core.LoadTextureFromImage(fgImage);
+  final fgImage = LoadImage("../resources/cyberpunk_street_foreground.png".toC);
+  final fgTexture = LoadTextureFromImage(fgImage);
   
-  rl.Core.UnloadImage(bgImage);
-  rl.Core.UnloadImage(fgImage);
+  UnloadImage(bgImage);
+  UnloadImage(fgImage);
 
   int blendCountMax = 5;
   BlendMode blendMode = .BLEND_ALPHA;
 
-  while (!rl.Core.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.Core.IsKeyPressed(KeyboardKey.KEY_SPACE.value))
+    if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
     {
       if (blendMode.value >= (blendCountMax - 1)) blendMode = .BLEND_ALPHA;
       else blendMode = .fromValue(blendMode.value + 1);
     }
 
-    rl.Core.BeginDrawing();
+    BeginDrawing();
 
-      rl.Core.ClearBackground(rl.Color.RAYWHITE);
+      ClearBackground(RAYWHITE);
 
-      rl.Core.DrawTexture(
+      DrawTexture(
         bgTexture,
         (screenWidth/2 - bgTexture.width/2).toInt(),
         (screenHeight/2 - bgTexture.height/2).toInt(),
-        rl.Color.WHITE
+        WHITE
       );
 
       // Apply the blend mode and then draw the foreground texture
-      rl.Core.BeginBlendMode(blendMode.value);
-        rl.Core.DrawTexture(
+      BeginBlendMode(blendMode.value);
+        DrawTexture(
           fgTexture,
           (screenWidth/2 - fgTexture.width/2).toInt(),
           (screenHeight/2 - fgTexture.height/2).toInt(),
-          rl.Color.WHITE
+          WHITE
         );
-      rl.Core.EndBlendMode();
+      EndBlendMode();
 
-      rl.Core.DrawText(
+      DrawText(
         "Press SPACE to change blend modes.".toC,
-        310, 350, 10, rl.Color.GRAY
+        310, 350, 10, GRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "Current: ${blendMode.name}".toC,
-        (screenWidth / 2 - 60).toInt(), 370, 10, rl.Color.GRAY
+        (screenWidth / 2 - 60).toInt(), 370, 10, GRAY
       );
 
-      rl.Core.DrawText(
+      DrawText(
         "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)".toC,
-        screenWidth - 330, screenHeight - 20, 10, rl.Color.GRAY
+        screenWidth - 330, screenHeight - 20, 10, GRAY
       );
 
-    rl.Core.EndDrawing();
+    EndDrawing();
   }
 
-  rl.Core.UnloadTexture(fgTexture);
-  rl.Core.UnloadTexture(bgTexture);
+  UnloadTexture(fgTexture);
+  UnloadTexture(bgTexture);
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

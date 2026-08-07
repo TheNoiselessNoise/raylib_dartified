@@ -1,7 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_input_box.c
 // Run it: dart run text_input_box.dart
-import '../../base.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -9,11 +9,10 @@ const int MAX_INPUT_CHARS = 9;
 
 void main()
 {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, "text_input_box");
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
+  InitWindow(screenWidth, screenHeight, "text_input_box");
+  SetTargetFPS(60);
 
   String name = '';
 
@@ -22,18 +21,18 @@ void main()
 
   int framesCounter = 0;
 
-  while (!rl.CoreD.WindowShouldClose())
+  while (!WindowShouldClose())
   {
-    if (rl.CoreD.CheckCollisionPointRec(rl.CoreD.GetMousePosition(), textBox))
+    if (CheckCollisionPointRec(GetMousePosition(), textBox))
       mouseOnText = true;
     else
       mouseOnText = false;
 
     if (mouseOnText)
     {
-      rl.CoreD.SetMouseCursor(.MOUSE_CURSOR_IBEAM);
+      SetMouseCursor(.MOUSE_CURSOR_IBEAM);
 
-      int key = rl.CoreD.GetCharPressed();
+      int key = GetCharPressed();
 
       while (key > 0)
       {
@@ -42,41 +41,41 @@ void main()
           name += String.fromCharCode(key);
         }
 
-        key = rl.CoreD.GetCharPressed();
+        key = GetCharPressed();
       }
 
-      if (rl.CoreD.IsKeyPressed(.KEY_BACKSPACE) && name.isNotEmpty)
+      if (IsKeyPressed(.KEY_BACKSPACE) && name.isNotEmpty)
       {
         name = name.substring(0, name.length - 1);
       }
     }
-    else rl.CoreD.SetMouseCursor(.MOUSE_CURSOR_DEFAULT);
+    else SetMouseCursor(.MOUSE_CURSOR_DEFAULT);
 
     if (mouseOnText) framesCounter++;
     else framesCounter = 0;
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.DrawText(
+      DrawText(
         "PLACE MOUSE OVER INPUT BOX!",
         240, 140, 20, .GRAY
       );
 
-      rl.CoreD.DrawRectangleRec(textBox, .LIGHTGRAY);
-      rl.CoreD.DrawRectangleLines(
+      DrawRectangleRec(textBox, .LIGHTGRAY);
+      DrawRectangleLines(
         textBox.x, textBox.y,
         textBox.width, textBox.height,
         mouseOnText ? .RED : .DARKGRAY
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         name,
         textBox.x + 5, textBox.y + 8, 40, .MAROON
       );
 
-      rl.CoreD.DrawText(
+      DrawText(
         "INPUT CHARS: ${name.length}/$MAX_INPUT_CHARS",
         315, 250, 20, .DARKGRAY
       );
@@ -85,19 +84,19 @@ void main()
       {
         if (name.length < MAX_INPUT_CHARS)
         {
-          if (((framesCounter/20)%2) == 0) rl.CoreD.DrawText(
+          if (((framesCounter/20)%2) == 0) DrawText(
             "_",
-            textBox.x + 8 + rl.CoreD.MeasureText(name, 40), textBox.y + 12, 40, .MAROON
+            textBox.x + 8 + MeasureText(name, 40), textBox.y + 12, 40, .MAROON
           );
         }
-        else rl.CoreD.DrawText(
+        else DrawText(
           "Press BACKSPACE to delete chars...",
           230, 300, 20, .GRAY
         );
       }
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }

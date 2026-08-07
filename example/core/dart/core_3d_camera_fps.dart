@@ -2,7 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_camera_fps.c
 // Run it: dart run core_3d_camera_fps.dart
 import 'dart:math' as math;
-import '../../base.dart';
+import '../../base_dart.dart';
 
 class Body {
   Vector3D position;
@@ -48,7 +48,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 void main() {
-  final rl = findRaylib('raylib-5.5_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib');
 
   final camera = Camera3DD(
     position: .vec3(
@@ -60,32 +60,31 @@ void main() {
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  rl.CoreD.InitWindow(screenWidth, screenHeight, 'core_3d_camera_fps');
-  rl.CoreD.SetWindowMonitor(0);
-  rl.CoreD.SetTargetFPS(60);
-  rl.CoreD.DisableCursor();
+  InitWindow(screenWidth, screenHeight, "core_3d_camera_fps");
+  SetTargetFPS(60);
+  DisableCursor();
 
-  UpdateCameraFPS(rl, camera);
+  UpdateCameraFPS(camera);
 
-  while (!rl.CoreD.WindowShouldClose()) {
-    final mouseDelta = rl.CoreD.GetMouseDelta();
+  while (!WindowShouldClose()) {
+    final mouseDelta = GetMouseDelta();
     lookRotation.x -= mouseDelta.x*sensitivity.x;
     lookRotation.y += mouseDelta.y*sensitivity.y;
 
     int sideway = (
-      rl.CoreD.IsKeyDown(.KEY_D).toInt() -
-      rl.CoreD.IsKeyDown(.KEY_A).toInt()
+      IsKeyDown(.KEY_D).toInt() -
+      IsKeyDown(.KEY_A).toInt()
     );
     int forward = (
-      rl.CoreD.IsKeyDown(.KEY_W).toInt() -
-      rl.CoreD.IsKeyDown(.KEY_S).toInt()
+      IsKeyDown(.KEY_W).toInt() -
+      IsKeyDown(.KEY_S).toInt()
     );
-    bool crouching = rl.CoreD.IsKeyDown(.KEY_LEFT_CONTROL);
-    bool jumping = rl.CoreD.IsKeyPressed(.KEY_SPACE);
-    UpdateBody(rl, player, lookRotation.x, sideway, forward, jumping, crouching);
+    bool crouching = IsKeyDown(.KEY_LEFT_CONTROL);
+    bool jumping = IsKeyPressed(.KEY_SPACE);
+    UpdateBody(player, lookRotation.x, sideway, forward, jumping, crouching);
 
-    double delta = rl.CoreD.GetFrameTime();
-    headLerp = rl.Lerp(headLerp, (crouching ? CROUCH_HEIGHT : STAND_HEIGHT), 20*delta);
+    double delta = GetFrameTime();
+    headLerp = Lerp(headLerp, (crouching ? CROUCH_HEIGHT : STAND_HEIGHT), 20*delta);
     camera.position.set(
       player.position.x,
       player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -94,43 +93,43 @@ void main() {
 
     if (player.isGrounded && ((forward != 0) || (sideway != 0))) {
       headTimer += delta*3;
-      walkLerp = rl.Lerp(walkLerp, 1, 10*delta);
-      camera.fovy = rl.Lerp(camera.fovy, 55, 5*delta);
+      walkLerp = Lerp(walkLerp, 1, 10*delta);
+      camera.fovy = Lerp(camera.fovy, 55, 5*delta);
     } else {
-      walkLerp = rl.Lerp(walkLerp, 0, 10*delta);
-      camera.fovy = rl.Lerp(camera.fovy, 60, 5*delta);
+      walkLerp = Lerp(walkLerp, 0, 10*delta);
+      camera.fovy = Lerp(camera.fovy, 60, 5*delta);
     }
 
-    lean.x = rl.Lerp(lean.x, sideway*0.02, 10*delta);
-    lean.y = rl.Lerp(lean.y, forward*0.015, 10*delta);
+    lean.x = Lerp(lean.x, sideway*0.02, 10*delta);
+    lean.y = Lerp(lean.y, forward*0.015, 10*delta);
 
-    UpdateCameraFPS(rl, camera);
+    UpdateCameraFPS(camera);
 
-    rl.CoreD.BeginDrawing();
+    BeginDrawing();
 
-      rl.CoreD.ClearBackground(.RAYWHITE);
+      ClearBackground(.RAYWHITE);
 
-      rl.CoreD.BeginMode3D(camera);
-        DrawLevel(rl);
-      rl.CoreD.EndMode3D();
+      BeginMode3D(camera);
+        DrawLevel();
+      EndMode3D();
 
-      rl.CoreD.DrawRectangle(5, 5, 330, 75, rl.CoreD.Fade(.SKYBLUE, 0.5));
-      rl.CoreD.DrawRectangleLines(5, 5, 330, 75, .BLUE);
+      DrawRectangle(5, 5, 330, 75, Fade(.SKYBLUE, 0.5));
+      DrawRectangleLines(5, 5, 330, 75, .BLUE);
 
-      rl.CoreD.DrawText("Camera controls:", 15, 15, 10, .BLACK);
-      rl.CoreD.DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, .BLACK);
-      rl.CoreD.DrawText("- Look around: arrow keys or mouse", 15, 45, 10, .BLACK);
+      DrawText("Camera controls:", 15, 15, 10, .BLACK);
+      DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, .BLACK);
+      DrawText("- Look around: arrow keys or mouse", 15, 45, 10, .BLACK);
 
       double velLen = Vector2D.vec2(player.velocity.x, player.velocity.z).length;
-      rl.CoreD.DrawText("- Velocity Len: (${velLen.f3})", 15, 60, 10, .BLACK);
+      DrawText("- Velocity Len: (${velLen.f3})", 15, 60, 10, .BLACK);
 
-    rl.CoreD.EndDrawing();
+    EndDrawing();
   }
 
-  rl.CloseWindowAndDispose();
+  CloseWindowAndDispose();
 }
 
-void UpdateCameraFPS(Raylib rl, Camera3DD camera)
+void UpdateCameraFPS(Camera3DD camera)
 {
   final Vector3D up = .vec3(0.0, 1.0, 0.0);
   final Vector3D targetOffset = .vec3(0.0, 0.0, -1.0);
@@ -149,11 +148,11 @@ void UpdateCameraFPS(Raylib rl, Camera3DD camera)
   Vector3D right = yaw.crossProduct(up).normalize();
 
   double pitchAngle = -lookRotation.y - lean.y;
-  pitchAngle = rl.Clamp(pitchAngle, -rl.PI/2 + 0.0001, rl.PI/2 - 0.0001);
+  pitchAngle = Clamp(pitchAngle, -PI/2 + 0.0001, PI/2 - 0.0001);
   Vector3D pitch = yaw.rotateByAxisAngle(right, pitchAngle);
 
-  double headSin = math.sin(headTimer*rl.PI);
-  double headCos = math.cos(headTimer*rl.PI);
+  double headSin = math.sin(headTimer*PI);
+  double headCos = math.cos(headTimer*PI);
   final double stepRotation = 0.01;
   camera.up.setD(up.rotateByAxisAngle(pitch, headSin*stepRotation + lean.x));
 
@@ -166,7 +165,7 @@ void UpdateCameraFPS(Raylib rl, Camera3DD camera)
   camera.target.setD(camera.position.add(pitch));
 }
 
-void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)
+void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)
 {
   Vector2D input = .vec2(side, -forward);
 
@@ -174,7 +173,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
     if ((side != 0) && (forward != 0)) input = input.normalize();
   }
 
-  double delta = rl.CoreD.GetFrameTime();
+  double delta = GetFrameTime();
 
   if (!body.isGrounded) body.velocity.y -= GRAVITY*delta;
 
@@ -183,7 +182,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
     body.velocity.y = JUMP_FORCE;
     body.isGrounded = false;
 
-    //rl.Audio.SetSoundPitch(fxJump, 1.0 + (rl.CoreD.GetRandomValue(-100, 100)*0.001));
+    //rl.Audio.SetSoundPitch(fxJump, 1.0 + (GetRandomValue(-100, 100)*0.001));
     //rl.Audio.PlaySound(fxJump);
   }
 
@@ -206,7 +205,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
   double speed = hvel.dotProduct(body.dir);
 
   double maxSpeed = (crouchHold? CROUCH_SPEED : MAX_SPEED);
-  double accel = rl.Clamp(maxSpeed - speed, 0, MAX_ACCEL*delta);
+  double accel = Clamp(maxSpeed - speed, 0, MAX_ACCEL*delta);
   hvel.x += body.dir.x*accel;
   hvel.z += body.dir.z*accel;
 
@@ -225,7 +224,7 @@ void UpdateBody(Raylib rl, Body body, double rot, int side, int forward, bool ju
   }
 }
 
-void DrawLevel(Raylib rl)
+void DrawLevel()
 {
   final int floorExtent = 25;
   final double tileSize = 5.0;
@@ -238,7 +237,7 @@ void DrawLevel(Raylib rl)
     {
       if ((y & 1) != 0 && (x & 1) != 0)
       {
-        rl.CoreD.DrawPlane(
+        DrawPlane(
           .vec3(x*tileSize, 0.0, y*tileSize),
           .vec2(tileSize, tileSize),
           color
@@ -246,7 +245,7 @@ void DrawLevel(Raylib rl)
       }
       else if ((y & 1) == 0 && (x & 1) == 0)
       {
-        rl.CoreD.DrawPlane(
+        DrawPlane(
           .vec3(x*tileSize, 0.0, y*tileSize),
           .vec2(tileSize, tileSize),
           .LIGHTGRAY
@@ -258,22 +257,22 @@ void DrawLevel(Raylib rl)
   final Vector3D towerSize = .vec3(16.0, 32.0, 16.0);
   final Vector3D towerPos = .vec3(16.0, 16.0, 16.0);
 
-  rl.CoreD.DrawCubeV(towerPos, towerSize, color);
-  rl.CoreD.DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
+  DrawCubeV(towerPos, towerSize, color);
+  DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
 
   towerPos.x *= -1;
-  rl.CoreD.DrawCubeV(towerPos, towerSize, color);
-  rl.CoreD.DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
+  DrawCubeV(towerPos, towerSize, color);
+  DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
 
   towerPos.z *= -1;
-  rl.CoreD.DrawCubeV(towerPos, towerSize, color);
-  rl.CoreD.DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
+  DrawCubeV(towerPos, towerSize, color);
+  DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
 
   towerPos.x *= -1;
-  rl.CoreD.DrawCubeV(towerPos, towerSize, color);
-  rl.CoreD.DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
+  DrawCubeV(towerPos, towerSize, color);
+  DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);
 
   towerPos.set(300.0, 300.0, 0.0);
   color.set(255, 0, 0, 255);
-  rl.CoreD.DrawSphere(towerPos, 100.0, color);
+  DrawSphere(towerPos, 100.0, color);
 }
