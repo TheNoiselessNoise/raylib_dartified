@@ -1,5 +1,33 @@
 part of 'raylib_dartified.dart';
 
+enum RaylibSupportedLibs {
+  gui('gui'),
+  msfGif('msf_gif');
+
+  const RaylibSupportedLibs(this.id);
+  final String id;
+}
+
+class RaylibExternalLibs {
+  final Map<Type, DynamicLibrary> _libs = {};
+
+  void register<T extends RaylibModule>(String path) {
+    if (_libs.containsKey(T)) {
+      throw StateError("A dynamic library for $T is already registered.");
+    }
+
+    _libs[T] = .open(path);
+  }
+
+  RaylibLookup lookup<T extends RaylibModule>() {
+    final lib = _libs[T];
+    if (lib == null) {
+      throw StateError("No dynamic library registered for $T.");
+    }
+    return lib.lookup;
+  }
+}
+
 class Raylib extends RaylibBase {
   static Raylib? _instance;
   static Raylib get instance {
@@ -36,37 +64,50 @@ class Raylib extends RaylibBase {
   //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
   //       LateInitializationError: Field 'Gui' has not been initialized.
   //       That's expected behavior!
-  late RaylibGui Gui;
-  @override late RaylibGuiD GuiD;
+
+  late RaylibGui Gui; // external
+  @override late RaylibGuiD GuiD; // external
   
   late RaylibLight Light;
   @override late RaylibLightD LightD;
+
+  late RaylibMsfGif MsfGif; // external
+  // @override late RaylibMsfGifD MsfGifD; // external
+
   late RaylibRlgl Rlgl;
   @override late RaylibRlglD RlglD;
   @override late RaylibUtils Utils;
 
-  late final DynamicLibrary _dynCore;
-  RaylibLookup get coreLookup => _dynCore.lookup;
+  final _externalLibs = RaylibExternalLibs();
 
-  late final DynamicLibrary? _dynGui;
-  RaylibLookup get guiLookup => _dynGui!.lookup;
+  Map<RaylibSupportedLibs, void Function(String)> get _moduleRegistrars => {
+    .gui: (p) => _externalLibs.register<RaylibGui>(p),
+    .msfGif: (p) => _externalLibs.register<RaylibMsfGif>(p),
+  };
+
+  RaylibLookup lookup<T extends RaylibModule>() => _externalLibs.lookup();
 
   Raylib({
     required String core,
-    String? gui,
+    Map<RaylibSupportedLibs, String?> libs = const {},
     super.tempOptions,
     super.random,
   }) {
-    _dynCore = .open(core);
-    _dynGui = gui != null ? .open(gui) : null;
-
-    if (_instance != null) {
-      throw StateError("There can only be one instance of a $runtimeType!");
-    }
-
+    if (_instance != null) throw StateError("There can only be one instance of a $runtimeType!");
     _instance = this;
-
+    _initLibs(core, libs);
     _init();
+  }
+
+  void _initLibs(String core, Map<RaylibSupportedLibs, String?> libs) {
+    _externalLibs.register<RaylibCore>(core);
+
+    final registrars = _moduleRegistrars;
+
+    for (final l in libs.entries) {
+      final path = l.value;
+      if (path != null) registrars[l.key]!(path);
+    }
   }
 
   void _init() {
@@ -115,6 +156,7 @@ class Raylib extends RaylibBase {
     registerModule(RaylibGuiD(this)); GuiD = module();
     registerModule(RaylibLight(this)); Light = module();
     registerModule(RaylibLightD(this)); LightD = module();
+    registerModule(RaylibMsfGif(this)); MsfGif = module();
     registerModule(RaylibRlgl(this)); Rlgl = module();
     registerModule(RaylibRlglD(this)); RlglD = module();
     registerModule(RaylibUtils(this)); Utils = module();
@@ -176,21 +218,25 @@ String? _platformLibPath(String directory, String name) {
 }
 
 Raylib findRaylib(String folder, [RaylibTempBaseOptions? tempOptions]) {
+  final raylibId = 'raylib';
   var dir = Directory.current;
 
   while (true) {
     final raylibPath = path.join(dir.path, folder);
 
     if (Directory(raylibPath).existsSync()) {
-      final corePath = _platformLibPath(raylibPath, 'raylib');
+      final corePath = _platformLibPath(raylibPath, raylibId);
 
       if (corePath == null) {
-        throw Exception('Could not find ${_platformLib('raylib')} file');
+        throw Exception('Could not find ${_platformLib(raylibId)} file');
       }
 
       return Raylib(
         core: corePath,
-        gui: _platformLibPath(raylibPath, 'raygui'),
+        libs: {
+          .gui: _platformLibPath(raylibPath, RaylibSupportedLibs.gui.id),
+          .msfGif: _platformLibPath(raylibPath, RaylibSupportedLibs.msfGif.id),
+        },
         tempOptions: tempOptions,
       );
     }

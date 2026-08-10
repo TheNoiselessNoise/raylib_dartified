@@ -1,48 +1,36 @@
 part of '../../../raylib_dartified.dart';
 
 // NOTE: va_list is unsolved computer science problem
-// typedef TraceLogCallbackFunction =
-//     Void Function(
-//       Int logLevel,
-//       Pointer<Char> text,
-//       Pointer<__va_list_tag> args,
-//     );
-// typedef TraceLogCallback =
-//     Pointer<NativeFunction<TraceLogCallbackFunction>>;
+// typedef TraceLogCallbackFunction = Void Function(
+//   Int logLevel,
+//   Pointer<Char> text,
+//   Pointer<__va_list_tag> args,
+// );
+// typedef TraceLogCallback = Pointer<NativeFunction<TraceLogCallbackFunction>>;
 
-typedef LoadFileDataCallbackFunctionC =
-    Pointer<UnsignedChar> Function(
-      Pointer<Char> fileName,
-      Pointer<Int> dataSize,
-    );
-typedef LoadFileDataCallbackC =
-    Pointer<NativeFunction<LoadFileDataCallbackFunctionC>>;
+typedef LoadFileDataCallbackC = Pointer<NativeFunction<LoadFileDataCallbackFunctionC>>;
+typedef LoadFileDataCallbackFunctionC = Pointer<UnsignedChar> Function(
+  Pointer<Char> fileName,
+  Pointer<Int> dataSize,
+);
 
-typedef SaveFileDataCallbackFunctionC =
-    Bool Function(
-      Pointer<Char> fileName,
-      Pointer<Void> data,
-      Int dataSize,
-    );
-typedef SaveFileDataCallbackC =
-    Pointer<NativeFunction<SaveFileDataCallbackFunctionC>>;
+typedef SaveFileDataCallbackC = Pointer<NativeFunction<SaveFileDataCallbackFunctionC>>;
+typedef SaveFileDataCallbackFunctionC = Bool Function(
+  Pointer<Char> fileName,
+  Pointer<Void> data,
+  Int dataSize,
+);
 
-typedef LoadFileTextCallbackFunctionC =
-    Pointer<Char> Function(Pointer<Char> fileName);
-typedef LoadFileTextCallbackC =
-    Pointer<NativeFunction<LoadFileTextCallbackFunctionC>>;
+typedef LoadFileTextCallbackC = Pointer<NativeFunction<LoadFileTextCallbackFunctionC>>;
+typedef LoadFileTextCallbackFunctionC = Pointer<Char> Function(
+  Pointer<Char> fileName,
+);
 
-typedef SaveFileTextCallbackFunctionC =
-    Bool Function(
-      Pointer<Char> fileName,
-      Pointer<Char> text,
-    );
-typedef SaveFileTextCallbackC =
-    Pointer<NativeFunction<SaveFileTextCallbackFunctionC>>;
-
-typedef AudioCallbackFunctionC =
-    Void Function(Pointer<Void> bufferData, UnsignedInt frames);
-typedef AudioCallbackC = Pointer<NativeFunction<AudioCallbackFunctionC>>;
+typedef SaveFileTextCallbackC = Pointer<NativeFunction<SaveFileTextCallbackFunctionC>>;
+typedef SaveFileTextCallbackFunctionC = Bool Function(
+  Pointer<Char> fileName,
+  Pointer<Char> text,
+);
 
 final class ColorC extends Struct {
   @UnsignedChar()

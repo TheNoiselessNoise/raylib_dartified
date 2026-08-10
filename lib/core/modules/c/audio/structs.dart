@@ -1,6 +1,11 @@
 // ignore_for_file: camel_case_types
-
 part of '../../../raylib_dartified.dart';
+
+typedef AudioCallbackC = Pointer<NativeFunction<AudioCallbackFunctionC>>;
+typedef AudioCallbackFunctionC = Void Function(
+  Pointer<Void> bufferData,
+  UnsignedInt frames,
+);
 
 final class WaveC extends Struct {
   @UnsignedInt()
