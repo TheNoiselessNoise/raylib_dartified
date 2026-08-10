@@ -348,6 +348,9 @@ void TraceLog(int logLevel, Pointer<Char> text) => _module.TraceLog(logLevel, te
 /// See [RaylibCore.SetTraceLogLevel].
 void SetTraceLogLevel(int logLevel) => _module.SetTraceLogLevel(logLevel);
 
+/// See [RaylibCore.SetTraceLogCallback].
+void SetTraceLogCallback(TraceLogCallbackC callback) => _module.SetTraceLogCallback(callback);
+
 /// See [RaylibCore.SetLoadFileDataCallback].
 void SetLoadFileDataCallback(LoadFileDataCallbackC callback) => _module.SetLoadFileDataCallback(callback);
 

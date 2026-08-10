@@ -85,7 +85,7 @@ class Raylib extends RaylibBase {
     .msfGif: (p) => _externalLibs.register<RaylibMsfGif>(p),
   };
 
-  RaylibLookup lookup<T extends RaylibModule>() => _externalLibs.lookup();
+  RaylibLookup lookup<T extends RaylibModule>() => _externalLibs.lookup<T>();
 
   Raylib({
     required String core,

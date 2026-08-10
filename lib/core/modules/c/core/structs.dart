@@ -1,12 +1,11 @@
 part of '../../../raylib_dartified.dart';
 
-// NOTE: va_list is unsolved computer science problem
-// typedef TraceLogCallbackFunction = Void Function(
-//   Int logLevel,
-//   Pointer<Char> text,
-//   Pointer<__va_list_tag> args,
-// );
-// typedef TraceLogCallback = Pointer<NativeFunction<TraceLogCallbackFunction>>;
+typedef TraceLogCallbackC = Pointer<NativeFunction<TraceLogCallbackFunctionC>>;
+typedef TraceLogCallbackFunctionC = Void Function(
+  Int logLevel,
+  Pointer<Char> text,
+  Pointer<Void> args,
+);
 
 typedef LoadFileDataCallbackC = Pointer<NativeFunction<LoadFileDataCallbackFunctionC>>;
 typedef LoadFileDataCallbackFunctionC = Pointer<UnsignedChar> Function(

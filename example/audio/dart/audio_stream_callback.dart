@@ -13,11 +13,12 @@ const int screenHeight = 450;
 const int BUFFER_SIZE = 4096;
 const int SAMPLE_RATE = 44100;
 
-// WaveType
-const int SINE = 0;
-const int SQUARE = 1;
-const int TRIANGLE = 2;
-const int SAWTOOTH = 3;
+enum WaveType {
+  SINE,
+  SQUARE,
+  TRIANGLE,
+  SAWTOOTH,
+}
 
 int waveFrequency = 440;
 int newWaveFrequency = 440;
@@ -30,7 +31,6 @@ List<AudioCallbackD> waveCallbacks = [
   .function(TriangleCallback),
   .function(SawtoothCallback),
 ];
-List<String> waveTypesAsString = [ "sine", "square", "triangle", "sawtooth" ];
 
 void main() async {
   findRaylib('raylib-6.0_linux_amd64/lib');
@@ -45,8 +45,8 @@ void main() async {
   final stream = LoadAudioStream(SAMPLE_RATE, 32, 1);
   PlayAudioStream(stream);
 
-  int waveType = SINE;
-  SetAudioStreamCallback(stream, waveCallbacks[waveType]);
+  WaveType waveType = .SINE;
+  SetAudioStreamCallback(stream, waveCallbacks[waveType.index]);
 
   while (!WindowShouldClose())
   {
@@ -64,29 +64,21 @@ void main() async {
 
     if (IsKeyPressed(.KEY_LEFT))
     {
-      if (waveType == SINE) waveType = SAWTOOTH;
-      else if (waveType == SQUARE) waveType = SINE;
-      else if (waveType == TRIANGLE) waveType = SQUARE;
-      else waveType = TRIANGLE;
-
-      SetAudioStreamCallback(stream, waveCallbacks[waveType]);
+      waveType = .values[(waveType.index - 1) % WaveType.values.length];
+      SetAudioStreamCallback(stream, waveCallbacks[waveType.index]);
     }
 
     if (IsKeyPressed(.KEY_RIGHT))
     {
-      if (waveType == SINE) waveType = SQUARE;
-      else if (waveType == SQUARE) waveType = TRIANGLE;
-      else if (waveType == TRIANGLE) waveType = SAWTOOTH;
-      else waveType = SINE;
-
-      SetAudioStreamCallback(stream, waveCallbacks[waveType]);
+      waveType = .values[(waveType.index + 1) % WaveType.values.length];
+      SetAudioStreamCallback(stream, waveCallbacks[waveType.index]);
     }
 
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
       DrawText("frequency: $newWaveFrequency", screenWidth - 220, 10, 20, RED);
-      DrawText("wave type: ${waveTypesAsString[waveType]}", screenWidth - 220, 30, 20, RED);
+      DrawText("wave type: ${waveType.name}", screenWidth - 220, 30, 20, RED);
       DrawText("Up/down to change frequency", 10, 10, 20, DARKGRAY);
       DrawText("Left/right to change wave type", 10, 30, 20, DARKGRAY);
 

@@ -42,6 +42,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   VrStereoConfigD,
 
   // callbacks
+  TraceLogCallbackD,
   LoadFileDataCallbackD,
   SaveFileDataCallbackD,
   LoadFileTextCallbackD,
@@ -996,10 +997,20 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     String text,
   ) => run(
     () => RaylibDebugLabels.TraceLog(logLevel, text),
-    () => rl.Core.TraceLog(
-      logLevel.value,
-      rl.Temp.String$.ValueOrNull(text),
-    ),
+    () {
+      if (rl.Utils.HasFormatSpecifier(text)) {
+        throw StateError(
+          '`TraceLog` text contains a printf format specifier ($text), '
+          'native will va_arg into garbage since no variadic args are passed. '
+          'Use Dart string interpolation instead.'
+        );
+      }
+      
+      rl.Core.TraceLog(
+        logLevel.value,
+        rl.Temp.String$.ValueOrNull(text),
+      );
+    },
   );
 
   @override
@@ -1008,6 +1019,14 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   ) => run(
     () => RaylibDebugLabels.SetTraceLogLevel(logLevel),
     () => rl.Core.SetTraceLogLevel(logLevel.value),
+  );
+
+  @override
+  void SetTraceLogCallback(
+    TraceLogCallbackD? callback
+  ) => run(
+    () => RaylibDebugLabels.SetTraceLogCallback(callback),
+    () => rl.Core.SetTraceLogCallback(callback?.attach() ?? nullptr),
   );
     
   @override

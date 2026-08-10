@@ -545,11 +545,10 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _SetTraceLogLevelPtr = _lookup<NativeFunction<Void Function(Int)>>('SetTraceLogLevel');
   late final _SetTraceLogLevel = _SetTraceLogLevelPtr.asFunction<void Function(int)>();
 
-  // NOTE: va_list is unsolved computer science problem
-  // void SetTraceLogCallback(TraceLogCallback callback)
-  //   => _SetTraceLogCallback(callback);
-  // late final _SetTraceLogCallbackPtr = _lookup<NativeFunction<Void Function(TraceLogCallback)>>('SetTraceLogCallback');
-  // late final _SetTraceLogCallback = _SetTraceLogCallbackPtr.asFunction<void Function(TraceLogCallback)>();
+  void SetTraceLogCallback(TraceLogCallbackC callback)
+    => _SetTraceLogCallback(callback);
+  late final _SetTraceLogCallbackPtr = _lookup<NativeFunction<Void Function(TraceLogCallbackC)>>('SetTraceLogCallback');
+  late final _SetTraceLogCallback = _SetTraceLogCallbackPtr.asFunction<void Function(TraceLogCallbackC)>();
 
   void SetLoadFileDataCallback(LoadFileDataCallbackC callback)
     => _SetLoadFileDataCallback(callback);

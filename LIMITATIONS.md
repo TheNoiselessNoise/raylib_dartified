@@ -18,11 +18,11 @@ Raylib's audio processing callbacks are invoked from a native audio thread (e.g.
 If your game loop yields to the event loop each frame (e.g. via `await Future.delayed(Duration.zero)`), `listener` callbacks will actually execute:
 
 ```dart
-final ProcessAudioFunc = NativeCallable<AudioCallbackFunction>.listener(ProcessAudio);
-rl.Audio.AttachAudioMixedProcessor(ProcessAudioFunc.nativeFunction);
+final ProcessAudioFunc = NativeCallable<AudioCallbackFunctionC>.listener(ProcessAudio);
+AttachAudioMixedProcessor(ProcessAudioFunc.nativeFunction);
 
 while (!rl.Window.ShouldClose()) {
-  rl.Audio.UpdateMusicStream(music);
+  UpdateMusicStream(music);
 
   await Future.delayed(Duration.zero);
 }
@@ -38,6 +38,37 @@ It is **not suitable for real-time DSP** (e.g. modifying the audio buffer in-pla
 
 1. **Native C shim** - Write the audio processor in C, compile it as a small shared library, and load it via FFI. Expose a way to set parameters (e.g. `exponent`) via a shared native variable that Dart writes to. Dart reads output (e.g. `averageVolume[]`) each frame via a pointer.
 2. **`UpdateAudioStream`** - If you control the audio source, push pre-processed PCM data from Dart each frame. Processing happens on the Dart side before submission, avoiding the callback entirely.
+
+---
+
+## `TraceLogCallback` variadic arguments (`va_list`)
+
+**Severity: Cosmetic limitation - custom log handling works, raw `va_list` access does not.**
+
+Raylib's `TraceLog` is variadic:
+
+```c
+RLAPI void TraceLog(int logLevel, const char *text, ...);
+typedef void (*TraceLogCallback)(int logLevel, const char *text, va_list args);
+```
+
+`va_list` has no fixed, FFI-representable layout. Dart FFI has no `NativeType` for it and no `va_arg` equivalent, so there is no way to decode the substitution arguments (`%d`, `%s`, etc.) from Dart once they reach a callback.
+
+**What works:** binding the callback with the third parameter typed as `Pointer<Void>` and never dereferencing it.
+
+```dart
+final traceLogCallback = NativeCallable<TraceLogCallbackFunctionC>.isolateLocal(
+  (int logLevel, Pointer<Char> text, Pointer<Void> args) {
+    // args intentionally unused - see LIMITATIONS.md
+    print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toD}');
+  }
+);
+SetTraceLogCallback(traceLogCallback.nativeFunction);
+```
+
+This receives `logLevel` and the *unformatted* `text` (the raw format string, before substitution) correctly and reliably. What it cannot do is recover the values raylib would have substituted into `%`-specifiers - those live in `args`, which this wrapper treats as opaque.
+
+The wrapper guards against this with an `Exception` on the Dart-facing `TraceLog` call, rejecting strings containing unescaped format specifiers.
 
 ---
 
