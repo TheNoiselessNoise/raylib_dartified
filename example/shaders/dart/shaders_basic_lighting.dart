@@ -86,7 +86,7 @@ void main()
           DrawPlane(.zero(), .vec2(10, 10), .WHITE);
           DrawCube(.zero(), 2, 4, 2, .WHITE);
 
-        rl.Core.EndShaderMode();
+        EndShaderMode();
 
         for (int i = 0; i < lights.length; i++) {
           if (lights[i].enabled) {

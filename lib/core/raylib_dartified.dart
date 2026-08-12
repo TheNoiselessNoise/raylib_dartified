@@ -95,8 +95,9 @@ part 'modules/dart/light/structs/light.dart';
 part 'modules/c/msf_gif/module.dart';
 part 'modules/c/msf_gif/structs.dart';
 
-// part 'modules/dart/msf_gif/module.dart';
-// part 'modules/dart/msf_gif/structs/light.dart';
+part 'modules/dart/msf_gif/module.dart';
+part 'modules/dart/msf_gif/structs/msf_gif_result.dart';
+part 'modules/dart/msf_gif/structs/msf_gif_state.dart';
 
 // ===== RLGL MODULE =====
 part 'modules/c/rlgl/module.dart';

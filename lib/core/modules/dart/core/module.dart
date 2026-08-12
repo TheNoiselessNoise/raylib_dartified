@@ -56,6 +56,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
   @DoNotAbbreviate()
   void dispose() {
     super.dispose();
+    TraceLogCallbackD.disposeRegistry();
     LoadFileDataCallbackD.disposeRegistry();
     SaveFileDataCallbackD.disposeRegistry();
     LoadFileTextCallbackD.disposeRegistry();
@@ -4503,9 +4504,12 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     TextureD texture,
   ) => run(
     () => RaylibDebugLabels.UnloadTexture(texture),
-    () => rl.Core.UnloadTexture(
-      texture.getOriginalPointerAndDispose().ref,
-    ),
+    () {
+      rl.Core.UnloadTexture(
+        rl.Temp.Texture$.Ref1(texture).ref,
+      );
+      texture.structMarkDisposed();
+    },
   );
 
   @override
@@ -5379,7 +5383,7 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => RaylibDebugLabels.TextLength(text),
     () {
       final textPtr = rl.Temp.String$.RawValue(text);
-      final lineCountPtr = calloc<Int>();
+      final lineCountPtr = rl.Temp.Int$.Ref1();
       try {
         final linesPtr = rl.Core.LoadTextLines(textPtr, lineCountPtr);
         final List<String> lines = .generate(lineCountPtr.value, (i) => linesPtr[i].toD);
@@ -5387,7 +5391,6 @@ class RaylibCoreD extends RaylibCoreModuleBase<
         return lines;
       } finally {
         calloc.free(textPtr);
-        calloc.free(lineCountPtr);
       }
     },
   );
@@ -5588,14 +5591,13 @@ class RaylibCoreD extends RaylibCoreModuleBase<
     () => RaylibDebugLabels.TextSplit(text, delimiter),
     () {
       final textPtr = rl.Temp.String$.RawValue(text);
-      final countPtr = calloc<Int>();
+      final countPtr = rl.Temp.Int$.Ref1();
       try {
         final delimiterChar = delimiter.isEmpty ? 0 : delimiter.codeUnitAt(0);
         final partsPtr = rl.Core.TextSplit(textPtr, delimiterChar, countPtr);
         return .generate(countPtr.value, (i) => partsPtr[i].toD);
       } finally {
         calloc.free(textPtr);
-        calloc.free(countPtr);
       }
     },
   );

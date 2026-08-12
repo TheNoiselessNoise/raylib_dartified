@@ -28,6 +28,10 @@ class RaylibExternalLibs {
   }
 }
 
+// NOTE: external modules may not be initialized at all
+//       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
+//       LateInitializationError: Field 'Gui' has not been initialized.
+//       That's expected behavior!
 class Raylib extends RaylibBase {
   static Raylib? _instance;
   static Raylib get instance {
@@ -59,20 +63,12 @@ class Raylib extends RaylibBase {
   @override late RaylibCameraD CameraD;
   late RaylibCore Core;
   @override late RaylibCoreD CoreD;
-  
-  // NOTE: external modules may not be initialized at all
-  //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
-  //       LateInitializationError: Field 'Gui' has not been initialized.
-  //       That's expected behavior!
 
-  late RaylibGui Gui; // external
-  @override late RaylibGuiD GuiD; // external
+  late RaylibGui Gui;
+  @override late RaylibGuiD GuiD;
   
   late RaylibLight Light;
   @override late RaylibLightD LightD;
-
-  late RaylibMsfGif MsfGif; // external
-  // @override late RaylibMsfGifD MsfGifD; // external
 
   late RaylibRlgl Rlgl;
   @override late RaylibRlglD RlglD;
@@ -156,10 +152,13 @@ class Raylib extends RaylibBase {
     registerModule(RaylibGuiD(this)); GuiD = module();
     registerModule(RaylibLight(this)); Light = module();
     registerModule(RaylibLightD(this)); LightD = module();
-    registerModule(RaylibMsfGif(this)); MsfGif = module();
     registerModule(RaylibRlgl(this)); Rlgl = module();
     registerModule(RaylibRlglD(this)); RlglD = module();
     registerModule(RaylibUtils(this)); Utils = module();
+
+    // other external modules (not inside base package)
+    registerModule(RaylibMsfGif(this));
+    registerModule(RaylibMsfGifD(this));
   }
 
   // Custom dynamic libraries
@@ -185,11 +184,6 @@ class Raylib extends RaylibBase {
       throw StateError("No DynamicLibrary registered for $T.");
     }
     return lib;
-  }
-
-  void CloseWindowAndDispose() {
-    Core.CloseWindow();
-    dispose();
   }
 }
 
@@ -231,12 +225,14 @@ Raylib findRaylib(String folder, [RaylibTempBaseOptions? tempOptions]) {
         throw Exception('Could not find ${_platformLib(raylibId)} file');
       }
 
+      final Map<RaylibSupportedLibs, String?> libs = {};
+      for (final lib in RaylibSupportedLibs.values) {
+        libs[lib] = _platformLibPath(raylibPath, lib.id);
+      }
+
       return Raylib(
         core: corePath,
-        libs: {
-          .gui: _platformLibPath(raylibPath, RaylibSupportedLibs.gui.id),
-          .msfGif: _platformLibPath(raylibPath, RaylibSupportedLibs.msfGif.id),
-        },
+        libs: libs,
         tempOptions: tempOptions,
       );
     }

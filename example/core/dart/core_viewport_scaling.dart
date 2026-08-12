@@ -24,11 +24,11 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_viewport_scaling");
   SetTargetFPS(60);
 
-  List<Vector2C> resolutionList = [
-    Vector2$.$new.set(64, 64),
-    Vector2$.$new.set(256, 240),
-    Vector2$.$new.set(320, 180),
-    Vector2$.$new.set(3840, 2160),
+  List<Vector2D> resolutionList = [
+    .vec2(64, 64),
+    .vec2(256, 240),
+    .vec2(320, 180),
+    .vec2(3840, 2160),
   ];
 
   int resolutionIndex = 0;

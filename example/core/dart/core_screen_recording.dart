@@ -2,10 +2,8 @@
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_screen_recording.c
 // Run it: dart run core_screen_recording.dart
 // WARNING: requires `msf_gif` library
-import 'dart:ffi';
 import 'dart:math' as math;
-import 'package:ffi/ffi.dart';
-import '../../base_c.dart';
+import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -15,18 +13,19 @@ const int MAX_SINEWAVE_POINTS = 256;
 
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
+  Temp.debugFree(true);
 
-  InitWindow(screenWidth, screenHeight, "core_screen_recording".toC);
+  InitWindow(screenWidth, screenHeight, "core_screen_recording");
   SetTargetFPS(60);
 
   bool gifRecording = false;
   int gifFrameCounter = 0;
-  final gifState = calloc<MsfGifStateC>();
+  final MsfGifStateD gifState = .zero();
 
-  final circlePosition = Vector2$.$new.set(0.0, screenHeight/2.0);
+  final Vector2D circlePosition = .vec2(0.0, screenHeight/2.0);
   double timeCounter = 0.0;
 
-  final sinePoints = Vector2$.AtUnique(count: MAX_SINEWAVE_POINTS);
+  final List<Vector2D> sinePoints = .generate(MAX_SINEWAVE_POINTS, (_) => .zero());
   for (int i = 0; i < MAX_SINEWAVE_POINTS; i++)
   {
     sinePoints[i].x = i*GetScreenWidth()/180.0;
@@ -43,22 +42,22 @@ void main() {
       timeCounter = 0.0;
     }
 
-    if (IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL.value) && IsKeyPressed(KeyboardKey.KEY_R.value))
+    if (IsKeyDown(.KEY_LEFT_CONTROL) && IsKeyPressed(.KEY_R))
     {
       if (gifRecording)
       {
         gifRecording = false;
         final result = msf_gif_end(gifState);
-        SaveFileData("${GetApplicationDirectory().toD}/screenrecording.gif".toC, result.data, result.dataSize);
+        SaveFileData("${GetApplicationDirectory()}/screenrecording.gif", result.data);
         msf_gif_free(result);
-        TraceLog(TraceLogLevel.LOG_INFO.value, "Finish animated GIF recording".toC);
+        TraceLog(.LOG_INFO, "Finish animated GIF recording");
       }
       else
       {
         gifRecording = true;
         gifFrameCounter = 0;
         msf_gif_begin(gifState, GetRenderWidth(), GetRenderHeight());
-        TraceLog(TraceLogLevel.LOG_INFO.value, "Start animated GIF recording".toC);
+        TraceLog(.LOG_INFO, "Start animated GIF recording");
       }
     }
 
@@ -70,7 +69,7 @@ void main() {
       {
         final imScreen = LoadImageFromScreen();
 
-        msf_gif_frame(gifState, imScreen.data.cast(), (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
+        msf_gif_frame(gifState, imScreen.data, (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
         gifFrameCounter = 0;
 
         UnloadImage(imScreen);
@@ -101,7 +100,7 @@ void main() {
         if ((GetTime()/0.5)%2 == 1)
         {
           DrawCircle(30, GetScreenHeight() - 20, 10, MAROON);
-          DrawText("GIF RECORDING".toC, 50, GetScreenHeight() - 25, 10, RED);
+          DrawText("GIF RECORDING", 50, GetScreenHeight() - 25, 10, RED);
         }
       }
       */

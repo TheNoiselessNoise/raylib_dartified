@@ -57,7 +57,7 @@ void main()
         EndMode2D();
 
         BeginBlendMode(.BLEND_CUSTOM_SEPARATE);
-          rl.Rlgl.rlSetBlendFactorsSeparate(rl.Rlgl.RL_ZERO, rl.Rlgl.RL_ONE, rl.Rlgl.RL_ONE, rl.Rlgl.RL_ZERO, rl.Rlgl.RL_FUNC_ADD, rl.Rlgl.RL_FUNC_ADD);
+          rlSetBlendFactorsSeparate(RL_ZERO, RL_ONE, RL_ONE, RL_ZERO, RL_FUNC_ADD, RL_FUNC_ADD);
           DrawTexture(mask, 0, 0, .WHITE);
         EndBlendMode();
       EndTextureMode();

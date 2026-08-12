@@ -36,39 +36,37 @@ void main()
   );
   skybox.materials[0].shader = skyboxShader;
 
-  int environmentMapLoc = GetShaderLocation(skybox.materials[0].shader, "environmentMap");
   SetShaderValue(
     skybox.materials[0].shader,
-    environmentMapLoc,
+    GetShaderLocation(skybox.materials[0].shader, "environmentMap"),
     [MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value],
     .SHADER_UNIFORM_INT,
   );
 
-  int doGammaLoc = GetShaderLocation(skybox.materials[0].shader, "doGamma");
-  SetShaderValue(
-    skybox.materials[0].shader,
-    doGammaLoc,
-    [useHDR ? 1 : 0],
-    .SHADER_UNIFORM_INT,
-  );
+  void updateSkyboxHDRShader() {
+    SetShaderValue(
+      skybox.materials[0].shader,
+      GetShaderLocation(skybox.materials[0].shader, "doGamma"),
+      [useHDR ? 1 : 0],
+      .SHADER_UNIFORM_INT,
+    );
 
-  int vflippedLoc = GetShaderLocation(skybox.materials[0].shader, "vflipped");
-  SetShaderValue(
-    skybox.materials[0].shader,
-    vflippedLoc,
-    [useHDR ? 1 : 0],
-    .SHADER_UNIFORM_INT,
-  );
+    SetShaderValue(
+      skybox.materials[0].shader,
+      GetShaderLocation(skybox.materials[0].shader, "vflipped"),
+      [useHDR ? 1 : 0],
+      .SHADER_UNIFORM_INT,
+    );
+  } updateSkyboxHDRShader();
 
   final shdrCubemap = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/cubemap.vs",
     "../resources/shaders/glsl$GLSL_VERSION/cubemap.fs"
   );
 
-  int equirectangularMapLoc = GetShaderLocation(shdrCubemap, "equirectangularMap");
   SetShaderValue(
     shdrCubemap,
-    equirectangularMapLoc,
+    GetShaderLocation(shdrCubemap, "equirectangularMap"),
     [0],
     .SHADER_UNIFORM_INT,
   );
@@ -95,6 +93,14 @@ void main()
 
   while (!WindowShouldClose())
   {
+    // NOTE: not part of original example 
+    if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT)) {
+      useHDR = !useHDR;
+      loadSkybox();
+      updateSkyboxHDRShader();
+    }
+    // --- 
+    
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
     if (IsFileDropped())

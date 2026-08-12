@@ -77,24 +77,24 @@ void main()
 
 void DrawTexturePoly(TextureD texture, Vector2D center, List<Vector2D> points, List<Vector2D> texcoords, ColorD tint)
 {
-  rl.Rlgl.rlSetTexture(texture.id);
-  rl.Rlgl.rlBegin(RlDrawMode.RL_TRIANGLES.value);
+  rlSetTexture(texture.id);
+  rlBegin(.RL_TRIANGLES);
 
-  rl.Rlgl.rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+  rlColor4ub(tint.r, tint.g, tint.b, tint.a);
 
   for (int i = 0; i < points.length - 1; i++)
   {
-    rl.Rlgl.rlTexCoord2f(0.5, 0.5);
-    rl.Rlgl.rlVertex2f(center.x, center.y);
+    rlTexCoord2f(0.5, 0.5);
+    rlVertex2f(center.x, center.y);
 
-    rl.Rlgl.rlTexCoord2f(texcoords[i].x, texcoords[i].y);
-    rl.Rlgl.rlVertex2f(points[i].x + center.x, points[i].y + center.y);
+    rlTexCoord2f(texcoords[i].x, texcoords[i].y);
+    rlVertex2f(points[i].x + center.x, points[i].y + center.y);
 
-    rl.Rlgl.rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
-    rl.Rlgl.rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+    rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+    rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
   }
 
-  rl.Rlgl.rlEnd();
+  rlEnd();
 
-  rl.Rlgl.rlSetTexture(0);
+  rlSetTexture(0);
 }

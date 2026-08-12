@@ -39,6 +39,16 @@ class ModelSkeletonD extends StructD<ModelSkeletonC, ModelSkeletonD> with ModelS
   QuaternionD,
   Vector4D
 > {
+
+  int _boneCount;
+  @override get boneCount {
+    structOnOp((p) => _boneCount = p.ref.boneCount);
+    return _boneCount;
+  }
+  @override set boneCount(int value) {
+    _boneCount = value;
+    structOnOp((p) => p.ref.boneCount = value);
+  }
   
   late NativeLiveListPointerStruct<BoneInfoC, BoneInfoD> _bones;
   @override get bones {
@@ -70,7 +80,7 @@ class ModelSkeletonD extends StructD<ModelSkeletonC, ModelSkeletonD> with ModelS
     super.originalPointer,
     List<BoneInfoD>? bones,
     List<TransformD>? bindPose,
-  }) {
+  }) : _boneCount = bones?.length ?? 0 {
     _bones = .new(bones ?? [], originalPointer?.ref.bones);
     _bindPose = .new(bindPose ?? [], originalPointer?.ref.bindPose);
   }
@@ -79,6 +89,7 @@ class ModelSkeletonD extends StructD<ModelSkeletonC, ModelSkeletonD> with ModelS
 
   @override
   ModelSkeletonD setD(ModelSkeletonD o) {
+    boneCount = o.boneCount;
     bones = .from(o.bones);
     bindPose = .from(o.bindPose);
     return this;
@@ -116,6 +127,7 @@ class ModelSkeletonD extends StructD<ModelSkeletonC, ModelSkeletonD> with ModelS
   @override
   void nativeReadFrom(ModelSkeletonC p) {
     structOnOp((o) {
+      o.ref.boneCount = p.boneCount;
       o.ref.bones = p.bones;
       o.ref.bindPose = p.bindPose;
     });

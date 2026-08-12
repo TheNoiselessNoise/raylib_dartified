@@ -5,7 +5,6 @@
 import 'dart:math' as math;
 import '../../base_dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const double FLT_MAX = 340282346638528859811704183484516925440.0;

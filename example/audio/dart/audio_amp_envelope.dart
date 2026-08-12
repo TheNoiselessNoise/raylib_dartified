@@ -11,12 +11,13 @@ const int screenHeight = 450;
 const int BUFFER_SIZE = 4096;
 const int SAMPLE_RATE = 44100;
 
-// ADSRState
-const int IDLE = 0;
-const int ATTACK = 1;
-const int DECAY = 2;
-const int SUSTAIN = 3;
-const int RELEASE = 4;
+enum ADSRState {
+  IDLE,
+  ATTACK,
+  DECAY,
+  SUSTAIN,
+  RELEASE,
+}
 
 class Envelope {
   double attackTime = 0;
@@ -24,7 +25,7 @@ class Envelope {
   double sustainLevel = 0;
   double releaseTime = 0;
   double currentValue = 0;
-  int state = IDLE;
+  ADSRState state = .IDLE;
 }
 
 void main() {
@@ -48,17 +49,17 @@ void main() {
   env.sustainLevel = 0.5;
   env.releaseTime = 1.0;
   env.currentValue = 0.0;
-  env.state = IDLE;
+  env.state = .IDLE;
 
   while (!WindowShouldClose())
   {
-    if (IsKeyPressed(.KEY_SPACE)) env.state = ATTACK;
+    if (IsKeyPressed(.KEY_SPACE)) env.state = .ATTACK;
 
-    if (IsKeyReleased(.KEY_SPACE) && (env.state != IDLE)) env.state = RELEASE;
+    if (IsKeyReleased(.KEY_SPACE) && (env.state != .IDLE)) env.state = .RELEASE;
 
     if (IsAudioStreamProcessed(stream))
     {
-      if ((env.state != IDLE) || (env.currentValue > 0.0))
+      if ((env.state != .IDLE) || (env.currentValue > 0.0))
       {
         for (int i = 0; i < BUFFER_SIZE; i++)
         {
@@ -125,31 +126,31 @@ void UpdateEnvelope(Envelope env)
 
   switch(env.state)
   {
-    case ATTACK: {
+    case .ATTACK: {
       env.currentValue += (1.0/env.attackTime)*sampleTime;
       if (env.currentValue >= 1.0)
       {
         env.currentValue = 1.0;
-        env.state = DECAY;
+        env.state = .DECAY;
       }
     }
-    case DECAY: {
+    case .DECAY: {
       env.currentValue -= ((1.0 - env.sustainLevel)/env.decayTime)*sampleTime;
       if (env.currentValue <= env.sustainLevel)
       {
         env.currentValue = env.sustainLevel;
-        env.state = SUSTAIN;
+        env.state = .SUSTAIN;
       }
     }
-    case SUSTAIN: {
+    case .SUSTAIN: {
       env.currentValue = env.sustainLevel;
     }
-    case RELEASE: {
+    case .RELEASE: {
       env.currentValue -= (env.sustainLevel/env.releaseTime)*sampleTime;
       if (env.currentValue <= 0.001)
       {
         env.currentValue = 0.0;
-        env.state = IDLE;
+        env.state = .IDLE;
       }
     }
     default: break;

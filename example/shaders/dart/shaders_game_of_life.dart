@@ -94,7 +94,7 @@ void main()
   var previousWorld = world1;
 
   ImageD? imageToDraw;
-  ImageD? pattern;
+  late ImageD pattern;
 
   int firstColor = -1;
   Vector2D prevMousePos = .zero();

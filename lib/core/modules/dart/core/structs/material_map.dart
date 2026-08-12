@@ -29,28 +29,50 @@ extension MaterialMapCEx on MaterialMapC {
   );
 }
 
-class MaterialMapD extends StructDLiteral<MaterialMapC, MaterialMapD> with MaterialMapBase<
+class MaterialMapD extends StructD<MaterialMapC, MaterialMapD> with MaterialMapBase<
   MaterialMapD,
   TextureD,
   ColorD
 > {
-  @override
-  TextureD texture;
-  
-  @override
-  ColorD color;
-  
-  @override
-  double value;
+  TextureD _texture;
+  @override get texture {
+    structOnOp((p) => _texture.nativeReadFrom(p.ref.texture));
+    return _texture;
+  }
+  @override set texture(TextureD value) {
+    _texture = value;
+    structOnOp((p) => value.nativeWriteInto(p.ref.texture));
+  }
 
+  ColorD _color;
+  @override get color {
+    structOnOp((p) => _color.nativeReadFrom(p.ref.color));
+    return _color;
+  }
+  @override set color(ColorD value) {
+    _color = value;
+    structOnOp((p) => value.nativeWriteInto(p.ref.color));
+  }
+  
+  double _value;
+  @override get value {
+    structOnOp((p) => _value = p.ref.value);
+    return _value;
+  }
+  @override set value(double value) {
+    _value = value;
+    structOnOp((p) => p.ref.value = value);
+  }
+  
   MaterialMapD({
     super.originalPointer,
     TextureD? texture,
     ColorD? color,
-    this.value = 0,
+    double value = 0,
   }) :
-    texture = texture ?? .zero(),
-    color = color ?? .zero();
+    _texture = texture ?? .zero(),
+    _color = color ?? .zero(),
+    _value = value;
 
   factory MaterialMapD.zero() => .new();
 

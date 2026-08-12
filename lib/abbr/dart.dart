@@ -4,6 +4,7 @@ export '../core/modules/dart/camera/abbr.dart';
 export '../core/modules/dart/core/abbr.dart';
 export '../core/modules/dart/gui/abbr.dart';
 export '../core/modules/dart/light/abbr.dart';
+export '../core/modules/dart/msf_gif/abbr.dart';
 export '../core/modules/dart/rlgl/abbr.dart';
 
 export 'package:raylib_dartified_base/abbr.dart';

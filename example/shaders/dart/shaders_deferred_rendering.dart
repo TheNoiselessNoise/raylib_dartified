@@ -235,8 +235,8 @@ void main()
             rlEnableColorBlend();
           EndMode3D();
 
-          rlBindFramebuffer(rl.Rlgl.RL_READ_FRAMEBUFFER, gBuffer.framebuffer);
-          rlBindFramebuffer(rl.Rlgl.RL_DRAW_FRAMEBUFFER, 0);
+          rlBindFramebuffer(RL_READ_FRAMEBUFFER, gBuffer.framebuffer);
+          rlBindFramebuffer(RL_DRAW_FRAMEBUFFER, 0);
           rlBlitFramebuffer(0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, 0x00000100);
           rlDisableFramebuffer();
 

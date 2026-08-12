@@ -78,7 +78,7 @@ void main()
     BeginTextureMode(target);
       ClearBackground(.WHITE);
 
-      rl.Rlgl.rlEnableDepthTest();
+      rlEnableDepthTest();
       BeginShaderMode(shdrRaymarch);
         DrawRectangleRec(
           .rect(0, 0, screenWidth, screenHeight),

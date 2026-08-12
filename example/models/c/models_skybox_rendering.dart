@@ -36,46 +36,38 @@ void main()
   );
   skybox.materials[0].shader = skyboxShader;
 
-  final shaderIntValue = Int$.At('shaderValue');
-
-  int environmentMapLoc = GetShaderLocation(skybox.materials[0].shader, "environmentMap".toC);
-  shaderIntValue.value = MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value;
   SetShaderValue(
     skybox.materials[0].shader,
-    environmentMapLoc,
-    shaderIntValue.cast(),
+    GetShaderLocation(skybox.materials[0].shader, "environmentMap".toC),
+    Int$.Value(MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
-  int doGammaLoc = GetShaderLocation(skybox.materials[0].shader, "doGamma".toC);
-  shaderIntValue.value = useHDR ? 1 : 0;
-  SetShaderValue(
-    skybox.materials[0].shader,
-    doGammaLoc,
-    shaderIntValue.cast(),
-    ShaderUniformDataType.SHADER_UNIFORM_INT.value,
-  );
+  void updateSkyboxHDRShader() {
+    SetShaderValue(
+      skybox.materials[0].shader,
+      GetShaderLocation(skybox.materials[0].shader, "doGamma".toC),
+      Int$.Value(useHDR ? 1 : 0).cast(),
+      ShaderUniformDataType.SHADER_UNIFORM_INT.value,
+    );
 
-  int vflippedLoc = GetShaderLocation(skybox.materials[0].shader, "vflipped".toC);
-  shaderIntValue.value = useHDR ? 1 : 0;
-  SetShaderValue(
-    skybox.materials[0].shader,
-    vflippedLoc,
-    shaderIntValue.cast(),
-    ShaderUniformDataType.SHADER_UNIFORM_INT.value,
-  );
+    SetShaderValue(
+      skybox.materials[0].shader,
+      GetShaderLocation(skybox.materials[0].shader, "vflipped".toC),
+      Int$.Value(useHDR ? 1 : 0).cast(),
+      ShaderUniformDataType.SHADER_UNIFORM_INT.value,
+    );
+  } updateSkyboxHDRShader();
 
   final shdrCubemap = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/cubemap.vs".toC,
     "../resources/shaders/glsl$GLSL_VERSION/cubemap.fs".toC,
   );
 
-  int equirectangularMapLoc = GetShaderLocation(shdrCubemap, "equirectangularMap".toC);
-  shaderIntValue.value = 0;
   SetShaderValue(
     shdrCubemap,
-    equirectangularMapLoc,
-    shaderIntValue.cast(),
+    GetShaderLocation(shdrCubemap, "equirectangularMap".toC),
+    Int$.Value(0).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
@@ -101,6 +93,14 @@ void main()
 
   while (!WindowShouldClose())
   {
+    // NOTE: not part of original example 
+    if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_RIGHT.value)) {
+      useHDR = !useHDR;
+      loadSkybox();
+      updateSkyboxHDRShader();
+    }
+    // --- 
+
     UpdateCamera(camera, CameraMode.CAMERA_FIRST_PERSON.value);
 
     if (IsFileDropped())

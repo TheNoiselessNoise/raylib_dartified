@@ -39,7 +39,7 @@ void main()
     rlLoadVertexBuffer(Float32List.fromList(mesh.texcoords2), false);
   rlEnableVertexArray(mesh.vaoId);
   
-  rlSetVertexAttribute(5, 2, rl.Rlgl.RL_FLOAT, false, 0, 0);
+  rlSetVertexAttribute(5, 2, RL_FLOAT, false, 0, 0);
   rlEnableVertexAttribute(5);
   rlDisableVertexArray();
 

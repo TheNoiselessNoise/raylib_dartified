@@ -47,7 +47,7 @@ void main()
       {
         var updatedShader = LoadShader(null, fragShaderFileName);
 
-        if (updatedShader.id != rl.Rlgl.rlGetShaderIdDefault())
+        if (updatedShader.id != rlGetShaderIdDefault())
         {
           UnloadShader(shader);
           shader = updatedShader;

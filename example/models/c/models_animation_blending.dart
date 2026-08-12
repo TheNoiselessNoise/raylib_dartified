@@ -28,10 +28,10 @@ void main()
 
   // Load skinning shader
   // WARNING: It requires SUPPORT_GPU_SKINNING enabled on raylib (disabled by default)
-  final skinningShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.vs".toC,
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.fs".toC
-  );
+  // final skinningShader = LoadShader(
+  //   "../resources/shaders/glsl$GLSL_VERSION/skinning.vs".toC,
+  //   "../resources/shaders/glsl$GLSL_VERSION/skinning.fs".toC
+  // );
 
   // Assign skinning shader to all materials shaders
   // for (int i = 0; i < model.ref.materialCount; i++) model.ref.materials[i].shader = skinningShader;
@@ -231,7 +231,7 @@ void main()
 
   UnloadModelAnimations(anims, animCount.value);
   UnloadModel(model.ref);
-  UnloadShader(skinningShader);
+  // UnloadShader(skinningShader);
   
   CloseWindowAndDispose();
 }
