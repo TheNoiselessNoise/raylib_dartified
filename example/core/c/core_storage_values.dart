@@ -66,7 +66,7 @@ void main() {
 bool SaveStorageValue(StorageData position, int value)
 {
   bool success = false;
-  final dataSize = Int$.$newPtr;
+  final dataSize = Int$.val.$newPtr;
   int newDataSize = 0;
   var fileData = LoadFileData(STORAGE_DATA_FILE.toC, dataSize);
   Pointer<UnsignedChar> newFileData = nullptr;
@@ -136,7 +136,7 @@ bool SaveStorageValue(StorageData position, int value)
 int LoadStorageValue(StorageData position)
 {
   int value = 0;
-  final dataSize = Int$.$newPtr;
+  final dataSize = Int$.val.$newPtr;
   final fileData = LoadFileData(STORAGE_DATA_FILE.toC, dataSize);
 
   if (fileData != nullptr)

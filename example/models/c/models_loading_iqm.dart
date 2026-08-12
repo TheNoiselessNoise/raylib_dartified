@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_loading_iqm".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(10.0, 10.0, 10.0);
   camera.ref.target.set(0.0, 4.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -24,10 +24,10 @@ void main()
 
   final model = LoadModel("../resources/models/iqm/guy.iqm".toC);
   final texture = LoadTexture("../resources/models/iqm/guytex.png".toC);
-  SetMaterialTexture(Material$.RawValueUnique(model.materials[0]), MATERIAL_MAP_DIFFUSE.value, texture);
-  final position = Vector3$.$new;
+  SetMaterialTexture(Material$.val.RawValueUnique(model.materials[0]), MATERIAL_MAP_DIFFUSE.value, texture);
+  final position = Vector3$.val.$new;
 
-  final animCount = Int$.$newPtr;
+  final animCount = Int$.val.$newPtr;
   final anims = LoadModelAnimations("../resources/models/iqm/guyanim.iqm".toC, animCount);
 
   int animIndex = 0;
@@ -50,9 +50,9 @@ void main()
         DrawModelEx(
           model,
           position,
-          Vector3$.$1.set(1.0, 0.0, 0.0),
+          Vector3$.val.$1.set(1.0, 0.0, 0.0),
           -90.0,
-          Vector3$.$2.set(1.0, 1.0, 1.0),
+          Vector3$.val.$2.set(1.0, 1.0, 1.0),
           WHITE
         );
 

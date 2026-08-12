@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_rlgl_solar_system".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(16, 16, 16);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -74,9 +74,9 @@ void main()
         rlPopMatrix();
 
         DrawCircle3D(
-          Vector3$.$zero,
+          Vector3$.val.$zero,
           earthOrbitRadius,
-          Vector3$.$1.set(1, 0, 0),
+          Vector3$.val.$1.set(1, 0, 0),
           90.0,
           Fade(RED, 0.5)
         );

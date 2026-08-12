@@ -22,9 +22,9 @@ void main() {
 
   bool btnBackPressed = false;
 
-  final listScrollIndex = Int$.ValueUnique(0);
-  final listItemActive = Int$.ValueUnique(-1);
-  final listItemFocused = Int$.ValueUnique(-1);
+  final listScrollIndex = Int$.val.ValueUnique(0);
+  final listItemActive = Int$.val.ValueUnique(-1);
+  final listItemFocused = Int$.val.ValueUnique(-1);
 
   while (!WindowShouldClose()) {
     if (btnBackPressed)
@@ -37,16 +37,16 @@ void main() {
     BeginDrawing();
       ClearBackground(RAYWHITE);
 
-      btnBackPressed = GuiButton(Rectangle$.$1.set(40.0, 10.0, 48, 28), "<".toC).toBool();
+      btnBackPressed = GuiButton(Rectangle$.val.$1.set(40.0, 10.0, 48, 28), "<".toC).toBool();
 
       GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, GuiGetFont().baseSize*2);
-      GuiLabel(Rectangle$.$1.set(40 + 48 + 10, 10, 700, 28), directory);
+      GuiLabel(Rectangle$.val.$1.set(40 + 48 + 10, 10, 700, 28), directory);
       GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, GuiGetFont().baseSize);
 
       GuiSetStyle(GuiControl.LISTVIEW.value, GuiControlProperty.TEXT_ALIGNMENT.value, GuiTextAlignment.TEXT_ALIGN_LEFT.value);
       GuiSetStyle(GuiControl.LISTVIEW.value, GuiControlProperty.TEXT_PADDING.value, 40);
       GuiListViewEx(
-        Rectangle$.$1.set(0, 50, GetScreenWidth(), GetScreenHeight() - 50),
+        Rectangle$.val.$1.set(0, 50, GetScreenWidth(), GetScreenHeight() - 50),
         files.paths, files.count,
         listScrollIndex, listItemActive, listItemFocused
       );

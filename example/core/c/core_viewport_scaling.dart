@@ -18,35 +18,35 @@ enum ViewportType {
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final screenWidth = Int$.ValueUnique(800);
-  final screenHeight = Int$.ValueUnique(450);
+  final screenWidth = Int$.val.ValueUnique(800);
+  final screenHeight = Int$.val.ValueUnique(450);
 
   SetConfigFlags(ConfigFlags.FLAG_WINDOW_RESIZABLE.value);
   InitWindow(screenWidth.value, screenHeight.value, "core_viewport_scaling".toC);
   SetTargetFPS(60);
 
   List<Vector2C> resolutionList = [
-    Vector2$.$new.set(64, 64),
-    Vector2$.$new.set(256, 240),
-    Vector2$.$new.set(320, 180),
-    Vector2$.$new.set(3840, 2160),
+    Vector2$.val.$new.set(64, 64),
+    Vector2$.val.$new.set(256, 240),
+    Vector2$.val.$new.set(320, 180),
+    Vector2$.val.$new.set(3840, 2160),
   ];
 
   int resolutionIndex = 0;
   int gameWidth = 64;
   int gameHeight = 64;
 
-  final target = RenderTexture$.$newPtr;
-  final sourceRect = Rectangle$.$newPtr;
-  final destRect = Rectangle$.$newPtr;
+  final target = RenderTexture$.val.$newPtr;
+  final sourceRect = Rectangle$.val.$newPtr;
+  final destRect = Rectangle$.val.$newPtr;
 
   ViewportType viewportType = .KEEP_ASPECT_INTEGER;
   ResizeRenderSize(viewportType, screenWidth, screenHeight, gameWidth, gameHeight, sourceRect, destRect, target);
 
-  final decreaseResolutionButton = Rectangle$.$new.set(200, 30, 10, 10);
-  final increaseResolutionButton = Rectangle$.$new.set(215, 30, 10, 10);
-  final decreaseTypeButton = Rectangle$.$new.set(200, 45, 10, 10);
-  final increaseTypeButton = Rectangle$.$new.set(215, 45, 10, 10);
+  final decreaseResolutionButton = Rectangle$.val.$new.set(200, 30, 10, 10);
+  final increaseResolutionButton = Rectangle$.val.$new.set(215, 30, 10, 10);
+  final decreaseTypeButton = Rectangle$.val.$new.set(200, 45, 10, 10);
+  final increaseTypeButton = Rectangle$.val.$new.set(215, 45, 10, 10);
 
   while (!WindowShouldClose()) {
     if (IsWindowResized()) ResizeRenderSize(viewportType, screenWidth, screenHeight, gameWidth, gameHeight, sourceRect, destRect, target);
@@ -83,7 +83,7 @@ void main() {
       ResizeRenderSize(viewportType, screenWidth, screenHeight, gameWidth, gameHeight, sourceRect, destRect, target);
     }
 
-    final textureMousePosition = Vector2$.At('textureMousePosition');
+    final textureMousePosition = Vector2$.val.At('textureMousePosition');
     Screen2RenderTexturePosition(textureMousePosition, mousePosition, sourceRect.ref, destRect.ref);
 
     BeginTextureMode(target.ref);
@@ -94,9 +94,9 @@ void main() {
     BeginDrawing();
       ClearBackground(BLACK);
 
-      DrawTexturePro(target.ref.texture, sourceRect.ref, destRect.ref, Vector2$.$zero, 0.0, WHITE);
+      DrawTexturePro(target.ref.texture, sourceRect.ref, destRect.ref, Vector2$.val.$zero, 0.0, WHITE);
 
-      final infoRect = Rectangle$.$1.set(5, 5, 330, 105);
+      final infoRect = Rectangle$.val.$1.set(5, 5, 330, 105);
       DrawRectangleRec(infoRect, Fade(LIGHTGRAY, 0.7));
       DrawRectangleLinesEx(infoRect, 1, BLUE);
 
@@ -104,7 +104,7 @@ void main() {
       DrawText("Game Resolution: $gameWidth x $gameHeight".toC, 15, 30, 10, BLACK);
 
       DrawText("Type: ${viewportType.name}".toC, 15, 45, 10, BLACK);
-      final scaleRatio = Vector2$.$1.set(destRect.ref.width/sourceRect.ref.width, -destRect.ref.height/sourceRect.ref.height);
+      final scaleRatio = Vector2$.val.$1.set(destRect.ref.width/sourceRect.ref.width, -destRect.ref.height/sourceRect.ref.height);
       if (scaleRatio.x < 0.001 || scaleRatio.y < 0.001) DrawText("Scale ratio: INVALID".toC, 15, 60, 10, BLACK);
       else DrawText("Scale ratio: ${scaleRatio.x.f2} x ${scaleRatio.y.f2}".toC, 15, 60, 10, BLACK);
 
@@ -249,7 +249,7 @@ void ResizeRenderSize(
 
 void Screen2RenderTexturePosition(Pointer<Vector2C> dest, Vector2C point, RectangleC textureRect, RectangleC scaledRect)
 {
-  final relativePosition = Vector2$.$1.set(point.x - scaledRect.x, point.y - scaledRect.y);
-  final ratio = Vector2$.$2.set(textureRect.width/scaledRect.width, -textureRect.height/scaledRect.height);
+  final relativePosition = Vector2$.val.$1.set(point.x - scaledRect.x, point.y - scaledRect.y);
+  final ratio = Vector2$.val.$2.set(textureRect.width/scaledRect.width, -textureRect.height/scaledRect.height);
   dest.set(relativePosition.x*ratio.x, relativePosition.y*ratio.x);
 }

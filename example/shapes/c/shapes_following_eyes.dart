@@ -15,21 +15,21 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_following_eyes".toC);
   SetTargetFPS(60);
 
-  final scleraLeftPosition = Vector2$.At('scleraLeftPosition').set(
+  final scleraLeftPosition = Vector2$.val.At('scleraLeftPosition').set(
     GetScreenWidth()/2.0 - 100.0,
     GetScreenHeight()/2.0
   );
-  final scleraRightPosition = Vector2$.At('scleraRightPosition').set(
+  final scleraRightPosition = Vector2$.val.At('scleraRightPosition').set(
     GetScreenWidth()/2.0 + 100.0,
     GetScreenHeight()/2.0
   );
   double scleraRadius = 80;
 
-  final irisLeftPosition = Vector2$.At('irisLeftPosition').set(
+  final irisLeftPosition = Vector2$.val.At('irisLeftPosition').set(
     GetScreenWidth()/2.0 - 100.0,
     GetScreenHeight()/2.0
   );
-  final irisRightPosition = Vector2$.At('irisRightPosition').set(
+  final irisRightPosition = Vector2$.val.At('irisRightPosition').set(
     GetScreenWidth()/2.0 + 100.0,
     GetScreenHeight()/2.0
   );

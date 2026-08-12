@@ -16,10 +16,10 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final mapPosition = Vector3$.At('mapPosition').set(-16.0, 0.0, -8.0);
-  final oldCamPos = Vector3$.At('oldCamPos');
+  final mapPosition = Vector3$.val.At('mapPosition').set(-16.0, 0.0, -8.0);
+  final oldCamPos = Vector3$.val.At('oldCamPos');
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0.2, 0.4, 0.2);
   camera.ref.target.set(0.185, 0.4, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -29,7 +29,7 @@ void main()
   final imMap = LoadImage("../resources/cubicmap.png".toC);
   final cubicmap = LoadTextureFromImage(imMap);
 
-  final mesh = GenMeshCubicmap(imMap, Vector3$.$1.set(1.0, 1.0, 1.0));
+  final mesh = GenMeshCubicmap(imMap, Vector3$.val.$1.set(1.0, 1.0, 1.0));
   final model = LoadModelFromMesh(mesh); 
 
   final texture = LoadTexture("../resources/cubicmap_atlas.png".toC);
@@ -66,8 +66,8 @@ void main()
             ((x >= 0) && (x < cubicmap.width)) &&
             (mapPixels[y*cubicmap.width + x].r == 255) &&
             (CheckCollisionCircleRec(
-              Vector2$.$1.setD(playerPos), playerRadius,
-              Rectangle$.$1.set(mapPosition.ref.x - 0.5 + x*1.0, mapPosition.ref.z - 0.5 + y*1.0, 1.0, 1.0),
+              Vector2$.val.$1.setD(playerPos), playerRadius,
+              Rectangle$.val.$1.set(mapPosition.ref.x - 0.5 + x*1.0, mapPosition.ref.z - 0.5 + y*1.0, 1.0, 1.0),
             ))
           ) {
             camera.ref.position.setC(oldCamPos.ref);
@@ -86,7 +86,7 @@ void main()
 
       DrawTextureEx(
         cubicmap,
-        Vector2$.$1.set(GetScreenWidth() - cubicmap.width*4.0 - 20, 20.0),
+        Vector2$.val.$1.set(GetScreenWidth() - cubicmap.width*4.0 - 20, 20.0),
         0.0, 4.0, WHITE
       );
       DrawRectangleLines(

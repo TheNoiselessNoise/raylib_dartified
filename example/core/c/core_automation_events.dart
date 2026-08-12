@@ -52,13 +52,13 @@ void main() {
   envElements[3].set(250, 300,  100,  10,  true, GRAY);
   envElements[4].set(650, 300,  100,  10,  true, GRAY);
 
-  final camera = Camera2D$.$newPtr;
+  final camera = Camera2D$.val.$newPtr;
   camera.ref.target = player.ref.position;
   camera.ref.offset.set(screenWidth/2.0, screenHeight/2.0);
   camera.ref.rotation = 0.0;
   camera.ref.zoom = 1.0;
   
-  final aelist = AutomationEventList$.At('aelist');
+  final aelist = AutomationEventList$.val.At('aelist');
   aelist.ref = LoadAutomationEventList(nullptr);
   SetAutomationEventList(aelist);
   bool eventRecording = false;
@@ -186,8 +186,8 @@ void main() {
       maxY = math.max(element.rect.y + element.rect.height, maxY);
     }
 
-    final max = GetWorldToScreen2D(Vector2$.$1.set(maxX, maxY), camera.ref);
-    final min = GetWorldToScreen2D(Vector2$.$1.set(minX, minY), camera.ref);
+    final max = GetWorldToScreen2D(Vector2$.val.$1.set(maxX, maxY), camera.ref);
+    final min = GetWorldToScreen2D(Vector2$.val.$1.set(minX, minY), camera.ref);
 
     if (max.x < screenWidth) camera.ref.offset.x = screenWidth - (max.x - screenWidth/2);
     if (max.y < screenHeight) camera.ref.offset.y = screenHeight - (max.y - screenHeight/2);
@@ -251,7 +251,7 @@ void main() {
           DrawRectangleRec(envElements[i].rect, envElements[i].color);
         }
 
-        DrawRectangleRec(Rectangle$.$1.set(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), RED);
+        DrawRectangleRec(Rectangle$.val.$1.set(player.ref.position.x - 20, player.ref.position.y - 40, 40, 40), RED);
 
       EndMode2D();
       
@@ -282,9 +282,9 @@ void main() {
         DrawRectangle(10, 160, 290, 30, Fade(LIME, 0.3));
         DrawRectangleLines(10, 160, 290, 30, Fade(DARKGREEN, 0.8));
         DrawTriangle(
-          Vector2$.$1.set(20, 155 + 10),
-          Vector2$.$2.set(20, 155 + 30),
-          Vector2$.$3.set(40, 155 + 20),
+          Vector2$.val.$1.set(20, 155 + 10),
+          Vector2$.val.$2.set(20, 155 + 30),
+          Vector2$.val.$3.set(40, 155 + 20),
           DARKGREEN
         );
 

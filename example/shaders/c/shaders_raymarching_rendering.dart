@@ -18,7 +18,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2.5, 2.5, 3.0);
   camera.ref.target.set(0.0, 0.0, 0.7);
   camera.ref.up.set(0, 1, 0);
@@ -38,7 +38,7 @@ void main()
   final resolution = [ screenWidth, screenHeight ];
   void updateShaderResolution() {
     SetShaderValue(shader, resolutionLoc,
-      Float32$.Array(resolution).cast(),
+      Float32$.val.Array(resolution).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
     );
   } updateShaderResolution();
@@ -53,17 +53,17 @@ void main()
     runTime += deltaTime;
 
     SetShaderValue(shader, viewEyeLoc,
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
     SetShaderValue(shader, viewCenterLoc,
-      Vector3$.$1Ptr.setC(camera.ref.target).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.target).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
     SetShaderValue(shader, runTimeLoc,
-      Float32$.Value(runTime).cast(),
+      Float32$.val.Value(runTime).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

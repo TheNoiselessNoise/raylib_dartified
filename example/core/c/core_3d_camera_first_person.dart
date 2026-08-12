@@ -11,10 +11,10 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final movement = Vector3$.At('movement');
-  final zoom = Vector3$.At('zoom');
+  final movement = Vector3$.val.At('movement');
+  final zoom = Vector3$.val.At('zoom');
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 2, 4);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
@@ -25,7 +25,7 @@ void main() {
   List<double> heights = [];
   List<Vector3D> positions = [];
 
-  final colors = Color$.At('colors', MAX_COLUMNS);
+  final colors = Color$.val.At('colors', MAX_COLUMNS);
 
   for (int i = 0; i < MAX_COLUMNS; i++) {
     heights.add(GetRandomValue(1, 12).toDouble());
@@ -109,14 +109,14 @@ void main() {
 
       BeginMode3D(camera.ref);
 
-        DrawPlane(Vector3$.$1.set(0, 0, 0), Vector2$.$1.set(32, 32), LIGHTGRAY);
-        DrawCube(Vector3$.$1.set(-16, 2.5, 0), 1, 5, 32, BLUE);
-        DrawCube(Vector3$.$1.set(16, 2.5, 0), 1, 5, 32, LIME);
-        DrawCube(Vector3$.$1.set(0, 2.5, 16), 32, 5, 1, GOLD);
+        DrawPlane(Vector3$.val.$1.set(0, 0, 0), Vector2$.val.$1.set(32, 32), LIGHTGRAY);
+        DrawCube(Vector3$.val.$1.set(-16, 2.5, 0), 1, 5, 32, BLUE);
+        DrawCube(Vector3$.val.$1.set(16, 2.5, 0), 1, 5, 32, LIME);
+        DrawCube(Vector3$.val.$1.set(0, 2.5, 16), 32, 5, 1, GOLD);
 
         for (int i = 0; i < MAX_COLUMNS; i++) {
-          DrawCube(Vector3$.$1.setD(positions[i]), 2, heights[i], 2, colors[i]);
-          DrawCubeWires(Vector3$.$1.setD(positions[i]), 2, heights[i], 2, MAROON);
+          DrawCube(Vector3$.val.$1.setD(positions[i]), 2, heights[i], 2, colors[i]);
+          DrawCubeWires(Vector3$.val.$1.setD(positions[i]), 2, heights[i], 2, MAROON);
         }
 
         if (cameraMode == CameraMode.CAMERA_THIRD_PERSON.value) {

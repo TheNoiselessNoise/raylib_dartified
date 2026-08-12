@@ -52,7 +52,7 @@ void main()
 
   bool drawInPerformanceMode = true;
 
-  final color = Color$.$1.set(0, 0, 0, 200);
+  final color = Color$.val.$1.set(0, 0, 0, 200);
 
   while (!WindowShouldClose())
   {
@@ -129,15 +129,15 @@ void main()
 
       magicCircleRotation++;
       DrawRectanglePro(
-        Rectangle$.$1.set(screenWidth/2, screenHeight/2, 120, 120),
-        Vector2$.$1.set(60.0, 60.0),
+        Rectangle$.val.$1.set(screenWidth/2, screenHeight/2, 120, 120),
+        Vector2$.val.$1.set(60.0, 60.0),
         magicCircleRotation,
         PURPLE
       );  
 
       DrawRectanglePro(
-        Rectangle$.$1.set(screenWidth/2, screenHeight/2, 120, 120),
-        Vector2$.$1.set(60.0, 60.0),
+        Rectangle$.val.$1.set(screenWidth/2, screenHeight/2, 120, 120),
+        Vector2$.val.$1.set(60.0, 60.0),
         magicCircleRotation + 45,
         PURPLE
       );
@@ -168,12 +168,12 @@ void main()
           if (!bullets[i].disabled)
           {
             DrawCircleV(
-              Vector2$.$1.setD(bullets[i].position),
+              Vector2$.val.$1.setD(bullets[i].position),
               bulletRadius.toDouble(),
               bullets[i].color
             );
             DrawCircleLinesV(
-              Vector2$.$1.setD(bullets[i].position),
+              Vector2$.val.$1.setD(bullets[i].position),
               bulletRadius.toDouble(),
               BLACK
             );

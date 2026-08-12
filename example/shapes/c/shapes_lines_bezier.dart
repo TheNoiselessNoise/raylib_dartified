@@ -15,8 +15,8 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_lines_bezier".toC);
   SetTargetFPS(60);
 
-  final startPoint = Vector2$.At('startPoint').set(30, 30);
-  final endPoint = Vector2$.At('endPoint').set(screenWidth - 30, screenHeight - 30);
+  final startPoint = Vector2$.val.At('startPoint').set(30, 30);
+  final endPoint = Vector2$.val.At('endPoint').set(screenWidth - 30, screenHeight - 30);
   bool moveStartPoint = false;
   bool moveEndPoint = false;
 

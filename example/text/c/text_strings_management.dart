@@ -38,9 +38,9 @@ void main()
   SetTargetFPS(60);
 
   final textParticles = calloc<TextParticle>(MAX_TEXT_PARTICLES);
-  final particleCount = Int$.At('particleCount');
+  final particleCount = Int$.val.At('particleCount');
   Pointer<TextParticle> grabbedTextParticle = nullptr;
-  final pressOffset = Vector2$.At('pressOffset');
+  final pressOffset = Vector2$.val.At('pressOffset');
 
   PrepareFirstTextParticle(String$.RawValue("raylib => fun videogames programming!"), textParticles, particleCount);
 
@@ -192,7 +192,7 @@ void main()
       for (int i = 0; i < particleCount.value; i++)
       {
         final tp = textParticles[i];
-        DrawRectangleRec(Rectangle$.$1.set(tp.rect.x - tp.borderWidth, tp.rect.y - tp.borderWidth, tp.rect.width + tp.borderWidth * 2, tp.rect.height + tp.borderWidth * 2), BLACK);
+        DrawRectangleRec(Rectangle$.val.$1.set(tp.rect.x - tp.borderWidth, tp.rect.y - tp.borderWidth, tp.rect.width + tp.borderWidth * 2, tp.rect.height + tp.borderWidth * 2), BLACK);
         DrawRectangleRec(tp.rect, tp.color);
         DrawText(tp.text, (tp.rect.x+tp.padding).toInt(), (tp.rect.y+tp.padding).toInt(), FONT_SIZE, BLACK);
       }
@@ -280,7 +280,7 @@ void SliceTextParticle(Pointer<TextParticle> tp, int particlePos, int sliceLengt
 
 void SliceTextParticleByChar(Pointer<TextParticle> tp, int charToSlice, Pointer<TextParticle> tps, Pointer<Int> particleCount)
 {
-  final tokenCount = Int$.At('tokenCount');
+  final tokenCount = Int$.val.At('tokenCount');
   final tokens = TextSplit(tp.ref.text, charToSlice, tokenCount);
 
   if (tokenCount.value > 1)

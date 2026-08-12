@@ -10,16 +10,16 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final cubePosition = Vector3$.At('cubePosition');
-  final cubeScreenPosition = Vector2$.At('cubeScreenPosition');
-  final worldPosition = Vector3$.At('worldPosition');
+  final cubePosition = Vector3$.val.At('cubePosition');
+  final cubeScreenPosition = Vector2$.val.At('cubeScreenPosition');
+  final worldPosition = Vector3$.val.At('worldPosition');
 
   InitWindow(screenWidth, screenHeight, "core_world_screen".toC);
   DisableCursor();

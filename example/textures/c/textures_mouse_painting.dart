@@ -12,8 +12,8 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final texturePos = Vector2$.At('texturePos');
-  final image = Image$.At('image');
+  final texturePos = Vector2$.val.At('texturePos');
+  final image = Image$.val.At('image');
 
   List<ColorC> colors = [
     RAYWHITE, YELLOW, GOLD, ORANGE,
@@ -25,7 +25,7 @@ void main()
   ];
   assert(colors.length == MAX_COLORS_COUNT);
 
-  final colorsRecs = Rectangle$.At('colorsRecs', MAX_COLORS_COUNT);
+  final colorsRecs = Rectangle$.val.At('colorsRecs', MAX_COLORS_COUNT);
   for (int i = 0; i < MAX_COLORS_COUNT; i++) {
     colorsRecs[i].x = (10 + 30*i + 2*i).toDouble();
     colorsRecs[i].y = 10;
@@ -39,7 +39,7 @@ void main()
   double brushSize = 20;
   bool mouseWasPressed = false;
 
-  final btnSaveRec = Rectangle$.At('btnSaveRec').set(750, 10, 40, 30);
+  final btnSaveRec = Rectangle$.val.At('btnSaveRec').set(750, 10, 40, 30);
   bool btnSaveMouseHover = false;
   bool showSaveMessage = false;
   int saveMessageCounter = 0;
@@ -142,7 +142,7 @@ void main()
 
       DrawTextureRec(
         target.texture,
-        Rectangle$.$1.set(
+        Rectangle$.val.$1.set(
           0, 0,
           target.texture.width, -target.texture.height,
         ),
@@ -172,7 +172,7 @@ void main()
       }
 
       DrawRectangleLinesEx(
-        Rectangle$.$1.set(
+        Rectangle$.val.$1.set(
           colorsRecs[colorSelected].x - 2,
           colorsRecs[colorSelected].y - 2,
           colorsRecs[colorSelected].width + 4,

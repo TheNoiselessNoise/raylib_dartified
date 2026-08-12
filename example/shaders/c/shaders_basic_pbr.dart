@@ -57,7 +57,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_basic_pbr".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2, 2, 6);
   camera.ref.target.set(0, 0.5, 0);
   camera.ref.up.set(0, 1, 0);
@@ -84,15 +84,15 @@ void main()
 
   SetShaderValue(shader,
     GetShaderLocation(shader, "numOfLights".toC),
-    Int$.Value(MAX_LIGHTS).cast(),
+    Int$.val.Value(MAX_LIGHTS).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
-  final ambientColor = Color$.$1.set(26, 32, 135, 255);
+  final ambientColor = Color$.val.$1.set(26, 32, 135, 255);
 
   SetShaderValue(shader,
     GetShaderLocation(shader, "ambientColor".toC),
-    Float32$.Array([
+    Float32$.val.Array([
       ambientColor.r/255.0,
       ambientColor.g/255.0,
       ambientColor.b/255.0,
@@ -102,7 +102,7 @@ void main()
 
   SetShaderValue(shader,
     GetShaderLocation(shader, "ambient".toC),
-    Float32$.Value(0.02).cast(),
+    Float32$.val.Value(0.02).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 
@@ -146,10 +146,10 @@ void main()
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture =
     LoadTexture("../resources/road_n.png".toC);
 
-  final carTextureTiling = Vector2$.At('carTextureTiling').set(0.5, 0.5);
-  final floorTextureTiling = Vector2$.At('floorTextureTiling').set(0.5, 0.5);
+  final carTextureTiling = Vector2$.val.At('carTextureTiling').set(0.5, 0.5);
+  final floorTextureTiling = Vector2$.val.At('floorTextureTiling').set(0.5, 0.5);
 
-  final usage = Int$.Value(1, 'usage');
+  final usage = Int$.val.Value(1, 'usage');
   
   SetShaderValue(shader,
     GetShaderLocation(shader, "useTexAlbedo".toC),
@@ -173,19 +173,19 @@ void main()
   );
 
   lights.add(CreateLight(
-    .LIGHT_POINT, Vector3$.$1.set(-1, 1, -2), Vector3$.$zero, YELLOW, 4.0, shader
+    .LIGHT_POINT, Vector3$.val.$1.set(-1, 1, -2), Vector3$.val.$zero, YELLOW, 4.0, shader
   ));
 
   lights.add(CreateLight(
-    .LIGHT_POINT, Vector3$.$1.set(2, 1, 1), Vector3$.$zero, RED, 3.3, shader
+    .LIGHT_POINT, Vector3$.val.$1.set(2, 1, 1), Vector3$.val.$zero, RED, 3.3, shader
   ));
 
   lights.add(CreateLight(
-    .LIGHT_POINT, Vector3$.$1.set(-2, 1, 1), Vector3$.$zero, GREEN, 8.3, shader
+    .LIGHT_POINT, Vector3$.val.$1.set(-2, 1, 1), Vector3$.val.$zero, GREEN, 8.3, shader
   ));
 
   lights.add(CreateLight(
-    .LIGHT_POINT, Vector3$.$1.set(1, 1, -2), Vector3$.$zero, BLUE, 2.0, shader
+    .LIGHT_POINT, Vector3$.val.$1.set(1, 1, -2), Vector3$.val.$zero, BLUE, 2.0, shader
   ));
 
   while (!WindowShouldClose())
@@ -194,7 +194,7 @@ void main()
 
     SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -218,7 +218,7 @@ void main()
           ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
         );
 
-        final floorEmissiveColor = Vector4$.At('floorEmissiveColor').setD(
+        final floorEmissiveColor = Vector4$.val.At('floorEmissiveColor').setD(
           .colorNormalize(floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color.toD())
         );
 
@@ -229,7 +229,7 @@ void main()
         
         DrawModel(
           floor,
-          Vector3$.$zero,
+          Vector3$.val.$zero,
           5.0,
           WHITE
         );
@@ -239,7 +239,7 @@ void main()
           ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
         );
         
-        final carEmissiveColor = Vector4$.At('carEmissiveColor').setD(
+        final carEmissiveColor = Vector4$.val.At('carEmissiveColor').setD(
           .colorNormalize(car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color.toD())
         );
         SetShaderValue(shader, emissiveColorLoc,
@@ -248,15 +248,15 @@ void main()
         );
         
         SetShaderValue(shader, emissiveIntensityLoc,
-          Float32$.Value(0.01).cast(),
+          Float32$.val.Value(0.01).cast(),
           ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
         );
         
-        DrawModel(car, Vector3$.$zero, 0.25, WHITE);
+        DrawModel(car, Vector3$.val.$zero, 0.25, WHITE);
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
-          final lightColor = Color$.$1.set(
+          final lightColor = Color$.val.$1.set(
             lights[i].ref.color[0]*255,
             lights[i].ref.color[1]*255,
             lights[i].ref.color[2]*255,
@@ -343,27 +343,27 @@ void UpdateLight(ShaderC shader, LightCEx light)
   );
 
   SetShaderValue(shader, light.typeLoc,
-    Int$.Value(light.type).cast(),
+    Int$.val.Value(light.type).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value
   );
   
   SetShaderValue(shader, light.positionLoc,
-    Vector3$.$1Ptr.setC(light.position).cast(),
+    Vector3$.val.$1Ptr.setC(light.position).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC3.value
   );
 
   SetShaderValue(shader, light.targetLoc,
-    Vector3$.$1Ptr.setC(light.target).cast(),
+    Vector3$.val.$1Ptr.setC(light.target).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC3.value
   );
 
   SetShaderValue(shader, light.colorLoc,
-    Vector4$.$1Ptr.set(light.color[0], light.color[1], light.color[2], light.color[3]).cast(),
+    Vector4$.val.$1Ptr.set(light.color[0], light.color[1], light.color[2], light.color[3]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
   );
   
   SetShaderValue(shader, light.intensityLoc,
-    Float32$.Value(light.intensity).cast(),
+    Float32$.val.Value(light.intensity).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 }

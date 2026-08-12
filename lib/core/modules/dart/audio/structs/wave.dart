@@ -124,9 +124,9 @@ class WaveD extends StructD<WaveC, WaveD> with WaveBase<WaveD> {
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<WaveC> p, String key) {
     p.ref.data = switch (sampleSize) {
-      8  => temp.Uint8$.Array(data.asUint8List(), key: '${key}_data').cast(),
-      16 => temp.Int16$.Array(data.asInt16List(), key: '${key}_data').cast(),
-      32 => temp.Float32$.Array(data.asFloat32List(), key: '${key}_data').cast(),
+      8  => temp.Uint8$.val.Array(data.asUint8List(), key: '${key}_data').cast(),
+      16 => temp.Int16$.val.Array(data.asInt16List(), key: '${key}_data').cast(),
+      32 => temp.Float32$.val.Array(data.asFloat32List(), key: '${key}_data').cast(),
       _  => throw UnsupportedError('Unexpected sampleSize: $sampleSize'),
     };
   }

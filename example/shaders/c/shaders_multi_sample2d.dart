@@ -16,11 +16,11 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_multi_sample2d".toC);
   SetTargetFPS(60);
 
-  final imRed = GenImageColor(800, 450, Color$.$1.set(255, 0, 0, 255));
+  final imRed = GenImageColor(800, 450, Color$.val.$1.set(255, 0, 0, 255));
   final texRed = LoadTextureFromImage(imRed);
   UnloadImage(imRed);
 
-  final imBlue = GenImageColor(800, 450, Color$.$1.set(0, 0, 255, 255));
+  final imBlue = GenImageColor(800, 450, Color$.val.$1.set(0, 0, 255, 255));
   final texBlue = LoadTextureFromImage(imBlue);
   UnloadImage(imBlue);
 
@@ -43,7 +43,7 @@ void main()
     else if (dividerValue > 1.0) dividerValue = 1.0;
 
     SetShaderValue(shader, dividerLoc,
-      Float32$.Value(dividerValue).cast(),
+      Float32$.val.Value(dividerValue).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

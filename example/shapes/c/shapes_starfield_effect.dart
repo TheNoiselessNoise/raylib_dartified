@@ -60,7 +60,7 @@ void main()
 
       for (int i = 0; i < STAR_COUNT; i++)
       {
-        final starScreenPos = Vector2$.At('starScreenPos').setD(starsScreenPos[i]);
+        final starScreenPos = Vector2$.val.At('starScreenPos').setD(starsScreenPos[i]);
 
         if (drawLines)
         {
@@ -68,7 +68,7 @@ void main()
 
           if ((t - stars[i].z) > 1e-3)
           {
-            final startPos = Vector2$.At('startPos').set(
+            final startPos = Vector2$.val.At('startPos').set(
               screenWidth*0.5 + stars[i].x/t,
               screenHeight*0.5 + stars[i].y/t,
             );

@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_input_keys".toC);
   SetTargetFPS(60);
 
-  final ballPosition = Vector2$.$new.set(screenWidth/2, screenHeight/2);
+  final ballPosition = Vector2$.val.$new.set(screenWidth/2, screenHeight/2);
 
   while (!WindowShouldClose()) {
     if (IsKeyDown(KeyboardKey.KEY_RIGHT.value)) ballPosition.x += 2.0;

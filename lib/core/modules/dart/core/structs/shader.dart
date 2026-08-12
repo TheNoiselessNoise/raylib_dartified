@@ -83,7 +83,7 @@ class ShaderD extends StructD<ShaderC, ShaderD> with ShaderBase<ShaderD> {
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ShaderC> p, String key) {
-    p.ref.locs = temp.Int$.Array(locs, key: '${key}_locs');
+    p.ref.locs = temp.Int$.val.Array(locs, key: '${key}_locs');
   }
 
   @override

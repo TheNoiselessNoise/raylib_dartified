@@ -15,11 +15,11 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_ellipse_collision".toC);
   SetTargetFPS(60);
 
-  final ellipseACenter = Vector2$.AtUnique().set(screenWidth/4, screenHeight/2);
+  final ellipseACenter = Vector2$.val.AtUnique().set(screenWidth/4, screenHeight/2);
   double ellipseARx = 120.0;
   double ellipseARy = 70.0;
 
-  final ellipseBCenter = Vector2$.AtUnique().set(screenWidth*3/4, screenHeight/2);
+  final ellipseBCenter = Vector2$.val.AtUnique().set(screenWidth*3/4, screenHeight/2);
   double ellipseBRx = 90.0;
   double ellipseBRy = 140.0;
 

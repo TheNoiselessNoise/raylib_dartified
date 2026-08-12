@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_textured_cube".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);

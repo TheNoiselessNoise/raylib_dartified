@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.AtUnique();
+  final camera = Camera3D$.val.AtUnique();
   camera.ref.position.set(4.0, 1.0, 5.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -30,7 +30,7 @@ void main()
   int depthLoc = GetShaderLocation(depthShader, "depthTexture".toC);
   int flipTextureLoc = GetShaderLocation(depthShader, "flipY".toC);
 
-  final flipTexture = Int$.ValueUnique(1);
+  final flipTexture = Int$.val.ValueUnique(1);
   SetShaderValue(
     depthShader, flipTextureLoc, flipTexture.cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value
@@ -48,8 +48,8 @@ void main()
       
       BeginMode3D(camera.ref);
         BeginShaderMode(depthShader);
-          DrawModel(cube, Vector3$.$1.set(0.0, 0.0, 0.0), 3.0, YELLOW);
-          DrawModel(floor, Vector3$.$1.set(10.0, 0.0, 2.0), 2.0, RED);
+          DrawModel(cube, Vector3$.val.$1.set(0.0, 0.0, 0.0), 3.0, YELLOW);
+          DrawModel(floor, Vector3$.val.$1.set(10.0, 0.0, 2.0), 2.0, RED);
         EndShaderMode();
       EndMode3D();
     EndTextureMode();
@@ -82,7 +82,7 @@ void main()
 
 RenderTextureC LoadRenderTextureDepthTex(int width, int height)
 {
-  final target = RenderTexture$.At('${width}_$height');
+  final target = RenderTexture$.val.At('${width}_$height');
 
   target.ref.id = rlLoadFramebuffer();
 

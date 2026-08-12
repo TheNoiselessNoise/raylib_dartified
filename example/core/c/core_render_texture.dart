@@ -16,8 +16,8 @@ void main() {
   int renderTextureHeight = 300;
   final target = LoadRenderTexture(renderTextureWidth, renderTextureHeight);
 
-  final ballPosition = Vector2$.$new.set(renderTextureWidth/2.0, renderTextureHeight/2.0);
-  final ballSpeed = Vector2$.$new.set(5.0, 4.0);
+  final ballPosition = Vector2$.val.$new.set(renderTextureWidth/2.0, renderTextureHeight/2.0);
+  final ballSpeed = Vector2$.val.$new.set(5.0, 4.0);
   int ballRadius = 20;
 
   double rotation = 0.0;
@@ -46,9 +46,9 @@ void main() {
 
       DrawTexturePro(
         target.texture,
-        Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
-        Rectangle$.$2.set(screenWidth/2.0, screenHeight/2.0, target.texture.width, target.texture.height),
-        Vector2$.$1.set(target.texture.width/2.0, target.texture.height/2.0),
+        Rectangle$.val.$1.set(0, 0, target.texture.width, -target.texture.height),
+        Rectangle$.val.$2.set(screenWidth/2.0, screenHeight/2.0, target.texture.width, target.texture.height),
+        Vector2$.val.$1.set(target.texture.width/2.0, target.texture.height/2.0),
         rotation,
         WHITE
       );

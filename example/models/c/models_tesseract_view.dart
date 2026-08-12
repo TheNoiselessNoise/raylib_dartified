@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_tesseract_view".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(4.0, 4.0, 4.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0.0, 0.0, 1.0);
@@ -65,7 +65,7 @@ void main()
         for (int i = 0; i < 16; i++)
         {
           DrawSphere(
-            Vector3$.$1.setD(transformed[i]),
+            Vector3$.val.$1.setD(transformed[i]),
             (wValues[i]*0.1).abs(),
             RED
           );
@@ -77,8 +77,8 @@ void main()
             int diff = (v1.x == v2.x).toInt() + (v1.y == v2.y).toInt() + (v1.z == v2.z).toInt() + (v1.w == v2.w).toInt();
 
             if (diff == 3 && i < j) DrawLine3D(
-              Vector3$.$1.setD(transformed[i]),
-              Vector3$.$2.setD(transformed[j]),
+              Vector3$.val.$1.setD(transformed[i]),
+              Vector3$.val.$2.setD(transformed[j]),
               MAROON
             );
           }

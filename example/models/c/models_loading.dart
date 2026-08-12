@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(50, 50, 50);
   camera.ref.target.set(0, 10, 0);
   camera.ref.up.set(0, 1, 0);
@@ -27,7 +27,7 @@ void main()
   var texture = LoadTexture("../resources/models/obj/castle_diffuse.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
   var bounds = GetMeshBoundingBox(model.meshes[0]);
 
   bool selected = false;

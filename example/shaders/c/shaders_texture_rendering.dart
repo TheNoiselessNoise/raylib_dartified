@@ -30,7 +30,7 @@ void main()
   void updateShaderTime() {
     SetShaderValue(shader,
       GetShaderLocation(shader, "uTime".toC),
-      Float32$.Value(time).cast(),
+      Float32$.val.Value(time).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderTime();

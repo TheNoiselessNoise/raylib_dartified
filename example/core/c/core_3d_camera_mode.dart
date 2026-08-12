@@ -13,16 +13,16 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_3d_camera_mode".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final cubePosition = Vector3$.$1.set(0, 0, 0);
+  final cubePosition = Vector3$.val.$1.set(0, 0, 0);
   // OR:
-  // final cubePosition = Vector3$.At('cubePosition').set(0, 0, 0);
+  // final cubePosition = Vector3$.val.At('cubePosition').set(0, 0, 0);
 
   while (!WindowShouldClose()) {
     BeginDrawing();

@@ -40,9 +40,9 @@ void main()
   );
 
   final roundedRectangle = CreateRoundedRectangle(
-    Vector4$.$1.set(5.0, 10.0, 15.0, 20.0),
+    Vector4$.val.$1.set(5.0, 10.0, 15.0, 20.0),
     20.0,
-    Vector2$.$1.set(0.0, -5.0),
+    Vector2$.val.$1.set(0.0, -5.0),
     0.95,
     5.0,
     shader
@@ -62,7 +62,7 @@ void main()
       ClearBackground(RAYWHITE);
 
       // Draw rectangle box with rounded corners using shader
-      var rec = Rectangle$.$1.set(50, 70, 110, 60);
+      var rec = Rectangle$.val.$1.set(50, 70, 110, 60);
       DrawRectangleLines((rec.x - 20).toInt(), (rec.y - 20).toInt(), (rec.width + 40).toInt(), (rec.height + 40).toInt(), DARKGRAY);
       DrawText("Rounded rectangle".toC, (rec.x - 20).toInt(), (rec.y - 35).toInt(), 10, DARKGRAY);
 
@@ -70,24 +70,24 @@ void main()
       rec.y = screenHeight - rec.y - rec.height;
       SetShaderValue(
         shader, roundedRectangle.ref.rectangleLoc,
-        Float32$.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
+        Float32$.val.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
       // Only rectangle color
       SetShaderValue(
         shader, roundedRectangle.ref.colorLoc,
-        Float32$.Array([rectangleColor.r/255.0, rectangleColor.g/255.0, rectangleColor.b/255.0, rectangleColor.a/255.0]).cast(),
+        Float32$.val.Array([rectangleColor.r/255.0, rectangleColor.g/255.0, rectangleColor.b/255.0, rectangleColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.shadowColorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.borderColorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
@@ -96,31 +96,31 @@ void main()
       EndShaderMode();
 
       // Draw rectangle shadow using shader
-      rec = Rectangle$.$1.set(50, 200, 110, 60);
+      rec = Rectangle$.val.$1.set(50, 200, 110, 60);
       DrawRectangleLines((rec.x - 20).toInt(), (rec.y - 20).toInt(), (rec.width + 40).toInt(), (rec.height + 40).toInt(), DARKGRAY);
       DrawText("Rounded rectangle shadow".toC, (rec.x - 20).toInt(), (rec.y - 35).toInt(), 10, DARKGRAY);
 
       rec.y = screenHeight - rec.y - rec.height;
       SetShaderValue(
         shader, roundedRectangle.ref.rectangleLoc,
-        Float32$.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
+        Float32$.val.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
       // Only shadow color
       SetShaderValue(
         shader, roundedRectangle.ref.colorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.shadowColorLoc,
-        Float32$.Array([shadowColor.r/255.0, shadowColor.g/255.0, shadowColor.b/255.0, shadowColor.a/255.0]).cast(),
+        Float32$.val.Array([shadowColor.r/255.0, shadowColor.g/255.0, shadowColor.b/255.0, shadowColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.borderColorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
@@ -129,31 +129,31 @@ void main()
       EndShaderMode();
 
       // Draw rectangle's border using shader
-      rec = Rectangle$.$1.set(50, 330, 110, 60);
+      rec = Rectangle$.val.$1.set(50, 330, 110, 60);
       DrawRectangleLines((rec.x - 20).toInt(), (rec.y - 20).toInt(), (rec.width + 40).toInt(), (rec.height + 40).toInt(), DARKGRAY);
       DrawText("Rounded rectangle border".toC, (rec.x - 20).toInt(), (rec.y - 35).toInt(), 10, DARKGRAY);
 
       rec.y = screenHeight - rec.y - rec.height;
       SetShaderValue(
         shader, roundedRectangle.ref.rectangleLoc,
-        Float32$.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
+        Float32$.val.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
       // Only border color
       SetShaderValue(
         shader, roundedRectangle.ref.colorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.shadowColorLoc,
-        Float32$.Array([0.0, 0.0, 0.0, 0.0]).cast(),
+        Float32$.val.Array([0.0, 0.0, 0.0, 0.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.borderColorLoc,
-        Float32$.Array([borderColor.r/255.0, borderColor.g/255.0, borderColor.b/255.0, borderColor.a/255.0]).cast(),
+        Float32$.val.Array([borderColor.r/255.0, borderColor.g/255.0, borderColor.b/255.0, borderColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
@@ -162,31 +162,31 @@ void main()
       EndShaderMode();
 
       // Draw one more rectangle with all three colors
-      rec = Rectangle$.$1.set(240, 80, 500, 300);
+      rec = Rectangle$.val.$1.set(240, 80, 500, 300);
       DrawRectangleLines((rec.x - 30).toInt(), (rec.y - 30).toInt(), (rec.width + 60).toInt(), (rec.height + 60).toInt(), DARKGRAY);
       DrawText("Rectangle with all three combined".toC, (rec.x - 30).toInt(), (rec.y - 45).toInt(), 10, DARKGRAY);
 
       rec.y = screenHeight - rec.y - rec.height;
       SetShaderValue(
         shader, roundedRectangle.ref.rectangleLoc,
-        Float32$.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
+        Float32$.val.Array([rec.x, rec.y, rec.width, rec.height]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
       // All three colors
       SetShaderValue(
         shader, roundedRectangle.ref.colorLoc,
-        Float32$.Array([rectangleColor.r/255.0, rectangleColor.g/255.0, rectangleColor.b/255.0, rectangleColor.a/255.0]).cast(),
+        Float32$.val.Array([rectangleColor.r/255.0, rectangleColor.g/255.0, rectangleColor.b/255.0, rectangleColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.shadowColorLoc,
-        Float32$.Array([shadowColor.r/255.0, shadowColor.g/255.0, shadowColor.b/255.0, shadowColor.a/255.0]).cast(),
+        Float32$.val.Array([shadowColor.r/255.0, shadowColor.g/255.0, shadowColor.b/255.0, shadowColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
       SetShaderValue(
         shader, roundedRectangle.ref.borderColorLoc,
-        Float32$.Array([borderColor.r/255.0, borderColor.g/255.0, borderColor.b/255.0, borderColor.a/255.0]).cast(),
+        Float32$.val.Array([borderColor.r/255.0, borderColor.g/255.0, borderColor.b/255.0, borderColor.a/255.0]).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
       );
 
@@ -232,7 +232,7 @@ void UpdateRoundedRectangle(Pointer<RoundedRectangle> rec, ShaderC shader)
 {
   SetShaderValue(
     shader, rec.ref.radiusLoc,
-    Float32$.Array([
+    Float32$.val.Array([
       rec.ref.cornerRadius.x,
       rec.ref.cornerRadius.y,
       rec.ref.cornerRadius.z,
@@ -242,12 +242,12 @@ void UpdateRoundedRectangle(Pointer<RoundedRectangle> rec, ShaderC shader)
   );
   SetShaderValue(
     shader, rec.ref.shadowRadiusLoc,
-    Float32$.Value(rec.ref.shadowRadius).cast(),
+    Float32$.val.Value(rec.ref.shadowRadius).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
   SetShaderValue(
     shader, rec.ref.shadowOffsetLoc,
-    Float32$.Array([
+    Float32$.val.Array([
       rec.ref.shadowOffset.x,
       rec.ref.shadowOffset.y,
     ]).cast(),
@@ -255,12 +255,12 @@ void UpdateRoundedRectangle(Pointer<RoundedRectangle> rec, ShaderC shader)
   );
   SetShaderValue(
     shader, rec.ref.shadowScaleLoc,
-    Float32$.Value(rec.ref.shadowScale).cast(),
+    Float32$.val.Value(rec.ref.shadowScale).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
   SetShaderValue(
     shader, rec.ref.borderThicknessLoc,
-    Float32$.Value(rec.ref.borderThickness).cast(),
+    Float32$.val.Value(rec.ref.borderThickness).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 }

@@ -31,7 +31,7 @@ Pointer<UnsignedChar> LoadFileDataFunction(
   lfdResult.assertIt(fileName.toD == 'LoadFileData');
   const dummyDataSize = 8;
   dataSize.value = dummyDataSize;
-  final data = UnsignedChar$.At('lfd_${fileName.toD}', dummyDataSize);
+  final data = UnsignedChar$.val.At('lfd_${fileName.toD}', dummyDataSize);
   for (int i = 0; i < dummyDataSize ~/ 2; i++) data[i] = 1;
   return data;
 }
@@ -40,7 +40,7 @@ TestResult testLoadFileData() {
   final cb = NativeCallable<LoadFileDataCallbackFunctionC>.isolateLocal(LoadFileDataFunction);
   SetLoadFileDataCallback(cb.nativeFunction);
 
-  final dataSize = Int$.At('lfd_size');
+  final dataSize = Int$.val.At('lfd_size');
   final data = LoadFileData('LoadFileData'.toC, dataSize);
 
   final bytes = List.generate(dataSize.value, (i) => data[i]);
@@ -73,7 +73,7 @@ TestResult testSaveFileData() {
   SetSaveFileDataCallback(cb.nativeFunction);
 
   const count = 6;
-  final buf = UnsignedChar$.At('sfd_buf', count);
+  final buf = UnsignedChar$.val.At('sfd_buf', count);
   for (int i = 0; i < count; i++) buf[i] = (i + 1) * 10;
 
   final ok = SaveFileData('SaveFileData'.toC, buf.cast(), count);
@@ -181,7 +181,7 @@ void DrawTestResults(bool allPassed) {
   for (int i = 0; i < results.length; i++) {
     final r   = results[i];
     final y   = padY + 44 + i * rowH;
-    final bg  = r.passed ? Color$.$1.set(220, 255, 220, 255) : Color$.$1.set(255, 220, 220, 255);
+    final bg  = r.passed ? Color$.val.$1.set(220, 255, 220, 255) : Color$.val.$1.set(255, 220, 220, 255);
     final dot = r.passed ? GREEN : RED;
 
     DrawRectangle(padX, y, screenWidth - padX * 2, rowH - 4, bg);
@@ -208,26 +208,26 @@ void DrawTestResults(bool allPassed) {
 
 void DrawCheckmark(int x, int y, int size, ColorC color) {
   DrawLineEx(
-    Vector2$.$1.set(x + size * 0.15, y + size * 0.50),
-    Vector2$.$2.set(x + size * 0.40, y + size * 0.75),
+    Vector2$.val.$1.set(x + size * 0.15, y + size * 0.50),
+    Vector2$.val.$2.set(x + size * 0.40, y + size * 0.75),
     size * 0.15, color,
   );
   DrawLineEx(
-    Vector2$.$1.set(x + size * 0.40, y + size * 0.75),
-    Vector2$.$2.set(x + size * 0.85, y + size * 0.20),
+    Vector2$.val.$1.set(x + size * 0.40, y + size * 0.75),
+    Vector2$.val.$2.set(x + size * 0.85, y + size * 0.20),
     size * 0.15, color,
   );
 }
 
 void DrawXSign(int x, int y, int size, ColorC color) {
   DrawLineEx(
-    Vector2$.$1.set(x + size * 0.20, y + size * 0.20),
-    Vector2$.$2.set(x + size * 0.80, y + size * 0.80),
+    Vector2$.val.$1.set(x + size * 0.20, y + size * 0.20),
+    Vector2$.val.$2.set(x + size * 0.80, y + size * 0.80),
     size * 0.15, color,
   );
   DrawLineEx(
-    Vector2$.$1.set(x + size * 0.80, y + size * 0.20),
-    Vector2$.$2.set(x + size * 0.20, y + size * 0.80),
+    Vector2$.val.$1.set(x + size * 0.80, y + size * 0.20),
+    Vector2$.val.$2.set(x + size * 0.20, y + size * 0.80),
     size * 0.15, color,
   );
 }

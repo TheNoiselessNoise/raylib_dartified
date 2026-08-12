@@ -16,8 +16,8 @@ Pointer<Char> GetDataAsHexText(Pointer<UnsignedInt> data, int size, [Endian endi
   if (data == nullptr) return ('00000000' * size).toC;
 
   final fixedData = switch (endian) {
-    .BIG => UnsignedInt$.ToBEBytes(data, size),
-    .LITTLE => UnsignedInt$.ToLEBytes(data, size),
+    .BIG => UnsignedInt$.val.ToBEBytes(data, size),
+    .LITTLE => UnsignedInt$.val.ToLEBytes(data, size),
   };
 
   return fixedData.map((b) => b.hex).join('').toC;
@@ -41,7 +41,7 @@ void main() {
   Pointer<UnsignedInt> hashSHA256 = nullptr;
 
   Pointer<Char> base64Text = nullptr;
-  final base64TextSize = Int$.At('base64TextSize');
+  final base64TextSize = Int$.val.At('base64TextSize');
 
   void computeHashes() {
     final inputLength = textInput.toD.length;
@@ -61,43 +61,43 @@ void main() {
 
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, 20);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SPACING.value, 2);
-    GuiLabel(Rectangle$.$1.set(40, 26, 720, 32), "INPUT DATA (TEXT):".toC);
+    GuiLabel(Rectangle$.val.$1.set(40, 26, 720, 32), "INPUT DATA (TEXT):".toC);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SPACING.value, 1);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, 10);
 
     if (GuiTextBox(
-      Rectangle$.$1.set(40, 64, 720, 32),
+      Rectangle$.val.$1.set(40, 64, 720, 32),
       textInput,
       95,
       textBoxEditMode
     ).toBool()) textBoxEditMode = !textBoxEditMode;
 
     btnComputeHashes = GuiButton(
-      Rectangle$.$1.set(40, 64 + 40, 720, 32),
+      Rectangle$.val.$1.set(40, 64 + 40, 720, 32),
       "COMPUTE INPUT DATA HASHES".toC,
     ).toBool();
 
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, 20);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SPACING.value, 2);
-    GuiLabel(Rectangle$.$1.set(40, 160, 720, 32), "INPUT DATA HASH VALUES:".toC);
+    GuiLabel(Rectangle$.val.$1.set(40, 160, 720, 32), "INPUT DATA HASH VALUES:".toC);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SPACING.value, 1);
     GuiSetStyle(GuiControl.DEFAULT.value, GuiDefaultProperty.TEXT_SIZE.value, 10);
 
     GuiSetStyle(GuiControl.TEXTBOX.value, GuiTextBoxProperty.TEXT_READONLY.value, 1);
-    GuiLabel(Rectangle$.$1.set(40, 200, 120, 32), "CRC32 [32 bit]:".toC);
-    GuiTextBox(Rectangle$.$1.set(40 + 120, 200, 720 - 120, 32), hashCRC32.hex.toC, 120, false);
-    GuiLabel(Rectangle$.$1.set(40, 200 + 36, 120, 32), "MD5 [128 bit]:".toC);
-    GuiTextBox(Rectangle$.$1.set(40 + 120, 200 + 36, 720 - 120, 32), GetDataAsHexText(hashMD5, rl.Utils.md5Uint32HashLength, .LITTLE), 120, false);
-    GuiLabel(Rectangle$.$1.set(40, 200 + 36*2, 120, 32), "SHA1 [160 bit]:".toC);
-    GuiTextBox(Rectangle$.$1.set(40 + 120, 200 + 36*2, 720 - 120, 32), GetDataAsHexText(hashSHA1, rl.Utils.sha1Uint32HashLength, .BIG), 120, false);
-    GuiLabel(Rectangle$.$1.set(40, 200 + 36*3, 120, 32), "SHA256 [256 bit]:".toC);
-    GuiTextBox(Rectangle$.$1.set(40 + 120, 200 + 36*3, 720 - 120, 32), GetDataAsHexText(hashSHA256, rl.Utils.sha256Uint32HashLength), 120, false);
+    GuiLabel(Rectangle$.val.$1.set(40, 200, 120, 32), "CRC32 [32 bit]:".toC);
+    GuiTextBox(Rectangle$.val.$1.set(40 + 120, 200, 720 - 120, 32), hashCRC32.hex.toC, 120, false);
+    GuiLabel(Rectangle$.val.$1.set(40, 200 + 36, 120, 32), "MD5 [128 bit]:".toC);
+    GuiTextBox(Rectangle$.val.$1.set(40 + 120, 200 + 36, 720 - 120, 32), GetDataAsHexText(hashMD5, rl.Utils.md5Uint32HashLength, .LITTLE), 120, false);
+    GuiLabel(Rectangle$.val.$1.set(40, 200 + 36*2, 120, 32), "SHA1 [160 bit]:".toC);
+    GuiTextBox(Rectangle$.val.$1.set(40 + 120, 200 + 36*2, 720 - 120, 32), GetDataAsHexText(hashSHA1, rl.Utils.sha1Uint32HashLength, .BIG), 120, false);
+    GuiLabel(Rectangle$.val.$1.set(40, 200 + 36*3, 120, 32), "SHA256 [256 bit]:".toC);
+    GuiTextBox(Rectangle$.val.$1.set(40 + 120, 200 + 36*3, 720 - 120, 32), GetDataAsHexText(hashSHA256, rl.Utils.sha256Uint32HashLength), 120, false);
 
     GuiSetState(GuiState.STATE_FOCUSED.value);
-    GuiLabel(Rectangle$.$1.set(40, 200 + 36*5 - 30, 320, 32), "BONUS - BAS64 ENCODED STRING:".toC);
+    GuiLabel(Rectangle$.val.$1.set(40, 200 + 36*5 - 30, 320, 32), "BONUS - BAS64 ENCODED STRING:".toC);
     GuiSetState(GuiState.STATE_NORMAL.value);
-    GuiLabel(Rectangle$.$1.set(40, 200 + 36*5, 120, 32), "BASE64 ENCODING:".toC);
-    GuiTextBox(Rectangle$.$1.set(40 + 120, 200 + 36*5, 720 - 120, 32), base64Text, 120, false);
+    GuiLabel(Rectangle$.val.$1.set(40, 200 + 36*5, 120, 32), "BASE64 ENCODING:".toC);
+    GuiTextBox(Rectangle$.val.$1.set(40 + 120, 200 + 36*5, 720 - 120, 32), base64Text, 120, false);
     GuiSetStyle(GuiControl.TEXTBOX.value, GuiTextBoxProperty.TEXT_READONLY.value, 0);
 
     EndDrawing();

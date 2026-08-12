@@ -103,8 +103,8 @@ class ModelSkeletonD extends StructD<ModelSkeletonC, ModelSkeletonD> with ModelS
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelSkeletonC> p, String key) {
-    p.ref.bones = temp.BoneInfo$.Array(bones, key: '${key}_bones');
-    p.ref.bindPose = temp.Transform$.Array(bindPose, key: '${key}_bindPose');
+    p.ref.bones = temp.BoneInfo$.val.Array(bones, key: '${key}_bones');
+    p.ref.bindPose = temp.Transform$.val.Array(bindPose, key: '${key}_bindPose');
   }
 
   @override

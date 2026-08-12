@@ -44,7 +44,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(-10.0, 15.0, -10.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -55,8 +55,8 @@ void main()
   bool multicolor = false;
   int cameraMode = CameraMode.CAMERA_ORBITAL.value;
 
-  final cubePosition = Vector3$.At('cubePosition').set(0.0, 1.0, 0.0);
-  final cubeSize = Vector3$.At('cubeSize').set(2.0, 2.0, 2.0);
+  final cubePosition = Vector3$.val.At('cubePosition').set(0.0, 1.0, 0.0);
+  final cubeSize = Vector3$.val.At('cubeSize').set(2.0, 2.0, 2.0);
 
   var font = GetFontDefault();
   double fontSize = 8.0;
@@ -65,7 +65,7 @@ void main()
 
   // Set the text (using markdown!)
   String text = "Hello ~~World~~ in 3D!";
-  final tbox = Vector3$.At('tbox');
+  final tbox = Vector3$.val.At('tbox');
   int layers = 1;
   int quads = 0;
   double layerDistance = 0.01;
@@ -78,15 +78,15 @@ void main()
 
   double time = 0.0;
 
-  var light = Color$.At('light').setC(MAROON);
-  var dark = Color$.At('dart').setC(RED);
+  var light = Color$.val.At('light').setC(MAROON);
+  var dark = Color$.val.At('dart').setC(RED);
 
   final alphaDiscard = LoadShader(
     nullptr,
     "../resources/shaders/glsl$GLSL_VERSION/alpha_discard.fs".toC,
   );
 
-  final multi = Color$.At('multi', TEXT_MAX_LAYERS);
+  final multi = Color$.val.At('multi', TEXT_MAX_LAYERS);
 
   while (!WindowShouldClose())
   {
@@ -138,13 +138,13 @@ void main()
 
     if (IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT.value))
     {
-      final center = Vector2$.$1.set(
+      final center = Vector2$.val.$1.set(
         GetScreenWidth() / 2,
         GetScreenHeight() / 2,
       );
       final ray = GetScreenToWorldRay(center, camera.ref);
 
-      final bbox = BoundingBox$.At('bbox');
+      final bbox = BoundingBox$.val.At('bbox');
 
       bbox.ref.min.set(
         cubePosition.ref.x - cubeSize.ref.x/2,
@@ -236,7 +236,7 @@ void main()
             }
 
             if (SHOW_TEXT_BOUNDRY) DrawCubeWiresV(
-              Vector3$.$1.set(0, 0, -4.5 + tbox.ref.z/2),
+              Vector3$.val.$1.set(0, 0, -4.5 + tbox.ref.z/2),
               tbox.ref,
               dark.ref,
             );
@@ -395,7 +395,7 @@ void DrawTextCodepoint3D(
   position.x += (font.glyphs[index].offsetX - font.glyphPadding)/font.baseSize*scale;
   position.z += (font.glyphs[index].offsetY - font.glyphPadding)/font.baseSize*scale;
 
-  final srcRec = Rectangle$.$1.set(
+  final srcRec = Rectangle$.val.$1.set(
     font.recs[index].x - font.glyphPadding,
     font.recs[index].y - font.glyphPadding,
     font.recs[index].width + 2.0*font.glyphPadding,
@@ -417,8 +417,8 @@ void DrawTextCodepoint3D(
     final th = (srcRec.y+srcRec.height)/font.texture.height;
 
     if (SHOW_LETTER_BOUNDRY) DrawCubeWiresV(
-      Vector3$.$1.set(position.x + width/2, position.y, position.z + height/2),
-      Vector3$.$2.set(width, LETTER_BOUNDRY_SIZE, height),
+      Vector3$.val.$1.set(position.x + width/2, position.y, position.z + height/2),
+      Vector3$.val.$2.set(width, LETTER_BOUNDRY_SIZE, height),
       LETTER_BOUNDRY_COLOR
     );
 
@@ -471,7 +471,7 @@ void DrawText3D(
 
   for (int i = 0; i < text.length;)
   {
-    final codepointByteCount = Int$.At('codepointByteCount');
+    final codepointByteCount = Int$.val.At('codepointByteCount');
     int codepoint = GetCodepoint(text[i].toC, codepointByteCount);
     int index = GetGlyphIndex(font, codepoint);
 
@@ -528,7 +528,7 @@ Vector3D MeasureText3D(
   {
     lenCounter++;
 
-    final next = Int$.At('next');
+    final next = Int$.val.At('next');
     letter = GetCodepoint(text[i].toC, next);
     index = GetGlyphIndex(font, letter);
 
@@ -584,7 +584,7 @@ void DrawTextWave3D(
 
   for (int i = 0, k = 0; i < text.length; ++k)
   {
-    final codepointByteCount = Int$.At('codepointByteCount');
+    final codepointByteCount = Int$.val.At('codepointByteCount');
     int codepoint = GetCodepoint(text[i].toC, codepointByteCount);
     int index = GetGlyphIndex(font, codepoint);
 
@@ -658,7 +658,7 @@ Vector3D MeasureTextWave3D(
   {
     lenCounter++;
 
-    final next = Int$.At('next');
+    final next = Int$.val.At('next');
     letter = GetCodepoint(text[i].toC, next);
     index = GetGlyphIndex(font, letter);
 

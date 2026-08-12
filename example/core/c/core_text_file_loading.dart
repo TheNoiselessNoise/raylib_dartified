@@ -14,13 +14,13 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_text_file_loading".toC);
   SetTargetFPS(60);
 
-  final cam = Camera2D$.$newPtr;
+  final cam = Camera2D$.val.$newPtr;
   cam.ref.zoom = 1;
 
   String fileName = "../resources/text_file.txt";
   final text = LoadFileText(fileName.toC);
 
-  final lineCount = Int$.$newPtr;
+  final lineCount = Int$.val.$newPtr;
   final lines = LoadTextLines(text, lineCount);
 
   int fontSize = 20;
@@ -62,7 +62,7 @@ void main() {
     textHeight += (size.y + 10).toInt();
   }
 
-  final scrollBar = Rectangle$.$new.set(
+  final scrollBar = Rectangle$.val.$new.set(
     screenWidth - 5,
     0,
     5,

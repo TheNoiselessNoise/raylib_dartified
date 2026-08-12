@@ -39,8 +39,8 @@ void main()
   for (int i = 0; i < MAX_PARTICLES; i++)
   {
     mouseTail.add(Particle(
-      position: Vector2$.At('position_$i').ref,
-      color: Color$.At('color_$i').set(
+      position: Vector2$.val.At('position_$i').ref,
+      color: Color$.val.At('color_$i').set(
         GetRandomValue(0, 255),
         GetRandomValue(0, 255),
         GetRandomValue(0, 255),
@@ -103,15 +103,15 @@ void main()
           
           DrawTexturePro(
             smoke,
-            Rectangle$.$1.set(
+            Rectangle$.val.$1.set(
               0.0, 0.0,
               smoke.width, smoke.height
             ),
-            Rectangle$.$2.set(
+            Rectangle$.val.$2.set(
               mouseTail[i].position.x, mouseTail[i].position.y,
               smoke.width*mouseTail[i].size, smoke.height*mouseTail[i].size
             ),
-            Vector2$.$1.set(
+            Vector2$.val.$1.set(
               smoke.width*mouseTail[i].size/2.0,
               smoke.height*mouseTail[i].size/2.0
             ),

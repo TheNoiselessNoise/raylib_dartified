@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(4, 4, 4);
   camera.ref.target.set(0.0, 0.5, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -37,7 +37,7 @@ void main()
   );
   SetShaderValue(shader,
     GetShaderLocation(shader, "tiling".toC),
-    Float32$.Array(tiling).cast(),
+    Float32$.val.Array(tiling).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
   model.materials[0].shader = shader;
@@ -55,7 +55,7 @@ void main()
       BeginMode3D(camera.ref);
       
         BeginShaderMode(shader);
-          DrawModel(model, Vector3$.$zero, 2.0, WHITE);
+          DrawModel(model, Vector3$.val.$zero, 2.0, WHITE);
         EndShaderMode();
 
         DrawGrid(10, 1.0);

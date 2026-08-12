@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0.0, 1.0, 2.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -54,7 +54,7 @@ void main()
   model2.materials[0].shader = shader;
 
   int framesCounter = 0;
-  final rotation = Vector3$.At('rotation');
+  final rotation = Vector3$.val.At('rotation');
 
   while (!WindowShouldClose())
   {
@@ -66,7 +66,7 @@ void main()
     rotation.ref.z -= 0.0025;
 
     SetShaderValue(shader, shaderFrame,
-      Int$.Value(framesCounter).cast(),
+      Int$.val.Value(framesCounter).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_INT.value,
     );
 
@@ -78,15 +78,15 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawModel(model1, Vector3$.$1.set(0.5, 0.0, 0.0), 1, WHITE);
+        DrawModel(model1, Vector3$.val.$1.set(0.5, 0.0, 0.0), 1, WHITE);
         DrawModelEx(model2,
-          Vector3$.$1.set(-0.5, 0.0, 0.0),
-          Vector3$.$2.set(1.0, 1.0, 0.0),
+          Vector3$.val.$1.set(-0.5, 0.0, 0.0),
+          Vector3$.val.$2.set(1.0, 1.0, 0.0),
           50,
-          Vector3$.$3.set(1.0, 1.0, 1.0),
+          Vector3$.val.$3.set(1.0, 1.0, 1.0),
           WHITE
         );
-        DrawModel(model3, Vector3$.$1.set(0.0, 0.0, -1.5), 1, WHITE);
+        DrawModel(model3, Vector3$.val.$1.set(0.0, 0.0, -1.5), 1, WHITE);
         DrawGrid(10, 1.0);
 
       EndMode3D();

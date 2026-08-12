@@ -17,15 +17,15 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_animation_blend_custom".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(4.0, 4.0, 4.0);
   camera.ref.target.set(0.0, 1.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final model = Model$.RawValueUnique(LoadModel("../resources/models/gltf/greenman.glb".toC));
-  final position = Vector3$.$new.set(0.0, 0.0, 0.0);
+  final model = Model$.val.RawValueUnique(LoadModel("../resources/models/gltf/greenman.glb".toC));
+  final position = Vector3$.val.$new.set(0.0, 0.0, 0.0);
 
   final skinningShader = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/skinning.vs".toC,
@@ -33,7 +33,7 @@ void main()
   );
   model.ref.materials[1].shader = skinningShader;
 
-  final animCount = Int$.$newPtr;
+  final animCount = Int$.val.$newPtr;
   final anims = LoadModelAnimations("../resources/models/gltf/greenman.glb".toC, animCount);
 
   int animIndex0 = 2;
@@ -53,8 +53,8 @@ void main()
     if (IsKeyPressed(KeyboardKey.KEY_SPACE.value))
       upperBodyBlend = !upperBodyBlend;
 
-    final anim0 = ModelAnimation$.RawValue(anims[animIndex0], 'anim0');
-    final anim1 = ModelAnimation$.RawValue(anims[animIndex1], 'anim1');
+    final anim0 = ModelAnimation$.val.RawValue(anims[animIndex0], 'anim0');
+    final anim1 = ModelAnimation$.val.RawValue(anims[animIndex1], 'anim1');
 
     animCurrentFrame0 = (animCurrentFrame0 + 1) % anim0.ref.keyframeCount;
     animCurrentFrame1 = (animCurrentFrame1 + 1) % anim1.ref.keyframeCount;
@@ -177,7 +177,7 @@ void UpdateModelAnimationBones(
       final animTransform0 = anim0.ref.keyframePoses[frame0] + boneIndex;
       final animTransform1 = anim1.ref.keyframePoses[frame1] + boneIndex;
 
-      final blended = Transform$.$1;
+      final blended = Transform$.val.$1;
       blended.translation.setD(animTransform0.ref.translation.toD().lerp(animTransform1.ref.translation.toD(), boneBlendFactor));
       blended.rotation.setD(animTransform0.ref.rotation.toD().sLerp(animTransform1.ref.rotation.toD(), boneBlendFactor));
       blended.scale.setD(animTransform0.ref.scale.toD().lerp(animTransform1.ref.scale.toD(), boneBlendFactor));
@@ -198,8 +198,8 @@ void UpdateModelAnimationBones(
     for (int m = 0; m < model.ref.meshCount; m++)
     {
       final mesh = model.ref.meshes[m];
-      final animVertex = Vector3$.$1;
-      final animNormal = Vector3$.$2;
+      final animVertex = Vector3$.val.$1;
+      final animNormal = Vector3$.val.$2;
       int vertexValuesCount = mesh.vertexCount * 3;
 
       int boneIndex = 0;

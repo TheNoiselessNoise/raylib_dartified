@@ -16,15 +16,15 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_animation_blending".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(6.0, 6.0, 6.0);
   camera.ref.target.set(0.0, 2.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final model = Model$.RawValueUnique(LoadModel("../resources/models/gltf/robot.glb".toC));
-  final position = Vector3$.$new.set(0.0, 0.0, 0.0);
+  final model = Model$.val.RawValueUnique(LoadModel("../resources/models/gltf/robot.glb".toC));
+  final position = Vector3$.val.$new.set(0.0, 0.0, 0.0);
 
   // Load skinning shader
   // WARNING: It requires SUPPORT_GPU_SKINNING enabled on raylib (disabled by default)
@@ -36,19 +36,19 @@ void main()
   // Assign skinning shader to all materials shaders
   // for (int i = 0; i < model.ref.materialCount; i++) model.ref.materials[i].shader = skinningShader;
 
-  final animCount = Int$.$newPtr;
+  final animCount = Int$.val.$newPtr;
   final anims = LoadModelAnimations("../resources/models/gltf/robot.glb".toC, animCount);
 
   int currentAnimPlaying = 0;
   int nextAnimToPlay = 1;
   bool animTransition = false;
 
-  final animIndex0 = Int$.ValueUnique(10);
-  final animCurrentFrame0 = Float32$.ValueUnique(0.0);
-  final animFrameSpeed0 = Float32$.ValueUnique(0.5);
-  final animIndex1 = Int$.ValueUnique(6);
+  final animIndex0 = Int$.val.ValueUnique(10);
+  final animCurrentFrame0 = Float32$.val.ValueUnique(0.0);
+  final animFrameSpeed0 = Float32$.val.ValueUnique(0.5);
+  final animIndex1 = Int$.val.ValueUnique(6);
   double animCurrentFrame1 = 0.0;
-  final animFrameSpeed1 = Float32$.ValueUnique(0.5);
+  final animFrameSpeed1 = Float32$.val.ValueUnique(0.5);
 
   double animBlendFactor = 0.0;
 
@@ -62,9 +62,9 @@ void main()
 
   bool dropdownEditMode0 = false;
   bool dropdownEditMode1 = false;
-  final animFrameProgress0 = Float32$.ValueUnique(0.0);
-  final animFrameProgress1 = Float32$.ValueUnique(0.0);
-  final animBlendProgress = Float32$.ValueUnique(0.0);
+  final animFrameProgress0 = Float32$.val.ValueUnique(0.0);
+  final animFrameProgress1 = Float32$.val.ValueUnique(0.0);
+  final animBlendProgress = Float32$.val.ValueUnique(0.0);
 
   while (!WindowShouldClose())
   {
@@ -169,14 +169,14 @@ void main()
 
       if (dropdownEditMode0) GuiDisable();
       GuiSlider(
-        Rectangle$.$1.set(10, 38, 160, 12),
+        Rectangle$.val.$1.set(10, 38, 160, 12),
         nullptr, animFrameSpeed0.value.f1.toC,
         animFrameSpeed0, 0.1, 2.0
       );
       GuiEnable();
       if (dropdownEditMode1) GuiDisable();
       GuiSlider(
-        Rectangle$.$1.set(GetScreenWidth() - 170.0, 38, 160, 12),
+        Rectangle$.val.$1.set(GetScreenWidth() - 170.0, 38, 160, 12),
         "${animFrameSpeed1.value.f1}x".toC, nullptr,
         animFrameSpeed1, 0.1, 2.0
       );
@@ -184,7 +184,7 @@ void main()
 
       GuiSetStyle(GuiControl.DROPDOWNBOX.value, GuiDropdownBoxProperty.DROPDOWN_ITEMS_SPACING.value, 1);
       if (GuiDropdownBox(
-        Rectangle$.$1.set(10, 10, 160, 24),
+        Rectangle$.val.$1.set(10, 10, 160, 24),
         animNames.join(';').toC,
         animIndex0, dropdownEditMode0
       ).toBool()) dropdownEditMode0 = !dropdownEditMode0;
@@ -192,20 +192,20 @@ void main()
       if (nextAnimToPlay == 1) GuiSetStyle(GuiControl.PROGRESSBAR.value, GuiProgressBarProperty.PROGRESS_SIDE.value, 0);
       else GuiSetStyle(GuiControl.PROGRESSBAR.value, GuiProgressBarProperty.PROGRESS_SIDE.value, 1);
       GuiProgressBar(
-        Rectangle$.$1.set(180, 14, 440, 16),
+        Rectangle$.val.$1.set(180, 14, 440, 16),
         nullptr, nullptr,
         animBlendProgress, 0.0, 1.0
       );
       GuiSetStyle(GuiControl.PROGRESSBAR.value, GuiProgressBarProperty.PROGRESS_SIDE.value, 0);
 
       if (GuiDropdownBox(
-        Rectangle$.$1.set(GetScreenWidth() - 170.0, 10, 160, 24),
+        Rectangle$.val.$1.set(GetScreenWidth() - 170.0, 10, 160, 24),
         animNames.join(';').toC,
         animIndex1, dropdownEditMode1
       ).toBool()) dropdownEditMode1 = !dropdownEditMode1;
 
       GuiProgressBar(
-        Rectangle$.$1.set(60, GetScreenHeight() - 60.0, GetScreenWidth() - 180.0, 20),
+        Rectangle$.val.$1.set(60, GetScreenHeight() - 60.0, GetScreenWidth() - 180.0, 20),
         "ANIM 0".toC, "FRAME: ${animFrameProgress0.value.f2} / ${anims[animIndex0.value].keyframeCount}".toC,
         animFrameProgress0, 0.0, anims[animIndex0.value].keyframeCount.toDouble()
       );
@@ -216,7 +216,7 @@ void main()
         );
 
       GuiProgressBar(
-        Rectangle$.$1.set(60, GetScreenHeight() - 30.0, GetScreenWidth() - 180.0, 20),
+        Rectangle$.val.$1.set(60, GetScreenHeight() - 30.0, GetScreenWidth() - 180.0, 20),
         "ANIM 1".toC, "FRAME: ${animFrameProgress1.value.f2} / ${anims[animIndex1.value].keyframeCount}".toC,
         animFrameProgress1, 0.0, anims[animIndex1.value].keyframeCount.toDouble()
       );

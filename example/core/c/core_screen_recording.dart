@@ -23,10 +23,10 @@ void main() {
   int gifFrameCounter = 0;
   final gifState = calloc<MsfGifStateC>();
 
-  final circlePosition = Vector2$.$new.set(0.0, screenHeight/2.0);
+  final circlePosition = Vector2$.val.$new.set(0.0, screenHeight/2.0);
   double timeCounter = 0.0;
 
-  final sinePoints = Vector2$.AtUnique(count: MAX_SINEWAVE_POINTS);
+  final sinePoints = Vector2$.val.AtUnique(count: MAX_SINEWAVE_POINTS);
   for (int i = 0; i < MAX_SINEWAVE_POINTS; i++)
   {
     sinePoints[i].x = i*GetScreenWidth()/180.0;

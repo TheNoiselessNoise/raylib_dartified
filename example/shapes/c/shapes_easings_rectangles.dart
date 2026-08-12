@@ -19,7 +19,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_easings_rectangles".toC);
   SetTargetFPS(60);
 
-  final recs = Rectangle$.At('recs', MAX_RECS_X*MAX_RECS_Y);
+  final recs = Rectangle$.val.At('recs', MAX_RECS_X*MAX_RECS_Y);
 
   for (int y = 0; y < MAX_RECS_Y; y++)
   {
@@ -78,7 +78,7 @@ void main()
         {
           DrawRectanglePro(
             recs[i],
-            Vector2$.$1.set(recs[i].width/2, recs[i].height/2),
+            Vector2$.val.$1.set(recs[i].width/2, recs[i].height/2),
             rotation, RED
           );
         }

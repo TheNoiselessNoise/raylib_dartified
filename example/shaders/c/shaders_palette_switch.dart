@@ -71,7 +71,7 @@ void main()
     SetShaderValueV(
       shader,
       paletteLoc,
-      Int$.Array(palettes.values.elementAt(currentPalette)).cast(),
+      Int$.val.Array(palettes.values.elementAt(currentPalette)).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_IVEC3.value,
       COLORS_PER_PALETTE
     );
@@ -84,7 +84,7 @@ void main()
 
         for (int i = 0; i < COLORS_PER_PALETTE; i++)
         {
-          DrawRectangle(0, lineHeight*i, GetScreenWidth(), lineHeight, Color$.$1.set(i, i, i, 255));
+          DrawRectangle(0, lineHeight*i, GetScreenWidth(), lineHeight, Color$.val.$1.set(i, i, i, 255));
         }
 
       EndShaderMode();

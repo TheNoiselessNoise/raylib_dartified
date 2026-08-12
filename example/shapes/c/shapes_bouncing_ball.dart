@@ -15,10 +15,10 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_bouncing_ball".toC);
   SetTargetFPS(60);
 
-  final ballPosition = Vector2$.At('ballPosition').set(
+  final ballPosition = Vector2$.val.At('ballPosition').set(
     GetScreenWidth()/2.0, GetScreenHeight()/2.0
   );
-  final ballSpeed = Vector2$.At('ballSpeed').set(5.0, 4.0);
+  final ballSpeed = Vector2$.val.At('ballSpeed').set(5.0, 4.0);
   int ballRadius = 20;
 
   bool pause = false;

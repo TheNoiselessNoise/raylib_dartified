@@ -88,7 +88,7 @@ void main()
     .EASING_NONE: (a, b, c, d) => b.toDouble(),
   };
 
-  final ballPosition = Vector2$.At('ballPosition').set(100.0, 100.0);
+  final ballPosition = Vector2$.val.At('ballPosition').set(100.0, 100.0);
 
   double t = 0.0;
   double d = 300.0;
@@ -155,8 +155,8 @@ void main()
       if (tail.length >= 2) {
         for (int i = 1; i < tail.length; i++) {
           DrawLineEx(
-            Vector2$.$1.setD(tail[i - 1]),
-            Vector2$.$2.setD(tail[i]),
+            Vector2$.val.$1.setD(tail[i - 1]),
+            Vector2$.val.$2.setD(tail[i]),
             1,
             RED
           );

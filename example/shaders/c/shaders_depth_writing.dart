@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_depth_writing".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.AtUnique();
+  final camera = Camera3D$.val.AtUnique();
   camera.ref.position.set(2.0, 2.0, 3.0);
   camera.ref.target.set(0.0, 0.5, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -39,10 +39,10 @@ void main()
 
       BeginMode3D(camera.ref);
         BeginShaderMode(shader);
-          DrawCubeWiresV(Vector3$.$1.set(0.0, 0.5, 1.0), Vector3$.$2.set(1.0, 1.0, 1.0), RED);
-          DrawCubeV(Vector3$.$1.set(0.0, 0.5, 1.0), Vector3$.$2.set(1.0, 1.0, 1.0), PURPLE);
-          DrawCubeWiresV(Vector3$.$1.set(0.0, 0.5, -1.0), Vector3$.$2.set(1.0, 1.0, 1.0), DARKGREEN);
-          DrawCubeV(Vector3$.$1.set(0.0, 0.5, -1.0), Vector3$.$2.set(1.0, 1.0, 1.0), YELLOW);
+          DrawCubeWiresV(Vector3$.val.$1.set(0.0, 0.5, 1.0), Vector3$.val.$2.set(1.0, 1.0, 1.0), RED);
+          DrawCubeV(Vector3$.val.$1.set(0.0, 0.5, 1.0), Vector3$.val.$2.set(1.0, 1.0, 1.0), PURPLE);
+          DrawCubeWiresV(Vector3$.val.$1.set(0.0, 0.5, -1.0), Vector3$.val.$2.set(1.0, 1.0, 1.0), DARKGREEN);
+          DrawCubeV(Vector3$.val.$1.set(0.0, 0.5, -1.0), Vector3$.val.$2.set(1.0, 1.0, 1.0), YELLOW);
           DrawGrid(10, 1.0);
         EndShaderMode();
       EndMode3D();
@@ -53,8 +53,8 @@ void main()
 
       DrawTextureRec(
         target.texture,
-        Rectangle$.$1.set(0, 0, screenWidth, -screenHeight),
-        Vector2$.$zero,
+        Rectangle$.val.$1.set(0, 0, screenWidth, -screenHeight),
+        Vector2$.val.$zero,
         WHITE
       );
 
@@ -70,7 +70,7 @@ void main()
 
 RenderTextureC LoadRenderTextureDepthTex(int width, int height)
 {
-  final target = RenderTexture$.At('${width}_$height');
+  final target = RenderTexture$.val.At('${width}_$height');
 
   target.ref.id = rlLoadFramebuffer();
 

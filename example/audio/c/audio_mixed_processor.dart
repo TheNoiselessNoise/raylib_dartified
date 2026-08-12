@@ -15,7 +15,7 @@ late Pointer<Float> averageVolume;
 void main() async {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  averageVolume = Float32$.At('averageVolume', 400);
+  averageVolume = Float32$.val.At('averageVolume', 400);
 
   InitWindow(screenWidth, screenHeight, "audio_mixed_processor".toC);
   SetTargetFPS(60);

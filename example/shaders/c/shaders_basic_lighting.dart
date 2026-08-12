@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_basic_lighting".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2, 4, 6);
   camera.ref.target.set(0, 0.5, 0);
   camera.ref.up.set(0, 1, 0);
@@ -34,7 +34,7 @@ void main()
 
   SetShaderValue(shader,
     GetShaderLocation(shader, "ambient".toC),
-    Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+    Float32$.val.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
   );
 
@@ -42,22 +42,22 @@ void main()
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(-2, 1, -2), Vector3$.$zero, YELLOW, shader
+    Vector3$.val.$1.set(-2, 1, -2), Vector3$.val.$zero, YELLOW, shader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(2, 1, 2), Vector3$.$zero, RED, shader
+    Vector3$.val.$1.set(2, 1, 2), Vector3$.val.$zero, RED, shader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(-2, 1, 2), Vector3$.$zero, GREEN, shader
+    Vector3$.val.$1.set(-2, 1, 2), Vector3$.val.$zero, GREEN, shader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(2, 1, -2), Vector3$.$zero, BLUE, shader
+    Vector3$.val.$1.set(2, 1, -2), Vector3$.val.$zero, BLUE, shader
   ));
 
   while (!WindowShouldClose())
@@ -66,7 +66,7 @@ void main()
 
     SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -87,8 +87,8 @@ void main()
 
         BeginShaderMode(shader);
 
-          DrawPlane(Vector3$.$zero, Vector2$.$1.set(10, 10), WHITE);
-          DrawCube(Vector3$.$zero, 2, 4, 2, WHITE);
+          DrawPlane(Vector3$.val.$zero, Vector2$.val.$1.set(10, 10), WHITE);
+          DrawCube(Vector3$.val.$zero, 2, 4, 2, WHITE);
 
         EndShaderMode();
 

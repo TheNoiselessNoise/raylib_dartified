@@ -28,8 +28,8 @@ void main()
   int currentFrame = 0;
   int currentLine = 0;
 
-  final frameRec = Rectangle$.At('frameRec').set(0, 0, frameWidth, frameHeight);
-  final position = Vector2$.At('position').set(0.0, 0.0);
+  final frameRec = Rectangle$.val.At('frameRec').set(0, 0, frameWidth, frameHeight);
+  final position = Vector2$.val.At('position').set(0.0, 0.0);
 
   bool active = false;
   int framesCounter = 0;

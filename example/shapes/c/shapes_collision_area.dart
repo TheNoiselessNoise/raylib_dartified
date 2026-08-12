@@ -14,16 +14,16 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_collision_area".toC);
   SetTargetFPS(60);
 
-  final boxA = Rectangle$.At('boxA').set(
+  final boxA = Rectangle$.val.At('boxA').set(
     10, GetScreenHeight()/2.0 - 50, 200, 100
   );
   int boxASpeedX = 4;
 
-  final boxB = Rectangle$.At('boxB').set(
+  final boxB = Rectangle$.val.At('boxB').set(
     GetScreenWidth()/2.0 - 30, GetScreenHeight()/2.0 - 30, 60, 60
   );
 
-  final boxCollision = Rectangle$.At('boxCollision');
+  final boxCollision = Rectangle$.val.At('boxCollision');
 
   int screenUpperLimit = 40;
 

@@ -22,11 +22,11 @@ void main()
   final button = LoadTexture("../resources/button.png".toC);
 
   final frameHeight = button.height/NUM_FRAMES;
-  final sourceRec = Rectangle$.At('sourceRec').set(
+  final sourceRec = Rectangle$.val.At('sourceRec').set(
     0, 0, button.width, frameHeight
   );
 
-  final btnBounds = Rectangle$.At('btnBounds').set(
+  final btnBounds = Rectangle$.val.At('btnBounds').set(
     screenWidth/2.0 - button.width/2.0,
     screenHeight/2.0 - button.height/NUM_FRAMES/2.0,
     button.width,
@@ -36,7 +36,7 @@ void main()
   int btnState = 0;
   bool btnAction = false;
 
-  final mousePoint = Vector2$.At('mousePoint');
+  final mousePoint = Vector2$.val.At('mousePoint');
 
   while (!WindowShouldClose())
   {
@@ -69,7 +69,7 @@ void main()
       DrawTextureRec(
         button,
         sourceRec.ref,
-        Vector2$.$1.set(btnBounds.ref.x, btnBounds.ref.y),
+        Vector2$.val.$1.set(btnBounds.ref.x, btnBounds.ref.y),
         WHITE
       );
 

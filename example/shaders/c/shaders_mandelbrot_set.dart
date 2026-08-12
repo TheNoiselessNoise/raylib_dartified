@@ -50,21 +50,21 @@ void main()
 
   void updateShaderZoom() {
     SetShaderValue(shader, zoomLoc,
-      Float32$.Value(zoom).cast(),
+      Float32$.val.Value(zoom).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderZoom();
 
   void updateShaderOffset() {
     SetShaderValue(shader, offsetLoc,
-      Float32$.Array(offset).cast(),
+      Float32$.val.Array(offset).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderOffset();
 
   void updateShaderMaxIterations() {
     SetShaderValue(shader, maxIterationsLoc,
-      Int$.Value(maxIterations).cast(),
+      Int$.val.Value(maxIterations).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_INT.value,
     );
   } updateShaderMaxIterations();
@@ -121,7 +121,7 @@ void main()
       zoom *= IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT.value)? zoomSpeed : 1.0/zoomSpeed;
 
       final mousePos = GetMousePosition();
-      final offsetVelocity = Vector2$.At('offsetVelocity');
+      final offsetVelocity = Vector2$.val.At('offsetVelocity');
 
       offsetVelocity.ref.x = (mousePos.x/screenWidth - 0.5)*offsetSpeedMul/zoom;
       offsetVelocity.ref.y = (mousePos.y/screenHeight - 0.5)*offsetSpeedMul/zoom;
@@ -150,7 +150,7 @@ void main()
       ClearBackground(BLACK);
 
       BeginShaderMode(shader);
-        DrawTextureEx(target.texture, Vector2$.$zero, 0.0, 1.0, WHITE);
+        DrawTextureEx(target.texture, Vector2$.val.$zero, 0.0, 1.0, WHITE);
       EndShaderMode();
 
       if (showControls)

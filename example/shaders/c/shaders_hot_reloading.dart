@@ -28,7 +28,7 @@ void main()
   final resolution = [ screenWidth, screenHeight ];
   void updateShaderResolution() {
     SetShaderValue(shader, resolutionLoc,
-      Float32$.Array(resolution).cast(),
+      Float32$.val.Array(resolution).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderResolution();
@@ -42,12 +42,12 @@ void main()
     final mouse = GetMousePosition();
 
     SetShaderValue(shader, timeLoc,
-      Float32$.Value(totalTime).cast(),
+      Float32$.val.Value(totalTime).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
     
     SetShaderValue(shader, mouseLoc,
-      Vector2$.$1Ptr.setC(mouse).cast(),
+      Vector2$.val.$1Ptr.setC(mouse).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
 

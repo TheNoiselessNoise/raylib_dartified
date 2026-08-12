@@ -40,7 +40,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_deferred_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5, 4, 5);
   camera.ref.target.set(0, 1, 0);
   camera.ref.up.set(0, 1, 0);
@@ -143,27 +143,27 @@ void main()
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(-2, 1, -2), Vector3$.$zero, YELLOW, deferredShader
+    Vector3$.val.$1.set(-2, 1, -2), Vector3$.val.$zero, YELLOW, deferredShader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(2, 1, 2), Vector3$.$zero, RED, deferredShader
+    Vector3$.val.$1.set(2, 1, 2), Vector3$.val.$zero, RED, deferredShader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(-2, 1, 2), Vector3$.$zero, GREEN, deferredShader
+    Vector3$.val.$1.set(-2, 1, 2), Vector3$.val.$zero, GREEN, deferredShader
   ));
 
   lights.add(CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(2, 1, -2), Vector3$.$zero, BLUE, deferredShader
+    Vector3$.val.$1.set(2, 1, -2), Vector3$.val.$zero, BLUE, deferredShader
   ));
 
   const double CUBE_SCALE = 0.25;
-  final cubePositions = Vector3$.At('cubePositions', MAX_CUBES);
-  final cubeRotations = Float32$.At('cubeRotations', MAX_CUBES);
+  final cubePositions = Vector3$.val.At('cubePositions', MAX_CUBES);
+  final cubeRotations = Float32$.val.At('cubeRotations', MAX_CUBES);
 
   for (int i = 0; i < MAX_CUBES; i++) {
     cubePositions[i].set(
@@ -185,7 +185,7 @@ void main()
 
     SetShaderValue(deferredShader,
       deferredShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -203,7 +203,7 @@ void main()
       UpdateLightValues(deferredShader, lights[i]);
     }
 
-    final texture = Texture$.At('texture');
+    final texture = Texture$.val.At('texture');
 
     BeginDrawing();
         
@@ -215,8 +215,8 @@ void main()
       rlDisableColorBlend();
       BeginMode3D(camera.ref);
         rlEnableShader(gbufferShader.id);
-          DrawModel(model, Vector3$.$1.set(0.0, 0.0, 0.0), 1.0, WHITE);
-          DrawModel(cube, Vector3$.$1.set(0.0, 1.0, 0.0), 1.0, WHITE);
+          DrawModel(model, Vector3$.val.$1.set(0.0, 0.0, 0.0), 1.0, WHITE);
+          DrawModel(cube, Vector3$.val.$1.set(0.0, 1.0, 0.0), 1.0, WHITE);
 
           for (int i = 0; i < MAX_CUBES; i++)
           {
@@ -224,9 +224,9 @@ void main()
             DrawModelEx(
               cube,
               position,
-              Vector3$.$1.set(1, 1, 1),
+              Vector3$.val.$1.set(1, 1, 1),
               cubeRotations[i],
-              Vector3$.$2.set(CUBE_SCALE, CUBE_SCALE, CUBE_SCALE),
+              Vector3$.val.$2.set(CUBE_SCALE, CUBE_SCALE, CUBE_SCALE),
               WHITE
             );
           }
@@ -289,8 +289,8 @@ void main()
 
           DrawTextureRec(
             texture.ref,
-            Rectangle$.$1.set(0, 0, screenWidth, -screenHeight),
-            Vector2$.$zero,
+            Rectangle$.val.$1.set(0, 0, screenWidth, -screenHeight),
+            Vector2$.val.$zero,
             RAYWHITE
           );
           
@@ -307,8 +307,8 @@ void main()
 
           DrawTextureRec(
             texture.ref,
-            Rectangle$.$1.set(0, 0, screenWidth, -screenHeight),
-            Vector2$.$zero,
+            Rectangle$.val.$1.set(0, 0, screenWidth, -screenHeight),
+            Vector2$.val.$zero,
             RAYWHITE
           );
           
@@ -325,8 +325,8 @@ void main()
 
           DrawTextureRec(
             texture.ref,
-            Rectangle$.$1.set(0, 0, screenWidth, -screenHeight),
-            Vector2$.$zero,
+            Rectangle$.val.$1.set(0, 0, screenWidth, -screenHeight),
+            Vector2$.val.$zero,
             RAYWHITE
           );
 

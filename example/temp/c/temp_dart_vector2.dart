@@ -9,8 +9,8 @@ void main()
   InitWindow(800, 450, "temp_dart_vector2".toC);
   SetTargetFPS(60);
 
-  final pos = Vector2$.At('position').set(200, 200);
-  final vel = Vector2$.At('velocity');
+  final pos = Vector2$.val.At('position').set(200, 200);
+  final vel = Vector2$.val.At('velocity');
 
   while (!WindowShouldClose())
   {
@@ -39,7 +39,7 @@ void main()
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
-      DrawRectangleV(pos.ref, Vector2$.$1.set(50, 50), BLUE);
+      DrawRectangleV(pos.ref, Vector2$.val.$1.set(50, 50), BLUE);
 
     EndDrawing();
   }

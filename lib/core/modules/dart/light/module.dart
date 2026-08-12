@@ -16,6 +16,12 @@ class RaylibLightD extends RaylibLightModuleBase<
   
   RaylibLightD(super.rl);
 
+  // NOTE: requirements
+  NativeStructAlloc<ColorC, ColorD> get _Color$ => rl.Temp.getAllocatorOrThrow();
+  NativeStructAlloc<LightC, LightD> get _Light$ => rl.Temp.getAllocatorOrThrow();
+  NativeStructAlloc<ShaderC, ShaderD> get _Shader$ => rl.Temp.getAllocatorOrThrow();
+  NativeStructAlloc<Vector3C, Vector3D> get _Vector3$ => rl.Temp.getAllocatorOrThrow();
+
   @override
   LightD CreateLight(
     LightType type,
@@ -27,10 +33,10 @@ class RaylibLightD extends RaylibLightModuleBase<
     () => RaylibDebugLabels.CreateLight(type, position, target, color, shader),
     () => rl.Light.CreateLight(
       type.value,
-      rl.Temp.Vector3$.Ref1(position).ref,
-      rl.Temp.Vector3$.Ref2(target).ref,
-      rl.Temp.Color$.Ref1(color).ref,
-      rl.Temp.Shader$.Ref1(shader).ref,
+      _Vector3$.Ref1(position).ref,
+      _Vector3$.Ref2(target).ref,
+      _Color$.Ref1(color).ref,
+      _Shader$.Ref1(shader).ref,
     ).toD(),
   );
 
@@ -40,9 +46,9 @@ class RaylibLightD extends RaylibLightModuleBase<
     LightD light,
   ) => run(
     () => RaylibDebugLabels.UpdateLightValues(shader, light),
-    () => rl.Temp.Light$.RefUpdate1(light,
+    () => _Light$.RefUpdate1(light,
       (pl) => rl.Light.UpdateLightValues(
-        rl.Temp.Shader$.Ref1(shader).ref,
+        _Shader$.Ref1(shader).ref,
         pl.ref
       ),
     ),

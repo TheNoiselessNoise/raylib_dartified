@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_input_mouse".toC);
   SetTargetFPS(60);
 
-  var ballPosition = Vector2$.$new.set(-100.0, -100.0);
+  var ballPosition = Vector2$.val.$new.set(-100.0, -100.0);
   ColorC ballColor = DARKBLUE;
 
   while (!WindowShouldClose()) {

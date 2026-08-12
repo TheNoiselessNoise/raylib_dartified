@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
@@ -1593,7 +1592,7 @@ bool ExportImage(
 ) => _module.ExportImage(image, fileName);
 
 /// See [RaylibCoreD.ExportImageToMemory].
-(Pointer<UnsignedChar> dataPtr, int dataSize) ExportImageToMemory(
+(NativeMemoryPointer<RUint8> dataPtr, int dataSize) ExportImageToMemory(
   ImageD image,
   String fileType,
 ) => _module.ExportImageToMemory(image, fileType);

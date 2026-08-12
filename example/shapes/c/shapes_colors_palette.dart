@@ -23,7 +23,7 @@ void main()
     'GREEN': GREEN, 'SKYBLUE': SKYBLUE, 'PURPLE': PURPLE, 'BEIGE': BEIGE
   };
 
-  final colorsRecs = Rectangle$.At('colorsRecs', colors.length);
+  final colorsRecs = Rectangle$.val.At('colorsRecs', colors.length);
 
   for (int i = 0; i < colors.length; i++)
   {
@@ -35,7 +35,7 @@ void main()
 
   final colorState = Bool$.At('colorState', colors.length);
 
-  final mousePoint = Vector2$.At('mousePoint');
+  final mousePoint = Vector2$.val.At('mousePoint');
 
   while (!WindowShouldClose())
   {

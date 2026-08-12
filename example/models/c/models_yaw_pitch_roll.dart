@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_yaw_pitch_roll".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 50, -120);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -64,7 +64,7 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawModel(model, Vector3$.$1.set(0, -8, 0), 1.0, WHITE);
+        DrawModel(model, Vector3$.val.$1.set(0, -8, 0), 1.0, WHITE);
         DrawGrid(10, 10.0);
 
       EndMode3D();

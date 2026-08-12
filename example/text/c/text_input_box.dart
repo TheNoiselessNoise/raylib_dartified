@@ -17,7 +17,7 @@ void main()
 
   String name = '';
 
-  final textBox = Rectangle$.At('textBox').set(screenWidth/2.0 - 100, 180, 225, 50);
+  final textBox = Rectangle$.val.At('textBox').set(screenWidth/2.0 - 100, 180, 225, 50);
   bool mouseOnText = false;
 
   int framesCounter = 0;

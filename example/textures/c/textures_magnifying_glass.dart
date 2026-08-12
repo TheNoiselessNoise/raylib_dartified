@@ -18,7 +18,7 @@ void main()
   final bunny = LoadTexture("../resources/raybunny.png".toC);
   final parrots = LoadTexture("../resources/parrots.png".toC);
 
-  final circle = Image$.At('circle');
+  final circle = Image$.val.At('circle');
   circle.ref = GenImageColor(256, 256, BLANK);
   ImageDrawCircle(circle, 128, 128, 128, WHITE);
   final mask = LoadTextureFromImage(circle.ref);
@@ -26,7 +26,7 @@ void main()
 
   final magnifiedWorld = LoadRenderTexture(256, 256);
 
-  final camera = Camera2D$.$newPtr;
+  final camera = Camera2D$.val.$newPtr;
   camera.ref.zoom = 2;
   camera.ref.offset.set(128, 128);
 
@@ -63,7 +63,7 @@ void main()
         EndBlendMode();
       EndTextureMode();
 
-      DrawTextureRec(magnifiedWorld.texture, Rectangle$.$1.set(0, 0, 256, -256), Vector2$.$1.set(mPos.x - 128, mPos.y - 128), WHITE);
+      DrawTextureRec(magnifiedWorld.texture, Rectangle$.val.$1.set(0, 0, 256, -256), Vector2$.val.$1.set(mPos.x - 128, mPos.y - 128), WHITE);
 
       DrawRing(mPos, 126, 130, 0, 360, 64, BLACK);
 

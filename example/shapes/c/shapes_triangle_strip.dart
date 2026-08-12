@@ -15,9 +15,9 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_triangle_strip".toC);
   SetTargetFPS(60);
 
-  final points = Vector2$.AtUnique(count: 122);
-  final center = Vector2$.AtUnique().set((screenWidth/2.0) - 125.0, screenHeight/2.0);
-  final segments = Float32$.ValueUnique(6.0);
+  final points = Vector2$.val.AtUnique(count: 122);
+  final center = Vector2$.val.AtUnique().set((screenWidth/2.0) - 125.0, screenHeight/2.0);
+  final segments = Float32$.val.ValueUnique(6.0);
   double insideRadius = 100.0;
   double outsideRadius = 150.0;
   final outline = Bool$.ValueUnique(true);
@@ -60,11 +60,11 @@ void main()
         }
       }
 
-      DrawLine(580, 0, 580, GetScreenHeight(), Color$.$1.set(218, 218, 218, 255));
-      DrawRectangle(580, 0, GetScreenWidth(), GetScreenHeight(), Color$.$1.set(232, 232, 232, 255));
+      DrawLine(580, 0, 580, GetScreenHeight(), Color$.val.$1.set(218, 218, 218, 255));
+      DrawRectangle(580, 0, GetScreenWidth(), GetScreenHeight(), Color$.val.$1.set(232, 232, 232, 255));
 
-      GuiSliderBar(Rectangle$.$1.set(640, 40, 120, 20), "Segments".toC, segments.value.f0.toC, segments, 6.0, 60.0);
-      GuiCheckBox(Rectangle$.$1.set(640, 70, 20, 20), "Outline".toC, outline);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 40, 120, 20), "Segments".toC, segments.value.f0.toC, segments, 6.0, 60.0);
+      GuiCheckBox(Rectangle$.val.$1.set(640, 70, 20, 20), "Outline".toC, outline);
 
       DrawFPS(10, 10);
 

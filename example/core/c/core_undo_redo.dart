@@ -38,7 +38,7 @@ void main() {
   int firstUndoIndex = 0;
   int lastUndoIndex = 0;
   int undoFrameCounter = 0;
-  final undoInfoPos = Vector2$.$new.set(110, 400);
+  final undoInfoPos = Vector2$.val.$new.set(110, 400);
 
   final player = calloc<PlayerState>();
   player.ref.cell.set(10, 10);
@@ -47,7 +47,7 @@ void main() {
   final states = calloc<PlayerState>(MAX_UNDO_STATES);
   for (int i = 0; i < MAX_UNDO_STATES; i++) states[i] = player.ref;
 
-  final gridPosition = Vector2$.$new.set(40, 60);
+  final gridPosition = Vector2$.val.$new.set(40, 60);
 
   while (!WindowShouldClose()) {
     if (IsKeyPressed(KeyboardKey.KEY_RIGHT.value)) player.ref.cell.x++;
@@ -127,7 +127,7 @@ void main() {
       {
         for (int i = firstUndoIndex; i < currentUndoIndex; i++)
           DrawRectangleRec(
-            Rectangle$.$1.set(gridPosition.x + states[i].cell.x*GRID_CELL_SIZE, gridPosition.y + states[i].cell.y*GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE),
+            Rectangle$.val.$1.set(gridPosition.x + states[i].cell.x*GRID_CELL_SIZE, gridPosition.y + states[i].cell.y*GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE),
             LIGHTGRAY
           );
       }
@@ -137,7 +137,7 @@ void main() {
         {
           for (int i = firstUndoIndex; i < currentUndoIndex; i++)
             DrawRectangleRec(
-              Rectangle$.$1.set(gridPosition.x + states[i].cell.x*GRID_CELL_SIZE, gridPosition.y + states[i].cell.y*GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE),
+              Rectangle$.val.$1.set(gridPosition.x + states[i].cell.x*GRID_CELL_SIZE, gridPosition.y + states[i].cell.y*GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE),
               LIGHTGRAY
             );
         }

@@ -78,7 +78,7 @@ void main()
           texBunny,
           bunnies[i].position.x.toInt(),
           bunnies[i].position.y.toInt(),
-          Color$.$1.setD(bunnies[i].color),
+          Color$.val.$1.setD(bunnies[i].color),
         );
       }
 

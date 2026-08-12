@@ -13,8 +13,8 @@ void main() {
 
   int currentFps = 60;
 
-  final deltaCircle = Vector2$.$new.set(0, screenHeight/3.0);
-  final frameCircle = Vector2$.$new.set(0, screenHeight*(2.0/3.0));
+  final deltaCircle = Vector2$.val.$new.set(0, screenHeight/3.0);
+  final frameCircle = Vector2$.val.$new.set(0, screenHeight*(2.0/3.0));
 
   const double speed = 10.0;
   const double circleRadius = 32.0;

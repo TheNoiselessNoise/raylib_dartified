@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_fog_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2.0, 2.0, 6.0);
   camera.ref.target.set(0.0, 0.5, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -44,7 +44,7 @@ void main()
 
   int ambientLoc = GetShaderLocation(shader, "ambient".toC);
   SetShaderValue(shader, ambientLoc,
-    Float32$.Array([0.2, 0.2, 0.2, 1.0]).cast(),
+    Float32$.val.Array([0.2, 0.2, 0.2, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
@@ -53,7 +53,7 @@ void main()
   void updateShaderFogDensity() {
     SetShaderValue(shader,
       GetShaderLocation(shader, "fogDensity".toC),
-      Float32$.Value(fogDensity).cast(),
+      Float32$.val.Value(fogDensity).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderFogDensity();
@@ -64,7 +64,7 @@ void main()
 
   CreateLight(
     LightType.LIGHT_POINT.value,
-    Vector3$.$1.set(0, 2, 6), Vector3$.$zero, WHITE, shader
+    Vector3$.val.$1.set(0, 2, 6), Vector3$.val.$zero, WHITE, shader
   );
 
   while (!WindowShouldClose())
@@ -90,7 +90,7 @@ void main()
 
     SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -100,13 +100,13 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawModel(modelA, Vector3$.$zero, 1.0, WHITE);
-        DrawModel(modelB, Vector3$.$1.set(-2.6, 0, 0), 1.0, WHITE);
-        DrawModel(modelC, Vector3$.$1.set(2.6, 0, 0), 1.0, WHITE);
+        DrawModel(modelA, Vector3$.val.$zero, 1.0, WHITE);
+        DrawModel(modelB, Vector3$.val.$1.set(-2.6, 0, 0), 1.0, WHITE);
+        DrawModel(modelC, Vector3$.val.$1.set(2.6, 0, 0), 1.0, WHITE);
 
         for (int i = -20; i < 20; i += 2) DrawModel(
           modelA,
-          Vector3$.$1.set(i, 0, 2),
+          Vector3$.val.$1.set(i, 0, 2),
           1.0,
           WHITE
         );

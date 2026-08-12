@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(18, 21, 18);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -26,12 +26,12 @@ void main()
   final image = LoadImage("../resources/heightmap.png".toC);
   final texture = LoadTextureFromImage(image);
 
-  final meshSize = Vector3$.$1.set(16, 8, 16);
+  final meshSize = Vector3$.val.$1.set(16, 8, 16);
   final mesh = GenMeshHeightmap(image, meshSize);
   final model = LoadModelFromMesh(mesh);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final mapPosition = Vector3$.$2.set(-8, 0, -8);
+  final mapPosition = Vector3$.val.$2.set(-8, 0, -8);
   
   UnloadImage(image);
 

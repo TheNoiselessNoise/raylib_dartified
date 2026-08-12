@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_normalmap_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.AtUnique();
+  final camera = Camera3D$.val.AtUnique();
   camera.ref.position.set(0.0, 2.0, -4.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -36,19 +36,19 @@ void main()
   // no need to get the location again if using that uniform name
   // shader.locs[ShaderLocationIndex.SHADER_LOC_MATRIX_MODEL.value] = GetShaderLocation(shader, "matModel".toC);
 
-  final lightPosition = Vector3$.AtUnique().set(0.0, 1.0, 0.0);
+  final lightPosition = Vector3$.val.AtUnique().set(0.0, 1.0, 0.0);
   int lightPosLoc = GetShaderLocation(shader, "lightPos".toC);
 
   final plane = LoadModel("../resources/models/plane.glb".toC);
 
   plane.materials[0].shader = shader;
 
-  final diffuseTex = Texture$.AtUnique();
+  final diffuseTex = Texture$.val.AtUnique();
   diffuseTex.ref = LoadTexture("../resources/tiles_diffuse.png".toC);
   plane.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = diffuseTex.ref;
   GenTextureMipmaps(diffuseTex);
 
-  final normalTex = Texture$.AtUnique();
+  final normalTex = Texture$.val.AtUnique();
   normalTex.ref = LoadTexture("../resources/tiles_normal.png".toC);
   plane.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture = normalTex.ref;
   GenTextureMipmaps(normalTex);
@@ -56,13 +56,13 @@ void main()
   SetTextureFilter(diffuseTex.ref, TextureFilter.TEXTURE_FILTER_TRILINEAR.value);
   SetTextureFilter(normalTex.ref, TextureFilter.TEXTURE_FILTER_TRILINEAR.value);
 
-  final specularExponent = Float32$.ValueUnique(8.0);
+  final specularExponent = Float32$.val.ValueUnique(8.0);
   int specularExponentLoc = GetShaderLocation(shader, "specularExponent".toC);
 
   final useNormalMap = Bool$.ValueUnique(true);
   int useNormalMapLoc = GetShaderLocation(shader, "useNormalMap".toC);
 
-  final direction = Vector3$.AtUnique();
+  final direction = Vector3$.val.AtUnique();
 
   while (!WindowShouldClose())
   {
@@ -92,7 +92,7 @@ void main()
 
     SetShaderValue(
       shader, lightPosLoc,
-      Float32$.Array([
+      Float32$.val.Array([
         lightPosition.ref.x,
         lightPosition.ref.y,
         lightPosition.ref.z,
@@ -102,7 +102,7 @@ void main()
 
     SetShaderValue(
       shader, shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Float32$.Array([
+      Float32$.val.Array([
         camera.ref.position.x,
         camera.ref.position.y,
         camera.ref.position.z,
@@ -128,7 +128,7 @@ void main()
 
         BeginShaderMode(shader);
 
-          DrawModel(plane, Vector3$.$zero, 2.0, WHITE);
+          DrawModel(plane, Vector3$.val.$zero, 2.0, WHITE);
 
         EndShaderMode();
 

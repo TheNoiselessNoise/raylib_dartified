@@ -2,7 +2,6 @@
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_stream_callback.c
 // Run it: dart run audio_stream_callback.dart
 // WARNING: NO SOUND, see LIMITATIONS.md
-import 'dart:ffi';
 import 'dart:math' as math;
 import 'dart:typed_data';
 import '../../base_dart.dart';
@@ -106,9 +105,9 @@ void main() async {
   CloseWindowAndDispose();
 }
 
-void SineCallback(Pointer<Void> framesOut, int frameCount)
+void SineCallback(MemoryPointer framesOut, int frameCount)
 {
-  final frames = framesOut.cast<Float>();
+  final frames = framesOut.asView<Float32List>(frameCount * 2);
 
   int wavelength = SAMPLE_RATE~/waveFrequency;
 
@@ -129,9 +128,9 @@ void SineCallback(Pointer<Void> framesOut, int frameCount)
   for (int i = 0; i < frameCount; i++) buffer[SAMPLE_RATE - frameCount + i] = frames[i];
 }
 
-void SquareCallback(Pointer<Void> framesOut, int frameCount)
+void SquareCallback(MemoryPointer framesOut, int frameCount)
 {
-  final frames = framesOut.cast<Float>();
+  final frames = framesOut.asView<Float32List>(frameCount * 2);
 
   int wavelength = SAMPLE_RATE~/waveFrequency;
 
@@ -151,9 +150,9 @@ void SquareCallback(Pointer<Void> framesOut, int frameCount)
   for (int i = 0; i < frameCount; i++) buffer[SAMPLE_RATE - frameCount + i] = frames[i];
 }
 
-void TriangleCallback(Pointer<Void> framesOut, int frameCount)
+void TriangleCallback(MemoryPointer framesOut, int frameCount)
 {
-  final frames = framesOut.cast<Float>();
+  final frames = framesOut.asView<Float32List>(frameCount * 2);
 
   int wavelength = SAMPLE_RATE~/waveFrequency;
 
@@ -173,9 +172,9 @@ void TriangleCallback(Pointer<Void> framesOut, int frameCount)
   for (int i = 0; i < frameCount; i++) buffer[SAMPLE_RATE - frameCount + i] = frames[i];
 }
 
-void SawtoothCallback(Pointer<Void> framesOut, int frameCount)
+void SawtoothCallback(MemoryPointer framesOut, int frameCount)
 {
-  final frames = framesOut.cast<Float>();
+  final frames = framesOut.asView<Float32List>(frameCount * 2);
 
   int wavelength = SAMPLE_RATE~/waveFrequency;
 

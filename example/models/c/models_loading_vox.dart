@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_loading_vox".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -67,7 +67,7 @@ void main()
 
 	SetShaderValue(shader,
     GetShaderLocation(shader, "ambient".toC),
-    Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+    Float32$.val.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
@@ -83,24 +83,24 @@ void main()
   final lights = <LightC>[
     CreateLight(
       LightType.LIGHT_POINT.value,
-      Vector3$.$1.set(-20, 20, -20), Vector3$.$zero, GRAY, shader
+      Vector3$.val.$1.set(-20, 20, -20), Vector3$.val.$zero, GRAY, shader
     ),
     CreateLight(
       LightType.LIGHT_POINT.value,
-      Vector3$.$1.set(20, -20, 20), Vector3$.$zero, GRAY, shader
+      Vector3$.val.$1.set(20, -20, 20), Vector3$.val.$zero, GRAY, shader
     ),
     CreateLight(
       LightType.LIGHT_POINT.value,
-      Vector3$.$1.set(-20, 20, 20), Vector3$.$zero, GRAY, shader
+      Vector3$.val.$1.set(-20, 20, 20), Vector3$.val.$zero, GRAY, shader
     ),
     CreateLight(
       LightType.LIGHT_POINT.value,
-      Vector3$.$1.set(20, -20, -20), Vector3$.$zero, GRAY, shader
+      Vector3$.val.$1.set(20, -20, -20), Vector3$.val.$zero, GRAY, shader
     ),
   ];
 
-  final modelpos = Vector3$.At('modelpos');
-	final camerarot = Vector3$.At('camerarot');
+  final modelpos = Vector3$.val.At('modelpos');
+	final camerarot = Vector3$.val.At('camerarot');
 
   while (!WindowShouldClose())
   {
@@ -123,7 +123,7 @@ void main()
       (IsKeyDown(KeyboardKey.KEY_A.value) || IsKeyDown(KeyboardKey.KEY_LEFT.value)).toInt() * 0.1;
 
 		UpdateCameraPro(camera,
-      Vector3$.$1.set(x, y, 0.0),
+      Vector3$.val.$1.set(x, y, 0.0),
 			camerarot.ref,
 			GetMouseWheelMove() * -2.0
     );
@@ -134,7 +134,7 @@ void main()
 
     SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 

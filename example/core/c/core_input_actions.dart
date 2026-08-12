@@ -35,8 +35,8 @@ void main() {
   SetActionsDefault();
   bool releaseAction = false;
 
-  final position = Vector2$.$new.set(400.0, 200.0);
-  final size = Vector2$.$new.set(40.0, 40.0);
+  final position = Vector2$.val.$new.set(400.0, 200.0);
+  final size = Vector2$.val.$new.set(40.0, 40.0);
 
   while (!WindowShouldClose()) {
     gamepadIndex = 0;

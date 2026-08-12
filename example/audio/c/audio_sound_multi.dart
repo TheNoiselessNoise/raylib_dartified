@@ -19,7 +19,7 @@ void main()
   InitAudioDevice();
 
   int currentSound = 0;
-  final soundArray = Sound$.FillWith(MAX_SOUNDS, (ptr, i) => switch(i) {
+  final soundArray = Sound$.val.FillWith(MAX_SOUNDS, (ptr, i) => switch(i) {
     0 => LoadSound("../resources/sound.wav".toC),
     _ => LoadSoundAlias(ptr[0]),
   });

@@ -15,36 +15,36 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_mesh_picking".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(20, 20, 20);
   camera.ref.target.set(0, 8, 0);
   camera.ref.up.set(0, 1.6, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final ray = Ray$.At('ray');
+  final ray = Ray$.val.At('ray');
 
   final tower = LoadModel("../resources/models/obj/turret.obj".toC);
   final texture = LoadTexture("../resources/models/obj/turret_diffuse.png".toC);
   tower.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final towerPos = Vector3$.At('towerPos');
+  final towerPos = Vector3$.val.At('towerPos');
   final towerBBox = GetMeshBoundingBox(tower.meshes[0]);
 
-  final g0 = Vector3$.At('g0').set(-50.0, 0.0, -50.0);
-  final g1 = Vector3$.At('g1').set(-50.0, 0.0,  50.0);
-  final g2 = Vector3$.At('g2').set( 50.0, 0.0,  50.0);
-  final g3 = Vector3$.At('g3').set( 50.0, 0.0, -50.0);
+  final g0 = Vector3$.val.At('g0').set(-50.0, 0.0, -50.0);
+  final g1 = Vector3$.val.At('g1').set(-50.0, 0.0,  50.0);
+  final g2 = Vector3$.val.At('g2').set( 50.0, 0.0,  50.0);
+  final g3 = Vector3$.val.At('g3').set( 50.0, 0.0, -50.0);
 
   // Test triangle
-  final ta = Vector3$.At('ta').set(-25.0, 0.5, 0.0);
-  final tb = Vector3$.At('tb').set(-4.0, 2.5, 1.0);
-  final tc = Vector3$.At('tc').set(-8.0, 6.5, 0.0);
+  final ta = Vector3$.val.At('ta').set(-25.0, 0.5, 0.0);
+  final tb = Vector3$.val.At('tb').set(-4.0, 2.5, 1.0);
+  final tc = Vector3$.val.At('tc').set(-8.0, 6.5, 0.0);
 
-  final bary = Vector3$.At('bary');
+  final bary = Vector3$.val.At('bary');
 
   // Test sphere
-  final sp = Vector3$.At('sp').set(-30.0, 5.0, 5.0);
+  final sp = Vector3$.val.At('sp').set(-30.0, 5.0, 5.0);
   double sr = 4.0;
 
   while (!WindowShouldClose())
@@ -57,7 +57,7 @@ void main()
       else DisableCursor();
     }
 
-    final collision = RayCollision$.At('collision');
+    final collision = RayCollision$.val.At('collision');
     String hitObjectName = "None";
     collision.ref.distance = double.maxFinite;
     collision.ref.hit = false;
@@ -108,7 +108,7 @@ void main()
       hitObjectName = "Box";
 
       // Check ray collision against model meshes
-      final meshHitInfo = RayCollision$.At('meshHitInfo');
+      final meshHitInfo = RayCollision$.val.At('meshHitInfo');
       for (int m = 0; m < tower.meshCount; m++)
       {
         // NOTE: We consider the model.transform for the collision check but 
@@ -153,7 +153,7 @@ void main()
           DrawCube(collision.ref.point, 0.3, 0.3, 0.3, cursorColor);
           DrawCubeWires(collision.ref.point, 0.3, 0.3, 0.3, RED);
 
-          final normalEnd = Vector3$.At('normalEnd');
+          final normalEnd = Vector3$.val.At('normalEnd');
           normalEnd.ref.x = collision.ref.point.x + collision.ref.normal.x;
           normalEnd.ref.y = collision.ref.point.y + collision.ref.normal.y;
           normalEnd.ref.z = collision.ref.point.z + collision.ref.normal.z;

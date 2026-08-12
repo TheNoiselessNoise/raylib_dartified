@@ -14,11 +14,11 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_rounded_rectangle_drawing".toC);
   SetTargetFPS(60);
 
-  final roundness = Float32$.Value(0.2, 'roundness');
-  final width = Float32$.Value(200.0, 'width');
-  final height = Float32$.Value(100.0, 'height');
-  final segments = Float32$.Value(0.0, 'segments');
-  final lineThick = Float32$.Value(1.0, 'lineThick');
+  final roundness = Float32$.val.Value(0.2, 'roundness');
+  final width = Float32$.val.Value(200.0, 'width');
+  final height = Float32$.val.Value(100.0, 'height');
+  final segments = Float32$.val.Value(0.0, 'segments');
+  final lineThick = Float32$.val.Value(1.0, 'lineThick');
 
   final drawRect = Bool$.Value(false, 'drawRect');
   final drawRoundedRect = Bool$.Value(true, 'drawRoundedRect');
@@ -28,7 +28,7 @@ void main()
   {
     final w = GetScreenWidth(), h = GetScreenHeight();
 
-    final rec = Rectangle$.At('rec').set(
+    final rec = Rectangle$.val.At('rec').set(
       (w - width.value - 250)/2, (h - height.value)/2.0,
       width.value, height.value
     );
@@ -61,35 +61,35 @@ void main()
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(640, 40, 105, 20),
+        Rectangle$.val.$1.set(640, 40, 105, 20),
         "Width".toC,
         width.value.f2.toC,
         width, 0, w - 300,
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(640, 70, 105, 20),
+        Rectangle$.val.$1.set(640, 70, 105, 20),
         "Height".toC,
         height.value.f2.toC,
         height, 0, h - 50,
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(640, 140, 105, 20),
+        Rectangle$.val.$1.set(640, 140, 105, 20),
         "Roundness".toC,
         roundness.value.f2.toC,
         roundness, 0.0, 1.0,
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(640, 170, 105, 20),
+        Rectangle$.val.$1.set(640, 170, 105, 20),
         "Thickness".toC,
         lineThick.value.f2.toC,
         lineThick, 0, 20,
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(640, 240, 105, 20),
+        Rectangle$.val.$1.set(640, 240, 105, 20),
         "Segments".toC,
         segments.value.f2.toC,
         segments, 0, 60,
@@ -97,19 +97,19 @@ void main()
 
 
       GuiCheckBox(
-        Rectangle$.$1.set(640, 320, 20, 20),
+        Rectangle$.val.$1.set(640, 320, 20, 20),
         "DrawRoundedRect".toC,
         drawRoundedRect,
       );
 
       GuiCheckBox(
-        Rectangle$.$1.set(640, 350, 20, 20),
+        Rectangle$.val.$1.set(640, 350, 20, 20),
         "DrawRoundedLines".toC,
         drawRoundedLines,
       );
 
       GuiCheckBox(
-        Rectangle$.$1.set(640, 380, 20, 20),
+        Rectangle$.val.$1.set(640, 380, 20, 20),
         "DrawRect".toC,
         drawRect,
       );

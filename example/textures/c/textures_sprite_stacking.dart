@@ -49,9 +49,9 @@ void main()
       {
         DrawTexturePro(
           booth,
-          Rectangle$.$1.set(0.0, i*frameHeight, frameWidth, frameHeight),
-          Rectangle$.$2.set(screenWidth/2.0, (screenHeight/2.0) + (i*stackSpacing) - (stackSpacing*stackCount/2.0), scaledWidth, scaledHeight),
-          Vector2$.$1.set(scaledWidth/2.0, scaledHeight/2.0),
+          Rectangle$.val.$1.set(0.0, i*frameHeight, frameWidth, frameHeight),
+          Rectangle$.val.$2.set(screenWidth/2.0, (screenHeight/2.0) + (i*stackSpacing) - (stackSpacing*stackCount/2.0), scaledWidth, scaledHeight),
+          Vector2$.val.$1.set(scaledWidth/2.0, scaledHeight/2.0),
           rotation,
           WHITE
         );

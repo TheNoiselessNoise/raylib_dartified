@@ -19,8 +19,8 @@ void main()
 
   final scarfy = LoadTexture("../resources/scarfy.png".toC);
 
-  final position = Vector2$.At('position').set(350.0, 280.0);
-  final frameRec = Rectangle$.At('frameRec').set(0.0, 0.0, scarfy.width/6, scarfy.height);
+  final position = Vector2$.val.At('position').set(350.0, 280.0);
+  final frameRec = Rectangle$.val.At('frameRec').set(0.0, 0.0, scarfy.width/6, scarfy.height);
   int currentFrame = 0;
 
   int framesCounter = 0;

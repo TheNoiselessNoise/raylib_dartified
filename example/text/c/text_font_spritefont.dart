@@ -22,17 +22,17 @@ void main()
   final font2 = LoadFont("../resources/custom_alagard.png".toC);
   final font3 = LoadFont("../resources/custom_jupiter_crash.png".toC);
 
-  final fontPosition1 = Vector2$.$1.set(
+  final fontPosition1 = Vector2$.val.$1.set(
     screenWidth/2.0 - MeasureTextEx(font1, msg1.toC, font1.baseSize.toDouble(), -3).x/2,
     screenHeight/2.0 - font1.baseSize/2.0 - 80.0
   );
 
-  final fontPosition2 = Vector2$.$2.set(
+  final fontPosition2 = Vector2$.val.$2.set(
     screenWidth/2.0 - MeasureTextEx(font2, msg2.toC, font2.baseSize.toDouble(), -2.0).x/2.0,
     screenHeight/2.0 - font2.baseSize/2.0 - 10.0
   );
 
-  final fontPosition3 = Vector2$.$3.set(
+  final fontPosition3 = Vector2$.val.$3.set(
     screenWidth/2.0 - MeasureTextEx(font3, msg3.toC, font3.baseSize.toDouble(), 2.0).x/2.0,
     screenHeight/2.0 - font3.baseSize/2.0 + 50.0
   );

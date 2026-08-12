@@ -26,12 +26,12 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_recursive_tree".toC);
   SetTargetFPS(60);
 
-  final start = Vector2$.AtUnique().set((screenWidth/2.0) - 125.0, screenHeight);
-  final angle = Float32$.ValueUnique(40.0);
-  final thick = Float32$.ValueUnique(1.0);
-  final treeDepth = Float32$.ValueUnique(10.0);
-  final branchDecay = Float32$.ValueUnique(0.66);
-  final length = Float32$.ValueUnique(120.0);
+  final start = Vector2$.val.AtUnique().set((screenWidth/2.0) - 125.0, screenHeight);
+  final angle = Float32$.val.ValueUnique(40.0);
+  final thick = Float32$.val.ValueUnique(1.0);
+  final treeDepth = Float32$.val.ValueUnique(10.0);
+  final branchDecay = Float32$.val.ValueUnique(0.66);
+  final length = Float32$.val.ValueUnique(120.0);
   final bezier = Bool$.ValueUnique(false);
 
   final branches = calloc<Branch>(1030);
@@ -42,7 +42,7 @@ void main()
     int maxBranches = math.pow(2, treeDepth.value.floor()).toInt();
     int count = 0;
 
-    final initialEnd = Vector2$.AtUnique().set(
+    final initialEnd = Vector2$.val.AtUnique().set(
       start.ref.x + length.value*math.sin(0.0),
       start.ref.y - length.value*math.cos(0.0)
     );
@@ -65,7 +65,7 @@ void main()
         final branchStart = branch.end;
 
         final angle1 = branch.angle + theta;
-        final branchEnd1 = Vector2$.At('branchEnd1_$i').set(
+        final branchEnd1 = Vector2$.val.At('branchEnd1_$i').set(
           branchStart.x + nextLength*math.sin(angle1),
           branchStart.y - nextLength*math.cos(angle1)
         );
@@ -77,7 +77,7 @@ void main()
         branches[current1].length = nextLength;
 
         final angle2 = branch.angle - theta;
-        final branchEnd2 = Vector2$.At('branchEnd2_$i').set(
+        final branchEnd2 = Vector2$.val.At('branchEnd2_$i').set(
           branchStart.x + nextLength*math.sin(angle2),
           branchStart.y - nextLength*math.cos(angle2)
         );
@@ -104,15 +104,15 @@ void main()
         }
       }
 
-      DrawLine(580, 0, 580, GetScreenHeight(), Color$.$1.set(218, 218, 218, 255));
-      DrawRectangle(580, 0, GetScreenWidth(), GetScreenHeight(), Color$.$1.set(232, 232, 232, 255));
+      DrawLine(580, 0, 580, GetScreenHeight(), Color$.val.$1.set(218, 218, 218, 255));
+      DrawRectangle(580, 0, GetScreenWidth(), GetScreenHeight(), Color$.val.$1.set(232, 232, 232, 255));
 
-      GuiSliderBar(Rectangle$.$1.set(640, 40, 120, 20), "Angle".toC, angle.value.f0.toC, angle, 0, 180);
-      GuiSliderBar(Rectangle$.$1.set(640, 70, 120, 20), "Length".toC, length.value.f0.toC, length, 12.0, 240.0);
-      GuiSliderBar(Rectangle$.$1.set(640, 100, 120, 20), "Decay".toC, branchDecay.value.f2.toC, branchDecay, 0.1, 0.78);
-      GuiSliderBar(Rectangle$.$1.set(640, 130, 120, 20), "Depth".toC, treeDepth.value.f0.toC, treeDepth, 1.0, 10.0);
-      GuiSliderBar(Rectangle$.$1.set(640, 160, 120, 20), "Thick".toC, thick.value.f0.toC, thick, 1, 8);
-      GuiCheckBox(Rectangle$.$1.set(640, 190, 20, 20), "Bezier".toC, bezier);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 40, 120, 20), "Angle".toC, angle.value.f0.toC, angle, 0, 180);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 70, 120, 20), "Length".toC, length.value.f0.toC, length, 12.0, 240.0);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 100, 120, 20), "Decay".toC, branchDecay.value.f2.toC, branchDecay, 0.1, 0.78);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 130, 120, 20), "Depth".toC, treeDepth.value.f0.toC, treeDepth, 1.0, 10.0);
+      GuiSliderBar(Rectangle$.val.$1.set(640, 160, 120, 20), "Thick".toC, thick.value.f0.toC, thick, 1, 8);
+      GuiCheckBox(Rectangle$.val.$1.set(640, 190, 20, 20), "Bezier".toC, bezier);
 
       DrawFPS(10, 10);
 

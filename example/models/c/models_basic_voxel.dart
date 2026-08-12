@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(-2, 0, -2);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -31,10 +31,10 @@ void main()
     return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
   });
 
-  final screenCenter = Vector2$.At('screenCenter')
+  final screenCenter = Vector2$.val.At('screenCenter')
     .set(screenWidth/2, screenHeight/2);
-  final voxelBB = BoundingBox$.At('voxelBB');
-  final modelPosition = Vector3$.At('modelPosition');
+  final voxelBB = BoundingBox$.val.At('voxelBB');
+  final modelPosition = Vector3$.val.At('modelPosition');
 
   while (!WindowShouldClose())
   {

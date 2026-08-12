@@ -18,7 +18,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_shadowmap_rendering".toC);
   SetTargetFPS(60);
 
-  final cam = Camera3D$.$newPtr;
+  final cam = Camera3D$.val.$newPtr;
   cam.ref.position.set(10, 10, 10);
   cam.ref.target.set(0, 0, 0);
   cam.ref.up.set(0, 1, 0);
@@ -39,20 +39,20 @@ void main()
   void updateShaderLightDir() {
     SetShaderValue(shadowShader,
       GetShaderLocation(shadowShader, "lightDir".toC),
-      Vector3$.$1Ptr.setD(lightDir).cast(),
+      Vector3$.val.$1Ptr.setD(lightDir).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
   } updateShaderLightDir();
 
   SetShaderValue(shadowShader,
     GetShaderLocation(shadowShader, "lightColor".toC),
-    Vector4$.$1Ptr.setD(lightColor).cast(),
+    Vector4$.val.$1Ptr.setD(lightColor).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
   SetShaderValue(shadowShader,
     GetShaderLocation(shadowShader, "ambient".toC),
-    Float32$.Array([0.1, 0.1, 0.1, 1.0]).cast(),
+    Float32$.val.Array([0.1, 0.1, 0.1, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
   
@@ -60,7 +60,7 @@ void main()
   int shadowMapLoc = GetShaderLocation(shadowShader, "shadowMap".toC);
   SetShaderValue(shadowShader,
     GetShaderLocation(shadowShader, "shadowMapResolution".toC),
-    Int$.Value(SHADOWMAP_RESOLUTION).cast(),
+    Int$.val.Value(SHADOWMAP_RESOLUTION).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
@@ -73,7 +73,7 @@ void main()
     robot.materials[i].shader = shadowShader;
   }
 
-  final animCount = Int$.At('animCount');
+  final animCount = Int$.val.At('animCount');
   final robotAnimations = LoadModelAnimations(
     "../resources/models/robot.glb".toC,
     animCount
@@ -81,7 +81,7 @@ void main()
 
   final shadowMap = LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
 
-  final lightCam = Camera3D$.At('lightCam');
+  final lightCam = Camera3D$.val.At('lightCam');
   lightCam.ref.position.setD(lightDir.scale(-15.0));
   lightCam.ref.target.set(0, 0, 0);
   lightCam.ref.up.set(0.0, 1.0, 0.0);
@@ -96,7 +96,7 @@ void main()
 
     SetShaderValue(shadowShader,
       shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(cam.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(cam.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -144,7 +144,7 @@ void main()
       EndMode3D();
     EndTextureMode();
     
-    final lightViewProj = Matrix$.At('lightViewProj');
+    final lightViewProj = Matrix$.val.At('lightViewProj');
     lightViewProj.setD(lightView.toD().mul(lightProj.toD()));
 
     BeginDrawing();
@@ -158,7 +158,7 @@ void main()
       rlActiveTextureSlot(textureActiveSlot);
       rlEnableTexture(shadowMap.depth.id);
       rlSetUniform(shadowMapLoc,
-        Int$.Value(textureActiveSlot).cast(),
+        Int$.val.Value(textureActiveSlot).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_INT.value,
         1
       );
@@ -197,7 +197,7 @@ RenderTextureC LoadShadowmapRenderTexture(
   int width,
   int height,
 ) {
-  final target = RenderTexture$.At('${width}_$height');
+  final target = RenderTexture$.val.At('${width}_$height');
 
   target.ref.id = rlLoadFramebuffer();
   target.ref.texture.width = width;
@@ -250,27 +250,27 @@ void DrawScene(ModelC cube, ModelC robot)
 {
   DrawModelEx(
     cube,
-    Vector3$.$1.set(0.0, 0.0, 0.0),
-    Vector3$.$2.set(0.0, 1.0, 0.0),
+    Vector3$.val.$1.set(0.0, 0.0, 0.0),
+    Vector3$.val.$2.set(0.0, 1.0, 0.0),
     0.0,
-    Vector3$.$3.set(10.0, 1.0, 10.0),
+    Vector3$.val.$3.set(10.0, 1.0, 10.0),
     BLUE
   );
 
   DrawModelEx(
     cube,
-    Vector3$.$1.set(1.5, 1.0, -1.5),
-    Vector3$.$2.set(0.0, 1.0, 0.0),
+    Vector3$.val.$1.set(1.5, 1.0, -1.5),
+    Vector3$.val.$2.set(0.0, 1.0, 0.0),
     0.0,
-    Vector3$.$3.set(1.0, 1.0, 1.0),
+    Vector3$.val.$3.set(1.0, 1.0, 1.0),
     WHITE
   );
   DrawModelEx(
     robot,
-    Vector3$.$1.set(0.0, 0.5, 0.0),
-    Vector3$.$2.set(0.0, 1.0, 0.0),
+    Vector3$.val.$1.set(0.0, 0.5, 0.0),
+    Vector3$.val.$2.set(0.0, 1.0, 0.0),
     0.0,
-    Vector3$.$3.set(1.0, 1.0, 1.0),
+    Vector3$.val.$3.set(1.0, 1.0, 1.0),
     RED
   );
 }

@@ -21,11 +21,11 @@ void main()
 
   int triangleCount = 64;
   double pointScale = 150.0;
-  final value = Float32$.At('value');
+  final value = Float32$.val.At('value');
 
-  final center = Vector2$.At('center').set(screenWidth/2.0, screenHeight/2.0);
-  final circlePosition = Vector2$.At('circlePos').setC(center.ref);
-  final color = Color$.At('color').setC(WHITE);
+  final center = Vector2$.val.At('center').set(screenWidth/2.0, screenHeight/2.0);
+  final circlePosition = Vector2$.val.At('circlePos').setC(center.ref);
+  final color = Color$.val.At('color').setC(WHITE);
 
   bool sliderClicked = false;
   bool settingColor = false;
@@ -40,7 +40,7 @@ void main()
       pointsMax.toDouble(),
     ).toInt();
 
-    final sliderRectangle = Rectangle$.At('slider').set(42.0, 16.0 + 64.0 + 45.0, 64.0, 16.0);
+    final sliderRectangle = Rectangle$.val.At('slider').set(42.0, 16.0 + 64.0 + 45.0, 64.0, 16.0);
     final mousePosition = GetMousePosition();
 
     bool sliderHover = (
@@ -136,7 +136,7 @@ void main()
       double angle360 = angle*360.0;
       double valueActual = Clamp(distance, 0.0, 1.0);
       color.setD(ColorLerp(
-        Color$.$1.set((value.value*255.0).toInt(), (value.value*255.0).toInt(), (value.value*255.0).toInt(), 255),
+        Color$.val.$1.set((value.value*255.0).toInt(), (value.value*255.0).toInt(), (value.value*255.0).toInt(), 255),
         ColorFromHSV(angle360, Clamp(distance, 0.0, 1.0), 1.0),
         valueActual,
       ).toD());
@@ -202,13 +202,13 @@ void main()
     DrawCircleLinesV(circlePosition.ref, 4.0, handleColor);
 
     DrawRectangleV(
-      Vector2$.$1.set(8, 8),
-      Vector2$.$2.set(64, 64),
+      Vector2$.val.$1.set(8, 8),
+      Vector2$.val.$2.set(64, 64),
       color.ref,
     );
 
     DrawRectangleLinesEx(
-      Rectangle$.$1.set(8, 8, 64, 64),
+      Rectangle$.val.$1.set(8, 8, 64, 64),
       2,
       ColorLerp(color.ref, BLACK, 0.5),
     );

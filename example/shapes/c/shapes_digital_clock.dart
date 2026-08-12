@@ -90,7 +90,7 @@ void main()
 
       ClearBackground(RAYWHITE);
 
-      if (clockMode == CLOCK_ANALOG) DrawClockAnalog(clock, Vector2$.$1.set(400, 240));
+      if (clockMode == CLOCK_ANALOG) DrawClockAnalog(clock, Vector2$.val.$1.set(400, 240));
       else if (clockMode == CLOCK_DIGITAL)
       {
         DrawClockDigital(clock, .vec2(30, 60));
@@ -142,12 +142,12 @@ void DrawClockAnalog(Clock clock, Vector2C position)
 
   for (int i = 0; i < 60; i++)
   {
-    final v1 = Vector2$.$1.set(
+    final v1 = Vector2$.val.$1.set(
       position.x + (clock.second.length + ((i%5>0)? 10 : 6))*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
       position.y + (clock.second.length + ((i%5>0)? 10 : 6))*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
     );
 
-    final v2 = Vector2$.$2.set(
+    final v2 = Vector2$.val.$2.set(
       position.x + (clock.second.length + 20)*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
       position.y + (clock.second.length + 20)*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
     );
@@ -157,33 +157,33 @@ void DrawClockAnalog(Clock clock, Vector2C position)
 
   // hand seconds
   DrawRectanglePro(
-    Rectangle$.$1.set(
+    Rectangle$.val.$1.set(
       position.x, position.y,
       clock.second.length.toDouble(), clock.second.thickness.toDouble(),
     ),
-    Vector2$.$1.set(0.0, clock.second.thickness/2.0),
+    Vector2$.val.$1.set(0.0, clock.second.thickness/2.0),
     clock.second.angle,
     clock.second.color
   );
 
   // hand minutes
   DrawRectanglePro(
-    Rectangle$.$1.set(
+    Rectangle$.val.$1.set(
       position.x, position.y,
       clock.minute.length.toDouble(), clock.minute.thickness.toDouble(),
     ),
-    Vector2$.$1.set(0.0, clock.minute.thickness/2.0),
+    Vector2$.val.$1.set(0.0, clock.minute.thickness/2.0),
     clock.minute.angle,
     clock.minute.color
   );
 
   // hand hours
   DrawRectanglePro(
-    Rectangle$.$1.set(
+    Rectangle$.val.$1.set(
       position.x, position.y,
       clock.hour.length.toDouble(), clock.hour.thickness.toDouble(),
     ),
-    Vector2$.$1.set(0.0, clock.hour.thickness/2.0),
+    Vector2$.val.$1.set(0.0, clock.hour.thickness/2.0),
     clock.hour.angle,
     clock.hour.color
   );
@@ -290,7 +290,7 @@ void DrawDisplaySegment(Vector2D center, int length, int thick, bool vertical, C
   if (!vertical)
   {
     // Horizontal segment points
-    final segmentPoints = Vector2$.FillInto(key: 'segmentPoints', 6, (i, v) => switch (i) {
+    final segmentPoints = Vector2$.val.FillInto(key: 'segmentPoints', 6, (i, v) => switch (i) {
       0 => v.set(center.x - length/2.0 - thick/2.0,  center.y), // Point 1
       1 => v.set(center.x - length/2.0,  center.y + thick/2.0), // Point 2
       2 => v.set(center.x - length/2.0, center.y - thick/2.0), // Point 3
@@ -305,7 +305,7 @@ void DrawDisplaySegment(Vector2D center, int length, int thick, bool vertical, C
   else
   {
     // Vertical segment points
-    final segmentPoints = Vector2$.FillInto(key: 'segmentPoints', 6, (i, v) => switch (i) {
+    final segmentPoints = Vector2$.val.FillInto(key: 'segmentPoints', 6, (i, v) => switch (i) {
       0 => v.set(center.x,  center.y - length/2.0 - thick/2.0), // Point 1
       1 => v.set(center.x - thick/2.0,  center.y - length/2.0), // Point 2
       2 => v.set(center.x + thick/2.0, center.y - length/2.0), // Point 3

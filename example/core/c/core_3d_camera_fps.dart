@@ -55,7 +55,7 @@ void main() {
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(
     player.position.x,
     player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -236,7 +236,7 @@ void DrawLevel()
   final int floorExtent = 25;
   final double tileSize = 5.0;
 
-  final towerColor = Color$.$1.set(150, 200, 200, 255);
+  final towerColor = Color$.val.$1.set(150, 200, 200, 255);
 
   for (int y = -floorExtent; y < floorExtent; y++)
   {
@@ -245,24 +245,24 @@ void DrawLevel()
       if ((y & 1) != 0 && (x & 1) != 0)
       {
         DrawPlane(
-          Vector3$.$1.set(x*tileSize, 0.0, y*tileSize),
-          Vector2$.$1.set(tileSize, tileSize),
+          Vector3$.val.$1.set(x*tileSize, 0.0, y*tileSize),
+          Vector2$.val.$1.set(tileSize, tileSize),
           towerColor
         );
       }
       else if ((y & 1) == 0 && (x & 1) == 0)
       {
         DrawPlane(
-          Vector3$.$1.set(x*tileSize, 0.0, y*tileSize),
-          Vector2$.$1.set(tileSize, tileSize),
+          Vector3$.val.$1.set(x*tileSize, 0.0, y*tileSize),
+          Vector2$.val.$1.set(tileSize, tileSize),
           LIGHTGRAY
         );
       }
     }
   }
 
-  final towerSize = Vector3$.$1.set(16.0, 32.0, 16.0);
-  final towerPos = Vector3$.$2.set(16.0, 16.0, 16.0);
+  final towerSize = Vector3$.val.$1.set(16.0, 32.0, 16.0);
+  final towerPos = Vector3$.val.$2.set(16.0, 16.0, 16.0);
 
   DrawCubeV(towerPos, towerSize, towerColor);
   DrawCubeWiresV(towerPos, towerSize, DARKBLUE);

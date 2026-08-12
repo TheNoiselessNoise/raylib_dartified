@@ -16,9 +16,9 @@ void main()
 
   double rotation = 0.0;
 
-  final v1 = Vector2$.At('v1');
-  final v2 = Vector2$.At('v2');
-  final v3 = Vector2$.At('v3');
+  final v1 = Vector2$.val.At('v1');
+  final v2 = Vector2$.val.At('v2');
+  final v3 = Vector2$.val.At('v3');
 
   while (!WindowShouldClose())
   {

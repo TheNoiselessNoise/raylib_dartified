@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_image_text".toC);
   SetTargetFPS(60);
 
-  final parrots = Image$.At('parrots');
+  final parrots = Image$.val.At('parrots');
   parrots.ref = LoadImage("../resources/parrots.png".toC);
 
   final font = LoadFontEx("../resources/KAISG.ttf".toC, 64, nullptr, 0);
@@ -24,7 +24,7 @@ void main()
     parrots,
     font,
     "[Parrots font drawing]".toC,
-    Vector2$.$1.set(20.0, 20.0),
+    Vector2$.val.$1.set(20.0, 20.0),
     font.baseSize.toDouble(),
     0.0,
     RED
@@ -33,7 +33,7 @@ void main()
   final texture = LoadTextureFromImage(parrots.ref);
   UnloadImage(parrots.ref);
 
-  final position = Vector2$.At('position').set(
+  final position = Vector2$.val.At('position').set(
     screenWidth/2 - texture.width/2,
     screenHeight/2 - texture.height/2 - 20
   );
@@ -55,7 +55,7 @@ void main()
         DrawTextEx(
           font,
           "[Parrots font drawing]".toC,
-          Vector2$.$1.set(position.ref.x + 20, position.ref.y + 20 + 280),
+          Vector2$.val.$1.set(position.ref.x + 20, position.ref.y + 20 + 280),
           font.baseSize.toDouble(),
           0.0,
           WHITE

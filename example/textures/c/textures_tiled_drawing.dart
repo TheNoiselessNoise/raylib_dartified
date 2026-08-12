@@ -23,7 +23,7 @@ void main()
   SetTextureFilter(texPattern, TextureFilter.TEXTURE_FILTER_TRILINEAR.value);
 
   final recCount = 6;
-  final recPattern = Rectangle$.FillInto(key: 'recPattern', recCount, (i, r) => switch(i) {
+  final recPattern = Rectangle$.val.FillInto(key: 'recPattern', recCount, (i, r) => switch(i) {
     0 => r.set(3, 3, 66, 66),
     1 => r.set(75, 3, 100, 100),
     2 => r.set(3, 75, 66, 66),
@@ -38,7 +38,7 @@ void main()
     BEIGE, LIME, RED, DARKGRAY, SKYBLUE
   ];
 
-  final colorRec = Rectangle$.At('colorRec', colors.length);
+  final colorRec = Rectangle$.val.At('colorRec', colors.length);
 
   for (int i = 0, x = 0, y = 0; i < colors.length; i++)
   {
@@ -67,7 +67,7 @@ void main()
       {
         if (CheckCollisionPointRec(
           mouse,
-          Rectangle$.$1.set(
+          Rectangle$.val.$1.set(
             2 + MARGIN_SIZE + recPattern[i].x,
             40 + MARGIN_SIZE + recPattern[i].y,
             recPattern[i].width,
@@ -104,13 +104,13 @@ void main()
       DrawTextureTiled(
         texPattern,
         recPattern[activePattern],
-        Rectangle$.$1.set(
+        Rectangle$.val.$1.set(
           OPT_WIDTH+MARGIN_SIZE,
           MARGIN_SIZE,
           GetScreenWidth() - OPT_WIDTH - 2.0*MARGIN_SIZE,
           GetScreenHeight() - 2.0*MARGIN_SIZE,
         ),
-        Vector2$.$zero,
+        Vector2$.val.$zero,
         rotation,
         scale,
         colors[activeCol]
@@ -207,11 +207,11 @@ void DrawTextureTiled(
     // Can fit only one tile
     DrawTexturePro(
       texture,
-      Rectangle$.$2.set(
+      Rectangle$.val.$2.set(
         source.x, source.y,
         (dest.width/tileWidth)*source.width, (dest.height/tileHeight)*source.height
       ),
-      Rectangle$.$3.set(
+      Rectangle$.val.$3.set(
         dest.x, dest.y,
         dest.width, dest.height
       ),
@@ -228,11 +228,11 @@ void DrawTextureTiled(
     {
       DrawTexturePro(
         texture,
-        Rectangle$.$2.set(
+        Rectangle$.val.$2.set(
           source.x, source.y,
           (dest.width/tileWidth)*source.width, source.height
         ),
-        Rectangle$.$3.set(
+        Rectangle$.val.$3.set(
           dest.x, dest.y + dy,
           dest.width, tileHeight,
         ),
@@ -247,11 +247,11 @@ void DrawTextureTiled(
     {
       DrawTexturePro(
         texture,
-        Rectangle$.$2.set(
+        Rectangle$.val.$2.set(
           source.x, source.y,
           (dest.width/tileWidth)*source.width, ((dest.height - dy)/tileHeight)*source.height
         ),
-        Rectangle$.$3.set(
+        Rectangle$.val.$3.set(
           dest.x, dest.y + dy,
           dest.width, dest.height - dy
         ),
@@ -269,11 +269,11 @@ void DrawTextureTiled(
     {
       DrawTexturePro(
         texture,
-        Rectangle$.$2.set(
+        Rectangle$.val.$2.set(
           source.x, source.y,
           source.width, (dest.height/tileHeight)*source.height
         ),
-        Rectangle$.$3.set(
+        Rectangle$.val.$3.set(
           dest.x + dx, dest.y,
           tileWidth, dest.height
         ),
@@ -288,11 +288,11 @@ void DrawTextureTiled(
     {
       DrawTexturePro(
         texture,
-        Rectangle$.$2.set(
+        Rectangle$.val.$2.set(
           source.x, source.y,
           ((dest.width - dx)/tileWidth)*source.width, (dest.height/tileHeight)*source.height
         ),
-        Rectangle$.$3.set(
+        Rectangle$.val.$3.set(
           dest.x + dx, dest.y,
           dest.width - dx, dest.height
         ),
@@ -314,7 +314,7 @@ void DrawTextureTiled(
         DrawTexturePro(
           texture,
           source,
-          Rectangle$.$2.set(
+          Rectangle$.val.$2.set(
             dest.x + dx, dest.y + dy,
             tileWidth, tileHeight
           ),
@@ -328,11 +328,11 @@ void DrawTextureTiled(
       {
         DrawTexturePro(
           texture,
-          Rectangle$.$2.set(
+          Rectangle$.val.$2.set(
             source.x, source.y, source.width,
             ((dest.height - dy)/tileHeight)*source.height
           ),
-          Rectangle$.$3.set(
+          Rectangle$.val.$3.set(
             dest.x + dx, dest.y + dy,
             tileWidth, dest.height - dy
           ),
@@ -351,11 +351,11 @@ void DrawTextureTiled(
       {
         DrawTexturePro(
           texture,
-          Rectangle$.$2.set(
+          Rectangle$.val.$2.set(
             source.x, source.y,
             ((dest.width - dx)/tileWidth)*source.width, source.height
           ),
-          Rectangle$.$3.set(
+          Rectangle$.val.$3.set(
             dest.x + dx, dest.y + dy,
             dest.width - dx, tileHeight
           ),
@@ -370,11 +370,11 @@ void DrawTextureTiled(
       {
         DrawTexturePro(
           texture,
-          Rectangle$.$2.set(
+          Rectangle$.val.$2.set(
             source.x, source.y,
             ((dest.width - dx)/tileWidth)*source.width, ((dest.height - dy)/tileHeight)*source.height
           ),
-          Rectangle$.$3.set(
+          Rectangle$.val.$3.set(
             dest.x + dx, dest.y + dy,
             dest.width - dx, dest.height - dy
           ),

@@ -21,11 +21,11 @@ void main()
   int imageHeight = screenHeight~/SCALE_FACTOR;
   int flameWidth = screenWidth~/SCALE_FACTOR;
 
-  final palette = Color$.At('palette', MAX_COLORS);
-  final indexBuffer = UnsignedChar$.At('indexBuffer', imageWidth*imageWidth);
-  final flameRootBuffer = UnsignedChar$.At('flameRootBuffer', flameWidth);
+  final palette = Color$.val.At('palette', MAX_COLORS);
+  final indexBuffer = UnsignedChar$.val.At('indexBuffer', imageWidth*imageWidth);
+  final flameRootBuffer = UnsignedChar$.val.At('flameRootBuffer', flameWidth);
 
-  final screenImage = Image$.At('screenImage');
+  final screenImage = Image$.val.At('screenImage');
   screenImage.ref = GenImageColor(imageWidth, imageHeight, BLACK);
   
   final screenTexture = LoadTextureFromImage(screenImage.ref);
@@ -102,7 +102,7 @@ void main()
 
       ClearBackground(RAYWHITE);
 
-      DrawTextureEx(screenTexture, Vector2$.$zero, 0.0, 2.0, WHITE);
+      DrawTextureEx(screenTexture, Vector2$.val.$zero, 0.0, 2.0, WHITE);
 
     EndDrawing();
   }

@@ -88,11 +88,11 @@ class RaylibRlglD extends RaylibRlglModuleBase<
 
   @override
   void rlMultMatrixf(
-    List<double> matf,
+    List<num> matf,
   ) => run(
     () => RaylibDebugLabels.rlMultMatrixf(matf),
     () => rl.Rlgl.rlMultMatrixf(
-      rl.Temp.Float32$.Array(matf),
+      rl.Temp.Float32$.val.Array(matf),
     ),
   );
 
@@ -865,7 +865,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     num bufferElements,
   ) => run(
     () => RaylibDebugLabels.rlLoadRenderBatch(numBuffers, bufferElements),
-    () => rl.Temp.RlRenderBatch$.RefCapture(
+    () => rl.Temp.RlRenderBatch$.val.RefCapture(
       RaylibCaptureIds.rlLoadRenderBatch(numBuffers, bufferElements),
       (_) => rl.Rlgl.rlLoadRenderBatch(
         numBuffers.toInt(),
@@ -880,7 +880,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlUnloadRenderBatch(batch),
     () => rl.Rlgl.rlUnloadRenderBatch(
-      rl.Temp.RlRenderBatch$.Ref1(batch).ref,
+      rl.Temp.RlRenderBatch$.val.Ref1(batch).ref,
     ),
   );
 
@@ -889,17 +889,17 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     RlRenderBatchD batch,
   ) => run(
     () => RaylibDebugLabels.rlDrawRenderBatch(batch),
-    () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
+    () => rl.Temp.RlRenderBatch$.val.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlDrawRenderBatch(pb),
     ),
   );
 
   @override
-  void rlSetRenderBatchActive(
-    RlRenderBatchD batch,
-  ) => run(
+  void rlSetRenderBatchActive([
+    RlRenderBatchD? batch,
+  ]) => run(
     () => RaylibDebugLabels.rlSetRenderBatchActive(batch),
-    () => rl.Temp.RlRenderBatch$.RefUpdate1(batch,
+    () => rl.Temp.RlRenderBatch$.val.RefUpdate1(batch,
       (pb) => rl.Rlgl.rlSetRenderBatchActive(pb),
     ),
   );
@@ -1047,7 +1047,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => RaylibDebugLabels.rlSetVertexAttributeDefault(locIndex, value, attribType),
     () => rl.Rlgl.rlSetVertexAttributeDefault(
       locIndex.toInt(),
-      rl.Temp.Float32$.FromTypedList(value).cast(),
+      rl.Temp.Float32$.val.FromTypedList(value).cast(),
       attribType.value,
       value.length,
     ),
@@ -1075,7 +1075,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => rl.Rlgl.rlDrawVertexArrayElements(
       offset.toInt(),
       count.toInt(),
-      rl.Temp.Uint16$.FromTypedList(buffer).cast(),
+      rl.Temp.Uint16$.val.FromTypedList(buffer).cast(),
     ),
   );
 
@@ -1104,7 +1104,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => rl.Rlgl.rlDrawVertexArrayElementsInstanced(
       offset.toInt(),
       count.toInt(),
-      rl.Temp.Uint16$.FromTypedList(buffer).cast(),
+      rl.Temp.Uint16$.val.FromTypedList(buffer).cast(),
       instances.toInt(),
     ),
   );
@@ -1119,7 +1119,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlLoadTexture(data, width, height, format, mipmapCount),
     () => rl.Rlgl.rlLoadTexture(
-      data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
+      data == null ? nullptr : rl.Temp.Uint8$.val.FromTypedList(data).cast(),
       width.toInt(),
       height.toInt(),
       format.value,
@@ -1150,7 +1150,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlLoadTextureCubemap(data, size, format, mipmapCount),
     () => rl.Rlgl.rlLoadTextureCubemap(
-      data == null ? nullptr : rl.Temp.Uint8$.FromTypedList(data).cast(),
+      data == null ? nullptr : rl.Temp.Uint8$.val.FromTypedList(data).cast(),
       size.toInt(),
       format.value,
       mipmapCount.toInt(),
@@ -1175,7 +1175,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
       width.toInt(),
       height.toInt(),
       format.value,
-      rl.Temp.Uint8$.FromTypedList(data).cast(),
+      rl.Temp.Uint8$.val.FromTypedList(data).cast(),
     ),
   );
 
@@ -1185,9 +1185,9 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlGetGlTextureFormats(format),
     () {
-      final glInternalFormat = rl.Temp.UnsignedInt$.Ref1();
-      final glFormat = rl.Temp.UnsignedInt$.Ref2();
-      final glType = rl.Temp.UnsignedInt$.Ref3();
+      final glInternalFormat = rl.Temp.UnsignedInt$.val.Ref1();
+      final glFormat = rl.Temp.UnsignedInt$.val.Ref2();
+      final glType = rl.Temp.UnsignedInt$.val.Ref3();
       rl.Rlgl.rlGetGlTextureFormats(
         format.value,
         glInternalFormat,
@@ -1225,7 +1225,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlGenTextureMipmaps(id, width, height, format),
     () {
-      final mipmaps = rl.Temp.Int$.Ref1();
+      final mipmaps = rl.Temp.Int$.val.Ref1();
       rl.Rlgl.rlGenTextureMipmaps(
         id.toInt(),
         width.toInt(),
@@ -1336,7 +1336,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
         );
       }
 
-      final pixels = rl.Temp.Uint8$.Sized(size);
+      final pixels = rl.Temp.Uint8$.val.Sized(size);
 
       rl.Rlgl.rlCopyFramebuffer(
         x.toInt(),
@@ -1466,18 +1466,18 @@ class RaylibRlglD extends RaylibRlglModuleBase<
         case .RL_SHADER_UNIFORM_VEC2:
         case .RL_SHADER_UNIFORM_VEC3:
         case .RL_SHADER_UNIFORM_VEC4:
-          ptr = rl.Temp.Float32$.FromTypedData(value).cast();
+          ptr = rl.Temp.Float32$.val.FromTypedData(value).cast();
         case .RL_SHADER_UNIFORM_INT:
         case .RL_SHADER_UNIFORM_IVEC2:
         case .RL_SHADER_UNIFORM_IVEC3:
         case .RL_SHADER_UNIFORM_IVEC4:
         case .RL_SHADER_UNIFORM_SAMPLER2D:
-          ptr = rl.Temp.Int32$.FromTypedData(value).cast();
+          ptr = rl.Temp.Int32$.val.FromTypedData(value).cast();
         case .RL_SHADER_UNIFORM_UINT:
         case .RL_SHADER_UNIFORM_UIVEC2:
         case .RL_SHADER_UNIFORM_UIVEC3:
         case .RL_SHADER_UNIFORM_UIVEC4:
-          ptr = rl.Temp.Uint32$.FromTypedData(value).cast();
+          ptr = rl.Temp.Uint32$.val.FromTypedData(value).cast();
       }
       rl.Rlgl.rlSetUniform(
         locIndex.toInt(),
@@ -1496,7 +1496,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => RaylibDebugLabels.rlSetUniformMatrix(locIndex, mat),
     () => rl.Rlgl.rlSetUniformMatrix(
       locIndex.toInt(),
-      rl.Temp.Matrix$.Ref1(mat).ref,
+      rl.Temp.Matrix$.val.Ref1(mat).ref,
     ),
   );
 
@@ -1508,7 +1508,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => RaylibDebugLabels.rlSetUniformMatrices(locIndex, mat),
     () => rl.Rlgl.rlSetUniformMatrices(
       locIndex.toInt(),
-      rl.Temp.Matrix$.Array(mat),
+      rl.Temp.Matrix$.val.Array(mat),
       mat.length,
     ),
   );
@@ -1533,7 +1533,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
     () => RaylibDebugLabels.rlSetShader(id, locs),
     () => rl.Rlgl.rlSetShader(
       id.toInt(),
-      rl.Temp.Int$.Array(locs),
+      rl.Temp.Int$.val.Array(locs),
     ),
   );
 
@@ -1608,7 +1608,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlReadShaderBuffer(id, count, offset),
     () {
-      final values = rl.Temp.Uint8$.Sized(count.toInt());
+      final values = rl.Temp.Uint8$.val.Sized(count.toInt());
       rl.Rlgl.rlReadShaderBuffer(
         id.toInt(),
         values.cast(),
@@ -1701,7 +1701,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlSetMatrixProjection(proj),
     () => rl.Rlgl.rlSetMatrixProjection(
-      rl.Temp.Matrix$.Ref1(proj).ref,
+      rl.Temp.Matrix$.val.Ref1(proj).ref,
     ),
   );
 
@@ -1711,7 +1711,7 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlSetMatrixModelview(view),
     () => rl.Rlgl.rlSetMatrixModelview(
-      rl.Temp.Matrix$.Ref1(view).ref,
+      rl.Temp.Matrix$.val.Ref1(view).ref,
     ),
   );
 
@@ -1722,8 +1722,8 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlSetMatrixProjectionStereo(right, left),
     () => rl.Rlgl.rlSetMatrixProjectionStereo(
-      rl.Temp.Matrix$.Ref1(right).ref,
-      rl.Temp.Matrix$.Ref2(left).ref,
+      rl.Temp.Matrix$.val.Ref1(right).ref,
+      rl.Temp.Matrix$.val.Ref2(left).ref,
     ),
   );
 
@@ -1734,8 +1734,8 @@ class RaylibRlglD extends RaylibRlglModuleBase<
   ) => run(
     () => RaylibDebugLabels.rlSetMatrixViewOffsetStereo(right, left),
     () => rl.Rlgl.rlSetMatrixViewOffsetStereo(
-      rl.Temp.Matrix$.Ref1(right).ref,
-      rl.Temp.Matrix$.Ref2(left).ref,
+      rl.Temp.Matrix$.val.Ref1(right).ref,
+      rl.Temp.Matrix$.val.Ref2(left).ref,
     ),
   );
 

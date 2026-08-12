@@ -15,11 +15,11 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_image_rotate".toC);
   SetTargetFPS(60);
 
-  final image45 = Image$.At('image45');
+  final image45 = Image$.val.At('image45');
   image45.ref = LoadImage("../resources/raylib_logo.png".toC);
-  final image90 = Image$.At('image90');
+  final image90 = Image$.val.At('image90');
   image90.ref = LoadImage("../resources/raylib_logo.png".toC);
-  final imageNeg90 = Image$.At('imageNeg90');
+  final imageNeg90 = Image$.val.At('imageNeg90');
   imageNeg90.ref = LoadImage("../resources/raylib_logo.png".toC);
 
   ImageRotate(image45, 45);

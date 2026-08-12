@@ -163,7 +163,7 @@ void BuildProductionStep(Pointer<PenroseLSystem> ls)
 
 void DrawPenroseLSystem(Pointer<PenroseLSystem> ls)
 {
-  final screenCenter = Vector2$.$1.set(
+  final screenCenter = Vector2$.val.$1.set(
     GetScreenWidth()/2.0,
     GetScreenHeight()/2.0
   );
@@ -191,8 +191,8 @@ void DrawPenroseLSystem(Pointer<PenroseLSystem> ls)
         turtle.ref.origin.y += ls.ref.drawLength*math.sin(radAngle);
 
         DrawLineEx(
-          Vector2$.$2.set(startX + screenCenter.x, startY + screenCenter.y),
-          Vector2$.$3.set(turtle.ref.origin.x + screenCenter.x, turtle.ref.origin.y + screenCenter.y),
+          Vector2$.val.$2.set(startX + screenCenter.x, startY + screenCenter.y),
+          Vector2$.val.$3.set(turtle.ref.origin.x + screenCenter.x, turtle.ref.origin.y + screenCenter.y),
           2,
           Fade(BLACK, 0.2)
         );

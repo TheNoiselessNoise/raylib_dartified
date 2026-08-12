@@ -87,8 +87,8 @@ void main() async {
       for (int i = 0; i < screenWidth; i++)
       {
         DrawLineV(
-          Vector2$.$1.set(i, 250 - 50*buffer[SAMPLE_RATE - SAMPLE_RATE~/100 + i*SAMPLE_RATE~/100~/screenWidth]),
-          Vector2$.$2.set(i + 1, 250 - 50*buffer[SAMPLE_RATE - SAMPLE_RATE~/100 + (i + 1)*SAMPLE_RATE~/100~/screenWidth]),
+          Vector2$.val.$1.set(i, 250 - 50*buffer[SAMPLE_RATE - SAMPLE_RATE~/100 + i*SAMPLE_RATE~/100~/screenWidth]),
+          Vector2$.val.$2.set(i + 1, 250 - 50*buffer[SAMPLE_RATE - SAMPLE_RATE~/100 + (i + 1)*SAMPLE_RATE~/100~/screenWidth]),
           RED
         );
       }

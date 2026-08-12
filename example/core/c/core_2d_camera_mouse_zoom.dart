@@ -11,7 +11,7 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = Camera2D$.$newPtr;
+  final camera = Camera2D$.val.$newPtr;
   camera.ref.zoom = 1;
 
   int zoomMode = 0;
@@ -75,7 +75,7 @@ void main() {
       DrawTextEx(
         GetFontDefault(),
         "[${GetMouseX()}, ${GetMouseY()}]".toC,
-        Vector2$.$1.setD(textPos),
+        Vector2$.val.$1.setD(textPos),
         20, 2, BLACK,
       );
 

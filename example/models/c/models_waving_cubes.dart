@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(30.0, 20.0, 30.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -50,7 +50,7 @@ void main()
               final blockScale = (x + y + z)/30.0;
               final scatter = math.sin(blockScale*20.0 + (time*4.0));
 
-              final cubePos = Vector3$.$1.set(
+              final cubePos = Vector3$.val.$1.set(
                 (x - NUM_BLOCKS/2)*(scale*3.0) + scatter,
                 (y - NUM_BLOCKS/2)*(scale*2.0) + scatter,
                 (z - NUM_BLOCKS/2)*(scale*3.0) + scatter

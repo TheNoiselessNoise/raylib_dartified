@@ -112,7 +112,7 @@ class MaterialD extends StructD<MaterialC, MaterialD> with MaterialBase<
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MaterialC> p, String key) {
-    p.ref.maps = temp.MaterialMap$.Array(maps, key: '${key}_maps');
+    p.ref.maps = temp.MaterialMap$.val.Array(maps, key: '${key}_maps');
   }
 
   @override

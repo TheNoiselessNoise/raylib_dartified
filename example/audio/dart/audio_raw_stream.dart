@@ -4,6 +4,7 @@
 // WARNING: NO SOUND, see LIMITATIONS.md
 import 'dart:ffi';
 import 'dart:math' as math;
+import 'dart:typed_data';
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
@@ -32,7 +33,7 @@ void main() async {
     audioFrequency = frequency + (audioFrequency - frequency)*0.95;
 
     final incr = audioFrequency/44100.0;
-    final d = buffer.cast<Short>();
+    final d = buffer.asView<Int16List>(frames * 2);
 
     for (int i = 0; i < frames; i++)
     {
@@ -42,7 +43,7 @@ void main() async {
     }
   }));
 
-  final data = Short$.At('data', MAX_SAMPLES);
+  final data = Short$.val.At('data', MAX_SAMPLES);
 
   PlayAudioStream(stream);
 

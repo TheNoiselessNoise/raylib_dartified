@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
 
   final font = GetFontDefault();
-  final textSize = Vector2$.At('textSize');
+  final textSize = Vector2$.val.At('textSize');
   final colRandom = RED;
   int frameCounter = 0; 
 
@@ -38,28 +38,28 @@ void main()
 
       DrawTextStyled(font,
         "This changes the [cFF0000F]foreground color[r] of provided text!!!".toC,
-        Vector2$.$1.set(100, 80), 20.0, 2.0, BLACK
+        Vector2$.val.$1.set(100, 80), 20.0, 2.0, BLACK
       );
 
       DrawTextStyled(font,
         "This changes the [bFF00FFF]background color[r] of provided text!!!".toC,
-        Vector2$.$1.set(100, 120), 20.0, 2.0, BLACK
+        Vector2$.val.$1.set(100, 120), 20.0, 2.0, BLACK
       );
 
       DrawTextStyled(font,
         "This changes the [c00f00f][bff0000f]foreground and background colors[r]!!!".toC,
-        Vector2$.$1.set(100, 160), 20.0, 2.0, BLACK
+        Vector2$.val.$1.set(100, 160), 20.0, 2.0, BLACK
       );
 
       DrawTextStyled(font,
         "This changes the [c00f00f]alpha[r] relative [cffffffff][b000000f]from source[r] [cff000088]color[r]!!!".toC,
-        Vector2$.$1.set(100, 200), 20.0, 2.0, Color$.$1.set(0, 0, 0, 100)
+        Vector2$.val.$1.set(100, 200), 20.0, 2.0, Color$.val.$1.set(0, 0, 0, 100)
       );
 
       final text = "Let's be [c${colRandom.toD().toHex()}]CREATIVE[r] !!!".toC;
       DrawTextStyled(font,
         text,
-        Vector2$.$1.set(100, 240), 40.0, 2.0, BLACK
+        Vector2$.val.$1.set(100, 240), 40.0, 2.0, BLACK
       );
 
       textSize.ref = MeasureTextStyled(font, text, 40.0, 2.0);
@@ -88,7 +88,7 @@ void DrawTextStyled(FontC font, Pointer<Char> text, Vector2C position, double fo
 
   for (int i = 0; i < textLen;)
   {
-    final codepointByteCount = Int$.At('codepointByteCount');
+    final codepointByteCount = Int$.val.At('codepointByteCount');
     int codepoint = GetCodepointNext(text + i, codepointByteCount);
 
     if (codepoint == '\n'.ch)
@@ -112,7 +112,7 @@ void DrawTextStyled(FontC font, Pointer<Char> text, Vector2C position, double fo
         {
           i += 2;
 
-          final colHexText = Char$.At('colHexText', 9);
+          final colHexText = Char$.val.At('colHexText', 9);
           final textPtr = text + i;
 
           int colHexCount = 0;
@@ -151,13 +151,13 @@ void DrawTextStyled(FontC font, Pointer<Char> text, Vector2C position, double fo
       else increaseX += font.glyphs[index].advanceX*scaleFactor + spacing;
 
       if (colBack.a > 0) DrawRectangleRec(
-        Rectangle$.$1.set(position.x + textOffsetX, position.y + textOffsetY - backRecPadding, increaseX, fontSize + 2*backRecPadding),
+        Rectangle$.val.$1.set(position.x + textOffsetX, position.y + textOffsetY - backRecPadding, increaseX, fontSize + 2*backRecPadding),
         colBack
       );
 
       if ((codepoint != ' '.ch) && (codepoint != '\t'.ch))
       {
-        DrawTextCodepoint(font, codepoint, Vector2$.$2.set(position.x + textOffsetX, position.y + textOffsetY), fontSize, colFront);
+        DrawTextCodepoint(font, codepoint, Vector2$.val.$2.set(position.x + textOffsetX, position.y + textOffsetY), fontSize, colFront);
       }
 
       textOffsetX += increaseX;
@@ -169,7 +169,7 @@ void DrawTextStyled(FontC font, Pointer<Char> text, Vector2C position, double fo
 
 Vector2C MeasureTextStyled(FontC font, Pointer<Char> text, double fontSize, double spacing)
 {
-  final textSize = Vector2$.At('textSize');
+  final textSize = Vector2$.val.At('textSize');
 
   if ((font.texture.id == 0) || (text == nullptr) || (text[0] == 0)) return textSize.ref;
 
@@ -185,7 +185,7 @@ Vector2C MeasureTextStyled(FontC font, Pointer<Char> text, double fontSize, doub
 
   for (int i = 0; i < textLen;)
   {
-    final codepointByteCount = Int$.At('codepointByteCount');
+    final codepointByteCount = Int$.val.At('codepointByteCount');
     codepoint = GetCodepointNext(text + i, codepointByteCount);
 
     if (codepoint == '['.ch)

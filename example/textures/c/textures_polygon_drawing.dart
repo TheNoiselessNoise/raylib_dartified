@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_polygon_drawing".toC);
   SetTargetFPS(60);
 
-  final texcoords = Vector2$.At('texcoords', MAX_POINTS);
+  final texcoords = Vector2$.val.At('texcoords', MAX_POINTS);
   texcoords[0].set(0.75, 0.0);
   texcoords[1].set(0.25, 0.0);
   texcoords[2].set(0.0, 0.5);
@@ -30,14 +30,14 @@ void main()
   texcoords[9].set(1.0, 0.5);
   texcoords[10].set(0.75, 0.0);
 
-  final points = Vector2$.At('points', MAX_POINTS);
+  final points = Vector2$.val.At('points', MAX_POINTS);
   for (int i = 0; i < MAX_POINTS; i++)
   {
     points[i].x = (texcoords[i].x - 0.5)*256.0;
     points[i].y = (texcoords[i].y - 0.5)*256.0;
   }
 
-  final positions = Vector2$.At('positions', MAX_POINTS);
+  final positions = Vector2$.val.At('positions', MAX_POINTS);
   for (int i = 0; i < MAX_POINTS; i++) {
     positions[i] = points[i];
   }
@@ -61,7 +61,7 @@ void main()
 
       DrawTexturePoly(
         texture,
-        Vector2$.$1.set(GetScreenWidth()/2.0, GetScreenHeight()/2.0),
+        Vector2$.val.$1.set(GetScreenWidth()/2.0, GetScreenHeight()/2.0),
         positions,
         texcoords,
         MAX_POINTS,

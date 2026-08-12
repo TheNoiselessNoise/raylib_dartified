@@ -2,20 +2,15 @@ part of '../../../raylib_dartified.dart';
 
 // TraceLogCallback
 
-typedef TraceLogCallbackFunctionD = void Function(
+typedef _TraceLogCallbackFunction = void Function(
   int logLevel,
   Pointer<Char> text,
   Pointer<Void> args,
 );
 
-typedef TraceLogCallbackFriendlyFunctionD = void Function(
-  TraceLogLevel logLevel,
-  String text,
-);
-
 abstract class TraceLogCallbackD extends CallbackD<
   TraceLogCallbackFunctionC,
-  TraceLogCallbackFunctionD
+  TraceLogCallbackFunction
 > with TraceLogCallbackBase {
   TraceLogCallbackD([super.name]);
 
@@ -25,51 +20,55 @@ abstract class TraceLogCallbackD extends CallbackD<
   @nonVirtual
   get registry => _registry;
 
+  /// The actual trampoline.
+  _TraceLogCallbackFunction get _rawFunction =>
+    (int logLevel, Pointer<Char> text, Pointer<Void> args) =>
+      function(
+        logLevel,
+        NativeMemoryPointer(text.cast()),
+        NativeMemoryPointer(args),
+      );
+
   @override
-  initializer() => .isolateLocal(function);
+  initializer() => .isolateLocal(_rawFunction);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
-  factory TraceLogCallbackD.function(TraceLogCallbackFunctionD f, {String? name})
+  factory TraceLogCallbackD.function(TraceLogCallbackFunction f, {String? name})
     => _TraceLogCallbackD(f, name: name);
 
-  factory TraceLogCallbackD.friendly(TraceLogCallbackFriendlyFunctionD f, {String? name})
+  factory TraceLogCallbackD.friendly(TraceLogCallbackFriendlyFunction f, {String? name})
     => _TraceLogCallbackFriendlyD(f, name: name);
 }
 
 class _TraceLogCallbackD extends TraceLogCallbackD {
-  final TraceLogCallbackFunctionD _f;
+  final TraceLogCallbackFunction _f;
   _TraceLogCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  TraceLogCallbackFunctionD get function => _f;
+  TraceLogCallbackFunction get function => _f;
 }
 
 class _TraceLogCallbackFriendlyD extends TraceLogCallbackD {
-  final TraceLogCallbackFriendlyFunctionD _f;
+  final TraceLogCallbackFriendlyFunction _f;
   _TraceLogCallbackFriendlyD(this._f, {String? name}) : super(name);
 
   @override
-  TraceLogCallbackFunctionD get function => (int logLevel, Pointer<Char> text, Pointer<Void> args) {
-    return _f(.fromValue(logLevel), text.toD);
+  TraceLogCallbackFunction get function => (int logLevel, MemoryPointer text, MemoryPointer args) {
+    return _f(.fromValue(logLevel), text.toDartString());
   };
 }
 
 // LoadFileDataCallback
 
-typedef LoadFileDataCallbackFunctionD = Pointer<UnsignedChar> Function(
+typedef _LoadFileDataCallbackFunction = Pointer<UnsignedChar> Function(
   Pointer<Char> fileName,
-  Pointer<Int> dataSize,
-);
-
-typedef LoadFileDataCallbackFriendlyFunctionD = Pointer<UnsignedChar> Function(
-  String fileName,
   Pointer<Int> dataSize,
 );
 
 abstract class LoadFileDataCallbackD extends CallbackD<
   LoadFileDataCallbackFunctionC,
-  LoadFileDataCallbackFunctionD
+  LoadFileDataCallbackFunction
 > with LoadFileDataCallbackBase {
   LoadFileDataCallbackD([super.name]);
 
@@ -79,53 +78,58 @@ abstract class LoadFileDataCallbackD extends CallbackD<
   @nonVirtual
   get registry => _registry;
 
+  /// The actual trampoline.
+  _LoadFileDataCallbackFunction get _rawFunction =>
+    (Pointer<Char> fileName, Pointer<Int> dataSize) {
+      final result = function(
+        NativeMemoryPointer(fileName.cast()),
+        NativeMemoryPointer(dataSize.cast()),
+      );
+      if (result.isNull) return nullptr;
+      return (result as NativeMemoryPointer).asPointer();
+    };
+
   @override
-  initializer() => .isolateLocal(function);
+  initializer() => .isolateLocal(_rawFunction);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
-  factory LoadFileDataCallbackD.function(LoadFileDataCallbackFunctionD f, {String? name})
+  factory LoadFileDataCallbackD.function(LoadFileDataCallbackFunction f, {String? name})
     => _LoadFileDataCallbackD(f, name: name);
 
-  factory LoadFileDataCallbackD.friendly(LoadFileDataCallbackFriendlyFunctionD f, {String? name})
+  factory LoadFileDataCallbackD.friendly(LoadFileDataCallbackFriendlyFunction f, {String? name})
     => _LoadFileDataCallbackFriendlyD(f, name: name);
 }
 
 class _LoadFileDataCallbackD extends LoadFileDataCallbackD {
-  final LoadFileDataCallbackFunctionD _f;
+  final LoadFileDataCallbackFunction _f;
   _LoadFileDataCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  LoadFileDataCallbackFunctionD get function => _f;
+  LoadFileDataCallbackFunction get function => _f;
 }
 
 class _LoadFileDataCallbackFriendlyD extends LoadFileDataCallbackD {
-  final LoadFileDataCallbackFriendlyFunctionD _f;
+  final LoadFileDataCallbackFriendlyFunction _f;
   _LoadFileDataCallbackFriendlyD(this._f, {String? name}) : super(name);
 
   @override
-  LoadFileDataCallbackFunctionD get function => (Pointer<Char> fileName, Pointer<Int> dataSize) {
-    return _f(fileName.toD, dataSize);
+  LoadFileDataCallbackFunction get function => (MemoryPointer<RInt8> fileName, MemoryPointer<RInt32> dataSize) {
+    return _f(fileName.toDartString(), dataSize);
   };
 }
 
 // SaveFileDataCallback
 
-typedef SaveFileDataCallbackFunctionD = bool Function(
+typedef _SaveFileDataCallbackFunction = bool Function(
   Pointer<Char> fileName,
-  Pointer<Void> data,
-  int dataSize,
-);
-
-typedef SaveFileDataCallbackFriendlyFunctionD = bool Function(
-  String fileName,
   Pointer<Void> data,
   int dataSize,
 );
 
 abstract class SaveFileDataCallbackD extends CallbackD<
   SaveFileDataCallbackFunctionC,
-  SaveFileDataCallbackFunctionD
+  SaveFileDataCallbackFunction
 > with SaveFileDataCallbackBase {
   SaveFileDataCallbackD([super.name]);
 
@@ -134,50 +138,55 @@ abstract class SaveFileDataCallbackD extends CallbackD<
   @override
   @nonVirtual
   get registry => _registry;
+  
+  /// The actual trampoline.
+  _SaveFileDataCallbackFunction get _rawFunction =>
+    (Pointer<Char> fileName, Pointer<Void> data, int dataSize) =>
+      function(
+        NativeMemoryPointer(fileName.cast()),
+        NativeMemoryPointer(data),
+        dataSize
+      );
 
   @override
-  initializer() => .isolateLocal(function, exceptionalReturn: false);
+  initializer() => .isolateLocal(_rawFunction, exceptionalReturn: false);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
-  factory SaveFileDataCallbackD.function(SaveFileDataCallbackFunctionD f, {String? name})
+  factory SaveFileDataCallbackD.function(SaveFileDataCallbackFunction f, {String? name})
     => _SaveFileDataCallbackD(f, name: name);
 
-  factory SaveFileDataCallbackD.friendly(SaveFileDataCallbackFriendlyFunctionD f, {String? name})
+  factory SaveFileDataCallbackD.friendly(SaveFileDataCallbackFriendlyFunction f, {String? name})
     => _SaveFileDataCallbackFriendlyD(f, name: name);
 }
 
 class _SaveFileDataCallbackD extends SaveFileDataCallbackD {
-  final SaveFileDataCallbackFunctionD _f;
+  final SaveFileDataCallbackFunction _f;
   _SaveFileDataCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  SaveFileDataCallbackFunctionD get function => _f;
+  SaveFileDataCallbackFunction get function => _f;
 }
 
 class _SaveFileDataCallbackFriendlyD extends SaveFileDataCallbackD {
-  final SaveFileDataCallbackFriendlyFunctionD _f;
+  final SaveFileDataCallbackFriendlyFunction _f;
   _SaveFileDataCallbackFriendlyD(this._f, {String? name}) : super(name);
 
   @override
-  SaveFileDataCallbackFunctionD get function => (Pointer<Char> fileName, Pointer<Void> data, int dataSize) {
-    return _f(fileName.toD, data, dataSize);
+  SaveFileDataCallbackFunction get function => (MemoryPointer<RInt8> fileName, MemoryPointer<RVoid> data, int dataSize) {
+    return _f(fileName.toDartString(), data, dataSize);
   };
 }
 
 // LoadFileTextCallback
 
-typedef LoadFileTextCallbackFunctionD = Pointer<Char> Function(
+typedef _LoadFileTextCallbackFunction = Pointer<Char> Function(
   Pointer<Char> fileName,
-);
-
-typedef LoadFileTextCallbackFriendlyFunctionD = String Function(
-  String fileName,
 );
 
 abstract class LoadFileTextCallbackD extends CallbackD<
   LoadFileTextCallbackFunctionC,
-  LoadFileTextCallbackFunctionD
+  LoadFileTextCallbackFunction
 > with LoadFileTextCallbackBase {
   LoadFileTextCallbackD([super.name]);
 
@@ -187,51 +196,56 @@ abstract class LoadFileTextCallbackD extends CallbackD<
   @nonVirtual
   get registry => _registry;
 
+  /// The actual trampoline.
+  _LoadFileTextCallbackFunction get _rawFunction =>
+    (Pointer<Char> fileName) {
+      final result = function(
+        NativeMemoryPointer(fileName.cast()),
+      );
+      if (result.isNull) return nullptr;
+      return (result as NativeMemoryPointer).asPointer();
+    };
+
   @override
-  initializer() => .isolateLocal(function);
+  initializer() => .isolateLocal(_rawFunction);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
-  factory LoadFileTextCallbackD.function(LoadFileTextCallbackFunctionD f, {String? name})
+  factory LoadFileTextCallbackD.function(LoadFileTextCallbackFunction f, {String? name})
     => _LoadFileTextCallbackD(f, name: name);
 
-  factory LoadFileTextCallbackD.friendly(LoadFileTextCallbackFriendlyFunctionD f, {String? name})
+  factory LoadFileTextCallbackD.friendly(LoadFileTextCallbackFriendlyFunction f, {String? name})
     => _LoadFileTextCallbackFriendlyD(f, name: name);
 }
 
 class _LoadFileTextCallbackD extends LoadFileTextCallbackD {
-  final LoadFileTextCallbackFunctionD _f;
+  final LoadFileTextCallbackFunction _f;
   _LoadFileTextCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  LoadFileTextCallbackFunctionD get function => _f;
+  LoadFileTextCallbackFunction get function => _f;
 }
 
 class _LoadFileTextCallbackFriendlyD extends LoadFileTextCallbackD {
-  final LoadFileTextCallbackFriendlyFunctionD _f;
+  final LoadFileTextCallbackFriendlyFunction _f;
   _LoadFileTextCallbackFriendlyD(this._f, {String? name}) : super(name);
 
   @override
-  LoadFileTextCallbackFunctionD get function => (Pointer<Char> fileName) {
-    return Raylib.instance.Temp.String$.Value(_f(fileName.toD));
+  LoadFileTextCallbackFunction get function => (MemoryPointer fileName) {
+    return NativeMemoryPointer(_f(fileName.toDartString()).toNativeUtf8().cast());
   };
 }
 
 // SaveFileTextCallback
 
-typedef SaveFileTextCallbackFunctionD = bool Function(
+typedef _SaveFileTextCallbackFunction = bool Function(
   Pointer<Char> fileName,
   Pointer<Char> text,
 );
 
-typedef SaveFileTextCallbackFriendlyFunctionD = bool Function(
-  String fileName,
-  String text,
-);
-
 abstract class SaveFileTextCallbackD extends CallbackD<
   SaveFileTextCallbackFunctionC,
-  SaveFileTextCallbackFunctionD
+  SaveFileTextCallbackFunction
 > with SaveFileTextCallbackBase {
   SaveFileTextCallbackD([super.name]);
 
@@ -241,32 +255,40 @@ abstract class SaveFileTextCallbackD extends CallbackD<
   @nonVirtual
   get registry => _registry;
 
+  /// The actual trampoline.
+  _SaveFileTextCallbackFunction get _rawFunction =>
+    (Pointer<Char> fileName, Pointer<Char> text) =>
+      function(
+        NativeMemoryPointer(fileName.cast()),
+        NativeMemoryPointer(text.cast()),
+      );
+
   @override
-  initializer() => .isolateLocal(function, exceptionalReturn: false);
+  initializer() => .isolateLocal(_rawFunction, exceptionalReturn: false);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
-  factory SaveFileTextCallbackD.function(SaveFileTextCallbackFunctionD f, {String? name})
+  factory SaveFileTextCallbackD.function(SaveFileTextCallbackFunction f, {String? name})
     => _SaveFileTextCallbackD(f, name: name);
   
-  factory SaveFileTextCallbackD.friendly(SaveFileTextCallbackFriendlyFunctionD f, {String? name})
+  factory SaveFileTextCallbackD.friendly(SaveFileTextCallbackFriendlyFunction f, {String? name})
     => _SaveFileTextCallbackFriendlyD(f, name: name);
 }
 
 class _SaveFileTextCallbackD extends SaveFileTextCallbackD {
-  final SaveFileTextCallbackFunctionD _f;
+  final SaveFileTextCallbackFunction _f;
   _SaveFileTextCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  SaveFileTextCallbackFunctionD get function => _f;
+  SaveFileTextCallbackFunction get function => _f;
 }
 
 class _SaveFileTextCallbackFriendlyD extends SaveFileTextCallbackD {
-  final SaveFileTextCallbackFriendlyFunctionD _f;
+  final SaveFileTextCallbackFriendlyFunction _f;
   _SaveFileTextCallbackFriendlyD(this._f, {String? name}) : super(name);
 
   @override
-  SaveFileTextCallbackFunctionD get function => (Pointer<Char> fileName, Pointer<Char> text) {
-    return _f(fileName.toD, text.toD);
+  SaveFileTextCallbackFunction get function => (MemoryPointer fileName, MemoryPointer text) {
+    return _f(fileName.toDartString(), text.toDartString());
   };
 }

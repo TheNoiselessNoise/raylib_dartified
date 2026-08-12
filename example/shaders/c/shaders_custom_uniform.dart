@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_custom_uniform".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(8, 8, 8);
   camera.ref.target.set(0, 1.5, 0);
   camera.ref.up.set(0, 1, 0);
@@ -28,7 +28,7 @@ void main()
   final texture = LoadTexture("../resources/models/barracks_diffuse.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
 
   final shader = LoadShader(
     nullptr,
@@ -51,7 +51,7 @@ void main()
     swirlCenter[1] = screenHeight - mousePosition.y;
 
     SetShaderValue(shader, swirlCenterLoc,
-      Float32$.Array(swirlCenter).cast(),
+      Float32$.val.Array(swirlCenter).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
 
@@ -75,11 +75,11 @@ void main()
       BeginShaderMode(shader);
         DrawTextureRec(
           target.texture,
-          Rectangle$.$1.set(
+          Rectangle$.val.$1.set(
             0, 0,
             target.texture.width, -target.texture.height
           ),
-          Vector2$.$zero,
+          Vector2$.val.$zero,
           WHITE
         );
       EndShaderMode();

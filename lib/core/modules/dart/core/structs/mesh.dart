@@ -331,17 +331,17 @@ class MeshD extends StructD<MeshC, MeshD> with MeshBase<
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<MeshC> p, String key) {
-    p.ref.vertices = vertices.isNotEmpty ? temp.Float32$.RawArray(vertices) : nullptr;
-    p.ref.texcoords = texcoords.isNotEmpty ? temp.Float32$.RawArray(texcoords) : nullptr;
-    p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float32$.RawArray(texcoords2) : nullptr;
-    p.ref.normals = normals.isNotEmpty ? temp.Float32$.RawArray(normals) : nullptr;
-    p.ref.tangents = tangents.isNotEmpty ? temp.Float32$.RawArray(tangents) : nullptr;
-    p.ref.colors = colors.isNotEmpty ? temp.UnsignedChar$.RawArray(colors) : nullptr;
-    p.ref.indices = indices.isNotEmpty ? temp.UnsignedShort$.RawArray(indices) : nullptr;
-    p.ref.boneIndices = boneIndices.isNotEmpty ? temp.UnsignedChar$.RawArray(boneIndices) : nullptr;
-    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float32$.RawArray(boneWeights) : nullptr;
-    p.ref.animVertices = animVertices.isNotEmpty ? temp.Float32$.RawArray(animVertices) : nullptr;
-    p.ref.animNormals = animNormals.isNotEmpty ? temp.Float32$.RawArray(animNormals) : nullptr;
+    p.ref.vertices = vertices.isNotEmpty ? temp.Float32$.val.RawArray(vertices) : nullptr;
+    p.ref.texcoords = texcoords.isNotEmpty ? temp.Float32$.val.RawArray(texcoords) : nullptr;
+    p.ref.texcoords2 = texcoords2.isNotEmpty ? temp.Float32$.val.RawArray(texcoords2) : nullptr;
+    p.ref.normals = normals.isNotEmpty ? temp.Float32$.val.RawArray(normals) : nullptr;
+    p.ref.tangents = tangents.isNotEmpty ? temp.Float32$.val.RawArray(tangents) : nullptr;
+    p.ref.colors = colors.isNotEmpty ? temp.UnsignedChar$.val.RawArray(colors) : nullptr;
+    p.ref.indices = indices.isNotEmpty ? temp.UnsignedShort$.val.RawArray(indices) : nullptr;
+    p.ref.boneIndices = boneIndices.isNotEmpty ? temp.UnsignedChar$.val.RawArray(boneIndices) : nullptr;
+    p.ref.boneWeights = boneWeights.isNotEmpty ? temp.Float32$.val.RawArray(boneWeights) : nullptr;
+    p.ref.animVertices = animVertices.isNotEmpty ? temp.Float32$.val.RawArray(animVertices) : nullptr;
+    p.ref.animNormals = animNormals.isNotEmpty ? temp.Float32$.val.RawArray(animNormals) : nullptr;
     p.ref.vboId = nullptr;
   }
 

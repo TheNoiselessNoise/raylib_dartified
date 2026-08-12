@@ -14,15 +14,15 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_hilbert_curve".toC);
   SetTargetFPS(60);
 
-  final order = Int$.ValueUnique(2);
-  final size = Float32$.ValueUnique(GetScreenHeight().toDouble());
-  final strokeCount = Int$.AtUnique();
+  final order = Int$.val.ValueUnique(2);
+  final size = Float32$.val.ValueUnique(GetScreenHeight().toDouble());
+  final strokeCount = Int$.val.AtUnique();
   var hilbertPath = LoadHilbertPath(order.value, size.value, strokeCount);
 
   int prevOrder = order.value;
   double prevSize = size.value;
   int counter = 0;
-  final thick = Float32$.ValueUnique(2.0);
+  final thick = Float32$.val.ValueUnique(2.0);
   final animate = Bool$.ValueUnique(true);
 
   while (!WindowShouldClose())
@@ -59,10 +59,10 @@ void main()
         }
       }
 
-      GuiCheckBox(Rectangle$.$1.set(450, 50, 20, 20), "ANIMATE GENERATION ON CHANGE".toC, animate);
-      GuiSpinner(Rectangle$.$1.set(585, 100, 180, 30), "HILBERT CURVE ORDER:  ".toC, order, 2, 8, false);
-      GuiSlider(Rectangle$.$1.set(524, 150, 240, 24), "THICKNESS:  ".toC, nullptr, thick, 1.0, 10.0);
-      GuiSlider(Rectangle$.$1.set(524, 190, 240, 24), "TOTAL SIZE: ".toC, nullptr, size, 10.0, GetScreenHeight()*1.5);
+      GuiCheckBox(Rectangle$.val.$1.set(450, 50, 20, 20), "ANIMATE GENERATION ON CHANGE".toC, animate);
+      GuiSpinner(Rectangle$.val.$1.set(585, 100, 180, 30), "HILBERT CURVE ORDER:  ".toC, order, 2, 8, false);
+      GuiSlider(Rectangle$.val.$1.set(524, 150, 240, 24), "THICKNESS:  ".toC, nullptr, thick, 1.0, 10.0);
+      GuiSlider(Rectangle$.val.$1.set(524, 190, 240, 24), "TOTAL SIZE: ".toC, nullptr, size, 10.0, GetScreenHeight()*1.5);
 
     EndDrawing();
   }
@@ -76,7 +76,7 @@ Pointer<Vector2C> LoadHilbertPath(int order, double size, Pointer<Int> strokeCou
   double len = size/N;
   strokeCount.value = N*N;
 
-  final hilbertPath = Vector2$.At('hilbertPath', strokeCount.value);
+  final hilbertPath = Vector2$.val.At('hilbertPath', strokeCount.value);
 
   for (int i = 0; i < strokeCount.value; i++)
   {

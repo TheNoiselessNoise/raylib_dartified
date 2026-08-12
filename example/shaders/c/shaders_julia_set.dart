@@ -46,21 +46,21 @@ void main()
 
   void updateShaderC() {
     SetShaderValue(shader, cLoc,
-      Float32$.Array(c).cast(),
+      Float32$.val.Array(c).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderC();
 
   void updateShaderZoom() {
     SetShaderValue(shader, zoomLoc,
-      Float32$.Value(zoom).cast(),
+      Float32$.val.Value(zoom).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderZoom();
 
   void updateShaderOffset() {
     SetShaderValue(shader, offsetLoc,
-      Float32$.Array(offset).cast(),
+      Float32$.val.Array(offset).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
   } updateShaderOffset();
@@ -112,7 +112,7 @@ void main()
       updateShaderZoom();
 
       final mousePos = GetMousePosition();
-      final offsetVelocity = Vector2$.At('offsetVelocity');
+      final offsetVelocity = Vector2$.val.At('offsetVelocity');
 
       offsetVelocity.ref.x = (mousePos.x/screenWidth - 0.5)*offsetSpeedMul/zoom;
       offsetVelocity.ref.y = (mousePos.y/screenHeight - 0.5)*offsetSpeedMul/zoom;
@@ -139,7 +139,7 @@ void main()
       BeginShaderMode(shader);
         DrawTextureEx(
           target.texture,
-          Vector2$.$zero,
+          Vector2$.val.$zero,
           0.0, 1.0, WHITE
         );
       EndShaderMode();

@@ -33,7 +33,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_splines_drawing".toC);
   SetTargetFPS(60);
 
-  final points = Vector2$.FillInto(key: 'points', MAX_SPLINE_POINTS, (i, v) => switch(i) {
+  final points = Vector2$.val.FillInto(key: 'points', MAX_SPLINE_POINTS, (i, v) => switch(i) {
     0 => v.set( 50.0, 400.0),
     1 => v.set(160.0, 220.0),
     2 => v.set(340.0, 380.0),
@@ -42,7 +42,7 @@ void main()
     _ => null,
   });
   
-  final pointsInterleaved = Vector2$.At('key', 3*(MAX_SPLINE_POINTS - 1) + 1);
+  final pointsInterleaved = Vector2$.val.At('key', 3*(MAX_SPLINE_POINTS - 1) + 1);
   
   int pointCount = 5;
   int selectedPoint = -1;
@@ -51,13 +51,13 @@ void main()
   Pointer<Vector2C> focusedControlPoint = nullptr;
   
   List<ControlPoint> control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
-    start: Vector2$.At('control_start_$i').set(points[i].x + 50, points[i].y),
-    end: Vector2$.At('control_end_$i').set(points[i + 1].x - 50, points[i + 1].y),
+    start: Vector2$.val.At('control_start_$i').set(points[i].x + 50, points[i].y),
+    end: Vector2$.val.At('control_end_$i').set(points[i + 1].x - 50, points[i + 1].y),
   ));
 
-  final splineThickness = Float32$.Value(8.0, 'splineThickness');
+  final splineThickness = Float32$.val.Value(8.0, 'splineThickness');
   SplineType splineTypeActive = .SPLINE_LINEAR;
-  final splineType = Int$.Value(splineTypeActive.index, 'splineType');
+  final splineType = Int$.val.Value(splineTypeActive.index, 'splineType');
   bool splineTypeEditMode = false; 
   final splineHelpersActive = Bool$.Value(true, 'splineHelpersActive');
 
@@ -222,19 +222,19 @@ void main()
       if (splineTypeEditMode) GuiLock();
       
       GuiLabel(
-        Rectangle$.$1.set(12, 62, 140, 24),
+        Rectangle$.val.$1.set(12, 62, 140, 24),
         "Spline thickness: ${splineThickness.value}".toC,
       );
       
       GuiSliderBar(
-        Rectangle$.$1.set(12, 60 + 24, 140, 16),
+        Rectangle$.val.$1.set(12, 60 + 24, 140, 16),
         nullptr,
         nullptr,
         splineThickness, 1.0, 40.0
       );
 
       GuiCheckBox(
-        Rectangle$.$1.set(12, 110, 20, 20),
+        Rectangle$.val.$1.set(12, 110, 20, 20),
         "Show point helpers".toC,
         splineHelpersActive
       );
@@ -242,12 +242,12 @@ void main()
       GuiUnlock();
 
       GuiLabel(
-        Rectangle$.$1.set(12, 10, 140, 24),
+        Rectangle$.val.$1.set(12, 10, 140, 24),
         "Spline type:".toC,
       );
       
       if (GuiDropdownBox(
-        Rectangle$.$1.set(12, 8 + 24, 140, 28),
+        Rectangle$.val.$1.set(12, 8 + 24, 140, 28),
         SplineType.values.map((e) => e.name).join(';').toC,
         splineType,
         splineTypeEditMode

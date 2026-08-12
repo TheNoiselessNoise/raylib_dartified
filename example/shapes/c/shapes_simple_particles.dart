@@ -70,7 +70,7 @@ void main()
 
   int emissionRate = -2;
   ParticleType currentType = .WATER;
-  final emitterPosition = Vector2$.AtUnique().set(screenWidth/2.0, screenHeight/2.0);
+  final emitterPosition = Vector2$.val.AtUnique().set(screenWidth/2.0, screenHeight/2.0);
 
   int frameCount = 0;
   while (!WindowShouldClose())

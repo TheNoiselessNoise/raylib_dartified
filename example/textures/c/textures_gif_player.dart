@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_gif_player".toC);
   SetTargetFPS(60);
 
-  final animFrames = Int$.At('animFrames');
+  final animFrames = Int$.val.At('animFrames');
   final imScarfyAnim = LoadImageAnim("../resources/scarfy_run.gif".toC, animFrames);
   final texScarfyAnim = LoadTextureFromImage(imScarfyAnim);
 

@@ -224,11 +224,11 @@ class RlVertexBufferD extends StructD<RlVertexBufferC, RlVertexBufferD> with RlV
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<RlVertexBufferC> p, String key) {
-    p.ref.vertices = temp.Float32$.Array(vertices, key: '${key}_vertices');
-    p.ref.texcoords = temp.Float32$.Array(texcoords, key: '${key}_texcoords');
-    p.ref.normals = temp.Float32$.Array(normals, key: '${key}_normals');
-    p.ref.colors = temp.UnsignedChar$.Array(colors, key: '${key}_colors');
-    p.ref.indices = temp.UnsignedInt$.Array(indices, key: '${key}_indices');
+    p.ref.vertices = temp.Float32$.val.Array(vertices, key: '${key}_vertices');
+    p.ref.texcoords = temp.Float32$.val.Array(texcoords, key: '${key}_texcoords');
+    p.ref.normals = temp.Float32$.val.Array(normals, key: '${key}_normals');
+    p.ref.colors = temp.UnsignedChar$.val.Array(colors, key: '${key}_colors');
+    p.ref.indices = temp.UnsignedInt$.val.Array(indices, key: '${key}_indices');
   }
 
   @override

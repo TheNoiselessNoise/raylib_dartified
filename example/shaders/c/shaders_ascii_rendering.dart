@@ -32,11 +32,11 @@ void main()
   final resolution = [ screenWidth, screenHeight ];
   SetShaderValue(
     shader, resolutionLoc,
-    Float32$.Array(resolution).cast(),
+    Float32$.val.Array(resolution).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
   );
 
-  final circlePos = Vector2$.AtUnique().set(40.0, screenHeight*0.5);
+  final circlePos = Vector2$.val.AtUnique().set(40.0, screenHeight*0.5);
   double circleSpeed = 1.0;
 
   final target = LoadRenderTexture(screenWidth, screenHeight);
@@ -51,7 +51,7 @@ void main()
 
     SetShaderValue(
       shader, fontSizeLoc,
-      Float32$.Value(fontSize).cast(),
+      Float32$.val.Value(fontSize).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
     );
 
@@ -68,8 +68,8 @@ void main()
       BeginShaderMode(shader);
         DrawTextureRec(
           target.texture,
-          Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
-          Vector2$.$1.set(0, 0),
+          Rectangle$.val.$1.set(0, 0, target.texture.width, -target.texture.height),
+          Vector2$.val.$1.set(0, 0),
           WHITE
         );
       EndShaderMode();

@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_billboard_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5, 4, 5);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
@@ -59,18 +59,18 @@ void main()
           DrawBillboard(
             camera.ref,
             bill,
-            Vector3$.$1.setD(billPositionStatic),
+            Vector3$.val.$1.setD(billPositionStatic),
             2.0,
             WHITE
           );
           DrawBillboardPro(
             camera.ref,
             bill,
-            Rectangle$.$1.setD(source),
-            Vector3$.$1.setD(billPositionRotating),
-            Vector3$.$2.setD(billUp),
-            Vector2$.$1.setD(size),
-            Vector2$.$2.setD(origin),
+            Rectangle$.val.$1.setD(source),
+            Vector3$.val.$1.setD(billPositionRotating),
+            Vector3$.val.$2.setD(billUp),
+            Vector2$.val.$1.setD(size),
+            Vector2$.val.$2.setD(origin),
             rotation,
             WHITE
           );
@@ -80,18 +80,18 @@ void main()
           DrawBillboardPro(
             camera.ref,
             bill,
-            Rectangle$.$1.setD(source),
-            Vector3$.$1.setD(billPositionRotating),
-            Vector3$.$2.setD(billUp),
-            Vector2$.$1.setD(size),
-            Vector2$.$2.setD(origin),
+            Rectangle$.val.$1.setD(source),
+            Vector3$.val.$1.setD(billPositionRotating),
+            Vector3$.val.$2.setD(billUp),
+            Vector2$.val.$1.setD(size),
+            Vector2$.val.$2.setD(origin),
             rotation,
             WHITE
           );
           DrawBillboard(
             camera.ref,
             bill,
-            Vector3$.$1.setD(billPositionStatic),
+            Vector3$.val.$1.setD(billPositionStatic),
             2.0,
             WHITE
           );

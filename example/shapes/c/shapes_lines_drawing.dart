@@ -65,9 +65,9 @@ void main()
 
     BeginDrawing();
 
-      DrawTextureRec(canvas.texture, Rectangle$.$1.set(0.0, 0.0, canvas.texture.width,-canvas.texture.height), Vector2$.$zero, WHITE);
+      DrawTextureRec(canvas.texture, Rectangle$.val.$1.set(0.0, 0.0, canvas.texture.width,-canvas.texture.height), Vector2$.val.$zero, WHITE);
 
-      if (!leftButtonDown) DrawCircleLinesV(GetMousePosition(), lineThickness/2.0, Color$.$1.set(127, 127, 127, 127));
+      if (!leftButtonDown) DrawCircleLinesV(GetMousePosition(), lineThickness/2.0, Color$.val.$1.set(127, 127, 127, 127));
 
       if (startText) DrawText("try clicking and dragging!".toC, 275, 215, 20, LIGHTGRAY);
 

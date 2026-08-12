@@ -22,11 +22,11 @@ void main()
   bool resizing = false;
   bool wordWrap = true;
 
-  final container = Rectangle$.At('container').set(
+  final container = Rectangle$.val.At('container').set(
     25.0, 25.0,
     screenWidth - 50.0, screenHeight - 250.0
   );
-  final resizer = Rectangle$.At('resizer').set(
+  final resizer = Rectangle$.val.At('resizer').set(
     container.ref.x + container.ref.width - 17, container.ref.y + container.ref.height - 17,
     14, 14
   );
@@ -36,7 +36,7 @@ void main()
   final maxWidth = screenWidth - 50.0;
   final maxHeight = screenHeight - 160.0;
 
-  final lastMouse = Vector2$.At('lastMouse');
+  final lastMouse = Vector2$.val.At('lastMouse');
   ColorC borderColor = MAROON;
   final font = GetFontDefault();
 
@@ -82,7 +82,7 @@ void main()
 
       DrawRectangleLinesEx(container.ref, 3, borderColor);
 
-      final rect = Rectangle$.At('rect');
+      final rect = Rectangle$.val.At('rect');
 
       rect.set(
         container.ref.x + 4, container.ref.y + 4,
@@ -170,7 +170,7 @@ void DrawTextBoxedSelectable(
 
   for (int i = 0, k = 0; i < text.length; i++, k++)
   {
-    final codepointByteCount = Int$.At('codepointByteCount');
+    final codepointByteCount = Int$.val.At('codepointByteCount');
     int codepoint = GetCodepoint(text[i].toC, codepointByteCount);
     int index = GetGlyphIndex(font, codepoint);
 
@@ -247,7 +247,7 @@ void DrawTextBoxedSelectable(
         if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
         {
           DrawRectangleRec(
-            Rectangle$.$1.set(
+            Rectangle$.val.$1.set(
               rec.x + textOffsetX - 1, rec.y + textOffsetY,
               glyphWidth, font.baseSize*scaleFactor,
             ),
@@ -261,7 +261,7 @@ void DrawTextBoxedSelectable(
           DrawTextCodepoint(
             font,
             codepoint,
-            Vector2$.$1.set(rec.x + textOffsetX, rec.y + textOffsetY),
+            Vector2$.val.$1.set(rec.x + textOffsetX, rec.y + textOffsetY),
             fontSize,
             isGlyphSelected ? selectTint : tint
           );

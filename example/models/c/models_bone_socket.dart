@@ -20,7 +20,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5.0, 5.0, 5.0);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
@@ -35,7 +35,7 @@ void main()
   ];
   final showEquip = List.filled(BONE_SOCKETS, true);
 
-  final animsCount = Int$.At('animsCount');
+  final animsCount = Int$.val.At('animsCount');
   int animIndex = 0;
   int animCurrentFrame = 0;
   final modelAnimations = LoadModelAnimations(
@@ -66,7 +66,7 @@ void main()
     }
   }
 
-  final position = Vector3$.At('position').set(0.0, 0.0, 0.0);
+  final position = Vector3$.val.At('position').set(0.0, 0.0, 0.0);
   int angle = 0;
 
   while (!WindowShouldClose())
@@ -122,7 +122,7 @@ void main()
           DrawMesh(
             equipModel[i].meshes[0],
             equipModel[i].materials[1],
-            Matrix$.Value(matrixTransform).ref,
+            Matrix$.val.Value(matrixTransform).ref,
           );
         }
 

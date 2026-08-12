@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_loading_gltf".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(6, 6, 6);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
@@ -23,9 +23,9 @@ void main()
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
   final model = LoadModel("../resources/models/gltf/robot.glb".toC);
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
   
-  final animsCount = Int$.At('animsCount');
+  final animsCount = Int$.val.At('animsCount');
   int animIndex = 10;
   int animCurrentFrame = 0;
   final anims = LoadModelAnimations(

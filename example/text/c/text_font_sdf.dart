@@ -18,26 +18,26 @@ void main()
 
   String msg = "Signed Distance Fields";
 
-  final fileSize = Int$.At('fileSize');
+  final fileSize = Int$.val.At('fileSize');
   final fileData = LoadFileData("../resources/anonymous_pro_bold.ttf".toC, fileSize);
 
-  final fontDefault = Font$.At('fontDefault');
+  final fontDefault = Font$.val.At('fontDefault');
   fontDefault.ref.baseSize = 16;
   fontDefault.ref.glyphCount = 95;
 
-  final glyphCount = Int$.At('glyphCount');
+  final glyphCount = Int$.val.At('glyphCount');
   fontDefault.ref.glyphs = LoadFontData(fileData, fileSize.value, 16, nullptr, 95, FontType.FONT_DEFAULT.value, glyphCount);
-  final fontDefaultRects = Ptr$Rectangle$.At('fontDefaultRects');
+  final fontDefaultRects = Rectangle$.ptr.At('fontDefaultRects');
   var atlas = GenImageFontAtlas(fontDefault.ref.glyphs, fontDefaultRects, 95, 16, 4, 0);
   fontDefault.ref.recs = fontDefaultRects.value;
   fontDefault.ref.texture = LoadTextureFromImage(atlas);
   UnloadImage(atlas);
 
-  final fontSDF = Font$.At('fontSDF');
+  final fontSDF = Font$.val.At('fontSDF');
   fontSDF.ref.baseSize = 16;
   fontSDF.ref.glyphCount = 95;
   fontSDF.ref.glyphs = LoadFontData(fileData, fileSize.value, 16, nullptr, 0, FontType.FONT_SDF.value, glyphCount);
-  final fontSDFRects = Ptr$Rectangle$.At('fontSDFRects');
+  final fontSDFRects = Rectangle$.ptr.At('fontSDFRects');
   atlas = GenImageFontAtlas(fontSDF.ref.glyphs, fontSDFRects, 95, 16, 0, 1);
   fontSDF.ref.recs = fontSDFRects.value;
   fontSDF.ref.texture = LoadTextureFromImage(atlas);
@@ -51,8 +51,8 @@ void main()
   );
   SetTextureFilter(fontSDF.ref.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  final fontPosition = Vector2$.At('fontPosition').set(40, screenHeight/2.0 - 50);
-  final textSize = Vector2$.At('textSize').set(0.0, 0.0);
+  final fontPosition = Vector2$.val.At('fontPosition').set(40, screenHeight/2.0 - 50);
+  final textSize = Vector2$.val.At('textSize').set(0.0, 0.0);
   double fontSize = 16.0;
   int currentFont = 0;
 

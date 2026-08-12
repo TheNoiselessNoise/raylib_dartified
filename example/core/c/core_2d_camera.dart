@@ -15,14 +15,14 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_2d_camera".toC);
   SetTargetFPS(60);
 
-  final player = Rectangle$.At('player');
+  final player = Rectangle$.val.At('player');
   player.ref.x = 400;
   player.ref.y = 280;
   player.ref.width = 40;
   player.ref.height = 40;
 
-  final buildings = Rectangle$.At('buildings', MAX_BUILDINGS);
-  final colors = Color$.At('colors', MAX_BUILDINGS);
+  final buildings = Rectangle$.val.At('buildings', MAX_BUILDINGS);
+  final colors = Color$.val.At('colors', MAX_BUILDINGS);
 
   int spacing = 0;
   for (int i = 0; i < MAX_BUILDINGS; i++) {
@@ -39,7 +39,7 @@ void main() {
     colors[i].a = 255;
   }
 
-  final camera = Camera2D$.$newPtr;
+  final camera = Camera2D$.val.$newPtr;
   camera.ref.target.set(player.ref.x + 20, player.ref.y + 20);
   camera.ref.offset.set(screenWidth / 2, screenHeight / 2);
   camera.ref.rotation = 0;

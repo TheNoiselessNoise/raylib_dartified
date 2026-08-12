@@ -18,7 +18,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(4, 4, 4);
   camera.ref.target.set(0, 1, -1);
   camera.ref.up.set(0, 1, 0);
@@ -46,7 +46,7 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawModel(model, Vector3$.$zero, 0.2, WHITE);
+        DrawModel(model, Vector3$.val.$zero, 0.2, WHITE);
 
         DrawGrid(10, 1.0);
 

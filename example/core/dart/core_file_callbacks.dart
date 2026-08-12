@@ -1,6 +1,6 @@
 // Custom example, there's no original equivalent
 // Run it: dart run core_file_callbacks.dart
-import 'dart:ffi';
+import 'dart:typed_data';
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
@@ -25,20 +25,17 @@ final results = <TestResult>[];
 // LoadFileData: returns 8 bytes [1,1,1,1,0,0,0,0]
 final TestResult lfdResult = TestResult('LoadFileData');
 TestResult testLoadFileData() {
-  SetLoadFileDataCallback(.function((fileName, dataSize) {
-    lfdResult.assertIt(fileName.toD == 'LoadFileData');
+  SetLoadFileDataCallback(.friendly((fileName, dataSize) {
+    lfdResult.assertIt(fileName == 'LoadFileData');
     const dummyDataSize = 8;
     dataSize.value = dummyDataSize;
-    final data = UnsignedChar$.At('lfd_${fileName.toD}', dummyDataSize);
+    final data = Uint8List(dummyDataSize);
     for (int i = 0; i < dummyDataSize ~/ 2; i++) data[i] = 1;
-    return data;
+    return .fromBytes(data).cast();
   }));
 
-  final dataSize = Int$.At('lfd_size');
-  final data = rl.Core.LoadFileData('LoadFileData'.toC, dataSize);
-
-  final bytes = List.generate(dataSize.value, (i) => data[i]);
-  lfdResult.assertIt(dataSize.value == 8, 'expected size 8, got ${dataSize.value}');
+  final bytes = LoadFileData('LoadFileData');
+  lfdResult.assertIt(bytes.length == 8, 'expected size 8, got ${bytes.length}');
   lfdResult.assertIt(bytes.join(',') == '1,1,1,1,0,0,0,0', 'unexpected bytes: ${bytes.join(",")}');
 
   SetLoadFileDataCallback(null);
@@ -50,19 +47,19 @@ int _savedDataSize = 0;
 List<int> _savedDataBytes = [];
 final TestResult sfdResult = TestResult('SaveFileData');
 TestResult testSaveFileData() {
-  SetSaveFileDataCallback(.function((fileName, data, dataSize) {
-    sfdResult.assertIt(fileName.toD == 'SaveFileData');
+  SetSaveFileDataCallback(.friendly((fileName, data, dataSize) {
+    sfdResult.assertIt(fileName == 'SaveFileData');
     _savedDataSize = dataSize;
-    final bytes = data.cast<UnsignedChar>();
+    final bytes = data.to<Uint8List>(dataSize);
     _savedDataBytes = .generate(dataSize, (i) => bytes[i]);
     return true;
   },));
 
   const count = 6;
-  final buf = UnsignedChar$.At('sfd_buf', count);
+  final buf = Uint8List(count);
   for (int i = 0; i < count; i++) buf[i] = (i + 1) * 10;
 
-  final ok = rl.Core.SaveFileData('SaveFileData'.toC, buf.cast(), count);
+  final ok = SaveFileData('SaveFileData', buf);
 
   sfdResult.assertIt(ok, 'SaveFileData returned false');
   sfdResult.assertIt(_savedDataSize == count, 'expected size $count, got $_savedDataSize');
@@ -75,16 +72,13 @@ TestResult testSaveFileData() {
 // LoadFileText: returns a fixed null-terminated C string
 final TestResult lftResult = TestResult('LoadFileText');
 TestResult testLoadFileText() {
-  SetLoadFileTextCallback(.function((fileName) {
-    lftResult.assertIt(fileName.toD == 'LoadFileText');
-    const text = 'hello raylib';
-    return String$.ValueAt('lft_${fileName.toD}', text);
+  SetLoadFileTextCallback(.friendly((fileName) {
+    lftResult.assertIt(fileName == 'LoadFileText');
+    return 'hello raylib';
   },));
 
-  final text = rl.Core.LoadFileText('LoadFileText'.toC);
-  final dart = text.toD;
-
-  lftResult.assertIt(dart == 'hello raylib', 'expected "hello raylib", got "$dart"');
+  final text = LoadFileText('LoadFileText');
+  lftResult.assertIt(text == 'hello raylib', 'expected "hello raylib", got "$text"');
 
   SetLoadFileTextCallback(null);
   return lftResult;
@@ -94,9 +88,9 @@ TestResult testLoadFileText() {
 String _savedText = '';
 final TestResult sftResult = TestResult('SaveFileText');
 TestResult testSaveFileText() {
-  SetSaveFileTextCallback(.function((fileName, text) {
-    sftResult.assertIt(fileName.toD == 'SaveFileText');
-    _savedText = text.toD;
+  SetSaveFileTextCallback(.friendly((fileName, text) {
+    sftResult.assertIt(fileName == 'SaveFileText');
+    _savedText = text;
     return true;
   }));
 

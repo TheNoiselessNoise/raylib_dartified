@@ -89,7 +89,7 @@ void main()
 
   SetShaderValue(shdrSpot,
     GetShaderLocation(shdrSpot, "screenWidth".toC),
-    Float32$.Value(GetScreenWidth()).cast(),
+    Float32$.val.Value(GetScreenWidth()).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
 
@@ -109,15 +109,15 @@ void main()
     spots[i].radius = 48.0 * (i + 1);
 
     SetShaderValue(shdrSpot, spots[i].positionLoc,
-      Vector2$.$1Ptr.setD(spots[i].position).cast(),
+      Vector2$.val.$1Ptr.setD(spots[i].position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
     );
     SetShaderValue(shdrSpot, spots[i].innerLoc,
-      Float32$.Value(spots[i].inner).cast(),
+      Float32$.val.Value(spots[i].inner).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
     SetShaderValue(shdrSpot, spots[i].radiusLoc,
-      Float32$.Value(spots[i].radius).cast(),
+      Float32$.val.Value(spots[i].radius).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   }
@@ -148,7 +148,7 @@ void main()
       }
 
       SetShaderValue(shdrSpot, spots[i].positionLoc,
-        Vector2$.$1Ptr.setD(spots[i].position).cast(),
+        Vector2$.val.$1Ptr.setD(spots[i].position).cast(),
         ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
       );
     }

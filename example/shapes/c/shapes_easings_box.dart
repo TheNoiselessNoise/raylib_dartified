@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_easings_box".toC);
   SetTargetFPS(60);
 
-  final rec = Rectangle$.At('rec').set(screenWidth / 2, -100, 100, 100);
+  final rec = Rectangle$.val.At('rec').set(screenWidth / 2, -100, 100, 100);
   double rotation = 0;
   double alpha = 1;
   int state = 0;
@@ -112,7 +112,7 @@ void main()
       
       DrawRectanglePro(
         rec.ref,
-        Vector2$.$1.set(
+        Vector2$.val.$1.set(
           rec.ref.width / 2,
           rec.ref.height / 2
         ),

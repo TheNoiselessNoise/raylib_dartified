@@ -18,7 +18,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_mesh_instancing".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(-125, 125, -125);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -26,7 +26,7 @@ void main()
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
   final cube = GenMeshCube(1.0, 1.0, 1.0);
-  final transforms = Matrix$.At('transforms', MAX_INSTANCES);
+  final transforms = Matrix$.val.At('transforms', MAX_INSTANCES);
 
   for (int i = 0; i < MAX_INSTANCES; i++)
   {
@@ -62,13 +62,13 @@ void main()
 
   int ambientLoc = GetShaderLocation(shader, "ambient".toC);
   SetShaderValue(shader, ambientLoc,
-    Float32$.Array([0.2, 0.2, 0.2, 1.0]).cast(),
+    Float32$.val.Array([0.2, 0.2, 0.2, 1.0]).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
   );
 
   CreateLight(
     LightType.LIGHT_DIRECTIONAL.value,
-    Vector3$.$1.set(50, 50, 0), Vector3$.$zero, WHITE, shader
+    Vector3$.val.$1.set(50, 50, 0), Vector3$.val.$zero, WHITE, shader
   );
 
   final matInstances = LoadMaterialDefault();
@@ -84,7 +84,7 @@ void main()
 
     SetShaderValue(shader,
       shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Vector3$.$1Ptr.setC(camera.ref.position).cast(),
+      Vector3$.val.$1Ptr.setC(camera.ref.position).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value,
     );
 
@@ -94,7 +94,7 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        final matrixTranslate = Matrix$.At('matrixTranslate');
+        final matrixTranslate = Matrix$.val.At('matrixTranslate');
         
         matrixTranslate.setD(.translate(-10.0, 0.0, 0.0));
         DrawMesh(cube, matDefault, matrixTranslate.ref);

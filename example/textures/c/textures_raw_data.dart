@@ -26,7 +26,7 @@ void main()
   int height = 480;
 
   // NOTE: Color$.Raw, because it is freed on raylib side on `UnloadImage`
-  final pixels = Color$.Raw(width*height);
+  final pixels = Color$.val.Raw(width*height);
 
   for (int y = 0; y < height; y++)
   {
@@ -37,7 +37,7 @@ void main()
     }
   }
 
-  final checkedIm = Image$.At('checkedIm');
+  final checkedIm = Image$.val.At('checkedIm');
   checkedIm.ref.data = pixels.cast();
   checkedIm.ref.width = width;
   checkedIm.ref.height = height;

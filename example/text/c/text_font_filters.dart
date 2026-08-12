@@ -17,15 +17,15 @@ void main()
 
   final msg = "Loaded Font";
 
-  final font = Font$.At('font');
-  final fontTexture = Texture$.At('fontTexture');
+  final font = Font$.val.At('font');
+  final fontTexture = Texture$.val.At('fontTexture');
   font.ref = LoadFontEx("../resources/KAISG.ttf".toC, 96, nullptr, 0);
   fontTexture.ref = font.ref.texture;
   GenTextureMipmaps(fontTexture);
 
   double fontSize = font.ref.baseSize.toDouble();
-  final fontPosition = Vector2$.At('fontPosition').set(40, screenHeight / 2 - 80);
-  final textSize = Vector2$.At('textSize');
+  final fontPosition = Vector2$.val.At('fontPosition').set(40, screenHeight / 2 - 80);
+  final textSize = Vector2$.val.At('textSize');
 
   int currentFontFilter = TextureFilter.TEXTURE_FILTER_POINT.value;
   SetTextureFilter(fontTexture.ref, currentFontFilter);

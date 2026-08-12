@@ -74,10 +74,10 @@ void main()
     BeginTextureMode(target);
       DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, fateAlpha));
 
-      DrawCircleV(Vector2$.$1.setD(previousPosition), trailThick, RED);
+      DrawCircleV(Vector2$.val.$1.setD(previousPosition), trailThick, RED);
       DrawLineEx(
-        Vector2$.$1.setD(previousPosition),
-        Vector2$.$2.setD(currentPosition),
+        Vector2$.val.$1.setD(previousPosition),
+        Vector2$.val.$2.setD(currentPosition),
         trailThick*2, RED
       );
     EndTextureMode();
@@ -90,22 +90,22 @@ void main()
 
       DrawTextureRec(
         target.texture,
-        Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
-        Vector2$.$1.set(0, 0),
+        Rectangle$.val.$1.set(0, 0, target.texture.width, -target.texture.height),
+        Vector2$.val.$1.set(0, 0),
         WHITE
       );
 
       DrawRectanglePro(
-        Rectangle$.$1.set(screenWidth/2.0, screenHeight/2.0 - 100, 10*l1, lineThick),
-        Vector2$.$1.set(0, lineThick*0.5),
+        Rectangle$.val.$1.set(screenWidth/2.0, screenHeight/2.0 - 100, 10*l1, lineThick),
+        Vector2$.val.$1.set(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta1,
         RAYWHITE
       );
 
       final endpoint1 = CalculatePendulumEndPoint(l1, theta1);
       DrawRectanglePro(
-        Rectangle$.$1.set(screenWidth/2.0 + endpoint1.x, screenHeight/2.0 - 100 + endpoint1.y, 10*l2, lineThick),
-        Vector2$.$1.set(0, lineThick*0.5),
+        Rectangle$.val.$1.set(screenWidth/2.0 + endpoint1.x, screenHeight/2.0 - 100 + endpoint1.y, 10*l2, lineThick),
+        Vector2$.val.$1.set(0, lineThick*0.5),
         90 - rl.RAD2DEG*theta2,
         RAYWHITE
       );

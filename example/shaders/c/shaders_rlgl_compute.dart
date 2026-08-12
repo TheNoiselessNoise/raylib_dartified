@@ -37,7 +37,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_rlgl_compute".toC);
   SetTargetFPS(60);
 
-  final resolution = Vector2$.At('resolution').set(GOL_WIDTH, GOL_WIDTH);
+  final resolution = Vector2$.val.At('resolution').set(GOL_WIDTH, GOL_WIDTH);
   int brushSize = 8;
 
   final golLogicCode = LoadFileText("../resources/shaders/glsl430/gol.glsl".toC);
@@ -57,12 +57,12 @@ void main()
   UnloadFileText(golTransfertCode);
 
   int ssboA = rlLoadShaderBuffer(
-    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
+    UnsignedInt$.val.Size(GOL_WIDTH*GOL_WIDTH),
     nullptr,
     RlUsageHint.RL_DYNAMIC_COPY.value
   );
   int ssboB = rlLoadShaderBuffer(
-    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
+    UnsignedInt$.val.Size(GOL_WIDTH*GOL_WIDTH),
     nullptr,
     RlUsageHint.RL_DYNAMIC_COPY.value
   );

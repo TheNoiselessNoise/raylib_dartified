@@ -41,8 +41,8 @@ late Pointer<Vector2C> maxVec;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  minVec = Vector2$.At('minVec');
-  maxVec = Vector2$.At('maxVec');
+  minVec = Vector2$.val.At('minVec');
+  maxVec = Vector2$.val.At('maxVec');
 
   InitWindow(screenWidth, screenHeight, "core_2d_camera_platformer".toC);
   SetTargetFPS(60);
@@ -77,7 +77,7 @@ void main() {
     "Player push camera on getting too close to screen edge"
   ];
 
-  final camera = Camera2D$.$newPtr;
+  final camera = Camera2D$.val.$newPtr;
   camera.ref.target.setD(player.position);
   camera.ref.offset.setD(.vec2(screenWidth/2, screenHeight/2));
   camera.ref.rotation = 0;
@@ -114,17 +114,17 @@ void main() {
 
         for (int i = 0; i < envItems.length; i++) {
           DrawRectangleRec(
-            Rectangle$.$1.setD(envItems[i].rect),
+            Rectangle$.val.$1.setD(envItems[i].rect),
             envItems[i].color
           );
         }
 
         DrawRectangleRec(
-          Rectangle$.$1.set(player.position.x - 20, player.position.y - 40, 40, 40),
+          Rectangle$.val.$1.set(player.position.x - 20, player.position.y - 40, 40, 40),
           RED
         );
 
-        DrawCircleV(Vector2$.$1.setD(player.position), 5, GOLD);
+        DrawCircleV(Vector2$.val.$1.setD(player.position), 5, GOLD);
 
       EndMode2D();
 
@@ -276,11 +276,11 @@ void UpdateCameraEvenOutOnLanding(Pointer<Camera2DC> camera, Player player, List
 void UpdateCameraPlayerBoundsPush(Pointer<Camera2DC> camera, Player player, List<EnvItem> envItems, double deltaTime) {
   final Vector2D bbox = .vec2(0.2, 0.2);
 
-  final minVec = Vector2$.At('UpdateCameraPlayerBoundsPush_minVec').set(
+  final minVec = Vector2$.val.At('UpdateCameraPlayerBoundsPush_minVec').set(
     (1 - bbox.x)*0.5*screenWidth,
     (1 - bbox.y)*0.5*screenHeight
   );
-  final maxVec = Vector2$.At('UpdateCameraPlayerBoundsPush_maxVec').set(
+  final maxVec = Vector2$.val.At('UpdateCameraPlayerBoundsPush_maxVec').set(
     (1 + bbox.x)*0.5*screenWidth,
     (1 + bbox.y)*0.5*screenHeight
   );

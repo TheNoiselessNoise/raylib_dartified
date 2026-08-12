@@ -11,9 +11,9 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final mousePosition = Vector2$.At('mousePosition');
-  final windowPosition = Vector2$.At('windowPosition').set(500, 200);
-  final panOffset = Vector2$.At('panOffset');
+  final mousePosition = Vector2$.val.At('mousePosition');
+  final windowPosition = Vector2$.val.At('windowPosition').set(500, 200);
+  final panOffset = Vector2$.val.At('panOffset');
   bool dragWindow = false;
   bool exitWindow = false;
 
@@ -32,7 +32,7 @@ void main()
     ) {
       if (CheckCollisionPointRec(
         mousePosition.ref,
-        Rectangle$.$1.set(0, 0, screenWidth, 20),
+        Rectangle$.val.$1.set(0, 0, screenWidth, 20),
       )) {
         windowPosition.setC(GetWindowPosition());
         dragWindow = true;
@@ -59,7 +59,7 @@ void main()
       ClearBackground(RAYWHITE);
 
       exitWindow = GuiWindowBox(
-        Rectangle$.$1.set(0, 0, screenWidth, screenHeight),
+        Rectangle$.val.$1.set(0, 0, screenWidth, screenHeight),
         "#198# PORTABLE WINDOW".toC,
       ).toBool();
 

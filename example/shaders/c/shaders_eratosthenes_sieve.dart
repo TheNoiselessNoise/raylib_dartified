@@ -42,11 +42,11 @@ void main()
       BeginShaderMode(shader);
         DrawTextureRec(
           target.texture,
-          Rectangle$.$1.set(
+          Rectangle$.val.$1.set(
             0, 0,
             target.texture.width, -target.texture.height
           ),
-          Vector2$.$zero,
+          Vector2$.val.$zero,
           WHITE
         );
       EndShaderMode();

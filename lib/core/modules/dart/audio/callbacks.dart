@@ -2,7 +2,7 @@ part of '../../../raylib_dartified.dart';
 
 // AudioCallback
 
-typedef AudioCallbackFunctionD = void Function(Pointer<Void> bufferData, int frames);
+typedef _AudioCallbackFunctionC = void Function(Pointer<Void> bufferData, int frames);
 
 abstract class AudioCallbackD extends CallbackD<
   AudioCallbackFunctionC,
@@ -16,15 +16,21 @@ abstract class AudioCallbackD extends CallbackD<
   @nonVirtual
   get registry => _registry;
 
+  /// The actual trampoline.
+  _AudioCallbackFunctionC get _rawFunction =>
+    (Pointer<Void> bufferData, int frames) =>
+      function(
+        NativeMemoryPointer(bufferData),
+        frames,
+      );
+
   @override
-  initializer() => .listener(function);
+  initializer() => .listener(_rawFunction);
 
   static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
 
   factory AudioCallbackD.function(AudioCallbackFunctionD f, {String? name})
     => _AudioCallbackD(f, name: name);
-
-  // NOTE: no need for `friendly` factory
 }
 
 class _AudioCallbackD extends AudioCallbackD {

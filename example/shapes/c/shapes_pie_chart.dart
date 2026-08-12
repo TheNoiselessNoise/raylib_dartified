@@ -16,12 +16,12 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_pie_chart".toC);
   SetTargetFPS(60);
 
-  final donutInnerRadius = Float32$.Value(25, 'donutInnerRadius');
-  final sliceCount = Int$.Value(MAX_PIE_SLICES, 'sliceCount');
+  final donutInnerRadius = Float32$.val.Value(25, 'donutInnerRadius');
+  final sliceCount = Int$.val.Value(MAX_PIE_SLICES, 'sliceCount');
 
   final sliceValues = [ 300.0, 100.0, 450.0, 350.0, 600.0, 380.0, 750.0 ];
   assert(sliceValues.length == MAX_PIE_SLICES);
-  final values = Float32$.Array(sliceValues, key: 'values');
+  final values = Float32$.val.Array(sliceValues, key: 'values');
 
   final labels = String$.Fill(
     key: 'labels',
@@ -36,26 +36,26 @@ void main()
   final showDonut = Bool$.Value(false, 'showDonut');
   
   int hoveredSlice = -1;
-  final scrollPanelBounds = Rectangle$.At('scrollPanelBounds');
-  final scrollContentOffset = Vector2$.At('scrollContentOffset');
-  final view = Rectangle$.At('view');
+  final scrollPanelBounds = Rectangle$.val.At('scrollPanelBounds');
+  final scrollContentOffset = Vector2$.val.At('scrollContentOffset');
+  final view = Rectangle$.val.At('view');
 
   const int panelWidth = 270;
   const int panelMargin = 5;
 
-  final panelPos = Vector2$.At('panelPos').set(
+  final panelPos = Vector2$.val.At('panelPos').set(
     (screenWidth - panelMargin - panelWidth).toDouble(),
     panelMargin.toDouble()
   );
 
-  final panelRect = Rectangle$.At('panelRect').set(
+  final panelRect = Rectangle$.val.At('panelRect').set(
     panelPos.ref.x, panelPos.ref.y,
     panelWidth.toDouble(),
     screenHeight - 2.0*panelMargin
   );
 
-  final canvas = Rectangle$.At('canvas').set(0, 0, panelPos.ref.x, screenHeight.toDouble());
-  final center = Vector2$.At('center').set(canvas.ref.width/2.0, canvas.ref.height/2.0);
+  final canvas = Rectangle$.val.At('canvas').set(0, 0, panelPos.ref.x, screenHeight.toDouble());
+  final center = Vector2$.val.At('center').set(canvas.ref.width/2.0, canvas.ref.height/2.0);
   const double radius = 205.0;
 
   double totalValue = 0.0;
@@ -120,7 +120,7 @@ void main()
 
           final textSize = MeasureTextEx(GetFontDefault(), labelText.toC, 20, 1);
           final labelRadius = radius*0.7;
-          final labelPos = Vector2$.At('labelPos').set(
+          final labelPos = Vector2$.val.At('labelPos').set(
             center.ref.x + math.cos(midAngle*rl.DEG2RAD)*labelRadius - textSize.x/2.0,
             center.ref.y + math.sin(midAngle*rl.DEG2RAD)*labelRadius - textSize.y/2.0
           );
@@ -139,31 +139,31 @@ void main()
       DrawRectangleLinesEx(panelRect.ref, 1.0, GRAY);
 
       GuiSpinner(
-        Rectangle$.$1.set(panelPos.ref.x + 95, panelPos.ref.y + 12, 125, 25),
+        Rectangle$.val.$1.set(panelPos.ref.x + 95, panelPos.ref.y + 12, 125, 25),
         "Slices ".toC, sliceCount, 1, MAX_PIE_SLICES, false
       );
       GuiCheckBox(
-        Rectangle$.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 40, 20, 20),
+        Rectangle$.val.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 40, 20, 20),
         "Show Values".toC, showValues
       );
       GuiCheckBox(
-        Rectangle$.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 70, 20, 20),
+        Rectangle$.val.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 70, 20, 20),
         "Show Percentages".toC, showPercentages
       );
       GuiCheckBox(
-        Rectangle$.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 100, 20, 20),
+        Rectangle$.val.$1.set(panelPos.ref.x + 20, panelPos.ref.y + 12 + 100, 20, 20),
         "Make Donut".toC, showDonut
       );
 
       if (!showDonut.value) GuiDisable();
       GuiSliderBar(
-        Rectangle$.$1.set(panelPos.ref.x + 80, panelPos.ref.y + 12 + 130, panelRect.ref.width - 100, 30),
+        Rectangle$.val.$1.set(panelPos.ref.x + 80, panelPos.ref.y + 12 + 130, panelRect.ref.width - 100, 30),
         "Inner Radius".toC, nullptr, donutInnerRadius, 5.0, radius - 10.0
       );
       GuiEnable();
 
       GuiLine(
-        Rectangle$.$1.set(panelPos.ref.x + 10, panelPos.ref.y + 12 + 170, panelRect.ref.width - 20, 1),
+        Rectangle$.val.$1.set(panelPos.ref.x + 10, panelPos.ref.y + 12 + 170, panelRect.ref.width - 20, 1),
         nullptr
       );
 
@@ -176,7 +176,7 @@ void main()
       final contentHeight = sliceCount.value*35;
 
       GuiScrollPanel(scrollPanelBounds.ref, nullptr,
-        Rectangle$.$1.set(0, 0, panelRect.ref.width - 25, contentHeight.toDouble()),
+        Rectangle$.val.$1.set(0, 0, panelRect.ref.width - 25, contentHeight.toDouble()),
         scrollContentOffset,
         view
       );
@@ -197,12 +197,12 @@ void main()
           DrawRectangle((contentX + 15).toInt(), rowY + 5, 20, 20, color);
 
           if (GuiTextBox(
-            Rectangle$.$1.set(contentX + 45, rowY.toDouble(), 75, 30),
+            Rectangle$.val.$1.set(contentX + 45, rowY.toDouble(), 75, 30),
             labels[i], 32, editingLabel[i]
           ).toBool()) editingLabel[i] = !editingLabel[i];
 
           GuiSliderBar(
-            Rectangle$.$1.set(contentX + 130, rowY.toDouble(), 110, 30),
+            Rectangle$.val.$1.set(contentX + 130, rowY.toDouble(), 110, 30),
             nullptr,
             nullptr,
             values + i,

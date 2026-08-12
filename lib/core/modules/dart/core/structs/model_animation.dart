@@ -111,10 +111,8 @@ class ModelAnimationD extends StructD<ModelAnimationC, ModelAnimationD> with Mod
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelAnimationC> p, String key) {
-    p.ref.keyframePoses = temp.Ptr$Transform$.Fill(
-      key: '${key}_keyframePoses',
-      keyframePoses
-    );
+    p.ref.keyframePoses = temp.allocPtrStruct<TransformC, TransformD>()
+      .Fill(key: '${key}_keyframePoses', keyframePoses);
 
     p.ref.name.setDartString(name, nameLength);
   }

@@ -19,7 +19,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_animation_gpu_skinning".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5, 5, 5);
   camera.ref.target.set(0, 1, 0);
   camera.ref.up.set(0, 1, 0);
@@ -35,7 +35,7 @@ void main()
 
   model.materials[1].shader = skinningShader;
     
-  final animCount = Int$.At('animCount');
+  final animCount = Int$.val.At('animCount');
   final anims = LoadModelAnimations(
     "../resources/models/gltf/greenman.glb".toC,
     animCount
@@ -44,7 +44,7 @@ void main()
   int animIndex = 0;
   int animCurrentFrame = 0;
 
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
 
   while (!WindowShouldClose())
   {

@@ -41,16 +41,16 @@ void main()
 
       // Draw background image twice
       // NOTE: Texture is scaled twice its size
-      DrawTextureEx(background, Vector2$.$1.set(scrollingBack, 20), 0.0, 2.0, WHITE);
-      DrawTextureEx(background, Vector2$.$1.set(background.width*2 + scrollingBack, 20), 0.0, 2.0, WHITE);
+      DrawTextureEx(background, Vector2$.val.$1.set(scrollingBack, 20), 0.0, 2.0, WHITE);
+      DrawTextureEx(background, Vector2$.val.$1.set(background.width*2 + scrollingBack, 20), 0.0, 2.0, WHITE);
 
       // Draw midground image twice
-      DrawTextureEx(midground, Vector2$.$1.set(scrollingMid, 20), 0.0, 2.0, WHITE);
-      DrawTextureEx(midground, Vector2$.$1.set(midground.width*2 + scrollingMid, 20), 0.0, 2.0, WHITE);
+      DrawTextureEx(midground, Vector2$.val.$1.set(scrollingMid, 20), 0.0, 2.0, WHITE);
+      DrawTextureEx(midground, Vector2$.val.$1.set(midground.width*2 + scrollingMid, 20), 0.0, 2.0, WHITE);
 
       // Draw foreground image twice
-      DrawTextureEx(foreground, Vector2$.$1.set(scrollingFore, 70), 0.0, 2.0, WHITE);
-      DrawTextureEx(foreground, Vector2$.$1.set(foreground.width*2 + scrollingFore, 70), 0.0, 2.0, WHITE);
+      DrawTextureEx(foreground, Vector2$.val.$1.set(scrollingFore, 70), 0.0, 2.0, WHITE);
+      DrawTextureEx(foreground, Vector2$.val.$1.set(foreground.width*2 + scrollingFore, 70), 0.0, 2.0, WHITE);
 
       DrawText(
         "BACKGROUND SCROLLING & PARALLAX".toC,

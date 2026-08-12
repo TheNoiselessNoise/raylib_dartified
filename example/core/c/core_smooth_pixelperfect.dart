@@ -17,24 +17,24 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_smooth_pixelperfect".toC);
   SetTargetFPS(60);
 
-  final worldSpaceCamera = Camera2D$.At('worldSpaceCamera');
+  final worldSpaceCamera = Camera2D$.val.At('worldSpaceCamera');
   worldSpaceCamera.ref.zoom = 1.0;
 
-  final screenSpaceCamera = Camera2D$.At('screenSpaceCamera');
+  final screenSpaceCamera = Camera2D$.val.At('screenSpaceCamera');
   screenSpaceCamera.ref.zoom = 1.0;
 
   final target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
 
-  final rec01 = Rectangle$.At('rec01').set(70.0, 35.0, 20.0, 20.0);
-  final rec02 = Rectangle$.At('rec02').set(90.0, 55.0, 30.0, 10.0);
-  final rec03 = Rectangle$.At('rec03').set(80.0, 65.0, 15.0, 25.0);
+  final rec01 = Rectangle$.val.At('rec01').set(70.0, 35.0, 20.0, 20.0);
+  final rec02 = Rectangle$.val.At('rec02').set(90.0, 55.0, 30.0, 10.0);
+  final rec03 = Rectangle$.val.At('rec03').set(80.0, 65.0, 15.0, 25.0);
 
-  final sourceRec = Rectangle$.At('sourceRec')
+  final sourceRec = Rectangle$.val.At('sourceRec')
     .set(0.0, 0.0, target.texture.width, -target.texture.height);
-  final destRec = Rectangle$.At('destRec')
+  final destRec = Rectangle$.val.At('destRec')
     .set(-virtualRatio, -virtualRatio, screenWidth + (virtualRatio*2), screenHeight + (virtualRatio*2));
 
-  final origin = Vector2$.At('origin').set(0.0, 0.0);
+  final origin = Vector2$.val.At('origin').set(0.0, 0.0);
 
   double rotation = 0.0;
 

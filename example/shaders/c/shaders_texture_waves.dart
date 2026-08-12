@@ -41,31 +41,31 @@ void main()
 
   final screenSize = [ GetScreenWidth(), GetScreenHeight() ];
   SetShaderValue(shader, sizeLoc,
-    Float32$.Array(screenSize).cast(),
+    Float32$.val.Array(screenSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
   SetShaderValue(shader, freqXLoc,
-    Float32$.Value(freqX).cast(),
+    Float32$.val.Value(freqX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   SetShaderValue(shader, freqYLoc,
-    Float32$.Value(freqY).cast(),
+    Float32$.val.Value(freqY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   SetShaderValue(shader, ampXLoc,
-    Float32$.Value(ampX).cast(),
+    Float32$.val.Value(ampX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   SetShaderValue(shader, ampYLoc,
-    Float32$.Value(ampY).cast(),
+    Float32$.val.Value(ampY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   SetShaderValue(shader, speedXLoc,
-    Float32$.Value(speedX).cast(),
+    Float32$.val.Value(speedX).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
   SetShaderValue(shader, speedYLoc,
-    Float32$.Value(speedY).cast(),
+    Float32$.val.Value(speedY).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
   );
 
@@ -76,7 +76,7 @@ void main()
     seconds += GetFrameTime();
 
     SetShaderValue(shader, secondsLoc,
-      Float32$.Value(seconds).cast(),
+      Float32$.val.Value(seconds).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 

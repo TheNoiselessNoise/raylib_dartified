@@ -31,15 +31,15 @@ void main() async {
   final AudioInputCallback = NativeCallable<AudioCallbackFunctionC>.listener(AudioInputCallbackCallback);
   SetAudioStreamCallback(stream, AudioInputCallback.nativeFunction);
 
-  final data = Short$.At('data', MAX_SAMPLES);
+  final data = Short$.val.At('data', MAX_SAMPLES);
 
   PlayAudioStream(stream);
 
-  final mousePosition = Vector2$.At('mousePosition').set(-100.0, -100.0);
+  final mousePosition = Vector2$.val.At('mousePosition').set(-100.0, -100.0);
 
   int waveLength = 1;
 
-  final position = Vector2$.At('position').set(0, 0);
+  final position = Vector2$.val.At('position').set(0, 0);
 
   while (!WindowShouldClose())
   {

@@ -14,25 +14,25 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_box_collisions".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final playerPosition = Vector3$.At('playerPosition').set(0, 1, 2);
-  final playerSize = Vector3$.At('playerSize').set(1, 2, 1);
+  final playerPosition = Vector3$.val.At('playerPosition').set(0, 1, 2);
+  final playerSize = Vector3$.val.At('playerSize').set(1, 2, 1);
   ColorC playerColor = GREEN;
 
-  final enemyBoxPos = Vector3$.At('enemyBoxPos').set(-4, 1, 0);
-  final enemyBoxSize = Vector3$.At('enemyBoxSize').set(2, 2, 2);
+  final enemyBoxPos = Vector3$.val.At('enemyBoxPos').set(-4, 1, 0);
+  final enemyBoxSize = Vector3$.val.At('enemyBoxSize').set(2, 2, 2);
 
-  final enemySpherePos = Vector3$.At('enemySpherePos').set(4, 0, 0);
+  final enemySpherePos = Vector3$.val.At('enemySpherePos').set(4, 0, 0);
   double enemySphereSize = 1.5;
 
-  final playerBBox = BoundingBox$.At('playerBBox');
-  final enemyBBox = BoundingBox$.At('enemyBBox');
+  final playerBBox = BoundingBox$.val.At('playerBBox');
+  final enemyBBox = BoundingBox$.val.At('enemyBBox');
 
   while (!WindowShouldClose())
   {

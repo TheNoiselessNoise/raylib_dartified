@@ -37,10 +37,10 @@ void main()
   map.tileIds = .filled(map.tilesX*map.tilesY, 0);
   map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
-  final textureSrc = Rectangle$.At('textureSrc');
-  final textureDst = Rectangle$.At('textureDst');
+  final textureSrc = Rectangle$.val.At('textureSrc');
+  final textureDst = Rectangle$.val.At('textureDst');
 
-  final playerPosition = Vector2$.At('playerPosition');
+  final playerPosition = Vector2$.val.At('playerPosition');
   int playerTileX = 0;
   int playerTileY = 0;
 
@@ -123,7 +123,7 @@ void main()
 
       DrawRectangleV(
         playerPosition.ref,
-        Vector2$.$1.set(PLAYER_SIZE, PLAYER_SIZE),
+        Vector2$.val.$1.set(PLAYER_SIZE, PLAYER_SIZE),
         RED
       );
 
@@ -141,7 +141,7 @@ void main()
         fogOfWar.texture,
         textureSrc.ref,
         textureDst.ref,
-        Vector2$.$1.set(0, 0),
+        Vector2$.val.$1.set(0, 0),
         0,
         WHITE,
       );

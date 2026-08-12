@@ -28,12 +28,12 @@ void main()
     "../resources/shaders/glsl$GLSL_VERSION/color_correction.fs".toC,
   );
 
-  final imageIndex = Int$.At('imageIndex');
+  final imageIndex = Int$.val.At('imageIndex');
   int resetButtonClicked = 0;
 
-  final contrast = Float32$.At('contrast');
-  final saturation = Float32$.At('saturation');
-  final brightness = Float32$.At('brightness');
+  final contrast = Float32$.val.At('contrast');
+  final saturation = Float32$.val.At('saturation');
+  final brightness = Float32$.val.At('brightness');
 
   int contrastLoc = GetShaderLocation(shader, "contrast".toC);
   int saturationLoc = GetShaderLocation(shader, "saturation".toC);
@@ -41,25 +41,25 @@ void main()
 
   void updateShaderValues() {
     SetShaderValue(shader, contrastLoc,
-      Float32$.Value(contrast.value).cast(),
+      Float32$.val.Value(contrast.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
     SetShaderValue(shader, saturationLoc,
-      Float32$.Value(saturation.value).cast(),
+      Float32$.val.Value(saturation.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
     SetShaderValue(shader, brightnessLoc,
-      Float32$.Value(brightness.value).cast(),
+      Float32$.val.Value(brightness.value).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   }
 
   updateShaderValues();
 
-  final lineColor = Color$.At('lineColor').set(218, 218, 218, 255);
-  final rectColor = Color$.At('rectColor').set(232, 232, 232, 255);
+  final lineColor = Color$.val.At('lineColor').set(218, 218, 218, 255);
+  final rectColor = Color$.val.At('rectColor').set(232, 232, 232, 255);
 
   while (!WindowShouldClose())
   {
@@ -116,30 +116,30 @@ void main()
       );
 
       GuiToggleGroup(
-        Rectangle$.$1.set(645, 70, 20, 20),
+        Rectangle$.val.$1.set(645, 70, 20, 20),
         "1;2;3;4".toC, imageIndex
       );
 
       GuiSliderBar(
-        Rectangle$.$1.set(645, 100, 120, 20),
+        Rectangle$.val.$1.set(645, 100, 120, 20),
         "Contrast".toC, contrast.value.f0.toC,
         contrast, -100.0, 100.0
       );
       
       GuiSliderBar(
-        Rectangle$.$1.set(645, 130, 120, 20),
+        Rectangle$.val.$1.set(645, 130, 120, 20),
         "Saturation".toC, saturation.value.f0.toC,
         saturation, -100.0, 100.0
       );
       
       GuiSliderBar(
-        Rectangle$.$1.set(645, 160, 120, 20),
+        Rectangle$.val.$1.set(645, 160, 120, 20),
         "Brightness".toC, brightness.value.f0.toC,
         brightness, -100.0, 100.0
       );
 
       resetButtonClicked = GuiButton(
-        Rectangle$.$1.set(645, 190, 40, 20),
+        Rectangle$.val.$1.set(645, 190, 40, 20),
         "Reset".toC
       );
 

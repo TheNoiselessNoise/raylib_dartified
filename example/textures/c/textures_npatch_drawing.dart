@@ -17,15 +17,15 @@ void main()
 
   final nPatchTexture = LoadTexture("../resources/ninepatch_button.png".toC);
 
-  final mousePosition = Vector2$.At('mousePosition');
-  final origin = Vector2$.At('origin');
+  final mousePosition = Vector2$.val.At('mousePosition');
+  final origin = Vector2$.val.At('origin');
 
-  final dstRec1 = Rectangle$.At('dstRec1').set(480.0, 160.0, 32.0, 32.0);
-  final dstRec2 = Rectangle$.At('dstRec2').set(160.0, 160.0, 32.0, 32.0);
-  final dstRecH = Rectangle$.At('dstRecH').set(160.0, 93.0, 32.0, 32.0);
-  final dstRecV = Rectangle$.At('dstRecV').set(92.0, 160.0, 32.0, 32.0);
+  final dstRec1 = Rectangle$.val.At('dstRec1').set(480.0, 160.0, 32.0, 32.0);
+  final dstRec2 = Rectangle$.val.At('dstRec2').set(160.0, 160.0, 32.0, 32.0);
+  final dstRecH = Rectangle$.val.At('dstRecH').set(160.0, 93.0, 32.0, 32.0);
+  final dstRecV = Rectangle$.val.At('dstRecV').set(92.0, 160.0, 32.0, 32.0);
 
-  final ninePatchInfo1 = NPatchInfo$.At('ninePatchInfo1');
+  final ninePatchInfo1 = NPatchInfo$.val.At('ninePatchInfo1');
   ninePatchInfo1.ref.source.set(0.0, 0.0, 64.0, 64.0);
   ninePatchInfo1.ref.left = 12;
   ninePatchInfo1.ref.top = 40;
@@ -33,7 +33,7 @@ void main()
   ninePatchInfo1.ref.bottom = 12;
   ninePatchInfo1.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
-  final ninePatchInfo2 = NPatchInfo$.At('ninePatchInfo2');
+  final ninePatchInfo2 = NPatchInfo$.val.At('ninePatchInfo2');
   ninePatchInfo2.ref.source.set(0.0, 128.0, 64.0, 64.0);
   ninePatchInfo2.ref.left = 16;
   ninePatchInfo2.ref.top = 16;
@@ -41,7 +41,7 @@ void main()
   ninePatchInfo2.ref.bottom = 16;
   ninePatchInfo2.ref.layout = NPatchLayout.NPATCH_NINE_PATCH.value;
 
-  final h3PatchInfo = NPatchInfo$.At('h3PatchInfo');
+  final h3PatchInfo = NPatchInfo$.val.At('h3PatchInfo');
   h3PatchInfo.ref.source.set(0.0, 64.0, 64.0, 64.0);
   h3PatchInfo.ref.left = 8;
   h3PatchInfo.ref.top = 8;
@@ -49,7 +49,7 @@ void main()
   h3PatchInfo.ref.bottom = 8;
   h3PatchInfo.ref.layout = NPatchLayout.NPATCH_THREE_PATCH_HORIZONTAL.value;
 
-  final v3PatchInfo = NPatchInfo$.At('v3PatchInfo');
+  final v3PatchInfo = NPatchInfo$.val.At('v3PatchInfo');
   v3PatchInfo.ref.source.set(0.0, 192.0, 64.0, 64.0);
   v3PatchInfo.ref.left = 6;
   v3PatchInfo.ref.top = 6;

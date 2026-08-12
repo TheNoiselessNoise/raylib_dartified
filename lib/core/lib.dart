@@ -91,8 +91,35 @@ class Raylib extends RaylibBase {
   }) {
     if (_instance != null) throw StateError("There can only be one instance of a $runtimeType!");
     _instance = this;
+    _initBase();
     _initLibs(core, libs);
     _init();
+  }
+
+  NativeMemoryPointer<RVoid> _defaultFromBytes<T extends TypedDataList>(T data) {
+    final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
+    final ptr = malloc<Uint8>(byteLength);
+    final asBytes = (data as TypedData).buffer.asUint8List(data.offsetInBytes, byteLength);
+    ptr.asTypedList(byteLength).setAll(0, asBytes);
+    return .new(ptr.cast());
+  }
+
+  NativeMemoryPointer<RUint8> _defaultFromString(String text)
+    => .new(text.toNativeUtf8().cast());
+
+  void _initBase() {
+    RaylibMatrixFactories.createFactory = MatrixD.mat4;
+    RaylibMatrixFactories.zeroFactory = MatrixD.zero;
+    RaylibQuaternionFactories.createFactory = QuaternionD.quat;
+    RaylibQuaternionFactories.zeroFactory = QuaternionD.zero;
+    RaylibVector2Factories.createFactory = Vector2D.vec2;
+    RaylibVector2Factories.zeroFactory = Vector2D.zero;
+    RaylibVector3Factories.createFactory = Vector3D.vec3;
+    RaylibVector3Factories.zeroFactory = Vector3D.zero;
+    RaylibVector4Factories.createFactory = Vector4D.vec4;
+    RaylibVector4Factories.zeroFactory = Vector4D.zero;
+    MemoryPointer.fromBytes = _defaultFromBytes;
+    MemoryPointer.fromString = _defaultFromString;
   }
 
   void _initLibs(String core, Map<RaylibSupportedLibs, String?> libs) {
@@ -121,17 +148,6 @@ class Raylib extends RaylibBase {
         stderr.writeln(record.stackTrace);
       }
     });
-
-    RaylibMatrixFactories.createFactory = MatrixD.mat4;
-    RaylibMatrixFactories.zeroFactory = MatrixD.zero;
-    RaylibQuaternionFactories.createFactory = QuaternionD.quat;
-    RaylibQuaternionFactories.zeroFactory = QuaternionD.zero;
-    RaylibVector2Factories.createFactory = Vector2D.vec2;
-    RaylibVector2Factories.zeroFactory = Vector2D.zero;
-    RaylibVector3Factories.createFactory = Vector3D.vec3;
-    RaylibVector3Factories.zeroFactory = Vector3D.zero;
-    RaylibVector4Factories.createFactory = Vector4D.vec4;
-    RaylibVector4Factories.zeroFactory = Vector4D.zero;
 
     // extensions
     registerModule(RaylibTemp(this, options: tempOptions)); Temp = module();
@@ -189,11 +205,11 @@ class Raylib extends RaylibBase {
 
 abstract class RaylibGame extends RaylibGameBase<Raylib> {}
 
-void runRaylib(RaylibGame game, {String? nativeLibPath}) {
+Future<void> runRaylib(RaylibGame game, {String? nativeLibPath}) async {
   final rl = findRaylib(nativeLibPath ?? 'raylib');
   game.init(rl);
   while (!game.shouldClose(rl)) {
-    game.loop(rl);
+    await game.loop(rl);
   }
   game.close(rl);
   game.dispose(rl);

@@ -20,7 +20,7 @@ void main() {
 
   final sound = LoadSound("../resources/coin.wav".toC);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 5, 5);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -33,7 +33,7 @@ void main() {
 
     final th = GetTime().toDouble();
 
-    final spherePos = Vector3$.$1.set(
+    final spherePos = Vector3$.val.$1.set(
       5.0*math.cos(th),
       0.0,
       5.0*math.sin(th)

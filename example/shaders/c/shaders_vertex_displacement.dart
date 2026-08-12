@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(20.0, 5.0, -20.0);
   camera.ref.target.set(0.0, 0.0, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -52,7 +52,7 @@ void main()
     time += GetFrameTime();
     SetShaderValue(shader,
       GetShaderLocation(shader, "time".toC),
-      Float32$.Value(time).cast(),
+      Float32$.val.Value(time).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
 
@@ -65,9 +65,9 @@ void main()
         BeginShaderMode(shader);
           DrawModel(
             planeModel,
-            Vector3$.$1.set(0.0, 0.0, 0.0),
+            Vector3$.val.$1.set(0.0, 0.0, 0.0),
             1.0,
-            Color$.$1.set(255, 255, 255, 255),
+            Color$.val.$1.set(255, 255, 255, 255),
           );
         EndShaderMode();
 

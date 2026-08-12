@@ -88,7 +88,7 @@ void main() {
     ClearBackground(RAYWHITE);
 
     GuiLabel(
-      Rectangle$.$1.set(50, 20, 700, 36),
+      Rectangle$.val.$1.set(50, 20, 700, 36),
       "Use the BUTTONS or KEY SHORTCUTS:".toC,
     );
 
@@ -98,50 +98,50 @@ void main() {
     );
 
     if (GuiTextBox(
-      Rectangle$.$1.set(50, 120, 652, 40),
+      Rectangle$.val.$1.set(50, 120, 652, 40),
       input,
       256,
       textBoxEditMode
     ).toBool()) textBoxEditMode = !textBoxEditMode;
 
     btnRandomPressed = GuiButton(
-      Rectangle$.$1.set(50 + 652 + 8, 120, 40, 40),
+      Rectangle$.val.$1.set(50 + 652 + 8, 120, 40, 40),
       "#77#".toC,
     ).toBool();
 
     btnCutPressed = GuiButton(
-      Rectangle$.$1.set(50, 180, 158, 40),
+      Rectangle$.val.$1.set(50, 180, 158, 40),
       "#17#CUT".toC,
     ).toBool();
     
     btnCopyPressed = GuiButton(
-      Rectangle$.$1.set(50 + 165, 180, 158, 40),
+      Rectangle$.val.$1.set(50 + 165, 180, 158, 40),
       "#16#COPY".toC,
     ).toBool();
     
     btnPastePressed = GuiButton(
-      Rectangle$.$1.set(50 + 165*2, 180, 158, 40),
+      Rectangle$.val.$1.set(50 + 165*2, 180, 158, 40),
       "#18#PASTE".toC,
     ).toBool();
     
     btnClearPressed = GuiButton(
-      Rectangle$.$1.set(50 + 165*3, 180, 158, 40),
+      Rectangle$.val.$1.set(50 + 165*3, 180, 158, 40),
       "#143#CLEAR".toC,
     ).toBool();
 
     GuiSetState(GuiState.STATE_DISABLED.value);
     GuiLabel(
-      Rectangle$.$1.set(50, 260, 700, 40),
+      Rectangle$.val.$1.set(50, 260, 700, 40),
       "Clipboard current text data:".toC,
     );
     GuiSetStyle(GuiControl.TEXTBOX.value, GuiTextBoxProperty.TEXT_READONLY.value, 1);
     GuiTextBox(
-      Rectangle$.$1.set(50, 300, 700, 40),
+      Rectangle$.val.$1.set(50, 300, 700, 40),
       clipboardText, 256, false
     );
     GuiSetStyle(GuiControl.TEXTBOX.value, GuiTextBoxProperty.TEXT_READONLY.value, 0);
     GuiLabel(
-      Rectangle$.$1.set(50, 360, 700, 40),
+      Rectangle$.val.$1.set(50, 360, 700, 40),
       "Try copying text from other applications and pasting here!".toC,
     );
     GuiSetState(GuiState.STATE_NORMAL.value);

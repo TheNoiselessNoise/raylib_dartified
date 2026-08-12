@@ -43,7 +43,7 @@ void main()
         DrawTextEx(
           fontBm,
           msg.toC,
-          Vector2$.$1.set(20.0, 100.0),
+          Vector2$.val.$1.set(20.0, 100.0),
           fontBm.baseSize.toDouble(), 2, MAROON
         );
 
@@ -57,7 +57,7 @@ void main()
         DrawTextEx(
           fontTtf,
           msg.toC,
-          Vector2$.$1.set(20.0, 100.0),
+          Vector2$.val.$1.set(20.0, 100.0),
           fontTtf.baseSize.toDouble(), 2, LIME
         );
         

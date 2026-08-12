@@ -33,18 +33,18 @@ void main()
 
   void updateShaderOutlineSize() {
     SetShaderValue(shdrOutline, outlineSizeLoc,
-      Float32$.Value(outlineSize).cast(),
+      Float32$.val.Value(outlineSize).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value,
     );
   } updateShaderOutlineSize();
 
   SetShaderValue(shdrOutline, outlineColorLoc,
-    Float32$.Array(outlineColor).cast(),
+    Float32$.val.Array(outlineColor).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC4.value,
   );
 
   SetShaderValue(shdrOutline, textureSizeLoc,
-    Float32$.Array(textureSize).cast(),
+    Float32$.val.Array(textureSize).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value,
   );
 

@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_directional_billboard".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2.0, 1.0, 2.0);
   camera.ref.target.set(0.0, 0.5, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -61,11 +61,11 @@ void main()
         DrawBillboardPro(
           camera.ref,
           skillbot,
-          Rectangle$.$1.set(0.0 + (anim*24.0), 0.0 + (dir*24.0), 24.0, 24.0),
-          Vector3$.$zero,
-          Vector3$.$1.set(0.0, 1.0, 0.0),
-          Vector2$.$1.set(1, 1),
-          Vector2$.$2.set(0.5, 0.0),
+          Rectangle$.val.$1.set(0.0 + (anim*24.0), 0.0 + (dir*24.0), 24.0, 24.0),
+          Vector3$.val.$zero,
+          Vector3$.val.$1.set(0.0, 1.0, 0.0),
+          Vector2$.val.$1.set(1, 1),
+          Vector2$.val.$2.set(0.5, 0.0),
           0,
           WHITE
         );

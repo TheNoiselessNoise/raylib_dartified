@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_orthographic_projection".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(0, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -45,19 +45,19 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawCube(Vector3$.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, RED);
-        DrawCubeWires(Vector3$.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, GOLD);
-        DrawCubeWires(Vector3$.$1.set(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, MAROON);
+        DrawCube(Vector3$.val.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, RED);
+        DrawCubeWires(Vector3$.val.$1.set(-4.0, 0.0, 2.0), 2.0, 5.0, 2.0, GOLD);
+        DrawCubeWires(Vector3$.val.$1.set(-4.0, 0.0, -2.0), 3.0, 6.0, 2.0, MAROON);
 
-        DrawSphere(Vector3$.$1.set(-1.0, 0.0, -2.0), 1.0, GREEN);
-        DrawSphereWires(Vector3$.$1.set(1.0, 0.0, 2.0), 2.0, 16, 16, LIME);
+        DrawSphere(Vector3$.val.$1.set(-1.0, 0.0, -2.0), 1.0, GREEN);
+        DrawSphereWires(Vector3$.val.$1.set(1.0, 0.0, 2.0), 2.0, 16, 16, LIME);
 
-        DrawCylinder(Vector3$.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, SKYBLUE);
-        DrawCylinderWires(Vector3$.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, DARKBLUE);
-        DrawCylinderWires(Vector3$.$1.set(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, BROWN);
+        DrawCylinder(Vector3$.val.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, SKYBLUE);
+        DrawCylinderWires(Vector3$.val.$1.set(4.0, 0.0, -2.0), 1.0, 2.0, 3.0, 4, DARKBLUE);
+        DrawCylinderWires(Vector3$.val.$1.set(4.5, -1.0, 2.0), 1.0, 1.0, 2.0, 6, BROWN);
 
-        DrawCylinder(Vector3$.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, GOLD);
-        DrawCylinderWires(Vector3$.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, PINK);
+        DrawCylinder(Vector3$.val.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, GOLD);
+        DrawCylinderWires(Vector3$.val.$1.set(1.0, 0.0, -4.0), 0.0, 1.5, 3.0, 8, PINK);
 
         DrawGrid(10, 1.0);
 

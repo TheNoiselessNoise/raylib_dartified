@@ -15,8 +15,8 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_rectangle_scaling".toC);
   SetTargetFPS(60);
 
-  final rec = Rectangle$.At('rec').set(100, 100, 200, 80);
-  final mousePosition = Vector2$.At('mousePosition');
+  final rec = Rectangle$.val.At('rec').set(100, 100, 200, 80);
+  final mousePosition = Vector2$.val.At('mousePosition');
 
   bool mouseScaleReady = false;
   bool mouseScaleMode = false;
@@ -27,7 +27,7 @@ void main()
 
     if (CheckCollisionPointRec(
       mousePosition.ref,
-      Rectangle$.$1.set(
+      Rectangle$.val.$1.set(
         rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE,
         rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE,
         MOUSE_SCALE_MARK_SIZE, MOUSE_SCALE_MARK_SIZE
@@ -71,9 +71,9 @@ void main()
       {
         DrawRectangleLinesEx(rec.ref, 1, RED);
         DrawTriangle(
-          Vector2$.$1.set(rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE, rec.ref.y + rec.ref.height),
-          Vector2$.$2.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height),
-          Vector2$.$3.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE),
+          Vector2$.val.$1.set(rec.ref.x + rec.ref.width - MOUSE_SCALE_MARK_SIZE, rec.ref.y + rec.ref.height),
+          Vector2$.val.$2.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height),
+          Vector2$.val.$3.set(rec.ref.x + rec.ref.width, rec.ref.y + rec.ref.height - MOUSE_SCALE_MARK_SIZE),
           RED
         );
       }

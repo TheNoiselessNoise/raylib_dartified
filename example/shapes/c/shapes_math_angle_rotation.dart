@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_math_angle_rotation".toC);
   SetTargetFPS(60);
 
-  final center = Vector2$.$1.set(screenWidth/2.0, screenHeight/2.0);
+  final center = Vector2$.val.$1.set(screenWidth/2.0, screenHeight/2.0);
   const double lineLength = 150.0;
 
   List<int> angles = [ 0, 30, 60, 90 ];
@@ -33,7 +33,7 @@ void main()
       for (int i = 0; i < angles.length; i++)
       {
         final rad = angles[i]*rl.DEG2RAD;
-        final end = Vector2$.$2.set(
+        final end = Vector2$.val.$2.set(
           center.x + math.cos(rad)*lineLength,
           center.y + math.sin(rad)*lineLength
         );
@@ -48,7 +48,7 @@ void main()
 
         DrawLineEx(center, end, 5.0, col);
 
-        final textPos = Vector2$.$3.set(
+        final textPos = Vector2$.val.$3.set(
           center.x + math.cos(rad)*(lineLength + 20),
           center.y + math.sin(rad)*(lineLength + 20)
         );
@@ -56,7 +56,7 @@ void main()
       }
 
       final animRad = totalAngle*rl.DEG2RAD;
-      final animEnd = Vector2$.$2.set(
+      final animEnd = Vector2$.val.$2.set(
         center.x + math.cos(animRad)*lineLength,
         center.y + math.sin(animRad)*lineLength
       );

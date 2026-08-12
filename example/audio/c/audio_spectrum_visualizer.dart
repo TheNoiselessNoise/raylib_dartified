@@ -64,20 +64,20 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  renderFrameVec4 = Vector4$.At('renderFrame')
+  renderFrameVec4 = Vector4$.val.At('renderFrame')
     .set(UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL, UNUSED_CHANNEL);
 
   InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer".toC);
   SetTargetFPS(60);
 
-  final textureSource = Rectangle$.At('textureSource');
-  final texturePosition = Vector2$.At('texturePosition');
+  final textureSource = Rectangle$.val.At('textureSource');
+  final texturePosition = Vector2$.val.At('texturePosition');
 
-  final fftImagePtr = Image$.At('fftImage');
+  final fftImagePtr = Image$.val.At('fftImage');
   fftImagePtr.ref = GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, WHITE);
   final fftTexture = LoadTextureFromImage(fftImagePtr.ref);
   final bufferA = LoadRenderTexture(screenWidth, screenHeight);
-  final iResolution = Vector2$.At('iResolution').set(screenWidth, screenHeight);
+  final iResolution = Vector2$.val.At('iResolution').set(screenWidth, screenHeight);
 
   final shader = LoadShader(
     nullptr,
@@ -101,7 +101,7 @@ void main()
   InitAudioDevice();
   SetAudioStreamBufferSizeDefault(AUDIO_STREAM_RING_BUFFER_SIZE);
 
-  final wavePtr = Wave$.At('wavePtr');
+  final wavePtr = Wave$.val.At('wavePtr');
   wavePtr.ref = LoadWave("../resources/country.mp3".toC);
   WaveFormat(wavePtr, SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
 
@@ -124,8 +124,8 @@ void main()
   int wavCursor = 0;
   final wavPCM16 = wavePtr.ref.data.cast<Short>();
 
-  final chunkSamples = Int16$.At('chunkSamples', AUDIO_STREAM_RING_BUFFER_SIZE);
-  final audioSamples = Float32$.At('audioSamples', FFT_WINDOW_SIZE);
+  final chunkSamples = Int16$.val.At('chunkSamples', AUDIO_STREAM_RING_BUFFER_SIZE);
+  final audioSamples = Float32$.val.At('audioSamples', FFT_WINDOW_SIZE);
 
   while (!WindowShouldClose())
   {

@@ -60,8 +60,8 @@ void main() {
       DrawRectangle(GetScreenWidth() - 30, GetScreenHeight() - 60, 30, 60, BLUE);
 
       DrawCircleV(GetMousePosition(), 20, MAROON);
-      DrawRectangleRec(Rectangle$.$1.set(mousePos.x - 25, mousePos.y, 50, 2), BLACK);
-      DrawRectangleRec(Rectangle$.$1.set(mousePos.x, mousePos.y - 25, 2, 50), BLACK);
+      DrawRectangleRec(Rectangle$.val.$1.set(mousePos.x - 25, mousePos.y, 50, 2), BLACK);
+      DrawRectangleRec(Rectangle$.val.$1.set(mousePos.x, mousePos.y - 25, 2, 50), BLACK);
       DrawText(
         "[${GetMouseX()},${GetMouseY()}]".toC,
         (mousePos.x - 44).toInt(), ((mousePos.y > GetScreenHeight() - 60) ? mousePos.y - 46 : mousePos.y + 30).toInt(), 20, BLACK

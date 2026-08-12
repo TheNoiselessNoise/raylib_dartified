@@ -7,7 +7,7 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final rect = Rectangle$.At('rect');
+  final rect = Rectangle$.val.At('rect');
 
   InitWindow(400, 200, "basic_example".toC);
   SetTargetFPS(60);

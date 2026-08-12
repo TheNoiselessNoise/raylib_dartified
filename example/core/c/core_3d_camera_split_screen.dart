@@ -13,7 +13,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_3d_camera_split_screen".toC);
   SetTargetFPS(60);
 
-  final cameraPlayer1 = Camera3D$.At('cameraPlayer1');
+  final cameraPlayer1 = Camera3D$.val.At('cameraPlayer1');
   cameraPlayer1.ref.fovy = 45.0;
   cameraPlayer1.ref.up.y = 1.0;
   cameraPlayer1.ref.target.y = 1.0;
@@ -22,7 +22,7 @@ void main() {
 
   final screenPlayer1 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final cameraPlayer2 = Camera3D$.At('cameraPlayer2');
+  final cameraPlayer2 = Camera3D$.val.At('cameraPlayer2');
   cameraPlayer2.ref.fovy = 45.0;
   cameraPlayer2.ref.up.y = 1.0;
   cameraPlayer2.ref.target.y = 3.0;
@@ -31,7 +31,7 @@ void main() {
 
   final screenPlayer2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final splitScreenRect = Rectangle$.At('splitScreenRect')
+  final splitScreenRect = Rectangle$.val.At('splitScreenRect')
     .set(0.0, 0.0, screenPlayer1.texture.width, -screenPlayer1.texture.height);
   
   int count = 5;
@@ -68,8 +68,8 @@ void main() {
       BeginMode3D(cameraPlayer1.ref);
       
         DrawPlane(
-          Vector3$.$1.set(0, 0, 0),
-          Vector2$.$1.set(50, 50),
+          Vector3$.val.$1.set(0, 0, 0),
+          Vector2$.val.$1.set(50, 50),
           BEIGE
         );
 
@@ -77,8 +77,8 @@ void main() {
         {
           for (double z = -count*spacing; z <= count*spacing; z += spacing)
           {
-            DrawCube(Vector3$.$1.set(x, 1.5, z), 1, 1, 1, LIME);
-            DrawCube(Vector3$.$1.set(x, 0.5, z), 0.25, 1, 0.25, BROWN);
+            DrawCube(Vector3$.val.$1.set(x, 1.5, z), 1, 1, 1, LIME);
+            DrawCube(Vector3$.val.$1.set(x, 0.5, z), 0.25, 1, 0.25, BROWN);
           }
         }
 
@@ -98,8 +98,8 @@ void main() {
       BeginMode3D(cameraPlayer2.ref);
 
         DrawPlane(
-          Vector3$.$1.set(0, 0, 0),
-          Vector2$.$1.set(50, 50),
+          Vector3$.val.$1.set(0, 0, 0),
+          Vector2$.val.$1.set(50, 50),
           BEIGE
         );
       
@@ -107,8 +107,8 @@ void main() {
         {
           for (double z = -count*spacing; z <= count*spacing; z += spacing)
           {
-            DrawCube(Vector3$.$1.set(x, 1.5, z), 1, 1, 1, LIME);
-            DrawCube(Vector3$.$1.set(x, 0.5, z), 0.25, 1, 0.25, BROWN);
+            DrawCube(Vector3$.val.$1.set(x, 1.5, z), 1, 1, 1, LIME);
+            DrawCube(Vector3$.val.$1.set(x, 0.5, z), 0.25, 1, 0.25, BROWN);
           }
         }
 
@@ -128,14 +128,14 @@ void main() {
       DrawTextureRec(
         screenPlayer1.texture,
         splitScreenRect.ref,
-        Vector2$.$1.set(0, 0),
+        Vector2$.val.$1.set(0, 0),
         WHITE
       );
 
       DrawTextureRec(
         screenPlayer2.texture,
         splitScreenRect.ref,
-        Vector2$.$1.set(screenWidth/2.0, 0),
+        Vector2$.val.$1.set(screenWidth/2.0, 0),
         WHITE
       );
       

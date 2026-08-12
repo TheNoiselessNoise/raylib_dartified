@@ -37,11 +37,11 @@ void main()
   texRoad = LoadTexture("../resources/road.png".toC);
   SetTextureFilter(texRoad, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  curveStartPosition = Vector2$.At('curveStartPosition').set(80, 100);
-  curveStartPositionTangent = Vector2$.At('curveStartPositionTangent').set(100, 300);
+  curveStartPosition = Vector2$.val.At('curveStartPosition').set(80, 100);
+  curveStartPositionTangent = Vector2$.val.At('curveStartPositionTangent').set(100, 300);
 
-  curveEndPosition = Vector2$.At('curveEndPosition').set(700, 350);
-  curveEndPositionTangent = Vector2$.At('curveEndPositionTangent').set(600, 100);
+  curveEndPosition = Vector2$.val.At('curveEndPosition').set(700, 350);
+  curveEndPositionTangent = Vector2$.val.At('curveEndPositionTangent').set(600, 100);
 
   while (!WindowShouldClose())
   {
@@ -131,13 +131,13 @@ void DrawTexturedCurve()
 {
   final step = 1.0/curveSegments;
 
-  final previous = Vector2$.At('previous').setC(curveStartPosition.ref);
-  final previousTangent = Vector2$.At('previousTangent');
+  final previous = Vector2$.val.At('previous').setC(curveStartPosition.ref);
+  final previousTangent = Vector2$.val.At('previousTangent');
   double previousV = 0;
 
   bool tangentSet = false;
 
-  final current = Vector2$.At('current');
+  final current = Vector2$.val.At('current');
   double t = 0.0;
 
   for (int i = 1; i <= curveSegments; i++)
@@ -152,12 +152,12 @@ void DrawTexturedCurve()
     current.ref.y = a*curveStartPosition.ref.y + b*curveStartPositionTangent.ref.y + c*curveEndPositionTangent.ref.y + d*curveEndPosition.ref.y;
     current.ref.x = a*curveStartPosition.ref.x + b*curveStartPositionTangent.ref.x + c*curveEndPositionTangent.ref.x + d*curveEndPosition.ref.x;
 
-    final delta = Vector2$.At('delta').set(
+    final delta = Vector2$.val.At('delta').set(
       current.ref.x - previous.ref.x,
       current.ref.y - previous.ref.y
     );
 
-    final normal = Vector2$.At('normal').setD(
+    final normal = Vector2$.val.At('normal').setD(
       .vec2(-delta.ref.y, delta.ref.x).normalize()
     );
 

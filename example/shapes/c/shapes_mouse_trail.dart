@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_mouse_trail".toC);
   SetTargetFPS(60);
 
-  final trailPositions = Vector2$.AtUnique(count: MAX_TRAIL_LENGTH);
+  final trailPositions = Vector2$.val.AtUnique(count: MAX_TRAIL_LENGTH);
 
   while (!WindowShouldClose())
   {

@@ -44,9 +44,9 @@ void main()
 
       if (IsImageValid(image))
       {
-        final texture = Texture$.AtUnique();
+        final texture = Texture$.val.AtUnique();
         texture.ref = LoadTextureFromImage(image);
-        final position = Vector2$.AtUnique();
+        final position = Vector2$.val.AtUnique();
         position.setC(GetMousePosition());
         collection.add(.new(texture, position));
         currentCollectionIndex++;
@@ -67,9 +67,9 @@ void main()
         if (IsTextureValid(collection[i].texture.ref))
         {
           DrawTexturePro(collection[i].texture.ref,
-            Rectangle$.$1.set(0,0,collection[i].texture.ref.width, collection[i].texture.ref.height),
-            Rectangle$.$2.set(collection[i].position.ref.x,collection[i].position.ref.y,collection[i].texture.ref.width, collection[i].texture.ref.height),
-            Vector2$.$1.set(collection[i].texture.ref.width*0.5, collection[i].texture.ref.height*0.5),
+            Rectangle$.val.$1.set(0,0,collection[i].texture.ref.width, collection[i].texture.ref.height),
+            Rectangle$.val.$2.set(collection[i].position.ref.x,collection[i].position.ref.y,collection[i].texture.ref.width, collection[i].texture.ref.height),
+            Vector2$.val.$1.set(collection[i].texture.ref.width*0.5, collection[i].texture.ref.height*0.5),
             0.0,
             WHITE
           );

@@ -175,11 +175,11 @@ class ModelD extends StructD<ModelC, ModelD> with ModelBase<
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ModelC> p, String key) {
-    p.ref.meshes = temp.Mesh$.Array(meshes, key: '${key}_meshes');
-    p.ref.materials = temp.Material$.Array(materials, key: '${key}_materials');
-    p.ref.meshMaterial = temp.Int$.Array(meshMaterial, key: '${key}_meshMaterial');
-    p.ref.currentPose = temp.Transform$.Array(currentPose, key: '${key}_currentPose');
-    p.ref.boneMatrices = temp.Matrix$.Array(boneMatrices, key: '${key}_boneMatrices');
+    p.ref.meshes = temp.Mesh$.val.Array(meshes, key: '${key}_meshes');
+    p.ref.materials = temp.Material$.val.Array(materials, key: '${key}_materials');
+    p.ref.meshMaterial = temp.Int$.val.Array(meshMaterial, key: '${key}_meshMaterial');
+    p.ref.currentPose = temp.Transform$.val.Array(currentPose, key: '${key}_currentPose');
+    p.ref.boneMatrices = temp.Matrix$.val.Array(boneMatrices, key: '${key}_boneMatrices');
   }
 
   @override

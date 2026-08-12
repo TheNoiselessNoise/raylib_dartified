@@ -22,13 +22,13 @@ void main()
   const double clockFaceSpacing = 8.0;
   const double sectionSpacing = 16.0;
 
-  final TL = Vector2$.At('TL').set(  0.0,  90.0); // Top-left corner
-  final TR = Vector2$.At('TR').set( 90.0, 180.0); // Top-right corner
-  final BR = Vector2$.At('BR').set(180.0, 270.0); // Bottom-right corner
-  final BL = Vector2$.At('BL').set(  0.0, 270.0); // Bottom-left corner
-  final HH = Vector2$.At('HH').set(  0.0, 180.0); // Horizontal line
-  final VV = Vector2$.At('VV').set( 90.0, 270.0); // Vertical line
-  final ZZ = Vector2$.At('ZZ').set(135.0, 135.0); // Not relevant
+  final TL = Vector2$.val.At('TL').set(  0.0,  90.0); // Top-left corner
+  final TR = Vector2$.val.At('TR').set( 90.0, 180.0); // Top-right corner
+  final BR = Vector2$.val.At('BR').set(180.0, 270.0); // Bottom-right corner
+  final BL = Vector2$.val.At('BL').set(  0.0, 270.0); // Bottom-left corner
+  final HH = Vector2$.val.At('HH').set(  0.0, 180.0); // Horizontal line
+  final VV = Vector2$.val.At('VV').set( 90.0, 270.0); // Vertical line
+  final ZZ = Vector2$.val.At('ZZ').set(135.0, 135.0); // Not relevant
 
   List<List<Pointer<Vector2C>>> digitAngles = [ // [10][24]
     /* 0 */ [ TL,HH,HH,TR, /* */ VV,TL,TR,VV,/* */ VV,VV,VV,VV,/* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
@@ -47,13 +47,13 @@ void main()
 
   int prevSeconds = -1;
   
-  final currentAngles = Vector2$.AtUnique(count: 6*24); // [6][24]
+  final currentAngles = Vector2$.val.AtUnique(count: 6*24); // [6][24]
   Pointer<Vector2C> currentAngleAt(int i, int j) => currentAngles + (i * 24 + j);
 
-  final srcAngles = Vector2$.AtUnique(count: 6*24); // [6][24]
+  final srcAngles = Vector2$.val.AtUnique(count: 6*24); // [6][24]
   Pointer<Vector2C> srcAngleAt(int i, int j) => srcAngles + (i * 24 + j);
 
-  final dstAngles = Vector2$.AtUnique(count: 6*24); // [6][24]
+  final dstAngles = Vector2$.val.AtUnique(count: 6*24); // [6][24]
   Pointer<Vector2C> dstAngleAt(int i, int j) => dstAngles + (i * 24 + j);
 
   double handsMoveTimer = 0.0;
@@ -119,7 +119,7 @@ void main()
         {
           for (int col = 0; col < 4; col++)
           {
-            final centre = Vector2$.$1.set(
+            final centre = Vector2$.val.$1.set(
               xOffset + col*(clockFaceSize+clockFaceSpacing) + clockFaceSize*0.5,
               100 + row*(clockFaceSize+clockFaceSpacing) + clockFaceSize*0.5
             );
@@ -128,16 +128,16 @@ void main()
 
             // Big hand
             DrawRectanglePro(
-              Rectangle$.$1.set(centre.x, centre.y, clockFaceSize*0.5+4.0, 4.0),
-              Vector2$.$2.set(2.0, 2.0),
+              Rectangle$.val.$1.set(centre.x, centre.y, clockFaceSize*0.5+4.0, 4.0),
+              Vector2$.val.$2.set(2.0, 2.0),
               currentAngleAt(digit, row*4+col).ref.x,
               handsColor
             );
 
             // Little hand
             DrawRectanglePro(
-              Rectangle$.$1.set(centre.x, centre.y, clockFaceSize*0.5+2.0, 4.0),
-              Vector2$.$2.set(2.0, 2.0),
+              Rectangle$.val.$1.set(centre.x, centre.y, clockFaceSize*0.5+2.0, 4.0),
+              Vector2$.val.$2.set(2.0, 2.0),
               currentAngleAt(digit, row*4+col).ref.y,
               handsColor
             );
@@ -147,8 +147,8 @@ void main()
         xOffset += (clockFaceSize+clockFaceSpacing)*4;
         if (digit%2 == 1)
         {
-          DrawRing(Vector2$.$2.set(xOffset + 4.0, 160.0), 6.0, 8.0, 0.0, 360.0, 24, handsColor);
-          DrawRing(Vector2$.$2.set(xOffset + 4.0, 225.0), 6.0, 8.0, 0.0, 360.0, 24, handsColor);
+          DrawRing(Vector2$.val.$2.set(xOffset + 4.0, 160.0), 6.0, 8.0, 0.0, 360.0, 24, handsColor);
+          DrawRing(Vector2$.val.$2.set(xOffset + 4.0, 225.0), 6.0, 8.0, 0.0, 360.0, 24, handsColor);
           xOffset += sectionSpacing;
         }
       }

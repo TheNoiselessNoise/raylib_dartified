@@ -65,7 +65,7 @@ void main() {
       for (int i = cellSize; i < GetRenderWidth(); i += cellSize, odd = !odd)
       {
         int x = i~/dpiScale.x;
-        if (odd) DrawRectangle(x, pixelGridTop, cellSizePx.toInt(), pixelGridBottom - pixelGridTop, Color$.$1.set(0, 121, 241, 100));
+        if (odd) DrawRectangle(x, pixelGridTop, cellSizePx.toInt(), pixelGridBottom - pixelGridTop, Color$.val.$1.set(0, 121, 241, 100));
 
         DrawLine(x, pixelGridTop, x, pixelGridLabelY - 10, GRAY);
 
@@ -80,7 +80,7 @@ void main() {
 
       final text = "Can you see this?".toC;
       final size = MeasureTextEx(GetFontDefault(), text, 20, 3);
-      final pos = Vector2$.$1.set(GetScreenWidth() - size.x - 5, GetScreenHeight() - size.y - 5);
+      final pos = Vector2$.val.$1.set(GetScreenWidth() - size.x - 5, GetScreenHeight() - size.y - 5);
       DrawTextEx(GetFontDefault(), text, pos, 20, 3, LIGHTGRAY);
 
     EndDrawing();
@@ -92,6 +92,6 @@ void main() {
 void DrawTextCenter(Pointer<Char> text, int x, int y, int fontSize, ColorC color)
 {
   final size = MeasureTextEx(GetFontDefault(), text, fontSize.toDouble(), 3);
-  final pos = Vector2$.$1.set(x - size.x/2, y - size.y/2);
+  final pos = Vector2$.val.$1.set(x - size.x/2, y - size.y/2);
   DrawTextEx(GetFontDefault(), text, pos, fontSize.toDouble(), 3, color);
 }

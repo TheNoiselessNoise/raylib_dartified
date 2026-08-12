@@ -15,22 +15,22 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_image_kernel".toC);
   SetTargetFPS(60);
 
-  final image = Image$.At('image');
+  final image = Image$.val.At('image');
   image.ref = LoadImage("../resources/cat.png".toC);
 
-  final gaussiankernel = Float32$.Array(key: 'gaussiankernel', [
+  final gaussiankernel = Float32$.val.Array(key: 'gaussiankernel', [
     1.0, 2.0, 1.0,
     2.0, 4.0, 2.0,
     1.0, 2.0, 1.0
   ]);
 
-  final sobelkernel = Float32$.Array(key: 'sobelkernel', [
+  final sobelkernel = Float32$.val.Array(key: 'sobelkernel', [
     1.0, 0.0, -1.0,
     2.0, 0.0, -2.0,
     1.0, 0.0, -1.0
   ]);
 
-  final sharpenkernel = Float32$.Array(key: 'sharpenkernel', [
+  final sharpenkernel = Float32$.val.Array(key: 'sharpenkernel', [
     0.0, -1.0, 0.0,
     -1.0, 5.0, -1.0,
     0.0, -1.0, 0.0
@@ -40,25 +40,25 @@ void main()
   NormalizeKernel(sharpenkernel, 9);
   NormalizeKernel(sobelkernel, 9);
 
-  final catSharpend = Image$.At('catSharpend');
+  final catSharpend = Image$.val.At('catSharpend');
   catSharpend.ref = ImageCopy(image.ref);
   ImageKernelConvolution(catSharpend, sharpenkernel, 9);
 
-  final catSobel = Image$.At('catSobel');
+  final catSobel = Image$.val.At('catSobel');
   catSobel.ref = ImageCopy(image.ref);
   ImageKernelConvolution(catSobel, sobelkernel, 9);
 
-  final catGaussian = Image$.At('catGaussian');
+  final catGaussian = Image$.val.At('catGaussian');
   catGaussian.ref = ImageCopy(image.ref);
   
   for (int i = 0; i < 6; i++) {
     ImageKernelConvolution(catGaussian, gaussiankernel, 9);
   }
 
-  ImageCrop(image, Rectangle$.$1.set(0, 0, 200, 450));
-  ImageCrop(catGaussian, Rectangle$.$1.set(0, 0, 200, 450));
-  ImageCrop(catSobel, Rectangle$.$1.set(0, 0, 200, 450));
-  ImageCrop(catSharpend, Rectangle$.$1.set(0, 0, 200, 450));
+  ImageCrop(image, Rectangle$.val.$1.set(0, 0, 200, 450));
+  ImageCrop(catGaussian, Rectangle$.val.$1.set(0, 0, 200, 450));
+  ImageCrop(catSobel, Rectangle$.val.$1.set(0, 0, 200, 450));
+  ImageCrop(catSharpend, Rectangle$.val.$1.set(0, 0, 200, 450));
   
   final texture = LoadTextureFromImage(image.ref);
   final catSharpendTexture = LoadTextureFromImage(catSharpend.ref);

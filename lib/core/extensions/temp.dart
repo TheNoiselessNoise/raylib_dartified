@@ -1,5 +1,119 @@
 part of '../raylib_dartified.dart';
 
+class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
+  final Pointer<Void> _ptr;
+
+  NativeMemoryPointer(this._ptr);
+
+  /* --- NATIVE SPECIFIC --- */
+
+  Pointer<R> asPointer<R extends NativeType>() => _ptr.cast<R>();
+
+  /* --- --------------- --- */
+
+  @override
+  NativeMemoryPointer<Y> cast<Y extends RType>() => .new(_ptr);
+
+  @override
+  bool get isNull => _ptr == nullptr;
+
+  @override
+  void free() { if (!isNull) malloc.free(_ptr); }
+
+  @override
+  int get address => _ptr.address;
+
+  @override
+  T to<T extends TypedDataList>(int length) {
+    return switch (T) {
+      const (Uint8List) => Uint8List.fromList(_ptr.cast<Uint8>().asTypedList(length)) as T,
+      const (Int8List) => Int8List.fromList(_ptr.cast<Int8>().asTypedList(length)) as T,
+      const (Uint16List) => Uint16List.fromList(_ptr.cast<Uint16>().asTypedList(length)) as T,
+      const (Int16List) => Int16List.fromList(_ptr.cast<Int16>().asTypedList(length)) as T,
+      const (Uint32List) => Uint32List.fromList(_ptr.cast<Uint32>().asTypedList(length)) as T,
+      const (Int32List) => Int32List.fromList(_ptr.cast<Int32>().asTypedList(length)) as T,
+      const (Uint64List) => Uint64List.fromList(_ptr.cast<Uint64>().asTypedList(length)) as T,
+      const (Int64List) => Int64List.fromList(_ptr.cast<Int64>().asTypedList(length)) as T,
+      const (Float32List) => Float32List.fromList(_ptr.cast<Float>().asTypedList(length)) as T,
+      const (Float64List) => Float64List.fromList(_ptr.cast<Double>().asTypedList(length)) as T,
+      _ => throw UnsupportedError('NativeMemoryPointer.to<$T> not implemented'),
+    };
+  }
+
+  @override
+  T asView<T extends TypedDataList>(int length) {
+    return switch (T) {
+      const (Uint8List) => _ptr.cast<Uint8>().asTypedList(length) as T,
+      const (Int8List) => _ptr.cast<Int8>().asTypedList(length) as T,
+      const (Uint16List) => _ptr.cast<Uint16>().asTypedList(length) as T,
+      const (Int16List) => _ptr.cast<Int16>().asTypedList(length) as T,
+      const (Uint32List) => _ptr.cast<Uint32>().asTypedList(length) as T,
+      const (Int32List) => _ptr.cast<Int32>().asTypedList(length) as T,
+      const (Uint64List) => _ptr.cast<Uint64>().asTypedList(length) as T,
+      const (Int64List) => _ptr.cast<Int64>().asTypedList(length) as T,
+      const (Float32List) => _ptr.cast<Float>().asTypedList(length) as T,
+      const (Float64List) => _ptr.cast<Double>().asTypedList(length) as T,
+      _ => throw UnsupportedError('NativeMemoryPointer.asView<$T> not implemented'),
+    };
+  }
+
+  @override
+  String toDartString() => _ptr.cast<Utf8>().toDartString();
+
+  @override
+  String toDartStringBounded(int maxLength) => _ptr.cast<Utf8>().toDartString(length: maxLength);
+
+  Pointer<T> _at<T extends NativeType>(int byteOffset) => (_ptr.cast<Uint8>() + byteOffset).cast<T>();
+
+  @override
+  MemoryPointer<Y> readPointer<Y extends RType>([int byteOffset = 0])
+    => NativeMemoryPointer<Y>(.fromAddress(address + byteOffset));
+
+  @override
+  void writePointer(MemoryPointer<RType> value, [int byteOffset = 0])
+    => Pointer<IntPtr>.fromAddress(address + byteOffset).value = value.address;
+
+  @override bool         readBool([int byteOffset = 0]) => _at<Bool>(byteOffset).value;
+  @override int          readInt8([int byteOffset = 0]) => _at<Int8>(byteOffset).value;
+  @override int         readUint8([int byteOffset = 0]) => _at<Uint8>(byteOffset).value;
+  @override int         readInt16([int byteOffset = 0]) => _at<Int16>(byteOffset).value;
+  @override int        readUint16([int byteOffset = 0]) => _at<Uint16>(byteOffset).value;
+  @override int         readInt32([int byteOffset = 0]) => _at<Int32>(byteOffset).value;
+  @override int        readUint32([int byteOffset = 0]) => _at<Uint32>(byteOffset).value;
+  @override int         readInt64([int byteOffset = 0]) => _at<Int64>(byteOffset).value;
+  @override int        readUint64([int byteOffset = 0]) => _at<Uint64>(byteOffset).value;
+  @override double    readFloat32([int byteOffset = 0]) => _at<Float>(byteOffset).value;
+  @override double    readFloat64([int byteOffset = 0]) => _at<Double>(byteOffset).value;
+  @override int          readChar([int byteOffset = 0]) => _at<Char>(byteOffset).value;
+  @override int  readUnsignedChar([int byteOffset = 0]) => _at<UnsignedChar>(byteOffset).value;
+  @override int         readShort([int byteOffset = 0]) => _at<Short>(byteOffset).value;
+  @override int readUnsignedShort([int byteOffset = 0]) => _at<UnsignedShort>(byteOffset).value;
+  @override int           readInt([int byteOffset = 0]) => _at<Int>(byteOffset).value;
+  @override int   readUnsignedInt([int byteOffset = 0]) => _at<UnsignedInt>(byteOffset).value;
+  @override double      readFloat([int byteOffset = 0]) => _at<Float>(byteOffset).value;
+  @override double     readDouble([int byteOffset = 0]) => _at<Double>(byteOffset).value;
+
+  @override void          writeBool(bool value,   [int byteOffset = 0]) => _at<Bool>(byteOffset).value = value;
+  @override void          writeInt8(int value,    [int byteOffset = 0]) => _at<Int8>(byteOffset).value = value;
+  @override void         writeUint8(int value,    [int byteOffset = 0]) => _at<Uint8>(byteOffset).value = value;
+  @override void         writeInt16(int value,    [int byteOffset = 0]) => _at<Int16>(byteOffset).value = value;
+  @override void        writeUint16(int value,    [int byteOffset = 0]) => _at<Uint16>(byteOffset).value = value;
+  @override void         writeInt32(int value,    [int byteOffset = 0]) => _at<Int32>(byteOffset).value = value;
+  @override void        writeUint32(int value,    [int byteOffset = 0]) => _at<Uint32>(byteOffset).value = value;
+  @override void         writeInt64(int value,    [int byteOffset = 0]) => _at<Int64>(byteOffset).value = value;
+  @override void        writeUint64(int value,    [int byteOffset = 0]) => _at<Uint64>(byteOffset).value = value;
+  @override void       writeFloat32(double value, [int byteOffset = 0]) => _at<Float>(byteOffset).value = value;
+  @override void       writeFloat64(double value, [int byteOffset = 0]) => _at<Double>(byteOffset).value = value;
+  @override void          writeChar(int value,    [int byteOffset = 0]) => _at<Char>(byteOffset).value = value;
+  @override void  writeUnsignedChar(int value,    [int byteOffset = 0]) => _at<UnsignedChar>(byteOffset).value = value;
+  @override void         writeShort(int value,    [int byteOffset = 0]) => _at<Short>(byteOffset).value = value;
+  @override void writeUnsignedShort(int value,    [int byteOffset = 0]) => _at<UnsignedShort>(byteOffset).value = value;
+  @override void           writeInt(int value,    [int byteOffset = 0]) => _at<Int>(byteOffset).value = value;
+  @override void   writeUnsignedInt(int value,    [int byteOffset = 0]) => _at<UnsignedInt>(byteOffset).value = value;
+  @override void         writeFloat(double value, [int byteOffset = 0]) => _at<Float>(byteOffset).value = value;
+  @override void        writeDouble(double value, [int byteOffset = 0]) => _at<Double>(byteOffset).value = value;
+}
+
 /// A slot-based temporary memory allocator for a single native type [C].
 ///
 /// Manages a named collection of `Pointer<C>` slots identified by string keys.
@@ -12,16 +126,15 @@ abstract class NativeAlloc<
 > extends RaylibTempAllocatorBase<
   RaylibTemp, Pointer<C>, Pointer<C>
 > {
-  NativeAlloc(super.temp, super.name, {
+  NativeAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
   }) : super(
     freeFunc: (ptr) => calloc.free(ptr),
     nullptrFactory: () => nullptr,
     pointerFactory: (ptr) => ptr,
     pointerToSource: (ptr) => ptr,
     isPointerNull: (ptr) => ptr == nullptr || ptr.address == 0,
+    allocatorFunc: ([count = 1]) => calloc.allocate(byteSize * count),
   );
 }
 
@@ -44,10 +157,8 @@ class NativeLitAlloc<
   @override
   void Function(Pointer<C> ptr, int i, X value) indexSetterFunc;
 
-  NativeLitAlloc(super.temp, super.name, {
+  NativeLitAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
     required this.literalSetterFunc,
     required this.indexSetterFunc,
   });
@@ -124,10 +235,8 @@ abstract class NativeLitTypedListAlloc<
   @override
   final L Function(ByteBuffer buffer, int offsetInBytes, int length) fromBuffer;
 
-  NativeLitTypedListAlloc(super.temp, super.name, {
+  NativeLitTypedListAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
     required this.fromList,
@@ -150,10 +259,8 @@ class NativeLitIntAlloc<
 > with RaylibTempLiteralIntAllocatorBase<
   RaylibTemp, L, Pointer<C>, Pointer<C>
 > {
-  NativeLitIntAlloc(super.temp, super.name, {
+  NativeLitIntAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
     required super.fromList,
@@ -170,10 +277,8 @@ class NativeLitFloatAlloc<
 > with RaylibTempLiteralFloatAllocatorBase<
   RaylibTemp, L, Pointer<C>, Pointer<C>
 > {
-  NativeLitFloatAlloc(super.temp, super.name, {
+  NativeLitFloatAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
     required super.literalSetterFunc,
     required super.indexSetterFunc,
     required super.fromList,
@@ -200,13 +305,9 @@ class NativeLitPtrAlloc<
   @override
   late final Function(Pointer<Pointer<C>> ptrptr, int i, Pointer<C> ptr) indexSetterFunc;
 
-  NativeLitPtrAlloc(super.temp, super.name, {
-    required super.allocatorFunc,
+  NativeLitPtrAlloc(super.temp, {
     required this.rawArrayFunc,
-  }) : super(
-    byteSize: sizeOf<Pointer>(),
-    printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<$C>> at this level',
-  ) {
+  }) : super(byteSize: sizeOf<Pointer>()) {
     indexSetterFunc = (ptrptr, i, ptr) => ptrptr[i] = ptr;
   }
 }
@@ -251,10 +352,8 @@ class NativeStructAlloc<
   @override
   final void Function(Pointer<C> ptr, D source) updateFunc;
 
-  NativeStructAlloc(super.temp, super.name, {
+  NativeStructAlloc(super.temp, {
     required super.byteSize,
-    required super.allocatorFunc,
-    required super.printerFunc,
     required this.refFunc,
     required this.setRefFunc,
     required this.setCFunc,
@@ -348,14 +447,10 @@ class NativeStructPtrAlloc<
   @override
   late final void Function(Pointer<Pointer<C>> ptr, int i, Pointer<C> value) indexSetterFunc;
 
-  NativeStructPtrAlloc(super.temp, super.name, {
-    required super.allocatorFunc,
+  NativeStructPtrAlloc(super.temp, {
     required this.valueFunc,
     required this.rawArrayFunc,
-  }) : super(
-    byteSize: sizeOf<Pointer>(),
-    printerFunc: (ptr) => 'We can\'t print Pointer<Pointer<$C>> at this level',
-  ) {
+  }) : super(byteSize: sizeOf<Pointer>()) {
     indexSetterFunc = (ptr, i, value) => ptr[i] = value;
   }
 }
@@ -393,13 +488,9 @@ final class NativeStringAlloc extends NativeAlloc<Char> with RaylibTempStringAll
   @override
   late final void Function(Pointer<Pointer<Char>> ptrptr, int i, Pointer<Char> ptr) indexSetterFunc;
 
-  NativeStringAlloc(super.temp, super.name, {
+  NativeStringAlloc(super.temp, {
     required this.slotCount,
-    required super.allocatorFunc,
-  }) : super(
-    byteSize: sizeOf<Uint8>(),
-    printerFunc: (ptr) => ptr.toD,
-  ) {
+  }) : super(byteSize: sizeOf<Uint8>()) {
     reset();
     freePPFunc = (ptr) => calloc.free(ptr);
     strAllocatorFunc = (text, [bufferSize]) {
@@ -578,8 +669,61 @@ class NativeRaylibTempUtils extends RaylibTempUtilsBase<RaylibTemp, Pointer<Void
       if (n[j] == 0) return (h + i).cast<Void>();
     }
 
-    return .fromAddress(0); // not found -> nullptr
+    return nullptr;
   }
+}
+
+class NativeLitAllocators<
+  X, C extends NativeType
+> extends RaylibTempLitAllocators<
+  NativeLitAlloc<X, C>, NativeLitPtrAlloc<X, C>
+> {
+  NativeLitAllocators(NativeLitAlloc<X, C> val) : super(
+    val: val,
+    ptr: .new(val.temp,
+      rawArrayFunc: val.RawArray,
+    ),
+  );
+}
+
+class NativeLitIntAllocators<
+  C extends NativeType, L extends TypedDataList
+> extends RaylibTempLitIntAllocators<
+  NativeLitIntAlloc<C, L>, NativeLitPtrAlloc<int, C>
+> {
+  NativeLitIntAllocators(NativeLitIntAlloc<C, L> val) : super(
+    val: val,
+    ptr: .new(val.temp,
+      rawArrayFunc: val.RawArray,
+    ),
+  );
+}
+
+class NativeLitFloatAllocators<
+  C extends NativeType, L extends TypedDataList
+> extends RaylibTempLitFloatAllocators<
+  NativeLitFloatAlloc<C, L>, NativeLitPtrAlloc<double, C>
+> {
+  NativeLitFloatAllocators(NativeLitFloatAlloc<C, L> val) : super(
+    val: val,
+    ptr: .new(val.temp,
+      rawArrayFunc: val.RawArray,
+    ),
+  );
+}
+
+class NativeStructAllocators<
+  C extends Struct, D extends StructD<C, D>
+> extends RaylibTempStructAllocators<
+  NativeStructAlloc<C, D>, NativeStructPtrAlloc<C, D>
+> {
+  NativeStructAllocators(NativeStructAlloc<C, D> val) : super(
+    val: val,
+    ptr: .new(val.temp,
+      valueFunc: val.Value,
+      rawArrayFunc: val.RawArray,
+    ),
+  );
 }
 
 class RaylibTemp extends RaylibTempBase<Raylib> {
@@ -587,151 +731,90 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
   
   @override late NativeRaylibTempUtils Utils;
 
+  // special
   @override late NativeTypedDataListAlloc TypedDataList$;
-
   @override late NativeStringAlloc String$;
 
-  @override late NativeLitAlloc<bool, Bool> Bool$;
-  @override late NativeLitPtrAlloc<bool, Bool> Ptr$Bool$;
+  // literals
+  @override late NativeLitAllocators<bool, Bool> Bool$;
+  @override late NativeLitIntAllocators<Int8, Int8List> Int8$;
+  @override late NativeLitIntAllocators<Uint8, Uint8List> Uint8$;
+  @override late NativeLitIntAllocators<Int16, Int16List> Int16$;
+  @override late NativeLitIntAllocators<Uint16, Uint16List> Uint16$;
+  @override late NativeLitIntAllocators<Int32, Int32List> Int32$;
+  @override late NativeLitIntAllocators<Uint32, Uint32List> Uint32$;
+  @override late NativeLitIntAllocators<Int64, Int64List> Int64$;
+  @override late NativeLitIntAllocators<Uint64, Uint64List> Uint64$;
+  @override late NativeLitFloatAllocators<Float, Float32List> Float32$;
+  @override late NativeLitFloatAllocators<Double, Float64List> Float64$;
+  // These allocate under FFI's ABI-defined C types (Int, UnsignedInt, Char,
+  // Short, ...), NOT the fixed-width types above (Int32$, Uint8$, Int16$, ...).
+  // They happen to share storage width on this backend's target ABI (hence
+  // the matching TypedData lists), but the NativeType is distinct from its
+  // fixed-width counterpart and must not be treated as an alias for it
+  // e.g. sizeOf<Char>() vs sizeOf<Int8>() are only equal because of this
+  // ABI's char width, not by definition. If a future target has a
+  // different C type width, these allocators diverge from the fixed-width
+  // ones in storage too, not just in name.
+  @override late NativeLitIntAllocators<Char, Int8List> Char$;
+  @override late NativeLitIntAllocators<UnsignedChar, Uint8List> UnsignedChar$;
+  @override late NativeLitIntAllocators<Short, Int16List> Short$;
+  @override late NativeLitIntAllocators<UnsignedShort, Uint16List> UnsignedShort$;
+  @override late NativeLitIntAllocators<Int, Int32List> Int$;
+  @override late NativeLitIntAllocators<UnsignedInt, Uint32List> UnsignedInt$;
+  @override NativeLitFloatAllocators<Float, Float32List> get Float$ => Float32$;
+  @override NativeLitFloatAllocators<Double, Float64List> get Double$ => Float64$;
 
-  @override late NativeLitIntAlloc<Int8, Int8List> Int8$;
-  @override late NativeLitPtrAlloc<int, Int8> Ptr$Int8$;
-  @override late NativeLitIntAlloc<Uint8, Uint8List> Uint8$;
-  @override late NativeLitPtrAlloc<int, Uint8> Ptr$Uint8$;
-  @override late NativeLitIntAlloc<Int16, Int16List> Int16$;
-  @override late NativeLitPtrAlloc<int, Int16> Ptr$Int16$;
-  @override late NativeLitIntAlloc<Uint16, Uint16List> Uint16$;
-  @override late NativeLitPtrAlloc<int, Uint16> Ptr$Uint16$;
-  @override late NativeLitIntAlloc<Int32, Int32List> Int32$;
-  @override late NativeLitPtrAlloc<int, Int32> Ptr$Int32$;
-  @override late NativeLitIntAlloc<Uint32, Uint32List> Uint32$;
-  @override late NativeLitPtrAlloc<int, Uint32> Ptr$Uint32$;
-  @override late NativeLitIntAlloc<Int64, Int64List> Int64$;
-  @override late NativeLitPtrAlloc<int, Int64> Ptr$Int64$;
-  @override late NativeLitIntAlloc<Uint64, Uint64List> Uint64$;
-  @override late NativeLitPtrAlloc<int, Uint64> Ptr$Uint64$;
-  @override late NativeLitFloatAlloc<Float, Float32List> Float32$;
-  @override late NativeLitPtrAlloc<double, Float> Ptr$Float32$;
-  @override late NativeLitFloatAlloc<Double, Float64List> Float64$;
-  @override late NativeLitPtrAlloc<double, Double> Ptr$Float64$;
-  
-  @override late NativeLitIntAlloc<Int, Int32List> Int$;
-  @override late NativeLitPtrAlloc<int, Int> Ptr$Int$;
-  @override late NativeLitIntAlloc<UnsignedInt, Uint32List> UnsignedInt$;
-  @override late NativeLitPtrAlloc<int, UnsignedInt> Ptr$UnsignedInt$;
-  @override late NativeLitIntAlloc<Char, Int8List> Char$;
-  @override late NativeLitPtrAlloc<int, Char> Ptr$Char$;
-  @override late NativeLitIntAlloc<UnsignedChar, Uint8List> UnsignedChar$;
-  @override late NativeLitPtrAlloc<int, UnsignedChar> Ptr$UnsignedChar$;
-  @override late NativeLitIntAlloc<Short, Int16List> Short$;
-  @override late NativeLitPtrAlloc<int, Short> Ptr$Short$;
-  @override late NativeLitIntAlloc<UnsignedShort, Uint16List> UnsignedShort$;
-  @override late NativeLitPtrAlloc<int, UnsignedShort> Ptr$UnsignedShort$;
-  
-  @override late NativeStructAlloc<AutomationEventListC, AutomationEventListD> AutomationEventList$;
-  @override late NativeStructPtrAlloc<AutomationEventListC, AutomationEventListD> Ptr$AutomationEventList$;
-  @override late NativeStructAlloc<AutomationEventC, AutomationEventD> AutomationEvent$;
-  @override late NativeStructPtrAlloc<AutomationEventC, AutomationEventD> Ptr$AutomationEvent$;
-  @override late NativeStructAlloc<AudioStreamC, AudioStreamD> AudioStream$;
-  @override late NativeStructPtrAlloc<AudioStreamC, AudioStreamD> Ptr$AudioStream$;
-  @override late NativeStructAlloc<BoneInfoC, BoneInfoD> BoneInfo$;
-  @override late NativeStructPtrAlloc<BoneInfoC, BoneInfoD> Ptr$BoneInfo$;
-  @override late NativeStructAlloc<BoundingBoxC, BoundingBoxD> BoundingBox$;
-  @override late NativeStructPtrAlloc<BoundingBoxC, BoundingBoxD> Ptr$BoundingBox$;
-  @override late NativeStructAlloc<Camera2DC, Camera2DD> Camera2D$;
-  @override late NativeStructPtrAlloc<Camera2DC, Camera2DD> Ptr$Camera2D$;
-  @override late NativeStructAlloc<Camera3DC, Camera3DD> Camera3D$;
-  @override late NativeStructPtrAlloc<Camera3DC, Camera3DD> Ptr$Camera3D$;
-  @override late NativeStructAlloc<ColorC, ColorD> Color$;
-  @override late NativeStructPtrAlloc<ColorC, ColorD> Ptr$Color$;
-  @override late NativeStructAlloc<FilePathListC, FilePathListD> FilePathList$;
-  @override late NativeStructPtrAlloc<FilePathListC, FilePathListD> Ptr$FilePathList$;
-  @override late NativeStructAlloc<FontC, FontD> Font$;
-  @override late NativeStructPtrAlloc<FontC, FontD> Ptr$Font$;
-  @override late NativeStructAlloc<GestureEventC, GestureEventD> GestureEvent$;
-  @override late NativeStructPtrAlloc<GestureEventC, GestureEventD> Ptr$GestureEvent$;
-  @override late NativeStructAlloc<GlyphInfoC, GlyphInfoD> GlyphInfo$;
-  @override late NativeStructPtrAlloc<GlyphInfoC, GlyphInfoD> Ptr$GlyphInfo$;
-  @override late NativeStructAlloc<ImageC, ImageD> Image$;
-  @override late NativeStructPtrAlloc<ImageC, ImageD> Ptr$Image$;
-  @override late NativeStructAlloc<LightC, LightD> Light$;
-  @override late NativeStructPtrAlloc<LightC, LightD> Ptr$Light$;
-  @override late NativeStructAlloc<MaterialC, MaterialD> Material$;
-  @override late NativeStructPtrAlloc<MaterialC, MaterialD> Ptr$Material$;
-  @override late NativeStructAlloc<MaterialMapC, MaterialMapD> MaterialMap$;
-  @override late NativeStructPtrAlloc<MaterialMapC, MaterialMapD> Ptr$MaterialMap$;
-  @override late NativeStructAlloc<MatrixC, MatrixD> Matrix$;
-  @override late NativeStructPtrAlloc<MatrixC, MatrixD> Ptr$Matrix$;
-  @override late NativeStructAlloc<MeshC, MeshD> Mesh$;
-  @override late NativeStructPtrAlloc<MeshC, MeshD> Ptr$Mesh$;
-  @override late NativeStructAlloc<ModelC, ModelD> Model$;
-  @override late NativeStructPtrAlloc<ModelC, ModelD> Ptr$Model$;
-  @override late NativeStructAlloc<ModelAnimationC, ModelAnimationD> ModelAnimation$;
-  @override late NativeStructPtrAlloc<ModelAnimationC, ModelAnimationD> Ptr$ModelAnimation$;
-  @override late NativeStructAlloc<ModelSkeletonC, ModelSkeletonD> ModelSkeleton$;
-  @override late NativeStructPtrAlloc<ModelSkeletonC, ModelSkeletonD> Ptr$ModelSkeleton$;
-  @override late NativeStructAlloc<MusicC, MusicD> Music$;
-  @override late NativeStructPtrAlloc<MusicC, MusicD> Ptr$Music$;
-  @override late NativeStructAlloc<NPatchInfoC, NPatchInfoD> NPatchInfo$;
-  @override late NativeStructPtrAlloc<NPatchInfoC, NPatchInfoD> Ptr$NPatchInfo$;
-  @override late NativeStructAlloc<QuaternionC, QuaternionD> Quaternion$;
-  @override late NativeStructPtrAlloc<QuaternionC, QuaternionD> Ptr$Quaternion$;
-  @override late NativeStructAlloc<RectangleC, RectangleD> Rectangle$;
-  @override late NativeStructPtrAlloc<RectangleC, RectangleD> Ptr$Rectangle$;
-  @override late NativeStructAlloc<RlDrawCallC, RlDrawCallD> RlDrawCall$;
-  @override late NativeStructPtrAlloc<RlDrawCallC, RlDrawCallD> Ptr$RlDrawCall$;
-  @override late NativeStructAlloc<RlRenderBatchC, RlRenderBatchD> RlRenderBatch$;
-  @override late NativeStructPtrAlloc<RlRenderBatchC, RlRenderBatchD> Ptr$RlRenderBatch$;
-  @override late NativeStructAlloc<RlVertexBufferC, RlVertexBufferD> RlVertexBuffer$;
-  @override late NativeStructPtrAlloc<RlVertexBufferC, RlVertexBufferD> Ptr$RlVertexBuffer$;
-  @override late NativeStructAlloc<RayC, RayD> Ray$;
-  @override late NativeStructPtrAlloc<RayC, RayD> Ptr$Ray$;
-  @override late NativeStructAlloc<RayCollisionC, RayCollisionD> RayCollision$;
-  @override late NativeStructPtrAlloc<RayCollisionC, RayCollisionD> Ptr$RayCollision$;
-  @override late NativeStructAlloc<RenderTextureC, RenderTextureD> RenderTexture$;
-  @override late NativeStructPtrAlloc<RenderTextureC, RenderTextureD> Ptr$RenderTexture$;
-  @override late NativeStructAlloc<ShaderC, ShaderD> Shader$;
-  @override late NativeStructPtrAlloc<ShaderC, ShaderD> Ptr$Shader$;
-  @override late NativeStructAlloc<SoundC, SoundD> Sound$;
-  @override late NativeStructPtrAlloc<SoundC, SoundD> Ptr$Sound$;
-  @override late NativeStructAlloc<TextureC, TextureD> Texture$;
-  @override late NativeStructPtrAlloc<TextureC, TextureD> Ptr$Texture$;
-  @override late NativeStructAlloc<TransformC, TransformD> Transform$;
-  @override late NativeStructPtrAlloc<TransformC, TransformD> Ptr$Transform$;
-  @override late NativeStructAlloc<Vector2C, Vector2D> Vector2$;
-  @override late NativeStructPtrAlloc<Vector2C, Vector2D> Ptr$Vector2$;
-  @override late NativeStructAlloc<Vector3C, Vector3D> Vector3$;
-  @override late NativeStructPtrAlloc<Vector3C, Vector3D> Ptr$Vector3$;
-  @override late NativeStructAlloc<Vector4C, Vector4D> Vector4$;
-  @override late NativeStructPtrAlloc<Vector4C, Vector4D> Ptr$Vector4$;
-  @override late NativeStructAlloc<VrDeviceInfoC, VrDeviceInfoD> VrDeviceInfo$;
-  @override late NativeStructPtrAlloc<VrDeviceInfoC, VrDeviceInfoD> Ptr$VrDeviceInfo$;
-  @override late NativeStructAlloc<VrStereoConfigC, VrStereoConfigD> VrStereoConfig$;
-  @override late NativeStructPtrAlloc<VrStereoConfigC, VrStereoConfigD> Ptr$VrStereoConfig$;
-  @override late NativeStructAlloc<WaveC, WaveD> Wave$;
-  @override late NativeStructPtrAlloc<WaveC, WaveD> Ptr$Wave$;
+  // structs
+  @override late NativeStructAllocators<AutomationEventListC, AutomationEventListD> AutomationEventList$;
+  @override late NativeStructAllocators<AutomationEventC, AutomationEventD> AutomationEvent$;
+  @override late NativeStructAllocators<AudioStreamC, AudioStreamD> AudioStream$;
+  @override late NativeStructAllocators<BoneInfoC, BoneInfoD> BoneInfo$;
+  @override late NativeStructAllocators<BoundingBoxC, BoundingBoxD> BoundingBox$;
+  @override late NativeStructAllocators<Camera2DC, Camera2DD> Camera2D$;
+  @override late NativeStructAllocators<Camera3DC, Camera3DD> Camera3D$;
+  @override late NativeStructAllocators<ColorC, ColorD> Color$;
+  @override late NativeStructAllocators<FilePathListC, FilePathListD> FilePathList$;
+  @override late NativeStructAllocators<FontC, FontD> Font$;
+  @override late NativeStructAllocators<GestureEventC, GestureEventD> GestureEvent$;
+  @override late NativeStructAllocators<GlyphInfoC, GlyphInfoD> GlyphInfo$;
+  @override late NativeStructAllocators<ImageC, ImageD> Image$;
+  @override late NativeStructAllocators<LightC, LightD> Light$;
+  @override late NativeStructAllocators<MaterialC, MaterialD> Material$;
+  @override late NativeStructAllocators<MaterialMapC, MaterialMapD> MaterialMap$;
+  @override late NativeStructAllocators<MatrixC, MatrixD> Matrix$;
+  @override late NativeStructAllocators<MeshC, MeshD> Mesh$;
+  @override late NativeStructAllocators<ModelC, ModelD> Model$;
+  @override late NativeStructAllocators<ModelAnimationC, ModelAnimationD> ModelAnimation$;
+  @override late NativeStructAllocators<ModelSkeletonC, ModelSkeletonD> ModelSkeleton$;
+  @override late NativeStructAllocators<MusicC, MusicD> Music$;
+  @override late NativeStructAllocators<NPatchInfoC, NPatchInfoD> NPatchInfo$;
+  @override late NativeStructAllocators<QuaternionC, QuaternionD> Quaternion$;
+  @override late NativeStructAllocators<RectangleC, RectangleD> Rectangle$;
+  @override late NativeStructAllocators<RlDrawCallC, RlDrawCallD> RlDrawCall$;
+  @override late NativeStructAllocators<RlRenderBatchC, RlRenderBatchD> RlRenderBatch$;
+  @override late NativeStructAllocators<RlVertexBufferC, RlVertexBufferD> RlVertexBuffer$;
+  @override late NativeStructAllocators<RayC, RayD> Ray$;
+  @override late NativeStructAllocators<RayCollisionC, RayCollisionD> RayCollision$;
+  @override late NativeStructAllocators<RenderTextureC, RenderTextureD> RenderTexture$;
+  @override late NativeStructAllocators<ShaderC, ShaderD> Shader$;
+  @override late NativeStructAllocators<SoundC, SoundD> Sound$;
+  @override late NativeStructAllocators<TextureC, TextureD> Texture$;
+  @override late NativeStructAllocators<TransformC, TransformD> Transform$;
+  @override late NativeStructAllocators<Vector2C, Vector2D> Vector2$;
+  @override late NativeStructAllocators<Vector3C, Vector3D> Vector3$;
+  @override late NativeStructAllocators<Vector4C, Vector4D> Vector4$;
+  @override late NativeStructAllocators<VrDeviceInfoC, VrDeviceInfoD> VrDeviceInfo$;
+  @override late NativeStructAllocators<VrStereoConfigC, VrStereoConfigD> VrStereoConfig$;
+  @override late NativeStructAllocators<WaveC, WaveD> Wave$;
 
   // ===========================
   // ====== CUSTOM ALLOCS ======
   // ===========================
 
-  NativeLitAlloc<X, C> allocLit<X, C extends NativeType>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeLitAlloc<X, C>;
-
-  NativeLitIntAlloc<C, L> allocIntList<X, C extends NativeType, L extends TypedDataList>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeLitIntAlloc<C, L>;
-
-  NativeLitFloatAlloc<C, L> allocFloatList<X, C extends NativeType, L extends TypedDataList>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeLitFloatAlloc<C, L>;
-
-  NativeLitPtrAlloc<X, C> allocLitPtr<X, C extends NativeType>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeLitPtrAlloc<X, C>;
-
-  NativeStructAlloc<C, D> allocStruct<C extends Struct, D extends StructD<C, D>>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeStructAlloc<C, D>;
-
-  NativeStructPtrAlloc<C, D> allocStructPtr<C extends Struct, D extends StructD<C, D>>(String key) =>
-    getCustomAllocatorOrThrow(key) as NativeStructPtrAlloc<C, D>;
+  NativeStructAlloc<C, D> allocStruct<C extends Struct, D extends StructD<C, D>>() => getAllocatorOrThrow();
+  
+  NativeStructPtrAlloc<C, D> allocPtrStruct<C extends Struct, D extends StructD<C, D>>() => getAllocatorOrThrow();
 
   // ============================
   // ====== INITIALIZATION ======
@@ -744,1058 +827,614 @@ class RaylibTemp extends RaylibTempBase<Raylib> {
     Utils = .new(this);
 
     TypedDataList$ = .new(this);
+    String$ = .new(this, slotCount: options.stringCount);
 
-    String$ = .new(this, 'String\$',
-      allocatorFunc: ([count = 1]) => calloc<Char>(count),
-      slotCount: options.stringCount,
-    );
+    _initLiteralAllocators();
+    _initStructAllocators();
+  }
 
-    Bool$ = .new(this, r'Bool$',
+  void _initLiteralAllocators() {
+    Bool$ = .new(.new(this,
       byteSize: sizeOf<Bool>(),
-      allocatorFunc: ([count = 1]) => calloc<Bool>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value,
       literalSetterFunc: (ptr, value) => ptr.value = value,
-      printerFunc: (ptr) => ptr.value.toString(),
-    );
+    ));
 
-    Ptr$Bool$ = .new(this, r'Ptr$Bool$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Bool>>(count),
-      rawArrayFunc: Bool$.RawArray,
-    );
-
-    Int8$ = .new(this, r'Int8$',
+    Int8$ = .new(.new(this,
       byteSize: sizeOf<Int8>(),
-      allocatorFunc: ([count = 1]) => calloc<Int8>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt8List(offset, len),
-    );
+    ));
 
-    Ptr$Int8$ = .new(this, r'Ptr$Int8$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Int8>>(count),
-      rawArrayFunc: Int8$.RawArray,
-    );
-
-    Uint8$ = .new(this, r'Uint8$',
+    Uint8$ = .new(.new(this,
       byteSize: sizeOf<Uint8>(),
-      allocatorFunc: ([count = 1]) => calloc<Uint8>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint8List(offset, len),
-    );
+    ));
 
-    Ptr$Uint8$ = .new(this, r'Ptr$Uint8$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Uint8>>(count),
-      rawArrayFunc: Uint8$.RawArray,
-    );
-
-    Int16$ = .new(this, r'Int16$',
+    Int16$ = .new(.new(this,
       byteSize: sizeOf<Int16>(),
-      allocatorFunc: ([count = 1]) => calloc<Int16>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt16List(offset, len),
-    );
+    ));
 
-    Ptr$Int16$ = .new(this, r'Ptr$Int16$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Int16>>(count),
-      rawArrayFunc: Int16$.RawArray,
-    );
-
-    Uint16$ = .new(this, r'Uint16$',
+    Uint16$ = .new(.new(this,
       byteSize: sizeOf<Uint16>(),
-      allocatorFunc: ([count = 1]) => calloc<Uint16>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint16List(offset, len),
-    );
+    ));
 
-    Ptr$Uint16$ = .new(this, r'Ptr$Uint16$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Uint16>>(count),
-      rawArrayFunc: Uint16$.RawArray,
-    );
-
-    Int32$ = .new(this, r'Int32$',
+    Int32$ = .new(.new(this,
       byteSize: sizeOf<Int32>(),
-      allocatorFunc: ([count = 1]) => calloc<Int32>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt32List(offset, len),
-    );
+    ));
 
-    Ptr$Int32$ = .new(this, r'Ptr$Int32$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Int32>>(count),
-      rawArrayFunc: Int32$.RawArray,
-    );
-
-    Uint32$ = .new(this, r'Uint32$',
+    Uint32$ = .new(.new(this,
       byteSize: sizeOf<Uint32>(),
-      allocatorFunc: ([count = 1]) => calloc<Uint32>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint32List(offset, len),
-    );
+    ));
 
-    Ptr$Uint32$ = .new(this, r'Ptr$Uint32$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Uint32>>(count),
-      rawArrayFunc: Uint32$.RawArray,
-    );
-
-    Int64$ = .new(this, r'Int64$',
+    Int64$ = .new(.new(this,
       byteSize: sizeOf<Int64>(),
-      allocatorFunc: ([count = 1]) => calloc<Int64>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt64List(offset, len),
-    );
+    ));
 
-    Ptr$Int64$ = .new(this, r'Ptr$Int64$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Int64>>(count),
-      rawArrayFunc: Int64$.RawArray,
-    );
-
-    Uint64$ = .new(this, r'Uint64$',
+    Uint64$ = .new(.new(this,
       byteSize: sizeOf<Uint64>(),
-      allocatorFunc: ([count = 1]) => calloc<Uint64>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint64List(offset, len),
-    );
+    ));
 
-    Ptr$Uint64$ = .new(this, r'Ptr$Uint64$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Uint64>>(count),
-      rawArrayFunc: Uint64$.RawArray,
-    );
-
-    Float32$ = .new(this, r'Float32$',
+    Float32$ = .new(.new(this,
       byteSize: sizeOf<Float>(),
-      allocatorFunc: ([count = 1]) => calloc<Float>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toDouble(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toDouble(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<double>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asFloat32List(offset, len),
-    );
+    ));
 
-    Ptr$Float32$ = .new(this, r'Ptr$Float32$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Float>>(count),
-      rawArrayFunc: Float32$.RawArray,
-    );
-
-    Float64$ = .new(this, r'Float64$',
+    Float64$ = .new(.new(this,
       byteSize: sizeOf<Double>(),
-      allocatorFunc: ([count = 1]) => calloc<Double>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toDouble(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toDouble(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<double>().toList()),
       asView: (ptr, length) => ptr.asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asFloat64List(offset, len),
-    );
+    ));
 
-    Ptr$Float64$ = .new(this, r'Ptr$Float64$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Double>>(count),
-      rawArrayFunc: Float64$.RawArray,
-    );
-
-    Int$ = .new(this, r'Int$',
-      byteSize: sizeOf<Int>(),
-      allocatorFunc: ([count = 1]) => calloc<Int>(count),
-      indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
-      literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
-      fromList: (list) => .fromList(list.cast<int>().toList()),
-      asView: (ptr, length) => ptr.cast<Int32>().asTypedList(length),
-      fromBuffer: (buf, offset, len) => buf.asInt32List(offset, len),
-    );
-
-    Ptr$Int$ = .new(this, r'Ptr$Int$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Int>>(count),
-      rawArrayFunc: Int$.RawArray,
-    );
-
-    UnsignedInt$ = .new(this, r'UnsignedInt$',
-      byteSize: sizeOf<UnsignedInt>(),
-      allocatorFunc: ([count = 1]) => calloc<UnsignedInt>(count),
-      indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
-      literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
-      fromList: (list) => .fromList(list.cast<int>().toList()),
-      asView: (ptr, length) => ptr.cast<Uint32>().asTypedList(length),
-      fromBuffer: (buf, offset, len) => buf.asUint32List(offset, len),
-    );
-
-    Ptr$UnsignedInt$ = .new(this, r'Ptr$UnsignedInt$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedInt>>(count),
-      rawArrayFunc: UnsignedInt$.RawArray,
-    );
-
-    Char$ = .new(this, r'Char$',
+    Char$ = .new(.new(this,
       byteSize: sizeOf<Char>(),
-      allocatorFunc: ([count = 1]) => calloc<Char>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.cast<Int8>().asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt8List(offset, len),
-    );
+    ));
 
-    Ptr$Char$ = .new(this, r'Ptr$Char$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Char>>(count),
-      rawArrayFunc: Char$.RawArray,
-    );
-
-    UnsignedChar$ = .new(this, r'UnsignedChar$',
+    UnsignedChar$ = .new(.new(this,
       byteSize: sizeOf<UnsignedChar>(),
-      allocatorFunc: ([count = 1]) => calloc<UnsignedChar>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.cast<Uint8>().asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint8List(offset, len),
-    );
+    ));
 
-    Ptr$UnsignedChar$ = .new(this, r'Ptr$UnsignedChar$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedChar>>(count),
-      rawArrayFunc: UnsignedChar$.RawArray,
-    );
-
-    Short$ = .new(this, r'Short$',
+    Short$ = .new(.new(this,
       byteSize: sizeOf<Short>(),
-      allocatorFunc: ([count = 1]) => calloc<Short>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.cast<Int16>().asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asInt16List(offset, len),
-    );
+    ));
 
-    Ptr$Short$ = .new(this, r'Ptr$Short$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Short>>(count),
-      rawArrayFunc: Short$.RawArray,
-    );
-
-    UnsignedShort$ = .new(this, r'UnsignedShort$',
+    UnsignedShort$ = .new(.new(this,
       byteSize: sizeOf<UnsignedShort>(),
-      allocatorFunc: ([count = 1]) => calloc<UnsignedShort>(count),
       indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
       literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
-      printerFunc: (ptr) => ptr.value.toString(),
       fromList: (list) => .fromList(list.cast<int>().toList()),
       asView: (ptr, length) => ptr.cast<Uint16>().asTypedList(length),
       fromBuffer: (buf, offset, len) => buf.asUint16List(offset, len),
-    );
+    ));
 
-    Ptr$UnsignedShort$ = .new(this, r'Ptr$UnsignedShort$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<UnsignedShort>>(count),
-      rawArrayFunc: UnsignedShort$.RawArray,
-    );
+    Int$ = .new(.new(this,
+      byteSize: sizeOf<Int>(),
+      indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
+      literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
+      fromList: (list) => .fromList(list.cast<int>().toList()),
+      asView: (ptr, length) => ptr.cast<Int32>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asInt32List(offset, len),
+    ));
 
-    AutomationEventList$ = .new(this, r'AutomationEventList$',
+    UnsignedInt$ = .new(.new(this,
+      byteSize: sizeOf<UnsignedInt>(),
+      indexSetterFunc: (ptr, i, value) => ptr[i] = value.toInt(),
+      literalSetterFunc: (ptr, value) => ptr.value = value.toInt(),
+      fromList: (list) => .fromList(list.cast<int>().toList()),
+      asView: (ptr, length) => ptr.cast<Uint32>().asTypedList(length),
+      fromBuffer: (buf, offset, len) => buf.asUint32List(offset, len),
+    ));
+  }
+
+  void _initStructAllocators() {
+    AutomationEventList$ = .new(.new(this,
       byteSize:        sizeOf<AutomationEventListC>(),
-      allocatorFunc:   ([count = 1]) => calloc<AutomationEventListC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$AutomationEventList$ = .new(this, r'Ptr$AutomationEventList$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<AutomationEventListC>>(count),
-      valueFunc: AutomationEventList$.Value,
-      rawArrayFunc: AutomationEventList$.RawArray,
-    );
-
-    AutomationEvent$ = .new(this, r'AutomationEvent$',
+    AutomationEvent$ = .new(.new(this,
       byteSize:        sizeOf<AutomationEventC>(),
-      allocatorFunc:   ([count = 1]) => calloc<AutomationEventC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$AutomationEvent$ = .new(this, r'Ptr$AutomationEvent$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<AutomationEventC>>(count),
-      valueFunc: AutomationEvent$.Value,
-      rawArrayFunc: AutomationEvent$.RawArray,
-    );
-
-    AudioStream$ = .new(this, r'AudioStream$',
+    AudioStream$ = .new(.new(this,
       byteSize:        sizeOf<AudioStreamC>(),
-      allocatorFunc:   ([count = 1]) => calloc<AudioStreamC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$AudioStream$ = .new(this, r'Ptr$AudioStream$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<AudioStreamC>>(count),
-      valueFunc: AudioStream$.Value,
-      rawArrayFunc: AudioStream$.RawArray,
-    );
-
-    BoneInfo$ = .new(this, r'BoneInfo$',
+    BoneInfo$ = .new(.new(this,
       byteSize:        sizeOf<BoneInfoC>(),
-      allocatorFunc:   ([count = 1]) => calloc<BoneInfoC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$BoneInfo$ = .new(this, r'Ptr$BoneInfo$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<BoneInfoC>>(count),
-      valueFunc: BoneInfo$.Value,
-      rawArrayFunc: BoneInfo$.RawArray,
-    );
-
-    BoundingBox$ = .new(this, r'BoundingBox$',
+    BoundingBox$ = .new(.new(this,
       byteSize:        sizeOf<BoundingBoxC>(),
-      allocatorFunc:   ([count = 1]) => calloc<BoundingBoxC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$BoundingBox$ = .new(this, r'Ptr$BoundingBox$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<BoundingBoxC>>(count),
-      valueFunc: BoundingBox$.Value,
-      rawArrayFunc: BoundingBox$.RawArray,
-    );
-
-    Camera2D$ = .new(this, r'Camera2D$',
+    Camera2D$ = .new(.new(this,
       byteSize:        sizeOf<Camera2DC>(),
-      allocatorFunc:   ([count = 1]) => calloc<Camera2DC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Camera2D$ = .new(this, r'Ptr$Camera2D$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Camera2DC>>(count),
-      valueFunc: Camera2D$.Value,
-      rawArrayFunc: Camera2D$.RawArray,
-    );
-
-    Camera3D$ = .new(this, r'Camera3D$',
+    Camera3D$ = .new(.new(this,
       byteSize:        sizeOf<Camera3DC>(),
-      allocatorFunc:   ([count = 1]) => calloc<Camera3DC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Camera3D$ = .new(this, r'Ptr$Camera3D$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Camera3DC>>(count),
-      valueFunc: Camera3D$.Value,
-      rawArrayFunc: Camera3D$.RawArray,
-    );
-
-    Color$ = .new(this, r'Color$',
+    Color$ = .new(.new(this,
       byteSize:        sizeOf<ColorC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ColorC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Color$ = .new(this, r'Ptr$Color$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ColorC>>(count),
-      valueFunc: Color$.Value,
-      rawArrayFunc: Color$.RawArray,
-    );
-
-    FilePathList$ = .new(this, r'FilePathList$',
+    FilePathList$ = .new(.new(this,
       byteSize:        sizeOf<FilePathListC>(),
-      allocatorFunc:   ([count = 1]) => calloc<FilePathListC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$FilePathList$ = .new(this, r'Ptr$FilePathList$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<FilePathListC>>(count),
-      valueFunc: FilePathList$.Value,
-      rawArrayFunc: FilePathList$.RawArray,
-    );
-
-    Font$ = .new(this, r'Font$',
+    Font$ = .new(.new(this,
       byteSize:        sizeOf<FontC>(),
-      allocatorFunc:   ([count = 1]) => calloc<FontC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Font$ = .new(this, r'Ptr$Font$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<FontC>>(count),
-      valueFunc: Font$.Value,
-      rawArrayFunc: Font$.RawArray,
-    );
-
-    GestureEvent$ = .new(this, r'GestureEvent$',
+    GestureEvent$ = .new(.new(this,
       byteSize:        sizeOf<GestureEventC>(),
-      allocatorFunc:   ([count = 1]) => calloc<GestureEventC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$GestureEvent$ = .new(this, r'Ptr$GestureEvent$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<GestureEventC>>(count),
-      valueFunc: GestureEvent$.Value,
-      rawArrayFunc: GestureEvent$.RawArray,
-    );
-
-    GlyphInfo$ = .new(this, r'GlyphInfo$',
+    GlyphInfo$ = .new(.new(this,
       byteSize:        sizeOf<GlyphInfoC>(),
-      allocatorFunc:   ([count = 1]) => calloc<GlyphInfoC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$GlyphInfo$ = .new(this, r'Ptr$GlyphInfo$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<GlyphInfoC>>(count),
-      valueFunc: GlyphInfo$.Value,
-      rawArrayFunc: GlyphInfo$.RawArray,
-    );
-
-    Image$ = .new(this, r'Image$',
+    Image$ = .new(.new(this,
       byteSize:        sizeOf<ImageC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ImageC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Image$ = .new(this, r'Ptr$Image$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ImageC>>(count),
-      valueFunc: Image$.Value,
-      rawArrayFunc: Image$.RawArray,
-    );
-
-    Light$ = .new(this, r'Light$',
+    Light$ = .new(.new(this,
       byteSize:        sizeOf<LightC>(),
-      allocatorFunc:   ([count = 1]) => calloc<LightC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Light$ = .new(this, r'Ptr$Light$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<LightC>>(count),
-      valueFunc: Light$.Value,
-      rawArrayFunc: Light$.RawArray,
-    );
-
-    Material$ = .new(this, r'Material$',
+    Material$ = .new(.new(this,
       byteSize:        sizeOf<MaterialC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MaterialC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Material$ = .new(this, r'Ptr$Material$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<MaterialC>>(count),
-      valueFunc: Material$.Value,
-      rawArrayFunc: Material$.RawArray,
-    );
-
-    MaterialMap$ = .new(this, r'MaterialMap$',
+    MaterialMap$ = .new(.new(this,
       byteSize:        sizeOf<MaterialMapC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MaterialMapC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$MaterialMap$ = .new(this, r'Ptr$MaterialMap$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<MaterialMapC>>(count),
-      valueFunc: MaterialMap$.Value,
-      rawArrayFunc: MaterialMap$.RawArray,
-    );
-
-    Matrix$ = .new(this, r'Matrix$',
+    Matrix$ = .new(.new(this,
       byteSize:        sizeOf<MatrixC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MatrixC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Matrix$ = .new(this, r'Ptr$Matrix$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<MatrixC>>(count),
-      valueFunc: Matrix$.Value,
-      rawArrayFunc: Matrix$.RawArray,
-    );
-
-    Mesh$ = .new(this, r'Mesh$',
+    Mesh$ = .new(.new(this,
       byteSize:        sizeOf<MeshC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MeshC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Mesh$ = .new(this, r'Ptr$Mesh$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<MeshC>>(count),
-      valueFunc: Mesh$.Value,
-      rawArrayFunc: Mesh$.RawArray,
-    );
-
-    Model$ = .new(this, r'Model$',
+    Model$ = .new(.new(this,
       byteSize:        sizeOf<ModelC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ModelC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Model$ = .new(this, r'Ptr$Model$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ModelC>>(count),
-      valueFunc: Model$.Value,
-      rawArrayFunc: Model$.RawArray,
-    );
-
-    ModelAnimation$ = .new(this, r'ModelAnimation$',
+    ModelAnimation$ = .new(.new(this,
       byteSize:        sizeOf<ModelAnimationC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ModelAnimationC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$ModelAnimation$ = .new(this, r'Ptr$ModelAnimation$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ModelAnimationC>>(count),
-      valueFunc: ModelAnimation$.Value,
-      rawArrayFunc: ModelAnimation$.RawArray,
-    );
-
-    ModelSkeleton$ = .new(this, r'ModelSkeleton$',
+    ModelSkeleton$ = .new(.new(this,
       byteSize:        sizeOf<ModelSkeletonC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ModelSkeletonC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$ModelSkeleton$ = .new(this, r'Ptr$ModelSkeleton$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ModelSkeletonC>>(count),
-      valueFunc: ModelSkeleton$.Value,
-      rawArrayFunc: ModelSkeleton$.RawArray,
-    );
-
-    Music$ = .new(this, r'Music$',
+    Music$ = .new(.new(this,
       byteSize:        sizeOf<MusicC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MusicC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Music$ = .new(this, r'Ptr$Music$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<MusicC>>(count),
-      valueFunc: Music$.Value,
-      rawArrayFunc: Music$.RawArray,
-    );
-
-    NPatchInfo$ = .new(this, r'NPatchInfo$',
+    NPatchInfo$ = .new(.new(this,
       byteSize:        sizeOf<NPatchInfoC>(),
-      allocatorFunc:   ([count = 1]) => calloc<NPatchInfoC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$NPatchInfo$ = .new(this, r'Ptr$NPatchInfo$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<NPatchInfoC>>(count),
-      valueFunc: NPatchInfo$.Value,
-      rawArrayFunc: NPatchInfo$.RawArray,
-    );
-
-    Quaternion$ = .new(this, r'Quaternion$',
+    Quaternion$ = .new(.new(this,
       byteSize:        sizeOf<QuaternionC>(),
-      allocatorFunc:   ([count = 1]) => calloc<QuaternionC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Quaternion$ = .new(this, r'Ptr$Quaternion$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<QuaternionC>>(count),
-      valueFunc: Quaternion$.Value,
-      rawArrayFunc: Quaternion$.RawArray,
-    );
-
-    Rectangle$ = .new(this, r'Rectangle$',
+    Rectangle$ = .new(.new(this,
       byteSize:        sizeOf<RectangleC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RectangleC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Rectangle$ = .new(this, r'Ptr$Rectangle$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RectangleC>>(count),
-      valueFunc: Rectangle$.Value,
-      rawArrayFunc: Rectangle$.RawArray,
-    );
-
-    RlDrawCall$ = .new(this, r'RlDrawCall$',
+    RlDrawCall$ = .new(.new(this,
       byteSize:        sizeOf<RlDrawCallC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RlDrawCallC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$RlDrawCall$ = .new(this, r'Ptr$RlDrawCall$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RlDrawCallC>>(count),
-      valueFunc: RlDrawCall$.Value,
-      rawArrayFunc: RlDrawCall$.RawArray,
-    );
-
-    RlRenderBatch$ = .new(this, r'RlRenderBatch$',
+    RlRenderBatch$ = .new(.new(this,
       byteSize:        sizeOf<RlRenderBatchC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RlRenderBatchC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$RlRenderBatch$ = .new(this, r'Ptr$RlRenderBatch$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RlRenderBatchC>>(count),
-      valueFunc: RlRenderBatch$.Value,
-      rawArrayFunc: RlRenderBatch$.RawArray,
-    );
-
-    RlVertexBuffer$ = .new(this, r'RlVertexBuffer$',
+    RlVertexBuffer$ = .new(.new(this,
       byteSize:        sizeOf<RlVertexBufferC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RlVertexBufferC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$RlVertexBuffer$ = .new(this, r'Ptr$RlVertexBuffer$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RlVertexBufferC>>(count),
-      valueFunc: RlVertexBuffer$.Value,
-      rawArrayFunc: RlVertexBuffer$.RawArray,
-    );
-
-    Ray$ = .new(this, r'Ray$',
+    Ray$ = .new(.new(this,
       byteSize:        sizeOf<RayC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RayC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Ray$ = .new(this, r'Ptr$Ray$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RayC>>(count),
-      valueFunc: Ray$.Value,
-      rawArrayFunc: Ray$.RawArray,
-    );
-
-    RayCollision$ = .new(this, r'RayCollision$',
+    RayCollision$ = .new(.new(this,
       byteSize:        sizeOf<RayCollisionC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RayCollisionC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$RayCollision$ = .new(this, r'Ptr$RayCollision$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RayCollisionC>>(count),
-      valueFunc: RayCollision$.Value,
-      rawArrayFunc: RayCollision$.RawArray,
-    );
-
-    RenderTexture$ = .new(this, r'RenderTexture$',
+    RenderTexture$ = .new(.new(this,
       byteSize:        sizeOf<RenderTextureC>(),
-      allocatorFunc:   ([count = 1]) => calloc<RenderTextureC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$RenderTexture$ = .new(this, r'Ptr$RenderTexture$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<RenderTextureC>>(count),
-      valueFunc: RenderTexture$.Value,
-      rawArrayFunc: RenderTexture$.RawArray,
-    );
-
-    Shader$ = .new(this, r'Shader$',
+    Shader$ = .new(.new(this,
       byteSize:        sizeOf<ShaderC>(),
-      allocatorFunc:   ([count = 1]) => calloc<ShaderC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Shader$ = .new(this, r'Ptr$Shader$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<ShaderC>>(count),
-      valueFunc: Shader$.Value,
-      rawArrayFunc: Shader$.RawArray,
-    );
-
-    Sound$ = .new(this, r'Sound$',
+    Sound$ = .new(.new(this,
       byteSize:        sizeOf<SoundC>(),
-      allocatorFunc:   ([count = 1]) => calloc<SoundC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Sound$ = .new(this, r'Ptr$Sound$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<SoundC>>(count),
-      valueFunc: Sound$.Value,
-      rawArrayFunc: Sound$.RawArray,
-    );
-
-    Texture$ = .new(this, r'Texture$',
+    Texture$ = .new(.new(this,
       byteSize:        sizeOf<TextureC>(),
-      allocatorFunc:   ([count = 1]) => calloc<TextureC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Texture$ = .new(this, r'Ptr$Texture$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<TextureC>>(count),
-      valueFunc: Texture$.Value,
-      rawArrayFunc: Texture$.RawArray,
-    );
-
-    Transform$ = .new(this, r'Transform$',
+    Transform$ = .new(.new(this,
       byteSize:        sizeOf<TransformC>(),
-      allocatorFunc:   ([count = 1]) => calloc<TransformC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Transform$ = .new(this, r'Ptr$Transform$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<TransformC>>(count),
-      valueFunc: Transform$.Value,
-      rawArrayFunc: Transform$.RawArray,
-    );
-
-    Vector2$ = .new(this, r'Vector2$',
+    Vector2$ = .new(.new(this,
       byteSize:        sizeOf<Vector2C>(),
-      allocatorFunc:   ([count = 1]) => calloc<Vector2C>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Vector2$ = .new(this, r'Ptr$Vector2$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Vector2C>>(count),
-      valueFunc: Vector2$.Value,
-      rawArrayFunc: Vector2$.RawArray,
-    );
-
-    Vector3$ = .new(this, r'Vector3$',
+    Vector3$ = .new(.new(this,
       byteSize:        sizeOf<Vector3C>(),
-      allocatorFunc:   ([count = 1]) => calloc<Vector3C>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Vector3$ = .new(this, r'Ptr$Vector3$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Vector3C>>(count),
-      valueFunc: Vector3$.Value,
-      rawArrayFunc: Vector3$.RawArray,
-    );
-
-    Vector4$ = .new(this, r'Vector4$',
+    Vector4$ = .new(.new(this,
       byteSize:        sizeOf<Vector4C>(),
-      allocatorFunc:   ([count = 1]) => calloc<Vector4C>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$Vector4$ = .new(this, r'Ptr$Vector4$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<Vector4C>>(count),
-      valueFunc: Vector4$.Value,
-      rawArrayFunc: Vector4$.RawArray,
-    );
-
-    VrDeviceInfo$ = .new(this, r'VrDeviceInfo$',
+    VrDeviceInfo$ = .new(.new(this,
       byteSize:        sizeOf<VrDeviceInfoC>(),
-      allocatorFunc:   ([count = 1]) => calloc<VrDeviceInfoC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$VrDeviceInfo$ = .new(this, r'Ptr$VrDeviceInfo$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<VrDeviceInfoC>>(count),
-      valueFunc: VrDeviceInfo$.Value,
-      rawArrayFunc: VrDeviceInfo$.RawArray,
-    );
-
-    VrStereoConfig$ = .new(this, r'VrStereoConfig$',
+    VrStereoConfig$ = .new(.new(this,
       byteSize:        sizeOf<VrStereoConfigC>(),
-      allocatorFunc:   ([count = 1]) => calloc<VrStereoConfigC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
+    ));
 
-    Ptr$VrStereoConfig$ = .new(this, r'Ptr$VrStereoConfig$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<VrStereoConfigC>>(count),
-      valueFunc: VrStereoConfig$.Value,
-      rawArrayFunc: VrStereoConfig$.RawArray,
-    );
-
-    Wave$ = .new(this, r'Wave$',
+    Wave$ = .new(.new(this,
       byteSize:        sizeOf<WaveC>(),
-      allocatorFunc:   ([count = 1]) => calloc<WaveC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
-    );
-
-    Ptr$Wave$ = .new(this, r'Ptr$Wave$',
-      allocatorFunc: ([count = 1]) => calloc<Pointer<WaveC>>(count),
-      valueFunc: Wave$.Value,
-      rawArrayFunc: Wave$.RawArray,
-    );
+    ));
   }
 }

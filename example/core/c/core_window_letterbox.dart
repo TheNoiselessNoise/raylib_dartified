@@ -25,7 +25,7 @@ void main() {
   final target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
   SetTextureFilter(target.texture, TextureFilter.TEXTURE_FILTER_BILINEAR.value);
 
-  final colors = Color$.AtUnique(count: 10);
+  final colors = Color$.val.AtUnique(count: 10);
   for (int i = 0; i < 10; i++) colors[i].set(GetRandomValue(100, 250), GetRandomValue(50, 150), GetRandomValue(10, 100), 255);
 
   while (!WindowShouldClose()) {
@@ -37,7 +37,7 @@ void main() {
     }
 
     final mouse = GetMousePosition();
-    final virtualMouse = Vector2$.At('virtualMouse');
+    final virtualMouse = Vector2$.val.At('virtualMouse');
     virtualMouse.ref.x = (mouse.x - (GetScreenWidth() - (gameScreenWidth*scale))*0.5)/scale;
     virtualMouse.ref.y = (mouse.y - (GetScreenHeight() - (gameScreenHeight*scale))*0.5)/scale;
     virtualMouse.setD(virtualMouse.toD().clamp(.zero(), .vec2(gameScreenWidth, gameScreenHeight)));
@@ -61,9 +61,9 @@ void main() {
 
       DrawTexturePro(
         target.texture,
-        Rectangle$.$1.set(0.0, 0.0, target.texture.width, -target.texture.height),
-        Rectangle$.$2.set((GetScreenWidth() - (gameScreenWidth*scale))*0.5, (GetScreenHeight() - (gameScreenHeight*scale))*0.5, gameScreenWidth*scale, gameScreenHeight*scale),
-        Vector2$.$zero, 0.0, WHITE
+        Rectangle$.val.$1.set(0.0, 0.0, target.texture.width, -target.texture.height),
+        Rectangle$.val.$2.set((GetScreenWidth() - (gameScreenWidth*scale))*0.5, (GetScreenHeight() - (gameScreenHeight*scale))*0.5, gameScreenWidth*scale, gameScreenHeight*scale),
+        Vector2$.val.$zero, 0.0, WHITE
       );
     EndDrawing();
   }

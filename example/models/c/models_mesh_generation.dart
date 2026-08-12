@@ -15,7 +15,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5, 5, 5);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -79,7 +79,7 @@ void main()
 
       BeginMode3D(camera.ref);
 
-        DrawModel(models[currentModel], Vector3$.$zero, 1.0, WHITE);
+        DrawModel(models[currentModel], Vector3$.val.$zero, 1.0, WHITE);
         DrawGrid(10, 1.0);
 
       EndMode3D();
@@ -115,14 +115,14 @@ void main()
 }
 
 MeshC GenMeshCustom() {
-  final mesh = Mesh$.At('mesh');
+  final mesh = Mesh$.val.At('mesh');
 
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = mesh.ref.triangleCount*3;
 
-  mesh.ref.vertices = Float32$.Raw(mesh.ref.vertexCount*3);
-  mesh.ref.texcoords = Float32$.Raw(mesh.ref.vertexCount*2);
-  mesh.ref.normals = Float32$.Raw(mesh.ref.vertexCount*3);
+  mesh.ref.vertices = Float32$.val.Raw(mesh.ref.vertexCount*3);
+  mesh.ref.texcoords = Float32$.val.Raw(mesh.ref.vertexCount*2);
+  mesh.ref.normals = Float32$.val.Raw(mesh.ref.vertexCount*3);
 
   // Vertex at (0, 0, 0)
   mesh.ref.vertices[0] = 0;

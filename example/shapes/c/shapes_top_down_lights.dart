@@ -57,15 +57,15 @@ void main()
   SetTargetFPS(60);
 
   lights = .generate(MAX_LIGHTS, (i) => .new(
-    position: Vector2$.At('light_position_$i'),
-    mask: RenderTexture$.At('light_mask_$i'),
-    bounds: Rectangle$.At('light_bounds_$i'),
+    position: Vector2$.val.At('light_position_$i'),
+    mask: RenderTexture$.val.At('light_mask_$i'),
+    bounds: Rectangle$.val.At('light_bounds_$i'),
     shadows: .generate(MAX_SHADOWS, (j) => .new(
-      vertices: Vector2$.At('light_shadows_${i}_vertices_$j', 4)
+      vertices: Vector2$.val.At('light_shadows_${i}_vertices_$j', 4)
     ))
   ));
 
-  final boxes = Rectangle$.FillInto(key: 'boxes', MAX_BOXES, (i, r) => switch (i) {
+  final boxes = Rectangle$.val.FillInto(key: 'boxes', MAX_BOXES, (i, r) => switch (i) {
     0 => r.set(150, 80, 40, 40),
     1 => r.set(1200, 700, 40, 40),
     2 => r.set(200, 600, 40, 40),
@@ -125,8 +125,8 @@ void main()
         {
           if (lights[i].active) DrawTextureRec(
             lights[i].mask.ref.texture,
-            Rectangle$.$1.set(0, 0, w, -h),
-            Vector2$.$1.set(0, 0),
+            Rectangle$.val.$1.set(0, 0, w, -h),
+            Vector2$.val.$1.set(0, 0),
             WHITE,
           );
         }
@@ -144,15 +144,15 @@ void main()
 
       DrawTextureRec(
         backgroundTexture,
-        Rectangle$.$1.set(0, 0, w, h),
-        Vector2$.$1.set(0, 0),
+        Rectangle$.val.$1.set(0, 0, w, h),
+        Vector2$.val.$1.set(0, 0),
         WHITE,
       );
       
       DrawTextureRec(
         lightMask.texture,
-        Rectangle$.$1.set(0, 0, w, -h),
-        Vector2$.$1.set(0, 0),
+        Rectangle$.val.$1.set(0, 0, w, -h),
+        Vector2$.val.$1.set(0, 0),
         ColorAlpha(WHITE, showLines ? 0.75 : 1.0),
       );
 
@@ -254,7 +254,7 @@ void DrawLightMask(int slot)
     rlSetBlendMode(BlendMode.BLEND_CUSTOM.value);
 
     if (lights[slot].valid) DrawCircleGradient(
-      Vector2$.$1.set(lights[slot].position.ref.x, lights[slot].position.ref.y),
+      Vector2$.val.$1.set(lights[slot].position.ref.x, lights[slot].position.ref.y),
       lights[slot].outerRadius,
       ColorAlpha(WHITE, 0),
       WHITE
@@ -307,8 +307,8 @@ bool UpdateLight(int slot, Pointer<RectangleC> boxes)
 
     if (!CheckCollisionRecs(lights[slot].bounds.ref, boxes[i])) continue;
 
-    final sp = Vector2$.$1.set(boxes[i].x, boxes[i].y);
-    final ep = Vector2$.$2.set(boxes[i].x + boxes[i].width, boxes[i].y);
+    final sp = Vector2$.val.$1.set(boxes[i].x, boxes[i].y);
+    final ep = Vector2$.val.$2.set(boxes[i].x + boxes[i].width, boxes[i].y);
 
     if (lights[slot].position.ref.y > ep.y) ComputeShadowVolumeForEdge(slot, sp, ep);
 

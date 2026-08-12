@@ -47,8 +47,8 @@ void main()
       angle = v0.lineAngle(v2)*rl.RAD2DEG;
     }
 
-    final startPos = Vector2$.At('startPos').setD(v0);
-    final endPos = Vector2$.At('endPos');
+    final startPos = Vector2$.val.At('startPos').setD(v0);
+    final endPos = Vector2$.val.At('endPos');
 
     BeginDrawing();
 

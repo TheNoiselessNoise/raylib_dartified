@@ -17,19 +17,19 @@ void main()
 
   final fudesumiImage = LoadImage("../resources/fudesumi.png".toC);
 
-  final imageAlpha = Image$.At('imageAlpha');
+  final imageAlpha = Image$.val.At('imageAlpha');
   imageAlpha.ref = ImageFromChannel(fudesumiImage, 3);
   ImageAlphaMask(imageAlpha, imageAlpha.ref);
 
-  final imageRed = Image$.At('imageRed');
+  final imageRed = Image$.val.At('imageRed');
   imageRed.ref = ImageFromChannel(fudesumiImage, 0);
   ImageAlphaMask(imageRed, imageAlpha.ref);
 
-  final imageGreen = Image$.At('imageGreen');
+  final imageGreen = Image$.val.At('imageGreen');
   imageGreen.ref = ImageFromChannel(fudesumiImage, 1);
   ImageAlphaMask(imageGreen, imageAlpha.ref);
 
-  final imageBlue = Image$.At('imageBlue');
+  final imageBlue = Image$.val.At('imageBlue');
   imageBlue.ref = ImageFromChannel(fudesumiImage, 2);
   ImageAlphaMask(imageBlue, imageAlpha.ref);
 
@@ -53,22 +53,22 @@ void main()
   UnloadImage(imageBlue.ref);
   UnloadImage(backgroundImage);
 
-  final fudesumiRec = Rectangle$.At('fudesumiRec')
+  final fudesumiRec = Rectangle$.val.At('fudesumiRec')
     .set(0, 0, fudesumiImage.width, fudesumiImage.height);
 
-  final fudesumiPos = Rectangle$.At('fudesumiPos')
+  final fudesumiPos = Rectangle$.val.At('fudesumiPos')
     .set(50, 10, fudesumiImage.width*0.8, fudesumiImage.height*0.8);
   
-  final redPos = Rectangle$.At('redPos')
+  final redPos = Rectangle$.val.At('redPos')
     .set(410, 10, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final greenPos = Rectangle$.At('greenPos')
+  final greenPos = Rectangle$.val.At('greenPos')
     .set(600, 10, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final bluePos = Rectangle$.At('bluePos')
+  final bluePos = Rectangle$.val.At('bluePos')
     .set(410, 230, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
   
-  final alphaPos = Rectangle$.At('alphaPos')
+  final alphaPos = Rectangle$.val.At('alphaPos')
     .set(600, 230, fudesumiPos.ref.width / 2, fudesumiPos.ref.height / 2 );
 
   while (!WindowShouldClose())
@@ -76,12 +76,12 @@ void main()
     BeginDrawing();
 
       DrawTexture(backgroundTexture, 0, 0, WHITE);
-      DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, Vector2$.$zero, 0, WHITE);
+      DrawTexturePro(fudesumiTexture, fudesumiRec.ref, fudesumiPos.ref, Vector2$.val.$zero, 0, WHITE);
 
-      DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, Vector2$.$zero, 0, RED);
-      DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, Vector2$.$zero, 0, GREEN);
-      DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, Vector2$.$zero, 0, BLUE);
-      DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, Vector2$.$zero, 0, WHITE);
+      DrawTexturePro(textureRed, fudesumiRec.ref, redPos.ref, Vector2$.val.$zero, 0, RED);
+      DrawTexturePro(textureGreen, fudesumiRec.ref, greenPos.ref, Vector2$.val.$zero, 0, GREEN);
+      DrawTexturePro(textureBlue, fudesumiRec.ref, bluePos.ref, Vector2$.val.$zero, 0, BLUE);
+      DrawTexturePro(textureAlpha, fudesumiRec.ref, alphaPos.ref, Vector2$.val.$zero, 0, WHITE);
 
     EndDrawing();
   }

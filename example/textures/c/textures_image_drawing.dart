@@ -15,25 +15,25 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_image_drawing".toC);
   SetTargetFPS(60);
 
-  final cat = Image$.At('cat');
+  final cat = Image$.val.At('cat');
   cat.ref = LoadImage("../resources/cat.png".toC);
-  ImageCrop(cat, Rectangle$.$1.set(100, 10, 280, 380));
+  ImageCrop(cat, Rectangle$.val.$1.set(100, 10, 280, 380));
   ImageFlipHorizontal(cat);
   ImageResize(cat, 150, 200);
 
-  final parrots = Image$.At('parrots');
+  final parrots = Image$.val.At('parrots');
   parrots.ref = LoadImage("../resources/parrots.png".toC);
 
   ImageDraw(
     parrots, cat.ref,
-    Rectangle$.$1.set(0, 0, cat.ref.width, cat.ref.height),
-    Rectangle$.$2.set(30, 40, cat.ref.width*1.5, cat.ref.height*1.5),
+    Rectangle$.val.$1.set(0, 0, cat.ref.width, cat.ref.height),
+    Rectangle$.val.$2.set(30, 40, cat.ref.width*1.5, cat.ref.height*1.5),
     WHITE
   );
 
   ImageCrop(
     parrots,
-    Rectangle$.$1.set(0, 50, parrots.ref.width, parrots.ref.height - 100),
+    Rectangle$.val.$1.set(0, 50, parrots.ref.width, parrots.ref.height - 100),
   );
 
   ImageDrawPixel(parrots, 10, 10, RAYWHITE);
@@ -47,7 +47,7 @@ void main()
   ImageDrawTextEx(
     parrots, font,
     "PARROTS & CAT".toC,
-    Vector2$.$1.set(300, 230),
+    Vector2$.val.$1.set(300, 230),
     font.baseSize.toDouble(),
     -2,
     WHITE

@@ -41,7 +41,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_cellular_automata".toC);
   SetTargetFPS(60);
 
-  final image = Image$.At('image');
+  final image = Image$.val.At('image');
   image.ref = GenImageColor(imageWidth, imageHeight, RAYWHITE);
   
   ImageDrawPixel(image, imageWidth~/2, 0, BLACK);
@@ -122,7 +122,7 @@ void main()
 
         if (mouseInCell == i + 8)
           DrawRectangleLinesEx(
-            Rectangle$.$1.set(2 + (presetsSizeX + 2.0)*(i~/2), (presetsSizeY + 2.0)*(i%2), presetsSizeX + 4.0, presetsSizeY + 4.0),
+            Rectangle$.val.$1.set(2 + (presetsSizeX + 2.0)*(i~/2), (presetsSizeY + 2.0)*(i%2), presetsSizeX + 4.0, presetsSizeY + 4.0),
             3, RED
           );
       }
@@ -142,7 +142,7 @@ void main()
 
         if (mouseInCell == i)
           DrawRectangleLinesEx(
-            Rectangle$.$1.set(drawRuleStartX - drawRuleGroupSpacing*i + drawRuleSpacing - 2.0, drawRuleStartY + drawRuleSpacing - 2.0, drawRuleSize + 4.0, drawRuleSize + 4.0),
+            Rectangle$.val.$1.set(drawRuleStartX - drawRuleGroupSpacing*i + drawRuleSpacing - 2.0, drawRuleStartY + drawRuleSpacing - 2.0, drawRuleSize + 4.0, drawRuleSize + 4.0),
             3, RED
           );
       }

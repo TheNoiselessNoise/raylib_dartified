@@ -82,7 +82,7 @@ void main() {
     _k(.KEY_RIGHT_CONTROL), _k(.KEY_LEFT), _k(.KEY_DOWN), _k(.KEY_RIGHT)
   ];
 
-  final keyboardOffset = Vector2$.$new.set(26, 80);
+  final keyboardOffset = Vector2$.val.$new.set(26, 80);
 
   while (!WindowShouldClose()) {
     int key = GetKeyPressed();
@@ -108,7 +108,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 15; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y, line01KeyWidths[i], 30.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y, line01KeyWidths[i], 30.0),
           line01Keys[i]
         );
         recOffsetX += line01KeyWidths[i] + KEY_REC_SPACING;
@@ -119,7 +119,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 15; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + KEY_REC_SPACING, line02KeyWidths[i], 38.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + KEY_REC_SPACING, line02KeyWidths[i], 38.0),
           line02Keys[i]
         );
         recOffsetX += line02KeyWidths[i] + KEY_REC_SPACING;
@@ -130,7 +130,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 15; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38 + KEY_REC_SPACING*2, line03KeyWidths[i], 38.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38 + KEY_REC_SPACING*2, line03KeyWidths[i], 38.0),
           line03Keys[i]
         );
         recOffsetX += line03KeyWidths[i] + KEY_REC_SPACING;
@@ -141,7 +141,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 14; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*2 + KEY_REC_SPACING*3, line04KeyWidths[i], 38.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*2 + KEY_REC_SPACING*3, line04KeyWidths[i], 38.0),
           line04Keys[i]
         );
         recOffsetX += line04KeyWidths[i] + KEY_REC_SPACING;
@@ -152,7 +152,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 14; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*3 + KEY_REC_SPACING*4, line05KeyWidths[i], 38.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*3 + KEY_REC_SPACING*4, line05KeyWidths[i], 38.0),
           line05Keys[i]
         );
         recOffsetX += line05KeyWidths[i] + KEY_REC_SPACING;
@@ -163,7 +163,7 @@ void main() {
       for (int i = 0, recOffsetX = 0; i < 11; i++)
       {
         GuiKeyboardKey(
-          Rectangle$.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*4 + KEY_REC_SPACING*5, line06KeyWidths[i], 38.0),
+          Rectangle$.val.$1.set(keyboardOffset.x + recOffsetX, keyboardOffset.y + 30 + 38*4 + KEY_REC_SPACING*5, line06KeyWidths[i], 38.0),
           line06Keys[i]
         );
         recOffsetX += line06KeyWidths[i] + KEY_REC_SPACING;

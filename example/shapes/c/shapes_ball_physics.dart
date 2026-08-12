@@ -63,11 +63,11 @@ void main()
   ];
 
   Ball? grabbedBall;
-  final pressOffset = Vector2$.At('pressOffset');
+  final pressOffset = Vector2$.val.At('pressOffset');
   double gravity = 100;
 
-  final ballColor = Color$.At('ballColor');
-  final ballPosition = Vector2$.At('ballPosition');
+  final ballColor = Color$.val.At('ballColor');
+  final ballPosition = Vector2$.val.At('ballPosition');
 
   while (!WindowShouldClose())
   {

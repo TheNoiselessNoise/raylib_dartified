@@ -5,26 +5,22 @@ class RaylibMsfGifD extends RaylibModule<Raylib> {
   late final NativeStructAlloc<MsfGifResultC, MsfGifResultD> _MsfGifResult$;
 
   RaylibMsfGifD(super.rl) {
-    rl.Temp.registerAllocator('MsfGifState\$', _MsfGifState$ = .new(rl.Temp, 'MsfGifState\$',
+    rl.Temp.registerAllocator(_MsfGifState$ = .new(rl.Temp,
       byteSize:        sizeOf<MsfGifStateC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MsfGifStateC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,
       updateFunc:      (ptr, source) => source.nativeReadFrom(ptr.ref),
     ));
 
-    rl.Temp.registerAllocator('MsfGifResult\$', _MsfGifResult$ = .new(rl.Temp, 'MsfGifResult\$',
+    rl.Temp.registerAllocator(_MsfGifResult$ = .new(rl.Temp,
       byteSize:        sizeOf<MsfGifResultC>(),
-      allocatorFunc:   ([count = 1]) => calloc<MsfGifResultC>(count),
       refFunc:         (ptr)         => ptr.ref,
       setRefFunc:      (ptr, v)      => ptr..ref = v,
       pointerToStruct: (ptr)         => ptr.toD(),
-      printerFunc:     (ptr)         => ptr.toD().signature(),
       setCFunc:        (ptr, i, v)   => ptr[i].setC(v),
       indexerFunc:     (ptr, i)      => ptr[i],
       indexSetterFunc: (ptr, i, v)   => ptr[i] = v,

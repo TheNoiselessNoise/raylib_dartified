@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_scissor_test".toC);
   SetTargetFPS(60);
 
-  final scissorArea = Rectangle$.$new.set(0, 0, 300, 300);
+  final scissorArea = Rectangle$.val.$new.set(0, 0, 300, 300);
   bool scissorMode = true;
 
   while (!WindowShouldClose()) {

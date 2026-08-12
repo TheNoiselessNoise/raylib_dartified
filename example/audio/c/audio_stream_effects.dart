@@ -25,7 +25,7 @@ void main() async {
   final music = LoadMusicStream("../resources/country.mp3".toC);
 
   delayBufferSize = 48000*2;
-  delayBuffer = Float32$.At('delayBuffer', delayBufferSize);
+  delayBuffer = Float32$.val.At('delayBuffer', delayBufferSize);
 
   PlayMusicStream(music);
 

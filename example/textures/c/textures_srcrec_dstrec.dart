@@ -20,17 +20,17 @@ void main()
   int frameWidth = (scarfy.width/6).toInt();
   int frameHeight = scarfy.height;
 
-  final sourceRec = Rectangle$.At('sourceRec').set(
+  final sourceRec = Rectangle$.val.At('sourceRec').set(
     0.0, 0.0,
     frameWidth, frameHeight
   );
 
-  final destRec = Rectangle$.At('destRec').set(
+  final destRec = Rectangle$.val.At('destRec').set(
     screenWidth/2.0, screenHeight/2.0,
     frameWidth*2.0, frameHeight*2.0
   );
 
-  final origin = Vector2$.At('origin').set(frameWidth, frameHeight);
+  final origin = Vector2$.val.At('origin').set(frameWidth, frameHeight);
 
   int rotation = 0;
 

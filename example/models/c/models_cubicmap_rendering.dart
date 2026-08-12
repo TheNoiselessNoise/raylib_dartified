@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_cubicmap_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(16, 14, 16);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
@@ -25,13 +25,13 @@ void main()
   final image = LoadImage("../resources/cubicmap.png".toC);
   final cubicmap = LoadTextureFromImage(image);
 
-  final mesh = GenMeshCubicmap(image, Vector3$.$1.set(1.0, 1.0, 1.0));
+  final mesh = GenMeshCubicmap(image, Vector3$.val.$1.set(1.0, 1.0, 1.0));
   final model = LoadModelFromMesh(mesh);
 
   final texture = LoadTexture("../resources/cubicmap_atlas.png".toC);
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final mapPosition = Vector3$.At('mapPosition').set(-16.0, 0.0, -8.0);
+  final mapPosition = Vector3$.val.At('mapPosition').set(-16.0, 0.0, -8.0);
 
   UnloadImage(image);
 
@@ -53,7 +53,7 @@ void main()
 
       EndMode3D();
 
-      DrawTextureEx(cubicmap, Vector2$.$1.set(screenWidth - cubicmap.width*4.0 - 20, 20.0), 0.0, 4.0, WHITE);
+      DrawTextureEx(cubicmap, Vector2$.val.$1.set(screenWidth - cubicmap.width*4.0 - 20, 20.0), 0.0, 4.0, WHITE);
       DrawRectangleLines(screenWidth - cubicmap.width*4 - 20, 20, cubicmap.width*4, cubicmap.height*4, GREEN);
 
       DrawText("cubicmap image used to".toC, 658, 90, 10, GRAY);

@@ -32,19 +32,19 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_image_processing".toC);
   SetTargetFPS(60);
 
-  final imOrigin = Image$.At('imOrigin');
+  final imOrigin = Image$.val.At('imOrigin');
   imOrigin.ref = LoadImage("../resources/parrots.png".toC);
   ImageFormat(imOrigin, PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8.value);
   final texture = LoadTextureFromImage(imOrigin.ref);
 
-  final imCopy = Image$.At('imCopy');
+  final imCopy = Image$.val.At('imCopy');
   imCopy.ref = ImageCopy(imOrigin.ref);
 
   ImageProcess currentProcess = .NONE;
   bool textureReload = false;
   int mouseHoverRec = -1;
 
-  final toggleRecs = Rectangle$.FillInto(
+  final toggleRecs = Rectangle$.val.FillInto(
     ImageProcess.values.length,
     (i, r) => r.set(40.0, 50 + 32*i, 150.0, 30.0),
   );

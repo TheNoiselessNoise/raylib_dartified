@@ -50,7 +50,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "text_words_alignment".toC);
   SetTargetFPS(60);
 
-  final textContainerRect = Rectangle$.At('textContainerRect').set(
+  final textContainerRect = Rectangle$.val.At('textContainerRect').set(
     screenWidth/2-screenWidth/4,
     screenHeight/2-screenHeight/3,
     screenWidth/2,
@@ -58,7 +58,7 @@ void main()
   );
 
   int wordIndex = 0;
-  final wordCount = Int$.At('wordCount');
+  final wordCount = Int$.val.At('wordCount');
   final words = TextSplit("raylib is a simple and easy-to-use library to enjoy videogames programming".toC, ' '.ch, wordCount);
 
   int fontSize = 40;
@@ -92,7 +92,7 @@ void main()
       DrawTextEx(
         font,
         words[wordIndex],
-        Vector2$.$1.set(
+        Vector2$.val.$1.set(
           textContainerRect.ref.x + Lerp(0.0, textContainerRect.ref.width  - textSize.x, hAlign.index*0.5),
           textContainerRect.ref.y + Lerp(0.0, textContainerRect.ref.height - textSize.y, vAlign.index*0.5)
         ),

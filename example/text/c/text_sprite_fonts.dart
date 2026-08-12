@@ -48,12 +48,12 @@ void main()
   InitWindow(screenWidth, screenHeight, "text_sprite_fonts".toC);
   SetTargetFPS(60);
   
-  final fonts = Font$.At('fonts', fontPaths.length);
+  final fonts = Font$.val.At('fonts', fontPaths.length);
   for (int i = 0; i < fontPaths.length; i++) {
     fonts[i] = LoadFont(fontPaths[i].toC);
   }
 
-  final positions = Vector2$.At('positions', fontPaths.length);
+  final positions = Vector2$.val.At('positions', fontPaths.length);
   for (int i = 0; i < fontPaths.length; i++) {
     final fontSize = MeasureTextEx(
       fonts[i],

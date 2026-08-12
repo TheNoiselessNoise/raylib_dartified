@@ -21,14 +21,14 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(1.5, 1.5, 1.5);
   camera.ref.target.set(0, 0.4, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
 
   final modelFileName = "../resources/models/m3d/cesium_man.m3d";
   bool drawMesh = true;
@@ -37,7 +37,7 @@ void main()
 
   final model = LoadModel(modelFileName.toC);
 
-  final animsCount = Int$.At('animsCount');
+  final animsCount = Int$.val.At('animsCount');
   int animFrameCounter = 0, animId = 0;
   final anims = LoadModelAnimations(modelFileName.toC, animsCount);
 

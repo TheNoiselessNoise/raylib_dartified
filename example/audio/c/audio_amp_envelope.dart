@@ -38,10 +38,10 @@ void main() {
 
   SetAudioStreamBufferSizeDefault(BUFFER_SIZE);
 
-  final buffer = Float32$.AtUnique(count: BUFFER_SIZE);
+  final buffer = Float32$.val.AtUnique(count: BUFFER_SIZE);
   final stream = LoadAudioStream(SAMPLE_RATE, 32, 1);
 
-  final audioTime = Float32$.ValueUnique(0.0);
+  final audioTime = Float32$.val.ValueUnique(0.0);
 
   final env = calloc<Envelope>();
   env.ref.attackTime = 1.0;
@@ -83,27 +83,27 @@ void main() {
 
       ClearBackground(RAYWHITE);
 
-      final floatEnvValue = Float32$.At('floatEnvValue');
+      final floatEnvValue = Float32$.val.At('floatEnvValue');
 
       floatEnvValue.value = env.ref.attackTime;
-      GuiSliderBar(Rectangle$.$1.set(100, 60, 400, 30), "Attack (s)".toC, "${env.ref.attackTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
+      GuiSliderBar(Rectangle$.val.$1.set(100, 60, 400, 30), "Attack (s)".toC, "${env.ref.attackTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
       env.ref.attackTime = floatEnvValue.value;
 
       floatEnvValue.value = env.ref.decayTime;
-      GuiSliderBar(Rectangle$.$1.set(100, 100, 400, 30), "Decay (s)".toC, "${env.ref.decayTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
+      GuiSliderBar(Rectangle$.val.$1.set(100, 100, 400, 30), "Decay (s)".toC, "${env.ref.decayTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
       env.ref.decayTime = floatEnvValue.value;
 
       floatEnvValue.value = env.ref.sustainLevel;
-      GuiSliderBar(Rectangle$.$1.set(100, 140, 400, 30), "Sustain".toC, env.ref.sustainLevel.f2.toC, floatEnvValue, 0.0, 1.0);
+      GuiSliderBar(Rectangle$.val.$1.set(100, 140, 400, 30), "Sustain".toC, env.ref.sustainLevel.f2.toC, floatEnvValue, 0.0, 1.0);
       env.ref.sustainLevel = floatEnvValue.value;
 
       floatEnvValue.value = env.ref.releaseTime;
-      GuiSliderBar(Rectangle$.$1.set(100, 180, 400, 30), "Release (s)".toC, "${env.ref.releaseTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
+      GuiSliderBar(Rectangle$.val.$1.set(100, 180, 400, 30), "Release (s)".toC, "${env.ref.releaseTime.f2}s".toC, floatEnvValue, 0.1, 3.0);
       env.ref.releaseTime = floatEnvValue.value;
 
-      DrawADSRGraph(env, Rectangle$.$1.set(100, 250, 400, 100));
+      DrawADSRGraph(env, Rectangle$.val.$1.set(100, 250, 400, 100));
 
-      DrawCircleV(Vector2$.$1.set(520, 350 - (env.ref.currentValue * 100)), 5, MAROON);
+      DrawCircleV(Vector2$.val.$1.set(520, 350 - (env.ref.currentValue * 100)), 5, MAROON);
       DrawText("Current Gain: ${env.ref.currentValue.f2}".toC, 535, 345 - (env.ref.currentValue * 100).toInt(), 10, MAROON);
 
       DrawText("Press SPACE to PLAY the sound!".toC, 200, 400, 20, LIGHTGRAY);
@@ -173,11 +173,11 @@ void DrawADSRGraph(Pointer<Envelope> env, RectangleC bounds)
   final scaleX = bounds.width/totalTime;
   final scaleY = bounds.height;
 
-  final start = Vector2$.At('start').set(bounds.x, bounds.y + bounds.height);
-  final peak = Vector2$.At('peak').set(start.ref.x + (env.ref.attackTime*scaleX), bounds.y);
-  final sustain = Vector2$.At('sustain').set(peak.ref.x + (env.ref.decayTime*scaleX), bounds.y + (1.0 - env.ref.sustainLevel)*scaleY);
-  final rel = Vector2$.At('rel').set(sustain.ref.x + (sustainWidth*scaleX), sustain.ref.y);
-  final end = Vector2$.At('end').set(rel.ref.x + (env.ref.releaseTime*scaleX), bounds.y + bounds.height);
+  final start = Vector2$.val.At('start').set(bounds.x, bounds.y + bounds.height);
+  final peak = Vector2$.val.At('peak').set(start.ref.x + (env.ref.attackTime*scaleX), bounds.y);
+  final sustain = Vector2$.val.At('sustain').set(peak.ref.x + (env.ref.decayTime*scaleX), bounds.y + (1.0 - env.ref.sustainLevel)*scaleY);
+  final rel = Vector2$.val.At('rel').set(sustain.ref.x + (sustainWidth*scaleX), sustain.ref.y);
+  final end = Vector2$.val.At('end').set(rel.ref.x + (env.ref.releaseTime*scaleX), bounds.y + bounds.height);
 
   DrawLineV(start.ref, peak.ref, SKYBLUE);
   DrawLineV(peak.ref, sustain.ref, BLUE);

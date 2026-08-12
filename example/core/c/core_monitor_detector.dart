@@ -82,7 +82,7 @@ void main() {
       {
         final m = monitors[i];
 
-        final rec = Rectangle$.$1.set(
+        final rec = Rectangle$.val.$1.set(
           (m.position.x + monitorOffsetX)*monitorScale + 140,
           m.position.y*monitorScale + 80,
           m.width*monitorScale,
@@ -101,8 +101,8 @@ void main() {
         {
           DrawRectangleLinesEx(rec, 5, RED);
           DrawRectangleV(
-            Vector2$.$1.set((GetWindowPosition().x + monitorOffsetX)*monitorScale  + 140, GetWindowPosition().y*monitorScale + 80),
-            Vector2$.$2.set(screenWidth*monitorScale, screenHeight*monitorScale),
+            Vector2$.val.$1.set((GetWindowPosition().x + monitorOffsetX)*monitorScale  + 140, GetWindowPosition().y*monitorScale + 80),
+            Vector2$.val.$2.set(screenWidth*monitorScale, screenHeight*monitorScale),
             Fade(GREEN, 0.5)
           );
         }

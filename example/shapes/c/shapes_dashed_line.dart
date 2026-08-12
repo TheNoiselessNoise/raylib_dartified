@@ -15,8 +15,8 @@ void main()
   SetTargetFPS(60);
   
   // Line Properties
-  final lineStartPosition = Vector2$.At('lineStartPosition').set(20.0, 50.0);
-  final lineEndPosition = Vector2$.At('lineEndPosition').set(780.0, 400.0);
+  final lineStartPosition = Vector2$.val.At('lineStartPosition').set(20.0, 50.0);
+  final lineEndPosition = Vector2$.val.At('lineEndPosition').set(780.0, 400.0);
   double dashLength = 25.0;
   double blankLength = 15.0;
 

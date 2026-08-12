@@ -15,12 +15,12 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_rlgl_triangle".toC);
   SetTargetFPS(60);
 
-  final startingPositions = Vector2$.At('startingPositions', 3);
+  final startingPositions = Vector2$.val.At('startingPositions', 3);
   startingPositions[0].set(400, 150);
   startingPositions[1].set(300, 300);
   startingPositions[2].set(500, 300);
 
-  final trianglePositions = Vector2$.At('trianglePositions', 3);
+  final trianglePositions = Vector2$.val.At('trianglePositions', 3);
   trianglePositions[0].setC(startingPositions[0]);
   trianglePositions[1].setC(startingPositions[1]);
   trianglePositions[2].setC(startingPositions[2]);

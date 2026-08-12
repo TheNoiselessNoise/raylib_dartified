@@ -26,7 +26,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_decals".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(5.0, 5.0, 5.0);
   camera.ref.target.set(0.0, 1.0, 0.0);
   camera.ref.up.set(0.0, 1.6, 0.0);
@@ -61,7 +61,7 @@ void main()
   final decalMaterial = LoadMaterialDefault();
   decalMaterial.maps[0].color = YELLOW;
 
-  final decalImage = Image$.RawValueUnique(LoadImage("../resources/raylib_logo.png".toC));
+  final decalImage = Image$.val.RawValueUnique(LoadImage("../resources/raylib_logo.png".toC));
   ImageResizeNN(decalImage, decalImage.ref.width~/4, decalImage.ref.height~/4);
   final decalTexture = LoadTextureFromImage(decalImage.ref);
   UnloadImage(decalImage.ref);
@@ -71,7 +71,7 @@ void main()
   decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].color = RAYWHITE;
 
   bool showModel = true;
-  final decalModels = Model$.AtUnique(count: MAX_DECALS);
+  final decalModels = Model$.val.AtUnique(count: MAX_DECALS);
   int decalCount = 0;
 
   while (!WindowShouldClose())
@@ -80,7 +80,7 @@ void main()
       UpdateCamera(camera, CameraMode.CAMERA_THIRD_PERSON.value);
     }
 
-    final collision = RayCollision$.$1Ptr;
+    final collision = RayCollision$.val.$1Ptr;
     collision.ref.distance = FLT_MAX;
     collision.ref.hit = false;
 
@@ -90,7 +90,7 @@ void main()
 
     if ((boxHitInfo.hit) && (decalCount < MAX_DECALS))
     {
-      final meshHitInfo = RayCollision$.$2Ptr;
+      final meshHitInfo = RayCollision$.val.$2Ptr;
       for (int m = 0; m < model.meshCount; m++)
       {
         meshHitInfo.ref = GetRayCollisionMesh(ray, model.meshes[m], model.transform);
@@ -124,16 +124,16 @@ void main()
       ClearBackground(RAYWHITE);
 
       BeginMode3D(camera.ref);
-        if (showModel) DrawModel(model, Vector3$.$zero, 1.0, WHITE);
+        if (showModel) DrawModel(model, Vector3$.val.$zero, 1.0, WHITE);
 
-        for (int i = 0; i < decalCount; i++) DrawModel(decalModels[i], Vector3$.$zero, 1.0, WHITE);
+        for (int i = 0; i < decalCount; i++) DrawModel(decalModels[i], Vector3$.val.$zero, 1.0, WHITE);
 
         if (collision.ref.hit)
         {
           final origin = collision.ref.point.toD().add(collision.ref.normal.toD().scale(1.0));
           MatrixD splat = .lookAt(collision.ref.point.toD(), origin, .vec3(0.0, 1.0, 0.0));
           placementCube.transform.setD(splat.invert());
-          DrawModel(placementCube, Vector3$.$zero, 1.0, Fade(WHITE, 0.5));
+          DrawModel(placementCube, Vector3$.val.$zero, 1.0, Fade(WHITE, 0.5));
         }
 
         DrawGrid(10, 10.0);
@@ -191,12 +191,12 @@ void main()
       DrawText("(c) Character model and texture from kenney.nl".toC, screenWidth - 260, screenHeight - 20, 10, GRAY);
 
       if (GuiButton(
-        Rectangle$.$1.set(10, screenHeight - 100, 100, 60),
+        Rectangle$.val.$1.set(10, screenHeight - 100, 100, 60),
         (showModel ? "Hide Model" : "Show Model").toC
       )) showModel = !showModel;
 
       if (GuiButton(
-        Rectangle$.$1.set(10 + 110, screenHeight - 100, 100, 60),
+        Rectangle$.val.$1.set(10 + 110, screenHeight - 100, 100, 60),
         "Clear Decals".toC
       )) {
         for (int i = 0; i < decalCount; i++) UnloadModel(decalModels[i]);
@@ -221,7 +221,7 @@ void main()
 }
 
 void FreeDecalMeshData() {
-  final model = Model$.$new;
+  final model = Model$.val.$new;
   model.meshCount = -1;
   GenMeshDecal(model, .zero(), 0.0, 0.0);
 }
@@ -258,7 +258,7 @@ void FreeMeshBuilder(Pointer<MeshBuilder> mb)
 
 MeshC BuildMesh(Pointer<MeshBuilder> mb)
 {
-  final outMesh = Mesh$.$newPtr;
+  final outMesh = Mesh$.val.$newPtr;
 
   outMesh.ref.vertexCount = mb.ref.vertexCount;
   outMesh.ref.triangleCount = mb.ref.vertexCount~/3;
@@ -292,7 +292,7 @@ Vector3D ClipSegment(Vector3D v0, Vector3D v1, Vector3D p, double s)
 }
 
 Pointer<Vector3C> Vector3Array3(Vector3D v1, Vector3D v2, Vector3D v3) {
-  final vertices = Vector3$.At('__Vector3Array__', 3);
+  final vertices = Vector3$.val.At('__Vector3Array__', 3);
   vertices[0].setD(v1);
   vertices[1].setD(v2);
   vertices[2].setD(v3);
@@ -307,7 +307,7 @@ MeshC GenMeshDecal(ModelC target, MatrixD projection, double decalSize, double d
   {
     FreeMeshBuilder(meshBuilders + 0);
     FreeMeshBuilder(meshBuilders + 1);
-    return Mesh$.$new;
+    return Mesh$.val.$new;
   }
 
   final invProj = projection.invert();
@@ -361,7 +361,7 @@ MeshC GenMeshDecal(ModelC target, MatrixD projection, double decalSize, double d
     }
   }
 
-  final planes = Vector3$.FillInto(key: 'planes', 6, (i, v) => switch(i) {
+  final planes = Vector3$.val.FillInto(key: 'planes', 6, (i, v) => switch(i) {
     0 => v.set( 1,  0,  0),
     1 => v.set(-1,  0,  0),
     2 => v.set( 0,  1,  0),
@@ -491,7 +491,7 @@ MeshC GenMeshDecal(ModelC target, MatrixD projection, double decalSize, double d
   }
   else
   {
-    return Mesh$.$new;
+    return Mesh$.val.$new;
   }
 }
 

@@ -18,7 +18,6 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   
 > {
 
-  
   RaylibGuiD(super.rl);
 
   @override
@@ -79,14 +78,14 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiSetFont(font),
     () => rl.Gui.GuiSetFont(
-      rl.Temp.Font$.Ref1(font).ref,
+      rl.Temp.Font$.val.Ref1(font).ref,
     ),
   );
 
   @override
   FontD GuiGetFont() => run(
     () => RaylibDebugLabels.GuiGetFont(),
-    () => rl.Temp.Font$.RefCapture(
+    () => rl.Temp.Font$.val.RefCapture(
       RaylibCaptureIds.GuiGetFont(),
       (_) => rl.Gui.GuiGetFont(),
     ),
@@ -228,7 +227,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
       posX.toInt(),
       posY.toInt(),
       pixelSize.toInt(),
-      rl.Temp.Color$.Ref1(color).ref,
+      rl.Temp.Color$.val.Ref1(color).ref,
     ),
   );
 
@@ -249,7 +248,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiWindowBox(bounds, title),
     () => rl.Gui.GuiWindowBox(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(title),
     ),
   );
@@ -261,7 +260,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiGroupBox(bounds, text),
     () => rl.Gui.GuiGroupBox(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -273,7 +272,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiLine(bounds, text),
     () => rl.Gui.GuiLine(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -285,7 +284,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiPanel(bounds, text),
     () => rl.Gui.GuiPanel(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -297,9 +296,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiTabBar(bounds, text),
     () {
-      final active = rl.Temp.Int$.Ref1();
+      final active = rl.Temp.Int$.val.Ref1();
       final currentTabClosingRequested = rl.Gui.GuiTabBar(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.Array(text),
         text.length,
         active,
@@ -317,12 +316,12 @@ class RaylibGuiD extends RaylibGuiModuleBase<
     [RectangleD? view]
   ) => run(
     () => RaylibDebugLabels.GuiScrollPanel(bounds, text, content, scroll, view),
-    () => rl.Temp.Vector2$.RefUpdate1(scroll,
-      (ps) => rl.Temp.Rectangle$.RefUpdate1(view,
+    () => rl.Temp.Vector2$.val.RefUpdate1(scroll,
+      (ps) => rl.Temp.Rectangle$.val.RefUpdate1(view,
         (pv) => rl.Gui.GuiScrollPanel(
-          rl.Temp.Rectangle$.Ref2(bounds).ref,
+          rl.Temp.Rectangle$.val.Ref2(bounds).ref,
           rl.Temp.String$.ValueOrNull(text),
-          rl.Temp.Rectangle$.Ref3(content).ref,
+          rl.Temp.Rectangle$.val.Ref3(content).ref,
           ps,
           pv,
         ),
@@ -337,7 +336,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiLabel(bounds, text),
     () => rl.Gui.GuiLabel(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -349,7 +348,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiButton(bounds, text),
     () => rl.Gui.GuiButton(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -361,7 +360,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiLabelButton(bounds, text),
     () => rl.Gui.GuiLabelButton(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -374,9 +373,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiToggle(bounds, text, active),
     () {
-      final valuePtr = rl.Temp.Bool$.Ref1(active);
+      final valuePtr = rl.Temp.Bool$.val.Ref1(active);
       final result = rl.Gui.GuiToggle(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
       );
@@ -392,9 +391,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiToggleGroup(bounds, text, active),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(active.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(active.toInt());
       final result = rl.Gui.GuiToggleGroup(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
       );
@@ -410,9 +409,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiToggleSlider(bounds, text, active),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(active.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(active.toInt());
       final result = rl.Gui.GuiToggleSlider(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
       );
@@ -428,9 +427,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiCheckBox(bounds, text, checked),
     () {
-      final valuePtr = rl.Temp.Bool$.Ref1(checked);
+      final valuePtr = rl.Temp.Bool$.val.Ref1(checked);
       final result = rl.Gui.GuiCheckBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
       );
@@ -446,9 +445,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiComboBox(bounds, text, active),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(active.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(active.toInt());
       final result = rl.Gui.GuiComboBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
       );
@@ -465,9 +464,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiDropdownBox(bounds, text, active, editMode),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(active.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(active.toInt());
       final result = rl.Gui.GuiDropdownBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
         editMode,
@@ -487,9 +486,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiSpinner(bounds, text, value, minValue, maxValue, editMode),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(value.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(value.toInt());
       final result = rl.Gui.GuiSpinner(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
         minValue.toInt(),
@@ -511,9 +510,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiValueBox(bounds, text, value, minValue, maxValue, editMode),
     () {
-      final valuePtr = rl.Temp.Int$.Ref1(value.toInt());
+      final valuePtr = rl.Temp.Int$.val.Ref1(value.toInt());
       final result = rl.Gui.GuiValueBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         valuePtr,
         minValue.toInt(),
@@ -534,9 +533,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiValueBoxFloat(bounds, text, textValue, value, editMode),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(value.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(value.toDouble());
       final result = rl.Gui.GuiValueBoxFloat(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         rl.Temp.String$.ValueOrNull(textValue),
         valuePtr,
@@ -557,7 +556,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
     () {
       final valuePtr = rl.Temp.String$.Ref1(text ?? '', textSize.toInt());
       final result = rl.Gui.GuiTextBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         valuePtr,
         textSize.toInt(),
         editMode,
@@ -577,9 +576,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiSlider(bounds, textLeft, textRight, value, minValue, maxValue),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(value.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(value.toDouble());
       final result = rl.Gui.GuiSlider(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(textLeft),
         rl.Temp.String$.ValueOrNull(textRight),
         valuePtr,
@@ -601,9 +600,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiSliderBar(bounds, textLeft, textRight, value, minValue, maxValue),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(value.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(value.toDouble());
       final result = rl.Gui.GuiSliderBar(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(textLeft),
         rl.Temp.String$.ValueOrNull(textRight),
         valuePtr,
@@ -625,9 +624,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiProgressBar(bounds, textLeft, textRight, value, minValue, maxValue),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(value.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(value.toDouble());
       final result = rl.Gui.GuiProgressBar(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(textLeft),
         rl.Temp.String$.ValueOrNull(textRight),
         valuePtr,
@@ -645,7 +644,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiStatusBar(bounds, text),
     () => rl.Gui.GuiStatusBar(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -657,7 +656,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiDummyRec(bounds, text),
     () => rl.Gui.GuiDummyRec(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(text),
     ),
   );
@@ -670,9 +669,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
     [Vector2D? mouseCell]
   ) => run(
     () => RaylibDebugLabels.GuiGrid(bounds, spacing, subdivs, mouseCell),
-    () => rl.Temp.Vector2$.RefUpdate1(mouseCell,
+    () => rl.Temp.Vector2$.val.RefUpdate1(mouseCell,
       (pv) => rl.Gui.GuiGrid(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         spacing.toDouble(),
         subdivs.toInt(),
@@ -691,10 +690,10 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiListView(bounds, text, scrollIndex: scrollIndex, active: active),
     () {
-      final scrollIndexPtr = rl.Temp.Int$.RefOrNull1(scrollIndex);
-      final activePtr = rl.Temp.Int$.RefOrNull2(active);
+      final scrollIndexPtr = rl.Temp.Int$.val.RefOrNull1(scrollIndex);
+      final activePtr = rl.Temp.Int$.val.RefOrNull2(active);
       final result = rl.Gui.GuiListView(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(text),
         scrollIndexPtr,
         activePtr,
@@ -718,11 +717,11 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiListViewEx(bounds, text, scrollIndex: scrollIndex, active: active, focus: focus),
     () {
-      final scrollIndexPtr = rl.Temp.Int$.RefOrNull1(scrollIndex);
-      final activePtr = rl.Temp.Int$.RefOrNull2(active);
-      final focusPtr = rl.Temp.Int$.RefOrNull3(focus);
+      final scrollIndexPtr = rl.Temp.Int$.val.RefOrNull1(scrollIndex);
+      final activePtr = rl.Temp.Int$.val.RefOrNull2(active);
+      final focusPtr = rl.Temp.Int$.val.RefOrNull3(focus);
       final result = rl.Gui.GuiListViewEx(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         text == null ? nullptr : rl.Temp.String$.Array(text),
         text?.length ?? 0,
         scrollIndexPtr,
@@ -747,7 +746,7 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiMessageBox(bounds, title, message, buttons),
     () => rl.Gui.GuiMessageBox(
-      rl.Temp.Rectangle$.Ref1(bounds).ref,
+      rl.Temp.Rectangle$.val.Ref1(bounds).ref,
       rl.Temp.String$.ValueOrNull(title),
       rl.Temp.String$.ValueOrNull(message),
       rl.Temp.String$.ValueOrNull(buttons),
@@ -767,9 +766,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
     () => RaylibDebugLabels.GuiTextInputBox(bounds, title, message, buttons, text, textMaxSize, secretViewActive),
     () {
       final valuePtr = rl.Temp.String$.Ref1(text, textMaxSize.toInt());
-      final secretViewActivePtr = rl.Temp.Bool$.RefOrNull1(secretViewActive);
+      final secretViewActivePtr = rl.Temp.Bool$.val.RefOrNull1(secretViewActive);
       final result = rl.Gui.GuiTextInputBox(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         rl.Temp.String$.ValueOrNull(title),
         rl.Temp.String$.ValueOrNull(message),
         rl.Temp.String$.ValueOrNull(buttons),
@@ -788,9 +787,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorPicker(bounds, color),
     () {
-      final valuePtr = rl.Temp.Color$.Ref1(color);
+      final valuePtr = rl.Temp.Color$.val.Ref1(color);
       final result = rl.Gui.GuiColorPicker(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );
@@ -805,9 +804,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorPanel(bounds, color),
     () {
-      final valuePtr = rl.Temp.Color$.Ref1(color);
+      final valuePtr = rl.Temp.Color$.val.Ref1(color);
       final result = rl.Gui.GuiColorPanel(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );
@@ -822,9 +821,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorBarAlpha(bounds, alpha),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(alpha.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(alpha.toDouble());
       final result = rl.Gui.GuiColorBarAlpha(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );
@@ -839,9 +838,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorBarHue(bounds, value),
     () {
-      final valuePtr = rl.Temp.Float32$.Ref1(value.toDouble());
+      final valuePtr = rl.Temp.Float32$.val.Ref1(value.toDouble());
       final result = rl.Gui.GuiColorBarHue(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );
@@ -856,9 +855,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorPickerHSV(bounds, colorHsv),
     () {
-      final valuePtr = rl.Temp.Vector3$.Ref1(colorHsv);
+      final valuePtr = rl.Temp.Vector3$.val.Ref1(colorHsv);
       final result = rl.Gui.GuiColorPickerHSV(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );
@@ -873,9 +872,9 @@ class RaylibGuiD extends RaylibGuiModuleBase<
   ) => run(
     () => RaylibDebugLabels.GuiColorPanelHSV(bounds, colorHsv),
     () {
-      final valuePtr = rl.Temp.Vector3$.Ref1(colorHsv);
+      final valuePtr = rl.Temp.Vector3$.val.Ref1(colorHsv);
       final result = rl.Gui.GuiColorPanelHSV(
-        rl.Temp.Rectangle$.Ref1(bounds).ref,
+        rl.Temp.Rectangle$.val.Ref1(bounds).ref,
         nullptr, // `text`, it's not used at all
         valuePtr,
       );

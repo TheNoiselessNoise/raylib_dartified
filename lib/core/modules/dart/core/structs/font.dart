@@ -148,8 +148,8 @@ class FontD extends StructD<FontC, FontD> with FontBase<
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<FontC> p, String key) {
-    p.ref.recs = temp.Rectangle$.RawArray(recs);
-    p.ref.glyphs = temp.GlyphInfo$.RawArray(glyphs);
+    p.ref.recs = temp.Rectangle$.val.RawArray(recs);
+    p.ref.glyphs = temp.GlyphInfo$.val.RawArray(glyphs);
   }
 
   @override

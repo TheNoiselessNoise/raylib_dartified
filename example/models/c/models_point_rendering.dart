@@ -17,14 +17,14 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_point_rendering".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(3, 3, 3);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
   bool useDrawModelPoints = true;
   bool numPointsChanged = false;
   int numPoints = 1000;
@@ -69,12 +69,12 @@ void main()
           for (int i = 0; i < numPoints; i++)
           {
             DrawPoint3D(
-              Vector3$.$1.set(
+              Vector3$.val.$1.set(
                 mesh.vertices[i*3 + 0],
                 mesh.vertices[i*3 + 1],
                 mesh.vertices[i*3 + 2],
               ),
-              Color$.$1.set(
+              Color$.val.$1.set(
                 mesh.colors[i*4 + 0],
                 mesh.colors[i*4 + 1],
                 mesh.colors[i*4 + 2],
@@ -152,13 +152,13 @@ MeshC GenMeshPoints(int numPoints)
   // Free the Mesh* so next Mesh$.At allocates a fresh zeroed struct.
   // Reusing the same pointer would leave stale vboId from UploadMesh
   // causing a double free on the next UnloadModel.
-  if (Mesh$.Has('mesh')) Mesh$.Free('mesh');
+  if (Mesh$.val.Has('mesh')) Mesh$.val.Free('mesh');
 
-  final mesh = Mesh$.At('mesh'); 
+  final mesh = Mesh$.val.At('mesh'); 
   mesh.ref.triangleCount = 1;
   mesh.ref.vertexCount = numPoints;
-  mesh.ref.vertices = Float32$.RawArray(vertices);
-  mesh.ref.colors = UnsignedChar$.RawArray(colors);
+  mesh.ref.vertices = Float32$.val.RawArray(vertices);
+  mesh.ref.colors = UnsignedChar$.val.RawArray(colors);
 
   UploadMesh(mesh, false);
 

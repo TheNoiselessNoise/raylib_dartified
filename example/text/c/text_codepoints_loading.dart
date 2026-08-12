@@ -17,10 +17,10 @@ void main()
   InitWindow(screenWidth, screenHeight, "text_codepoints_loading".toC);
   SetTargetFPS(60);
 
-  final codepointCount = Int$.At('codepointCount');
+  final codepointCount = Int$.val.At('codepointCount');
   final codepoints = LoadCodepoints(text.toC, codepointCount);
 
-  final codepointsNoDupsCount = Int$.At('codepointsNoDupsCount');
+  final codepointsNoDupsCount = Int$.val.At('codepointsNoDupsCount');
   final codepointsNoDups = CodepointRemoveDuplicates(codepoints, codepointCount.value, codepointsNoDupsCount);
   UnloadCodepoints(codepoints);
 
@@ -63,7 +63,7 @@ void main()
         DrawTextEx(
           font,
           text.toC,
-          Vector2$.$1.set(160, 110),
+          Vector2$.val.$1.set(160, 110),
           48, 5, BLACK
         );
       }
@@ -84,7 +84,7 @@ void main()
 Pointer<Int> CodepointRemoveDuplicates(Pointer<Int> codepoints, int codepointCount, Pointer<Int> codepointsResultCount)
 {
   int codepointsNoDupsCount = codepointCount;
-  final codepointsNoDups = Int$.Copy(codepoints, codepointCount, key: 'codepointsNoDups');
+  final codepointsNoDups = Int$.val.Copy(codepoints, codepointCount, key: 'codepointsNoDups');
 
   for (int i = 0; i < codepointsNoDupsCount; i++)
   {

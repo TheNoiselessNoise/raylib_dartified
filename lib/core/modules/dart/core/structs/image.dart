@@ -147,7 +147,7 @@ class ImageD extends StructD<ImageC, ImageD> with ImageBase<ImageD> {
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<ImageC> p, String key) {
-    p.ref.data = temp.Uint8$.RawArray(data).cast();
+    p.ref.data = temp.Uint8$.val.RawArray(data).cast();
   }
 
   @override

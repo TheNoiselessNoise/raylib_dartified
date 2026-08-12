@@ -4,6 +4,7 @@
 // WARNING: expects resources from the raylib source
 // WARNING: NO EFFECTS, see LIMITATIONS.md
 import 'dart:ffi';
+import 'dart:typed_data';
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
@@ -19,7 +20,7 @@ AudioCallbackD AudioProcessEffectLPF = .function((buffer, frames) {
   final cutoff = 70.0 / 44100.0;
   final k = cutoff / (cutoff + 0.1591549431);
 
-  final bufferData = buffer.cast<Float>();
+  final bufferData = buffer.asView<Float32List>(frames * 2);
   for (int i = 0; i < frames*2; i += 2)
   {
     final l = bufferData[i];
@@ -33,7 +34,7 @@ AudioCallbackD AudioProcessEffectLPF = .function((buffer, frames) {
 });
 
 AudioCallbackD AudioProcessEffectDelay = .function((buffer, frames) {
-  final bufferData = buffer.cast<Float>();
+  final bufferData = buffer.asView<Float32List>(frames * 2);
   for (int i = 0; i < frames*2; i += 2)
   {
     final leftDelay = delayBuffer[delayReadIndex++];
@@ -61,7 +62,7 @@ void main() async {
   final music = LoadMusicStream("../resources/country.mp3");
 
   delayBufferSize = 48000*2;
-  delayBuffer = Float32$.At('delayBuffer', delayBufferSize);
+  delayBuffer = Float32$.val.At('delayBuffer', delayBufferSize);
 
   PlayMusicStream(music);
 

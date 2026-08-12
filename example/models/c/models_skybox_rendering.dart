@@ -18,7 +18,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(1, 1, 1);
   camera.ref.target.set(4, 1, 4);
   camera.ref.up.set(0, 1, 0);
@@ -39,7 +39,7 @@ void main()
   SetShaderValue(
     skybox.materials[0].shader,
     GetShaderLocation(skybox.materials[0].shader, "environmentMap".toC),
-    Int$.Value(MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value).cast(),
+    Int$.val.Value(MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
@@ -47,14 +47,14 @@ void main()
     SetShaderValue(
       skybox.materials[0].shader,
       GetShaderLocation(skybox.materials[0].shader, "doGamma".toC),
-      Int$.Value(useHDR ? 1 : 0).cast(),
+      Int$.val.Value(useHDR ? 1 : 0).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_INT.value,
     );
 
     SetShaderValue(
       skybox.materials[0].shader,
       GetShaderLocation(skybox.materials[0].shader, "vflipped".toC),
-      Int$.Value(useHDR ? 1 : 0).cast(),
+      Int$.val.Value(useHDR ? 1 : 0).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_INT.value,
     );
   } updateSkyboxHDRShader();
@@ -67,7 +67,7 @@ void main()
   SetShaderValue(
     shdrCubemap,
     GetShaderLocation(shdrCubemap, "equirectangularMap".toC),
-    Int$.Value(0).cast(),
+    Int$.val.Value(0).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_INT.value,
   );
 
@@ -128,7 +128,7 @@ void main()
 
         rlDisableBackfaceCulling();
         rlDisableDepthMask();
-          DrawModel(skybox, Vector3$.$zero, 1.0, WHITE);
+          DrawModel(skybox, Vector3$.val.$zero, 1.0, WHITE);
         rlEnableBackfaceCulling();
         rlEnableDepthMask();
 
@@ -163,7 +163,7 @@ void main()
 
 TextureC GenTextureCubemap(ShaderC shader, TextureC panorama, int size, PixelFormat format)
 {
-  final cubemap = Texture$.At('cubemap').ref;
+  final cubemap = Texture$.val.At('cubemap').ref;
 
   rlDisableBackfaceCulling();
 
@@ -195,7 +195,7 @@ TextureC GenTextureCubemap(ShaderC shader, TextureC panorama, int size, PixelFor
   //------------------------------------------------------------------------------------------
   rlEnableShader(shader.id);
 
-  final matFboProjection = Matrix$.At('matFboProjection').setD(
+  final matFboProjection = Matrix$.val.At('matFboProjection').setD(
     rl.Matrix.MatrixPerspective(
       90.0*rl.DEG2RAD,
       1.0,
@@ -205,7 +205,7 @@ TextureC GenTextureCubemap(ShaderC shader, TextureC panorama, int size, PixelFor
 
   rlSetUniformMatrix(shader.locs[ShaderLocationIndex.SHADER_LOC_MATRIX_PROJECTION.value], matFboProjection.ref);
 
-  final fboViews = Matrix$.Array(key: 'fboViews', [
+  final fboViews = Matrix$.val.Array(key: 'fboViews', [
     .lookAt(.vec3(0, 0, 0), .vec3( 1.0,  0.0,  0.0), .vec3(0.0, -1.0,  0.0)),
     .lookAt(.vec3(0, 0, 0), .vec3(-1.0,  0.0,  0.0), .vec3(0.0, -1.0,  0.0)),
     .lookAt(.vec3(0, 0, 0), .vec3( 0.0,  1.0,  0.0), .vec3(0.0,  0.0,  1.0)),

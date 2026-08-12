@@ -38,7 +38,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_postprocessing".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(2.0, 3.0, 2.0);
   camera.ref.target.set(0.0, 1.0, 0.0);
   camera.ref.up.set(0, 1, 0);
@@ -82,7 +82,7 @@ void main()
       ClearBackground(RAYWHITE);
 
       BeginMode3D(camera.ref);
-        DrawModel(model, Vector3$.$zero, 0.1, WHITE);
+        DrawModel(model, Vector3$.val.$zero, 0.1, WHITE);
         DrawGrid(10, 1.0);
       EndMode3D();
     EndTextureMode();
@@ -93,8 +93,8 @@ void main()
       BeginShaderMode(shaders[currentShader]!);
         DrawTextureRec(
           target.texture,
-          Rectangle$.$1.set(0, 0, target.texture.width, -target.texture.height),
-          Vector2$.$1.set(0, 0),
+          Rectangle$.val.$1.set(0, 0, target.texture.width, -target.texture.height),
+          Vector2$.val.$1.set(0, 0),
           WHITE
         );
       EndShaderMode();

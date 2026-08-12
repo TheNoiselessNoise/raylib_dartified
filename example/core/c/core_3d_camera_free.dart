@@ -14,14 +14,14 @@ void main() {
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(10, 10, 10);
   camera.ref.target.set(0, 0, 0);
   camera.ref.up.set(0, 1, 0);
   camera.ref.fovy = 45;
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final cubePosition = Vector3$.At('cubePosition');
+  final cubePosition = Vector3$.val.At('cubePosition');
 
   while (!WindowShouldClose()) {
     UpdateCamera(camera, CameraMode.CAMERA_FREE.value);

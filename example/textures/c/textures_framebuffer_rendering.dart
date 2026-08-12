@@ -16,14 +16,14 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final subjectCamera = Camera3D$.At('subjectCamera');
+  final subjectCamera = Camera3D$.val.At('subjectCamera');
   subjectCamera.ref.position.set(5.0, 5.0, 5.0);
   subjectCamera.ref.target.set(0.0, 0.0, 0.0);
   subjectCamera.ref.up.set(0.0, 1.0, 0.0);
   subjectCamera.ref.fovy = 45.0;
   subjectCamera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
-  final observerCamera = Camera3D$.At('observerCamera');
+  final observerCamera = Camera3D$.val.At('observerCamera');
   observerCamera.ref.position.set(10.0, 10.0, 10.0);
   observerCamera.ref.target.set(0.0, 0.0, 0.0);
   observerCamera.ref.up.set(0.0, 1.0, 0.0);
@@ -31,27 +31,27 @@ void main()
   observerCamera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
   final observerTarget = LoadRenderTexture(splitWidth, screenHeight);
-  final observerSource = Rectangle$.At('observerSource').set(
+  final observerSource = Rectangle$.val.At('observerSource').set(
     0.0, 0.0, observerTarget.texture.width, -observerTarget.texture.height
   );
-  final observerDest = Rectangle$.At('observerDest').set(
+  final observerDest = Rectangle$.val.At('observerDest').set(
     0.0, 0.0, splitWidth, screenHeight
   );
 
   final subjectTarget = LoadRenderTexture(splitWidth, screenHeight);
-  final subjectSource = Rectangle$.At('subjectSource').set(
+  final subjectSource = Rectangle$.val.At('subjectSource').set(
     0.0, 0.0, subjectTarget.texture.width, -subjectTarget.texture.height
   );
-  final subjectDest = Rectangle$.At('subjectDest').set(
+  final subjectDest = Rectangle$.val.At('subjectDest').set(
     splitWidth, 0.0, splitWidth, screenHeight
   );
   final textureAspectRatio = subjectTarget.texture.width/subjectTarget.texture.height;
 
   final captureSize = 128.0;
-  final cropSource = Rectangle$.At('cropSource').set(
+  final cropSource = Rectangle$.val.At('cropSource').set(
     (subjectTarget.texture.width - captureSize)/2.0, (subjectTarget.texture.height - captureSize)/2.0, captureSize, -captureSize
   );
-  final cropDest = Rectangle$.At('cropDest').set(
+  final cropDest = Rectangle$.val.At('cropDest').set(
     splitWidth + 20.0, 20.0, captureSize, captureSize
   );
 
@@ -69,8 +69,8 @@ void main()
       BeginMode3D(observerCamera.ref);
 
         DrawGrid(10, 1.0);
-        DrawCube(Vector3$.$zero, 2.0, 2.0, 2.0, GOLD);
-        DrawCubeWires(Vector3$.$zero, 2.0, 2.0, 2.0, PINK);
+        DrawCube(Vector3$.val.$zero, 2.0, 2.0, 2.0, GOLD);
+        DrawCubeWires(Vector3$.val.$zero, 2.0, 2.0, 2.0, PINK);
         DrawCameraPrism(subjectCamera.ref, textureAspectRatio, GREEN);
 
       EndMode3D();
@@ -88,8 +88,8 @@ void main()
 
       BeginMode3D(subjectCamera.ref);
 
-        DrawCube(Vector3$.$zero, 2.0, 2.0, 2.0, GOLD);
-        DrawCubeWires(Vector3$.$zero, 2.0, 2.0, 2.0, PINK);
+        DrawCube(Vector3$.val.$zero, 2.0, 2.0, 2.0, GOLD);
+        DrawCubeWires(Vector3$.val.$zero, 2.0, 2.0, 2.0, PINK);
         DrawGrid(10, 1.0);
 
       EndMode3D();
@@ -109,11 +109,11 @@ void main()
 
       ClearBackground(BLACK);
 
-      DrawTexturePro(observerTarget.texture, observerSource.ref, observerDest.ref, Vector2$.$zero, 0.0, WHITE);
+      DrawTexturePro(observerTarget.texture, observerSource.ref, observerDest.ref, Vector2$.val.$zero, 0.0, WHITE);
 
-      DrawTexturePro(subjectTarget.texture, subjectSource.ref, subjectDest.ref, Vector2$.$zero, 0.0, WHITE);
+      DrawTexturePro(subjectTarget.texture, subjectSource.ref, subjectDest.ref, Vector2$.val.$zero, 0.0, WHITE);
 
-      DrawTexturePro(subjectTarget.texture, cropSource.ref, cropDest.ref, Vector2$.$zero, 0.0, WHITE);
+      DrawTexturePro(subjectTarget.texture, cropSource.ref, cropDest.ref, Vector2$.val.$zero, 0.0, WHITE);
       DrawRectangleLinesEx(cropDest.ref, 2, BLACK);
 
       DrawLine(splitWidth, 0, splitWidth, screenHeight, BLACK);
@@ -131,7 +131,7 @@ void DrawCameraPrism(Camera3DC camera, double aspect, ColorC color)
 {
   final length = camera.position.toD().distance(camera.target.toD());
 
-  final planeNDC = Vector3$.At('planeNDC', 4);
+  final planeNDC = Vector3$.val.At('planeNDC', 4);
   planeNDC[0].set(-1, -1, 1);
   planeNDC[1].set( 1, -1, 1);
   planeNDC[2].set( 1,  1, 1);
@@ -142,7 +142,7 @@ void DrawCameraPrism(Camera3DC camera, double aspect, ColorC color)
   final viewProj = view.mul(proj);
   final inverseViewProj = viewProj.invert();
 
-  final corners = Vector3$.At('corners', 4);
+  final corners = Vector3$.val.At('corners', 4);
   for (int i = 0; i < 4; i++)
   {
     final x = planeNDC[i].x;

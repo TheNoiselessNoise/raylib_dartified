@@ -37,9 +37,9 @@ void main()
 
   const int randomTiles = 8;
 
-  final worldRectSource = Rectangle$.At('worldRectSource').set(0, 0, worldWidth, -worldHeight);
-  final worldRectDest = Rectangle$.At('worldRectDest').set(0, 0, worldWidth, worldHeight);
-  final textureOnScreen = Rectangle$.At('textureOnScreen').set(0, 0, windowWidth, windowHeight);
+  final worldRectSource = Rectangle$.val.At('worldRectSource').set(0, 0, worldWidth, -worldHeight);
+  final worldRectDest = Rectangle$.val.At('worldRectDest').set(0, 0, worldWidth, worldHeight);
+  final textureOnScreen = Rectangle$.val.At('textureOnScreen').set(0, 0, windowWidth, windowHeight);
 
   final presetPatterns = [
     PresetPattern("Glider", 0.5, 0.5), PresetPattern("R-pentomino", 0.5, 0.5),
@@ -56,7 +56,7 @@ void main()
   int frame = 0;
 
   int preset = -1;
-  final mode = Int$.Value(MODE_RUN, 'mode');
+  final mode = Int$.val.Value(MODE_RUN, 'mode');
   bool buttonZoomIn = false;
   bool buttonZomOut = false;
   bool buttonFaster = false;
@@ -69,7 +69,7 @@ void main()
 
   int resolutionLoc = GetShaderLocation(shdrGameOfLife, "resolution".toC);
   SetShaderValue(shdrGameOfLife, resolutionLoc,
-    Vector2$.$1Ptr.set(worldWidth, worldHeight).cast(),
+    Vector2$.val.$1Ptr.set(worldWidth, worldHeight).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_VEC2.value
   );
 
@@ -83,7 +83,7 @@ void main()
   final startPattern = LoadImage("../resources/game_of_life/r_pentomino.png".toC);
   UpdateTextureRec(
     world2.texture,
-    Rectangle$.$1.set(worldWidth/2.0, worldHeight/2.0, startPattern.width, startPattern.height),
+    Rectangle$.val.$1.set(worldWidth/2.0, worldHeight/2.0, startPattern.width, startPattern.height),
     startPattern.data
   );
   UnloadImage(startPattern);
@@ -91,11 +91,11 @@ void main()
   var currentWorld = world2;
   var previousWorld = world1;
 
-  final imageToDraw = Image$.At('imageToDraw');
-  final pattern = Image$.At('pattern');
+  final imageToDraw = Image$.val.At('imageToDraw');
+  final pattern = Image$.val.At('pattern');
 
   int firstColor = -1;
-  final prevMousePos = Vector2$.At('prevMousePos');
+  final prevMousePos = Vector2$.val.At('prevMousePos');
 
   while (!WindowShouldClose())
   {
@@ -142,15 +142,15 @@ void main()
         BeginTextureMode(worldOnScreen);
           DrawTexturePro(
             currentWorld.texture,
-            Rectangle$.$1.set(
+            Rectangle$.val.$1.set(
               offsetX.floorToDouble(), offsetY.floorToDouble(),
               sizeInWorldX, -sizeInWorldY
             ),
-            Rectangle$.$2.set(
+            Rectangle$.val.$2.set(
               0, 0,
               sizeInWorldX, sizeInWorldY
             ),
-            Vector2$.$zero,
+            Vector2$.val.$zero,
             0.0,
             WHITE
           );
@@ -177,7 +177,7 @@ void main()
         
         if (prevColor != firstColor) UpdateTextureRec(
           currentWorld.texture,
-          Rectangle$.$1.set(
+          Rectangle$.val.$1.set(
             offsetX.floorToDouble(), offsetY.floorToDouble(),
             sizeInWorldX, sizeInWorldY
           ),
@@ -210,7 +210,7 @@ void main()
         
         UpdateTextureRec(
           currentWorld.texture,
-          Rectangle$.$1.set(
+          Rectangle$.val.$1.set(
             worldWidth*presetPatterns[preset].position.x - pattern.ref.width/2.0,
             worldHeight*presetPatterns[preset].position.y - pattern.ref.height/2.0,
             pattern.ref.width,
@@ -235,7 +235,7 @@ void main()
             }
             UpdateTextureRec(
               currentWorld.texture,
-              Rectangle$.$1.set(
+              Rectangle$.val.$1.set(
                 pattern.ref.width*i, pattern.ref.height*j,
                 pattern.ref.width, pattern.ref.height,
               ),
@@ -269,7 +269,7 @@ void main()
             previousWorld.texture,
             worldRectSource.ref,
             worldRectDest.ref,
-            Vector2$.$zero,
+            Vector2$.val.$zero,
             0.0,
             RAYWHITE
           );
@@ -281,15 +281,15 @@ void main()
         
       DrawTexturePro(
         currentWorld.texture,
-        Rectangle$.$1.set(offsetX, offsetY, windowWidth/zoom, windowHeight/zoom),
+        Rectangle$.val.$1.set(offsetX, offsetY, windowWidth/zoom, windowHeight/zoom),
         textureOnScreen.ref,
-        Vector2$.$zero,
+        Vector2$.val.$zero,
         0.0,
         WHITE
       );
 
-      DrawLine(windowWidth, 0, windowWidth, screenHeight, Color$.$1.set(218, 218, 218, 255));
-      DrawRectangle(windowWidth, 0, screenWidth - windowWidth, screenHeight, Color$.$1.set(232, 232, 232, 255));
+      DrawLine(windowWidth, 0, windowWidth, screenHeight, Color$.val.$1.set(218, 218, 218, 255));
+      DrawRectangle(windowWidth, 0, screenWidth - windowWidth, screenHeight, Color$.val.$1.set(232, 232, 232, 255));
 
       DrawText("Conway's".toC, 704, 4, 20, DARKBLUE);
       DrawText(" game of".toC, 704, 19, 20, DARKBLUE);
@@ -299,24 +299,24 @@ void main()
       DrawText("Presets".toC, 710, 58, 8, GRAY);
       preset = -1;
       for (int i = 0; i < presetPatterns.length; i++)
-        if (GuiButton(Rectangle$.$1.set(710.0, 70.0 + 18*i, 80.0, 16.0), presetPatterns[i].name.toC).toBool())
+        if (GuiButton(Rectangle$.val.$1.set(710.0, 70.0 + 18*i, 80.0, 16.0), presetPatterns[i].name.toC).toBool())
           preset = i;
 
-      GuiToggleGroup(Rectangle$.$1.set(710, 258, 80, 16), "Run\nPause\nDraw".toC, mode);
+      GuiToggleGroup(Rectangle$.val.$1.set(710, 258, 80, 16), "Run\nPause\nDraw".toC, mode);
 
       DrawText(
         "Zoom: $zoom".toC,
         710, 316, 8, GRAY
       );
-      buttonZoomIn = GuiButton(Rectangle$.$1.set(710, 328, 80, 16), "Zoom in".toC).toBool();
-      buttonZomOut = GuiButton(Rectangle$.$1.set(710, 346, 80, 16), "Zoom out".toC).toBool();
+      buttonZoomIn = GuiButton(Rectangle$.val.$1.set(710, 328, 80, 16), "Zoom in".toC).toBool();
+      buttonZomOut = GuiButton(Rectangle$.val.$1.set(710, 346, 80, 16), "Zoom out".toC).toBool();
 
       DrawText(
         "Speed: $framesPerStep frame${(framesPerStep > 1)? "s" : ""}".toC,
         710, 370, 8, GRAY
       );
-      buttonFaster = GuiButton(Rectangle$.$1.set(710, 382, 80, 16), "Faster".toC).toBool();
-      buttonSlower = GuiButton(Rectangle$.$1.set(710, 400, 80, 16), "Slower".toC).toBool();
+      buttonFaster = GuiButton(Rectangle$.val.$1.set(710, 382, 80, 16), "Faster".toC).toBool();
+      buttonSlower = GuiButton(Rectangle$.val.$1.set(710, 400, 80, 16), "Slower".toC).toBool();
 
       DrawFPS(712, 426);
 

@@ -20,7 +20,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_animation_timing".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.$newPtr;
+  final camera = Camera3D$.val.$newPtr;
   camera.ref.position.set(6, 6, 6);
   camera.ref.target.set(0, 2, 0);
   camera.ref.up.set(0, 1, 0);
@@ -28,20 +28,20 @@ void main()
   camera.ref.projection = CameraProjection.CAMERA_PERSPECTIVE.value;
 
   final model = LoadModel("../resources/models/gltf/robot.glb".toC);
-  final position = Vector3$.At('position');
+  final position = Vector3$.val.At('position');
 
-  final animCount = Int$.At('animCount');
+  final animCount = Int$.val.At('animCount');
   final anims = LoadModelAnimations("../resources/models/gltf/robot.glb".toC, animCount);
 
-  final animIndex = Int$.Value(10, 'animIndex');
+  final animIndex = Int$.val.Value(10, 'animIndex');
   double animCurrentFrame = 0.0;
-  final animFrameSpeed = Float32$.Value(0.5, 'animFrameSpeed');
+  final animFrameSpeed = Float32$.val.Value(0.5, 'animFrameSpeed');
   bool animPause = false;
 
   final List<String> animNames = .generate(animCount.value, (i) => anims[i].nameString);
 
   bool dropdownEditMode = false;
-  final animFrameProgress = Float32$.At('animFrameProgress');
+  final animFrameProgress = Float32$.val.At('animFrameProgress');
 
   while (!WindowShouldClose())
   {
@@ -77,14 +77,14 @@ void main()
       );
 
       if (GuiDropdownBox(
-        Rectangle$.$1.set(10, 10, 140, 24),
+        Rectangle$.val.$1.set(10, 10, 140, 24),
         animNames.join(';').toC,
         animIndex,
         dropdownEditMode
       ) != 0) dropdownEditMode = !dropdownEditMode;
 
       GuiSlider(
-        Rectangle$.$1.set(260, 10, 500, 24),
+        Rectangle$.val.$1.set(260, 10, 500, 24),
         "FRAME SPEED: ".toC,
         animFrameSpeed.value.f1.toC,
         animFrameSpeed,
@@ -93,12 +93,12 @@ void main()
       );
 
       GuiLabel(
-        Rectangle$.$1.set(10, GetScreenHeight() - 64.0, GetScreenWidth() - 20.0, 24),
+        Rectangle$.val.$1.set(10, GetScreenHeight() - 64.0, GetScreenWidth() - 20.0, 24),
         "CURRENT FRAME: ${animFrameProgress.value.f2} / ${anims[animIndex.value].keyframeCount}".toC
       );
 
       GuiProgressBar(
-        Rectangle$.$1.set(10, GetScreenHeight() - 40.0, GetScreenWidth() - 20.0, 24),
+        Rectangle$.val.$1.set(10, GetScreenHeight() - 40.0, GetScreenWidth() - 20.0, 24),
         nullptr,
         nullptr,
         animFrameProgress,

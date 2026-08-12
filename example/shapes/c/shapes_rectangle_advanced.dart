@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_rectangle_advanced".toC);
   SetTargetFPS(60);
 
-  final rec = Rectangle$.At('rec');
+  final rec = Rectangle$.val.At('rec');
 
   while (!WindowShouldClose())
   {

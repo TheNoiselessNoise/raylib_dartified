@@ -35,7 +35,7 @@ void main()
       );
 
       DrawCircle(80, 120, 35, DARKBLUE);
-      DrawCircleGradient(Vector2$.$1.set(80, 220), 60, GREEN, SKYBLUE);
+      DrawCircleGradient(Vector2$.val.$1.set(80, 220), 60, GREEN, SKYBLUE);
       DrawCircleLines(80, 340, 80, DARKBLUE);
 
       BeginShaderMode(shader);
@@ -57,20 +57,20 @@ void main()
       );
 
       DrawTriangle(
-        Vector2$.$1.set(430, 80),
-        Vector2$.$2.set(430 - 60, 150),
-        Vector2$.$3.set(430 + 60, 150),
+        Vector2$.val.$1.set(430, 80),
+        Vector2$.val.$2.set(430 - 60, 150),
+        Vector2$.val.$3.set(430 + 60, 150),
         VIOLET
       );
 
       DrawTriangleLines(
-        Vector2$.$1.set(430, 160),
-        Vector2$.$2.set(430 - 20, 230),
-        Vector2$.$3.set(430 + 20, 230),
+        Vector2$.val.$1.set(430, 160),
+        Vector2$.val.$2.set(430 - 20, 230),
+        Vector2$.val.$3.set(430 + 20, 230),
         DARKBLUE
       );
 
-      DrawPoly(Vector2$.$1.set(430, 320), 6, 80, 0, BROWN);
+      DrawPoly(Vector2$.val.$1.set(430, 320), 6, 80, 0, BROWN);
 
       BeginShaderMode(shader);
 

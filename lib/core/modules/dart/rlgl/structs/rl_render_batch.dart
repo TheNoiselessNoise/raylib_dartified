@@ -158,8 +158,8 @@ class RlRenderBatchD extends StructD<RlRenderBatchC, RlRenderBatchD> with RlRend
 
   @override
   void structAllocateInto(RaylibTemp temp, Pointer<RlRenderBatchC> p, String key) {
-    p.ref.vertexBuffer = temp.RlVertexBuffer$.Array(vertexBuffer, key: '${key}_vbufs');
-    p.ref.draws = temp.RlDrawCall$.Array(draws, key: '${key}_draws');
+    p.ref.vertexBuffer = temp.RlVertexBuffer$.val.Array(vertexBuffer, key: '${key}_vbufs');
+    p.ref.draws = temp.RlDrawCall$.val.Array(draws, key: '${key}_draws');
   }
 
   @override

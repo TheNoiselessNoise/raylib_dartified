@@ -18,7 +18,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_cel_shading".toC);
   SetTargetFPS(60);
 
-  final camera = Camera3D$.AtUnique();
+  final camera = Camera3D$.val.AtUnique();
   camera.ref.position.set(9.0, 6.0, 9.0);
   camera.ref.target.set(0.0, 1.0, 0.0);
   camera.ref.up.set(0.0, 1.0, 0.0);
@@ -40,7 +40,7 @@ void main()
   int numBandsLoc = GetShaderLocation(celShader, "numBands".toC);
   SetShaderValue(
     celShader, numBandsLoc,
-    Float32$.Value(numBands).cast(),
+    Float32$.val.Value(numBands).cast(),
     ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
   );
 
@@ -50,11 +50,11 @@ void main()
   );
   int outlineThicknessLoc = GetShaderLocation(outlineShader, "outlineThickness".toC);
 
-  final lights = Light$.AtUnique(count: rl.Light.MAX_LIGHTS);
+  final lights = Light$.val.AtUnique(count: rl.Light.MAX_LIGHTS);
   lights[0] = CreateLight(
     LightType.LIGHT_DIRECTIONAL.value,
-    Vector3$.$1.set(50.0, 50.0, 50.0),
-    Vector3$.$zero,
+    Vector3$.val.$1.set(50.0, 50.0, 50.0),
+    Vector3$.val.$zero,
     WHITE,
     celShader
   );
@@ -68,7 +68,7 @@ void main()
 
     SetShaderValue(
       celShader, celShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      Float32$.Array([camera.ref.position.x, camera.ref.position.y, camera.ref.position.z]).cast(),
+      Float32$.val.Array([camera.ref.position.x, camera.ref.position.y, camera.ref.position.z]).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_VEC3.value
     );
 
@@ -88,7 +88,7 @@ void main()
     
     SetShaderValue(
       celShader, numBandsLoc,
-      Float32$.Value(numBands).cast(),
+      Float32$.val.Value(numBands).cast(),
       ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
     );
 
@@ -110,7 +110,7 @@ void main()
           double thickness = 0.005;
           SetShaderValue(
             outlineShader, outlineThicknessLoc,
-            Float32$.Value(thickness).cast(),
+            Float32$.val.Value(thickness).cast(),
             ShaderUniformDataType.SHADER_UNIFORM_FLOAT.value
           );
 
@@ -118,7 +118,7 @@ void main()
 
           model.materials[0].shader = outlineShader;
 
-          DrawModel(model, Vector3$.$zero, 0.75, WHITE);
+          DrawModel(model, Vector3$.val.$zero, 0.75, WHITE);
 
           if (celEnabled) model.materials[0].shader = celShader;
           else model.materials[0].shader = defaultShader;
@@ -126,7 +126,7 @@ void main()
           rlSetCullFace(RlCullMode.RL_CULL_FACE_BACK.value);
         }
 
-        DrawModel(model, Vector3$.$zero, 0.75, WHITE);
+        DrawModel(model, Vector3$.val.$zero, 0.75, WHITE);
         DrawSphereEx(lights[0].position, 0.2, 50, 50, YELLOW);
         DrawGrid(10, 10.0);
 

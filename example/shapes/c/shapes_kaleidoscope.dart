@@ -26,15 +26,15 @@ void main()
   int symmetry = 6;
   double angle = 360.0/symmetry;
   double thickness = 3.0;
-  final resetButtonRec = Rectangle$.AtUnique().set(screenWidth - 55.0, 5.0, 50, 25);
-  final backButtonRec = Rectangle$.AtUnique().set(screenWidth - 55.0, screenHeight - 30.0, 25, 25);
-  final nextButtonRec = Rectangle$.AtUnique().set(screenWidth - 30.0, screenHeight - 30.0, 25, 25);
-  final mousePos = Vector2$.AtUnique();
-  final prevMousePos = Vector2$.AtUnique();
-  final scaleVector = Vector2$.AtUnique().set(1.0, -1.0);
-  final offset = Vector2$.AtUnique().set(screenWidth/2.0, screenHeight/2.0);
+  final resetButtonRec = Rectangle$.val.AtUnique().set(screenWidth - 55.0, 5.0, 50, 25);
+  final backButtonRec = Rectangle$.val.AtUnique().set(screenWidth - 55.0, screenHeight - 30.0, 25, 25);
+  final nextButtonRec = Rectangle$.val.AtUnique().set(screenWidth - 30.0, screenHeight - 30.0, 25, 25);
+  final mousePos = Vector2$.val.AtUnique();
+  final prevMousePos = Vector2$.val.AtUnique();
+  final scaleVector = Vector2$.val.AtUnique().set(1.0, -1.0);
+  final offset = Vector2$.val.AtUnique().set(screenWidth/2.0, screenHeight/2.0);
 
-  final camera = Camera2D$.AtUnique();
+  final camera = Camera2D$.val.AtUnique();
   camera.ref.target.set(0, 0);
   camera.ref.offset = offset.ref;
   camera.ref.rotation = 0.0;
