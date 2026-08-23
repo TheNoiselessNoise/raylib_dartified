@@ -41,7 +41,7 @@ void main()
 
   final boneSocketIndex = List.filled(BONE_SOCKETS, -1);
 
-  for (int i = 0; i < characterModel.boneCount; i++)
+  for (int i = 0; i < characterModel.skeleton.boneCount; i++)
   {
     if (characterModel.skeleton.bones[i].name == "socket_hat")
     {

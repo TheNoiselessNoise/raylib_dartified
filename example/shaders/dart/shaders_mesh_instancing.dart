@@ -33,7 +33,7 @@ void main()
       GetRandomValue(-50, 50)
     );
 
-    final Vector3D axis = .vec3Normalized(
+    final Vector3D axis = .normalized(
       GetRandomValue(0, 360),
       GetRandomValue(0, 360),
       GetRandomValue(0, 360)

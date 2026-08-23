@@ -105,14 +105,17 @@ See any `c` example in `example/<category>/c/`.
 
 Or start here: [core/c/core_basic_window.dart](example/core/c/core_basic_window.dart)
 
-## abbr/c.dart | abbr/dart.dart
+## API Tiers
 
-`abbr/dart.dart` and `abbr/c.dart` drop the module namespace (`CoreD.`, `TextD.`, ...) entirely, so calls read exactly like the raylib API itself, no prefixes, no indirection.
+These three drop the module namespace (`Core`, `Rlgl`, ...) entirely, so calls read exactly like the raylib API itself, no prefixes, no indirection.
 
-- **`abbr/dart.dart`** exposes the Dart-layer (dartified) API: idiomatic types, no manual memory management.
-- **`abbr/c.dart`** exposes the raw FFI-layer API 1:1 native signatures, `Pointer`s, manual allocation/freeing, for when you want to talk to raylib exactly as C does.
+- **`abbr/raw.dart`** exposes the raw FFI-layer API 1:1 native signatures, `Pointer`s, manual allocation/freeing, for when you want to talk to raylib exactly as C does. <u>**Native only**</u> no `dart:ffi` on web, so no equivalent there.
 
-Pick one per file (mixing both in the same scope will collide on names).
+- **`abbr/flat.dart`** exposes the same 1:1 signatures, but built on `MemoryPointer` instead of `Pointer`. Backend-agnostic, works on native and web.
+
+- **`abbr/dart.dart`** exposes the Dart-layer (dartified) API: idiomatic types, no manual memory management. Backend-agnostic, works on native and web.
+
+Pick one per file (mixing any two in the same scope will collide on names).
 
 ```dart
 import 'package:raylib_dartified/raylib_dartified.dart';
@@ -129,16 +132,33 @@ void main() {
 }
 ```
 
-Or, working directly against the FFI layer:
+Or, backend-agnostic but still working with raw memory:
 
 ```dart
 import 'package:raylib_dartified/raylib_dartified.dart';
-import 'package:raylib_dartified/abbr/c.dart';
+import 'package:raylib_dartified/abbr/flat.dart';
 
 void main() {
   findRaylib('path/to/raylib');
 
-  InitWindow(800, 600, 'Title'.toC);
+  InitWindow(800, 600, Char$.val.Value('Title'));
+  SetTargetFPS(60);
+  // ... and so on
+
+  disposeRaylib();
+}
+```
+
+Or, working directly against the native FFI layer:
+
+```dart
+import 'package:raylib_dartified/raylib_dartified.dart';
+import 'package:raylib_dartified/abbr/raw.dart';
+
+void main() {
+  findRaylib('path/to/raylib');
+
+  InitWindow(800, 600, 'Title'.toNativeUtf8().cast());
   SetTargetFPS(60);
   // ... and so on
 

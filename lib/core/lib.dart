@@ -1,12 +1,14 @@
 part of 'raylib_dartified.dart';
 
 enum RaylibSupportedLibs {
-  gui('gui'),
+  gui('raygui'),
   msfGif('msf_gif');
 
   const RaylibSupportedLibs(this.id);
   final String id;
 }
+
+typedef RaylibLookup = Pointer<T> Function<T extends NativeType>(String symbolName);
 
 class RaylibExternalLibs {
   final Map<Type, DynamicLibrary> _libs = {};
@@ -33,11 +35,7 @@ class RaylibExternalLibs {
 //       LateInitializationError: Field 'Gui' has not been initialized.
 //       That's expected behavior!
 class Raylib extends RaylibBase {
-  static Raylib? _instance;
-  static Raylib get instance {
-    if (_instance == null) throw StateError('Raylib not initialized.');
-    return _instance!;
-  }
+  static Raylib get instance => RaylibBase.getInstance();
 
   Logger logger = Logger.detached('Raylib');
 
@@ -50,29 +48,33 @@ class Raylib extends RaylibBase {
   @override
   void logError(Object? message) => logger.severe('[Raylib] $message');
 
-  @override late RaylibTemp Temp;
-  @override late RaylibColors Color;
-  @override late RaylibEasings Ease;
-  @override late RaylibQuaternions Quat;
-  @override late RaylibMatrices Matrix;
-  @override late RaylibVectors Vector;
-
   late RaylibAudio Audio;
+  @override late RaylibAudioFlat AudioFlat;
   @override late RaylibAudioD AudioD;
+  
   late RaylibCamera Camera;
+  @override late RaylibCameraFlat CameraFlat;
   @override late RaylibCameraD CameraD;
+  
   late RaylibCore Core;
+  @override late RaylibCoreFlat CoreFlat;
   @override late RaylibCoreD CoreD;
 
   late RaylibGui Gui;
+  @override late RaylibGuiFlat GuiFlat;
   @override late RaylibGuiD GuiD;
   
   late RaylibLight Light;
+  @override late RaylibLightFlat LightFlat;
   @override late RaylibLightD LightD;
 
+  late RaylibMsfGif MsfGif;
+  @override late RaylibMsfGifFlat MsfGifFlat;
+  @override late RaylibMsfGifD MsfGifD;
+
   late RaylibRlgl Rlgl;
+  @override late RaylibRlglFlat RlglFlat;
   @override late RaylibRlglD RlglD;
-  @override late RaylibUtils Utils;
 
   final _externalLibs = RaylibExternalLibs();
 
@@ -88,9 +90,9 @@ class Raylib extends RaylibBase {
     Map<RaylibSupportedLibs, String?> libs = const {},
     super.tempOptions,
     super.random,
-  }) {
-    if (_instance != null) throw StateError("There can only be one instance of a $runtimeType!");
-    _instance = this;
+  }) : super(
+    initializer: () => RType.nativeWordSize = sizeOf<IntPtr>(),
+  ) {
     _initBase();
     _initLibs(core, libs);
     _init();
@@ -98,28 +100,31 @@ class Raylib extends RaylibBase {
 
   NativeMemoryPointer<RVoid> _defaultFromBytes<T extends TypedDataList>(T data) {
     final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
-    final ptr = malloc<Uint8>(byteLength);
+    final ptr = ffi.malloc<Uint8>(byteLength);
     final asBytes = (data as TypedData).buffer.asUint8List(data.offsetInBytes, byteLength);
     ptr.asTypedList(byteLength).setAll(0, asBytes);
     return .new(ptr.cast());
   }
 
-  NativeMemoryPointer<RUint8> _defaultFromString(String text)
-    => .new(text.toNativeUtf8().cast());
+  NativeMemoryPointer<Y> _defaultNullptrFactory<Y extends RType>() => .new(nullptr);
+
+  NativeMemoryPointer<RUint8> _defaultFromString(String text, [int? bufferSize]) {
+    final bytes = utf8.encode(text);
+    final len = bytes.length + 1;
+    final bufSize = bufferSize != null ? (bufferSize > len ? bufferSize : len) : len;
+    final ptr = calloc<Uint8>(bufSize);
+    ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
+    return .new(ptr);
+  }
+
+  NativeMemoryPointer<Y> _defaultMalloc<Y extends RType>(int size)
+    => .new(ffi.malloc.allocate(size));
 
   void _initBase() {
-    RaylibMatrixFactories.createFactory = MatrixD.mat4;
-    RaylibMatrixFactories.zeroFactory = MatrixD.zero;
-    RaylibQuaternionFactories.createFactory = QuaternionD.quat;
-    RaylibQuaternionFactories.zeroFactory = QuaternionD.zero;
-    RaylibVector2Factories.createFactory = Vector2D.vec2;
-    RaylibVector2Factories.zeroFactory = Vector2D.zero;
-    RaylibVector3Factories.createFactory = Vector3D.vec3;
-    RaylibVector3Factories.zeroFactory = Vector3D.zero;
-    RaylibVector4Factories.createFactory = Vector4D.vec4;
-    RaylibVector4Factories.zeroFactory = Vector4D.zero;
     MemoryPointer.fromBytes = _defaultFromBytes;
     MemoryPointer.fromString = _defaultFromString;
+    MemoryPointer.nullptrFactory = _defaultNullptrFactory;
+    MemoryPointer.malloc = _defaultMalloc;
   }
 
   void _initLibs(String core, Map<RaylibSupportedLibs, String?> libs) {
@@ -149,32 +154,34 @@ class Raylib extends RaylibBase {
       }
     });
 
-    // extensions
-    registerModule(RaylibTemp(this, options: tempOptions)); Temp = module();
-    registerModule(RaylibColors(this)); Color = module();
-    registerModule(RaylibEasings(this)); Ease = module();
-    registerModule(RaylibQuaternions(this)); Quat = module();
-    registerModule(RaylibMatrices(this)); Matrix = module();
-    registerModule(RaylibVectors(this)); Vector = module();
-
     // modules
     registerModule(RaylibAudio(this)); Audio = module();
+    registerModule(RaylibAudioFlat(this)); AudioFlat = module();
     registerModule(RaylibAudioD(this)); AudioD = module();
-    registerModule(RaylibCamera(this)); Camera = module();
-    registerModule(RaylibCameraD(this)); CameraD = module();
-    registerModule(RaylibCore(this)); Core = module();
-    registerModule(RaylibCoreD(this)); CoreD = module();
-    registerModule(RaylibGui(this)); Gui = module();
-    registerModule(RaylibGuiD(this)); GuiD = module();
-    registerModule(RaylibLight(this)); Light = module();
-    registerModule(RaylibLightD(this)); LightD = module();
-    registerModule(RaylibRlgl(this)); Rlgl = module();
-    registerModule(RaylibRlglD(this)); RlglD = module();
-    registerModule(RaylibUtils(this)); Utils = module();
 
-    // other external modules (not inside base package)
-    registerModule(RaylibMsfGif(this));
-    registerModule(RaylibMsfGifD(this));
+    registerModule(RaylibCamera(this)); Camera = module();
+    registerModule(RaylibCameraFlat(this)); CameraFlat = module();
+    registerModule(RaylibCameraD(this)); CameraD = module();
+    
+    registerModule(RaylibCore(this)); Core = module();
+    registerModule(RaylibCoreFlat(this)); CoreFlat = module();
+    registerModule(RaylibCoreD(this)); CoreD = module();
+    
+    registerModule(RaylibGui(this)); Gui = module();
+    registerModule(RaylibGuiFlat(this)); GuiFlat = module();
+    registerModule(RaylibGuiD(this)); GuiD = module();
+
+    registerModule(RaylibLight(this)); Light = module();
+    registerModule(RaylibLightFlat(this)); LightFlat = module();
+    registerModule(RaylibLightD(this)); LightD = module();
+
+    registerModule(RaylibMsfGif(this)); MsfGif = module();
+    registerModule(RaylibMsfGifFlat(this)); MsfGifFlat = module();
+    registerModule(RaylibMsfGifD(this)); MsfGifD = module();
+    
+    registerModule(RaylibRlgl(this)); Rlgl = module();
+    registerModule(RaylibRlglFlat(this)); RlglFlat = module();
+    registerModule(RaylibRlglD(this)); RlglD = module();
   }
 
   // Custom dynamic libraries
@@ -227,7 +234,7 @@ String? _platformLibPath(String directory, String name) {
   return File(tmpGuiPath).existsSync() ? tmpGuiPath : null;
 }
 
-Raylib findRaylib(String folder, [RaylibTempBaseOptions? tempOptions]) {
+Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
   final raylibId = 'raylib';
   var dir = Directory.current;
 

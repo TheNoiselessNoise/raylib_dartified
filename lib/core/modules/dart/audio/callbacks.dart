@@ -2,41 +2,44 @@ part of '../../../raylib_dartified.dart';
 
 // AudioCallback
 
-typedef _AudioCallbackFunctionC = void Function(Pointer<Void> bufferData, int frames);
+typedef _AudioCallbackFunction = void Function(
+  Pointer<Void> bufferData,
+  int frames,
+);
 
-abstract class AudioCallbackD extends CallbackD<
-  AudioCallbackFunctionC,
-  AudioCallbackFunctionD
-> with AudioCallbackBase {
+abstract class AudioCallbackD extends AudioCallbackBase {
   AudioCallbackD([super.name]);
 
-  static final List<AudioCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
-
   /// The actual trampoline.
-  _AudioCallbackFunctionC get _rawFunction =>
+  _AudioCallbackFunction get _rawFunction =>
     (Pointer<Void> bufferData, int frames) =>
       function(
         NativeMemoryPointer(bufferData),
         frames,
       );
 
+  late final NativeCallable<AudioCallbackFunctionC> _callable;
+
   @override
-  initializer() => .listener(_rawFunction);
+  MemoryPointer<RFunction> initializer() {
+    _callable = .listener(_rawFunction);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
+  
+  @override
+  void dispose() {
+    _callable.close();
+    super.dispose();
+  }
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
-
-  factory AudioCallbackD.function(AudioCallbackFunctionD f, {String? name})
+  factory AudioCallbackD.function(AudioCallbackFunction f, {String? name})
     => _AudioCallbackD(f, name: name);
 }
 
 class _AudioCallbackD extends AudioCallbackD {
-  final AudioCallbackFunctionD _f;
+  final AudioCallbackFunction _f;
   _AudioCallbackD(this._f, {String? name}) : super(name);
 
   @override
-  AudioCallbackFunctionD get function => _f;
+  AudioCallbackFunction get function => _f;
 }

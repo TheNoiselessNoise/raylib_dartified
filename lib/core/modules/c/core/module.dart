@@ -1185,7 +1185,7 @@ class RaylibCore extends RaylibModule<Raylib> {
   late final _DrawEllipsePtr = _lookup<NativeFunction<Void Function(Int, Int, Float, Float, ColorC)>>('DrawEllipse');
   late final _DrawEllipse = _DrawEllipsePtr.asFunction<void Function(int, int, double, double, ColorC)>();
 
-  void DrawEllipseV(Vector2C center,double radiusH,double radiusV,ColorC color)
+  void DrawEllipseV(Vector2C center, double radiusH, double radiusV, ColorC color)
     => _DrawEllipseV(center, radiusH, radiusV, color);
   late final _DrawEllipseVPtr = _lookup<NativeFunction<Void Function(Vector2C, Float, Float, ColorC)>>('DrawEllipseV');
   late final _DrawEllipseV = _DrawEllipseVPtr.asFunction<void Function(Vector2C, double, double, ColorC)>();

@@ -1,15 +1,18 @@
-export '_base.dart';
-export '../core/modules/dart/audio/abbr.dart';
-export '../core/modules/dart/camera/abbr.dart';
-export '../core/modules/dart/core/abbr.dart';
-export '../core/modules/dart/gui/abbr.dart';
-export '../core/modules/dart/light/abbr.dart';
-export '../core/modules/dart/msf_gif/abbr.dart';
-export '../core/modules/dart/rlgl/abbr.dart';
-
 export 'package:raylib_dartified_base/abbr.dart';
+export '../core/modules/dart/audio/abbr_dart.dart';
+export '../core/modules/dart/camera/abbr_dart.dart';
+export '../core/modules/dart/core/abbr_dart.dart';
+export '../core/modules/dart/gui/abbr_dart.dart';
+export '../core/modules/dart/light/abbr_dart.dart';
+export '../core/modules/dart/msf_gif/abbr_dart.dart';
+export '../core/modules/dart/rlgl/abbr_dart.dart';
+export '_base.dart';
 
-import 'package:raylib_dartified/raylib_dartified.dart';
+import '';
+
+extension StringToRaylibC on String {
+  MemoryPointer<RChar> get toC => String$.Value(this);
+}
 
 ColorD get LIGHTGRAY => .LIGHTGRAY;
 ColorD get GRAY => .GRAY;

@@ -82,7 +82,7 @@ void main() {
     _k(.KEY_RIGHT_CONTROL), _k(.KEY_LEFT), _k(.KEY_DOWN), _k(.KEY_RIGHT)
   ];
 
-  final keyboardOffset = Vector2$.val.$new.set(26, 80);
+  final Vector2D keyboardOffset = .vec2(26, 80);
 
   while (!WindowShouldClose()) {
     int key = GetKeyPressed();

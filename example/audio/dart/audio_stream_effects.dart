@@ -3,14 +3,13 @@
 // Run it: dart run audio_stream_effects.dart
 // WARNING: expects resources from the raylib source
 // WARNING: NO EFFECTS, see LIMITATIONS.md
-import 'dart:ffi';
 import 'dart:typed_data';
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-late Pointer<Float> delayBuffer;
+late MemoryPointer<RFloat32> delayBuffer;
 int delayBufferSize = 0;
 int delayReadIndex = 2;
 int delayWriteIndex = 0;
@@ -62,7 +61,7 @@ void main() async {
   final music = LoadMusicStream("../resources/country.mp3");
 
   delayBufferSize = 48000*2;
-  delayBuffer = Float32$.val.At('delayBuffer', delayBufferSize);
+  delayBuffer = Float32$.At('delayBuffer', delayBufferSize).cast<RFloat32>();
 
   PlayMusicStream(music);
 

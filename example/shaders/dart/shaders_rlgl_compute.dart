@@ -60,12 +60,12 @@ void main()
   final golTransfertProgram = rlLoadShaderProgramCompute(golTransfertShader);
 
   int ssboA = rlLoadShaderBuffer(
-    UnsignedInt$.val.Size(GOL_WIDTH*GOL_WIDTH),
+    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
     null,
     .RL_DYNAMIC_COPY
   );
   int ssboB = rlLoadShaderBuffer(
-    UnsignedInt$.val.Size(GOL_WIDTH*GOL_WIDTH),
+    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
     null,
     .RL_DYNAMIC_COPY
   );
@@ -75,7 +75,7 @@ void main()
   );
 
   final ssboTransfert = rlLoadShaderBuffer(
-    transfertBuffer.data.length*UnsignedInt$.val.Size(),
+    transfertBuffer.data.length*UnsignedInt$.Size(),
     null,
     .RL_DYNAMIC_COPY
   );

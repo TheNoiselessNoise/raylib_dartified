@@ -34,7 +34,7 @@ void main()
   shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
     GetShaderLocation(shadowShader, "viewPos");
 
-  Vector3D lightDir = .vec3Normalized(0.35, -1.0, -0.35);
+  Vector3D lightDir = .normalized(0.35, -1.0, -0.35);
   Vector4D lightColor = .colorNormalize(.WHITE);
 
   void updateShaderLightDir() {

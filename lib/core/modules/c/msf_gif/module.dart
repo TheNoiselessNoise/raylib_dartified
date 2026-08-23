@@ -1,9 +1,9 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibMsfGif extends RaylibModule<Raylib> {
+class RaylibMsfGif extends RaylibModule {
   RaylibMsfGif(super.rl);
 
-  RaylibLookup get _lookup => rl.lookup<RaylibMsfGif>();
+  RaylibLookup get _lookup => (rl as Raylib).lookup<RaylibMsfGif>();
 
   late final _msf_gif_alpha_threshold = _lookup<Int>('msf_gif_alpha_threshold');
   int get msf_gif_alpha_threshold => _msf_gif_alpha_threshold.value;

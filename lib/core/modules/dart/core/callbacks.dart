@@ -8,17 +8,8 @@ typedef _TraceLogCallbackFunction = void Function(
   Pointer<Void> args,
 );
 
-abstract class TraceLogCallbackD extends CallbackD<
-  TraceLogCallbackFunctionC,
-  TraceLogCallbackFunction
-> with TraceLogCallbackBase {
+abstract class TraceLogCallbackD extends TraceLogCallbackBase {
   TraceLogCallbackD([super.name]);
-
-  static final List<TraceLogCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
 
   /// The actual trampoline.
   _TraceLogCallbackFunction get _rawFunction =>
@@ -29,10 +20,19 @@ abstract class TraceLogCallbackD extends CallbackD<
         NativeMemoryPointer(args),
       );
 
-  @override
-  initializer() => .isolateLocal(_rawFunction);
+  late final NativeCallable<TraceLogCallbackFunctionC> _callable;
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  @override
+  MemoryPointer<RFunction> initializer() {
+    _callable = .isolateLocal(_rawFunction);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _callable.close();
+  }
 
   factory TraceLogCallbackD.function(TraceLogCallbackFunction f, {String? name})
     => _TraceLogCallbackD(f, name: name);
@@ -66,17 +66,8 @@ typedef _LoadFileDataCallbackFunction = Pointer<UnsignedChar> Function(
   Pointer<Int> dataSize,
 );
 
-abstract class LoadFileDataCallbackD extends CallbackD<
-  LoadFileDataCallbackFunctionC,
-  LoadFileDataCallbackFunction
-> with LoadFileDataCallbackBase {
+abstract class LoadFileDataCallbackD extends LoadFileDataCallbackBase {
   LoadFileDataCallbackD([super.name]);
-
-  static final List<LoadFileDataCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
 
   /// The actual trampoline.
   _LoadFileDataCallbackFunction get _rawFunction =>
@@ -89,10 +80,13 @@ abstract class LoadFileDataCallbackD extends CallbackD<
       return (result as NativeMemoryPointer).asPointer();
     };
 
-  @override
-  initializer() => .isolateLocal(_rawFunction);
+  late final NativeCallable<LoadFileDataCallbackFunctionC> _callable;
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  @override
+  MemoryPointer<RFunction> initializer() {
+    _callable = .isolateLocal(_rawFunction);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
 
   factory LoadFileDataCallbackD.function(LoadFileDataCallbackFunction f, {String? name})
     => _LoadFileDataCallbackD(f, name: name);
@@ -127,17 +121,8 @@ typedef _SaveFileDataCallbackFunction = bool Function(
   int dataSize,
 );
 
-abstract class SaveFileDataCallbackD extends CallbackD<
-  SaveFileDataCallbackFunctionC,
-  SaveFileDataCallbackFunction
-> with SaveFileDataCallbackBase {
+abstract class SaveFileDataCallbackD extends SaveFileDataCallbackBase {
   SaveFileDataCallbackD([super.name]);
-
-  static final List<SaveFileDataCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
   
   /// The actual trampoline.
   _SaveFileDataCallbackFunction get _rawFunction =>
@@ -148,10 +133,13 @@ abstract class SaveFileDataCallbackD extends CallbackD<
         dataSize
       );
 
-  @override
-  initializer() => .isolateLocal(_rawFunction, exceptionalReturn: false);
+  late final NativeCallable<SaveFileDataCallbackFunctionC> _callable;
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  @override
+  MemoryPointer<RFunction> initializer() {
+    _callable = .isolateLocal(_rawFunction, exceptionalReturn: false);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
 
   factory SaveFileDataCallbackD.function(SaveFileDataCallbackFunction f, {String? name})
     => _SaveFileDataCallbackD(f, name: name);
@@ -184,17 +172,8 @@ typedef _LoadFileTextCallbackFunction = Pointer<Char> Function(
   Pointer<Char> fileName,
 );
 
-abstract class LoadFileTextCallbackD extends CallbackD<
-  LoadFileTextCallbackFunctionC,
-  LoadFileTextCallbackFunction
-> with LoadFileTextCallbackBase {
+abstract class LoadFileTextCallbackD extends LoadFileTextCallbackBase {
   LoadFileTextCallbackD([super.name]);
-
-  static final List<LoadFileTextCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
 
   /// The actual trampoline.
   _LoadFileTextCallbackFunction get _rawFunction =>
@@ -206,10 +185,13 @@ abstract class LoadFileTextCallbackD extends CallbackD<
       return (result as NativeMemoryPointer).asPointer();
     };
 
-  @override
-  initializer() => .isolateLocal(_rawFunction);
+  late final NativeCallable<LoadFileTextCallbackFunctionC> _callable;
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  @override
+  MemoryPointer<RFunction> initializer() {
+    _callable = .isolateLocal(_rawFunction);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
 
   factory LoadFileTextCallbackD.function(LoadFileTextCallbackFunction f, {String? name})
     => _LoadFileTextCallbackD(f, name: name);
@@ -243,17 +225,8 @@ typedef _SaveFileTextCallbackFunction = bool Function(
   Pointer<Char> text,
 );
 
-abstract class SaveFileTextCallbackD extends CallbackD<
-  SaveFileTextCallbackFunctionC,
-  SaveFileTextCallbackFunction
-> with SaveFileTextCallbackBase {
+abstract class SaveFileTextCallbackD extends SaveFileTextCallbackBase {
   SaveFileTextCallbackD([super.name]);
-
-  static final List<SaveFileTextCallbackD> _registry = [];
-
-  @override
-  @nonVirtual
-  get registry => _registry;
 
   /// The actual trampoline.
   _SaveFileTextCallbackFunction get _rawFunction =>
@@ -263,10 +236,13 @@ abstract class SaveFileTextCallbackD extends CallbackD<
         NativeMemoryPointer(text.cast()),
       );
 
-  @override
-  initializer() => .isolateLocal(_rawFunction, exceptionalReturn: false);
+  late final NativeCallable<SaveFileTextCallbackFunctionC> _callable;
 
-  static void disposeRegistry() => CallbackD.disposeRegistry(_registry);
+  @override
+  MemoryPointer<RFunction> initializer() {
+    _callable = .isolateLocal(_rawFunction, exceptionalReturn: false);
+    return NativeMemoryPointer(_callable.nativeFunction.cast());
+  }
 
   factory SaveFileTextCallbackD.function(SaveFileTextCallbackFunction f, {String? name})
     => _SaveFileTextCallbackD(f, name: name);

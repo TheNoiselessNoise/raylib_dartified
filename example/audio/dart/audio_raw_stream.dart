@@ -2,7 +2,6 @@
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_raw_stream.c
 // Run it: dart run audio_raw_stream.dart
 // WARNING: NO SOUND, see LIMITATIONS.md
-import 'dart:ffi';
 import 'dart:math' as math;
 import 'dart:typed_data';
 import '../../base_dart.dart';
@@ -43,7 +42,7 @@ void main() async {
     }
   }));
 
-  final data = Short$.val.At('data', MAX_SAMPLES);
+  final data = Short$.At('data', MAX_SAMPLES).cast<RShort>();
 
   PlayAudioStream(stream);
 

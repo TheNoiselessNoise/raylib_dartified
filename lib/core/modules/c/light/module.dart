@@ -31,25 +31,25 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     final light = calloc<LightC>();
     light.ref.enabled = true;
     light.ref.type = type;
-    light.ref.position.setC(position);
-    light.ref.target.setC(target);
-    light.ref.color.setC(color);
+    light.ref.position = position;
+    light.ref.target = target;
+    light.ref.color = color;
 
     int index = _lights.length;
     light.ref.enabledLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].enabled"),
+      shader, rl.Temp.String$.Value("lights[$index].enabled").asNativePointer(),
     );
     light.ref.typeLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].type"),
+      shader, rl.Temp.String$.Value("lights[$index].type").asNativePointer(),
     );
     light.ref.positionLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].position"),
+      shader, rl.Temp.String$.Value("lights[$index].position").asNativePointer(),
     );
     light.ref.targetLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].target"),
+      shader, rl.Temp.String$.Value("lights[$index].target").asNativePointer(),
     );
     light.ref.colorLoc = rl.Core.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].color"),
+      shader, rl.Temp.String$.Value("lights[$index].color").asNativePointer(),
     );
 
     UpdateLightValues(shader, light.ref);
