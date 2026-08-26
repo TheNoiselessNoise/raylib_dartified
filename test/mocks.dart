@@ -41,7 +41,7 @@ class MockTestStruct extends RaylibStruct<MockTestStruct> {
   };
 
   static StructPointer<MockTestStruct> pointer([MemoryPointer? ptr])
-    => .nullable(ptr, structLayout, MockTestStruct.new);
+    => .nullable(ptr, structLayout, MockTestStruct.new, MockTestStruct.pointer);
 
   int _a;
   int get a {
@@ -96,14 +96,14 @@ class MockTestStruct extends RaylibStruct<MockTestStruct> {
   }
 
   @override
-  void writeInto(MemoryPointer<RStruct> p) {
+  void structWriteInto(MemoryPointer<RStruct> p) {
     p.writeUint32(_a, structLayout.offset(.a));
     p.writePtr(_ptrField, structLayout.offset(.ptrField));
     p.writeUint32(_b, structLayout.offset(.b));
   }
 
   @override
-  void readFrom(MemoryPointer<RStruct> p) {
+  void structReadFrom(MemoryPointer<RStruct> p) {
     _a = p.readUint32(structLayout.offset(.a));
     _ptrField = p.readPtr(structLayout.offset(.ptrField));
     _b = p.readUint32(structLayout.offset(.b));

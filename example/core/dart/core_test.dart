@@ -35,7 +35,7 @@ void main() {
 
     scanY = (scanY + 1) % 256;
 
-    UpdateTexture(texture, pixels);
+    UpdateTexture(texture, .fromList(pixels));
 
     BeginDrawing();
       ClearBackground(.RAYWHITE);

@@ -34,7 +34,7 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => module<MyModule>();
+MyModule get myModule => Raylib.instance.module();
 
 void main()
 {

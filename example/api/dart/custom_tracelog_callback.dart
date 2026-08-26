@@ -10,7 +10,7 @@ void main()
 
   InitWindow(screenWidth, screenHeight, 'custom_tracelog_callback');
 
-  SetTraceLogCallback(.friendly((logLevel, text) {
+  SetTraceLogCallback(TraceLogCallbackD.friendly((logLevel, text) {
     print('${logLevel.name}: $text');
   }));
 

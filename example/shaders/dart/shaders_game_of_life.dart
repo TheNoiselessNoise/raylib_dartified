@@ -86,7 +86,7 @@ void main()
       worldWidth/2.0, worldHeight/2.0,
       startPattern.width, startPattern.height
     ),
-    startPattern.data
+    .fromList(startPattern.data),
   );
   UnloadImage(startPattern);
 
@@ -190,7 +190,7 @@ void main()
             offsetX.floorToDouble(), offsetY.floorToDouble(),
             sizeInWorldX, sizeInWorldY,
           ),
-          imageToDraw!.data,
+          .fromList(imageToDraw!.data),
         );
       }
       else firstColor = -1;
@@ -225,7 +225,7 @@ void main()
             pattern.width,
             pattern.height,
           ),
-          pattern.data,
+          .fromList(pattern.data),
         );
       } else {
         pattern = GenImageColor(worldWidth~/randomTiles, worldHeight~/randomTiles, .RAYWHITE);
@@ -248,7 +248,7 @@ void main()
                 pattern.width*i, pattern.height*j,
                 pattern.width, pattern.height,
               ),
-              pattern.data
+              .fromList(pattern.data),
             );
           }
         }

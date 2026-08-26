@@ -58,6 +58,7 @@ void main()
 
         DrawGrid(10, 1.0);
 
+        // ignore: deprecated_member_use
         DrawBillboardPro(
           camera,
           skillbot,

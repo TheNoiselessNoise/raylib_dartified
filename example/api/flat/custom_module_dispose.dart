@@ -14,12 +14,12 @@ class MyModule extends RaylibModule<Raylib> {
   @override
   void load() {
     // automatically disposed
-    background = Color$.StructAtUnique();
+    background = Color$.AtUniqueStruct();
     background.ref = RAYWHITE;
     // or simply: background = Color$.ValueUnique(RAYWHITE);
 
     // using raw (untracked) - we own this, must free in dispose()
-    position = Vector2$.StructRaw();
+    position = Vector2$.RawStruct();
   }
 
   @override
@@ -49,7 +49,7 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => module<MyModule>();
+MyModule get myModule => Raylib.instance.module();
 
 void main()
 {

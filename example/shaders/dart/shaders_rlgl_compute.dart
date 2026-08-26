@@ -75,7 +75,7 @@ void main()
   );
 
   final ssboTransfert = rlLoadShaderBuffer(
-    transfertBuffer.data.length*UnsignedInt$.Size(),
+    UnsignedInt$.Size(transfertBuffer.data.length),
     null,
     .RL_DYNAMIC_COPY
   );

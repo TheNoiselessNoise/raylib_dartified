@@ -1,19 +1,11 @@
 part of 'raylib_dartified.dart';
 
-enum RaylibSupportedLibs {
-  gui('raygui'),
-  msfGif('msf_gif');
-
-  const RaylibSupportedLibs(this.id);
-  final String id;
-}
-
 typedef RaylibLookup = Pointer<T> Function<T extends NativeType>(String symbolName);
 
 class RaylibExternalLibs {
   final Map<Type, DynamicLibrary> _libs = {};
 
-  void register<T extends RaylibModule>(String path) {
+  void register<T extends RaylibModule<Raylib>>(String path) {
     if (_libs.containsKey(T)) {
       throw StateError("A dynamic library for $T is already registered.");
     }
@@ -21,7 +13,7 @@ class RaylibExternalLibs {
     _libs[T] = .open(path);
   }
 
-  RaylibLookup lookup<T extends RaylibModule>() {
+  RaylibLookup lookup<T extends RaylibModule<Raylib>>() {
     final lib = _libs[T];
     if (lib == null) {
       throw StateError("No dynamic library registered for $T.");
@@ -30,11 +22,33 @@ class RaylibExternalLibs {
   }
 }
 
+NativeMemoryPointer<RVoid> _nativeFromBytes<T extends TypedDataList>(T data) {
+  final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
+  final ptr = ffi.malloc<Uint8>(byteLength);
+  final asBytes = (data as TypedData).buffer.asUint8List(data.offsetInBytes, byteLength);
+  ptr.asTypedList(byteLength).setAll(0, asBytes);
+  return .new(ptr.cast());
+}
+
+NativeMemoryPointer<Y> _nativeNullptrFactory<Y extends RType>() => .new(nullptr);
+
+NativeMemoryPointer<RUint8> _nativeFromString(String text, [int? bufferSize]) {
+  final bytes = utf8.encode(text);
+  final len = bytes.length + 1;
+  final bufSize = bufferSize != null ? (bufferSize > len ? bufferSize : len) : len;
+  final ptr = calloc<Uint8>(bufSize);
+  ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
+  return .new(ptr);
+}
+
+NativeMemoryPointer<Y> _nativeMalloc<Y extends RType>(int size)
+  => .new(ffi.malloc.allocate(size));
+
 // NOTE: external modules may not be initialized at all
 //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
 //       LateInitializationError: Field 'Gui' has not been initialized.
 //       That's expected behavior!
-class Raylib extends RaylibBase {
+class Raylib extends RaylibBase<Raylib> {
   static Raylib get instance => RaylibBase.getInstance();
 
   Logger logger = Logger.detached('Raylib');
@@ -50,81 +64,49 @@ class Raylib extends RaylibBase {
 
   late RaylibAudio Audio;
   @override late RaylibAudioFlat AudioFlat;
-  @override late RaylibAudioD AudioD;
   
   late RaylibCamera Camera;
   @override late RaylibCameraFlat CameraFlat;
-  @override late RaylibCameraD CameraD;
   
   late RaylibCore Core;
   @override late RaylibCoreFlat CoreFlat;
-  @override late RaylibCoreD CoreD;
 
   late RaylibGui Gui;
   @override late RaylibGuiFlat GuiFlat;
-  @override late RaylibGuiD GuiD;
   
   late RaylibLight Light;
-  @override late RaylibLightFlat LightFlat;
-  @override late RaylibLightD LightD;
 
   late RaylibMsfGif MsfGif;
   @override late RaylibMsfGifFlat MsfGifFlat;
-  @override late RaylibMsfGifD MsfGifD;
 
   late RaylibRlgl Rlgl;
   @override late RaylibRlglFlat RlglFlat;
-  @override late RaylibRlglD RlglD;
 
   final _externalLibs = RaylibExternalLibs();
 
   Map<RaylibSupportedLibs, void Function(String)> get _moduleRegistrars => {
     .gui: (p) => _externalLibs.register<RaylibGui>(p),
-    .msfGif: (p) => _externalLibs.register<RaylibMsfGif>(p),
+    .msf_gif: (p) => _externalLibs.register<RaylibMsfGif>(p),
   };
 
-  RaylibLookup lookup<T extends RaylibModule>() => _externalLibs.lookup<T>();
+  RaylibLookup lookup<T extends RaylibModule<Raylib>>() => _externalLibs.lookup<T>();
 
   Raylib({
     required String core,
     Map<RaylibSupportedLibs, String?> libs = const {},
     super.tempOptions,
     super.random,
-  }) : super(
-    initializer: () => RType.nativeWordSize = sizeOf<IntPtr>(),
-  ) {
-    _initBase();
+    super.silent,
+  }) {
+    RType.nativeWordSize = sizeOf<IntPtr>();
+    MemoryPointer.fromBytes = _nativeFromBytes;
+    MemoryPointer.fromString = _nativeFromString;
+    MemoryPointer.nullptrFactory = _nativeNullptrFactory;
+    MemoryPointer.malloc = _nativeMalloc;
+    boot();
+    
     _initLibs(core, libs);
     _init();
-  }
-
-  NativeMemoryPointer<RVoid> _defaultFromBytes<T extends TypedDataList>(T data) {
-    final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
-    final ptr = ffi.malloc<Uint8>(byteLength);
-    final asBytes = (data as TypedData).buffer.asUint8List(data.offsetInBytes, byteLength);
-    ptr.asTypedList(byteLength).setAll(0, asBytes);
-    return .new(ptr.cast());
-  }
-
-  NativeMemoryPointer<Y> _defaultNullptrFactory<Y extends RType>() => .new(nullptr);
-
-  NativeMemoryPointer<RUint8> _defaultFromString(String text, [int? bufferSize]) {
-    final bytes = utf8.encode(text);
-    final len = bytes.length + 1;
-    final bufSize = bufferSize != null ? (bufferSize > len ? bufferSize : len) : len;
-    final ptr = calloc<Uint8>(bufSize);
-    ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
-    return .new(ptr);
-  }
-
-  NativeMemoryPointer<Y> _defaultMalloc<Y extends RType>(int size)
-    => .new(ffi.malloc.allocate(size));
-
-  void _initBase() {
-    MemoryPointer.fromBytes = _defaultFromBytes;
-    MemoryPointer.fromString = _defaultFromString;
-    MemoryPointer.nullptrFactory = _defaultNullptrFactory;
-    MemoryPointer.malloc = _defaultMalloc;
   }
 
   void _initLibs(String core, Map<RaylibSupportedLibs, String?> libs) {
@@ -132,7 +114,7 @@ class Raylib extends RaylibBase {
 
     final registrars = _moduleRegistrars;
 
-    for (final l in libs.entries) {
+    for (final l in libs.entries.skip(1)) {
       final path = l.value;
       if (path != null) registrars[l.key]!(path);
     }
@@ -155,53 +137,44 @@ class Raylib extends RaylibBase {
     });
 
     // modules
-    registerModule(RaylibAudio(this)); Audio = module();
-    registerModule(RaylibAudioFlat(this)); AudioFlat = module();
-    registerModule(RaylibAudioD(this)); AudioD = module();
+    registerModule(Audio = RaylibAudio(this));
+    registerModule(AudioFlat = RaylibAudioFlat(this));
 
-    registerModule(RaylibCamera(this)); Camera = module();
-    registerModule(RaylibCameraFlat(this)); CameraFlat = module();
-    registerModule(RaylibCameraD(this)); CameraD = module();
+    registerModule(Camera = RaylibCamera(this));
+    registerModule(CameraFlat = RaylibCameraFlat(this));
     
-    registerModule(RaylibCore(this)); Core = module();
-    registerModule(RaylibCoreFlat(this)); CoreFlat = module();
-    registerModule(RaylibCoreD(this)); CoreD = module();
+    registerModule(Core = RaylibCore(this));
+    registerModule(CoreFlat = RaylibCoreFlat(this));
     
-    registerModule(RaylibGui(this)); Gui = module();
-    registerModule(RaylibGuiFlat(this)); GuiFlat = module();
-    registerModule(RaylibGuiD(this)); GuiD = module();
+    registerModule(Gui = RaylibGui(this));
+    registerModule(GuiFlat = RaylibGuiFlat(this));
 
-    registerModule(RaylibLight(this)); Light = module();
-    registerModule(RaylibLightFlat(this)); LightFlat = module();
-    registerModule(RaylibLightD(this)); LightD = module();
+    registerModule(Light = RaylibLight(this));
 
-    registerModule(RaylibMsfGif(this)); MsfGif = module();
-    registerModule(RaylibMsfGifFlat(this)); MsfGifFlat = module();
-    registerModule(RaylibMsfGifD(this)); MsfGifD = module();
+    registerModule(MsfGif = RaylibMsfGif(this));
+    registerModule(MsfGifFlat = RaylibMsfGifFlat(this));
     
-    registerModule(RaylibRlgl(this)); Rlgl = module();
-    registerModule(RaylibRlglFlat(this)); RlglFlat = module();
-    registerModule(RaylibRlglD(this)); RlglD = module();
+    registerModule(Rlgl = RaylibRlgl(this));
+    registerModule(RlglFlat = RaylibRlglFlat(this));
   }
 
   // Custom dynamic libraries
   final Map<Type, DynamicLibrary> _customDynLibs = {};
-  (T, DynamicLibrary) registerDynLib<T extends RaylibModule>(
+  (T, DynamicLibrary) registerDynLib<T extends RaylibModule<Raylib>>(
     T module,
     DynamicLibrary dynLib,
   ) {
     logInfo('Registering DynamicLibrary for $T');
 
-    final key = module.runtimeType;
-    if (_customDynLibs.containsKey(key)) {
-      throw StateError("A DynamicLibrary for $key is already registered.");
+    if (_customDynLibs.containsKey(T)) {
+      throw StateError("A DynamicLibrary for $T is already registered.");
     }
 
-    _customDynLibs[key] = dynLib;
+    _customDynLibs[T] = dynLib;
     return (registerModule(module), dynLib);
   }
 
-  DynamicLibrary dynLib<T extends RaylibModule>() {
+  DynamicLibrary dynLib<T extends RaylibModule<Raylib>>() {
     final lib = _customDynLibs[T];
     if (lib == null) {
       throw StateError("No DynamicLibrary registered for $T.");
@@ -212,8 +185,14 @@ class Raylib extends RaylibBase {
 
 abstract class RaylibGame extends RaylibGameBase<Raylib> {}
 
-Future<void> runRaylib(RaylibGame game, {String? nativeLibPath}) async {
-  final rl = findRaylib(nativeLibPath ?? 'raylib');
+Future<void> runRaylib(RaylibGame game, {
+  String? nativeLibPath,
+  bool silent = false,
+}) async {
+  final rl = findRaylib(
+    nativeLibPath ?? 'raylib',
+    silent: silent,
+  );
   game.init(rl);
   while (!game.shouldClose(rl)) {
     await game.loop(rl);
@@ -234,8 +213,11 @@ String? _platformLibPath(String directory, String name) {
   return File(tmpGuiPath).existsSync() ? tmpGuiPath : null;
 }
 
-Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
-  final raylibId = 'raylib';
+Raylib findRaylib(String folder, {
+  RaylibTempOptions? tempOptions,
+  bool silent = false,
+}) {
+  final raylibId = RaylibSupportedLibs.raylib.id;
   var dir = Directory.current;
 
   while (true) {
@@ -249,7 +231,7 @@ Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
       }
 
       final Map<RaylibSupportedLibs, String?> libs = {};
-      for (final lib in RaylibSupportedLibs.values) {
+      for (final lib in RaylibSupportedLibs.values.skip(1)) {
         libs[lib] = _platformLibPath(raylibPath, lib.id);
       }
 
@@ -257,6 +239,7 @@ Raylib findRaylib(String folder, [RaylibTempOptions? tempOptions]) {
         core: corePath,
         libs: libs,
         tempOptions: tempOptions,
+        silent: silent,
       );
     }
 

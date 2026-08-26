@@ -1,6 +1,6 @@
 // Run it: dart run custom_tracelog_callback.dart
 import 'dart:ffi';
-import '../../base_raw.dart';
+import '../../base_ffi.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;

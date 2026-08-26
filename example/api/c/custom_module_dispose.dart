@@ -1,7 +1,7 @@
 // Run it: dart run custom_module_dispose.dart
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
-import '../../base_raw.dart';
+import '../../base_ffi.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -50,7 +50,7 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => module<MyModule>();
+MyModule get myModule => Raylib.instance.module();
 
 void main()
 {
@@ -74,5 +74,4 @@ void main()
   // you should see in the output:
   // Disposing MyModule
   CloseWindowAndDispose();
-  freeRaylibColors();
 }

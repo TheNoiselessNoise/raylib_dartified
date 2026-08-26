@@ -13,6 +13,9 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
+  // rl.debugEverything(true);
+  rl.Temp.debugFree(true);
+
   InitWindow(screenWidth, screenHeight, "models_point_rendering");
   SetTargetFPS(60);
 

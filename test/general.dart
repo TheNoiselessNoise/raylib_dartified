@@ -23,15 +23,13 @@ void main() {
       addTearDown(() => buf.free());
 
       final src = MockTestStruct(a: 1, ptrField: data, b: 2);
-      src.writeInto(buf.cast());
+      src.structWriteInto(buf.cast());
 
       final dst = MockTestStruct.zero();
-      dst.readFrom(buf.cast());
+      dst.structReadFrom(buf.cast());
 
       expect(dst.a, 1);
       expect(dst.b, 2);
-      // this is the assertion that would've caught the readPtr bug directly:
-      // dst.ptrField.address must equal data.address, not buf.address + offset
       expect(dst.ptrField.address, data.address);
       expect(dst.ptrField.readArray(4), [10, 20, 30, 40]);
     });

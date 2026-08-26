@@ -25,7 +25,7 @@ final results = <TestResult>[];
 // LoadFileData: returns 8 bytes [1,1,1,1,0,0,0,0]
 final TestResult lfdResult = TestResult('LoadFileData');
 TestResult testLoadFileData() {
-  SetLoadFileDataCallback(.friendly((fileName, dataSize) {
+  SetLoadFileDataCallback(LoadFileDataCallbackD.friendly((fileName, dataSize) {
     lfdResult.assertIt(fileName == 'LoadFileData');
     const dummyDataSize = 8;
     dataSize.value = dummyDataSize;
@@ -47,7 +47,7 @@ int _savedDataSize = 0;
 List<int> _savedDataBytes = [];
 final TestResult sfdResult = TestResult('SaveFileData');
 TestResult testSaveFileData() {
-  SetSaveFileDataCallback(.friendly((fileName, data, dataSize) {
+  SetSaveFileDataCallback(SaveFileDataCallbackD.friendly((fileName, data, dataSize) {
     sfdResult.assertIt(fileName == 'SaveFileData');
     _savedDataSize = dataSize;
     final bytes = data.to<Uint8List>(dataSize);
@@ -72,7 +72,7 @@ TestResult testSaveFileData() {
 // LoadFileText: returns a fixed null-terminated C string
 final TestResult lftResult = TestResult('LoadFileText');
 TestResult testLoadFileText() {
-  SetLoadFileTextCallback(.friendly((fileName) {
+  SetLoadFileTextCallback(LoadFileTextCallbackD.friendly((fileName) {
     lftResult.assertIt(fileName == 'LoadFileText');
     return 'hello raylib';
   },));
@@ -88,7 +88,7 @@ TestResult testLoadFileText() {
 String _savedText = '';
 final TestResult sftResult = TestResult('SaveFileText');
 TestResult testSaveFileText() {
-  SetSaveFileTextCallback(.friendly((fileName, text) {
+  SetSaveFileTextCallback(SaveFileTextCallbackD.friendly((fileName, text) {
     sftResult.assertIt(fileName == 'SaveFileText');
     _savedText = text;
     return true;

@@ -57,10 +57,12 @@ void main()
         if (distanceStatic > distanceRotating) 
         {
           DrawBillboard(camera, bill, billPositionStatic, 2.0, .WHITE);
+          // ignore: deprecated_member_use
           DrawBillboardPro(camera, bill, source, billPositionRotating, billUp, size, origin, rotation, .WHITE);
         } 
         else
         {
+          // ignore: deprecated_member_use
           DrawBillboardPro(camera, bill, source, billPositionRotating, billUp, size, origin, rotation, .WHITE);
           DrawBillboard(camera, bill, billPositionStatic, 2.0, .WHITE);
         }
