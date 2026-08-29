@@ -7,23 +7,29 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   @override
   Vector3D GetCameraForward(
     StructPointer<Camera3DD> camera,
-  ) => rl.Camera.GetCameraForward(
-    camera.asNativePointer(),
-  ).toD();
+  ) => rl.Temp.Vector3$.Extract1(
+    (p) => rl.Camera.GetCameraForward(
+      camera.asNativePointer(),
+    ).toD(p.asNativePointer())
+  );
 
   @override
   Vector3D GetCameraUp(
     StructPointer<Camera3DD> camera,
-  ) => rl.Camera.GetCameraUp(
-    camera.asNativePointer(),
-  ).toD();
+  ) => rl.Temp.Vector3$.Extract1(
+    (p) => rl.Camera.GetCameraUp(
+      camera.asNativePointer(),
+    ).toD(p.asNativePointer())
+  );
 
   @override
   Vector3D GetCameraRight(
     StructPointer<Camera3DD> camera,
-  ) => rl.Camera.GetCameraRight(
-    camera.asNativePointer(),
-  ).toD();
+  ) => rl.Temp.Vector3$.Extract1(
+    (p) => rl.Camera.GetCameraRight(
+      camera.asNativePointer(),
+    ).toD(p.asNativePointer())
+  );
 
   @override
   void CameraMoveForward(
@@ -103,16 +109,20 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   @override
   MatrixD GetCameraViewMatrix(
     StructPointer<Camera3DD> camera,
-  ) => rl.Camera.GetCameraViewMatrix(
-    camera.asNativePointer(),
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Camera.GetCameraViewMatrix(
+      camera.asNativePointer(),
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   MatrixD GetCameraProjectionMatrix(
     StructPointer<Camera3DD> camera,
     double aspect,
-  ) => rl.Camera.GetCameraProjectionMatrix(
-    camera.asNativePointer(),
-    aspect.toDouble(),
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Camera.GetCameraProjectionMatrix(
+      camera.asNativePointer(),
+      aspect.toDouble(),
+    ).toD(p.asNativePointer()),
+  );
 }

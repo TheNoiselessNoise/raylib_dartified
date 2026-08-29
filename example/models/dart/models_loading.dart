@@ -23,17 +23,10 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  print('loading model...');
   var model = LoadModel("../resources/models/obj/castle.obj");
-  print('materialCount: ${model.materialCount}');
-  print('meshCount: ${model.meshCount}');
-  print('meshes[0]: ${model.meshes[0]}');
-  print('loading texture...');
   var texture = LoadTexture("../resources/models/obj/castle_diffuse.png");
-  print('setting texture...');
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  print('generating mesh...');
   var bounds = GetMeshBoundingBox(model.meshes[0]);
 
   bool selected = false;

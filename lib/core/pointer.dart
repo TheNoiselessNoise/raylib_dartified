@@ -80,16 +80,8 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   }
 
   @override
-  String toDartString() {
-    _p('toDartString');
-    return _ptr.cast<Utf8>().toDartString();
-  }
-
-  @override
-  String toDartStringBounded(int maxLength) {
-    _p('toDartStringBounded', maxLength);
-    return _ptr.cast<Utf8>().toDartString(length: maxLength);
-  }
+  Uint8List readBytes(int byteOffset, int length) =>
+    (_ptr.cast<Uint8>() + byteOffset).asTypedList(length);
 
   @override
   NativeMemoryPointer<Y> offsetBy<Y extends RType>(int byteOffset) => .new(_at(byteOffset));

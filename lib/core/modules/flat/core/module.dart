@@ -178,9 +178,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   Vector2D GetMonitorPosition(
     int monitor,
-  ) => rl.Core.GetMonitorPosition(
-    monitor,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetMonitorPosition(
+      monitor,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   int GetMonitorWidth(
@@ -218,10 +220,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   );
 
   @override
-  Vector2D GetWindowPosition() => rl.Core.GetWindowPosition().toD();
+  Vector2D GetWindowPosition() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetWindowPosition().toD(p.asNativePointer()),
+  );
 
   @override
-  Vector2D GetWindowScaleDPI() => rl.Core.GetWindowScaleDPI().toD();
+  Vector2D GetWindowScaleDPI() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetWindowScaleDPI().toD(p.asNativePointer()),
+  );
 
   @override
   NativeMemoryPointer<RChar> GetMonitorName(
@@ -473,10 +479,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RayD GetScreenToWorldRay(
     Vector2D position,
     Camera3DD camera,
-  ) => rl.Core.GetScreenToWorldRay(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-  ).toD();
+  ) => rl.Temp.Ray$.Extract1(
+    (p) => rl.Core.GetScreenToWorldRay(
+      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RayD GetScreenToWorldRayEx(
@@ -484,21 +492,25 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Camera3DD camera,
     int width,
     int height,
-  ) => rl.Core.GetScreenToWorldRayEx(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-    width,
-    height,
-  ).toD();
+  ) => rl.Temp.Ray$.Extract1(
+    (p) => rl.Core.GetScreenToWorldRayEx(
+      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      width,
+      height,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetWorldToScreen(
     Vector3D position,
     Camera3DD camera,
-  ) => rl.Core.GetWorldToScreen(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetWorldToScreen(
+      rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetWorldToScreenEx(
@@ -506,44 +518,54 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Camera3DD camera,
     int width,
     int height,
-  ) => rl.Core.GetWorldToScreenEx(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-    width,
-    height,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetWorldToScreenEx(
+      rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      width,
+      height,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetWorldToScreen2D(
     Vector2D position,
     Camera2DD camera,
-  ) => rl.Core.GetWorldToScreen2D(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract2(
+    (p) => rl.Core.GetWorldToScreen2D(
+      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetScreenToWorld2D(
     Vector2D position,
     Camera2DD camera,
-  ) => rl.Core.GetScreenToWorld2D(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract2(
+    (p) => rl.Core.GetScreenToWorld2D(
+      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   MatrixD GetCameraMatrix(
     Camera3DD camera,
-  ) => rl.Core.GetCameraMatrix(
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Core.GetCameraMatrix(
+      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   MatrixD GetCameraMatrix2D(
     Camera2DD camera,
-  ) => rl.Core.GetCameraMatrix2D(
-    rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Core.GetCameraMatrix2D(
+      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void SetTargetFPS(
@@ -1277,10 +1299,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   int GetMouseY() => rl.Core.GetMouseY();
 
   @override
-  Vector2D GetMousePosition() => rl.Core.GetMousePosition().toD();
+  Vector2D GetMousePosition() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetMousePosition().toD(p.asNativePointer()),
+  );
 
   @override
-  Vector2D GetMouseDelta() => rl.Core.GetMouseDelta().toD();
+  Vector2D GetMouseDelta() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetMouseDelta().toD(p.asNativePointer()),
+  );
 
   @override
   void SetMousePosition(
@@ -1313,7 +1339,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   double GetMouseWheelMove() => rl.Core.GetMouseWheelMove();
 
   @override
-  Vector2D GetMouseWheelMoveV() => rl.Core.GetMouseWheelMoveV().toD();
+  Vector2D GetMouseWheelMoveV() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetMouseWheelMoveV().toD(p.asNativePointer()),
+  );
 
   @override
   void SetMouseCursor(
@@ -1331,9 +1359,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   Vector2D GetTouchPosition(
     int index,
-  ) => rl.Core.GetTouchPosition(
-    index,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetTouchPosition(
+      index,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   int GetTouchPointId(
@@ -1366,13 +1396,17 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   double GetGestureHoldDuration() => rl.Core.GetGestureHoldDuration();
 
   @override
-  Vector2D GetGestureDragVector() => rl.Core.GetGestureDragVector().toD();
+  Vector2D GetGestureDragVector() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetGestureDragVector().toD(p.asNativePointer()),
+  );
 
   @override
   double GetGestureDragAngle() => rl.Core.GetGestureDragAngle();
 
   @override
-  Vector2D GetGesturePinchVector() => rl.Core.GetGesturePinchVector().toD();
+  Vector2D GetGesturePinchVector() => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.GetGesturePinchVector().toD(p.asNativePointer()),
+  );
 
   @override
   double GetGesturePinchAngle() => rl.Core.GetGesturePinchAngle();
@@ -1419,10 +1453,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   );
 
   @override
-  TextureD GetShapesTexture() => rl.Core.GetShapesTexture().toD();
+  TextureD GetShapesTexture() => rl.Temp.Texture$.Extract1(
+    (p) => rl.Core.GetShapesTexture().toD(p.asNativePointer()),
+  );
 
   @override
-  RectangleD GetShapesTextureRectangle() => rl.Core.GetShapesTextureRectangle().toD();
+  RectangleD GetShapesTextureRectangle() => rl.Temp.Rectangle$.Extract1(
+    (p) => rl.Core.GetShapesTextureRectangle().toD(p.asNativePointer()),
+  );
 
   @override
   void DrawPixel(
@@ -2119,11 +2157,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D startPos,
     Vector2D endPos,
     double t,
-  ) => rl.Core.GetSplinePointLinear(
-    rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
-    t,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract3(
+    (p) => rl.Core.GetSplinePointLinear(
+      rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+      t,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetSplinePointBasis(
@@ -2132,13 +2172,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p3,
     Vector2D p4,
     double t,
-  ) => rl.Core.GetSplinePointBasis(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
-    t,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract5(
+    (p) => rl.Core.GetSplinePointBasis(
+      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      t,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetSplinePointCatmullRom(
@@ -2147,13 +2189,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p3,
     Vector2D p4,
     double t,
-  ) => rl.Core.GetSplinePointCatmullRom(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
-    t,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract5(
+    (p) => rl.Core.GetSplinePointCatmullRom(
+      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      t,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetSplinePointBezierQuad(
@@ -2161,12 +2205,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D c2,
     Vector2D p3,
     double t,
-  ) => rl.Core.GetSplinePointBezierQuad(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-    t,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract4(
+    (p) => rl.Core.GetSplinePointBezierQuad(
+      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      t,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D GetSplinePointBezierCubic(
@@ -2175,13 +2221,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D c3,
     Vector2D p4,
     double t,
-  ) => rl.Core.GetSplinePointBezierCubic(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
-    t,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract5(
+    (p) => rl.Core.GetSplinePointBezierCubic(
+      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
+      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      t,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   bool CheckCollisionRecs(
@@ -2305,10 +2353,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RectangleD GetCollisionRec(
     RectangleD rec1,
     RectangleD rec2,
-  ) => rl.Core.GetCollisionRec(
-    rl.Temp.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
-    rl.Temp.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
-  ).toD();
+  ) => rl.Temp.Rectangle$.Extract3(
+    (p) => rl.Core.GetCollisionRec(
+      rl.Temp.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
+      rl.Temp.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ImageD LoadImage(
@@ -2922,21 +2972,25 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RectangleD GetImageAlphaBorder(
     ImageD image,
     double threshold,
-  ) => rl.Core.GetImageAlphaBorder(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
-    threshold,
-  ).toD();
+  ) => rl.Temp.Rectangle$.Extract1(
+    (p) => rl.Core.GetImageAlphaBorder(
+      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      threshold,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD GetImageColor(
     ImageD image,
     int x,
     int y,
-  ) => rl.Core.GetImageColor(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
-    x,
-    y,
-  ).toD();
+  ) => rl.Temp.Color$.Extract1(
+    (p) => rl.Core.GetImageColor(
+      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      x,
+      y,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void ImageClearBackground(
@@ -3468,10 +3522,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD Fade(
     ColorD color,
     double alpha,
-  ) => rl.Core.Fade(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    alpha,
-  ).toD();
+  ) => rl.Temp.Color$.Extract2(
+    (p) => rl.Core.Fade(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      alpha,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   int ColorToInt(
@@ -3483,108 +3539,132 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   Vector4D ColorNormalize(
     ColorD color,
-  ) => rl.Core.ColorNormalize(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-  ).toD();
+  ) => rl.Temp.Vector4$.Extract1(
+    (p) => rl.Core.ColorNormalize(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorFromNormalized(
     Vector4D normalized,
-  ) => rl.Core.ColorFromNormalized(
-    rl.Temp.Vector4$.Ref1(normalized).asNativePointer<Vector4C>().ref,
-  ).toD();
+  ) => rl.Temp.Color$.Extract1(
+    (p) => rl.Core.ColorFromNormalized(
+      rl.Temp.Vector4$.Ref1(normalized).asNativePointer<Vector4C>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector3D ColorToHSV(
     ColorD color,
-  ) => rl.Core.ColorToHSV(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-  ).toD();
+  ) => rl.Temp.Vector3$.Extract1(
+    (p) => rl.Core.ColorToHSV(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorFromHSV(
     double hue,
     double saturation,
     double value,
-  ) => rl.Core.ColorFromHSV(
-    hue,
-    saturation,
-    value,
-  ).toD();
+  ) => rl.Temp.Color$.Extract1(
+    (p) => rl.Core.ColorFromHSV(
+      hue,
+      saturation,
+      value,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorTint(
     ColorD color,
     ColorD tint,
-  ) => rl.Core.ColorTint(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(tint).asNativePointer<ColorC>().ref,
-  ).toD();
+  ) => rl.Temp.Color$.Extract3(
+    (p) => rl.Core.ColorTint(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      rl.Temp.Color$.Ref2(tint).asNativePointer<ColorC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorBrightness(
     ColorD color,
     double factor,
-  ) => rl.Core.ColorBrightness(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    factor,
-  ).toD();
+  ) => rl.Temp.Color$.Extract2(
+    (p) => rl.Core.ColorBrightness(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      factor,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorContrast(
     ColorD color,
     double contrast,
-  ) => rl.Core.ColorContrast(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    contrast,
-  ).toD();
+  ) => rl.Temp.Color$.Extract2(
+    (p) => rl.Core.ColorContrast(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      contrast,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorAlpha(
     ColorD color,
     double alpha,
-  ) => rl.Core.ColorAlpha(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    alpha,
-  ).toD();
+  ) => rl.Temp.Color$.Extract2(
+    (p) => rl.Core.ColorAlpha(
+      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      alpha,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorAlphaBlend(
     ColorD dst,
     ColorD src,
     ColorD tint,
-  ) => rl.Core.ColorAlphaBlend(
-    rl.Temp.Color$.Ref1(dst).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(src).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref3(tint).asNativePointer<ColorC>().ref,
-  ).toD();
+  ) => rl.Temp.Color$.Extract4(
+    (p) => rl.Core.ColorAlphaBlend(
+      rl.Temp.Color$.Ref1(dst).asNativePointer<ColorC>().ref,
+      rl.Temp.Color$.Ref2(src).asNativePointer<ColorC>().ref,
+      rl.Temp.Color$.Ref3(tint).asNativePointer<ColorC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD ColorLerp(
     ColorD color1,
     ColorD color2,
     double factor,
-  ) => rl.Core.ColorLerp(
-    rl.Temp.Color$.Ref1(color1).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(color2).asNativePointer<ColorC>().ref,
-    factor,
-  ).toD();
+  ) => rl.Temp.Color$.Extract3(
+    (p) => rl.Core.ColorLerp(
+      rl.Temp.Color$.Ref1(color1).asNativePointer<ColorC>().ref,
+      rl.Temp.Color$.Ref2(color2).asNativePointer<ColorC>().ref,
+      factor,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD GetColor(
     int hexValue,
-  ) => rl.Core.GetColor(
-    hexValue,
-  ).toD();
+  ) => rl.Temp.Color$.Extract1(
+    (p) => rl.Core.GetColor(
+      hexValue,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   ColorD GetPixelColor(
     MemoryPointer<RVoid> srcPtr,
     int format,
-  ) => rl.Core.GetPixelColor(
-    srcPtr.asNativePointer(),
-    format,
-  ).toD();
+  ) => rl.Temp.Color$.Extract1(
+    (p) => rl.Core.GetPixelColor(
+      srcPtr.asNativePointer(),
+      format,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void SetPixelColor(
@@ -3863,12 +3943,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     double fontSize,
     double spacing,
-  ) => rl.Core.MeasureTextEx(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
-    text.asNativePointer(),
-    fontSize,
-    spacing,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.MeasureTextEx(
+      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      text.asNativePointer(),
+      fontSize,
+      spacing,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   Vector2D MeasureTextCodepoints(
@@ -3877,13 +3959,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int length,
     double fontSize,
     double spacing,
-  ) => rl.Core.MeasureTextCodepoints(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
-    codepoints.asNativePointer(),
-    length,
-    fontSize,
-    spacing,
-  ).toD();
+  ) => rl.Temp.Vector2$.Extract1(
+    (p) => rl.Core.MeasureTextCodepoints(
+      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      codepoints.asNativePointer(),
+      length,
+      fontSize,
+      spacing,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   int GetGlyphIndex(
@@ -3898,19 +3982,23 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   GlyphInfoD GetGlyphInfo(
     FontD font,
     int codepoint,
-  ) => rl.Core.GetGlyphInfo(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
-    codepoint,
-  ).toD();
+  ) => rl.Temp.GlyphInfo$.Extract1(
+    (p) => rl.Core.GetGlyphInfo(
+      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      codepoint,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RectangleD GetGlyphAtlasRec(
     FontD font,
     int codepoint,
-  ) => rl.Core.GetGlyphAtlasRec(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
-    codepoint,
-  ).toD();
+  ) => rl.Temp.Rectangle$.Extract1(
+    (p) => rl.Core.GetGlyphAtlasRec(
+      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      codepoint,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   NativeMemoryPointer<RChar> LoadUTF8(
@@ -4540,9 +4628,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   BoundingBoxD GetModelBoundingBox(
     ModelD model,
-  ) => rl.Core.GetModelBoundingBox(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-  ).toD();
+  ) => rl.Temp.BoundingBox$.Extract1(
+    (p) => rl.Core.GetModelBoundingBox(
+      rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void DrawModel(
@@ -4732,9 +4822,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   BoundingBoxD GetMeshBoundingBox(
     MeshD mesh,
-  ) => rl.Core.GetMeshBoundingBox(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
-  ).toD();
+  ) => rl.Temp.BoundingBox$.Extract1(
+    (p) => rl.Core.GetMeshBoundingBox(
+      rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void GenMeshTangents(
@@ -4925,7 +5017,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ).asMemoryPointer());
 
   @override
-  MaterialD LoadMaterialDefault() => rl.Core.LoadMaterialDefault().toD();
+  MaterialD LoadMaterialDefault() => rl.Temp.Material$.Extract1(
+    (p) => rl.Core.LoadMaterialDefault().toD(p.asNativePointer()),
+  );
 
   @override
   bool IsMaterialValid(
@@ -5056,31 +5150,37 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RayD ray,
     Vector3D center,
     double radius,
-  ) => rl.Core.GetRayCollisionSphere(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
-    radius,
-  ).toD();
+  ) => rl.Temp.RayCollision$.Extract1(
+    (p) => rl.Core.GetRayCollisionSphere(
+      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      rl.Temp.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
+      radius,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RayCollisionD GetRayCollisionBox(
     RayD ray,
     BoundingBoxD box,
-  ) => rl.Core.GetRayCollisionBox(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
-  ).toD();
+  ) => rl.Temp.RayCollision$.Extract1(
+    (p) => rl.Core.GetRayCollisionBox(
+      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      rl.Temp.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RayCollisionD GetRayCollisionMesh(
     RayD ray,
     MeshD mesh,
     MatrixD transform,
-  ) => rl.Core.GetRayCollisionMesh(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
-    rl.Temp.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
-  ).toD();
+  ) => rl.Temp.RayCollision$.Extract1(
+    (p) => rl.Core.GetRayCollisionMesh(
+      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+      rl.Temp.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RayCollisionD GetRayCollisionTriangle(
@@ -5088,12 +5188,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D p1,
     Vector3D p2,
     Vector3D p3,
-  ) => rl.Core.GetRayCollisionTriangle(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
-  ).toD();
+  ) => rl.Temp.RayCollision$.Extract1(
+    (p) => rl.Core.GetRayCollisionTriangle(
+      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
+      rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
+      rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   RayCollisionD GetRayCollisionQuad(
@@ -5102,11 +5204,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D p2,
     Vector3D p3,
     Vector3D p4,
-  ) => rl.Core.GetRayCollisionQuad(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref4(p4).asNativePointer<Vector3C>().ref,
-  ).toD();
+  ) => rl.Temp.RayCollision$.Extract1(
+    (p) => rl.Core.GetRayCollisionQuad(
+      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
+      rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
+      rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
+      rl.Temp.Vector3$.Ref4(p4).asNativePointer<Vector3C>().ref,
+    ).toD(p.asNativePointer()),
+  );
 }

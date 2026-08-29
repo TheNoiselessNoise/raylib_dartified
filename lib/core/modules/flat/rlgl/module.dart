@@ -1208,27 +1208,37 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   );
 
   @override
-  MatrixD rlGetMatrixModelview() => rl.Rlgl.rlGetMatrixModelview().toD();
+  MatrixD rlGetMatrixModelview() => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Rlgl.rlGetMatrixModelview().toD(p.asNativePointer()),
+  );
 
   @override
-  MatrixD rlGetMatrixProjection() => rl.Rlgl.rlGetMatrixProjection().toD();
+  MatrixD rlGetMatrixProjection() => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Rlgl.rlGetMatrixProjection().toD(p.asNativePointer()),
+  );
 
   @override
-  MatrixD rlGetMatrixTransform() => rl.Rlgl.rlGetMatrixTransform().toD();
+  MatrixD rlGetMatrixTransform() => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Rlgl.rlGetMatrixTransform().toD(p.asNativePointer()),
+  );
 
   @override
   MatrixD rlGetMatrixProjectionStereo(
     int eye,
-  ) => rl.Rlgl.rlGetMatrixProjectionStereo(
-    eye,
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Rlgl.rlGetMatrixProjectionStereo(
+      eye,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   MatrixD rlGetMatrixViewOffsetStereo(
     int eye,
-  ) => rl.Rlgl.rlGetMatrixViewOffsetStereo(
-    eye,
-  ).toD();
+  ) => rl.Temp.Matrix$.Extract1(
+    (p) => rl.Rlgl.rlGetMatrixViewOffsetStereo(
+      eye,
+    ).toD(p.asNativePointer()),
+  );
 
   @override
   void rlSetMatrixProjection(
