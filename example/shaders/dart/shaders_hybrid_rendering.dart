@@ -130,7 +130,7 @@ RenderTextureD LoadRenderTextureDepthTex(int width, int height)
 
     final format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
 
-    target.texture.id = rlLoadTexture(null, width, height, .fromValue(format.value), 1);
+    target.texture.id = rlLoadTexture(null, width, height, format, 1);
     target.texture.width = width;
     target.texture.height = height;
     target.texture.format = format;

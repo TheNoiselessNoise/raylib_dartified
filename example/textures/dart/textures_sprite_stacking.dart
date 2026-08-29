@@ -1,5 +1,5 @@
 // Example dartified, see original for reference:
-// https://github.com/raysan5/raylib/blob/master/examples/textures/textures_polygon_drawing.c
+// https://github.com/raysan5/raylib/blob/master/examples/textures/textures_sprite_stacking.c
 // Run it: dart run textures_sprite_stacking.dart
 // WARNING: expects resources from the raylib source
 import '../../base_dart.dart';

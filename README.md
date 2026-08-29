@@ -47,23 +47,31 @@ final rl = Raylib(
 
 This package provides three API layers. They all expose the same underlying raylib functionality, but offer different levels of abstraction and control.
 
-| API | Memory | Backend | Style | Recommended |
-|-----|--------|---------|-------|-------------|
-| **Dart** | Managed by Dart layer | Native + Web | Idiomatic Dart | **Yes** |
-| **Flat** | Manual | Native + Web | Close to raylib C API | For low-level code |
-| **Raw FFI** | Manual | Native only | Direct FFI | Advanced use |
+| API | Memory | Backend | Style |
+|-----|--------|---------|-------|
+| **Dart** | Managed by Dart layer | Native + Web | Idiomatic Dart |
+| **Flat** | Manual | Native + Web | Close to raylib C API |
+| **Raw FFI** | Manual | Native only | Direct FFI |
 
 You can use all three layers in the same application. The choice only matters for the code where you use them.
 
 ---
 
-## Dart API - Recommended
+## Dart API
 
-The **Dart API** is the recommended way to use this library.
+Provides idiomatic Dart types and objects which manage their own data and memory. Structs can exist as ordinary Dart values or act as live views over native/backend memory when needed.
 
-It provides idiomatic Dart types and objects which manage their own data and memory. Structs can exist as ordinary Dart values or act as live views over native/backend memory when needed.
+The Dart API handles most pointer lifetimes, native struct layouts, null terminators, and other low-level details for you.
 
-The Dart layer handles most pointer lifetimes, native struct layouts, null terminators, and other low-level details for you.
+### ⚠️ Stability
+
+The **Dart API** is convenient, but **not yet battle-tested at the level the Flat API is**. It's a comparatively young abstraction sitting on top of raw memory access, and it's the kind of thing where a subtle mistake in a single getter/setter can produce backend-specific memory corruption that's silent, hard to reproduce, and only shows up under certain conditions (particular platforms, particular allocation patterns, etc.).
+
+**Recommendation:** for anything where correctness matters, performance matters, or anything touching raw pixel/buffer data, prefer the **Flat API**. It's intentionally modeled after `dart:ffi`'s direct pointer semantics (just platform-independent), which makes the memory access explicit and auditable rather than hidden behind wrapper abstractions. It's more verbose, but what you see is what actually happens.
+
+If you hit a bug that smells like memory corruption (garbage data, platform-specific weirdness, things that work on native but not on WASM or vice versa) while using the **Dart API**, try reproducing it with the **Flat API** first, it's the more trustworthy baseline while **Dart API** matures.
+
+### Usage
 
 Each raylib module has a corresponding Dart counterpart accessible from the same `Raylib` instance:
 
@@ -107,7 +115,7 @@ The Flat API therefore sits between the two other layers:
 
 ```text
         Dart API
-    High-level / safe
+High-level / backend-agnostic
             │
             ▼
         Flat API

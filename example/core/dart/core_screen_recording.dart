@@ -13,14 +13,14 @@ const int MAX_SINEWAVE_POINTS = 256;
 
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
-  Temp.debugFree(true);
 
   InitWindow(screenWidth, screenHeight, "core_screen_recording");
   SetTargetFPS(60);
 
   bool gifRecording = false;
   int gifFrameCounter = 0;
-  final MsfGifStateD gifState = .zero();
+  // final MsfGifStateD gifState = .zero();
+  final MsfGifStateD gifState = MsfGifState$.$new;
 
   final Vector2D circlePosition = .vec2(0.0, screenHeight/2.0);
   double timeCounter = 0.0;
@@ -61,21 +61,6 @@ void main() {
       }
     }
 
-    if (gifRecording)
-    {
-      gifFrameCounter++;
-
-      if (gifFrameCounter > GIF_RECORD_FRAMERATE)
-      {
-        final imScreen = LoadImageFromScreen();
-
-        msf_gif_frame(gifState, .fromList(imScreen.data), (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
-        gifFrameCounter = 0;
-
-        UnloadImage(imScreen);
-      }
-    }
-
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
@@ -105,6 +90,21 @@ void main() {
       }
       */
     EndDrawing();
+
+    if (gifRecording)
+    {
+      gifFrameCounter++;
+
+      if (gifFrameCounter > GIF_RECORD_FRAMERATE)
+      {
+        final imScreen = LoadImageFromScreen();
+
+        msf_gif_frame(gifState, .fromList(imScreen.data), (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
+        gifFrameCounter = 0;
+
+        UnloadImage(imScreen);
+      }
+    }
   }
 
   if (gifRecording)

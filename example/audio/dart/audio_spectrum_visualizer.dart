@@ -100,7 +100,7 @@ void main()
   );
 
   int wavCursor = 0;
-  final wavPCM16 = wave.data.asInt16List(); // short
+  final wavPCM16 = wave.dataBuffer.asInt16List(); // short
 
   final List<int> chunkSamples = .filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
   final List<double> audioSamples = .filled(FFT_WINDOW_SIZE, 0);

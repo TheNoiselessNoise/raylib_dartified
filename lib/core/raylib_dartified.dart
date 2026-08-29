@@ -44,6 +44,7 @@ part 'modules/flat/gui/module.dart';
 part 'modules/c/light/module.dart';
 part 'modules/c/light/structs.dart';
 
+part 'modules/flat/light/module.dart';
 part 'modules/flat/light/structs.dart';
 
 // ===== MSF_GIF MODULE =====

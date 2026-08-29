@@ -42,7 +42,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   ) => rl.Temp.MsfGifResult$.RefCapture(
     RaylibCaptureIds.msf_gif_end,
     (p) => rl.MsfGif.msf_gif_end(
-      p.asNativePointer(),
+      handle.asNativePointer(),
     ).toD(p.asNativePointer()),
   );
 

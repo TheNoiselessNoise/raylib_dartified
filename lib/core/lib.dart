@@ -75,6 +75,7 @@ class Raylib extends RaylibBase<Raylib> {
   @override late RaylibGuiFlat GuiFlat;
   
   late RaylibLight Light;
+  @override late RaylibLightFlat LightFlat;
 
   late RaylibMsfGif MsfGif;
   @override late RaylibMsfGifFlat MsfGifFlat;
@@ -150,6 +151,7 @@ class Raylib extends RaylibBase<Raylib> {
     registerModule(GuiFlat = RaylibGuiFlat(this));
 
     registerModule(Light = RaylibLight(this));
+    registerModule(LightFlat = RaylibLightFlat(this));
 
     registerModule(MsfGif = RaylibMsfGif(this));
     registerModule(MsfGifFlat = RaylibMsfGifFlat(this));

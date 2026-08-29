@@ -12,6 +12,8 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
+  rl.debugEverything(true);
+
   InitWindow(screenWidth, screenHeight, "text_font_sdf");
   SetTargetFPS(60);
 
@@ -19,34 +21,25 @@ void main()
 
   final fileData = LoadFileData("../resources/anonymous_pro_bold.ttf");
 
-  final fontDefault = FontD(
-    baseSize: 16,
-    glyphCount: 95,
-  );
+  final fontDefault = FontD(baseSize: 16, glyphCount: 95);
   fontDefault.glyphs = LoadFontData(fileData, 16, null, 95, .FONT_DEFAULT);
   var (fontDefaultAtlas, fontDefaultRecs) = GenImageFontAtlas(fontDefault.glyphs, 16, 4, 0);
   fontDefault.recs = fontDefaultRecs;
   fontDefault.texture = LoadTextureFromImage(fontDefaultAtlas);
   UnloadImage(fontDefaultAtlas);
 
-  final fontSDF = FontD(
-    baseSize: 16,
-    glyphCount: 95,
-  );
+  final fontSDF = FontD(baseSize: 16, glyphCount: 95);
   fontSDF.glyphs = LoadFontData(fileData, 16, null, 0, .FONT_SDF);
   var (fontSDFAtlas, fontSDFRects) = GenImageFontAtlas(fontSDF.glyphs, 16, 0, 1);
   fontSDF.recs = fontSDFRects;
   fontSDF.texture = LoadTextureFromImage(fontSDFAtlas);
   UnloadImage(fontSDFAtlas);
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/sdf.fs"
-  );
+  final shader = LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/sdf.fs");
   SetTextureFilter(fontSDF.texture, .TEXTURE_FILTER_BILINEAR);
 
   final Vector2D fontPosition = .vec2(40, screenHeight/2.0 - 50);
-  final Vector2D textSize = .vec2(0.0, 0.0);
+  Vector2D textSize = .vec2(0.0, 0.0);
   double fontSize = 16.0;
   int currentFont = 0;
 
@@ -59,8 +52,8 @@ void main()
     if (IsKeyDown(.KEY_SPACE)) currentFont = 1;
     else currentFont = 0;
 
-    if (currentFont == 0) textSize.setD(MeasureTextEx(fontDefault, msg, fontSize, 0));
-    else textSize.setD(MeasureTextEx(fontSDF, msg, fontSize, 0));
+    if (currentFont == 0) textSize = MeasureTextEx(fontDefault, msg, fontSize, 0);
+    else textSize = MeasureTextEx(fontSDF, msg, fontSize, 0);
 
     fontPosition.x = GetScreenWidth()/2 - textSize.x/2;
     fontPosition.y = GetScreenHeight()/2 - textSize.y/2 + 80;
