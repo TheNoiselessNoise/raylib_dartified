@@ -1,3 +1,8 @@
+## 6.0.0
+
+- [BREAKING] Migrated to `raylib_dartified_base` 6.0.0's unified contract: implements `NativeMemoryPointer` as `MemoryPointer`, adopts `StructLayout`-based struct definitions and unified allocators
+- Removed a large amount of code now shared in `raylib_dartified_base`
+
 ## 5.5.5
 
 - [BREAKING] renamed the entrypoint to `raylib_dartified`
