@@ -1,12 +1,12 @@
 export 'package:raylib_dartified_base/abbr.dart';
 export 'package:raylib_dartified/raylib_dartified.dart';
-export '../core/modules/c/audio/abbr.dart';
-export '../core/modules/c/camera/abbr.dart';
-export '../core/modules/c/core/abbr.dart';
-export '../core/modules/c/gui/abbr.dart';
-export '../core/modules/c/light/abbr.dart';
-export '../core/modules/c/msf_gif/abbr.dart';
-export '../core/modules/c/rlgl/abbr.dart';
+export '../core/modules/ffi/audio/abbr.dart';
+export '../core/modules/ffi/camera/abbr.dart';
+export '../core/modules/ffi/core/abbr.dart';
+export '../core/modules/ffi/gui/abbr.dart';
+export '../core/modules/ffi/light/abbr.dart';
+export '../core/modules/ffi/msf_gif/abbr.dart';
+export '../core/modules/ffi/rlgl/abbr.dart';
 
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
@@ -61,7 +61,7 @@ ColorC _CreateRGBA(int r, int g, int b, [int? a]) {
 
 void allocateRaylibColors() {
   try {
-    final _ = Raylib.instance;
+    Raylib.instance;
   } catch (_) {
     throw StateError('Initialize Raylib before calling allocateRaylibColors()');
   }

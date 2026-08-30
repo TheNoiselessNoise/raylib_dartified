@@ -185,7 +185,7 @@ class Raylib extends RaylibBase<Raylib> {
   }
 }
 
-Future<void> runRaylib(RaylibGameBase<Raylib> game, {
+Future<void> runRaylib(RaylibAppBase<Raylib> game, {
   String? nativeLibPath,
   bool silent = false,
 }) async {

@@ -10,7 +10,69 @@ In short: **`ffigen` gives you the raw function table. This project gives you so
 
 ---
 
-## Installation
+## Contents
+- [Version 6.0](#version-60)
+- [Platform Support](#platform-support)
+- [Installation](#installation)
+- [API Tiers](#api-tiers)
+  - [Dart API](#dart-api)
+  - [Flat API](#flat-api---backend-agnostic-low-level-api)
+  - [FFI API](#ffi-api---full-native-control)
+- [Abbreviated API](#abbreviated-api)
+- [Writing Backend-Agnostic Apps](#writing-backend-agnostic-apps)
+- [Safety Notes](#safety-notes)
+- [Examples](#examples)
+  - [Running Examples](#running-examples)
+- [See Also](#see-also)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+---
+
+# Version 6.0
+
+Version 6.0 is a full rewrite of the binding layer around a backend-agnostic
+core: a single `MemoryPointer<X extends RType>` abstraction replaces the
+separate native (dart:ffi) and WASM struct implementations, collapsing what
+was previously duplicated per-backend code.
+
+> ⚠️ **Use 6.0 for new projects.** The 5.5 line was never truly
+> backend-agnostic, native and WASM paths diverged in ways that made
+> maintenance and correctness guarantees difficult. 5.5 remains published but receives no further development.
+
+# Platform Support
+
+| Platform | Status | Notes |
+|---|:-:|---|
+| **Linux** | ✅ | Primary development platform |
+| **Windows** | ✅ | Should work out of the box |
+| **macOS** | ❌ | See below |
+| **Web** | ❌ | See [`raylib_dartified_web`](https://pub.dev/packages/raylib_dartified_web) instead |
+| **Android** | ❓ | Not tested |
+| **iOS** | ❓ | Not tested, likely blocked |
+
+---
+
+### macOS
+
+macOS is currently **not supported** due to a fundamental limitation of the Dart standalone runtime.
+
+Raylib (like most windowing/graphics libraries) requires OpenGL context creation and the main event loop to run on the OS main thread. In Flutter, this is somewhat worked around via platform channels, but in pure Dart FFI, the Dart VM does not run on the system's main thread, and there is no OS-level `DispatchQueue` or `NSRunLoop` set up. This causes crashes like:
+
+> NSWindow should only be instantiated on the main thread!
+
+This is a [known issue in the Dart SDK](https://github.com/dart-lang/sdk/issues/38315) and is not something that can be fixed at the binding layer. A native shim that bootstraps the macOS event loop and schedules Dart execution accordingly would be required, which is currently out of scope.
+
+---
+
+### Android / iOS
+
+These platforms have not been tested.
+
+- **Android** - Raylib has official Android support and Dart FFI works on Android (dynamic libraries only, no static linking). In theory, this could work, but significant platform-specific setup (NDK, CMake, Activity lifecycle integration) would be required. Untested and unsupported for now.
+- **iOS** - Doubly blocked: raylib itself [does not have official iOS support](https://github.com/raysan5/raylib/discussions/2681) (there is an open PR with a community `rcore_ios.c` attempt), and Dart FFI on iOS shares the same main-thread issue as macOS. Not expected to work.
+
+# Installation
 
 This package currently assumes you already have **raylib compiled** for your platform.
 
@@ -51,9 +113,7 @@ This package provides three API layers. They all expose the same underlying rayl
 |-----|--------|---------|-------|
 | **Dart** | Managed by Dart layer | Native + Web | Idiomatic Dart |
 | **Flat** | Manual | Native + Web | Close to raylib C API |
-| **Raw FFI** | Manual | Native only | Direct FFI |
-
-You can use all three layers in the same application. The choice only matters for the code where you use them.
+| **FFI** | Manual | Native only | Direct FFI |
 
 ---
 
@@ -75,11 +135,12 @@ If you hit a bug that smells like memory corruption (garbage data, platform-spec
 
 Each raylib module has a corresponding Dart counterpart accessible from the same `Raylib` instance:
 
-| Raw / Flat module | Dart module |
-|-------------------|-------------|
-| `rl.Core` | `rl.CoreDart` |
-| `rl.Rlgl` | `rl.RlglDart` |
-| `rl.Gui` | `rl.GuiDart` |
+| FFI | Flat | Dart |
+|-----|-------------|-------------|
+| `rl.Core` | `rl.CoreFlat` | `rl.CoreDart` |
+| `rl.Rlgl` | `rl.RlglFlat` | `rl.RlglDart` |
+| `rl.Gui` | `rl.GuiFlat` | `rl.GuiDart` |
+| ... | ... | ... |
 
 You are **not required to choose one API layer exclusively**. The layers can coexist, and it is perfectly valid to use the lower-level APIs when necessary.
 
@@ -122,8 +183,8 @@ High-level / backend-agnostic
 Low-level / backend-agnostic
             │
             ▼
-       Raw FFI API
-   Native / Pointer<T>
+         FFI API
+     Native / Pointer<T>
 ```
 
 Use Flat when you want:
@@ -133,7 +194,7 @@ Use Flat when you want:
 - minimal abstraction over the C API;
 - the ability to run the same code on native and web/WASM.
 
-If you need actual `dart:ffi` `Pointer<T>` objects, use the Raw FFI API instead.
+If you need actual `dart:ffi` `Pointer<T>` objects, use the FFI API instead.
 
 See any `flat` example in `example/<category>/flat/`.
 
@@ -143,9 +204,9 @@ Or start here:
 
 ---
 
-## Raw FFI API - Full Native Control
+## FFI API - Full Native Control
 
-If you really want to manage your own pointers and interact directly with the native FFI layer, the raw API is fully available.
+If you really want to manage your own pointers and interact directly with the native FFI layer, you can.
 
 This layer exposes raylib's native signatures essentially 1:1:
 
@@ -158,11 +219,11 @@ The trade-off is that this layer is **native-only** and ties your code directly 
 
 If you do not specifically need native FFI pointers, **prefer the Flat API instead**.
 
-See any `c` example in `example/<category>/c/`.
+See any `ffi` example in `example/<category>/ffi/`.
 
 Or start here:
 
-[core/c/core_basic_window.dart](example/core/c/core_basic_window.dart)
+[core/ffi/core_basic_window.dart](example/core/ffi/core_basic_window.dart)
 
 ---
 
@@ -174,7 +235,7 @@ The `abbr/` variants expose the same three API tiers without requiring a module 
 
 - **`abbr/dart.dart`** - Idiomatic Dart API. Backend-agnostic.
 - **`abbr/flat.dart`** - Flat raylib-style API using `MemoryPointer`. Backend-agnostic.
-- **`abbr/raw.dart`** - Raw FFI API using native `Pointer<T>`. Native-only.
+- **`abbr/ffi.dart`** - FFI API using native `Pointer<T>`. Native-only.
 
 Pick **one** per file. Mixing abbreviated APIs in the same scope will cause name collisions.
 
@@ -219,13 +280,13 @@ void main() {
 }
 ```
 
-### Raw FFI
+### FFI
 
 The same API directly against the native FFI layer:
 
 ```dart
 import 'package:raylib_dartified/raylib_dartified.dart';
-import 'package:raylib_dartified/abbr/raw.dart';
+import 'package:raylib_dartified/abbr/ffi.dart';
 
 void main() {
   findRaylib('path/to/raylib');
@@ -244,22 +305,24 @@ void main() {
 
 ---
 
+# Writing Backend-Agnostic Apps
+
+To write an app once and run it on both backends, implement
+`RaylibAppBase` and let each backend's `runRaylib` drive the lifecycle.
+
+See [api/dart/backend_agnostic.dart](example/api/dart/backend_agnostic.dart)
+
+---
+
 # Safety Notes
 
 The lower you go in the API stack, the more responsibility you take for memory management.
 
-- This is **not memory-safe Dart** when using the raw FFI layer.
+- This is **not memory-safe Dart** when using the FFI layer.
 - Passing invalid native pointers can crash the Dart VM.
 - Manually allocated memory must be freed by its owner.
 - Optional modules such as `Gui` are unavailable if their native library was not loaded.
 - The Flat API removes platform-specific pointer types, but it still exposes manual memory management.
-- The Dart API handles most of these details for you.
-
-If you want guardrails, use the **Dart API**.
-
-If you need low-level control without tying yourself to a particular memory backend, use the **Flat API**.
-
-Use Raw FFI when you specifically need direct access to `dart:ffi`.
 
 ---
 
@@ -269,7 +332,7 @@ This repository includes ported raylib examples rewritten to use the Dart APIs e
 
 The examples closely follow the **original raylib examples**, making it easy to cross-reference the Dart implementation with the original C source.
 
-Every example has a **Dart version**, while only selected examples also have **Raw FFI** and **Flat** versions.
+Every example has a **Dart version**, while only selected examples also have **FFI** and **Flat** versions.
 
 The reason is simple: the Dart versions remain close to the original raylib examples, while the lower-level APIs introduce memory-management and pointer-related details that would make the examples harder to cross-reference.
 
@@ -280,7 +343,7 @@ See the [example/](example/) directory for runnable examples.
 
 ---
 
-# Running Examples
+## Running Examples
 
 Examples expect the following file to exist somewhere in the current directory or one of its parents:
 

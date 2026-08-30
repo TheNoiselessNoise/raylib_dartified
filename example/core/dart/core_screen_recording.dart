@@ -19,8 +19,7 @@ void main() {
 
   bool gifRecording = false;
   int gifFrameCounter = 0;
-  // final MsfGifStateD gifState = .zero();
-  final MsfGifStateD gifState = MsfGifState$.$new;
+  final MsfGifStateD gifState = .zero();
 
   final Vector2D circlePosition = .vec2(0.0, screenHeight/2.0);
   double timeCounter = 0.0;

@@ -49,7 +49,6 @@ void main()
   // Freeing user-defined 1 Vector2D slots
   // [FREE] Vector2D_struct_1
 
-
   InitWindow(screenWidth, screenHeight, "custom_module_dispose");
   SetTargetFPS(60);
 
