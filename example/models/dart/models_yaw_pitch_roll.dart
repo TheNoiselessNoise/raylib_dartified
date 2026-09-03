@@ -56,7 +56,7 @@ void main()
       else if (roll < 0.0) roll += 0.5;
     }
 
-    model.transform.setD(.rotateXYZ(.vec3(rl.DEG2RAD*pitch, rl.DEG2RAD*yaw, rl.DEG2RAD*roll)));
+    model.transform.setDart(.rotateXYZ(.vec3(rl.DEG2RAD*pitch, rl.DEG2RAD*yaw, rl.DEG2RAD*roll)));
 
     BeginDrawing();
 

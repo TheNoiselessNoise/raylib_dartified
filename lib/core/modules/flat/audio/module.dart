@@ -30,7 +30,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.LoadWave,
     (p) => rl.Audio.LoadWave(
       fileName.asNativePointer(),
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -44,7 +44,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
       fileType.asNativePointer(),
       fileData.asNativePointer(),
       dataSize,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -61,7 +61,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.LoadSound,
     (p) => rl.Audio.LoadSound(
       fileName.asNativePointer(),
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -71,7 +71,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.LoadSoundFromWave,
     (p) => rl.Audio.LoadSoundFromWave(
       rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -81,7 +81,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.LoadSoundAlias,
     (p) => rl.Audio.LoadSoundAlias(
       rl.Temp.Sound$.Ref1(source).asNativePointer<SoundC>().ref,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -212,7 +212,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.WaveCopy,
     (p) => rl.Audio.WaveCopy(
       rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -260,7 +260,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     RaylibCaptureIds.LoadMusicStream,
     (p) => rl.Audio.LoadMusicStream(
       fileName.asNativePointer(),
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -274,7 +274,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
       fileType.asNativePointer(),
       data.asNativePointer(),
       dataSize,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override
@@ -394,7 +394,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
       sampleRate,
       sampleSize,
       channels,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
   
   @override

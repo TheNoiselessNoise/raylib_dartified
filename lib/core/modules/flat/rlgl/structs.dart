@@ -3,11 +3,11 @@ part of '../../../raylib_dartified.dart';
 // rlDrawCall
 
 extension RlDrawCallCPEx on Pointer<RlDrawCallC> {
-  RlDrawCallD toD() => ref.toD(this);
+  RlDrawCallD toDart() => ref.toDart(this);
 }
 
 extension RlDrawCallCEx on RlDrawCallC {
-  RlDrawCallD toD([Pointer<RlDrawCallC>? ptr]) => .new(
+  RlDrawCallD toDart([Pointer<RlDrawCallC>? ptr]) => .new(
     op: RlDrawCallD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -15,11 +15,11 @@ extension RlDrawCallCEx on RlDrawCallC {
 // rlRenderBatch
 
 extension RlRenderBatchCPEx on Pointer<RlRenderBatchC> {
-  RlRenderBatchD toD() => ref.toD(this);
+  RlRenderBatchD toDart() => ref.toDart(this);
 }
 
 extension RlRenderBatchCEx on RlRenderBatchC {
-  RlRenderBatchD toD([Pointer<RlRenderBatchC>? ptr]) => .new(
+  RlRenderBatchD toDart([Pointer<RlRenderBatchC>? ptr]) => .new(
     op: RlRenderBatchD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -27,11 +27,11 @@ extension RlRenderBatchCEx on RlRenderBatchC {
 // rlVertexBuffer
 
 extension RlVertexBufferCPEx on Pointer<RlVertexBufferC> {
-  RlVertexBufferD toD() => ref.toD(this);
+  RlVertexBufferD toDart() => ref.toDart(this);
 }
 
 extension RlVertexBufferCEx on RlVertexBufferC {
-  RlVertexBufferD toD([Pointer<RlVertexBufferC>? ptr]) => .new(
+  RlVertexBufferD toDart([Pointer<RlVertexBufferC>? ptr]) => .new(
     op: RlVertexBufferD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

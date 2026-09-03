@@ -112,7 +112,7 @@ void main()
       
       if (selectedControlPoint != null)
       {
-        selectedControlPoint.setD(mousePos);
+        selectedControlPoint.setDart(mousePos);
         if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) selectedControlPoint = null;
       }
     }

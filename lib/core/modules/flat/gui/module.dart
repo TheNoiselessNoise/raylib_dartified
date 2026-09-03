@@ -46,7 +46,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   @override
   FontD GuiGetFont() => rl.Temp.Font$.RefCapture(
     RaylibCaptureIds.GuiGetFont,
-    (p) => rl.Gui.GuiGetFont().toD(p.asNativePointer()),
+    (p) => rl.Gui.GuiGetFont().toDart(p.asNativePointer()),
   );
 
   @override

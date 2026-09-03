@@ -241,7 +241,7 @@ void KeepWidthCentered(int screenWidth, int screenHeight, int gameWidth, int gam
 
   UnloadRenderTexture(target);
 
-  target.setD(LoadRenderTexture(sourceRect.width, -sourceRect.height));
+  target.setDart(LoadRenderTexture(sourceRect.width, -sourceRect.height));
 
   return (screenWidth, screenHeight);
 }

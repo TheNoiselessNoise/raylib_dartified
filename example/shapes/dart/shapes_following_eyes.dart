@@ -39,8 +39,8 @@ void main()
 
   while (!WindowShouldClose())
   {
-    irisLeftPosition.setD(GetMousePosition());
-    irisRightPosition.setD(GetMousePosition());
+    irisLeftPosition.setDart(GetMousePosition());
+    irisRightPosition.setDart(GetMousePosition());
 
     if (!CheckCollisionPointCircle(irisLeftPosition, scleraLeftPosition, scleraRadius - irisRadius))
     {

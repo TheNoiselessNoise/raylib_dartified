@@ -18,7 +18,7 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
       rl.Temp.Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
       rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
       rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 
   @override

@@ -79,7 +79,7 @@ void main()
 
     // NOTE: see that we don't use:
     // previousPosition = currentPosition;
-    previousPosition.setD(currentPosition);
+    previousPosition.setDart(currentPosition);
 
     BeginDrawing();
 

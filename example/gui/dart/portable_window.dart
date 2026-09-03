@@ -23,7 +23,7 @@ void main()
 
   while (!exitWindow && !WindowShouldClose())
   {
-    mousePosition.setD(GetMousePosition());
+    mousePosition.setDart(GetMousePosition());
 
     if (
       IsMouseButtonDown(.MOUSE_BUTTON_LEFT) &&
@@ -33,14 +33,14 @@ void main()
         mousePosition,
         .rect(0, 0, screenWidth, 20)
       )) {
-        windowPosition.setD(GetWindowPosition());
+        windowPosition.setDart(GetWindowPosition());
         dragWindow = true;
-        panOffset.setD(mousePosition);
+        panOffset.setDart(mousePosition);
       }
     }
 
     if (dragWindow) {
-      windowPosition.setD(windowPosition.add(mousePosition.sub(panOffset)));
+      windowPosition.setDart(windowPosition.add(mousePosition.sub(panOffset)));
 
       SetWindowPosition(windowPosition.x, windowPosition.y);
 

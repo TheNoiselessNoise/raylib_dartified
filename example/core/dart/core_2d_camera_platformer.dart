@@ -190,11 +190,11 @@ void UpdatePlayer(Player player, List<EnvItem> envItems, double delta)
 
 void UpdateCameraCenter(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
   camera.offset.set(screenWidth/2, screenHeight/2);
-  camera.target.setD(player.position);
+  camera.target.setDart(player.position);
 }
 
 void UpdateCameraCenterInsideMap(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
-  camera.target.setD(player.position);
+  camera.target.setDart(player.position);
   camera.offset.set(screenWidth/2, screenHeight/2);
   double minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
 
@@ -229,7 +229,7 @@ void UpdateCameraCenterSmoothFollow(Camera2DD camera, Player player, List<EnvIte
   {
     final speed = math.max(fractionSpeed*length, minSpeed);
     final target = camera.target.add(diff.scale(speed*deltaTime/length));
-    camera.target.setD(target);
+    camera.target.setDart(target);
   }
 }
 

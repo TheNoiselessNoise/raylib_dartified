@@ -10,7 +10,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   ) => rl.Temp.Vector3$.Extract1(
     (p) => rl.Camera.GetCameraForward(
       camera.asNativePointer(),
-    ).toD(p.asNativePointer())
+    ).toDart(p.asNativePointer())
   );
 
   @override
@@ -19,7 +19,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   ) => rl.Temp.Vector3$.Extract1(
     (p) => rl.Camera.GetCameraUp(
       camera.asNativePointer(),
-    ).toD(p.asNativePointer())
+    ).toDart(p.asNativePointer())
   );
 
   @override
@@ -28,7 +28,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   ) => rl.Temp.Vector3$.Extract1(
     (p) => rl.Camera.GetCameraRight(
       camera.asNativePointer(),
-    ).toD(p.asNativePointer())
+    ).toDart(p.asNativePointer())
   );
 
   @override
@@ -112,7 +112,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   ) => rl.Temp.Matrix$.Extract1(
     (p) => rl.Camera.GetCameraViewMatrix(
       camera.asNativePointer(),
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 
   @override
@@ -123,6 +123,6 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     (p) => rl.Camera.GetCameraProjectionMatrix(
       camera.asNativePointer(),
       aspect.toDouble(),
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 }

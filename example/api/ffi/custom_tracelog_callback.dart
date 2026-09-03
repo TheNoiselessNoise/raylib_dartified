@@ -14,7 +14,7 @@ void main()
   final traceLogCallback = NativeCallable<TraceLogCallbackFunctionC>.isolateLocal(
     (int logLevel, Pointer<Char> text, Pointer<Void> args) {
       // args intentionally unused - see LIMITATIONS.md
-      print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toD}');
+      print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toDart}');
     }
   );
   SetTraceLogCallback(traceLogCallback.nativeFunction);

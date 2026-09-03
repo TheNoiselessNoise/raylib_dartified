@@ -154,15 +154,15 @@ void UpdateCameraFPS(Camera3DD camera)
   double headSin = math.sin(headTimer*PI);
   double headCos = math.cos(headTimer*PI);
   final double stepRotation = 0.01;
-  camera.up.setD(up.rotateByAxisAngle(pitch, headSin*stepRotation + lean.x));
+  camera.up.setDart(up.rotateByAxisAngle(pitch, headSin*stepRotation + lean.x));
 
   final double bobSide = 0.1;
   final double bobUp = 0.15;
   Vector3D bobbing = right.scale(headSin*bobSide);
   bobbing.y = (headCos*bobUp).abs();
 
-  camera.position.setD(camera.position.add(bobbing.scale(walkLerp)));
-  camera.target.setD(camera.position.add(pitch));
+  camera.position.setDart(camera.position.add(bobbing.scale(walkLerp)));
+  camera.target.setDart(camera.position.add(pitch));
 }
 
 void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)

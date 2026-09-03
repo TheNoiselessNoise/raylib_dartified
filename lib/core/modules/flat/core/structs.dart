@@ -3,11 +3,11 @@ part of '../../../raylib_dartified.dart';
 // AutomationEventList
 
 extension AutomationEventListCPEx on Pointer<AutomationEventListC> {
-  AutomationEventListD toD() => ref.toD(this);
+  AutomationEventListD toDart() => ref.toDart(this);
 }
 
 extension AutomationEventListCEx on AutomationEventListC {
-  AutomationEventListD toD([Pointer<AutomationEventListC>? ptr]) => .new(
+  AutomationEventListD toDart([Pointer<AutomationEventListC>? ptr]) => .new(
     op: AutomationEventListD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -15,11 +15,11 @@ extension AutomationEventListCEx on AutomationEventListC {
 // AutomationEvent
 
 extension AutomationEventCPEx on Pointer<AutomationEventC> {
-  AutomationEventD toD() => ref.toD(this);
+  AutomationEventD toDart() => ref.toDart(this);
 }
 
 extension AutomationEventCEx on AutomationEventC {
-  AutomationEventD toD([Pointer<AutomationEventC>? ptr]) => .new(
+  AutomationEventD toDart([Pointer<AutomationEventC>? ptr]) => .new(
     op: AutomationEventD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -27,11 +27,11 @@ extension AutomationEventCEx on AutomationEventC {
 // BoneInfo
 
 extension BoneInfoCPEx on Pointer<BoneInfoC> {
-  BoneInfoD toD() => ref.toD(this);
+  BoneInfoD toDart() => ref.toDart(this);
 }
 
 extension BoneInfoCEx on BoneInfoC {
-  BoneInfoD toD([Pointer<BoneInfoC>? ptr]) => .new(
+  BoneInfoD toDart([Pointer<BoneInfoC>? ptr]) => .new(
     op: BoneInfoD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -39,11 +39,11 @@ extension BoneInfoCEx on BoneInfoC {
 // BoundingBox
 
 extension BoundingBoxCPEx on Pointer<BoundingBoxC> {
-  BoundingBoxD toD() => ref.toD(this);
+  BoundingBoxD toDart() => ref.toDart(this);
 }
 
 extension BoundingBoxCEx on BoundingBoxC {
-  BoundingBoxD toD([Pointer<BoundingBoxC>? ptr]) => .new(
+  BoundingBoxD toDart([Pointer<BoundingBoxC>? ptr]) => .new(
     op: BoundingBoxD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -51,11 +51,11 @@ extension BoundingBoxCEx on BoundingBoxC {
 // Camera2D
 
 extension Camera2DCPEx on Pointer<Camera2DC> {
-  Camera2DD toD() => ref.toD(this);
+  Camera2DD toDart() => ref.toDart(this);
 }
 
 extension Camera2DCEx on Camera2DC {
-  Camera2DD toD([Pointer<Camera2DC>? ptr]) => .new(
+  Camera2DD toDart([Pointer<Camera2DC>? ptr]) => .new(
     op: Camera2DD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -63,11 +63,11 @@ extension Camera2DCEx on Camera2DC {
 // Camera3D
 
 extension Camera3DCPEx on Pointer<Camera3DC> {
-  Camera3DD toD() => ref.toD(this);
+  Camera3DD toDart() => ref.toDart(this);
 }
 
 extension Camera3DCEx on Camera3DC {
-  Camera3DD toD([Pointer<Camera3DC>? ptr]) => .new(
+  Camera3DD toDart([Pointer<Camera3DC>? ptr]) => .new(
     op: Camera3DD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -76,7 +76,7 @@ extension Camera3DCEx on Camera3DC {
 
 extension ColorCPEx on Pointer<ColorC> {
   Pointer<ColorC> set(num r, num g, num b, num a) { ref.set(r, g, b, a); return this; }
-  ColorD toD() => ref.toD(this);
+  ColorD toDart() => ref.toDart(this);
 }
 
 extension ColorCEx on ColorC {
@@ -88,7 +88,7 @@ extension ColorCEx on ColorC {
     return this;
   }
 
-  ColorD toD([Pointer<ColorC>? ptr]) => .new(
+  ColorD toDart([Pointer<ColorC>? ptr]) => .new(
     op: ColorD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -96,11 +96,11 @@ extension ColorCEx on ColorC {
 // FilePathList
 
 extension FilePathListCPEx on Pointer<FilePathListC> {
-  FilePathListD toD() => ref.toD(this);
+  FilePathListD toDart() => ref.toDart(this);
 }
 
 extension FilePathListCEx on FilePathListC {
-  FilePathListD toD([Pointer<FilePathListC>? ptr]) => .new(
+  FilePathListD toDart([Pointer<FilePathListC>? ptr]) => .new(
     op: FilePathListD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -108,11 +108,11 @@ extension FilePathListCEx on FilePathListC {
 // Font
 
 extension FontCPEx on Pointer<FontC> {
-  FontD toD() => ref.toD(this);
+  FontD toDart() => ref.toDart(this);
 }
 
 extension FontCEx on FontC {
-  FontD toD([Pointer<FontC>? ptr]) => .new(
+  FontD toDart([Pointer<FontC>? ptr]) => .new(
     op: FontD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -120,11 +120,11 @@ extension FontCEx on FontC {
 // GestureEvent
 
 extension GestureEventCPEx on Pointer<GestureEventC> {
-  GestureEventD toD() => ref.toD(this);
+  GestureEventD toDart() => ref.toDart(this);
 }
 
 extension GestureEventCEx on GestureEventC {
-  GestureEventD toD([Pointer<GestureEventC>? ptr]) => .new(
+  GestureEventD toDart([Pointer<GestureEventC>? ptr]) => .new(
     op: GestureEventD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -132,11 +132,11 @@ extension GestureEventCEx on GestureEventC {
 // GlyphInfo
 
 extension GlyphInfoCPEx on Pointer<GlyphInfoC> {
-  GlyphInfoD toD() => ref.toD(this);
+  GlyphInfoD toDart() => ref.toDart(this);
 }
 
 extension GlyphInfoCEx on GlyphInfoC {
-  GlyphInfoD toD([Pointer<GlyphInfoC>? ptr]) => .new(
+  GlyphInfoD toDart([Pointer<GlyphInfoC>? ptr]) => .new(
     op: GlyphInfoD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -144,11 +144,11 @@ extension GlyphInfoCEx on GlyphInfoC {
 // Image
 
 extension ImageCPEx on Pointer<ImageC> {
-  ImageD toD() => ref.toD(this);
+  ImageD toDart() => ref.toDart(this);
 }
 
 extension ImageCEx on ImageC {
-  ImageD toD([Pointer<ImageC>? ptr]) => .new(
+  ImageD toDart([Pointer<ImageC>? ptr]) => .new(
     op: ImageD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -156,11 +156,11 @@ extension ImageCEx on ImageC {
 // MaterialMap
 
 extension MaterialMapCPEx on Pointer<MaterialMapC> {
-  MaterialMapD toD() => ref.toD(this);
+  MaterialMapD toDart() => ref.toDart(this);
 }
 
 extension MaterialMapCEx on MaterialMapC {
-  MaterialMapD toD([Pointer<MaterialMapC>? ptr]) => .new(
+  MaterialMapD toDart([Pointer<MaterialMapC>? ptr]) => .new(
     op: MaterialMapD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -168,11 +168,11 @@ extension MaterialMapCEx on MaterialMapC {
 // Material
 
 extension MaterialCPEx on Pointer<MaterialC> {
-  MaterialD toD() => ref.toD(this);
+  MaterialD toDart() => ref.toDart(this);
 }
 
 extension MaterialCEx on MaterialC {
-  MaterialD toD([Pointer<MaterialC>? ptr]) => .new(
+  MaterialD toDart([Pointer<MaterialC>? ptr]) => .new(
     op: MaterialD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -180,11 +180,11 @@ extension MaterialCEx on MaterialC {
 // Matrix
 
 extension MatrixCPEx on Pointer<MatrixC> {
-  MatrixD toD() => ref.toD(this);
+  MatrixD toDart() => ref.toDart(this);
 }
 
 extension MatrixCEx on MatrixC {
-  MatrixD toD([Pointer<MatrixC>? ptr]) => .new(
+  MatrixD toDart([Pointer<MatrixC>? ptr]) => .new(
     op: MatrixD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -192,11 +192,11 @@ extension MatrixCEx on MatrixC {
 // Mesh
 
 extension MeshCPEx on Pointer<MeshC> {
-  MeshD toD() => ref.toD(this);
+  MeshD toDart() => ref.toDart(this);
 }
 
 extension MeshCEx on MeshC {
-  MeshD toD([Pointer<MeshC>? ptr]) => .new(
+  MeshD toDart([Pointer<MeshC>? ptr]) => .new(
     op: MeshD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -204,11 +204,11 @@ extension MeshCEx on MeshC {
 // ModelAnimation
 
 extension ModelAnimationCPEx on Pointer<ModelAnimationC> {
-  ModelAnimationD toD() => ref.toD(this);
+  ModelAnimationD toDart() => ref.toDart(this);
 }
 
 extension ModelAnimationCEx on ModelAnimationC {
-  ModelAnimationD toD([Pointer<ModelAnimationC>? ptr]) => .new(
+  ModelAnimationD toDart([Pointer<ModelAnimationC>? ptr]) => .new(
     op: ModelAnimationD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -216,11 +216,11 @@ extension ModelAnimationCEx on ModelAnimationC {
 // ModelSkeleton
 
 extension ModelSkeletonCPEx on Pointer<ModelSkeletonC> {
-  ModelSkeletonD toD() => ref.toD(this);
+  ModelSkeletonD toDart() => ref.toDart(this);
 }
 
 extension ModelSkeletonCEx on ModelSkeletonC {
-  ModelSkeletonD toD([Pointer<ModelSkeletonC>? ptr]) => .new(
+  ModelSkeletonD toDart([Pointer<ModelSkeletonC>? ptr]) => .new(
     op: ModelSkeletonD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -228,11 +228,11 @@ extension ModelSkeletonCEx on ModelSkeletonC {
 // Model
 
 extension ModelCPEx on Pointer<ModelC> {
-  ModelD toD() => ref.toD(this);
+  ModelD toDart() => ref.toDart(this);
 }
 
 extension ModelCEx on ModelC {
-  ModelD toD([Pointer<ModelC>? ptr]) => .new(
+  ModelD toDart([Pointer<ModelC>? ptr]) => .new(
     op: ModelD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -240,11 +240,11 @@ extension ModelCEx on ModelC {
 // NPatchInfo
 
 extension NPatchInfoCPEx on Pointer<NPatchInfoC> {
-  NPatchInfoD toD() => ref.toD(this);
+  NPatchInfoD toDart() => ref.toDart(this);
 }
 
 extension NPatchInfoCEx on NPatchInfoC {
-  NPatchInfoD toD([Pointer<NPatchInfoC>? ptr]) => .new(
+  NPatchInfoD toDart([Pointer<NPatchInfoC>? ptr]) => .new(
     op: NPatchInfoD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -252,11 +252,11 @@ extension NPatchInfoCEx on NPatchInfoC {
 // Quaternion
 
 extension QuaternionCPEx on Pointer<QuaternionC> {
-  QuaternionD toD() => ref.toD(this);
+  QuaternionD toDart() => ref.toDart(this);
 }
 
 extension QuaternionCEx on QuaternionC {
-  QuaternionD toD([Pointer<QuaternionC>? ptr]) => .new(
+  QuaternionD toDart([Pointer<QuaternionC>? ptr]) => .new(
     op: QuaternionD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -264,11 +264,11 @@ extension QuaternionCEx on QuaternionC {
 // RayCollision
 
 extension RayCollisionCPEx on Pointer<RayCollisionC> {
-  RayCollisionD toD() => ref.toD(this);
+  RayCollisionD toDart() => ref.toDart(this);
 }
 
 extension RayCollisionCEx on RayCollisionC {
-  RayCollisionD toD([Pointer<RayCollisionC>? ptr]) => .new(
+  RayCollisionD toDart([Pointer<RayCollisionC>? ptr]) => .new(
     op: RayCollisionD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -276,11 +276,11 @@ extension RayCollisionCEx on RayCollisionC {
 // Ray
 
 extension RayCPEx on Pointer<RayC> {
-  RayD toD() => ref.toD(this);
+  RayD toDart() => ref.toDart(this);
 }
 
 extension RayCEx on RayC {
-  RayD toD([Pointer<RayC>? ptr]) => .new(
+  RayD toDart([Pointer<RayC>? ptr]) => .new(
     op: RayD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -288,11 +288,11 @@ extension RayCEx on RayC {
 // Rectangle
 
 extension RectangleCPEx on Pointer<RectangleC> {
-  RectangleD toD() => ref.toD(this);
+  RectangleD toDart() => ref.toDart(this);
 }
 
 extension RectangleCEx on RectangleC {
-  RectangleD toD([Pointer<RectangleC>? ptr]) => .new(
+  RectangleD toDart([Pointer<RectangleC>? ptr]) => .new(
     op: RectangleD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -300,11 +300,11 @@ extension RectangleCEx on RectangleC {
 // RenderTexture
 
 extension RenderTextureCPEx on Pointer<RenderTextureC> {
-  RenderTextureD toD() => ref.toD(this);
+  RenderTextureD toDart() => ref.toDart(this);
 }
 
 extension RenderTextureCEx on RenderTextureC {
-  RenderTextureD toD([Pointer<RenderTextureC>? ptr]) => .new(
+  RenderTextureD toDart([Pointer<RenderTextureC>? ptr]) => .new(
     op: RenderTextureD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -312,11 +312,11 @@ extension RenderTextureCEx on RenderTextureC {
 // Shader
 
 extension ShaderCPEx on Pointer<ShaderC> {
-  ShaderD toD() => ref.toD(this);
+  ShaderD toDart() => ref.toDart(this);
 }
 
 extension ShaderCEx on ShaderC {
-  ShaderD toD([Pointer<ShaderC>? ptr]) => .new(
+  ShaderD toDart([Pointer<ShaderC>? ptr]) => .new(
     op: ShaderD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -324,11 +324,11 @@ extension ShaderCEx on ShaderC {
 // Texture
 
 extension TextureCPEx on Pointer<TextureC> {
-  TextureD toD() => ref.toD(this);
+  TextureD toDart() => ref.toDart(this);
 }
 
 extension TextureCEx on TextureC {
-  TextureD toD([Pointer<TextureC>? ptr]) => .new(
+  TextureD toDart([Pointer<TextureC>? ptr]) => .new(
     op: TextureD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -336,11 +336,11 @@ extension TextureCEx on TextureC {
 // Transform
 
 extension TransformCPEx on Pointer<TransformC> {
-  TransformD toD() => ref.toD(this);
+  TransformD toDart() => ref.toDart(this);
 }
 
 extension TransformCEx on TransformC {
-  TransformD toD([Pointer<TransformC>? ptr]) => .new(
+  TransformD toDart([Pointer<TransformC>? ptr]) => .new(
     op: TransformD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -348,11 +348,11 @@ extension TransformCEx on TransformC {
 // Vector2
 
 extension Vector2CPEx on Pointer<Vector2C> {
-  Vector2D toD() => ref.toD(this);
+  Vector2D toDart() => ref.toDart(this);
 }
 
 extension Vector2CEx on Vector2C {
-  Vector2D toD([Pointer<Vector2C>? ptr]) => .new(
+  Vector2D toDart([Pointer<Vector2C>? ptr]) => .new(
     op: Vector2D.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -360,11 +360,11 @@ extension Vector2CEx on Vector2C {
 // Vector3
 
 extension Vector3CPEx on Pointer<Vector3C> {
-  Vector3D toD() => ref.toD(this);
+  Vector3D toDart() => ref.toDart(this);
 }
 
 extension Vector3CEx on Vector3C {
-  Vector3D toD([Pointer<Vector3C>? ptr]) => .new(
+  Vector3D toDart([Pointer<Vector3C>? ptr]) => .new(
     op: Vector3D.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -372,11 +372,11 @@ extension Vector3CEx on Vector3C {
 // Vector4
 
 extension Vector4CPEx on Pointer<Vector4C> {
-  Vector4D toD() => ref.toD(this);
+  Vector4D toDart() => ref.toDart(this);
 }
 
 extension Vector4CEx on Vector4C {
-  Vector4D toD([Pointer<Vector4C>? ptr]) => .new(
+  Vector4D toDart([Pointer<Vector4C>? ptr]) => .new(
     op: Vector4D.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -384,11 +384,11 @@ extension Vector4CEx on Vector4C {
 // VrDeviceInfo
 
 extension VrDeviceInfoCPEx on Pointer<VrDeviceInfoC> {
-  VrDeviceInfoD toD() => ref.toD(this);
+  VrDeviceInfoD toDart() => ref.toDart(this);
 }
 
 extension VrDeviceInfoCEx on VrDeviceInfoC {
-  VrDeviceInfoD toD([Pointer<VrDeviceInfoC>? ptr]) => .new(
+  VrDeviceInfoD toDart([Pointer<VrDeviceInfoC>? ptr]) => .new(
     op: VrDeviceInfoD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -396,11 +396,11 @@ extension VrDeviceInfoCEx on VrDeviceInfoC {
 // VrStereoConfig
 
 extension VrStereoConfigCPEx on Pointer<VrStereoConfigC> {
-  VrStereoConfigD toD() => ref.toD(this);
+  VrStereoConfigD toDart() => ref.toDart(this);
 }
 
 extension VrStereoConfigCEx on VrStereoConfigC {
-  VrStereoConfigD toD([Pointer<VrStereoConfigC>? ptr]) => .new(
+  VrStereoConfigD toDart([Pointer<VrStereoConfigC>? ptr]) => .new(
     op: VrStereoConfigD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

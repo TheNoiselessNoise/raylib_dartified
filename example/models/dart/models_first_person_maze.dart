@@ -40,7 +40,7 @@ void main()
 
   while (!WindowShouldClose())
   {
-    oldCamPos.setD(camera.position);
+    oldCamPos.setDart(camera.position);
 
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
@@ -74,7 +74,7 @@ void main()
               ),
             ))
           ) {
-            camera.position.setD(oldCamPos);
+            camera.position.setDart(oldCamPos);
           }
         }
       }

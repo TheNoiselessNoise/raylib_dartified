@@ -27,14 +27,14 @@ void main() {
     if (IsMouseButtonDown(.MOUSE_BUTTON_LEFT)) {
       final delta = GetMouseDelta();
       final finalDelta = delta.scale(-1/camera.zoom);
-      camera.target.setD(camera.target.add(finalDelta));
+      camera.target.setDart(camera.target.add(finalDelta));
     }
 
     if (zoomMode == 0) {
       double wheel = GetMouseWheelMove();
       if (wheel != 0) {
         final mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
-        camera.offset.setD(GetMousePosition());
+        camera.offset.setDart(GetMousePosition());
         camera.target = mouseWorldPos;
         double scale = 0.2*wheel;
         camera.zoom = Clamp(math.exp(math.log(camera.zoom)+scale), 0.125, 64);

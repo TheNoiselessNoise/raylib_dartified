@@ -44,6 +44,9 @@ NativeMemoryPointer<RUint8> _nativeFromString(String text, [int? bufferSize]) {
 NativeMemoryPointer<Y> _nativeMalloc<Y extends RType>(int size)
   => .new(ffi.malloc.allocate(size));
 
+NativeMemoryPointer<Y> _nativeCalloc<Y extends RType>(int nmemb, int size)
+  => .new(ffi.calloc.allocate(nmemb * size));
+
 // NOTE: external modules may not be initialized at all
 //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
 //       LateInitializationError: Field 'Gui' has not been initialized.
@@ -104,6 +107,7 @@ class Raylib extends RaylibBase<Raylib> {
     MemoryPointer.fromString = _nativeFromString;
     MemoryPointer.nullptrFactory = _nativeNullptrFactory;
     MemoryPointer.malloc = _nativeMalloc;
+    MemoryPointer.calloc = _nativeCalloc;
     boot();
     
     _initLibs(core, libs);

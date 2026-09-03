@@ -1,7 +1,7 @@
 part of 'raylib_dartified.dart';
 
 extension CharPointerEx on Pointer<Char> {
-  String get toD => cast<Utf8>().toDartString();
+  String get toDart => cast<Utf8>().toDartString();
 }
 
 extension GetStringFromArrayChar on Array<Char> {

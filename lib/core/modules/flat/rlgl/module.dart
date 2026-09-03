@@ -622,7 +622,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     (p) => rl.Rlgl.rlLoadRenderBatch(
       numBuffers,
       bufferElements,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 
   @override
@@ -1209,17 +1209,17 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
 
   @override
   MatrixD rlGetMatrixModelview() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixModelview().toD(p.asNativePointer()),
+    (p) => rl.Rlgl.rlGetMatrixModelview().toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD rlGetMatrixProjection() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixProjection().toD(p.asNativePointer()),
+    (p) => rl.Rlgl.rlGetMatrixProjection().toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD rlGetMatrixTransform() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixTransform().toD(p.asNativePointer()),
+    (p) => rl.Rlgl.rlGetMatrixTransform().toDart(p.asNativePointer()),
   );
 
   @override
@@ -1228,7 +1228,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   ) => rl.Temp.Matrix$.Extract1(
     (p) => rl.Rlgl.rlGetMatrixProjectionStereo(
       eye,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 
   @override
@@ -1237,7 +1237,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   ) => rl.Temp.Matrix$.Extract1(
     (p) => rl.Rlgl.rlGetMatrixViewOffsetStereo(
       eye,
-    ).toD(p.asNativePointer()),
+    ).toDart(p.asNativePointer()),
   );
 
   @override

@@ -3,11 +3,11 @@ part of '../../../raylib_dartified.dart';
 // MsfGifResult
 
 extension MsfGifResultCPEx on Pointer<MsfGifResultC> {
-  MsfGifResultD toD() => ref.toD(this);
+  MsfGifResultD toDart() => ref.toDart(this);
 }
 
 extension MsfGifResultCEx on MsfGifResultC {
-  MsfGifResultD toD([Pointer<MsfGifResultC>? ptr]) => .new(
+  MsfGifResultD toDart([Pointer<MsfGifResultC>? ptr]) => .new(
     op: MsfGifResultD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
@@ -15,11 +15,11 @@ extension MsfGifResultCEx on MsfGifResultC {
 // MsfGifState
 
 extension MsfGifStateCPEx on Pointer<MsfGifStateC> {
-  MsfGifStateD toD() => ref.toD(this);
+  MsfGifStateD toDart() => ref.toDart(this);
 }
 
 extension MsfGifStateCEx on MsfGifStateC {
-  MsfGifStateD toD([Pointer<MsfGifStateC>? ptr]) => .new(
+  MsfGifStateD toDart([Pointer<MsfGifStateC>? ptr]) => .new(
     op: MsfGifStateD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

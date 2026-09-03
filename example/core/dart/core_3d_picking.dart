@@ -40,7 +40,7 @@ void main() {
     {
       if (!collision.hit)
       {
-        ray.setD(GetScreenToWorldRay(GetMousePosition(), camera));
+        ray.setDart(GetScreenToWorldRay(GetMousePosition(), camera));
 
         final BoundingBoxD bbox = .new(
           min: cubePosition.sub(cubeSize.divideBy(2)),
@@ -48,7 +48,7 @@ void main() {
         );
 
         // Check collision between ray and box
-        collision.setD(GetRayCollisionBox(ray, bbox));
+        collision.setDart(GetRayCollisionBox(ray, bbox));
       }
       else collision.hit = false;
     }
