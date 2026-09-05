@@ -44,13 +44,13 @@ void main() {
 
     test('does not split a multi-byte codepoint on truncation boundary landing mid-char', () {
       // 'é' is 2 bytes (0xC3 0xA9). maxLength=3 after 'a' (1 byte) leaves
-      // only 2 bytes for 'é' — exactly enough. maxLength=2 would only fit
+      // only 2 bytes for 'é', exactly enough. maxLength=2 would only fit
       // 1 byte of 'é', which utf8.encode-then-slice would corrupt if not
       // handled at the codepoint level.
       ptr.writeString('aé', 2);
       final raw = ptr.readBytes(0, 2);
       // Implementation-defined: assert it's either "a\0" (dropped whole char)
-      // or a valid encode — never a lone continuation byte.
+      // or a valid encode, never a lone continuation byte.
       expect(raw[0], 0x61);
       expect(raw[1], anyOf(0x00, 0xC3));
     });

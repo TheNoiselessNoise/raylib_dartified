@@ -94,7 +94,7 @@ void main()
       }
     }
 
-    UpdateTexture(screenTexture, .fromList(screenImage.data));
+    UpdateTexture(screenTexture, .fromList(screenImage.dataView));
 
     BeginDrawing();
 

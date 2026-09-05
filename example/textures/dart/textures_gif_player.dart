@@ -34,11 +34,11 @@ void main()
       if (currentAnimFrame >= imScarfyAnim.frameCount) currentAnimFrame = 0;
 
       final frameSize = imScarfyAnim.frameSize;
-      final nextFrameDataOffset = frameSize * currentAnimFrame;
+      nextFrameDataOffset = frameSize * currentAnimFrame;
 
       UpdateTexture(
         texScarfyAnim,
-        .fromList(imScarfyAnim.data.sublist(nextFrameDataOffset, nextFrameDataOffset + frameSize)),
+        .fromList(imScarfyAnim.dataView.sublist(nextFrameDataOffset, nextFrameDataOffset + frameSize)),
       );
 
       frameCounter = 0;

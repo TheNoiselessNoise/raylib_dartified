@@ -33,7 +33,7 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _stringPointerCharF.allocate(temp, p, key, 32);
+    _stringPointerCharF.allocate(temp, p, key, count: 32);
   }
 
   @override

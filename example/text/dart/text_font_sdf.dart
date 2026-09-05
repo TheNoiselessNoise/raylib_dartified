@@ -12,8 +12,6 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  rl.debugEverything(true);
-
   InitWindow(screenWidth, screenHeight, "text_font_sdf");
   SetTargetFPS(60);
 

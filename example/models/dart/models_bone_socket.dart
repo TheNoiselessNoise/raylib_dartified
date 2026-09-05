@@ -15,6 +15,8 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
+  rl.debugEverything(true);
+
   InitWindow(screenWidth, screenHeight, "models_bone_socket");
   SetTargetFPS(60);
   DisableCursor();

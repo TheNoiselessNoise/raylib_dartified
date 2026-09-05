@@ -98,7 +98,7 @@ void main() {
       {
         final imScreen = LoadImageFromScreen();
 
-        msf_gif_frame(gifState, .fromList(imScreen.data), (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
+        msf_gif_frame(gifState, .fromList(imScreen.dataView), (((1.0/60.0)*GIF_RECORD_FRAMERATE)/10).toInt(), 16, imScreen.width*4);
         gifFrameCounter = 0;
 
         UnloadImage(imScreen);

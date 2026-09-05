@@ -96,12 +96,10 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     SoundD sound,
     MemoryPointer<RVoid> data,
     int sampleCount,
-  ) => rl.Temp.Sound$.RefUpdate1(sound,
-    (p) => rl.Audio.UpdateSound(
-      p.asNativePointer<SoundC>().ref,
-      data.asNativePointer(),
-      sampleCount,
-    ),
+  ) => rl.Audio.UpdateSound(
+    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    data.asNativePointer(),
+    sampleCount,
   );
   
   @override
