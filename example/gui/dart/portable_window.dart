@@ -1,6 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raygui/blob/master/examples/portable_window/portable_window.c
 // Run it: dart run portable_window.dart
+// WARNING: if you are running under Linux/Wayland you should run with:
+// `WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11`
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
@@ -10,9 +12,9 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final Vector2D mousePosition = .zero();
-  final Vector2D windowPosition = .vec2(500, 200);
-  final Vector2D panOffset = .zero();
+  Vector2D mousePosition = .zero();
+  Vector2D windowPosition = .vec2(500, 200);
+  Vector2D panOffset = .zero();
   bool dragWindow = false;
   bool exitWindow = false;
 
@@ -23,7 +25,7 @@ void main()
 
   while (!exitWindow && !WindowShouldClose())
   {
-    mousePosition.setDart(GetMousePosition());
+    mousePosition = GetMousePosition();
 
     if (
       IsMouseButtonDown(.MOUSE_BUTTON_LEFT) &&
@@ -33,14 +35,14 @@ void main()
         mousePosition,
         .rect(0, 0, screenWidth, 20)
       )) {
-        windowPosition.setDart(GetWindowPosition());
+        windowPosition = GetWindowPosition();
         dragWindow = true;
-        panOffset.setDart(mousePosition);
+        panOffset = mousePosition.copy();
       }
     }
 
     if (dragWindow) {
-      windowPosition.setDart(windowPosition.add(mousePosition.sub(panOffset)));
+      windowPosition = windowPosition.add(mousePosition.sub(panOffset));
 
       SetWindowPosition(windowPosition.x, windowPosition.y);
 

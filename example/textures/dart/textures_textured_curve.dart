@@ -159,7 +159,7 @@ void DrawTexturedCurve()
 
     if (!tangentSet)
     {
-      previousTangent.setDart(normal);
+      previousTangent = normal.copy();
       tangentSet = true;
     }
 
@@ -187,8 +187,8 @@ void DrawTexturedCurve()
       rlVertex2f(currentNegNormal.x, currentNegNormal.y);
     rlEnd();
 
-    previous.setDart(current);
-    previousTangent.setDart(normal);
+    previous = current.copy();
+    previousTangent = normal.copy();
     previousV = v;
   }
 }

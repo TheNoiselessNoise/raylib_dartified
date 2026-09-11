@@ -22,6 +22,8 @@ class RaylibExternalLibs {
   }
 }
 
+NativeMemoryPointer<Y> _nativeFromAddress<Y extends RType>(int address) => .new(.fromAddress(address));
+
 NativeMemoryPointer<RVoid> _nativeFromBytes<T extends TypedDataList>(T data) {
   final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
   final ptr = ffi.malloc<Uint8>(byteLength);
@@ -46,6 +48,16 @@ NativeMemoryPointer<Y> _nativeMalloc<Y extends RType>(int size)
 
 NativeMemoryPointer<Y> _nativeCalloc<Y extends RType>(int nmemb, int size)
   => .new(ffi.calloc.allocate(nmemb * size));
+
+void bootMemoryBackend() {
+  RType.nativeWordSize = sizeOf<IntPtr>();
+  MemoryPointer.fromAddress = _nativeFromAddress;
+  MemoryPointer.fromBytes = _nativeFromBytes;
+  MemoryPointer.fromString = _nativeFromString;
+  MemoryPointer.nullptr = _nativeNullptrFactory;
+  MemoryPointer.malloc = _nativeMalloc;
+  MemoryPointer.calloc = _nativeCalloc;
+}
 
 // NOTE: external modules may not be initialized at all
 //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
@@ -89,6 +101,7 @@ class Raylib extends RaylibBase<Raylib> {
   final _externalLibs = RaylibExternalLibs();
 
   Map<RaylibSupportedLibs, void Function(String)> get _moduleRegistrars => {
+    .raylib: (p) => _externalLibs.register<RaylibCore>(p),
     .gui: (p) => _externalLibs.register<RaylibGui>(p),
     .msf_gif: (p) => _externalLibs.register<RaylibMsfGif>(p),
   };
@@ -96,30 +109,22 @@ class Raylib extends RaylibBase<Raylib> {
   RaylibLookup lookup<T extends RaylibModule<Raylib>>() => _externalLibs.lookup<T>();
 
   Raylib({
-    required String core,
     Map<RaylibSupportedLibs, String?> libs = const {},
     super.tempOptions,
     super.random,
     super.silent,
   }) {
-    RType.nativeWordSize = sizeOf<IntPtr>();
-    MemoryPointer.fromBytes = _nativeFromBytes;
-    MemoryPointer.fromString = _nativeFromString;
-    MemoryPointer.nullptrFactory = _nativeNullptrFactory;
-    MemoryPointer.malloc = _nativeMalloc;
-    MemoryPointer.calloc = _nativeCalloc;
+    bootMemoryBackend();
     boot();
     
-    _initLibs(core, libs);
+    _initLibs(libs);
     _init();
   }
 
-  void _initLibs(String core, Map<RaylibSupportedLibs, String?> libs) {
-    _externalLibs.register<RaylibCore>(core);
-
+  void _initLibs(Map<RaylibSupportedLibs, String?> libs) {
     final registrars = _moduleRegistrars;
 
-    for (final l in libs.entries.skip(1)) {
+    for (final l in libs.entries) {
       final path = l.value;
       if (path != null) registrars[l.key]!(path);
     }
@@ -221,26 +226,18 @@ Raylib findRaylib(String folder, {
   RaylibTempOptions? tempOptions,
   bool silent = false,
 }) {
-  final raylibId = RaylibSupportedLibs.raylib.id;
   var dir = Directory.current;
 
   while (true) {
     final raylibPath = path.join(dir.path, folder);
 
     if (Directory(raylibPath).existsSync()) {
-      final corePath = _platformLibPath(raylibPath, raylibId);
-
-      if (corePath == null) {
-        throw Exception('Could not find ${_platformLib(raylibId)} file');
-      }
-
       final Map<RaylibSupportedLibs, String?> libs = {};
-      for (final lib in RaylibSupportedLibs.values.skip(1)) {
+      for (final lib in RaylibSupportedLibs.values) {
         libs[lib] = _platformLibPath(raylibPath, lib.id);
       }
 
       return Raylib(
-        core: corePath,
         libs: libs,
         tempOptions: tempOptions,
         silent: silent,

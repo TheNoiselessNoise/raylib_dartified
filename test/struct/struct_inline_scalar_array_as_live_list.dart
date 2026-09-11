@@ -19,8 +19,8 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   static final _inlineScalarArrayF = struct.scalarArray<int, RInt>(.inlineScalarArray);
 
-  late final LiveStructList<int, RInt> _inlineScalarArray;
-  LiveStructList<int, RInt> get inlineScalarArray => _inlineScalarArray;
+  late final StructLiveList<int, RInt> _inlineScalarArray;
+  StructLiveList<int, RInt> get inlineScalarArray => _inlineScalarArray;
   set inlineScalarArray(List<int> value) => _inlineScalarArray.inner = value;
 
   MyStruct({

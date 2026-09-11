@@ -24,11 +24,11 @@ void main()
   );
   double scleraRadius = 80;
 
-  final Vector2D irisLeftPosition = .vec2(
+  Vector2D irisLeftPosition = .vec2(
     GetScreenWidth()/2.0 - 100.0,
     GetScreenHeight()/2.0
   );
-  final Vector2D irisRightPosition = .vec2(
+  Vector2D irisRightPosition = .vec2(
     GetScreenWidth()/2.0 + 100.0,
     GetScreenHeight()/2.0
   );
@@ -39,8 +39,8 @@ void main()
 
   while (!WindowShouldClose())
   {
-    irisLeftPosition.setDart(GetMousePosition());
-    irisRightPosition.setDart(GetMousePosition());
+    irisLeftPosition = GetMousePosition();
+    irisRightPosition = GetMousePosition();
 
     if (!CheckCollisionPointCircle(irisLeftPosition, scleraLeftPosition, scleraRadius - irisRadius))
     {

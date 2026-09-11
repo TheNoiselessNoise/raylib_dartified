@@ -19,8 +19,8 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   static final _inlineStructArrayF = struct.structArray<ColorD>(.inlineStructArray, ColorD.pointer);
 
-  late final LiveStructList<ColorD, RStruct> _inlineStructArray;
-  LiveStructList<ColorD, RStruct> get inlineStructArray => _inlineStructArray;
+  late final StructLiveList<ColorD, RStruct> _inlineStructArray;
+  StructLiveList<ColorD, RStruct> get inlineStructArray => _inlineStructArray;
   set inlineStructArray(List<ColorD> value) => _inlineStructArray.inner = value;
 
   MyStruct({

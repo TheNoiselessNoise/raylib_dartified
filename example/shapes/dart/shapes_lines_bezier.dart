@@ -14,8 +14,8 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_lines_bezier");
   SetTargetFPS(60);
 
-  final Vector2D startPoint = .vec2(30, 30);
-  final Vector2D endPoint = .vec2(screenWidth - 30, screenHeight - 30);
+  Vector2D startPoint = .vec2(30, 30);
+  Vector2D endPoint = .vec2(screenWidth - 30, screenHeight - 30);
   bool moveStartPoint = false;
   bool moveEndPoint = false;
 
@@ -35,14 +35,14 @@ void main()
 
     if (moveStartPoint)
     {
-      startPoint.setDart(mouse);
+      startPoint = mouse;
       if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT))
         moveStartPoint = false;
     }
 
     if (moveEndPoint)
     {
-      endPoint.setDart(mouse);
+      endPoint = mouse;
       if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT))
         moveEndPoint = false;
     }

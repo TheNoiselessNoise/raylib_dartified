@@ -37,5 +37,5 @@ class BackendAgnosticRaylibExample<R extends RaylibBase<R>> extends RaylibAppBas
 
 void main() => runRaylib(
   BackendAgnosticRaylibExample(),
-  nativeLibPath: 'raylib-6.0_linux_amd64/lib',
+  nativeLibPath: 'raylib-6.0_linux_amd64/lib', // ignored on Web/WASM
 );

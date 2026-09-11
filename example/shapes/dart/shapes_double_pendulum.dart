@@ -77,9 +77,7 @@ void main()
       DrawLineEx(previousPosition, currentPosition, trailThick*2, .RED);
     EndTextureMode();
 
-    // NOTE: see that we don't use:
-    // previousPosition = currentPosition;
-    previousPosition.setDart(currentPosition);
+    previousPosition = currentPosition.copy();
 
     BeginDrawing();
 

@@ -242,7 +242,6 @@ Pick **one** per file. Mixing abbreviated APIs in the same scope will cause name
 ### Dart
 
 ```dart
-import 'package:raylib_dartified/raylib_dartified.dart';
 import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {
@@ -262,7 +261,6 @@ void main() {
 The same raylib-style API, but with backend-independent memory:
 
 ```dart
-import 'package:raylib_dartified/raylib_dartified.dart';
 import 'package:raylib_dartified/abbr/flat.dart';
 
 void main() {
@@ -285,7 +283,6 @@ void main() {
 The same API directly against the native FFI layer:
 
 ```dart
-import 'package:raylib_dartified/raylib_dartified.dart';
 import 'package:raylib_dartified/abbr/ffi.dart';
 
 void main() {

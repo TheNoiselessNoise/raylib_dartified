@@ -16,7 +16,7 @@ void main()
   DisableCursor();
 
   final Vector3D mapPosition = .vec3(-16.0, 0.0, -8.0);
-  final Vector3D oldCamPos = .zero();
+  Vector3D oldCamPos = .zero();
 
   final camera = Camera3DD(
     position: .vec3(0.2, 0.4, 0.2),
@@ -40,7 +40,7 @@ void main()
 
   while (!WindowShouldClose())
   {
-    oldCamPos.setDart(camera.position);
+    oldCamPos = camera.position.copy();
 
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
@@ -65,16 +65,11 @@ void main()
           if (
             ((x >= 0) && (x < cubicmap.width)) &&
             (mapPixels[y*cubicmap.width + x].r == 255) &&
-            (CheckCollisionCircleRec(
-              playerPos,
-              playerRadius,
-              .rect(
-                mapPosition.x - 0.5 + x*1.0, mapPosition.z - 0.5 + y*1.0,
-                1.0, 1.0,
-              ),
+            (CheckCollisionCircleRec(playerPos, playerRadius,
+              .rect(mapPosition.x - 0.5 + x*1.0, mapPosition.z - 0.5 + y*1.0, 1.0, 1.0),
             ))
           ) {
-            camera.position.setDart(oldCamPos);
+            camera.position = oldCamPos;
           }
         }
       }
