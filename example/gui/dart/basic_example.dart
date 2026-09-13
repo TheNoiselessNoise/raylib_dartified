@@ -18,21 +18,19 @@ void main()
       final style = GuiGetStyle(.DEFAULT, GuiDefaultProperty.BACKGROUND_COLOR);
       ClearBackground(GetColor(style));
 
-      if (GuiButton(
-        .rect(24, 24, 120, 30),
-        "#191#Show Message"
-      ) != 0) showMessageBox = true;
+      if (GuiButton(.rect(24, 24, 120, 30), "#191#Show Message") != .RESULT_NONE)
+        showMessageBox = true;
 
       if (showMessageBox)
       {
-        int result = GuiMessageBox(
+        final (result, btnActive) = GuiMessageBox(
           .rect(85, 70, 250, 100),
           "#191#Message Box",
           "Hi! This is a message!",
           "Nice;Cool"
         );
 
-        if (result >= 0) {
+        if (result != .RESULT_NONE) {
           showMessageBox = false;
         }
       }

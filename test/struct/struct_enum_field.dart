@@ -17,11 +17,11 @@ class MyStruct extends RaylibStruct<MyStruct> {
   static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
     => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
 
-  static final _enumFieldF = struct.enumValue<KeyboardKey, RInt>(.enumField, KeyboardKey.fromValue);
+  static final enumFieldF = struct.enumValue<KeyboardKey, RInt>(.enumField, KeyboardKey.fromValue);
 
   KeyboardKey _enumField;
-  KeyboardKey get enumField => _enumField = _enumFieldF.readOr(op?.ptr, _enumField);
-  set enumField(KeyboardKey value) => _enumField = _enumFieldF.writeIf(op?.ptr, value);
+  KeyboardKey get enumField => _enumField = enumFieldF.readOr(op?.ptr, _enumField);
+  set enumField(KeyboardKey value) => _enumField = enumFieldF.writeIf(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,33 +33,59 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _enumField = _enumFieldF.read(p);
+    _enumField = enumFieldF.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _enumFieldF.write(p, _enumField);
+    enumFieldF.write(p, _enumField);
   }
 }
 
 void main() {
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
+  final value = KeyboardKey.KEY_DELETE; // 261
+
   late MemoryPointer<RStruct> ptr;
   setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
   tearDown(() => ptr.free());
 
-  test("Enum - after assignment", () {
-    final value = KeyboardKey.KEY_DELETE; // 261
+  test("Enum - through getter and setter", () {
     final struct = MyStruct.pointer(ptr).ref;
     struct.enumField = value;
     expect(struct.enumField, equals(value));
   });
 
-  test("Enum - read live data", () {
-    final value = KeyboardKey.KEY_DELETE;
+  test("Enum - through offsets", () {
     ptr.offsetBy(MyStruct.struct.offset(.enumField)).writeInt(value.value);
+    final value1 = ptr.offsetBy(MyStruct.struct.offset(.enumField)).readInt();
+    final value2 = ptr.readInt(MyStruct.struct.offset(.enumField));
+    expect(KeyboardKey.fromValue(value1), value);
+    expect(KeyboardKey.fromValue(value2), value);
+  });
+
+  test("Enum - through static field", () {
+    MyStruct.enumFieldF.write(ptr, value);
+    expect(MyStruct.enumFieldF.read(ptr), value);
+  });
+
+  test("Enum - through pointer (as reference - keeps pointer)", () {
+    MyStruct.enumFieldF.write(ptr, value);
     expect(MyStruct.pointer(ptr).ref.enumField, value);
+  });
+
+  test("Enum - through pointer (as value - discards pointer)", () {
+    MyStruct.enumFieldF.write(ptr, value);
+    final struct = MyStruct.pointer(ptr).value;
+    // works only when `MyStruct extends RaylibStructLiteral` (which is not)
+    // so let's do it ourselves
+    if (struct is! RaylibStructLiteral) {
+      struct.structSyncFromMemory(); // sync everything to Dart side
+      struct.op = null; // unset the pointer, no live data available
+    }
+    // now let's test our Dart side
+    expect(struct.enumField, value);
   });
 
   tearDownAll(disposeRaylib);

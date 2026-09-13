@@ -58,7 +58,7 @@ void main()
       exitWindow = GuiWindowBox(
         .rect(0, 0, screenWidth, screenHeight),
         "#198# PORTABLE WINDOW"
-      ) != 0;
+      ) != .RESULT_NONE;
 
       DrawText(
         "Mouse Position: $mousePosition",

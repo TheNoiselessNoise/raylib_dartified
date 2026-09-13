@@ -101,7 +101,7 @@ void main() {
     test('does not leave a lone high surrogate when truncating', () {
       // '😀' takes 2 code units; maxLength=1 can only fit the high surrogate.
       ptr.writeString('😀', 1);
-      final units = ptr.to<Uint16List>(1); // hypothetical bulk read helper
+      final units = ptr.asCopy<Uint16List>(1); // hypothetical bulk read helper
       // The lone high surrogate must not be written unpaired.
       expect(units[0], isNot(inInclusiveRange(0xD800, 0xDBFF)));
     });
@@ -113,7 +113,7 @@ void main() {
 
     test('zero-pads remainder after write (as uint16 zeros)', () {
       ptr.writeString('ab', 4);
-      final units = ptr.to<Uint16List>(4);
+      final units = ptr.asCopy<Uint16List>(4);
       expect(units, [0x0061, 0x0062, 0, 0]);
     });
 
@@ -149,7 +149,7 @@ void main() {
       const s = '😀🎉';
       ptr.writeString(s, 4);
       expect(ptr.toDartString(), s);
-      final runes = ptr.to<Uint32List>(4);
+      final runes = ptr.asCopy<Uint32List>(4);
       expect(runes[0], 0x1F600);
       expect(runes[1], 0x1F389);
     });
@@ -161,7 +161,7 @@ void main() {
 
     test('zero-pads remainder after write', () {
       ptr.writeString('a', 3);
-      final runes = ptr.to<Uint32List>(3);
+      final runes = ptr.asCopy<Uint32List>(3);
       expect(runes, [0x61, 0, 0]);
     });
 
@@ -178,7 +178,7 @@ void main() {
 
     test('exact-fit write leaves no room for NUL and does not overflow', () {
       ptr.writeString('abcd', 4);
-      final runes = ptr.to<Uint32List>(4);
+      final runes = ptr.asCopy<Uint32List>(4);
       expect(runes, [0x61, 0x62, 0x63, 0x64]);
     });
   });

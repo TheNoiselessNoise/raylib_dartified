@@ -11,7 +11,8 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
     Vector3D target,
     ColorD color,
     ShaderD shader,
-  ) => rl.Temp.Light$.Extract1(
+  ) => rl.Temp.Light$.RefCapture(
+    RaylibCaptureIds.CreateLight,
     (p) => rl.Light.CreateLight(
       type,
       rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,

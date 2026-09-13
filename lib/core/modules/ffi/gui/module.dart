@@ -83,6 +83,12 @@ class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> 
   late final _GuiLoadStylePtr = _lookup<NativeFunction<Void Function(Pointer<Char>)>>('GuiLoadStyle');
   late final _GuiLoadStyle = _GuiLoadStylePtr.asFunction<void Function(Pointer<Char>)>();
 
+  /// Load style from memory (binary only)
+  void GuiLoadStyleFromMemory(Pointer<UnsignedChar> fileData, int dataSize)
+    => _GuiLoadStyleFromMemory(fileData, dataSize);
+  late final _GuiLoadStyleFromMemoryPtr = _lookup<NativeFunction<Void Function(Pointer<UnsignedChar>, Int)>>('GuiLoadStyleFromMemory');
+  late final _GuiLoadStyleFromMemory = _GuiLoadStyleFromMemoryPtr.asFunction<void Function(Pointer<UnsignedChar>, int)>();
+
   /// Load style default over global style
   void GuiLoadStyleDefault()
     => _GuiLoadStyleDefault();
@@ -131,6 +137,12 @@ class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> 
   late final _GuiLoadIconsPtr = _lookup<NativeFunction<Pointer<Pointer<Char>> Function(Pointer<Char>, Bool)>>('GuiLoadIcons');
   late final _GuiLoadIcons = _GuiLoadIconsPtr.asFunction<Pointer<Pointer<Char>> Function(Pointer<Char>, bool)>();
 
+  /// Load raygui icons file (.rgi) from memory into internal icons data
+  Pointer<Pointer<Char>> GuiLoadIconsFromMemory(Pointer<UnsignedChar> fileData, int dataSize, bool loadIconsName)
+    => _GuiLoadIconsFromMemory(fileData, dataSize, loadIconsName);
+  late final _GuiLoadIconsFromMemoryPtr = _lookup<NativeFunction<Pointer<Pointer<Char>> Function(Pointer<UnsignedChar>, Int, Bool)>>('GuiLoadIconsFromMemory');
+  late final _GuiLoadIconsFromMemory = _GuiLoadIconsFromMemoryPtr.asFunction<Pointer<Pointer<Char>> Function(Pointer<UnsignedChar>, int, bool)>();
+
   /// Draw icon using pixel size at specified position
   void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, ColorC color)
     => _GuiDrawIcon(iconId, posX, posY, pixelSize, color);
@@ -166,12 +178,6 @@ class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> 
     => _GuiPanel(bounds, text);
   late final _GuiPanelPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>)>>('GuiPanel');
   late final _GuiPanel = _GuiPanelPtr.asFunction<int Function(RectangleC, Pointer<Char>)>();
-
-  /// Tab Bar control, returns TAB to be closed or -1
-  int GuiTabBar(RectangleC bounds, Pointer<Pointer<Char>> text, int count, Pointer<Int> active)
-    => _GuiTabBar(bounds, text, count, active);
-  late final _GuiTabBarPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Pointer<Char>>, Int, Pointer<Int>)>>('GuiTabBar');
-  late final _GuiTabBar = _GuiTabBarPtr.asFunction<int Function(RectangleC, Pointer<Pointer<Char>>, int, Pointer<Int>)>();
 
   /// Scroll Panel control
   int GuiScrollPanel(RectangleC bounds, Pointer<Char> text, RectangleC content, Pointer<Vector2C> scroll, Pointer<RectangleC> view)
@@ -299,25 +305,37 @@ class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> 
   late final _GuiListViewPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Int>, Pointer<Int>)>>('GuiListView');
   late final _GuiListView = _GuiListViewPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Int>, Pointer<Int>)>();
 
-  /// List View with extended parameters
+  /// List View control, using text entries list and returning focus entry
   int GuiListViewEx(RectangleC bounds, Pointer<Pointer<Char>> text, int count, Pointer<Int> scrollIndex, Pointer<Int> active, Pointer<Int> focus)
     => _GuiListViewEx(bounds, text, count, scrollIndex, active, focus);
   late final _GuiListViewExPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Pointer<Char>>, Int, Pointer<Int>, Pointer<Int>, Pointer<Int>)>>('GuiListViewEx');
   late final _GuiListViewEx = _GuiListViewExPtr.asFunction<int Function(RectangleC, Pointer<Pointer<Char>>, int, Pointer<Int>, Pointer<Int>, Pointer<Int>)>();
 
+  /// Tab Bar control
+  int GuiTabBar(RectangleC bounds, Pointer<Char> text, Pointer<Int> hscroll, Pointer<Int> active)
+    => _GuiTabBar(bounds, text, hscroll, active);
+  late final _GuiTabBarPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Int>, Pointer<Int>)>>('GuiTabBar');
+  late final _GuiTabBar = _GuiTabBarPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Int>, Pointer<Int>)>();
+
+  /// Tab Bar control, using text entries list and returning focus entry
+  int GuiTabBarEx(RectangleC bounds, Pointer<Pointer<Char>> text, int count, Pointer<Int> hscroll, Pointer<Int> active, Pointer<Int> focus)
+    => _GuiTabBarEx(bounds, text, count, hscroll, active, focus);
+  late final _GuiTabBarExPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Pointer<Char>>, Int, Pointer<Int>, Pointer<Int>, Pointer<Int>)>>('GuiTabBarEx');
+  late final _GuiTabBarEx = _GuiTabBarExPtr.asFunction<int Function(RectangleC, Pointer<Pointer<Char>>, int, Pointer<Int>, Pointer<Int>, Pointer<Int>)>();
+
   /// Message Box control, displays a message
-  int GuiMessageBox(RectangleC bounds, Pointer<Char> title, Pointer<Char> message, Pointer<Char> buttons)
-    => _GuiMessageBox(bounds, title, message, buttons);
-  late final _GuiMessageBoxPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>)>>('GuiMessageBox');
-  late final _GuiMessageBox = _GuiMessageBoxPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>)>();
+  int GuiMessageBox(RectangleC bounds, Pointer<Char> title, Pointer<Char> message, Pointer<Char> btnText, Pointer<Int> btnActive)
+    => _GuiMessageBox(bounds, title, message, btnText, btnActive);
+  late final _GuiMessageBoxPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, Pointer<Int>)>>('GuiMessageBox');
+  late final _GuiMessageBox = _GuiMessageBoxPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, Pointer<Int>)>();
 
   /// Text Input Box control, ask for text, supports secret
-  int GuiTextInputBox(RectangleC bounds, Pointer<Char> title, Pointer<Char> message, Pointer<Char> buttons, Pointer<Char> text, int textMaxSize, Pointer<Bool> secretViewActive)
-    => _GuiTextInputBox(bounds, title, message, buttons, text, textMaxSize, secretViewActive);
-  late final _GuiTextInputBoxPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, Pointer<Char>, Int, Pointer<Bool>)>>('GuiTextInputBox');
-  late final _GuiTextInputBox = _GuiTextInputBoxPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, Pointer<Char>, int, Pointer<Bool>)>();
+  int GuiTextInputBox(RectangleC bounds, Pointer<Char> title, Pointer<Char> message, Pointer<Char> text, int textSize, Pointer<Char> btnText, Pointer<Int> btnActive, Pointer<Bool> secretViewActive)
+    => _GuiTextInputBox(bounds, title, message, text, textSize, btnText, btnActive, secretViewActive);
+  late final _GuiTextInputBoxPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, Int, Pointer<Char>, Pointer<Int>, Pointer<Bool>)>>('GuiTextInputBox');
+  late final _GuiTextInputBox = _GuiTextInputBoxPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Char>, Pointer<Char>, int, Pointer<Char>, Pointer<Int>, Pointer<Bool>)>();
 
-  /// Color Picker control (multiple color controls)
+  /// Color Picker control, includes Color bar controls
   int GuiColorPicker(RectangleC bounds, Pointer<Char> text, Pointer<ColorC> color)
     => _GuiColorPicker(bounds, text, color);
   late final _GuiColorPickerPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<ColorC>)>>('GuiColorPicker');
@@ -341,13 +359,13 @@ class RaylibGui extends RaylibModule<Raylib> with RaylibGuiModuleExtras<Raylib> 
   late final _GuiColorBarHuePtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Float>)>>('GuiColorBarHue');
   late final _GuiColorBarHue = _GuiColorBarHuePtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Float>)>();
 
-  /// Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+  /// Color Picker control, using Hue-Saturation-Value color data, includes Color bar controls
   int GuiColorPickerHSV(RectangleC bounds, Pointer<Char> text, Pointer<Vector3C> colorHsv)
     => _GuiColorPickerHSV(bounds, text, colorHsv);
   late final _GuiColorPickerHSVPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Vector3C>)>>('GuiColorPickerHSV');
   late final _GuiColorPickerHSV = _GuiColorPickerHSVPtr.asFunction<int Function(RectangleC, Pointer<Char>, Pointer<Vector3C>)>();
 
-  /// Color Panel control that updates Hue-Saturation-Value color value, used by GuiColorPickerHSV()
+  /// Color Panel control, using Hue-Saturation-Value color data
   int GuiColorPanelHSV(RectangleC bounds, Pointer<Char> text, Pointer<Vector3C> colorHsv)
     => _GuiColorPanelHSV(bounds, text, colorHsv);
   late final _GuiColorPanelHSVPtr = _lookup<NativeFunction<Int Function(RectangleC, Pointer<Char>, Pointer<Vector3C>)>>('GuiColorPanelHSV');

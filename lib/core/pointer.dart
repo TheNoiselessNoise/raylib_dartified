@@ -32,7 +32,7 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   int get address => _ptr.address;
 
   @override
-  T to<T extends TypedDataList>(int length) {
+  T asCopy<T extends TypedDataList>(int length) {
     MemoryDebug.checkPointer(this, 'to', T, length);
     return switch (T) {
       const (Uint8List) => Uint8List.fromList(_ptr.cast<Uint8>().asTypedList(length)) as T,

@@ -137,9 +137,9 @@ void UpdateModelAnimationBones(
   bool upperBodyBlend
 ) {
   if (
-    (anim0.boneCount != 0) && anim0.keyframePoses.isNotEmpty &&
-    (anim1.boneCount != 0) && anim1.keyframePoses.isNotEmpty &&
-    (model.skeleton.boneCount != 0) && model.skeleton.bindPose.isNotEmpty
+    (anim0.boneCount != 0) && anim0.keyframeCount > 0 &&
+    (anim1.boneCount != 0) && anim1.keyframeCount > 0 &&
+    (model.skeleton.boneCount != 0)
   ) {
     blend = math.min(1.0, math.max(0.0, blend));
 

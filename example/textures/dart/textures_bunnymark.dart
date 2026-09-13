@@ -2,6 +2,7 @@
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_bunnymark.c
 // Run it: dart run textures_bunnymark.dart
 // WARNING: expects resources from the raylib source
+// INFORMATION: ~27 FPS with all 50000 bunnies
 import '../../base_dart.dart';
 
 const int screenWidth = 800;
@@ -28,7 +29,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_bunnymark");
   SetTargetFPS(120);
 
-  final texBunny = LoadTexture("../resources/wabbit_alpha.png");
+  final texBunny = LoadTexture("../resources/raybunny.png");
   final bunnies = <Bunny>[];
 
   while (!WindowShouldClose())
@@ -73,21 +74,12 @@ void main()
 
       for (int i = 0; i < bunnies.length; i++)
       {
-        // NOTE: ~13 FPS with all 50000 bunnies
         DrawTexture(
           texBunny,
           bunnies[i].position.x,
           bunnies[i].position.y,
           bunnies[i].color,
         );
-
-        // NOTE: ~29 FPS with all 50000 bunnies
-        // rl.Core.DrawTexture(
-        //   Texture2D$(texBunny).ref,
-        //   bunnies[i].position.x,
-        //   bunnies[i].position.y,
-        //   Color$(bunnies[i].color).ref,
-        // );
       }
 
       DrawRectangle(0, 0, screenWidth, 40, .BLACK);

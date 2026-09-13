@@ -56,13 +56,13 @@ void main() {
         input, 95, textBoxEditMode
       );
       input = newValue;
-      if (result != 0) textBoxEditMode = !textBoxEditMode;
+      if (result != .RESULT_NONE) textBoxEditMode = !textBoxEditMode;
     }
 
     btnComputeHashes = GuiButton(
       .rect(40, 64 + 40, 720, 32),
       "COMPUTE INPUT DATA HASHES",
-    ) != 0;
+    ) != .RESULT_NONE;
 
     GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SIZE, 20);
     GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SPACING, 2);

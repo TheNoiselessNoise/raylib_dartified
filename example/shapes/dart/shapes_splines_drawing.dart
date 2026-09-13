@@ -258,7 +258,7 @@ void main()
           splineTypeEditMode
         );
 
-        if (result.toBool()) {
+        if (result != .RESULT_NONE) {
           splineTypeActive = SplineType.values[splineTypeIndex];
           splineTypeEditMode = !splineTypeEditMode;
         }

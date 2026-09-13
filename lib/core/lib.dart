@@ -102,7 +102,7 @@ class Raylib extends RaylibBase<Raylib> {
 
   Map<RaylibSupportedLibs, void Function(String)> get _moduleRegistrars => {
     .raylib: (p) => _externalLibs.register<RaylibCore>(p),
-    .gui: (p) => _externalLibs.register<RaylibGui>(p),
+    .raygui: (p) => _externalLibs.register<RaylibGui>(p),
     .msf_gif: (p) => _externalLibs.register<RaylibMsfGif>(p),
   };
 
@@ -110,7 +110,6 @@ class Raylib extends RaylibBase<Raylib> {
 
   Raylib({
     Map<RaylibSupportedLibs, String?> libs = const {},
-    super.tempOptions,
     super.random,
     super.silent,
   }) {
@@ -222,10 +221,7 @@ String? _platformLibPath(String directory, String name) {
   return File(tmpGuiPath).existsSync() ? tmpGuiPath : null;
 }
 
-Raylib findRaylib(String folder, {
-  RaylibTempOptions? tempOptions,
-  bool silent = false,
-}) {
+Raylib findRaylib(String folder, { bool silent = false }) {
   var dir = Directory.current;
 
   while (true) {
@@ -237,11 +233,7 @@ Raylib findRaylib(String folder, {
         libs[lib] = _platformLibPath(raylibPath, lib.id);
       }
 
-      return Raylib(
-        libs: libs,
-        tempOptions: tempOptions,
-        silent: silent,
-      );
+      return Raylib(libs: libs, silent: silent);
     }
 
     final parent = dir.parent;

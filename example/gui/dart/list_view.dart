@@ -6,7 +6,7 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  InitWindow(800, 450, "tab_bar");
+  InitWindow(800, 450, "list_view");
   SetTargetFPS(60);
 
   List<String> keyNames = KeyboardKey.values.map((v) => v.name).toList();
@@ -20,16 +20,13 @@ void main()
 
       ClearBackground(.WHITE);
 
-      final (_, newScrollIndex, newActive, newFocus) = GuiListViewEx(
+      (_, scrollIndex!, active!, focus!) = GuiListViewEx(
         .rect(50, 50, 100, 200),
         keyNames,
         scrollIndex: scrollIndex,
         active: active,
         focus: focus,
       );
-      scrollIndex = newScrollIndex!;
-      active = newActive!;
-      focus = newFocus!;
       
       DrawText("SCROLL INDEX: $scrollIndex [ at ${keyNames[scrollIndex]} ]", 50, 280, 20, .BLACK);
 

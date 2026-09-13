@@ -42,6 +42,12 @@ int GuiGetStyle(int control, int property) => _module.GuiGetStyle(control, prope
 /// See [RaylibGui.GuiLoadStyle].
 void GuiLoadStyle(Pointer<Char> fileName) => _module.GuiLoadStyle(fileName);
 
+/// See [RaylibGui.GuiLoadStyleFromMemory].
+void GuiLoadStyleFromMemory(
+  Pointer<UnsignedChar> fileData,
+  int dataSize,
+) => _module.GuiLoadStyleFromMemory(fileData, dataSize);
+
 /// See [RaylibGui.GuiLoadStyleDefault].
 void GuiLoadStyleDefault() => _module.GuiLoadStyleDefault();
 
@@ -69,6 +75,13 @@ Pointer<Pointer<Char>> GuiLoadIcons(
   bool loadIconsName,
 ) => _module.GuiLoadIcons(fileName, loadIconsName);
 
+/// See [RaylibGui.GuiLoadIcons].
+Pointer<Pointer<Char>> GuiLoadIconsFromMemory(
+  Pointer<UnsignedChar> fileData,
+  int dataSize,
+  bool loadIconsName,
+) => _module.GuiLoadIconsFromMemory(fileData, dataSize, loadIconsName);
+
 /// See [RaylibGui.GuiDrawIcon].
 void GuiDrawIcon(
   int iconId,
@@ -92,14 +105,6 @@ int GuiLine(RectangleC bounds, Pointer<Char> text) => _module.GuiLine(bounds, te
 
 /// See [RaylibGui.GuiPanel].
 int GuiPanel(RectangleC bounds, Pointer<Char> text) => _module.GuiPanel(bounds, text);
-
-/// See [RaylibGui.GuiTabBar].
-int GuiTabBar(
-  RectangleC bounds,
-  Pointer<Pointer<Char>> text,
-  int count,
-  Pointer<Int> active,
-) => _module.GuiTabBar(bounds, text, count, active);
 
 /// See [RaylibGui.GuiScrollPanel].
 int GuiScrollPanel(
@@ -254,24 +259,44 @@ int GuiListViewEx(
   Pointer<Int> focus,
 ) => _module.GuiListViewEx(bounds, text, count, scrollIndex, active, focus);
 
+/// See [RaylibGui.GuiTabBar].
+int GuiTabBar(
+  RectangleC bounds,
+  Pointer<Char> text,
+  Pointer<Int> hscroll,
+  Pointer<Int> active,
+) => _module.GuiTabBar(bounds, text, hscroll, active);
+
+/// See [RaylibGui.GuiTabBarEx].
+int GuiTabBarEx(
+  RectangleC bounds,
+  Pointer<Pointer<Char>> text,
+  int count,
+  Pointer<Int> hscroll,
+  Pointer<Int> active,
+  Pointer<Int> focus,
+) => _module.GuiTabBarEx(bounds, text, count, hscroll, active, focus);
+
 /// See [RaylibGui.GuiMessageBox].
 int GuiMessageBox(
   RectangleC bounds,
   Pointer<Char> title,
   Pointer<Char> message,
-  Pointer<Char> buttons,
-) => _module.GuiMessageBox(bounds, title, message, buttons);
+  Pointer<Char> btnText,
+  Pointer<Int> btnActive,
+) => _module.GuiMessageBox(bounds, title, message, btnText, btnActive);
 
 /// See [RaylibGui.GuiTextInputBox].
 int GuiTextInputBox(
   RectangleC bounds,
   Pointer<Char> title,
   Pointer<Char> message,
-  Pointer<Char> buttons,
   Pointer<Char> text,
-  int textMaxSize,
+  int textSize,
+  Pointer<Char> btnText,
+  Pointer<Int> btnActive,
   Pointer<Bool> secretViewActive,
-) => _module.GuiTextInputBox(bounds, title, message, buttons, text, textMaxSize, secretViewActive);
+) => _module.GuiTextInputBox(bounds, title, message, text, textSize, btnText, btnActive, secretViewActive);
 
 /// See [RaylibGui.GuiColorPicker].
 int GuiColorPicker(

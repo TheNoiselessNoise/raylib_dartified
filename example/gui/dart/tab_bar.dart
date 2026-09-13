@@ -10,6 +10,7 @@ void main()
   SetTargetFPS(60);
 
   final tabs = <String>["one", "two", "three"];
+  int activeTab = 0;
 
   while (!WindowShouldClose())
   {
@@ -17,12 +18,13 @@ void main()
 
       ClearBackground(.WHITE);
 
-      final (result, active) = GuiTabBar(
+      (_, activeTab) = GuiTabBar(
         .rect(24, 24, 120, 30),
-        tabs,
+        tabs.join(';'),
+        activeTab,
       );
 
-      DrawText("CURRENT TAB: ${tabs[active]}", 50, 300, 20, .BLACK);
+      DrawText("CURRENT TAB: ${tabs[activeTab]}", 50, 300, 20, .BLACK);
 
     EndDrawing();
   }

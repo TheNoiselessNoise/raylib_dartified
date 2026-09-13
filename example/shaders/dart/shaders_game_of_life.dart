@@ -311,7 +311,7 @@ void main()
       DrawText("Presets", 710, 58, 8, .GRAY);
       preset = -1;
       for (int i = 0; i < presetPatterns.length; i++)
-        if (GuiButton(.rect(710.0, 70.0 + 18*i, 80.0, 16.0), presetPatterns[i].name) != 0)
+        if (GuiButton(.rect(710.0, 70.0 + 18*i, 80.0, 16.0), presetPatterns[i].name) != .RESULT_NONE)
           preset = i;
 
       (_, mode) = GuiToggleGroup(
@@ -324,15 +324,15 @@ void main()
         "Zoom: $zoom",
         710, 316, 8, .GRAY
       );
-      buttonZoomIn = GuiButton(.rect(710, 328, 80, 16), "Zoom in") != 0;
-      buttonZomOut = GuiButton(.rect(710, 346, 80, 16), "Zoom out") != 0;
+      buttonZoomIn = GuiButton(.rect(710, 328, 80, 16), "Zoom in") != .RESULT_NONE;
+      buttonZomOut = GuiButton(.rect(710, 346, 80, 16), "Zoom out") != .RESULT_NONE;
 
       DrawText(
         "Speed: $framesPerStep frame${(framesPerStep > 1)? "s" : ""}",
         710, 370, 8, .GRAY
       );
-      buttonFaster = GuiButton(.rect(710, 382, 80, 16), "Faster") != 0;
-      buttonSlower = GuiButton(.rect(710, 400, 80, 16), "Slower") != 0;
+      buttonFaster = GuiButton(.rect(710, 382, 80, 16), "Faster") != .RESULT_NONE;
+      buttonSlower = GuiButton(.rect(710, 400, 80, 16), "Slower") != .RESULT_NONE;
 
       DrawFPS(712, 426);
 

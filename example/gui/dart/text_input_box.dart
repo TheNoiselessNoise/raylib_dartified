@@ -6,12 +6,14 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  InitWindow(800, 450, "tab_bar");
+  InitWindow(800, 450, "text_input_box");
   SetTargetFPS(60);
 
   String value = 'Hello, World!';
 
-  bool? secretViewActive = false;
+  bool secretViewActive = false;
+  GuiResult lastResult = .RESULT_NONE;
+  int lastBtnActive = 0;
 
   while (!WindowShouldClose())
   {
@@ -19,18 +21,17 @@ void main()
 
       ClearBackground(.WHITE);
 
-      int result;
-      (result, value, secretViewActive!) = GuiTextInputBox(
+      (lastResult, value, lastBtnActive, secretViewActive!) = GuiTextInputBox(
         .rect(50, 50, 200, 120),
         'Title', // title, can be null
         'Some message', // message, can be null
-        'OK', // buttons ';' seperated
         value, // text, can be null
-        255, // textMaxSize
-        secretViewActive, // secretViewActive, boolean, can be null
+        255, // textSize
+        'OK', // buttons ';' seperated
+        secretViewActive, // secretViewActive, boolean, can be omitted
       );
 
-      DrawText("RESULT: $result (0 = X button, 1 = OK button)", 50, 200, 20, .BLACK);
+      DrawText("RESULT: ${lastResult.value} BTN_ACTIVE: $lastBtnActive", 50, 200, 20, .BLACK);
       DrawText("VALUE: $value", 50, 230, 20, .BLACK);
 
     EndDrawing();

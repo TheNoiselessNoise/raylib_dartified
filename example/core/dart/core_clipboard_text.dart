@@ -102,33 +102,33 @@ void main() {
         textBoxEditMode
       );
       input = newValue;
-      if (result != 0) textBoxEditMode = !textBoxEditMode;
+      if (result != .RESULT_NONE) textBoxEditMode = !textBoxEditMode;
     }
 
     btnRandomPressed = GuiButton(
       .rect(50 + 652 + 8, 120, 40, 40),
       "#77#",
-    ) != 0;
+    ) != .RESULT_NONE;
 
     btnCutPressed = GuiButton(
       .rect(50, 180, 158, 40),
       "#17#CUT",
-    ) != 0;
+    ) != .RESULT_NONE;
     
     btnCopyPressed = GuiButton(
       .rect(50 + 165, 180, 158, 40),
       "#16#COPY",
-    ) != 0;
+    ) != .RESULT_NONE;
     
     btnPastePressed = GuiButton(
       .rect(50 + 165*2, 180, 158, 40),
       "#18#PASTE",
-    ) != 0;
+    ) != .RESULT_NONE;
     
     btnClearPressed = GuiButton(
       .rect(50 + 165*3, 180, 158, 40),
       "#143#CLEAR",
-    ) != 0;
+    ) != .RESULT_NONE;
 
     GuiSetState(.STATE_DISABLED);
     GuiLabel(

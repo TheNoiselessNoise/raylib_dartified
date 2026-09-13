@@ -17,8 +17,6 @@ const List<String> BIN_EXTS = ['.exe', '.bin', '.so'];
 const List<String> TEXT_EXTS = ['.txt', '.md' , '.yaml'];
 const List<String> SHADER_EXTS = ['.fs', '.vs'];
 
-// TODO: responsive
-
 class DoubleClickDetector {
   final Map<MouseButton, double> _lastClickTimes = {};
   final Map<MouseButton, int> _lastClickIndex = {};
@@ -320,7 +318,7 @@ void main() {
     {
       DrawRectangle(0, y, screenWidth, TOOLBAR_HEIGHT, Colors.PANEL_BG);
 
-      final upPressed = GuiButton(.rect(4, y + 5, 60, TOOLBAR_HEIGHT - 10), 'Up').toBool();
+      final upPressed = GuiButton(.rect(4, y + 5, 60, TOOLBAR_HEIGHT - 10), 'Up') != .RESULT_NONE;
       if (upPressed) {
         final parent = path.dirname(pathBox.text);
         if (parent != pathBox.text) { navigate(parent); rebuildVisible(); }
@@ -346,7 +344,7 @@ void main() {
         final label = i == 0 ? '/' : path.basename(crumbs[i]);
 
         final tw = GuiGetTextWidth(label) + 12;
-        final pressed = GuiButton(.rect(bx, y + 4, tw, BREADCRUMB_HEIGHT - 8), label).toBool();
+        final pressed = GuiButton(.rect(bx, y + 4, tw, BREADCRUMB_HEIGHT - 8), label) != .RESULT_NONE;
         if (pressed) { navigate(crumbs[i]); rebuildVisible(); }
 
         bx += tw + 2;
@@ -383,7 +381,7 @@ void main() {
       for (final (label, field, w) in cols) {
         final active = sortField == field;
         final btnText = active ? '$label ${sortDir == SortDir.asc ? "^" : "v"}' : label;
-        final pressed = GuiButton(.rect(sx, y, w, SORT_BAR_HEIGHT), btnText).toBool();
+        final pressed = GuiButton(.rect(sx, y, w, SORT_BAR_HEIGHT), btnText) != .RESULT_NONE;
         if (pressed) {
           if (sortField == field) {
             sortDir = sortDir == SortDir.asc ? SortDir.desc : SortDir.asc;
@@ -473,10 +471,7 @@ void main() {
 
         if (e.isDir) {
           py += 8;
-          final openPressed = GuiButton(
-            .rect(px + 8, py, PANEL_WIDTH - 16, 28),
-            'Open',
-          ).toBool();
+          final openPressed = GuiButton(.rect(px + 8, py, PANEL_WIDTH - 16, 28), 'Open') != .RESULT_NONE;
           if (openPressed) { navigate(e.fullPath); rebuildVisible(); }
         }
 

@@ -71,14 +71,10 @@ abstract class LoadFileDataCallbackD extends LoadFileDataCallbackBase {
 
   /// The actual trampoline.
   _LoadFileDataCallbackFunction get _rawFunction =>
-    (Pointer<Char> fileName, Pointer<Int> dataSize) {
-      final result = function(
-        NativeMemoryPointer(fileName.cast()),
-        NativeMemoryPointer(dataSize.cast()),
-      );
-      if (result.isNull) return nullptr;
-      return (result as NativeMemoryPointer).asPointer();
-    };
+    (Pointer<Char> fileName, Pointer<Int> dataSize) => function(
+      NativeMemoryPointer(fileName.cast()),
+      NativeMemoryPointer(dataSize.cast()),
+    ).asNativePointer();
 
   late final NativeCallable<LoadFileDataCallbackFunctionC> _callable;
 

@@ -44,7 +44,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   );
 
   @override
-  FontD GuiGetFont() => rl.Temp.Font$.RefCapture(
+  FontD GuiGetFont() => rl.Temp.Font$.RefCaptureCached(
     RaylibCaptureIds.GuiGetFont,
     (p) => rl.Gui.GuiGetFont().toDart(p.asNativePointer()),
   );
@@ -74,6 +74,15 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> fileName,
   ) => rl.Gui.GuiLoadStyle(
     fileName.asNativePointer(),
+  );
+
+  @override
+  void GuiLoadStyleFromMemory(
+    MemoryPointer<RUnsignedChar> fileData,
+    int dataSize,
+  ) => rl.Gui.GuiLoadStyleFromMemory(
+    fileData.asNativePointer(),
+    dataSize,
   );
 
   @override
@@ -117,6 +126,17 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     bool loadIconsName,
   ) => rl.Gui.GuiLoadIcons(
     fileName.asNativePointer(),
+    loadIconsName,
+  ).asMemoryPointer();
+
+  @override
+  NativeMemoryPointer<RPointer<RChar>> GuiLoadIconsFromMemory(
+    MemoryPointer<RUnsignedChar> fileData,
+    int dataSize,
+    bool loadIconsName,
+  ) => rl.Gui.GuiLoadIconsFromMemory(
+    fileData.asNativePointer(),
+    dataSize,
     loadIconsName,
   ).asMemoryPointer();
 
@@ -176,19 +196,6 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   ) => rl.Gui.GuiPanel(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
-  );
-
-  @override
-  int GuiTabBar(
-    RectangleD bounds,
-    MemoryPointer<RPointer<RChar>> text,
-    int count,
-    MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiTabBar(
-    rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
-    text.asNativePointer(),
-    count,
-    active.asNativePointer(),
   );
 
   @override
@@ -478,16 +485,48 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   );
 
   @override
+  int GuiTabBar(
+    RectangleD bounds,
+    MemoryPointer<RChar> text,
+    MemoryPointer<RInt> hscroll,
+    MemoryPointer<RInt> active,
+  ) => rl.Gui.GuiTabBar(
+    rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    text.asNativePointer(),
+    hscroll.asNativePointer(),
+    active.asNativePointer(),
+  );
+
+  @override
+  int GuiTabBarEx(
+    RectangleD bounds,
+    MemoryPointer<RPointer<RChar>> text,
+    int count,
+    MemoryPointer<RInt> hscroll,
+    MemoryPointer<RInt> active,
+    MemoryPointer<RInt> focus,
+  ) => rl.Gui.GuiTabBarEx(
+    rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    text.asNativePointer(),
+    count,
+    hscroll.asNativePointer(),
+    active.asNativePointer(),
+    focus.asNativePointer(),
+  );
+
+  @override
   int GuiMessageBox(
     RectangleD bounds,
     MemoryPointer<RChar> title,
     MemoryPointer<RChar> message,
-    MemoryPointer<RChar> buttons,
+    MemoryPointer<RChar> btnText,
+    MemoryPointer<RInt> btnActive,
   ) => rl.Gui.GuiMessageBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
-    buttons.asNativePointer(),
+    btnText.asNativePointer(),
+    btnActive.asNativePointer(),
   );
 
   @override
@@ -495,17 +534,19 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> title,
     MemoryPointer<RChar> message,
-    MemoryPointer<RChar> buttons,
     MemoryPointer<RChar> text,
-    int textMaxSize,
+    int textSize,
+    MemoryPointer<RChar> btnText,
+    MemoryPointer<RInt> btnActive,
     MemoryPointer<RBool> secretViewActive,
   ) => rl.Gui.GuiTextInputBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
-    buttons.asNativePointer(),
     text.asNativePointer(),
-    textMaxSize,
+    textSize,
+    btnText.asNativePointer(),
+    btnActive.asNativePointer(),
     secretViewActive.asNativePointer(),
   );
 

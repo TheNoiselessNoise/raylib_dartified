@@ -80,7 +80,7 @@ void main()
           dropdownEditMode
         );
         animIndex = active;
-        if (result != 0) dropdownEditMode = !dropdownEditMode;
+        if (result != .RESULT_NONE) dropdownEditMode = !dropdownEditMode;
       }
 
       {
@@ -92,7 +92,7 @@ void main()
           0.1,
           2.0
         );
-        if (result != 0) animFrameSpeed = value;
+        if (result != .RESULT_NONE) animFrameSpeed = value;
       }
 
       GuiLabel(
@@ -109,7 +109,7 @@ void main()
           0.0,
           anim.keyframeCount,
         );
-        if (result != 0) animFrameProgress = value;
+        if (result != .RESULT_NONE) animFrameProgress = value;
       }
 
       for (int i = 0; i < anim.keyframeCount; i++) {

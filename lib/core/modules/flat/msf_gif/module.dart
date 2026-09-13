@@ -49,9 +49,11 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   @override
   void msf_gif_free(
     MsfGifResultD result,
-  ) => rl.MsfGif.msf_gif_free(
-    result.getOpAndDispose().asNativePointer<MsfGifResultC>().ref,
-  );
+  ) => disposeStructWithOpFreed(result, (ptr) {
+    rl.MsfGif.msf_gif_free(
+      ptr.asNativePointer<MsfGifResultC>().ref,
+    );
+  });
 
   @override
   int msf_gif_begin_to_file(

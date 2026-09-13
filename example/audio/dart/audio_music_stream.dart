@@ -20,7 +20,7 @@ void main()
   double timePlayed = 0;
   bool pause = false;
 
-  double pan = 0.5;
+  double pan = 0;
   SetMusicPan(music, pan);
 
   double volume = 0.8;
@@ -47,12 +47,12 @@ void main()
 
     if (IsKeyDown(.KEY_LEFT)) {
       pan -= 0.05;
-      if (pan < 0) pan = 0;
-      SetMusicPan(music, 1 - pan);
+      if (pan < -1) pan = -1;
+      SetMusicPan(music, pan);
     } else if (IsKeyDown(.KEY_RIGHT)) {
       pan += 0.05;
       if (pan > 1) pan = 1;
-      SetMusicPan(music, 1 - pan);
+      SetMusicPan(music, pan);
     }
 
     if (IsKeyDown(.KEY_DOWN)) {
@@ -77,7 +77,7 @@ void main()
       DrawText("LEFT-RIGHT for PAN CONTROL", 320, 74, 10, .DARKBLUE);
       DrawRectangle(300, 100, 200, 12, .LIGHTGRAY);
       DrawRectangleLines(300, 100, 200, 12, .GRAY);
-      DrawRectangle(Remap(pan, 0, 1, 300, 500), 92, 10, 28, .DARKGRAY);
+      DrawRectangle(Remap(pan, -1, 1, 300, 500), 92, 10, 28, .DARKGRAY);
 
       DrawRectangle(200, 200, 400, 12, .LIGHTGRAY);
       DrawRectangle(200, 200, timePlayed*400.0, 12, .MAROON);

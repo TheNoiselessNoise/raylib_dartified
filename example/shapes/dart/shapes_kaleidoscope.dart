@@ -113,14 +113,14 @@ void main()
 
       if ((currentLineCounter - 1) < 0) GuiDisable();
 
-      backButtonClicked = GuiButton(backButtonRec, "<") > 0;
+      backButtonClicked = GuiButton(backButtonRec, "<") > .RESULT_NONE;
       GuiEnable();
 
       if ((currentLineCounter + 1) > totalLineCounter) GuiDisable();
 
-      nextButtonClicked = GuiButton(nextButtonRec, ">") > 0;
+      nextButtonClicked = GuiButton(nextButtonRec, ">") > .RESULT_NONE;
       GuiEnable();
-      resetButtonClicked = GuiButton(resetButtonRec, "Reset") > 0;
+      resetButtonClicked = GuiButton(resetButtonRec, "Reset") > .RESULT_NONE;
 
       DrawText("LINES: $currentLineCounter/$MAX_DRAW_LINES", 10, screenHeight - 30, 20, .MAROON);
       DrawFPS(10, 10);

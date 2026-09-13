@@ -1,7 +1,10 @@
 part of '../../../raylib_dartified.dart';
 
-// NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
+// `rlights.h` is not part of the raylib core
+//  it purely exists as an external file in raylib repo.
+//  That's why we need to literally re-implement these two functions.
 
+// NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
 class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Raylib> {
   final List<Pointer<LightC>> _lights = [];
 
@@ -21,6 +24,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     calloc.free(_lightFloat4ValuePtr);
   }
 
+  /// Create a light and get its shader locations
   LightC CreateLight(
     int type,
     Vector3C position,
@@ -59,6 +63,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     return light.ref;
   }
 
+  /// Send light properties to shader
   void UpdateLightValues(ShaderC shader, LightC light) {
     _lightInt8ValuePtr.value = light.enabled.toInt();
     rl.Core.SetShaderValue(

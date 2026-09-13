@@ -378,9 +378,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   void UnloadVrStereoConfig(
     VrStereoConfigD config,
-  ) => rl.Core.UnloadVrStereoConfig(
-    config.getOpAndDispose().asNativePointer<VrStereoConfigC>().ref,
-  );
+  ) => disposeStructWithOpFreed(config, (ptr) {
+    rl.Core.UnloadVrStereoConfig(
+      ptr.asNativePointer<VrStereoConfigC>().ref,
+    );
+  });
 
   @override
   ShaderD LoadShader(
@@ -471,9 +473,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   void UnloadShader(
     ShaderD shader,
-  ) => rl.Core.UnloadShader(
-    shader.getOpAndDispose().asNativePointer<ShaderC>().ref,
-  );
+  ) => disposeStructWithOpFreed(shader, (ptr) {
+    rl.Core.UnloadShader(
+      ptr.asNativePointer<ShaderC>().ref,
+    );
+  });
 
   @override
   RayD GetScreenToWorldRay(
@@ -962,9 +966,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   void UnloadDirectoryFiles(
     FilePathListD files,
-  ) => rl.Core.UnloadDirectoryFiles(
-    files.getOpAndDispose().asNativePointer<FilePathListC>().ref,
-  );
+  ) => disposeStructWithOpFreed(files, (ptr) {
+    rl.Core.UnloadDirectoryFiles(
+      ptr.asNativePointer<FilePathListC>().ref,
+    );
+  });
 
   @override
   bool IsFileDropped() => rl.Core.IsFileDropped();
@@ -978,9 +984,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   void UnloadDroppedFiles(
     FilePathListD files,
-  ) => rl.Core.UnloadDroppedFiles(
-    files.getOpAndDispose().asNativePointer<FilePathListC>().ref,
-  );
+  ) => disposeStructWithOpFreed(files, (ptr) {
+    rl.Core.UnloadDroppedFiles(
+      ptr.asNativePointer<FilePathListC>().ref,
+    );
+  });
 
   @override
   int GetFileModTime(
@@ -1080,9 +1088,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   void UnloadAutomationEventList(
     AutomationEventListD list,
-  ) => rl.Core.UnloadAutomationEventList(
-    list.getOpAndDispose().asNativePointer<AutomationEventListC>().ref,
-  );
+  ) => disposeStructWithOpFreed(list, (ptr) {
+    rl.Core.UnloadAutomationEventList(
+      ptr.asNativePointer<AutomationEventListC>().ref,
+    );
+  });
 
   @override
   bool ExportAutomationEventList(
@@ -3689,7 +3699,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   );
 
   @override
-  FontD GetFontDefault() => rl.Temp.Font$.RefCapture(
+  FontD GetFontDefault() => rl.Temp.Font$.RefCaptureCached(
     RaylibCaptureIds.GetFontDefault,
     (p) => rl.Core.GetFontDefault().toDart(p.asNativePointer()),
   );
@@ -5017,7 +5027,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ).asMemoryPointer());
 
   @override
-  MaterialD LoadMaterialDefault() => rl.Temp.Material$.Extract1(
+  MaterialD LoadMaterialDefault() => rl.Temp.Material$.RefCapture(
+    RaylibCaptureIds.LoadMaterialDefault,
     (p) => rl.Core.LoadMaterialDefault().toDart(p.asNativePointer()),
   );
 

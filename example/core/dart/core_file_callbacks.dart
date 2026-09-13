@@ -50,7 +50,7 @@ TestResult testSaveFileData() {
   SetSaveFileDataCallback(SaveFileDataCallbackD.friendly((fileName, data, dataSize) {
     sfdResult.assertIt(fileName == 'SaveFileData');
     _savedDataSize = dataSize;
-    final bytes = data.to<Uint8List>(dataSize);
+    final bytes = data.asCopy<Uint8List>(dataSize);
     _savedDataBytes = .generate(dataSize, (i) => bytes[i]);
     return true;
   },));
