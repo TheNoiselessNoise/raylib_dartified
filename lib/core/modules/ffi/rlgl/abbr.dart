@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibRlgl get _module => Raylib.instance.Rlgl;
+RaylibRlgl get _module => Raylib.instance.module();
 
 /// See [RaylibRlgl.rlMatrixMode].
 void rlMatrixMode(int mode) => _module.rlMatrixMode(mode);

@@ -195,7 +195,7 @@ TextureD GenTextureCubemap(ShaderD shader, TextureD panorama, int size, PixelFor
   //------------------------------------------------------------------------------------------
   rlEnableShader(shader.id);
 
-  final matFboProjection = rl.Matrix.MatrixPerspective(
+  final matFboProjection = MatrixPerspective(
     90.0*rl.DEG2RAD,
     1.0,
     rlGetCullDistanceNear(),

@@ -63,7 +63,7 @@ void bootMemoryBackend() {
 //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
 //       LateInitializationError: Field 'Gui' has not been initialized.
 //       That's expected behavior!
-class Raylib extends RaylibBase<Raylib> {
+class Raylib extends RaylibBase {
   static Raylib get instance => RaylibBase.getInstance();
 
   Logger logger = Logger.detached('Raylib');
@@ -76,27 +76,6 @@ class Raylib extends RaylibBase<Raylib> {
   
   @override
   void logError(Object? message) => logger.severe('[Raylib] $message');
-
-  late RaylibAudio Audio;
-  @override late RaylibAudioFlat AudioFlat;
-  
-  late RaylibCamera Camera;
-  @override late RaylibCameraFlat CameraFlat;
-  
-  late RaylibCore Core;
-  @override late RaylibCoreFlat CoreFlat;
-
-  late RaylibGui Gui;
-  @override late RaylibGuiFlat GuiFlat;
-  
-  late RaylibLight Light;
-  @override late RaylibLightFlat LightFlat;
-
-  late RaylibMsfGif MsfGif;
-  @override late RaylibMsfGifFlat MsfGifFlat;
-
-  late RaylibRlgl Rlgl;
-  @override late RaylibRlglFlat RlglFlat;
 
   final _externalLibs = RaylibExternalLibs();
 
@@ -145,27 +124,43 @@ class Raylib extends RaylibBase<Raylib> {
       }
     });
 
+    // extensions
+    registerModule(RaylibMatrixExt(this));
+    registerModule<RaylibMatrixFlatExt>(RaylibMatrixExtFlat(this));
+
+    registerModule(RaylibQuaternionExt(this));
+    registerModule<RaylibQuaternionFlatExt>(RaylibQuaternionExtFlat(this));
+
+    registerModule(RaylibVector2Ext(this));
+    registerModule<RaylibVector2FlatExt>(RaylibVector2ExtFlat(this));
+
+    registerModule(RaylibVector3Ext(this));
+    registerModule<RaylibVector3FlatExt>(RaylibVector3ExtFlat(this));
+
+    registerModule(RaylibVector4Ext(this));
+    registerModule<RaylibVector4FlatExt>(RaylibVector4ExtFlat(this));
+
     // modules
-    registerModule(Audio = RaylibAudio(this));
-    registerModule(AudioFlat = RaylibAudioFlat(this));
+    registerModule(RaylibAudio(this));
+    registerModule<RaylibAudioFlatModule>(RaylibAudioFlat(this));
 
-    registerModule(Camera = RaylibCamera(this));
-    registerModule(CameraFlat = RaylibCameraFlat(this));
+    registerModule(RaylibCamera(this));
+    registerModule<RaylibCameraFlatModule>(RaylibCameraFlat(this));
     
-    registerModule(Core = RaylibCore(this));
-    registerModule(CoreFlat = RaylibCoreFlat(this));
+    registerModule(RaylibCore(this));
+    registerModule<RaylibCoreFlatModule>(RaylibCoreFlat(this));
     
-    registerModule(Gui = RaylibGui(this));
-    registerModule(GuiFlat = RaylibGuiFlat(this));
+    registerModule(RaylibGui(this));
+    registerModule<RaylibGuiFlatModule>(RaylibGuiFlat(this));
 
-    registerModule(Light = RaylibLight(this));
-    registerModule(LightFlat = RaylibLightFlat(this));
+    registerModule(RaylibLight(this));
+    registerModule<RaylibLightFlatModule>(RaylibLightFlat(this));
 
-    registerModule(MsfGif = RaylibMsfGif(this));
-    registerModule(MsfGifFlat = RaylibMsfGifFlat(this));
+    registerModule(RaylibMsfGif(this));
+    registerModule<RaylibMsfGifFlatModule>(RaylibMsfGifFlat(this));
     
-    registerModule(Rlgl = RaylibRlgl(this));
-    registerModule(RlglFlat = RaylibRlglFlat(this));
+    registerModule(RaylibRlgl(this));
+    registerModule<RaylibRlglFlatModule>(RaylibRlglFlat(this));
   }
 
   // Custom dynamic libraries

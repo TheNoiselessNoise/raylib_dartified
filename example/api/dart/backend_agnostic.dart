@@ -14,7 +14,7 @@ import '../../base_dart.dart';
   of "agnostic" rather than a leak in the abstraction.
 */
 
-class BackendAgnosticRaylibExample<R extends RaylibBase<R>> extends RaylibAppBase<R> {
+class BackendAgnosticRaylibExample<R extends RaylibBase> extends RaylibAppBase<R> {
   @override
   bool shouldClose(_) => switch (currentRaylibPlatform) {
     .native => WindowShouldClose(),

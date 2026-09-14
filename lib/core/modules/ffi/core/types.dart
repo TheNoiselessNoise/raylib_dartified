@@ -519,3 +519,15 @@ final class GestureEventC extends Struct {
   @Array.multi([8])
   external Array<Vector2C> position;
 }
+
+// ignore: camel_case_types
+final class float16C extends Struct {
+  @Array.multi([16])
+  external Array<Float> v;
+}
+
+// ignore: camel_case_types
+final class float3C extends Struct {
+  @Array.multi([3])
+  external Array<Float> v;
+}

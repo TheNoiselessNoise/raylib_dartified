@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibGui get _module => Raylib.instance.Gui;
+RaylibGui get _module => Raylib.instance.module();
 
 /// See [RaylibGui.GuiEnable].
 void GuiEnable() => _module.GuiEnable();

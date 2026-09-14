@@ -4,49 +4,51 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
 
   RaylibGuiFlat(super.rl);
 
-  @override
-  void GuiEnable() => rl.Gui.GuiEnable();
+  RaylibGui get _ffi => rl.module();
 
   @override
-  void GuiDisable() => rl.Gui.GuiDisable();
+  void GuiEnable() => _ffi.GuiEnable();
 
   @override
-  void GuiLock() => rl.Gui.GuiLock();
+  void GuiDisable() => _ffi.GuiDisable();
 
   @override
-  void GuiUnlock() => rl.Gui.GuiUnlock();
+  void GuiLock() => _ffi.GuiLock();
 
   @override
-  bool GuiIsLocked() => rl.Gui.GuiIsLocked();
+  void GuiUnlock() => _ffi.GuiUnlock();
+
+  @override
+  bool GuiIsLocked() => _ffi.GuiIsLocked();
 
   @override
   void GuiSetAlpha(
     double alpha,
-  ) => rl.Gui.GuiSetAlpha(
+  ) => _ffi.GuiSetAlpha(
     alpha,
   );
 
   @override
   void GuiSetState(
     int state,
-  ) => rl.Gui.GuiSetState(
+  ) => _ffi.GuiSetState(
     state,
   );
 
   @override
-  int GuiGetState() => rl.Gui.GuiGetState();
+  int GuiGetState() => _ffi.GuiGetState();
 
   @override
   void GuiSetFont(
     FontD font,
-  ) => rl.Gui.GuiSetFont(
+  ) => _ffi.GuiSetFont(
     rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
   );
 
   @override
   FontD GuiGetFont() => rl.Temp.Font$.RefCaptureCached(
     RaylibCaptureIds.GuiGetFont,
-    (p) => rl.Gui.GuiGetFont().toDart(p.asNativePointer()),
+    (p) => _ffi.GuiGetFont().toDart(p.asNativePointer()),
   );
 
   @override
@@ -54,7 +56,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     int control,
     int property,
     int value,
-  ) => rl.Gui.GuiSetStyle(
+  ) => _ffi.GuiSetStyle(
     control,
     property,
     value,
@@ -64,7 +66,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiGetStyle(
     int control,
     int property,
-  ) => rl.Gui.GuiGetStyle(
+  ) => _ffi.GuiGetStyle(
     control,
     property,
   );
@@ -72,7 +74,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   @override
   void GuiLoadStyle(
     MemoryPointer<RChar> fileName,
-  ) => rl.Gui.GuiLoadStyle(
+  ) => _ffi.GuiLoadStyle(
     fileName.asNativePointer(),
   );
 
@@ -80,24 +82,24 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   void GuiLoadStyleFromMemory(
     MemoryPointer<RUnsignedChar> fileData,
     int dataSize,
-  ) => rl.Gui.GuiLoadStyleFromMemory(
+  ) => _ffi.GuiLoadStyleFromMemory(
     fileData.asNativePointer(),
     dataSize,
   );
 
   @override
-  void GuiLoadStyleDefault() => rl.Gui.GuiLoadStyleDefault();
+  void GuiLoadStyleDefault() => _ffi.GuiLoadStyleDefault();
 
   @override
-  void GuiEnableTooltip() => rl.Gui.GuiEnableTooltip();
+  void GuiEnableTooltip() => _ffi.GuiEnableTooltip();
 
   @override
-  void GuiDisableTooltip() => rl.Gui.GuiDisableTooltip();
+  void GuiDisableTooltip() => _ffi.GuiDisableTooltip();
 
   @override
   void GuiSetTooltip(
     MemoryPointer<RChar> tooltip,
-  ) => rl.Gui.GuiSetTooltip(
+  ) => _ffi.GuiSetTooltip(
     tooltip.asNativePointer(),
   );
 
@@ -105,7 +107,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   NativeMemoryPointer<RChar> GuiIconText(
     int iconId,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiIconText(
+  ) => _ffi.GuiIconText(
     iconId,
     text.asNativePointer(),
   ).asMemoryPointer();
@@ -113,18 +115,18 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   @override
   void GuiSetIconScale(
     int scale,
-  ) => rl.Gui.GuiSetIconScale(
+  ) => _ffi.GuiSetIconScale(
     scale,
   );
 
   @override
-  NativeMemoryPointer<RUnsignedInt> GuiGetIcons() => rl.Gui.GuiGetIcons().asMemoryPointer();
+  NativeMemoryPointer<RUnsignedInt> GuiGetIcons() => _ffi.GuiGetIcons().asMemoryPointer();
 
   @override
   NativeMemoryPointer<RPointer<RChar>> GuiLoadIcons(
     MemoryPointer<RChar> fileName,
     bool loadIconsName,
-  ) => rl.Gui.GuiLoadIcons(
+  ) => _ffi.GuiLoadIcons(
     fileName.asNativePointer(),
     loadIconsName,
   ).asMemoryPointer();
@@ -134,7 +136,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RUnsignedChar> fileData,
     int dataSize,
     bool loadIconsName,
-  ) => rl.Gui.GuiLoadIconsFromMemory(
+  ) => _ffi.GuiLoadIconsFromMemory(
     fileData.asNativePointer(),
     dataSize,
     loadIconsName,
@@ -147,7 +149,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     int posY,
     int pixelSize,
     ColorD color,
-  ) => rl.Gui.GuiDrawIcon(
+  ) => _ffi.GuiDrawIcon(
     iconId,
     posX,
     posY,
@@ -158,7 +160,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   @override
   int GuiGetTextWidth(
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiGetTextWidth(
+  ) => _ffi.GuiGetTextWidth(
     text.asNativePointer(),
   );
 
@@ -166,7 +168,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiWindowBox(
     RectangleD bounds,
     MemoryPointer<RChar> title,
-  ) => rl.Gui.GuiWindowBox(
+  ) => _ffi.GuiWindowBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
   );
@@ -175,7 +177,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiGroupBox(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiGroupBox(
+  ) => _ffi.GuiGroupBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -184,7 +186,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiLine(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiLine(
+  ) => _ffi.GuiLine(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -193,7 +195,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiPanel(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiPanel(
+  ) => _ffi.GuiPanel(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -205,7 +207,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD content,
     StructPointer<Vector2D> scroll,
     StructPointer<RectangleD> view,
-  ) => rl.Gui.GuiScrollPanel(
+  ) => _ffi.GuiScrollPanel(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     rl.Temp.Rectangle$.Ref2(content).asNativePointer<RectangleC>().ref,
@@ -217,7 +219,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiLabel(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiLabel(
+  ) => _ffi.GuiLabel(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -226,7 +228,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiButton(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiButton(
+  ) => _ffi.GuiButton(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -235,7 +237,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiLabelButton(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiLabelButton(
+  ) => _ffi.GuiLabelButton(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -245,7 +247,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RBool> active,
-  ) => rl.Gui.GuiToggle(
+  ) => _ffi.GuiToggle(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
@@ -256,7 +258,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiToggleGroup(
+  ) => _ffi.GuiToggleGroup(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
@@ -267,7 +269,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiToggleSlider(
+  ) => _ffi.GuiToggleSlider(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
@@ -278,7 +280,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RBool> checked,
-  ) => rl.Gui.GuiCheckBox(
+  ) => _ffi.GuiCheckBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     checked.asNativePointer(),
@@ -289,7 +291,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiComboBox(
+  ) => _ffi.GuiComboBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
@@ -301,7 +303,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
     bool editMode,
-  ) => rl.Gui.GuiDropdownBox(
+  ) => _ffi.GuiDropdownBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
@@ -316,7 +318,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     int minValue,
     int maxValue,
     bool editMode,
-  ) => rl.Gui.GuiSpinner(
+  ) => _ffi.GuiSpinner(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
@@ -333,7 +335,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     int minValue,
     int maxValue,
     bool editMode,
-  ) => rl.Gui.GuiValueBox(
+  ) => _ffi.GuiValueBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
@@ -349,7 +351,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> textValue,
     MemoryPointer<RFloat> value,
     bool editMode,
-  ) => rl.Gui.GuiValueBoxFloat(
+  ) => _ffi.GuiValueBoxFloat(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     textValue.asNativePointer(),
@@ -363,7 +365,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     int textSize,
     bool editMode,
-  ) => rl.Gui.GuiTextBox(
+  ) => _ffi.GuiTextBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     textSize,
@@ -378,7 +380,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
-  ) => rl.Gui.GuiSlider(
+  ) => _ffi.GuiSlider(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
@@ -395,7 +397,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
-  ) => rl.Gui.GuiSliderBar(
+  ) => _ffi.GuiSliderBar(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
@@ -412,7 +414,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
-  ) => rl.Gui.GuiProgressBar(
+  ) => _ffi.GuiProgressBar(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
@@ -425,7 +427,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiStatusBar(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiStatusBar(
+  ) => _ffi.GuiStatusBar(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -434,7 +436,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
   int GuiDummyRec(
     RectangleD bounds,
     MemoryPointer<RChar> text,
-  ) => rl.Gui.GuiDummyRec(
+  ) => _ffi.GuiDummyRec(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
@@ -446,7 +448,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     double spacing,
     int subdivs,
     StructPointer<Vector2D> mouseCell,
-  ) => rl.Gui.GuiGrid(
+  ) => _ffi.GuiGrid(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     spacing,
@@ -460,7 +462,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> scrollIndex,
     MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiListView(
+  ) => _ffi.GuiListView(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     scrollIndex.asNativePointer(),
@@ -475,7 +477,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RInt> scrollIndex,
     MemoryPointer<RInt> active,
     MemoryPointer<RInt> focus,
-  ) => rl.Gui.GuiListViewEx(
+  ) => _ffi.GuiListViewEx(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     count,
@@ -490,7 +492,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> hscroll,
     MemoryPointer<RInt> active,
-  ) => rl.Gui.GuiTabBar(
+  ) => _ffi.GuiTabBar(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     hscroll.asNativePointer(),
@@ -505,7 +507,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RInt> hscroll,
     MemoryPointer<RInt> active,
     MemoryPointer<RInt> focus,
-  ) => rl.Gui.GuiTabBarEx(
+  ) => _ffi.GuiTabBarEx(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     count,
@@ -521,7 +523,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> message,
     MemoryPointer<RChar> btnText,
     MemoryPointer<RInt> btnActive,
-  ) => rl.Gui.GuiMessageBox(
+  ) => _ffi.GuiMessageBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
@@ -539,7 +541,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     MemoryPointer<RChar> btnText,
     MemoryPointer<RInt> btnActive,
     MemoryPointer<RBool> secretViewActive,
-  ) => rl.Gui.GuiTextInputBox(
+  ) => _ffi.GuiTextInputBox(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
@@ -555,7 +557,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     StructPointer<ColorD> color,
-  ) => rl.Gui.GuiColorPicker(
+  ) => _ffi.GuiColorPicker(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     color.asNativePointer(),
@@ -566,7 +568,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     StructPointer<ColorD> color,
-  ) => rl.Gui.GuiColorPanel(
+  ) => _ffi.GuiColorPanel(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     color.asNativePointer(),
@@ -577,7 +579,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RFloat> alpha,
-  ) => rl.Gui.GuiColorBarAlpha(
+  ) => _ffi.GuiColorBarAlpha(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     alpha.asNativePointer(),
@@ -588,7 +590,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RFloat> value,
-  ) => rl.Gui.GuiColorBarHue(
+  ) => _ffi.GuiColorBarHue(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
@@ -599,7 +601,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     StructPointer<Vector3D> colorHsv,
-  ) => rl.Gui.GuiColorPickerHSV(
+  ) => _ffi.GuiColorPickerHSV(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     colorHsv.asNativePointer(),
@@ -610,7 +612,7 @@ class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
     RectangleD bounds,
     MemoryPointer<RChar> text,
     StructPointer<Vector3D> colorHsv,
-  ) => rl.Gui.GuiColorPanelHSV(
+  ) => _ffi.GuiColorPanelHSV(
     rl.Temp.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     colorHsv.asNativePointer(),

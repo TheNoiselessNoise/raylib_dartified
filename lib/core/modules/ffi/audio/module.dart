@@ -155,7 +155,7 @@ class RaylibAudio extends RaylibModule<Raylib> {
   late final _SetSoundPitchPtr = _lookup<NativeFunction<Void Function(SoundC, Float)>>('SetSoundPitch');
   late final _SetSoundPitch = _SetSoundPitchPtr.asFunction<void Function(SoundC, double)>();
 
-  /// Set pan for a sound (0.5 is center)
+  /// Set pan for a sound (-1.0 left, 0.0 center, 1.0 right)
   void SetSoundPan(SoundC sound, double pan)
     => _SetSoundPan(sound, pan);
   late final _SetSoundPanPtr = _lookup<NativeFunction<Void Function(SoundC, Float)>>('SetSoundPan');

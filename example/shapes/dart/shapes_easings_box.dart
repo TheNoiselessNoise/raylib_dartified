@@ -37,7 +37,7 @@ void main()
 
         // NOTE: Remember that 3rd parameter of easing function refers to
         // desired value variation, do not confuse it with expected final value!
-        rec.y = rl.Ease.EaseElasticOut(
+        rec.y = EaseElasticOut(
           framesCounter,
           -100,
           GetScreenHeight() / 2 + 100,
@@ -52,11 +52,11 @@ void main()
       case 1: {
         framesCounter++;
 
-        rec.height = rl.Ease.EaseBounceOut(
+        rec.height = EaseBounceOut(
           framesCounter, 100, -90, 120
         );
 
-        rec.width = rl.Ease.EaseBounceOut(
+        rec.width = EaseBounceOut(
           framesCounter, 100, GetScreenWidth(), 120
         );
 
@@ -68,7 +68,7 @@ void main()
       case 2: {
         framesCounter++;
 
-        rotation = rl.Ease.EaseQuadOut(framesCounter, 0, 270, 240);
+        rotation = EaseQuadOut(framesCounter, 0, 270, 240);
 
         if (framesCounter >= 240) {
           framesCounter = 0;
@@ -79,7 +79,7 @@ void main()
       case 3: {
         framesCounter++;
 
-        rec.height = rl.Ease.EaseCircOut(
+        rec.height = EaseCircOut(
           framesCounter, 10, GetScreenWidth(), 120
         );
 
@@ -92,7 +92,7 @@ void main()
       case 4: {
         framesCounter++;
 
-        alpha = rl.Ease.EaseSineOut(framesCounter, 1, -1, 160);
+        alpha = EaseSineOut(framesCounter, 1, -1, 160);
 
         if (framesCounter >= 160) {
           framesCounter = 0;

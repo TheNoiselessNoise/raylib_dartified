@@ -404,3 +404,31 @@ extension VrStereoConfigCEx on VrStereoConfigC {
     op: VrStereoConfigD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
+
+// float16
+
+// ignore: camel_case_extensions
+extension float16CPEx on Pointer<float16C> {
+  float16D toDart() => ref.toDart(this);
+}
+
+// ignore: camel_case_extensions
+extension float16CEx on float16C {
+  float16D toDart([Pointer<float16C>? ptr]) => .new(
+    op: float16D.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  );
+}
+
+// float3
+
+// ignore: camel_case_extensions
+extension float3CPEx on Pointer<float3C> {
+  float3D toDart() => ref.toDart(this);
+}
+
+// ignore: camel_case_extensions
+extension float3CEx on float3C {
+  float3D toDart([Pointer<float3C>? ptr]) => .new(
+    op: float3D.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  );
+}

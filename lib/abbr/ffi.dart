@@ -1,12 +1,7 @@
 export 'package:raylib_dartified_base/abbr.dart';
 export 'package:raylib_dartified/raylib_dartified.dart';
-export '../core/modules/ffi/audio/abbr.dart';
-export '../core/modules/ffi/camera/abbr.dart';
-export '../core/modules/ffi/core/abbr.dart';
-export '../core/modules/ffi/gui/abbr.dart';
-export '../core/modules/ffi/light/abbr.dart';
-export '../core/modules/ffi/msf_gif/abbr.dart';
-export '../core/modules/ffi/rlgl/abbr.dart';
+export '../core/extensions/ffi/abbr.dart';
+export '../core/modules/ffi/abbr.dart';
 
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
@@ -16,7 +11,8 @@ import '';
 Raylib get rl => Raylib.instance;
 
 extension StringToRaylibC on String {
-  Pointer<Char> get toC => String$.Value(this).asNativePointer();
+  @Deprecated('Leaks memory if not freed!')
+  Pointer<Char> get toC => toNativeUtf8().cast();
 }
 
 late ColorC LIGHTGRAY;

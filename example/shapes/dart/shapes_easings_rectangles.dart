@@ -43,15 +43,15 @@ void main()
 
       for (int i = 0; i < MAX_RECS_X*MAX_RECS_Y; i++)
       {
-        recs[i].height = rl.Ease.EaseCircOut(framesCounter, RECS_HEIGHT, -RECS_HEIGHT, PLAY_TIME_IN_FRAMES);
-        recs[i].width = rl.Ease.EaseCircOut(framesCounter, RECS_WIDTH, -RECS_WIDTH, PLAY_TIME_IN_FRAMES);
+        recs[i].height = EaseCircOut(framesCounter, RECS_HEIGHT, -RECS_HEIGHT, PLAY_TIME_IN_FRAMES);
+        recs[i].width = EaseCircOut(framesCounter, RECS_WIDTH, -RECS_WIDTH, PLAY_TIME_IN_FRAMES);
 
         if (recs[i].height < 0) recs[i].height = 0;
         if (recs[i].width < 0) recs[i].width = 0;
 
         if ((recs[i].height == 0) && (recs[i].width == 0)) state = 1;
 
-        rotation = rl.Ease.EaseLinearIn(framesCounter, 0.0, 360.0, PLAY_TIME_IN_FRAMES);
+        rotation = EaseLinearIn(framesCounter, 0.0, 360.0, PLAY_TIME_IN_FRAMES);
       }
     }
     else if ((state == 1) && IsKeyPressed(.KEY_SPACE))

@@ -182,7 +182,7 @@ void GuiKeyboardKey(RectangleD bounds, int key)
   if (key == KeyboardKey.KEY_NULL.value) DrawRectangleLinesEx(bounds, 2.0, LIGHTGRAY);
   else
   {
-    if (rl.Core.IsKeyDown(key)) // use the FFI version
+    if (rl.module<RaylibCore>().IsKeyDown(key)) // use the FFI version
     {
       DrawRectangleLinesEx(bounds, 2.0, MAROON);
       DrawText(GetKeyText(key), (bounds.x + 4).toInt(), (bounds.y + 4).toInt(), 10, MAROON);

@@ -46,7 +46,7 @@ void main()
   {
     UpdateCamera(camera, .CAMERA_FREE);
 
-    if (rl.Core.IsKeyPressed('Z'.ch)) camera.target.set(0.0, 0.5, 0.0);
+    if (rl.module<RaylibCore>().IsKeyPressed('Z'.ch)) camera.target.set(0.0, 0.5, 0.0);
 
     BeginDrawing();
     

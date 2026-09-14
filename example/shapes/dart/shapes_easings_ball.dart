@@ -25,7 +25,7 @@ void main()
     if (state == 0)
     {
       framesCounter++;
-      ballPositionX = rl.Ease.EaseElasticOut(framesCounter, -100, screenWidth/2.0 + 100, 120).toInt();
+      ballPositionX = EaseElasticOut(framesCounter, -100, screenWidth/2.0 + 100, 120).toInt();
 
       if (framesCounter >= 120)
       {
@@ -36,7 +36,7 @@ void main()
     else if (state == 1)
     {
       framesCounter++;
-      ballRadius = rl.Ease.EaseElasticIn(framesCounter, 20, 500, 200).toInt();
+      ballRadius = EaseElasticIn(framesCounter, 20, 500, 200).toInt();
 
       if (framesCounter >= 200)
       {
@@ -47,7 +47,7 @@ void main()
     else if (state == 2)
     {
       framesCounter++;
-      ballAlpha = rl.Ease.EaseCubicOut(framesCounter, 0.0, 1.0, 200);
+      ballAlpha = EaseCubicOut(framesCounter, 0.0, 1.0, 200);
 
       if (framesCounter >= 200)
       {

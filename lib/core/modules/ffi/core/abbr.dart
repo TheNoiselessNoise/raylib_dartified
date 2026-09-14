@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibCore get _module => Raylib.instance.Core;
+RaylibCore get _module => Raylib.instance.module();
 
 /// See [RaylibCore.InitWindow].
 void InitWindow(int width, int height, Pointer<Char> title) => _module.InitWindow(width, height, title);

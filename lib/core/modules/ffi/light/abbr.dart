@@ -1,6 +1,6 @@
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibLight get _module => Raylib.instance.Light;
+RaylibLight get _module => Raylib.instance.module();
 
 /// See [RaylibLight.CreateLight].
 LightC CreateLight(

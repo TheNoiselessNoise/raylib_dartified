@@ -77,13 +77,9 @@ void main() {
 
   test("Enum - through pointer (as value - discards pointer)", () {
     MyStruct.enumFieldF.write(ptr, value);
-    final struct = MyStruct.pointer(ptr).value;
-    // works only when `MyStruct extends RaylibStructLiteral` (which is not)
-    // so let's do it ourselves
-    if (struct is! RaylibStructLiteral) {
-      struct.structSyncFromMemory(); // sync everything to Dart side
-      struct.op = null; // unset the pointer, no live data available
-    }
+    // `detached` is like `value` (without underlying memory), but it will actually
+    // throw an exception if it's used on structs which REQUIRES underlying memory pointer
+    final struct = MyStruct.pointer(ptr).detached; 
     // now let's test our Dart side
     expect(struct.enumField, value);
   });

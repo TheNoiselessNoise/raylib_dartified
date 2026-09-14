@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibCamera get _module => Raylib.instance.Camera;
+RaylibCamera get _module => Raylib.instance.module();
 
 /// See [RaylibCamera.GetCameraForward].
 Vector3C GetCameraForward(Pointer<Camera3DC> camera) => _module.GetCameraForward(camera);

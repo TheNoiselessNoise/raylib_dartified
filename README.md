@@ -133,13 +133,13 @@ If you hit a bug that smells like memory corruption (garbage data, platform-spec
 
 ### Usage
 
-Each raylib module has a corresponding Dart counterpart accessible from the same `Raylib` instance:
+Each raylib module has a corresponding Dart counterpart, both accessible from the same `Raylib` instance via `module<T>()`:
 
 | FFI | Flat | Dart |
-|-----|-------------|-------------|
-| `rl.Core` | `rl.CoreFlat` | `rl.CoreDart` |
-| `rl.Rlgl` | `rl.RlglFlat` | `rl.RlglDart` |
-| `rl.Gui` | `rl.GuiFlat` | `rl.GuiDart` |
+|-----|------|------|
+| `rl.module<RaylibCore>()` | `rl.module<RaylibCoreFlat>()` | `rl.module<RaylibCoreDart>()` |
+| `rl.module<RaylibRlgl>()` | `rl.module<RaylibRlglFlat>()` | `rl.module<RaylibRlglDart>()` |
+| `rl.module<RaylibGui>()` | `rl.module<RaylibGuiFlat>()` | `rl.module<RaylibGuiDart>()` |
 | ... | ... | ... |
 
 You are **not required to choose one API layer exclusively**. The layers can coexist, and it is perfectly valid to use the lower-level APIs when necessary.
@@ -229,7 +229,7 @@ Or start here:
 
 # Abbreviated API
 
-If you want raylib's functions without the module namespace (`rl.Core`, `rl.Rlgl`, etc.), you can use one of the abbreviated APIs.
+If you want raylib's functions without any namespacing, you can use one of the abbreviated APIs.
 
 The `abbr/` variants expose the same three API tiers without requiring a module prefix:
 

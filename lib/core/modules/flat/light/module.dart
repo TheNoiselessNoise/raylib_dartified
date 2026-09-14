@@ -4,6 +4,8 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
 
   RaylibLightFlat(super.rl);
 
+  RaylibLight get _ffi => rl.module();
+
   @override
   LightD CreateLight(
     int type,
@@ -13,7 +15,7 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
     ShaderD shader,
   ) => rl.Temp.Light$.RefCapture(
     RaylibCaptureIds.CreateLight,
-    (p) => rl.Light.CreateLight(
+    (p) => _ffi.CreateLight(
       type,
       rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
       rl.Temp.Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
@@ -26,7 +28,7 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
   void UpdateLightValues(
     ShaderD shader,
     LightD light,
-  ) => rl.Light.UpdateLightValues(
+  ) => _ffi.UpdateLightValues(
     rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     rl.Temp.Light$.Ref1(light).asNativePointer<LightC>().ref,
   );

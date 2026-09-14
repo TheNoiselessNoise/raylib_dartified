@@ -4,18 +4,20 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   
   RaylibMsfGifFlat(super.rl);
 
-  @override int get msf_gif_alpha_threshold => rl.MsfGif._msf_gif_alpha_threshold.value;
-  @override set msf_gif_alpha_threshold(int v) => rl.MsfGif._msf_gif_alpha_threshold.value = v;
+  RaylibMsfGif get _ffi => rl.module();
 
-  @override int get msf_gif_bgra_flag => rl.MsfGif._msf_gif_bgra_flag.value;
-  @override set msf_gif_bgra_flag(int v) => rl.MsfGif._msf_gif_bgra_flag.value = v;
+  @override int get msf_gif_alpha_threshold => _ffi._msf_gif_alpha_threshold.value;
+  @override set msf_gif_alpha_threshold(int v) => _ffi._msf_gif_alpha_threshold.value = v;
+
+  @override int get msf_gif_bgra_flag => _ffi._msf_gif_bgra_flag.value;
+  @override set msf_gif_bgra_flag(int v) => _ffi._msf_gif_bgra_flag.value = v;
 
   @override
   int msf_gif_begin(
     StructPointer<MsfGifStateD> handle,
     int width,
     int height,
-  ) => rl.MsfGif.msf_gif_begin(
+  ) => _ffi.msf_gif_begin(
     handle.asNativePointer(),
     width,
     height,
@@ -28,7 +30,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
     int centiSecondsPerFame,
     int maxBitDepth,
     int pitchInBytes,
-  ) => rl.MsfGif.msf_gif_frame(
+  ) => _ffi.msf_gif_frame(
     handle.asNativePointer(),
     pixelData.asNativePointer(),
     centiSecondsPerFame,
@@ -41,7 +43,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
     StructPointer<MsfGifStateD> handle,
   ) => rl.Temp.MsfGifResult$.RefCapture(
     RaylibCaptureIds.msf_gif_end,
-    (p) => rl.MsfGif.msf_gif_end(
+    (p) => _ffi.msf_gif_end(
       handle.asNativePointer(),
     ).toDart(p.asNativePointer()),
   );
@@ -50,7 +52,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   void msf_gif_free(
     MsfGifResultD result,
   ) => disposeStructWithOpFreed(result, (ptr) {
-    rl.MsfGif.msf_gif_free(
+    _ffi.msf_gif_free(
       ptr.asNativePointer<MsfGifResultC>().ref,
     );
   });
@@ -62,7 +64,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
     int height,
     MemoryPointer<RFunction> func,
     MemoryPointer<RVoid> filePointer,
-  ) => rl.MsfGif.msf_gif_begin_to_file(
+  ) => _ffi.msf_gif_begin_to_file(
     handle.asNativePointer(),
     width,
     height,
@@ -77,7 +79,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
     int centiSecondsPerFame,
     int maxBitDepth,
     int pitchInBytes,
-  ) => rl.MsfGif.msf_gif_frame_to_file(
+  ) => _ffi.msf_gif_frame_to_file(
     handle.asNativePointer(),
     pixelData.asNativePointer(),
     centiSecondsPerFame,
@@ -88,7 +90,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   @override
   int msf_gif_end_to_file(
     StructPointer<MsfGifStateD> handle,
-  ) => rl.MsfGif.msf_gif_end_to_file(
+  ) => _ffi.msf_gif_end_to_file(
     handle.asNativePointer(),
   );
 }

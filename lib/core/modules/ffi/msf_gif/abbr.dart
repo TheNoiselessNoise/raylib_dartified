@@ -1,8 +1,13 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibMsfGif get _module => Raylib.instance.module<RaylibMsfGif>();
+RaylibMsfGif get _module => Raylib.instance.module();
 
+/// See [RaylibMsfGif.msf_gif_alpha_threshold].
+int get msf_gif_alpha_threshold => _module.msf_gif_alpha_threshold;
+set msf_gif_alpha_threshold(int v) => _module.msf_gif_alpha_threshold = v;
+
+/// See [RaylibMsfGif.msf_gif_bgra_flag].
 int get msf_gif_bgra_flag => _module.msf_gif_bgra_flag;
 set msf_gif_bgra_flag(int v) => _module.msf_gif_bgra_flag = v;
 

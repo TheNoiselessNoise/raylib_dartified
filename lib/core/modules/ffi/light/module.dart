@@ -14,6 +14,8 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
   
   RaylibLight(super.rl);
 
+  RaylibCore get _coreFfi => rl.module();
+
   @override
   @DoNotAbbreviate()
   void dispose() {
@@ -40,19 +42,19 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     light.ref.color = color;
 
     int index = _lights.length;
-    light.ref.enabledLoc = rl.Core.GetShaderLocation(
+    light.ref.enabledLoc = _coreFfi.GetShaderLocation(
       shader, rl.Temp.String$.Value("lights[$index].enabled").asNativePointer(),
     );
-    light.ref.typeLoc = rl.Core.GetShaderLocation(
+    light.ref.typeLoc = _coreFfi.GetShaderLocation(
       shader, rl.Temp.String$.Value("lights[$index].type").asNativePointer(),
     );
-    light.ref.positionLoc = rl.Core.GetShaderLocation(
+    light.ref.positionLoc = _coreFfi.GetShaderLocation(
       shader, rl.Temp.String$.Value("lights[$index].position").asNativePointer(),
     );
-    light.ref.targetLoc = rl.Core.GetShaderLocation(
+    light.ref.targetLoc = _coreFfi.GetShaderLocation(
       shader, rl.Temp.String$.Value("lights[$index].target").asNativePointer(),
     );
-    light.ref.colorLoc = rl.Core.GetShaderLocation(
+    light.ref.colorLoc = _coreFfi.GetShaderLocation(
       shader, rl.Temp.String$.Value("lights[$index].color").asNativePointer(),
     );
 
@@ -66,7 +68,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
   /// Send light properties to shader
   void UpdateLightValues(ShaderC shader, LightC light) {
     _lightInt8ValuePtr.value = light.enabled.toInt();
-    rl.Core.SetShaderValue(
+    _coreFfi.SetShaderValue(
       shader,
       light.enabledLoc,
       _lightInt8ValuePtr.cast(),
@@ -74,7 +76,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     );
 
     _lightInt8ValuePtr.value = light.type;
-    rl.Core.SetShaderValue(
+    _coreFfi.SetShaderValue(
       shader,
       light.typeLoc,
       _lightInt8ValuePtr.cast(),
@@ -84,7 +86,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     _lightFloat3ValuePtr[0] = light.position.x;
     _lightFloat3ValuePtr[1] = light.position.y;
     _lightFloat3ValuePtr[2] = light.position.z;
-    rl.Core.SetShaderValue(
+    _coreFfi.SetShaderValue(
       shader,
       light.positionLoc,
       _lightFloat3ValuePtr.cast(),
@@ -94,7 +96,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     _lightFloat3ValuePtr[0] = light.target.x;
     _lightFloat3ValuePtr[1] = light.target.y;
     _lightFloat3ValuePtr[2] = light.target.z;
-    rl.Core.SetShaderValue(
+    _coreFfi.SetShaderValue(
       shader,
       light.targetLoc,
       _lightFloat3ValuePtr.cast(),
@@ -105,7 +107,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     _lightFloat4ValuePtr[1] = light.color.g / 255;
     _lightFloat4ValuePtr[2] = light.color.b / 255;
     _lightFloat4ValuePtr[3] = light.color.a / 255;
-    rl.Core.SetShaderValue(
+    _coreFfi.SetShaderValue(
       shader,
       light.colorLoc,
       _lightFloat4ValuePtr.cast(),

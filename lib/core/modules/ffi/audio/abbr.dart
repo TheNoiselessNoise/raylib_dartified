@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:raylib_dartified/raylib_dartified.dart';
 
-RaylibAudio get _module => Raylib.instance.Audio;
+RaylibAudio get _module => Raylib.instance.module();
 
 /// See [RaylibAudio.InitAudioDevice].
 void InitAudioDevice() => _module.InitAudioDevice();

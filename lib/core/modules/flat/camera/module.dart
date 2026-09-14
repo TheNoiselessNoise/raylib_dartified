@@ -4,11 +4,13 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
 
   RaylibCameraFlat(super.rl);
 
+  RaylibCamera get _ffi => rl.module();
+
   @override
   Vector3D GetCameraForward(
     StructPointer<Camera3DD> camera,
   ) => rl.Temp.Vector3$.Extract1(
-    (p) => rl.Camera.GetCameraForward(
+    (p) => _ffi.GetCameraForward(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
   );
@@ -17,7 +19,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   Vector3D GetCameraUp(
     StructPointer<Camera3DD> camera,
   ) => rl.Temp.Vector3$.Extract1(
-    (p) => rl.Camera.GetCameraUp(
+    (p) => _ffi.GetCameraUp(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
   );
@@ -26,7 +28,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   Vector3D GetCameraRight(
     StructPointer<Camera3DD> camera,
   ) => rl.Temp.Vector3$.Extract1(
-    (p) => rl.Camera.GetCameraRight(
+    (p) => _ffi.GetCameraRight(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
   );
@@ -36,7 +38,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     StructPointer<Camera3DD> camera,
     double distance,
     bool moveInWorldPlane,
-  ) => rl.Camera.CameraMoveForward(
+  ) => _ffi.CameraMoveForward(
     camera.asNativePointer(),
     distance.toDouble(),
     moveInWorldPlane,
@@ -46,7 +48,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   void CameraMoveUp(
     StructPointer<Camera3DD> camera,
     double distance,
-  ) => rl.Camera.CameraMoveUp(
+  ) => _ffi.CameraMoveUp(
     camera.asNativePointer(),
     distance.toDouble(),
   );
@@ -56,7 +58,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     StructPointer<Camera3DD> camera,
     double distance,
     bool moveInWorldPlane,
-  ) => rl.Camera.CameraMoveRight(
+  ) => _ffi.CameraMoveRight(
     camera.asNativePointer(),
     distance.toDouble(),
     moveInWorldPlane,
@@ -66,7 +68,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   void CameraMoveToTarget(
     StructPointer<Camera3DD> camera,
     double delta,
-  ) => rl.Camera.CameraMoveToTarget(
+  ) => _ffi.CameraMoveToTarget(
     camera.asNativePointer(),
     delta.toDouble(),
   );
@@ -76,7 +78,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     StructPointer<Camera3DD> camera,
     double angle,
     bool rotateAroundTarget,
-  ) => rl.Camera.CameraYaw(
+  ) => _ffi.CameraYaw(
     camera.asNativePointer(),
     angle.toDouble(),
     rotateAroundTarget,
@@ -89,7 +91,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     bool lockView,
     bool rotateAroundTarget,
     bool rotateUp,
-  ) => rl.Camera.CameraPitch(
+  ) => _ffi.CameraPitch(
     camera.asNativePointer(),
     angle.toDouble(),
     lockView,
@@ -101,7 +103,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   void CameraRoll(
     StructPointer<Camera3DD> camera,
     double angle,
-  ) => rl.Camera.CameraRoll(
+  ) => _ffi.CameraRoll(
     camera.asNativePointer(),
     angle.toDouble(),
   );
@@ -110,7 +112,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
   MatrixD GetCameraViewMatrix(
     StructPointer<Camera3DD> camera,
   ) => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Camera.GetCameraViewMatrix(
+    (p) => _ffi.GetCameraViewMatrix(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer()),
   );
@@ -120,7 +122,7 @@ class RaylibCameraFlat extends RaylibCameraFlatModule<Raylib> {
     StructPointer<Camera3DD> camera,
     double aspect,
   ) => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Camera.GetCameraProjectionMatrix(
+    (p) => _ffi.GetCameraProjectionMatrix(
       camera.asNativePointer(),
       aspect.toDouble(),
     ).toDart(p.asNativePointer()),

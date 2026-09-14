@@ -14,6 +14,22 @@ part 'ext.dart';
 part 'lib.dart';
 part 'pointer.dart';
 
+// ===== EXTENSIONS =====
+part 'extensions/ffi/raymath/matrix/extension.dart';
+part 'extensions/flat/raymath/matrix/extension.dart';
+
+part 'extensions/ffi/raymath/quaternion/extension.dart';
+part 'extensions/flat/raymath/quaternion/extension.dart';
+
+part 'extensions/ffi/raymath/vector2/extension.dart';
+part 'extensions/flat/raymath/vector2/extension.dart';
+
+part 'extensions/ffi/raymath/vector3/extension.dart';
+part 'extensions/flat/raymath/vector3/extension.dart';
+
+part 'extensions/ffi/raymath/vector4/extension.dart';
+part 'extensions/flat/raymath/vector4/extension.dart';
+
 // ===== AUDIO MODULE =====
 part 'modules/ffi/audio/module.dart';
 part 'modules/ffi/audio/types.dart';

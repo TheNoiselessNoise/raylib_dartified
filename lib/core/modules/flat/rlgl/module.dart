@@ -4,28 +4,30 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   
   RaylibRlglFlat(super.rl);
 
+  RaylibRlgl get _ffi => rl.module();
+
   @override
   void rlMatrixMode(
     int mode,
-  ) => rl.Rlgl.rlMatrixMode(
+  ) => _ffi.rlMatrixMode(
     mode,
   );
 
   @override
-  void rlPushMatrix() => rl.Rlgl.rlPushMatrix();
+  void rlPushMatrix() => _ffi.rlPushMatrix();
 
   @override
-  void rlPopMatrix() => rl.Rlgl.rlPopMatrix();
+  void rlPopMatrix() => _ffi.rlPopMatrix();
 
   @override
-  void rlLoadIdentity() => rl.Rlgl.rlLoadIdentity();
+  void rlLoadIdentity() => _ffi.rlLoadIdentity();
 
   @override
   void rlTranslatef(
     double x,
     double y,
     double z,
-  ) => rl.Rlgl.rlTranslatef(
+  ) => _ffi.rlTranslatef(
     x,
     y,
     z,
@@ -37,7 +39,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double x,
     double y,
     double z,
-  ) => rl.Rlgl.rlRotatef(
+  ) => _ffi.rlRotatef(
     angle,
     x,
     y,
@@ -49,7 +51,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double x,
     double y,
     double z,
-  ) => rl.Rlgl.rlScalef(
+  ) => _ffi.rlScalef(
     x,
     y,
     z,
@@ -58,7 +60,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlMultMatrixf(
     MemoryPointer<RFloat32> matf, 
-  ) => rl.Rlgl.rlMultMatrixf(
+  ) => _ffi.rlMultMatrixf(
     matf.asNativePointer(),
   );
 
@@ -70,7 +72,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double top,
     double znear,
     double zfar,
-  ) => rl.Rlgl.rlFrustum(
+  ) => _ffi.rlFrustum(
     left,
     right,
     bottom,
@@ -87,7 +89,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double top,
     double znear,
     double zfar,
-  ) => rl.Rlgl.rlOrtho(
+  ) => _ffi.rlOrtho(
     left,
     right,
     bottom,
@@ -102,7 +104,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int y,
     int width,
     int height,
-  ) => rl.Rlgl.rlViewport(
+  ) => _ffi.rlViewport(
     x,
     y,
     width,
@@ -113,32 +115,32 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetClipPlanes(
     double nearPlane,
     double farPlane,
-  ) => rl.Rlgl.rlSetClipPlanes(
+  ) => _ffi.rlSetClipPlanes(
     nearPlane,
     farPlane,
   );
 
   @override
-  double rlGetCullDistanceNear() => rl.Rlgl.rlGetCullDistanceNear();
+  double rlGetCullDistanceNear() => _ffi.rlGetCullDistanceNear();
 
   @override
-  double rlGetCullDistanceFar() => rl.Rlgl.rlGetCullDistanceFar();
+  double rlGetCullDistanceFar() => _ffi.rlGetCullDistanceFar();
 
   @override
   void rlBegin(
     int mode,
-  ) => rl.Rlgl.rlBegin(
+  ) => _ffi.rlBegin(
     mode,
   );
 
   @override
-  void rlEnd() => rl.Rlgl.rlEnd();
+  void rlEnd() => _ffi.rlEnd();
 
   @override
   void rlVertex2i(
     int x,
     int y,
-  ) => rl.Rlgl.rlVertex2i(
+  ) => _ffi.rlVertex2i(
     x,
     y,
   );
@@ -147,7 +149,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlVertex2f(
     double x,
     double y,
-  ) => rl.Rlgl.rlVertex2f(
+  ) => _ffi.rlVertex2f(
     x,
     y,
   );
@@ -157,7 +159,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double x,
     double y,
     double z
-  ) => rl.Rlgl.rlVertex3f(
+  ) => _ffi.rlVertex3f(
     x,
     y,
     z,
@@ -167,7 +169,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlTexCoord2f(
     double x,
     double y,
-  ) => rl.Rlgl.rlTexCoord2f(
+  ) => _ffi.rlTexCoord2f(
     x,
     y,
   );
@@ -177,7 +179,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double x,
     double y,
     double z,
-  ) => rl.Rlgl.rlNormal3f(
+  ) => _ffi.rlNormal3f(
     x,
     y,
     z,
@@ -189,7 +191,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int g,
     int b,
     int a,
-  ) => rl.Rlgl.rlColor4ub(
+  ) => _ffi.rlColor4ub(
     r,
     g,
     b,
@@ -201,7 +203,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double x,
     double y,
     double z,
-  ) => rl.Rlgl.rlColor3f(
+  ) => _ffi.rlColor3f(
     x,
     y,
     z,
@@ -213,7 +215,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     double y,
     double z,
     double w,
-  ) => rl.Rlgl.rlColor4f(
+  ) => _ffi.rlColor4f(
     x,
     y,
     z,
@@ -223,44 +225,44 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   bool rlEnableVertexArray(
     int vaoId,
-  ) => rl.Rlgl.rlEnableVertexArray(
+  ) => _ffi.rlEnableVertexArray(
     vaoId,
   );
 
   @override
-  void rlDisableVertexArray() => rl.Rlgl.rlDisableVertexArray();
+  void rlDisableVertexArray() => _ffi.rlDisableVertexArray();
 
   @override
   void rlEnableVertexBuffer(
     int id,
-  ) => rl.Rlgl.rlEnableVertexBuffer(
+  ) => _ffi.rlEnableVertexBuffer(
     id,
   );
 
   @override
-  void rlDisableVertexBuffer() => rl.Rlgl.rlDisableVertexBuffer();
+  void rlDisableVertexBuffer() => _ffi.rlDisableVertexBuffer();
 
   @override
   void rlEnableVertexBufferElement(
     int id,
-  ) => rl.Rlgl.rlEnableVertexBufferElement(
+  ) => _ffi.rlEnableVertexBufferElement(
     id,
   );
 
   @override
-  void rlDisableVertexBufferElement() => rl.Rlgl.rlDisableVertexBufferElement();
+  void rlDisableVertexBufferElement() => _ffi.rlDisableVertexBufferElement();
 
   @override
   void rlEnableVertexAttribute(
     int index,
-  ) => rl.Rlgl.rlEnableVertexAttribute(
+  ) => _ffi.rlEnableVertexAttribute(
     index,
   );
 
   @override
   void rlDisableVertexAttribute(
     int index,
-  ) => rl.Rlgl.rlDisableVertexAttribute(
+  ) => _ffi.rlDisableVertexAttribute(
     index,
   );
 
@@ -268,7 +270,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlEnableStatePointer(
     int vertexAttribType,
     MemoryPointer<RVoid> buffer,
-  ) => rl.Rlgl.rlEnableStatePointer(
+  ) => _ffi.rlEnableStatePointer(
     vertexAttribType,
     buffer.asNativePointer(),
   );
@@ -276,43 +278,43 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlDisableStatePointer(
     int vertexAttribType,
-  ) => rl.Rlgl.rlDisableStatePointer(
+  ) => _ffi.rlDisableStatePointer(
     vertexAttribType,
   );
 
   @override
   void rlActiveTextureSlot(
     int slot,
-  ) => rl.Rlgl.rlActiveTextureSlot(
+  ) => _ffi.rlActiveTextureSlot(
     slot,
   );
 
   @override
   void rlEnableTexture(
     int id,
-  ) => rl.Rlgl.rlEnableTexture(
+  ) => _ffi.rlEnableTexture(
     id,
   );
 
   @override
-  void rlDisableTexture() => rl.Rlgl.rlDisableTexture();
+  void rlDisableTexture() => _ffi.rlDisableTexture();
 
   @override
   void rlEnableTextureCubemap(
     int id,
-  ) => rl.Rlgl.rlEnableTextureCubemap(
+  ) => _ffi.rlEnableTextureCubemap(
     id,
   );
 
   @override
-  void rlDisableTextureCubemap() => rl.Rlgl.rlDisableTextureCubemap();
+  void rlDisableTextureCubemap() => _ffi.rlDisableTextureCubemap();
 
   @override
   void rlTextureParameters(
     int id,
     int param,
     int value,
-  ) => rl.Rlgl.rlTextureParameters(
+  ) => _ffi.rlTextureParameters(
     id,
     param,
     value,
@@ -323,7 +325,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int id,
     int param,
     int value,
-  ) => rl.Rlgl.rlCubemapParameters(
+  ) => _ffi.rlCubemapParameters(
     id,
     param,
     value,
@@ -332,30 +334,30 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlEnableShader(
     int id,
-  ) => rl.Rlgl.rlEnableShader(
+  ) => _ffi.rlEnableShader(
     id,
   );
 
   @override
-  void rlDisableShader() => rl.Rlgl.rlDisableShader();
+  void rlDisableShader() => _ffi.rlDisableShader();
 
   @override
   void rlEnableFramebuffer(
     int id,
-  ) => rl.Rlgl.rlEnableFramebuffer(
+  ) => _ffi.rlEnableFramebuffer(
     id,
   );
 
   @override
-  void rlDisableFramebuffer() => rl.Rlgl.rlDisableFramebuffer();
+  void rlDisableFramebuffer() => _ffi.rlDisableFramebuffer();
 
   @override
-  int rlGetActiveFramebuffer() => rl.Rlgl.rlGetActiveFramebuffer();
+  int rlGetActiveFramebuffer() => _ffi.rlGetActiveFramebuffer();
 
   @override
   void rlActiveDrawBuffers(
     int count,
-  ) => rl.Rlgl.rlActiveDrawBuffers(
+  ) => _ffi.rlActiveDrawBuffers(
     count,
   );
 
@@ -370,7 +372,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int dstWidth,
     int dstHeight,
     int bufferMask,
-  ) => rl.Rlgl.rlBlitFramebuffer(
+  ) => _ffi.rlBlitFramebuffer(
     srcX,
     srcY,
     srcWidth,
@@ -386,34 +388,34 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlBindFramebuffer(
     int target,
     int framebuffer,
-  ) => rl.Rlgl.rlBindFramebuffer(
+  ) => _ffi.rlBindFramebuffer(
     target,
     framebuffer,
   );
 
   @override
-  void rlEnableColorBlend() => rl.Rlgl.rlEnableColorBlend();
+  void rlEnableColorBlend() => _ffi.rlEnableColorBlend();
 
   @override
-  void rlDisableColorBlend() => rl.Rlgl.rlDisableColorBlend();
+  void rlDisableColorBlend() => _ffi.rlDisableColorBlend();
 
   @override
-  void rlEnableDepthTest() => rl.Rlgl.rlEnableDepthTest();
+  void rlEnableDepthTest() => _ffi.rlEnableDepthTest();
 
   @override
-  void rlDisableDepthTest() => rl.Rlgl.rlDisableDepthTest();
+  void rlDisableDepthTest() => _ffi.rlDisableDepthTest();
 
   @override
-  void rlEnableDepthMask() => rl.Rlgl.rlEnableDepthMask();
+  void rlEnableDepthMask() => _ffi.rlEnableDepthMask();
 
   @override
-  void rlDisableDepthMask() => rl.Rlgl.rlDisableDepthMask();
+  void rlDisableDepthMask() => _ffi.rlDisableDepthMask();
 
   @override
-  void rlEnableBackfaceCulling() => rl.Rlgl.rlEnableBackfaceCulling();
+  void rlEnableBackfaceCulling() => _ffi.rlEnableBackfaceCulling();
 
   @override
-  void rlDisableBackfaceCulling() => rl.Rlgl.rlDisableBackfaceCulling();
+  void rlDisableBackfaceCulling() => _ffi.rlDisableBackfaceCulling();
 
   @override
   void rlColorMask(
@@ -421,7 +423,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     bool g,
     bool b,
     bool a,
-  ) => rl.Rlgl.rlColorMask(
+  ) => _ffi.rlColorMask(
     r,
     g,
     b,
@@ -431,15 +433,15 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlSetCullFace(
     int mode,
-  ) => rl.Rlgl.rlSetCullFace(
+  ) => _ffi.rlSetCullFace(
     mode,
   );
 
   @override
-  void rlEnableScissorTest() => rl.Rlgl.rlEnableScissorTest();
+  void rlEnableScissorTest() => _ffi.rlEnableScissorTest();
 
   @override
-  void rlDisableScissorTest() => rl.Rlgl.rlDisableScissorTest();
+  void rlDisableScissorTest() => _ffi.rlDisableScissorTest();
 
   @override
   void rlScissor(
@@ -447,7 +449,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int y,
     int width,
     int height,
-  ) => rl.Rlgl.rlScissor(
+  ) => _ffi.rlScissor(
     x,
     y,
     width,
@@ -455,51 +457,51 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   );
 
   @override
-  void rlEnablePointMode() => rl.Rlgl.rlEnablePointMode();
+  void rlEnablePointMode() => _ffi.rlEnablePointMode();
 
   @override
-  void rlDisablePointMode() => rl.Rlgl.rlDisablePointMode();
+  void rlDisablePointMode() => _ffi.rlDisablePointMode();
 
   @override
   void rlSetPointSize(
     double size,
-  ) => rl.Rlgl.rlSetPointSize(
+  ) => _ffi.rlSetPointSize(
     size,
   );
 
   @override
-  double rlGetPointSize() => rl.Rlgl.rlGetPointSize();
+  double rlGetPointSize() => _ffi.rlGetPointSize();
 
   @override
-  void rlEnableWireMode() => rl.Rlgl.rlEnableWireMode();
+  void rlEnableWireMode() => _ffi.rlEnableWireMode();
 
   @override
-  void rlDisableWireMode() => rl.Rlgl.rlDisableWireMode();
+  void rlDisableWireMode() => _ffi.rlDisableWireMode();
 
   @override
   void rlSetLineWidth(
     double width,
-  ) => rl.Rlgl.rlSetLineWidth(
+  ) => _ffi.rlSetLineWidth(
     width,
   );
 
   @override
-  double rlGetLineWidth() => rl.Rlgl.rlGetLineWidth();
+  double rlGetLineWidth() => _ffi.rlGetLineWidth();
 
   @override
-  void rlEnableSmoothLines() => rl.Rlgl.rlEnableSmoothLines();
+  void rlEnableSmoothLines() => _ffi.rlEnableSmoothLines();
 
   @override
-  void rlDisableSmoothLines() => rl.Rlgl.rlDisableSmoothLines();
+  void rlDisableSmoothLines() => _ffi.rlDisableSmoothLines();
 
   @override
-  void rlEnableStereoRender() => rl.Rlgl.rlEnableStereoRender();
+  void rlEnableStereoRender() => _ffi.rlEnableStereoRender();
 
   @override
-  void rlDisableStereoRender() => rl.Rlgl.rlDisableStereoRender();
+  void rlDisableStereoRender() => _ffi.rlDisableStereoRender();
 
   @override
-  bool rlIsStereoRenderEnabled() => rl.Rlgl.rlIsStereoRenderEnabled();
+  bool rlIsStereoRenderEnabled() => _ffi.rlIsStereoRenderEnabled();
 
   @override
   void rlClearColor(
@@ -507,7 +509,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int g,
     int b,
     int a,
-  ) => rl.Rlgl.rlClearColor(
+  ) => _ffi.rlClearColor(
     r,
     g,
     b,
@@ -515,15 +517,15 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   );
 
   @override
-  void rlClearScreenBuffers() => rl.Rlgl.rlClearScreenBuffers();
+  void rlClearScreenBuffers() => _ffi.rlClearScreenBuffers();
 
   @override
-  void rlCheckErrors() => rl.Rlgl.rlCheckErrors();
+  void rlCheckErrors() => _ffi.rlCheckErrors();
 
   @override
   void rlSetBlendMode(
     int mode,
-  ) => rl.Rlgl.rlSetBlendMode(
+  ) => _ffi.rlSetBlendMode(
     mode,
   );
 
@@ -532,7 +534,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int glSrcFactor,
     int glDstFactor,
     int glEquation,
-  ) => rl.Rlgl.rlSetBlendFactors(
+  ) => _ffi.rlSetBlendFactors(
     glSrcFactor,
     glDstFactor,
     glEquation,
@@ -546,7 +548,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int glDstAlpha,
     int glEqRGB,
     int glEqAlpha,
-  ) => rl.Rlgl.rlSetBlendFactorsSeparate(
+  ) => _ffi.rlSetBlendFactorsSeparate(
     glSrcRGB,
     glDstRGB,
     glSrcAlpha,
@@ -559,59 +561,59 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlglInit(
     int width,
     int height,
-  ) => rl.Rlgl.rlglInit(
+  ) => _ffi.rlglInit(
     width,
     height,
   );
 
   @override
-  void rlglClose() => rl.Rlgl.rlglClose();
+  void rlglClose() => _ffi.rlglClose();
 
   @override
   void rlLoadExtensions(
     MemoryPointer<RVoid> loader,
-  ) => rl.Rlgl.rlLoadExtensions(
+  ) => _ffi.rlLoadExtensions(
     loader.asNativePointer(),
   );
 
   @override
   NativeMemoryPointer<RVoid> rlGetProcAddress(
     MemoryPointer<RChar> procName,
-  ) => rl.Rlgl.rlGetProcAddress(
+  ) => _ffi.rlGetProcAddress(
     procName.asNativePointer(),
   ).asMemoryPointer();
 
   @override
-  int rlGetVersion() => rl.Rlgl.rlGetVersion();
+  int rlGetVersion() => _ffi.rlGetVersion();
 
   @override
   void rlSetFramebufferWidth(
     int width,
-  ) => rl.Rlgl.rlSetFramebufferWidth(
+  ) => _ffi.rlSetFramebufferWidth(
     width,
   );
 
   @override
-  int rlGetFramebufferWidth() => rl.Rlgl.rlGetFramebufferWidth();
+  int rlGetFramebufferWidth() => _ffi.rlGetFramebufferWidth();
 
   @override
   void rlSetFramebufferHeight(
     int height,
-  ) => rl.Rlgl.rlSetFramebufferHeight(
+  ) => _ffi.rlSetFramebufferHeight(
     height,
   );
 
   @override
-  int rlGetFramebufferHeight() => rl.Rlgl.rlGetFramebufferHeight();
+  int rlGetFramebufferHeight() => _ffi.rlGetFramebufferHeight();
 
   @override
-  int rlGetTextureIdDefault() => rl.Rlgl.rlGetTextureIdDefault();
+  int rlGetTextureIdDefault() => _ffi.rlGetTextureIdDefault();
 
   @override
-  int rlGetShaderIdDefault() => rl.Rlgl.rlGetShaderIdDefault();
+  int rlGetShaderIdDefault() => _ffi.rlGetShaderIdDefault();
 
   @override
-  NativeMemoryPointer<RInt> rlGetShaderLocsDefault() => rl.Rlgl.rlGetShaderLocsDefault().asMemoryPointer();
+  NativeMemoryPointer<RInt> rlGetShaderLocsDefault() => _ffi.rlGetShaderLocsDefault().asMemoryPointer();
 
   @override
   RlRenderBatchD rlLoadRenderBatch(
@@ -619,7 +621,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int bufferElements,
   ) => rl.Temp.RlRenderBatch$.RefCapture(
     RaylibCaptureIds.rlLoadRenderBatch,
-    (p) => rl.Rlgl.rlLoadRenderBatch(
+    (p) => _ffi.rlLoadRenderBatch(
       numBuffers,
       bufferElements,
     ).toDart(p.asNativePointer()),
@@ -628,50 +630,50 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlUnloadRenderBatch(
     RlRenderBatchD batch,
-  ) => rl.Rlgl.rlUnloadRenderBatch(
+  ) => _ffi.rlUnloadRenderBatch(
     rl.Temp.RlRenderBatch$.Ref1(batch).asNativePointer<RlRenderBatchC>().ref,
   );
 
   @override
   void rlDrawRenderBatch(
     StructPointer<RlRenderBatchD> batch,
-  ) => rl.Rlgl.rlDrawRenderBatch(
+  ) => _ffi.rlDrawRenderBatch(
     batch.asNativePointer(),
   );
 
   @override
   void rlSetRenderBatchActive(
     StructPointer<RlRenderBatchD> batch,
-  ) => rl.Rlgl.rlSetRenderBatchActive(
+  ) => _ffi.rlSetRenderBatchActive(
     batch.asNativePointer(),
   );
 
   @override
-  void rlDrawRenderBatchActive() => rl.Rlgl.rlDrawRenderBatchActive();
+  void rlDrawRenderBatchActive() => _ffi.rlDrawRenderBatchActive();
 
   @override
   bool rlCheckRenderBatchLimit(
     int vCount,
-  ) => rl.Rlgl.rlCheckRenderBatchLimit(
+  ) => _ffi.rlCheckRenderBatchLimit(
     vCount,
   );
 
   @override
   void rlSetTexture(
     int id,
-  ) => rl.Rlgl.rlSetTexture(
+  ) => _ffi.rlSetTexture(
     id,
   );
 
   @override
-  int rlLoadVertexArray() => rl.Rlgl.rlLoadVertexArray();
+  int rlLoadVertexArray() => _ffi.rlLoadVertexArray();
 
   @override
   int rlLoadVertexBuffer(
     MemoryPointer<RVoid> buffer,
     int size,
     bool dynamic,
-  ) => rl.Rlgl.rlLoadVertexBuffer(
+  ) => _ffi.rlLoadVertexBuffer(
     buffer.asNativePointer(),
     size,
     dynamic,
@@ -682,7 +684,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> buffer,
     int size,
     bool dynamic,
-  ) => rl.Rlgl.rlLoadVertexBufferElement(
+  ) => _ffi.rlLoadVertexBufferElement(
     buffer.asNativePointer(),
     size,
     dynamic,
@@ -694,7 +696,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> data,
     int dataSize,
     int offset,
-  ) => rl.Rlgl.rlUpdateVertexBuffer(
+  ) => _ffi.rlUpdateVertexBuffer(
     bufferId,
     data.asNativePointer(),
     dataSize,
@@ -707,7 +709,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> data,
     int dataSize,
     int offset,
-  ) => rl.Rlgl.rlUpdateVertexBufferElements(
+  ) => _ffi.rlUpdateVertexBufferElements(
     id,
     data.asNativePointer(),
     dataSize,
@@ -717,14 +719,14 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlUnloadVertexArray(
     int vaoId,
-  ) => rl.Rlgl.rlUnloadVertexArray(
+  ) => _ffi.rlUnloadVertexArray(
     vaoId,
   );
 
   @override
   void rlUnloadVertexBuffer(
     int vboId,
-  ) => rl.Rlgl.rlUnloadVertexBuffer(
+  ) => _ffi.rlUnloadVertexBuffer(
     vboId,
   );
 
@@ -736,7 +738,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     bool normalized,
     int stride,
     int offset,
-  ) => rl.Rlgl.rlSetVertexAttribute(
+  ) => _ffi.rlSetVertexAttribute(
     index,
     compSize,
     type,
@@ -749,7 +751,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetVertexAttributeDivisor(
     int index,
     int divisor,
-  ) => rl.Rlgl.rlSetVertexAttributeDivisor(
+  ) => _ffi.rlSetVertexAttributeDivisor(
     index,
     divisor,
   );
@@ -760,7 +762,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> value,
     int attribType,
     int count,
-  ) => rl.Rlgl.rlSetVertexAttributeDefault(
+  ) => _ffi.rlSetVertexAttributeDefault(
     locIndex,
     value.asNativePointer(),
     attribType,
@@ -771,7 +773,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlDrawVertexArray(
     int offset,
     int count,
-  ) => rl.Rlgl.rlDrawVertexArray(
+  ) => _ffi.rlDrawVertexArray(
     offset,
     count,
   );
@@ -781,7 +783,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int offset,
     int count,
     MemoryPointer<RVoid> buffer,
-  ) => rl.Rlgl.rlDrawVertexArrayElements(
+  ) => _ffi.rlDrawVertexArrayElements(
     offset,
     count,
     buffer.asNativePointer(),
@@ -792,7 +794,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int offset,
     int count,
     int instances,
-  ) => rl.Rlgl.rlDrawVertexArrayInstanced(
+  ) => _ffi.rlDrawVertexArrayInstanced(
     offset,
     count,
     instances,
@@ -804,7 +806,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int count,
     MemoryPointer<RVoid> buffer,
     int instances,
-  ) => rl.Rlgl.rlDrawVertexArrayElementsInstanced(
+  ) => _ffi.rlDrawVertexArrayElementsInstanced(
     offset,
     count,
     buffer.asNativePointer(),
@@ -818,7 +820,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int height,
     int format,
     int mipmapCount,
-  ) => rl.Rlgl.rlLoadTexture(
+  ) => _ffi.rlLoadTexture(
     data.asNativePointer(),
     width,
     height,
@@ -831,7 +833,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int width,
     int height,
     bool useRenderBuffer,
-  ) => rl.Rlgl.rlLoadTextureDepth(
+  ) => _ffi.rlLoadTextureDepth(
     width,
     height,
     useRenderBuffer,
@@ -843,7 +845,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int size,
     int format,
     int mipmapCount,
-  ) => rl.Rlgl.rlLoadTextureCubemap(
+  ) => _ffi.rlLoadTextureCubemap(
     data.asNativePointer(),
     size,
     format,
@@ -859,7 +861,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int height,
     int format,
     MemoryPointer<RVoid> data,
-  ) => rl.Rlgl.rlUpdateTexture(
+  ) => _ffi.rlUpdateTexture(
     id,
     offsetX,
     offsetY,
@@ -875,7 +877,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RUnsignedInt> glInternalFormat,
     MemoryPointer<RUnsignedInt> glFormat,
     MemoryPointer<RUnsignedInt> glType,
-  ) => rl.Rlgl.rlGetGlTextureFormats(
+  ) => _ffi.rlGetGlTextureFormats(
     format,
     glInternalFormat.asNativePointer(),
     glFormat.asNativePointer(),
@@ -885,14 +887,14 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   NativeMemoryPointer<RChar> rlGetPixelFormatName(
     int format,
-  ) => rl.Rlgl.rlGetPixelFormatName(
+  ) => _ffi.rlGetPixelFormatName(
     format,
   ).asMemoryPointer();
 
   @override
   void rlUnloadTexture(
     int id,
-  ) => rl.Rlgl.rlUnloadTexture(
+  ) => _ffi.rlUnloadTexture(
     id,
   );
 
@@ -903,7 +905,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int height,
     int format,
     MemoryPointer<RInt> mipmaps,
-  ) => rl.Rlgl.rlGenTextureMipmaps(
+  ) => _ffi.rlGenTextureMipmaps(
     id,
     width,
     height,
@@ -917,7 +919,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int width,
     int height,
     int format,
-  ) => rl.Rlgl.rlReadTexturePixels(
+  ) => _ffi.rlReadTexturePixels(
     id,
     width,
     height,
@@ -928,13 +930,13 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   NativeMemoryPointer<RUnsignedChar> rlReadScreenPixels(
     int width,
     int height,
-  ) => rl.Rlgl.rlReadScreenPixels(
+  ) => _ffi.rlReadScreenPixels(
     width,
     height,
   ).asMemoryPointer();
 
   @override
-  int rlLoadFramebuffer() => rl.Rlgl.rlLoadFramebuffer();
+  int rlLoadFramebuffer() => _ffi.rlLoadFramebuffer();
 
   @override
   void rlFramebufferAttach(
@@ -943,7 +945,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int attachType,
     int texType,
     int mipLevel,
-  ) => rl.Rlgl.rlFramebufferAttach(
+  ) => _ffi.rlFramebufferAttach(
     fboId,
     texId,
     attachType,
@@ -954,14 +956,14 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   bool rlFramebufferComplete(
     int id,
-  ) => rl.Rlgl.rlFramebufferComplete(
+  ) => _ffi.rlFramebufferComplete(
     id,
   );
 
   @override
   void rlUnloadFramebuffer(
     int id,
-  ) => rl.Rlgl.rlUnloadFramebuffer(
+  ) => _ffi.rlUnloadFramebuffer(
     id,
   );
 
@@ -973,7 +975,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int height,
     int format,
     MemoryPointer<RVoid> pixels,
-  ) => rl.Rlgl.rlCopyFramebuffer(
+  ) => _ffi.rlCopyFramebuffer(
     x,
     y,
     width,
@@ -986,7 +988,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlResizeFramebuffer(
     int width,
     int height,
-  ) => rl.Rlgl.rlResizeFramebuffer(
+  ) => _ffi.rlResizeFramebuffer(
     width,
     height,
   );
@@ -995,7 +997,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   int rlLoadShader(
     MemoryPointer<RChar> code,
     int type,
-  ) => rl.Rlgl.rlLoadShader(
+  ) => _ffi.rlLoadShader(
     code.asNativePointer(),
     type,
   );
@@ -1004,7 +1006,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   int rlLoadShaderProgram(
     MemoryPointer<RChar> vsCode,
     MemoryPointer<RChar> fsCode,
-  ) => rl.Rlgl.rlLoadShaderProgram(
+  ) => _ffi.rlLoadShaderProgram(
     vsCode.asNativePointer(),
     fsCode.asNativePointer(),
   );
@@ -1013,7 +1015,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   int rlLoadShaderProgramEx(
     int vsId,
     int fsId,
-  ) => rl.Rlgl.rlLoadShaderProgramEx(
+  ) => _ffi.rlLoadShaderProgramEx(
     vsId,
     fsId,
   );
@@ -1021,21 +1023,21 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   int rlLoadShaderProgramCompute(
     int csId,
-  ) => rl.Rlgl.rlLoadShaderProgramCompute(
+  ) => _ffi.rlLoadShaderProgramCompute(
     csId,
   );
 
   @override
   void rlUnloadShader(
     int id,
-  ) => rl.Rlgl.rlUnloadShader(
+  ) => _ffi.rlUnloadShader(
     id,
   );
 
   @override
   void rlUnloadShaderProgram(
     int id,
-  ) => rl.Rlgl.rlUnloadShaderProgram(
+  ) => _ffi.rlUnloadShaderProgram(
     id,
   );
 
@@ -1043,7 +1045,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   int rlGetLocationUniform(
     int shaderId,
     MemoryPointer<RChar> uniformName,
-  ) => rl.Rlgl.rlGetLocationUniform(
+  ) => _ffi.rlGetLocationUniform(
     shaderId,
     uniformName.asNativePointer(),
   );
@@ -1052,7 +1054,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   int rlGetLocationAttrib(
     int shaderId,
     MemoryPointer<RChar> attribName,
-  ) => rl.Rlgl.rlGetLocationAttrib(
+  ) => _ffi.rlGetLocationAttrib(
     shaderId,
     attribName.asNativePointer(),
   );
@@ -1063,7 +1065,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> value,
     int uniformType,
     int count,
-  ) => rl.Rlgl.rlSetUniform(
+  ) => _ffi.rlSetUniform(
     locIndex,
     value.asNativePointer(),
     uniformType,
@@ -1074,7 +1076,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetUniformMatrix(
     int locIndex,
     MatrixD mat,
-  ) => rl.Rlgl.rlSetUniformMatrix(
+  ) => _ffi.rlSetUniformMatrix(
     locIndex,
     rl.Temp.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
   );
@@ -1084,7 +1086,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int locIndex,
     StructPointer<MatrixD> mat,
     int count,
-  ) => rl.Rlgl.rlSetUniformMatrices(
+  ) => _ffi.rlSetUniformMatrices(
     locIndex,
     mat.asNativePointer(),
     count,
@@ -1094,7 +1096,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetUniformSampler(
     int locIndex,
     int textureId,
-  ) => rl.Rlgl.rlSetUniformSampler(
+  ) => _ffi.rlSetUniformSampler(
     locIndex,
     textureId,
   );
@@ -1103,7 +1105,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetShader(
     int id,
     MemoryPointer<RInt> locs,
-  ) => rl.Rlgl.rlSetShader(
+  ) => _ffi.rlSetShader(
     id,
     locs.asNativePointer(),
   );
@@ -1113,7 +1115,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int groupX,
     int groupY,
     int groupZ,
-  ) => rl.Rlgl.rlComputeShaderDispatch(
+  ) => _ffi.rlComputeShaderDispatch(
     groupX,
     groupY,
     groupZ,
@@ -1124,7 +1126,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int size,
     MemoryPointer<RVoid> data,
     int usageHint,
-  ) => rl.Rlgl.rlLoadShaderBuffer(
+  ) => _ffi.rlLoadShaderBuffer(
     size,
     data.asNativePointer(),
     usageHint,
@@ -1133,7 +1135,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlUnloadShaderBuffer(
     int ssboId,
-  ) => rl.Rlgl.rlUnloadShaderBuffer(
+  ) => _ffi.rlUnloadShaderBuffer(
     ssboId,
   );
 
@@ -1143,7 +1145,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> data,
     int dataSize,
     int offset,
-  ) => rl.Rlgl.rlUpdateShaderBuffer(
+  ) => _ffi.rlUpdateShaderBuffer(
     id,
     data.asNativePointer(),
     dataSize,
@@ -1154,7 +1156,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlBindShaderBuffer(
     int id,
     int index,
-  ) => rl.Rlgl.rlBindShaderBuffer(
+  ) => _ffi.rlBindShaderBuffer(
     id,
     index,
   );
@@ -1165,7 +1167,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     MemoryPointer<RVoid> dest,
     int count,
     int offset,
-  ) => rl.Rlgl.rlReadShaderBuffer(
+  ) => _ffi.rlReadShaderBuffer(
     id,
     dest.asNativePointer(),
     count,
@@ -1179,7 +1181,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int destOffset,
     int srcOffset,
     int count,
-  ) => rl.Rlgl.rlCopyShaderBuffer(
+  ) => _ffi.rlCopyShaderBuffer(
     destId,
     srcId,
     destOffset,
@@ -1190,7 +1192,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   int rlGetShaderBufferSize(
     int id,
-  ) => rl.Rlgl.rlGetShaderBufferSize(
+  ) => _ffi.rlGetShaderBufferSize(
     id,
   );
 
@@ -1200,7 +1202,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
     int index,
     int format,
     bool readonly,
-  ) => rl.Rlgl.rlBindImageTexture(
+  ) => _ffi.rlBindImageTexture(
     id,
     index,
     format,
@@ -1209,24 +1211,24 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
 
   @override
   MatrixD rlGetMatrixModelview() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixModelview().toDart(p.asNativePointer()),
+    (p) => _ffi.rlGetMatrixModelview().toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD rlGetMatrixProjection() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixProjection().toDart(p.asNativePointer()),
+    (p) => _ffi.rlGetMatrixProjection().toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD rlGetMatrixTransform() => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixTransform().toDart(p.asNativePointer()),
+    (p) => _ffi.rlGetMatrixTransform().toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD rlGetMatrixProjectionStereo(
     int eye,
   ) => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixProjectionStereo(
+    (p) => _ffi.rlGetMatrixProjectionStereo(
       eye,
     ).toDart(p.asNativePointer()),
   );
@@ -1235,7 +1237,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   MatrixD rlGetMatrixViewOffsetStereo(
     int eye,
   ) => rl.Temp.Matrix$.Extract1(
-    (p) => rl.Rlgl.rlGetMatrixViewOffsetStereo(
+    (p) => _ffi.rlGetMatrixViewOffsetStereo(
       eye,
     ).toDart(p.asNativePointer()),
   );
@@ -1243,14 +1245,14 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   @override
   void rlSetMatrixProjection(
     MatrixD proj,
-  ) => rl.Rlgl.rlSetMatrixProjection(
+  ) => _ffi.rlSetMatrixProjection(
     rl.Temp.Matrix$.Ref1(proj).asNativePointer<MatrixC>().ref,
   );
 
   @override
   void rlSetMatrixModelview(
     MatrixD view,
-  ) => rl.Rlgl.rlSetMatrixModelview(
+  ) => _ffi.rlSetMatrixModelview(
     rl.Temp.Matrix$.Ref1(view).asNativePointer<MatrixC>().ref,
   );
 
@@ -1258,7 +1260,7 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetMatrixProjectionStereo(
     MatrixD right,
     MatrixD left,
-  ) => rl.Rlgl.rlSetMatrixProjectionStereo(
+  ) => _ffi.rlSetMatrixProjectionStereo(
     rl.Temp.Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
     rl.Temp.Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
   );
@@ -1267,14 +1269,14 @@ class RaylibRlglFlat extends RaylibRlglFlatModule<Raylib> {
   void rlSetMatrixViewOffsetStereo(
     MatrixD right,
     MatrixD left,
-  ) => rl.Rlgl.rlSetMatrixViewOffsetStereo(
+  ) => _ffi.rlSetMatrixViewOffsetStereo(
     rl.Temp.Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
     rl.Temp.Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
   );
 
   @override
-  void rlLoadDrawCube() => rl.Rlgl.rlLoadDrawCube();
+  void rlLoadDrawCube() => _ffi.rlLoadDrawCube();
 
   @override
-  void rlLoadDrawQuad() => rl.Rlgl.rlLoadDrawQuad();
+  void rlLoadDrawQuad() => _ffi.rlLoadDrawQuad();
 }
