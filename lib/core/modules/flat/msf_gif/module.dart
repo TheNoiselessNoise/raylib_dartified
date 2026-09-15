@@ -41,7 +41,7 @@ class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
   @override
   MsfGifResultD msf_gif_end(
     StructPointer<MsfGifStateD> handle,
-  ) => rl.Temp.MsfGifResult$.RefCapture(
+  ) => $.MsfGifResult$.RefCapture(
     RaylibCaptureIds.msf_gif_end,
     (p) => _ffi.msf_gif_end(
       handle.asNativePointer(),

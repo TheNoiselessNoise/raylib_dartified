@@ -13,14 +13,14 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
     Vector3D target,
     ColorD color,
     ShaderD shader,
-  ) => rl.Temp.Light$.RefCapture(
+  ) => $.Light$.RefCapture(
     RaylibCaptureIds.CreateLight,
     (p) => _ffi.CreateLight(
       type,
-      rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-      rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+      $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -29,7 +29,7 @@ class RaylibLightFlat extends RaylibLightFlatModule<Raylib> {
     ShaderD shader,
     LightD light,
   ) => _ffi.UpdateLightValues(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
-    rl.Temp.Light$.Ref1(light).asNativePointer<LightC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Light$.Ref1(light).asNativePointer<LightC>().ref,
   );
 }

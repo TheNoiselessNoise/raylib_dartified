@@ -57,7 +57,7 @@ void main()
   findRaylib('raylib-6.0_linux_amd64/lib');
   allocateRaylibColors();
   
-  rl.registerModule(MyModule(rl));
+  registerModule(MyModule(rl));
 
   InitWindow(screenWidth, screenHeight, "custom_module_dispose".toC);
   SetTargetFPS(60);

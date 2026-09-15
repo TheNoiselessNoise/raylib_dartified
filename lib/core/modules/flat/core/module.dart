@@ -84,7 +84,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void SetWindowIcon(
     ImageD image,
   ) => _ffi.SetWindowIcon(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
   );
 
   @override
@@ -180,7 +180,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   Vector2D GetMonitorPosition(
     int monitor,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.GetMonitorPosition(
       monitor,
     ).toDart(p.asNativePointer()),
@@ -222,12 +222,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   );
 
   @override
-  Vector2D GetWindowPosition() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetWindowPosition() => $.Vector2$.Extract1(
     (p) => _ffi.GetWindowPosition().toDart(p.asNativePointer()),
   );
 
   @override
-  Vector2D GetWindowScaleDPI() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetWindowScaleDPI() => $.Vector2$.Extract1(
     (p) => _ffi.GetWindowScaleDPI().toDart(p.asNativePointer()),
   );
 
@@ -249,7 +249,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   NativeMemoryPointer<RChar> GetClipboardText() => _ffi.GetClipboardText().asMemoryPointer();
 
   @override
-  ImageD GetClipboardImage() => rl.Temp.Image$.RefCapture(
+  ImageD GetClipboardImage() => $.Image$.RefCapture(
     RaylibCaptureIds.GetClipboardImage,
     (p) => _ffi.GetClipboardImage().toDart(p.asNativePointer()),
   );
@@ -282,7 +282,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void ClearBackground(
     ColorD color,
   ) => _ffi.ClearBackground(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -295,7 +295,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void BeginMode2D(
     Camera2DD camera,
   ) => _ffi.BeginMode2D(
-    rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+    $.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
   );
 
   @override
@@ -305,7 +305,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void BeginMode3D(
     Camera3DD camera,
   ) => _ffi.BeginMode3D(
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
   );
 
   @override
@@ -315,7 +315,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void BeginTextureMode(
     RenderTextureD target,
   ) => _ffi.BeginTextureMode(
-    rl.Temp.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
+    $.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
   );
 
   @override
@@ -325,7 +325,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void BeginShaderMode(
     ShaderD shader,
   ) => _ffi.BeginShaderMode(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
   );
 
   @override
@@ -361,7 +361,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void BeginVrStereoMode(
     VrStereoConfigD config,
   ) => _ffi.BeginVrStereoMode(
-    rl.Temp.VrStereoConfig$.Ref1(config).asNativePointer<VrStereoConfigC>().ref,
+    $.VrStereoConfig$.Ref1(config).asNativePointer<VrStereoConfigC>().ref,
   );
 
   @override
@@ -370,10 +370,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   VrStereoConfigD LoadVrStereoConfig(
     VrDeviceInfoD device,
-  ) => rl.Temp.VrStereoConfig$.RefCapture(
+  ) => $.VrStereoConfig$.RefCapture(
     RaylibCaptureIds.LoadVrStereoConfig,
     (p) => _ffi.LoadVrStereoConfig(
-      rl.Temp.VrDeviceInfo$.Ref1(device).asNativePointer<VrDeviceInfoC>().ref,
+      $.VrDeviceInfo$.Ref1(device).asNativePointer<VrDeviceInfoC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -390,7 +390,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ShaderD LoadShader(
     MemoryPointer<RChar> vsFileName,
     MemoryPointer<RChar> fsFileName,
-  ) => rl.Temp.Shader$.RefCapture(
+  ) => $.Shader$.RefCapture(
     RaylibCaptureIds.LoadShader,
     (p) => _ffi.LoadShader(
       vsFileName.asNativePointer(),
@@ -402,7 +402,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ShaderD LoadShaderFromMemory(
     MemoryPointer<RChar> vsCode,
     MemoryPointer<RChar> fsCode,
-  ) => rl.Temp.Shader$.RefCapture(
+  ) => $.Shader$.RefCapture(
     RaylibCaptureIds.LoadShaderFromMemory,
     (p) => _ffi.LoadShaderFromMemory(
       vsCode.asNativePointer(),
@@ -414,7 +414,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsShaderValid(
     ShaderD shader,
   ) => _ffi.IsShaderValid(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
   );
 
   @override
@@ -422,7 +422,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ShaderD shader,
     MemoryPointer<RChar> uniformName,
   ) => _ffi.GetShaderLocation(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     uniformName.asNativePointer(),
   );
 
@@ -431,7 +431,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ShaderD shader,
     MemoryPointer<RChar> attribName,
   ) => _ffi.GetShaderLocationAttrib(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     attribName.asNativePointer(),
   );
 
@@ -443,7 +443,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int uniformType,
     int count,
   ) => _ffi.SetShaderValueV(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     locIndex,
     value.asNativePointer(),
     uniformType,
@@ -456,9 +456,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int locIndex,
     MatrixD mat,
   ) => _ffi.SetShaderValueMatrix(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     locIndex,
-    rl.Temp.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+    $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
   );
 
   @override
@@ -467,9 +467,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int locIndex,
     TextureD texture,
   ) => _ffi.SetShaderValueTexture(
-    rl.Temp.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
+    $.Shader$.Ref1(shader).asNativePointer<ShaderC>().ref,
     locIndex,
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
   );
 
   @override
@@ -485,10 +485,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RayD GetScreenToWorldRay(
     Vector2D position,
     Camera3DD camera,
-  ) => rl.Temp.Ray$.Extract1(
+  ) => $.Ray$.Extract1(
     (p) => _ffi.GetScreenToWorldRay(
-      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -498,10 +498,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Camera3DD camera,
     int width,
     int height,
-  ) => rl.Temp.Ray$.Extract1(
+  ) => $.Ray$.Extract1(
     (p) => _ffi.GetScreenToWorldRayEx(
-      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
       width,
       height,
     ).toDart(p.asNativePointer()),
@@ -511,10 +511,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   Vector2D GetWorldToScreen(
     Vector3D position,
     Camera3DD camera,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.GetWorldToScreen(
-      rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+      $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -524,10 +524,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Camera3DD camera,
     int width,
     int height,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.GetWorldToScreenEx(
-      rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+      $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
       width,
       height,
     ).toDart(p.asNativePointer()),
@@ -537,10 +537,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   Vector2D GetWorldToScreen2D(
     Vector2D position,
     Camera2DD camera,
-  ) => rl.Temp.Vector2$.Extract2(
+  ) => $.Vector2$.Extract2(
     (p) => _ffi.GetWorldToScreen2D(
-      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+      $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      $.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -548,28 +548,28 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   Vector2D GetScreenToWorld2D(
     Vector2D position,
     Camera2DD camera,
-  ) => rl.Temp.Vector2$.Extract2(
+  ) => $.Vector2$.Extract2(
     (p) => _ffi.GetScreenToWorld2D(
-      rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+      $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+      $.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD GetCameraMatrix(
     Camera3DD camera,
-  ) => rl.Temp.Matrix$.Extract1(
+  ) => $.Matrix$.Extract1(
     (p) => _ffi.GetCameraMatrix(
-      rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+      $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   MatrixD GetCameraMatrix2D(
     Camera2DD camera,
-  ) => rl.Temp.Matrix$.Extract1(
+  ) => $.Matrix$.Extract1(
     (p) => _ffi.GetCameraMatrix2D(
-      rl.Temp.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
+      $.Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -944,7 +944,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   FilePathListD LoadDirectoryFiles(
     MemoryPointer<RChar> dirPath,
-  ) => rl.Temp.FilePathList$.RefCapture(
+  ) => $.FilePathList$.RefCapture(
     RaylibCaptureIds.LoadDirectoryFiles,
     (p) => _ffi.LoadDirectoryFiles(
       dirPath.asNativePointer(),
@@ -956,7 +956,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> basePath,
     MemoryPointer<RChar> filter,
     bool scanSubdirs,
-  ) => rl.Temp.FilePathList$.RefCapture(
+  ) => $.FilePathList$.RefCapture(
     RaylibCaptureIds.LoadDirectoryFilesEx,
     (p) => _ffi.LoadDirectoryFilesEx(
       basePath.asNativePointer(),
@@ -978,7 +978,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsFileDropped() => _ffi.IsFileDropped();
 
   @override
-  FilePathListD LoadDroppedFiles() => rl.Temp.FilePathList$.RefCapture(
+  FilePathListD LoadDroppedFiles() => $.FilePathList$.RefCapture(
     RaylibCaptureIds.LoadDroppedFiles,
     (p) => _ffi.LoadDroppedFiles().toDart(p.asNativePointer()),
   );
@@ -1080,7 +1080,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   AutomationEventListD LoadAutomationEventList(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.AutomationEventList$.RefCapture(
+  ) => $.AutomationEventList$.RefCapture(
     RaylibCaptureIds.LoadAutomationEventList,
     (p) => _ffi.LoadAutomationEventList(
       fileName.asNativePointer(),
@@ -1101,7 +1101,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     AutomationEventListD list,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportAutomationEventList(
-    rl.Temp.AutomationEventList$.Ref1(list).asNativePointer<AutomationEventListC>().ref,
+    $.AutomationEventList$.Ref1(list).asNativePointer<AutomationEventListC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -1129,7 +1129,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void PlayAutomationEvent(
     AutomationEventD event,
   ) => _ffi.PlayAutomationEvent(
-    rl.Temp.AutomationEvent$.Ref1(event).asNativePointer<AutomationEventC>().ref,
+    $.AutomationEvent$.Ref1(event).asNativePointer<AutomationEventC>().ref,
   );
 
   @override
@@ -1311,12 +1311,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   int GetMouseY() => _ffi.GetMouseY();
 
   @override
-  Vector2D GetMousePosition() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetMousePosition() => $.Vector2$.Extract1(
     (p) => _ffi.GetMousePosition().toDart(p.asNativePointer()),
   );
 
   @override
-  Vector2D GetMouseDelta() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetMouseDelta() => $.Vector2$.Extract1(
     (p) => _ffi.GetMouseDelta().toDart(p.asNativePointer()),
   );
 
@@ -1351,7 +1351,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   double GetMouseWheelMove() => _ffi.GetMouseWheelMove();
 
   @override
-  Vector2D GetMouseWheelMoveV() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetMouseWheelMoveV() => $.Vector2$.Extract1(
     (p) => _ffi.GetMouseWheelMoveV().toDart(p.asNativePointer()),
   );
 
@@ -1371,7 +1371,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   Vector2D GetTouchPosition(
     int index,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.GetTouchPosition(
       index,
     ).toDart(p.asNativePointer()),
@@ -1408,7 +1408,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   double GetGestureHoldDuration() => _ffi.GetGestureHoldDuration();
 
   @override
-  Vector2D GetGestureDragVector() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetGestureDragVector() => $.Vector2$.Extract1(
     (p) => _ffi.GetGestureDragVector().toDart(p.asNativePointer()),
   );
 
@@ -1416,7 +1416,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   double GetGestureDragAngle() => _ffi.GetGestureDragAngle();
 
   @override
-  Vector2D GetGesturePinchVector() => rl.Temp.Vector2$.Extract1(
+  Vector2D GetGesturePinchVector() => $.Vector2$.Extract1(
     (p) => _ffi.GetGesturePinchVector().toDart(p.asNativePointer()),
   );
 
@@ -1427,7 +1427,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void ProcessGestureEvent(
     GestureEventD event,
   ) => _ffi.ProcessGestureEvent(
-    rl.Temp.GestureEvent$.Ref1(event).asNativePointer<GestureEventC>().ref,
+    $.GestureEvent$.Ref1(event).asNativePointer<GestureEventC>().ref,
   );
 
   @override
@@ -1450,8 +1450,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double zoom,
   ) => _ffi.UpdateCameraPro(
     camera.asNativePointer(),
-    rl.Temp.Vector3$.Ref1(movement).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(rotation).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(movement).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(rotation).asNativePointer<Vector3C>().ref,
     zoom,
   );
 
@@ -1460,17 +1460,17 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     TextureD texture,
     RectangleD source,
   ) => _ffi.SetShapesTexture(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
   );
 
   @override
-  TextureD GetShapesTexture() => rl.Temp.Texture$.Extract1(
+  TextureD GetShapesTexture() => $.Texture$.Extract1(
     (p) => _ffi.GetShapesTexture().toDart(p.asNativePointer()),
   );
 
   @override
-  RectangleD GetShapesTextureRectangle() => rl.Temp.Rectangle$.Extract1(
+  RectangleD GetShapesTextureRectangle() => $.Rectangle$.Extract1(
     (p) => _ffi.GetShapesTextureRectangle().toDart(p.asNativePointer()),
   );
 
@@ -1482,7 +1482,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.DrawPixel(
     posX,
     posY,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1490,8 +1490,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D position,
     ColorD color,
   ) => _ffi.DrawPixelV(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1506,7 +1506,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     startPosY,
     endPosX,
     endPosY,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1515,9 +1515,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D endPos,
     ColorD color,
   ) => _ffi.DrawLineV(
-    rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1527,10 +1527,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawLineEx(
-    rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1541,7 +1541,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.DrawLineStrip(
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1551,10 +1551,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawLineBezier(
-    rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1565,11 +1565,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int spaceSize,
     ColorD color,
   ) => _ffi.DrawLineDashed(
-    rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
     dashSize,
     spaceSize,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1582,7 +1582,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerX,
     centerY,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1594,12 +1594,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawCircleSector(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
     startAngle,
     endAngle,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1611,12 +1611,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawCircleSectorLines(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
     startAngle,
     endAngle,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1626,10 +1626,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD inner,
     ColorD outer,
   ) => _ffi.DrawCircleGradient(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1638,9 +1638,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     ColorD color,
   ) => _ffi.DrawCircleV(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1653,7 +1653,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerX,
     centerY,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1662,9 +1662,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     ColorD color,
   ) => _ffi.DrawCircleLinesV(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1679,7 +1679,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerY,
     radiusH,
     radiusV,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1689,10 +1689,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radiusV,
     ColorD color,
   ) => _ffi.DrawEllipseV(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radiusH,
     radiusV,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1707,7 +1707,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerY,
     radiusH,
     radiusV,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1717,10 +1717,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radiusV,
     ColorD color,
   ) => _ffi.DrawEllipseLinesV(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radiusH,
     radiusV,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1733,13 +1733,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawRing(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     innerRadius,
     outerRadius,
     startAngle,
     endAngle,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1752,13 +1752,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawRingLines(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     innerRadius,
     outerRadius,
     startAngle,
     endAngle,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1773,7 +1773,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posY,
     width,
     height,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1782,9 +1782,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D size,
     ColorD color,
   ) => _ffi.DrawRectangleV(
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(size).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(size).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1792,8 +1792,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RectangleD rec,
     ColorD color,
   ) => _ffi.DrawRectangleRec(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1803,10 +1803,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD color,
   ) => _ffi.DrawRectanglePro(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
     rotation,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1822,8 +1822,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posY,
     width,
     height,
-    rl.Temp.Color$.Ref1(top).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(bottom).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(top).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(bottom).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1839,8 +1839,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posY,
     width,
     height,
-    rl.Temp.Color$.Ref1(left).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(right).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(left).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(right).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1851,11 +1851,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD topRight,
     ColorD bottomRight,
   ) => _ffi.DrawRectangleGradientEx(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Color$.Ref1(topLeft).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(bottomLeft).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref3(topRight).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref4(bottomRight).asNativePointer<ColorC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Color$.Ref1(topLeft).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(bottomLeft).asNativePointer<ColorC>().ref,
+    $.Color$.Ref3(topRight).asNativePointer<ColorC>().ref,
+    $.Color$.Ref4(bottomRight).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1870,7 +1870,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posY,
     width,
     height,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1879,9 +1879,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double lineThick,
     ColorD color,
   ) => _ffi.DrawRectangleLinesEx(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     lineThick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1891,10 +1891,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawRectangleRounded(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     roundness,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1904,10 +1904,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int segments,
     ColorD color,
   ) => _ffi.DrawRectangleRoundedLines(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     roundness,
     segments,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1918,11 +1918,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double lineThick,
     ColorD color,
   ) => _ffi.DrawRectangleRoundedLinesEx(
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     roundness,
     segments,
     lineThick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1932,10 +1932,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D v3,
     ColorD color,
   ) => _ffi.DrawTriangle(
-    rl.Temp.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1945,10 +1945,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D v3,
     ColorD color,
   ) => _ffi.DrawTriangleLines(
-    rl.Temp.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1959,7 +1959,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.DrawTriangleFan(
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref
   );
 
   @override
@@ -1970,7 +1970,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.DrawTriangleStrip(
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref
   );
 
   @override
@@ -1981,11 +1981,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD color,
   ) => _ffi.DrawPoly(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     sides,
     radius,
     rotation,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -1996,11 +1996,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD color,
   ) => _ffi.DrawPolyLines(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     sides,
     radius,
     rotation,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2012,12 +2012,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double lineThick,
     ColorD color,
   ) => _ffi.DrawPolyLinesEx(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     sides,
     radius,
     rotation,
     lineThick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2030,7 +2030,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     points.asNativePointer(),
     pointCount,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2043,7 +2043,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     points.asNativePointer(),
     pointCount,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2056,7 +2056,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     points.asNativePointer(),
     pointCount, 
     thick, 
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2069,7 +2069,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     points.asNativePointer(),
     pointCount,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2082,7 +2082,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     points.asNativePointer(),
     pointCount,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2092,10 +2092,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawSplineSegmentLinear(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2107,12 +2107,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawSplineSegmentBasis(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2124,12 +2124,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawSplineSegmentCatmullRom(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2140,11 +2140,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawSplineSegmentBezierQuadratic(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2156,12 +2156,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double thick,
     ColorD color,
   ) => _ffi.DrawSplineSegmentBezierCubic(
-    rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2169,10 +2169,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D startPos,
     Vector2D endPos,
     double t,
-  ) => rl.Temp.Vector2$.Extract3(
+  ) => $.Vector2$.Extract3(
     (p) => _ffi.GetSplinePointLinear(
-      rl.Temp.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
       t,
     ).toDart(p.asNativePointer()),
   );
@@ -2184,12 +2184,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p3,
     Vector2D p4,
     double t,
-  ) => rl.Temp.Vector2$.Extract5(
+  ) => $.Vector2$.Extract5(
     (p) => _ffi.GetSplinePointBasis(
-      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
       t,
     ).toDart(p.asNativePointer()),
   );
@@ -2201,12 +2201,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p3,
     Vector2D p4,
     double t,
-  ) => rl.Temp.Vector2$.Extract5(
+  ) => $.Vector2$.Extract5(
     (p) => _ffi.GetSplinePointCatmullRom(
-      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
       t,
     ).toDart(p.asNativePointer()),
   );
@@ -2217,11 +2217,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D c2,
     Vector2D p3,
     double t,
-  ) => rl.Temp.Vector2$.Extract4(
+  ) => $.Vector2$.Extract4(
     (p) => _ffi.GetSplinePointBezierQuad(
-      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref3(p3).asNativePointer<Vector2C>().ref,
       t,
     ).toDart(p.asNativePointer()),
   );
@@ -2233,12 +2233,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D c3,
     Vector2D p4,
     double t,
-  ) => rl.Temp.Vector2$.Extract5(
+  ) => $.Vector2$.Extract5(
     (p) => _ffi.GetSplinePointBezierCubic(
-      rl.Temp.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
-      rl.Temp.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref3(c3).asNativePointer<Vector2C>().ref,
+      $.Vector2$.Ref4(p4).asNativePointer<Vector2C>().ref,
       t,
     ).toDart(p.asNativePointer()),
   );
@@ -2248,8 +2248,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RectangleD rec1,
     RectangleD rec2,
   ) => _ffi.CheckCollisionRecs(
-    rl.Temp.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
-    rl.Temp.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
   );
 
   @override
@@ -2259,9 +2259,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D center2,
     double radius2,
   ) => _ffi.CheckCollisionCircles(
-    rl.Temp.Vector2$.Ref1(center1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center1).asNativePointer<Vector2C>().ref,
     radius1,
-    rl.Temp.Vector2$.Ref2(center2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(center2).asNativePointer<Vector2C>().ref,
     radius2,
   );
 
@@ -2271,9 +2271,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     RectangleD rec,
   ) => _ffi.CheckCollisionCircleRec(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
   );
 
   @override
@@ -2283,10 +2283,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p1,
     Vector2D p2,
   ) => _ffi.CheckCollisionCircleLine(
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
   );
 
   @override
@@ -2294,8 +2294,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D point,
     RectangleD rec,
   ) => _ffi.CheckCollisionPointRec(
-    rl.Temp.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
   );
 
   @override
@@ -2304,8 +2304,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D center,
     double radius,
   ) => _ffi.CheckCollisionPointCircle(
-    rl.Temp.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(center).asNativePointer<Vector2C>().ref,
     radius,
   );
 
@@ -2316,10 +2316,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p2,
     Vector2D p3,
   ) => _ffi.CheckCollisionPointTriangle(
-    rl.Temp.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(p3).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref4(p3).asNativePointer<Vector2C>().ref,
   );
 
   @override
@@ -2329,9 +2329,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D p2,
     int threshold,
   ) => _ffi.CheckCollisionPointLine(
-    rl.Temp.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(p1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(p2).asNativePointer<Vector2C>().ref,
     threshold,
   );
 
@@ -2341,7 +2341,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     StructPointer<Vector2D> points,
     int pointCount,
   ) => _ffi.CheckCollisionPointPoly(
-    rl.Temp.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(point).asNativePointer<Vector2C>().ref,
     points.asNativePointer(),
     pointCount,
   );
@@ -2354,10 +2354,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D endPos2,
     StructPointer<Vector2D> collisionPoint,
   ) => _ffi.CheckCollisionLines(
-    rl.Temp.Vector2$.Ref1(startPos1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(endPos1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(startPos2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref4(endPos2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(startPos1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(endPos1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(startPos2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref4(endPos2).asNativePointer<Vector2C>().ref,
     collisionPoint.asNativePointer(),
   );
 
@@ -2365,17 +2365,17 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RectangleD GetCollisionRec(
     RectangleD rec1,
     RectangleD rec2,
-  ) => rl.Temp.Rectangle$.Extract3(
+  ) => $.Rectangle$.Extract3(
     (p) => _ffi.GetCollisionRec(
-      rl.Temp.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
-      rl.Temp.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
+      $.Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
+      $.Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   ImageD LoadImage(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImage,
     (p) => _ffi.LoadImage(
       fileName.asNativePointer(),
@@ -2389,7 +2389,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int height,
     int format,
     int headerSize,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageRaw,
     (p) => _ffi.LoadImageRaw(
       fileName.asNativePointer(),
@@ -2404,7 +2404,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ImageD LoadImageAnim(
     MemoryPointer<RChar> fileName,
     MemoryPointer<RInt> frames,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageAnim,
     (p) => _ffi.LoadImageAnim(
       fileName.asNativePointer(),
@@ -2418,7 +2418,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RUnsignedChar> fileData,
     int dataSize,
     MemoryPointer<RInt> frames,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageAnimFromMemory,
     (p) => _ffi.LoadImageAnimFromMemory(
       fileType.asNativePointer(),
@@ -2433,7 +2433,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> fileType,
     MemoryPointer<RUnsignedChar> fileData,
     int dataSize,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageFromMemory,
     (p) => _ffi.LoadImageFromMemory(
       fileType.asNativePointer(),
@@ -2445,15 +2445,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   ImageD LoadImageFromTexture(
     TextureD texture,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageFromTexture,
     (p) => _ffi.LoadImageFromTexture(
-      rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+      $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  ImageD LoadImageFromScreen() => rl.Temp.Image$.RefCapture(
+  ImageD LoadImageFromScreen() => $.Image$.RefCapture(
     RaylibCaptureIds.LoadImageFromScreen,
     (p) => _ffi.LoadImageFromScreen().toDart(p.asNativePointer()),
   );
@@ -2462,14 +2462,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsImageValid(
     ImageD image,
   ) => _ffi.IsImageValid(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
   );
 
   @override
   void UnloadImage(
     ImageD image,
   ) => _ffi.UnloadImage(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
   );
 
   @override
@@ -2477,7 +2477,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD image,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportImage(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -2487,7 +2487,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> fileType,
     MemoryPointer<RInt> fileSize,
   ) => _ffi.ExportImageToMemory(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     fileType.asNativePointer(),
     fileSize.asNativePointer(),
   ).asMemoryPointer();
@@ -2497,7 +2497,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD image,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportImageAsCode(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -2506,12 +2506,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int width,
     int height,
     ColorD color,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageColor,
     (p) => _ffi.GenImageColor(
       width,
       height,
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2522,14 +2522,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int direction,
     ColorD start,
     ColorD end,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageGradientLinear,
     (p) => _ffi.GenImageGradientLinear(
       width,
       height,
       direction,
-      rl.Temp.Color$.Ref1(start).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(end).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(start).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(end).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2540,14 +2540,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double density,
     ColorD inner,
     ColorD outer,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageGradientRadial,
     (p) => _ffi.GenImageGradientRadial(
       width,
       height,
       density,
-      rl.Temp.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2558,14 +2558,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double density,
     ColorD inner,
     ColorD outer,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageGradientSquare,
     (p) => _ffi.GenImageGradientSquare(
       width,
       height,
       density,
-      rl.Temp.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(inner).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(outer).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2577,15 +2577,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int checksY,
     ColorD col1,
     ColorD col2,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageChecked,
     (p) => _ffi.GenImageChecked(
       width,
       height,
       checksX,
       checksY,
-      rl.Temp.Color$.Ref1(col1).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(col2).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(col1).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(col2).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2594,7 +2594,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int width,
     int height,
     double factor,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageWhiteNoise,
     (p) => _ffi.GenImageWhiteNoise(
       width,
@@ -2610,7 +2610,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int offsetX,
     int offsetY,
     double scale,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImagePerlinNoise,
     (p) => _ffi.GenImagePerlinNoise(
       width,
@@ -2626,7 +2626,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int width,
     int height,
     int tileSize,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageCellular,
     (p) => _ffi.GenImageCellular(
       width,
@@ -2640,7 +2640,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int width,
     int height,
     MemoryPointer<RChar> text,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageText,
     (p) => _ffi.GenImageText(
       width,
@@ -2652,10 +2652,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   ImageD ImageCopy(
     ImageD image,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.ImageCopy,
     (p) => _ffi.ImageCopy(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2663,11 +2663,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ImageD ImageFromImage(
     ImageD image,
     RectangleD rec,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.ImageFromImage,
     (p) => _ffi.ImageFromImage(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
-      rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2675,10 +2675,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ImageD ImageFromChannel(
     ImageD image,
     int selectedChannel,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.ImageFromChannel,
     (p) => _ffi.ImageFromChannel(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
       selectedChannel,
     ).toDart(p.asNativePointer()),
   );
@@ -2688,12 +2688,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     int fontSize,
     ColorD color,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.ImageText,
     (p) => _ffi.ImageText(
       text.asNativePointer(),
       fontSize,
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2704,14 +2704,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double fontSize,
     double spacing,
     ColorD tint,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.ImageTextEx,
     (p) => _ffi.ImageTextEx(
-      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      $.Font$.Ref1(font).asNativePointer<FontC>().ref,
       text.asNativePointer(),
       fontSize,
       spacing,
-      rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -2730,7 +2730,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD fill,
   ) => _ffi.ImageToPOT(
     image.asNativePointer(),
-    rl.Temp.Color$.Ref1(fill).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(fill).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2739,7 +2739,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RectangleD crop,
   ) => _ffi.ImageCrop(
     image.asNativePointer(),
-    rl.Temp.Rectangle$.Ref1(crop).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(crop).asNativePointer<RectangleC>().ref,
   );
 
   @override
@@ -2758,7 +2758,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double threshold,
   ) => _ffi.ImageAlphaClear(
     image.asNativePointer(),
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     threshold,
   );
 
@@ -2768,7 +2768,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD alphaMask,
   ) => _ffi.ImageAlphaMask(
     image.asNativePointer(),
-    rl.Temp.Image$.Ref2(alphaMask).asNativePointer<ImageC>().ref,
+    $.Image$.Ref2(alphaMask).asNativePointer<ImageC>().ref,
   );
 
   @override
@@ -2834,7 +2834,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     newHeight,
     offsetX,
     offsetY,
-    rl.Temp.Color$.Ref1(fill).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(fill).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2902,7 +2902,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageColorTint(
     image.asNativePointer(),
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -2944,15 +2944,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD replace,
   ) => _ffi.ImageColorReplace(
     image.asNativePointer(),
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(replace).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(replace).asNativePointer<ColorC>().ref,
   );
 
   @override
   StructPointer<ColorD> LoadImageColors(
     ImageD image,
   ) => ColorD.pointer(_ffi.LoadImageColors(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
   ).asMemoryPointer());
 
   @override
@@ -2961,7 +2961,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int maxPaletteSize,
     MemoryPointer<RInt> colorCount,
   ) => ColorD.pointer(_ffi.LoadImagePalette(
-    rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+    $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     maxPaletteSize,
     colorCount.asNativePointer(),
   ).asMemoryPointer());
@@ -2984,9 +2984,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RectangleD GetImageAlphaBorder(
     ImageD image,
     double threshold,
-  ) => rl.Temp.Rectangle$.Extract1(
+  ) => $.Rectangle$.Extract1(
     (p) => _ffi.GetImageAlphaBorder(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
       threshold,
     ).toDart(p.asNativePointer()),
   );
@@ -2996,9 +2996,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD image,
     int x,
     int y,
-  ) => rl.Temp.Color$.Extract1(
+  ) => $.Color$.Extract1(
     (p) => _ffi.GetImageColor(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
       x,
       y,
     ).toDart(p.asNativePointer()),
@@ -3010,7 +3010,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageClearBackground(
     dst.asNativePointer(),
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3023,7 +3023,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     dst.asNativePointer(),
     posX,
     posY,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3033,8 +3033,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawPixelV(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3051,7 +3051,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     startPosY,
     endPosX,
     endPosY,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3062,9 +3062,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawLineV(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(start).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(end).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(start).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(end).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3076,10 +3076,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawLineEx(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(start).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(end).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(start).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(end).asNativePointer<Vector2C>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3094,7 +3094,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerX,
     centerY,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3105,9 +3105,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawCircleV(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3122,7 +3122,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     centerX,
     centerY,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3133,9 +3133,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawCircleLinesV(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(center).asNativePointer<Vector2C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3152,7 +3152,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posY,
     width,
     height,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3163,9 +3163,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawRectangleV(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(size).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(size).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3175,8 +3175,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawRectangleRec(
     dst.asNativePointer(),
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3187,9 +3187,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawRectangleLines(
     dst.asNativePointer(),
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     thick,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3201,10 +3201,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawTriangle(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3218,12 +3218,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD c3,
   ) => _ffi.ImageDrawTriangleEx(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(c1).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(c2).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref3(c3).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(c1).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(c2).asNativePointer<ColorC>().ref,
+    $.Color$.Ref3(c3).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3235,10 +3235,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color,
   ) => _ffi.ImageDrawTriangleLines(
     dst.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector2$.Ref1(v1).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(v2).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref3(v3).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3251,7 +3251,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     dst.asNativePointer(),
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3264,7 +3264,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     dst.asNativePointer(),
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3276,10 +3276,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD tint,
   ) => _ffi.ImageDraw(
     dst.asNativePointer(),
-    rl.Temp.Image$.Ref2(src).asNativePointer<ImageC>().ref,
-    rl.Temp.Rectangle$.Ref1(srcRec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Rectangle$.Ref2(dstRec).asNativePointer<RectangleC>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Image$.Ref2(src).asNativePointer<ImageC>().ref,
+    $.Rectangle$.Ref1(srcRec).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref2(dstRec).asNativePointer<RectangleC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3296,7 +3296,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posX,
     posY,
     fontSize,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3310,18 +3310,18 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD tint,
   ) => _ffi.ImageDrawTextEx(
     dst.asNativePointer(),
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     text.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
     fontSize,
     spacing,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
   TextureD LoadTexture(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Texture$.RefCapture(
+  ) => $.Texture$.RefCapture(
     RaylibCaptureIds.LoadTexture,
     (p) => _ffi.LoadTexture(
       fileName.asNativePointer(),
@@ -3331,10 +3331,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   TextureD LoadTextureFromImage(
     ImageD image,
-  ) => rl.Temp.Texture$.RefCapture(
+  ) => $.Texture$.RefCapture(
     RaylibCaptureIds.LoadTextureFromImage,
     (p) => _ffi.LoadTextureFromImage(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -3342,10 +3342,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   TextureD LoadTextureCubemap(
     ImageD image,
     int layout,
-  ) => rl.Temp.Texture$.RefCapture(
+  ) => $.Texture$.RefCapture(
     RaylibCaptureIds.LoadTextureCubemap,
     (p) => _ffi.LoadTextureCubemap(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
       layout,
     ).toDart(p.asNativePointer()),
   );
@@ -3354,7 +3354,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RenderTextureD LoadRenderTexture(
     int width,
     int height,
-  ) => rl.Temp.RenderTexture$.RefCapture(
+  ) => $.RenderTexture$.RefCapture(
     RaylibCaptureIds.LoadRenderTexture,
     (p) => _ffi.LoadRenderTexture(
       width,
@@ -3366,28 +3366,28 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsTextureValid(
     TextureD texture,
   ) => _ffi.IsTextureValid(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
   );
 
   @override
   void UnloadTexture(
     TextureD texture,
   ) => _ffi.UnloadTexture(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
   );
 
   @override
   bool IsRenderTextureValid(
     RenderTextureD target,
   ) => _ffi.IsRenderTextureValid(
-    rl.Temp.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
+    $.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
   );
 
   @override
   void UnloadRenderTexture(
     RenderTextureD target,
   ) => _ffi.UnloadRenderTexture(
-    rl.Temp.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
+    $.RenderTexture$.Ref1(target).asNativePointer<RenderTextureC>().ref,
   );
 
   @override
@@ -3395,7 +3395,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     TextureD texture,
     MemoryPointer<RVoid> pixels,
   ) => _ffi.UpdateTexture(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
     pixels.asNativePointer(),
   );
 
@@ -3405,8 +3405,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RectangleD rec,
     MemoryPointer<RVoid> pixels,
   ) => _ffi.UpdateTextureRec(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(rec).asNativePointer<RectangleC>().ref,
     pixels.asNativePointer(),
   );
 
@@ -3422,7 +3422,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     TextureD texture,
     int filter,
   ) => _ffi.SetTextureFilter(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
     filter,
   );
 
@@ -3431,7 +3431,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     TextureD texture,
     int wrap,
   ) => _ffi.SetTextureWrap(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
     wrap,
   );
 
@@ -3442,10 +3442,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int posY,
     ColorD tint,
   ) => _ffi.DrawTexture(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
     posX,
     posY,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3454,9 +3454,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D position,
     ColorD tint,
   ) => _ffi.DrawTextureV(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3467,11 +3467,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double scale,
     ColorD tint,
   ) => _ffi.DrawTextureEx(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
     rotation,
     scale,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3481,10 +3481,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D position,
     ColorD tint,
   ) => _ffi.DrawTextureRec(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3496,12 +3496,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD tint,
   ) => _ffi.DrawTexturePro(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
-    rl.Temp.Rectangle$.Ref2(dest).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
+    $.Rectangle$.Ref2(dest).asNativePointer<RectangleC>().ref,
+    $.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
     rotation,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3513,12 +3513,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD tint,
   ) => _ffi.DrawTextureNPatch(
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.NPatchInfo$.Ref1(nPatchInfo).asNativePointer<NPatchInfoC>().ref,
-    rl.Temp.Rectangle$.Ref1(dest).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.NPatchInfo$.Ref1(nPatchInfo).asNativePointer<NPatchInfoC>().ref,
+    $.Rectangle$.Ref1(dest).asNativePointer<RectangleC>().ref,
+    $.Vector2$.Ref1(origin).asNativePointer<Vector2C>().ref,
     rotation,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3526,17 +3526,17 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD col1,
     ColorD col2,
   ) => _ffi.ColorIsEqual(
-    rl.Temp.Color$.Ref1(col1).asNativePointer<ColorC>().ref,
-    rl.Temp.Color$.Ref2(col2).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(col1).asNativePointer<ColorC>().ref,
+    $.Color$.Ref2(col2).asNativePointer<ColorC>().ref,
   );
 
   @override
   ColorD Fade(
     ColorD color,
     double alpha,
-  ) => rl.Temp.Color$.Extract2(
+  ) => $.Color$.Extract2(
     (p) => _ffi.Fade(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
       alpha,
     ).toDart(p.asNativePointer()),
   );
@@ -3545,33 +3545,33 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   int ColorToInt(
     ColorD color,
   ) => _ffi.ColorToInt(
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
   Vector4D ColorNormalize(
     ColorD color,
-  ) => rl.Temp.Vector4$.Extract1(
+  ) => $.Vector4$.Extract1(
     (p) => _ffi.ColorNormalize(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   ColorD ColorFromNormalized(
     Vector4D normalized,
-  ) => rl.Temp.Color$.Extract1(
+  ) => $.Color$.Extract1(
     (p) => _ffi.ColorFromNormalized(
-      rl.Temp.Vector4$.Ref1(normalized).asNativePointer<Vector4C>().ref,
+      $.Vector4$.Ref1(normalized).asNativePointer<Vector4C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   Vector3D ColorToHSV(
     ColorD color,
-  ) => rl.Temp.Vector3$.Extract1(
+  ) => $.Vector3$.Extract1(
     (p) => _ffi.ColorToHSV(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -3580,7 +3580,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double hue,
     double saturation,
     double value,
-  ) => rl.Temp.Color$.Extract1(
+  ) => $.Color$.Extract1(
     (p) => _ffi.ColorFromHSV(
       hue,
       saturation,
@@ -3592,10 +3592,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD ColorTint(
     ColorD color,
     ColorD tint,
-  ) => rl.Temp.Color$.Extract3(
+  ) => $.Color$.Extract3(
     (p) => _ffi.ColorTint(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(tint).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(tint).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -3603,9 +3603,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD ColorBrightness(
     ColorD color,
     double factor,
-  ) => rl.Temp.Color$.Extract2(
+  ) => $.Color$.Extract2(
     (p) => _ffi.ColorBrightness(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
       factor,
     ).toDart(p.asNativePointer()),
   );
@@ -3614,9 +3614,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD ColorContrast(
     ColorD color,
     double contrast,
-  ) => rl.Temp.Color$.Extract2(
+  ) => $.Color$.Extract2(
     (p) => _ffi.ColorContrast(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
       contrast,
     ).toDart(p.asNativePointer()),
   );
@@ -3625,9 +3625,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD ColorAlpha(
     ColorD color,
     double alpha,
-  ) => rl.Temp.Color$.Extract2(
+  ) => $.Color$.Extract2(
     (p) => _ffi.ColorAlpha(
-      rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
       alpha,
     ).toDart(p.asNativePointer()),
   );
@@ -3637,11 +3637,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD dst,
     ColorD src,
     ColorD tint,
-  ) => rl.Temp.Color$.Extract4(
+  ) => $.Color$.Extract4(
     (p) => _ffi.ColorAlphaBlend(
-      rl.Temp.Color$.Ref1(dst).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(src).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref3(tint).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(dst).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(src).asNativePointer<ColorC>().ref,
+      $.Color$.Ref3(tint).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -3650,10 +3650,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ColorD color1,
     ColorD color2,
     double factor,
-  ) => rl.Temp.Color$.Extract3(
+  ) => $.Color$.Extract3(
     (p) => _ffi.ColorLerp(
-      rl.Temp.Color$.Ref1(color1).asNativePointer<ColorC>().ref,
-      rl.Temp.Color$.Ref2(color2).asNativePointer<ColorC>().ref,
+      $.Color$.Ref1(color1).asNativePointer<ColorC>().ref,
+      $.Color$.Ref2(color2).asNativePointer<ColorC>().ref,
       factor,
     ).toDart(p.asNativePointer()),
   );
@@ -3661,7 +3661,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   ColorD GetColor(
     int hexValue,
-  ) => rl.Temp.Color$.Extract1(
+  ) => $.Color$.Extract1(
     (p) => _ffi.GetColor(
       hexValue,
     ).toDart(p.asNativePointer()),
@@ -3671,7 +3671,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ColorD GetPixelColor(
     MemoryPointer<RVoid> srcPtr,
     int format,
-  ) => rl.Temp.Color$.Extract1(
+  ) => $.Color$.Extract1(
     (p) => _ffi.GetPixelColor(
       srcPtr.asNativePointer(),
       format,
@@ -3685,7 +3685,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int format,
   ) => _ffi.SetPixelColor(
     dstPtr.asNativePointer(),
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
     format,
   );
 
@@ -3701,7 +3701,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   );
 
   @override
-  FontD GetFontDefault() => rl.Temp.Font$.RefCaptureCached(
+  FontD GetFontDefault() => $.Font$.RefCaptureCached(
     RaylibCaptureIds.GetFontDefault,
     (p) => _ffi.GetFontDefault().toDart(p.asNativePointer()),
   );
@@ -3709,7 +3709,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   FontD LoadFont(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Font$.RefCapture(
+  ) => $.Font$.RefCapture(
     RaylibCaptureIds.LoadFont,
     (p) => _ffi.LoadFont(
       fileName.asNativePointer(),
@@ -3722,7 +3722,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int fontSize,
     MemoryPointer<RInt> codepoints,
     int codepointCount,
-  ) => rl.Temp.Font$.RefCapture(
+  ) => $.Font$.RefCapture(
     RaylibCaptureIds.LoadFontEx,
     (p) => _ffi.LoadFontEx(
       fileName.asNativePointer(),
@@ -3737,11 +3737,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD image,
     ColorD key,
     int firstChar,
-  ) => rl.Temp.Font$.RefCapture(
+  ) => $.Font$.RefCapture(
     RaylibCaptureIds.LoadFontFromImage,
     (p) => _ffi.LoadFontFromImage(
-      rl.Temp.Image$.Ref1(image).asNativePointer<ImageC>().ref,
-      rl.Temp.Color$.Ref1(key).asNativePointer<ColorC>().ref,
+      $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
+      $.Color$.Ref1(key).asNativePointer<ColorC>().ref,
       firstChar,
     ).toDart(p.asNativePointer()),
   );
@@ -3754,7 +3754,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int fontSize,
     MemoryPointer<RInt> codepoints,
     int codepointCount,
-  ) => rl.Temp.Font$.RefCapture(
+  ) => $.Font$.RefCapture(
     RaylibCaptureIds.LoadFontFromMemory,
     (p) => _ffi.LoadFontFromMemory(
       fileType.asNativePointer(),
@@ -3770,7 +3770,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsFontValid(
     FontD font,
   ) => _ffi.IsFontValid(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
   );
 
   @override
@@ -3800,7 +3800,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int fontSize,
     int padding,
     int packMethod,
-  ) => rl.Temp.Image$.RefCapture(
+  ) => $.Image$.RefCapture(
     RaylibCaptureIds.GenImageFontAtlas,
     (p) => _ffi.GenImageFontAtlas(
       glyphs.asNativePointer(),
@@ -3825,7 +3825,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void UnloadFont(
     FontD font,
   ) => _ffi.UnloadFont(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
   );
 
   @override
@@ -3833,7 +3833,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     FontD font,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportFontAsCode(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -3858,7 +3858,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     posX,
     posY,
     fontSize,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3870,12 +3870,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double spacing,
     ColorD tint,
   ) => _ffi.DrawTextEx(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     text.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
     fontSize,
     spacing,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3889,14 +3889,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double spacing,
     ColorD tint,
   ) => _ffi.DrawTextPro(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     text.asNativePointer(),
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(origin).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(origin).asNativePointer<Vector2C>().ref,
     rotation,
     fontSize,
     spacing,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3907,11 +3907,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double fontSize,
     ColorD tint,
   ) => _ffi.DrawTextCodepoint(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     codepoint,
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
     fontSize,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3924,13 +3924,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double spacing,
     ColorD tint,
   ) => _ffi.DrawTextCodepoints(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     codepoints.asNativePointer(),
     codepointCount,
-    rl.Temp.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
     fontSize,
     spacing,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -3955,9 +3955,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MemoryPointer<RChar> text,
     double fontSize,
     double spacing,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.MeasureTextEx(
-      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      $.Font$.Ref1(font).asNativePointer<FontC>().ref,
       text.asNativePointer(),
       fontSize,
       spacing,
@@ -3971,9 +3971,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int length,
     double fontSize,
     double spacing,
-  ) => rl.Temp.Vector2$.Extract1(
+  ) => $.Vector2$.Extract1(
     (p) => _ffi.MeasureTextCodepoints(
-      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      $.Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoints.asNativePointer(),
       length,
       fontSize,
@@ -3986,7 +3986,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     FontD font,
     int codepoint,
   ) => _ffi.GetGlyphIndex(
-    rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
     codepoint,
   );
 
@@ -3994,9 +3994,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   GlyphInfoD GetGlyphInfo(
     FontD font,
     int codepoint,
-  ) => rl.Temp.GlyphInfo$.Extract1(
+  ) => $.GlyphInfo$.Extract1(
     (p) => _ffi.GetGlyphInfo(
-      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      $.Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoint,
     ).toDart(p.asNativePointer()),
   );
@@ -4005,9 +4005,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RectangleD GetGlyphAtlasRec(
     FontD font,
     int codepoint,
-  ) => rl.Temp.Rectangle$.Extract1(
+  ) => $.Rectangle$.Extract1(
     (p) => _ffi.GetGlyphAtlasRec(
-      rl.Temp.Font$.Ref1(font).asNativePointer<FontC>().ref,
+      $.Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoint,
     ).toDart(p.asNativePointer()),
   );
@@ -4326,9 +4326,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D endPos,
     ColorD color,
   ) => _ffi.DrawLine3D(
-    rl.Temp.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4336,8 +4336,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D position,
     ColorD color,
   ) => _ffi.DrawPoint3D(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4348,11 +4348,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotationAngle,
     ColorD color,
   ) => _ffi.DrawCircle3D(
-    rl.Temp.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
     radius,
-    rl.Temp.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
     rotationAngle,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4362,10 +4362,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D v3,
     ColorD color,
   ) => _ffi.DrawTriangle3D(
-    rl.Temp.Vector3$.Ref1(v1).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(v2).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref3(v3).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(v1).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(v2).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref3(v3).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4376,7 +4376,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.DrawTriangleStrip3D(
     points.asNativePointer(),
     pointCount,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4387,11 +4387,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double length,
     ColorD color,
   ) => _ffi.DrawCube(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     width,
     height,
     length,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4400,9 +4400,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D size,
     ColorD color,
   ) => _ffi.DrawCubeV(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(size).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(size).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4413,11 +4413,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double length,
     ColorD color,
   ) => _ffi.DrawCubeWires(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     width,
     height,
     length,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4426,9 +4426,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D size,
     ColorD color,
   ) => _ffi.DrawCubeWiresV(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(size).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(size).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4437,9 +4437,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     ColorD color,
   ) => _ffi.DrawSphere(
-    rl.Temp.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
     radius,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4450,11 +4450,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int slices,
     ColorD color,
   ) => _ffi.DrawSphereEx(
-    rl.Temp.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
     radius,
     rings,
     slices,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4465,11 +4465,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int slices,
     ColorD color,
   ) => _ffi.DrawSphereWires(
-    rl.Temp.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
     radius,
     rings,
     slices,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4481,12 +4481,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int slices,
     ColorD color,
   ) => _ffi.DrawCylinder(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     radiusTop,
     radiusBottom,
     height,
     slices,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4498,12 +4498,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int sides,
     ColorD color,
   ) => _ffi.DrawCylinderEx(
-    rl.Temp.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
     startRadius,
     endRadius,
     sides,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4515,12 +4515,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int slices,
     ColorD color,
   ) => _ffi.DrawCylinderWires(
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     radiusTop,
     radiusBottom,
     height,
     slices,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4532,12 +4532,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int sides,
     ColorD color,
   ) => _ffi.DrawCylinderWiresEx(
-    rl.Temp.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
     startRadius,
     endRadius,
     sides,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4549,12 +4549,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int rings,
     ColorD color,
   ) => _ffi.DrawCapsule(
-    rl.Temp.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
     radius,
     slices,
     rings,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4566,12 +4566,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int rings,
     ColorD color,
   ) => _ffi.DrawCapsuleWires(
-    rl.Temp.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(startPos).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(endPos).asNativePointer<Vector3C>().ref,
     radius,
     slices,
     rings,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4580,9 +4580,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D size,
     ColorD color,
   ) => _ffi.DrawPlane(
-    rl.Temp.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref1(centerPos).asNativePointer<Vector3C>().ref,
+    $.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4590,8 +4590,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RayD ray,
     ColorD color,
   ) => _ffi.DrawRay(
-    rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4606,7 +4606,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   ModelD LoadModel(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Model$.RefCapture(
+  ) => $.Model$.RefCapture(
     RaylibCaptureIds.LoadModel,
     (p) => _ffi.LoadModel(
       fileName.asNativePointer(),
@@ -4616,10 +4616,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   ModelD LoadModelFromMesh(
     MeshD mesh,
-  ) => rl.Temp.Model$.RefCapture(
+  ) => $.Model$.RefCapture(
     RaylibCaptureIds.LoadModelFromMesh,
     (p) => _ffi.LoadModelFromMesh(
-      rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+      $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -4627,22 +4627,22 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsModelValid(
     ModelD model,
   ) => _ffi.IsModelValid(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
   );
 
   @override
   void UnloadModel(
     ModelD model,
   ) => _ffi.UnloadModel(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
   );
 
   @override
   BoundingBoxD GetModelBoundingBox(
     ModelD model,
-  ) => rl.Temp.BoundingBox$.Extract1(
+  ) => $.BoundingBox$.Extract1(
     (p) => _ffi.GetModelBoundingBox(
-      rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+      $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -4653,10 +4653,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double scale,
     ColorD tint,
   ) => _ffi.DrawModel(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     scale,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4668,12 +4668,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D scale,
     ColorD tint,
   ) => _ffi.DrawModelEx(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
     rotationAngle,
-    rl.Temp.Vector3$.Ref3(scale).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref3(scale).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4683,10 +4683,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double scale,
     ColorD tint,
   ) => _ffi.DrawModelWires(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     scale,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4698,12 +4698,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D scale,
     ColorD tint,
   ) => _ffi.DrawModelWiresEx(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(rotationAxis).asNativePointer<Vector3C>().ref,
     rotationAngle,
-    rl.Temp.Vector3$.Ref3(scale).asNativePointer<Vector3C>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Vector3$.Ref3(scale).asNativePointer<Vector3C>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4711,8 +4711,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     BoundingBoxD box,
     ColorD color,
   ) => _ffi.DrawBoundingBox(
-    rl.Temp.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
-    rl.Temp.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    $.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
+    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4723,11 +4723,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double scale,
     ColorD tint,
   ) => _ffi.DrawBillboard(
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
     scale,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4739,12 +4739,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector2D size,
     ColorD tint,
   ) => _ffi.DrawBillboardRec(
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4765,15 +4765,15 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double rotation,
     ColorD tint,
   ) => _ffi.DrawBillboardPro(
-    rl.Temp.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
-    rl.Temp.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
-    rl.Temp.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector3$.Ref2(up).asNativePointer<Vector3C>().ref,
-    rl.Temp.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
-    rl.Temp.Vector2$.Ref2(origin).asNativePointer<Vector2C>().ref,
+    $.Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Rectangle$.Ref1(source).asNativePointer<RectangleC>().ref,
+    $.Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(up).asNativePointer<Vector3C>().ref,
+    $.Vector2$.Ref1(size).asNativePointer<Vector2C>().ref,
+    $.Vector2$.Ref2(origin).asNativePointer<Vector2C>().ref,
     rotation,
-    rl.Temp.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
+    $.Color$.Ref1(tint).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -4793,7 +4793,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int dataSize,
     int offset,
   ) => _ffi.UpdateMeshBuffer(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     index,
     data.asNativePointer(),
     dataSize,
@@ -4804,7 +4804,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   void UnloadMesh(
     MeshD mesh,
   ) => _ffi.UnloadMesh(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
   );
 
   @override
@@ -4813,9 +4813,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MaterialD material,
     MatrixD transform,
   ) => _ffi.DrawMesh(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
-    rl.Temp.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
-    rl.Temp.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
+    $.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
   );
 
   @override
@@ -4825,8 +4825,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     StructPointer<MatrixD> transforms,
     int instances,
   ) => _ffi.DrawMeshInstanced(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
-    rl.Temp.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
     transforms.asNativePointer(),
     instances,
   );
@@ -4834,9 +4834,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   BoundingBoxD GetMeshBoundingBox(
     MeshD mesh,
-  ) => rl.Temp.BoundingBox$.Extract1(
+  ) => $.BoundingBox$.Extract1(
     (p) => _ffi.GetMeshBoundingBox(
-      rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+      $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -4852,7 +4852,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MeshD mesh,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportMesh(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -4861,7 +4861,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     MeshD mesh,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportMeshAsCode(
-    rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+    $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     fileName.asNativePointer(),
   );
 
@@ -4869,7 +4869,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   MeshD GenMeshPoly(
     int sides,
     double radius,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshPoly,
     (p) => _ffi.GenMeshPoly(
       sides,
@@ -4883,7 +4883,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double length,
     int resX,
     int resZ,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshPlane,
     (p) => _ffi.GenMeshPlane(
       width,
@@ -4898,7 +4898,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double width,
     double height,
     double length,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshCube,
     (p) => _ffi.GenMeshCube(
       width,
@@ -4912,7 +4912,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     int rings,
     int slices,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshSphere,
     (p) => _ffi.GenMeshSphere(
       radius,
@@ -4926,7 +4926,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     int rings,
     int slices,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshHemiSphere,
     (p) => _ffi.GenMeshHemiSphere(
       radius,
@@ -4940,7 +4940,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     double height,
     int slices,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshCylinder,
     (p) => _ffi.GenMeshCylinder(
       radius,
@@ -4954,7 +4954,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double radius,
     double height,
     int slices,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshCone,
     (p) => _ffi.GenMeshCone(
       radius,
@@ -4969,7 +4969,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double size,
     int radSeg,
     int sides,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshTorus,
     (p) => _ffi.GenMeshTorus(
       radius,
@@ -4985,7 +4985,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double size,
     int radSeg,
     int sides,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshKnot,
     (p) => _ffi.GenMeshKnot(
       radius,
@@ -4999,11 +4999,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   MeshD GenMeshHeightmap(
     ImageD heightmap,
     Vector3D size,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshHeightmap,
     (p) => _ffi.GenMeshHeightmap(
-      rl.Temp.Image$.Ref1(heightmap).asNativePointer<ImageC>().ref,
-      rl.Temp.Vector3$.Ref1(size).asNativePointer<Vector3C>().ref,
+      $.Image$.Ref1(heightmap).asNativePointer<ImageC>().ref,
+      $.Vector3$.Ref1(size).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -5011,11 +5011,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   MeshD GenMeshCubicmap(
     ImageD cubicmap,
     Vector3D cubeSize,
-  ) => rl.Temp.Mesh$.RefCapture(
+  ) => $.Mesh$.RefCapture(
     RaylibCaptureIds.GenMeshCubicmap,
     (p) => _ffi.GenMeshCubicmap(
-      rl.Temp.Image$.Ref1(cubicmap).asNativePointer<ImageC>().ref,
-      rl.Temp.Vector3$.Ref1(cubeSize).asNativePointer<Vector3C>().ref,
+      $.Image$.Ref1(cubicmap).asNativePointer<ImageC>().ref,
+      $.Vector3$.Ref1(cubeSize).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -5029,7 +5029,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ).asMemoryPointer());
 
   @override
-  MaterialD LoadMaterialDefault() => rl.Temp.Material$.RefCapture(
+  MaterialD LoadMaterialDefault() => $.Material$.RefCapture(
     RaylibCaptureIds.LoadMaterialDefault,
     (p) => _ffi.LoadMaterialDefault().toDart(p.asNativePointer()),
   );
@@ -5038,14 +5038,14 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   bool IsMaterialValid(
     MaterialD material,
   ) => _ffi.IsMaterialValid(
-    rl.Temp.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
+    $.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
   );
 
   @override
   void UnloadMaterial(
     MaterialD material,
   ) => _ffi.UnloadMaterial(
-    rl.Temp.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
+    $.Material$.Ref1(material).asNativePointer<MaterialC>().ref,
   );
 
   @override
@@ -5056,7 +5056,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   ) => _ffi.SetMaterialTexture(
     material.asNativePointer(),
     mapType,
-    rl.Temp.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
+    $.Texture$.Ref1(texture).asNativePointer<TextureC>().ref,
   );
 
   @override
@@ -5085,8 +5085,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ModelAnimationD anim,
     double frame,
   ) => _ffi.UpdateModelAnimation(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.ModelAnimation$.Ref1(anim).asNativePointer<ModelAnimationC>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.ModelAnimation$.Ref1(anim).asNativePointer<ModelAnimationC>().ref,
     frame,
   );
 
@@ -5099,10 +5099,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     double frameB,
     double blend,
   ) => _ffi.UpdateModelAnimationEx(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.ModelAnimation$.Ref1(animA).asNativePointer<ModelAnimationC>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.ModelAnimation$.Ref1(animA).asNativePointer<ModelAnimationC>().ref,
     frameA,
-    rl.Temp.ModelAnimation$.Ref2(animB).asNativePointer<ModelAnimationC>().ref,
+    $.ModelAnimation$.Ref2(animB).asNativePointer<ModelAnimationC>().ref,
     frameB,
     blend,
   );
@@ -5121,8 +5121,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ModelD model,
     ModelAnimationD anim,
   ) => _ffi.IsModelAnimationValid(
-    rl.Temp.Model$.Ref1(model).asNativePointer<ModelC>().ref,
-    rl.Temp.ModelAnimation$.Ref1(anim).asNativePointer<ModelAnimationC>().ref,
+    $.Model$.Ref1(model).asNativePointer<ModelC>().ref,
+    $.ModelAnimation$.Ref1(anim).asNativePointer<ModelAnimationC>().ref,
   );
 
   @override
@@ -5132,9 +5132,9 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D center2,
     double radius2,
   ) => _ffi.CheckCollisionSpheres(
-    rl.Temp.Vector3$.Ref1(center1).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref1(center1).asNativePointer<Vector3C>().ref,
     radius1,
-    rl.Temp.Vector3$.Ref2(center2).asNativePointer<Vector3C>().ref,
+    $.Vector3$.Ref2(center2).asNativePointer<Vector3C>().ref,
     radius2,
   );
 
@@ -5143,8 +5143,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     BoundingBoxD box1,
     BoundingBoxD box2,
   ) => _ffi.CheckCollisionBoxes(
-    rl.Temp.BoundingBox$.Ref1(box1).asNativePointer<BoundingBoxC>().ref,
-    rl.Temp.BoundingBox$.Ref2(box2).asNativePointer<BoundingBoxC>().ref,
+    $.BoundingBox$.Ref1(box1).asNativePointer<BoundingBoxC>().ref,
+    $.BoundingBox$.Ref2(box2).asNativePointer<BoundingBoxC>().ref,
   );
 
   @override
@@ -5153,8 +5153,8 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D center,
     double radius,
   ) => _ffi.CheckCollisionBoxSphere(
-    rl.Temp.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
-    rl.Temp.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
+    $.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
+    $.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
     radius,
   );
 
@@ -5163,10 +5163,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RayD ray,
     Vector3D center,
     double radius,
-  ) => rl.Temp.RayCollision$.Extract1(
+  ) => $.RayCollision$.Extract1(
     (p) => _ffi.GetRayCollisionSphere(
-      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-      rl.Temp.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
+      $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      $.Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
       radius,
     ).toDart(p.asNativePointer()),
   );
@@ -5175,10 +5175,10 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   RayCollisionD GetRayCollisionBox(
     RayD ray,
     BoundingBoxD box,
-  ) => rl.Temp.RayCollision$.Extract1(
+  ) => $.RayCollision$.Extract1(
     (p) => _ffi.GetRayCollisionBox(
-      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-      rl.Temp.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
+      $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      $.BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -5187,11 +5187,11 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     RayD ray,
     MeshD mesh,
     MatrixD transform,
-  ) => rl.Temp.RayCollision$.Extract1(
+  ) => $.RayCollision$.Extract1(
     (p) => _ffi.GetRayCollisionMesh(
-      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-      rl.Temp.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
-      rl.Temp.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
+      $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      $.Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
+      $.Matrix$.Ref1(transform).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -5201,12 +5201,12 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D p1,
     Vector3D p2,
     Vector3D p3,
-  ) => rl.Temp.RayCollision$.Extract1(
+  ) => $.RayCollision$.Extract1(
     (p) => _ffi.GetRayCollisionTriangle(
-      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-      rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
+      $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      $.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
@@ -5217,13 +5217,13 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     Vector3D p2,
     Vector3D p3,
     Vector3D p4,
-  ) => rl.Temp.RayCollision$.Extract1(
+  ) => $.RayCollision$.Extract1(
     (p) => _ffi.GetRayCollisionQuad(
-      rl.Temp.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
-      rl.Temp.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
-      rl.Temp.Vector3$.Ref4(p4).asNativePointer<Vector3C>().ref,
+      $.Ray$.Ref1(ray).asNativePointer<RayC>().ref,
+      $.Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref2(p2).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref3(p3).asNativePointer<Vector3C>().ref,
+      $.Vector3$.Ref4(p4).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 }

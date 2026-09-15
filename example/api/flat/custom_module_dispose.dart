@@ -55,9 +55,9 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
   
-  rl.registerModule(MyModule(rl));
+  registerModule(MyModule(rl));
 
-  rl.Temp.debugFree(true);
+  $.debugFree(true);
   // NOTE: with `debugFree` enabled you should see output at the exit:
   // Freeing user-defined 1 Color$ slots
   // [FREE] background

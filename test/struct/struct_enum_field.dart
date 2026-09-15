@@ -84,5 +84,27 @@ void main() {
     expect(struct.enumField, value);
   });
 
+  test("Enum - reference is live, detached is a snapshot", () {
+    final reference = MyStruct.pointer(ptr).ref;
+    final detached = MyStruct.pointer(ptr).detached;
+
+    reference.enumField = .KEY_DELETE;
+
+    expect(reference.enumField, KeyboardKey.KEY_DELETE);
+    expect(detached.enumField, KeyboardKey.KEY_NULL);
+
+    detached.enumField = .KEY_NULL;
+
+    expect(reference.enumField, KeyboardKey.KEY_DELETE);
+  });
+
+  test("Enum - detached is initialized from memory", () {
+    MyStruct.enumFieldF.write(ptr, .KEY_DELETE);
+
+    final detached = MyStruct.pointer(ptr).detached;
+
+    expect(detached.enumField, KeyboardKey.KEY_DELETE);
+  });
+
   tearDownAll(disposeRaylib);
 }

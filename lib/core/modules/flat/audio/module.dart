@@ -28,7 +28,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   @override
   WaveD LoadWave(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Wave$.RefCapture(
+  ) => $.Wave$.RefCapture(
     RaylibCaptureIds.LoadWave,
     (p) => _ffi.LoadWave(
       fileName.asNativePointer(),
@@ -40,7 +40,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MemoryPointer<RChar> fileType,
     MemoryPointer<RUnsignedChar> fileData,
     int dataSize,
-  ) => rl.Temp.Wave$.RefCapture(
+  ) => $.Wave$.RefCapture(
     RaylibCaptureIds.LoadWaveFromMemory,
     (p) => _ffi.LoadWaveFromMemory(
       fileType.asNativePointer(),
@@ -53,13 +53,13 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   bool IsWaveValid(
     WaveD wave,
   ) => _ffi.IsWaveValid(
-    rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+    $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
   );
   
   @override
   SoundD LoadSound(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Sound$.RefCapture(
+  ) => $.Sound$.RefCapture(
     RaylibCaptureIds.LoadSound,
     (p) => _ffi.LoadSound(
       fileName.asNativePointer(),
@@ -69,20 +69,20 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   @override
   SoundD LoadSoundFromWave(
     WaveD wave,
-  ) => rl.Temp.Sound$.RefCapture(
+  ) => $.Sound$.RefCapture(
     RaylibCaptureIds.LoadSoundFromWave,
     (p) => _ffi.LoadSoundFromWave(
-      rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+      $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
     ).toDart(p.asNativePointer()),
   );
   
   @override
   SoundD LoadSoundAlias(
     SoundD source,
-  ) => rl.Temp.Sound$.RefCapture(
+  ) => $.Sound$.RefCapture(
     RaylibCaptureIds.LoadSoundAlias,
     (p) => _ffi.LoadSoundAlias(
-      rl.Temp.Sound$.Ref1(source).asNativePointer<SoundC>().ref,
+      $.Sound$.Ref1(source).asNativePointer<SoundC>().ref,
     ).toDart(p.asNativePointer()),
   );
   
@@ -90,7 +90,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   bool IsSoundValid(
     SoundD sound,
   ) => _ffi.IsSoundValid(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
@@ -99,7 +99,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MemoryPointer<RVoid> data,
     int sampleCount,
   ) => _ffi.UpdateSound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
     data.asNativePointer(),
     sampleCount,
   );
@@ -108,21 +108,21 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   void UnloadWave(
     WaveD wave,
   ) => _ffi.UnloadWave(
-    rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+    $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
   );
   
   @override
   void UnloadSound(
     SoundD sound,
   ) => _ffi.UnloadSound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
   void UnloadSoundAlias(
     SoundD alias,
   ) => _ffi.UnloadSoundAlias(
-    rl.Temp.Sound$.Ref1(alias).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(alias).asNativePointer<SoundC>().ref,
   );
   
   @override
@@ -130,7 +130,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     WaveD wave,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportWave(
-    rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+    $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
     fileName.asNativePointer(),
   );
   
@@ -139,7 +139,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     WaveD wave,
     MemoryPointer<RChar> fileName,
   ) => _ffi.ExportWaveAsCode(
-    rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+    $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
     fileName.asNativePointer(),
   );
   
@@ -147,35 +147,35 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   void PlaySound(
     SoundD sound,
   ) => _ffi.PlaySound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
   void StopSound(
     SoundD sound,
   ) => _ffi.StopSound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
   void PauseSound(
     SoundD sound,
   ) => _ffi.PauseSound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
   void ResumeSound(
     SoundD sound,
   ) => _ffi.ResumeSound(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
   bool IsSoundPlaying(
     SoundD sound,
   ) => _ffi.IsSoundPlaying(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
   );
   
   @override
@@ -183,7 +183,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     SoundD sound,
     double volume,
   ) => _ffi.SetSoundVolume(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
     volume,
   );
   
@@ -192,7 +192,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     SoundD sound,
     double pitch,
   ) => _ffi.SetSoundPitch(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
     pitch,
   );
   
@@ -201,17 +201,17 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     SoundD sound,
     double pan,
   ) => _ffi.SetSoundPan(
-    rl.Temp.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
+    $.Sound$.Ref1(sound).asNativePointer<SoundC>().ref,
     pan,
   );
   
   @override
   WaveD WaveCopy(
     WaveD wave,
-  ) => rl.Temp.Wave$.RefCapture(
+  ) => $.Wave$.RefCapture(
     RaylibCaptureIds.WaveCopy,
     (p) => _ffi.WaveCopy(
-      rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+      $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
     ).toDart(p.asNativePointer()),
   );
   
@@ -243,7 +243,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   NativeMemoryPointer<RFloat32> LoadWaveSamples(
     WaveD wave,
   ) => _ffi.LoadWaveSamples(
-    rl.Temp.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
+    $.Wave$.Ref1(wave).asNativePointer<WaveC>().ref,
   ).asMemoryPointer();
   
   @override
@@ -256,7 +256,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   @override
   MusicD LoadMusicStream(
     MemoryPointer<RChar> fileName,
-  ) => rl.Temp.Music$.RefCapture(
+  ) => $.Music$.RefCapture(
     RaylibCaptureIds.LoadMusicStream,
     (p) => _ffi.LoadMusicStream(
       fileName.asNativePointer(),
@@ -268,7 +268,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MemoryPointer<RChar> fileType,
     MemoryPointer<RUnsignedChar> data,
     int dataSize,
-  ) => rl.Temp.Music$.RefCapture(
+  ) => $.Music$.RefCapture(
     RaylibCaptureIds.LoadMusicStreamFromMemory,
     (p) => _ffi.LoadMusicStreamFromMemory(
       fileType.asNativePointer(),
@@ -281,56 +281,56 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   bool IsMusicValid(
     MusicD music,
   ) => _ffi.IsMusicValid(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void UnloadMusicStream(
     MusicD music,
   ) => _ffi.UnloadMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void PlayMusicStream(
     MusicD music,
   ) => _ffi.PlayMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   bool IsMusicStreamPlaying(
     MusicD music,
   ) => _ffi.IsMusicStreamPlaying(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void UpdateMusicStream(
     MusicD music,
   ) => _ffi.UpdateMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void StopMusicStream(
     MusicD music,
   ) => _ffi.StopMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void PauseMusicStream(
     MusicD music,
   ) => _ffi.PauseMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   void ResumeMusicStream(
     MusicD music,
   ) => _ffi.ResumeMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
@@ -338,7 +338,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MusicD music,
     double position,
   ) => _ffi.SeekMusicStream(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
     position,
   );
   
@@ -347,7 +347,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MusicD music,
     double volume,
   ) => _ffi.SetMusicVolume(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
     volume,
   );
   
@@ -356,7 +356,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MusicD music,
     double pitch,
   ) => _ffi.SetMusicPitch(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
     pitch,
   );
   
@@ -365,7 +365,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MusicD music,
     double pan,
   ) => _ffi.SetMusicPan(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
     pan,
   );
   
@@ -373,14 +373,14 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   double GetMusicTimeLength(
     MusicD music,
   ) => _ffi.GetMusicTimeLength(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
   double GetMusicTimePlayed(
     MusicD music,
   ) => _ffi.GetMusicTimePlayed(
-    rl.Temp.Music$.Ref1(music).asNativePointer<MusicC>().ref,
+    $.Music$.Ref1(music).asNativePointer<MusicC>().ref,
   );
   
   @override
@@ -388,7 +388,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     int sampleRate,
     int sampleSize,
     int channels
-  ) => rl.Temp.AudioStream$.RefCapture(
+  ) => $.AudioStream$.RefCapture(
     RaylibCaptureIds.LoadAudioStream,
     (p) => _ffi.LoadAudioStream(
       sampleRate,
@@ -401,14 +401,14 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   bool IsAudioStreamValid(
     AudioStreamD stream,
   ) => _ffi.IsAudioStreamValid(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   void UnloadAudioStream(
     AudioStreamD stream,
   ) => _ffi.IsAudioStreamValid(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
@@ -417,7 +417,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     MemoryPointer<RVoid> data,
     int frameCount,
   ) => _ffi.UpdateAudioStream(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     data.asNativePointer(),
     frameCount,
   );
@@ -426,42 +426,42 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
   bool IsAudioStreamProcessed(
     AudioStreamD stream,
   ) => _ffi.IsAudioStreamProcessed(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   void PlayAudioStream(
     AudioStreamD stream,
   ) => _ffi.PlayAudioStream(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   void PauseAudioStream(
     AudioStreamD stream,
   ) => _ffi.PauseAudioStream(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   void ResumeAudioStream(
     AudioStreamD stream,
   ) => _ffi.ResumeAudioStream(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   bool IsAudioStreamPlaying(
     AudioStreamD stream,
   ) => _ffi.IsAudioStreamPlaying(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
   void StopAudioStream(
     AudioStreamD stream,
   ) => _ffi.StopAudioStream(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
   );
   
   @override
@@ -469,7 +469,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     double volume,
   ) => _ffi.SetAudioStreamVolume(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     volume,
   );
   
@@ -478,7 +478,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     double pitch,
   ) => _ffi.SetAudioStreamPitch(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     pitch,
   );
   
@@ -487,7 +487,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     double pan,
   ) => _ffi.SetAudioStreamPan(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     pan,
   );
   
@@ -503,7 +503,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     MemoryPointer<RFunction> callback, // AudioCallback
   ) => _ffi.SetAudioStreamCallback(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     callback.asNativePointer(),
   );
   
@@ -512,7 +512,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     MemoryPointer<RFunction> processor, // AudioCallback
   ) => _ffi.AttachAudioStreamProcessor(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     processor.asNativePointer(),
   );
   
@@ -521,7 +521,7 @@ class RaylibAudioFlat extends RaylibAudioFlatModule<Raylib> {
     AudioStreamD stream,
     MemoryPointer<RFunction> processor, // AudioCallback
   ) => _ffi.DetachAudioStreamProcessor(
-    rl.Temp.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
+    $.AudioStream$.Ref1(stream).asNativePointer<AudioStreamC>().ref,
     processor.asNativePointer(),
   );
   

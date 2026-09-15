@@ -43,19 +43,19 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
 
     int index = _lights.length;
     light.ref.enabledLoc = _coreFfi.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].enabled").asNativePointer(),
+      shader, $.String$.Value("lights[$index].enabled").asNativePointer(),
     );
     light.ref.typeLoc = _coreFfi.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].type").asNativePointer(),
+      shader, $.String$.Value("lights[$index].type").asNativePointer(),
     );
     light.ref.positionLoc = _coreFfi.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].position").asNativePointer(),
+      shader, $.String$.Value("lights[$index].position").asNativePointer(),
     );
     light.ref.targetLoc = _coreFfi.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].target").asNativePointer(),
+      shader, $.String$.Value("lights[$index].target").asNativePointer(),
     );
     light.ref.colorLoc = _coreFfi.GetShaderLocation(
-      shader, rl.Temp.String$.Value("lights[$index].color").asNativePointer(),
+      shader, $.String$.Value("lights[$index].color").asNativePointer(),
     );
 
     UpdateLightValues(shader, light.ref);

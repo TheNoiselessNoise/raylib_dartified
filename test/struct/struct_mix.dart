@@ -122,8 +122,8 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = rl.Temp.createStructAllocator(
-      byteSize: MyStruct.struct.byteSize,
+    myStructAlloc = $.createStructAllocator(
+      layout: MyStruct.struct,
       factory: MyStruct.new,
       pointerFactory: MyStruct.pointer,
     );
