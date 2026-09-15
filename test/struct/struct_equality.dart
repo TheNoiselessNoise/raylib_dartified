@@ -7,7 +7,8 @@ void main() {
   test("ColorD - compareBytes", () {
     final struct1 = Color$.Allocate(.new()).ref..set(42, 42, 42, 42);
     final struct2 = Color$.Allocate(.new()).ref..set(42, 42, 42, 42);
-    final cmp = struct1.getOp().compareBytes(struct2.getOp(), struct1.structLayout.byteSize);
+    final layout = StructTypes.of(struct1);
+    final cmp = struct1.getOp().compareBytes(struct2.getOp(), layout.byteSize);
     expect(cmp, equals(0));
   });
 

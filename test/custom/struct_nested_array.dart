@@ -10,7 +10,7 @@ void main() {
 
     final ptrs = pp.readPtrArray<RStruct>(colors.length);
     for (final (i, p) in ptrs.indexed) {
-      final memColors = ColorD.pointer(p).readArray(colors[i].length);
+      final memColors = ColorD.struct.ptr(p).readArray(colors[i].length);
       expect(memColors.toString(), colors[i].toString());
       p.free();
     }
@@ -23,7 +23,7 @@ void main() {
 
     final ptrs = pp.readPtrArray<RStruct>(colors.length);
     for (final (i, p) in ptrs.indexed) {
-      final memColors = ColorD.pointer(p).readArray(colors[i].length);
+      final memColors = ColorD.struct.ptr(p).readArray(colors[i].length);
       expect(memColors.toString(), colors[i].toString());
     }
   });

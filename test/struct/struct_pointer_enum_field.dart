@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .pointerEnumField: RPointer(RInt()),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .pointerEnumField: RPointer(RInt()),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _pointerEnumFieldF = struct.pointerEnumValue<KeyboardKey, RInt>(.pointerEnumField, KeyboardKey.fromValue);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_pointerEnumField = structLayout.pointerEnumValue<KeyboardKey, RInt>(.pointerEnumField, KeyboardKey.fromValue);
 
   KeyboardKey _pointerEnumField;
-  KeyboardKey get pointerEnumField => _pointerEnumField = _pointerEnumFieldF.readOr(op?.ptr, _pointerEnumField);
-  set pointerEnumField(KeyboardKey value) => _pointerEnumField = _pointerEnumFieldF.writeIf(op?.ptr, value);
+  KeyboardKey get pointerEnumField => _pointerEnumField = field_pointerEnumField.readOr(op?.ptr, _pointerEnumField);
+  set pointerEnumField(KeyboardKey value) => _pointerEnumField = field_pointerEnumField.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
   
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _pointerEnumFieldF.allocate(temp, p, key);
+    field_pointerEnumField.allocate(temp, p, key);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerEnumField = _pointerEnumFieldF.readSafe(p, _pointerEnumField);
+    _pointerEnumField = field_pointerEnumField.readSafe(p, _pointerEnumField);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _pointerEnumFieldF.writeSafe(p, _pointerEnumField);
+    field_pointerEnumField.writeSafe(p, _pointerEnumField);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("Pointer Enum - read live data", () {
     final value = KeyboardKey.KEY_DELETE;
     final struct = myStructAlloc.Allocate(.new()).ref;
-    struct.getOp().offsetBy(MyStruct.struct.offset(.pointerEnumField)).readPtr().writeInt(value.value);
+    struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerEnumField)).readPtr().writeInt(value.value);
     expect(struct.pointerEnumField, value);
   });
 

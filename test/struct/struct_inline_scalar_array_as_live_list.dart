@@ -7,17 +7,15 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .inlineScalarArray: RArray(RInt(), 4),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .inlineScalarArray: RArray(RInt(), 4),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _inlineScalarArrayF = struct.scalarArray<int, RInt>(.inlineScalarArray);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_inlineScalarArray = structLayout.scalarArray<int, RInt>(.inlineScalarArray);
 
   late final StructLiveList<int, RInt> _inlineScalarArray;
   StructLiveList<int, RInt> get inlineScalarArray => _inlineScalarArray;
@@ -27,7 +25,7 @@ class MyStruct extends RaylibStruct<MyStruct> {
     super.op,
     List<int>? inlineScalarArray,
   }) {
-    _inlineScalarArray = _inlineScalarArrayF.live(() => op?.ptr, .filled(4, 0));
+    _inlineScalarArray = field_inlineScalarArray.live(() => op, .filled(4, 0));
   }
 
   @override
@@ -53,22 +51,22 @@ void main() {
 
   test("Live List - Inline Scalar Array - after assignment", () {
     final List<int> values = .generate(4, (i) => i);
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineScalarArray = values;
     expect(struct.inlineScalarArray, equals(values));
   });
 
   test("Live List - Inline Scalar Array - read live data", () {
     final List<int> values = .generate(4, (i) => i);
-    ptr.offsetBy(MyStruct.struct.offset(.inlineScalarArray)).cast<RInt>().writeArray(values);
-    expect(MyStruct.pointer(ptr).ref.inlineScalarArray, equals(values));
+    ptr.offsetBy(MyStruct.structLayout.offset(.inlineScalarArray)).cast<RInt>().writeArray(values);
+    expect(MyStruct.struct.ptr(ptr).ref.inlineScalarArray, equals(values));
   });
 
   test("Live List - Inline Scalar Array - write through live list and check live data", () {
     final List<int> values = .generate(4, (i) => i);
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineScalarArray = values;
-    final result = ptr.offsetBy(MyStruct.struct.offset(.inlineScalarArray))
+    final result = ptr.offsetBy(MyStruct.structLayout.offset(.inlineScalarArray))
       .cast<RInt>()
       .readArray(values.length);
     expect(result, values);
@@ -79,12 +77,12 @@ void main() {
     final List<int> expected = .of(values);
     expected[1] = 99;
 
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineScalarArray = values;
     struct.inlineScalarArray[1] = 99;
 
     // read as live data
-    final result = ptr.offsetBy(MyStruct.struct.offset(.inlineScalarArray))
+    final result = ptr.offsetBy(MyStruct.structLayout.offset(.inlineScalarArray))
       .cast<RInt>()
       .readArray(expected.length);
 

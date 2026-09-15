@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .pointerStructFixedArray: RPointer(RArray(RStruct(ColorD.struct), 2)),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .pointerStructFixedArray: RPointer(RArray(RStruct(ColorD.struct), 2)),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _pointerStructFixedArrayF = struct.pointerStructFixedArray<ColorD>(.pointerStructFixedArray, ColorD.pointer);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_pointerStructFixedArray = structLayout.pointerStructFixedArray<ColorD>(.pointerStructFixedArray);
 
   List<ColorD> _pointerStructFixedArray;
-  List<ColorD> get pointerStructFixedArray => _pointerStructFixedArray = _pointerStructFixedArrayF.readOr(op?.ptr, _pointerStructFixedArray);
-  set pointerStructFixedArray(List<ColorD> value) => _pointerStructFixedArray = _pointerStructFixedArrayF.writeIf(op?.ptr, value);
+  List<ColorD> get pointerStructFixedArray => _pointerStructFixedArray = field_pointerStructFixedArray.readOr(op?.ptr, _pointerStructFixedArray);
+  set pointerStructFixedArray(List<ColorD> value) => _pointerStructFixedArray = field_pointerStructFixedArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _pointerStructFixedArrayF.allocate(temp, p, key);
+    field_pointerStructFixedArray.allocate(temp, p, key);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerStructFixedArray = _pointerStructFixedArrayF.readSafe(p, _pointerStructFixedArray);
+    _pointerStructFixedArray = field_pointerStructFixedArray.readSafe(p, _pointerStructFixedArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _pointerStructFixedArrayF.write(p, _pointerStructFixedArray);
+    field_pointerStructFixedArray.write(p, _pointerStructFixedArray);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("Pointer Struct Array - reading live data", () {
     final List<ColorD> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
-    ColorD.pointer(struct.getOp().offsetBy(MyStruct.struct.offset(.pointerStructFixedArray)).readPtr()).writeArray(values);
+    ColorD.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructFixedArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructFixedArray.toString(), equals(values.toString()));
   });
 

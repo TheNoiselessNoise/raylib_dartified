@@ -8,6 +8,6 @@ extension LightCPEx on Pointer<LightC> {
 
 extension LightCEx on LightC {
   LightD toDart([Pointer<LightC>? ptr]) => .new(
-    op: LightD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: LightD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

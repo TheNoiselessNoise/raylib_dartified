@@ -16,12 +16,10 @@ void main() {
 
   test("Nested Structs - backed by memory", () {
     Vector3D position = .vec3(10, 10, 10);
-
     Camera3DD camera = .new(position: position);
 
     Camera3D$.Allocate(camera);
     expect(camera.op, isNotNull);
-
     expect(camera.position.toString(), position.toString());
 
     camera.position.x = 5;

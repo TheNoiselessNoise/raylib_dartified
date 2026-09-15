@@ -7,24 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .inlineScalarArray: RArray(RInt(), 4),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .inlineScalarArray: RArray(RInt(), 4),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _inlineScalarArrayF = struct.scalarArray<int, RInt>(.inlineScalarArray);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_inlineScalarArray = structLayout.scalarArray<int, RInt>(.inlineScalarArray);
 
   List<int> _inlineScalarArray;
-  List<int> get inlineScalarArray => _inlineScalarArray = _inlineScalarArrayF.readOr(op?.ptr, _inlineScalarArray);
-  set inlineScalarArray(List<int> value) {
-    assert(value.length <= _inlineScalarArrayF.codec.type.count);
-    _inlineScalarArray = _inlineScalarArrayF.writeIf(op?.ptr, value);
-  }
+  List<int> get inlineScalarArray => _inlineScalarArray = field_inlineScalarArray.readOr(op?.ptr, _inlineScalarArray);
+  set inlineScalarArray(List<int> value) => _inlineScalarArray = field_inlineScalarArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -36,12 +31,12 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _inlineScalarArray = _inlineScalarArrayF.read(p);
+    _inlineScalarArray = field_inlineScalarArray.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _inlineScalarArrayF.write(p, _inlineScalarArray);
+    field_inlineScalarArray.write(p, _inlineScalarArray);
   }
 }
 
@@ -54,15 +49,15 @@ void main() {
 
   test("Inline Scalar Array - after assignment", () {
     final List<int> values = .generate(4, (i) => i);
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineScalarArray = values;
     expect(struct.inlineScalarArray, equals(values));
   });
 
   test("Inline Scalar Array - read live data", () {
     final List<int> values = .generate(4, (i) => i);
-    ptr.offsetBy(MyStruct.struct.offset(.inlineScalarArray)).cast<RInt>().writeArray(values);
-    expect(MyStruct.pointer(ptr).ref.inlineScalarArray, equals(values));
+    ptr.offsetBy(MyStruct.structLayout.offset(.inlineScalarArray)).cast<RInt>().writeArray(values);
+    expect(MyStruct.struct.ptr(ptr).ref.inlineScalarArray, equals(values));
   });
 
   tearDownAll(disposeRaylib);

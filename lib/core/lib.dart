@@ -165,6 +165,8 @@ class Raylib extends RaylibBase {
 
   // Custom dynamic libraries
   final Map<Type, DynamicLibrary> _customDynLibs = {};
+
+  /// Register [DynamicLibrary] at [T] for a given [module].
   (T, DynamicLibrary) registerDynLib<T extends RaylibModule<Raylib>>(
     T module,
     DynamicLibrary dynLib,
@@ -179,6 +181,7 @@ class Raylib extends RaylibBase {
     return (registerModule(module), dynLib);
   }
 
+  /// Gets a [DynamicLibrary] based on module [T].
   DynamicLibrary dynLib<T extends RaylibModule<Raylib>>() {
     final lib = _customDynLibs[T];
     if (lib == null) {
@@ -188,20 +191,24 @@ class Raylib extends RaylibBase {
   }
 }
 
-Future<void> runRaylib(RaylibAppBase<Raylib> game, {
+/// Runs [app] on the native raylib backend until it closes.
+///
+/// Loads the native raylib shared library, searching upward from the
+/// current working directory for a folder named [nativeLibPath] (defaults
+/// to `'raylib-6.0/lib'`).
+///
+/// Set [silent] to suppress raylib's init/dispose log output.
+Future<void> runRaylib(RaylibAppBase<Raylib> app, {
   String? nativeLibPath,
   bool silent = false,
 }) async {
-  final rl = findRaylib(
-    nativeLibPath ?? 'raylib',
-    silent: silent,
-  );
-  game.init(rl);
-  while (!game.shouldClose(rl)) {
-    await game.loop(rl);
+  final rl = findRaylib(nativeLibPath ?? 'raylib-6.0/lib', silent: silent);
+  app.init(rl);
+  while (!app.shouldClose(rl)) {
+    await app.loop(rl);
   }
-  game.close(rl);
-  game.dispose(rl);
+  app.close(rl);
+  app.dispose(rl);
 }
 
 String _platformLib(String lib) {
@@ -216,6 +223,17 @@ String? _platformLibPath(String directory, String name) {
   return File(tmpGuiPath).existsSync() ? tmpGuiPath : null;
 }
 
+/// Locates the native raylib library by walking up from the current
+/// working directory until a directory named [folder] is found.
+///
+/// For each [RaylibSupportedLibs] entry, resolves the platform-specific
+/// library file inside that directory and returns a bound [Raylib]
+/// instance wrapping all of them.
+///
+/// Set [silent] to suppress [Raylib]'s init/dispose log output.
+///
+/// Throws an [Exception] if [folder] can't be found before reaching the
+/// filesystem root, or if the current platform isn't supported.
 Raylib findRaylib(String folder, { bool silent = false }) {
   var dir = Directory.current;
 
@@ -232,9 +250,7 @@ Raylib findRaylib(String folder, { bool silent = false }) {
     }
 
     final parent = dir.parent;
-    if (parent.path == dir.path) {
-      throw Exception('Could not find $folder directory');
-    }
+    if (parent.path == dir.path) throw Exception('Could not find $folder directory');
     dir = parent;
   }
 }

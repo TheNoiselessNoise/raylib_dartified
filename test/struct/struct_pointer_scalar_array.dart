@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .pointerScalarArray: RPointer(RInt()), // exactly 4
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .pointerScalarArray: RPointer(RInt()), // exactly 4
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _pointerScalarArrayF = struct.pointerScalarArray<int, RInt>(.pointerScalarArray);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_pointerScalarArray = structLayout.pointerScalarArray<int, RInt>(.pointerScalarArray);
 
   List<int> _pointerScalarArray;
-  List<int> get pointerScalarArray => _pointerScalarArray = _pointerScalarArrayF.readCountOr(op?.ptr, 4, _pointerScalarArray);
-  set pointerScalarArray(List<int> value) => _pointerScalarArray = _pointerScalarArrayF.writeCountIf(op?.ptr, value);
+  List<int> get pointerScalarArray => _pointerScalarArray = field_pointerScalarArray.readCountOr(op?.ptr, 4, _pointerScalarArray);
+  set pointerScalarArray(List<int> value) => _pointerScalarArray = field_pointerScalarArray.writeCountIf(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _pointerScalarArrayF.allocate(temp, p, key);
+    field_pointerScalarArray.allocate(temp, p, key);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerScalarArray = _pointerScalarArrayF.readCount(p, 4, _pointerScalarArray);
+    _pointerScalarArray = field_pointerScalarArray.readCount(p, 4, _pointerScalarArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _pointerScalarArrayF.writeCount(p, _pointerScalarArray);
+    field_pointerScalarArray.writeCount(p, _pointerScalarArray);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("Pointer Scalar Array - reading live data", () {
     final List<int> values = .generate(4, (i) => i);
     final struct = myStructAlloc.Allocate(.new()).ref;
-    struct.getOp().offsetBy(MyStruct.struct.offset(.pointerScalarArray)).readPtr().cast<RInt>().writeArray(values);
+    struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerScalarArray)).readPtr().cast<RInt>().writeArray(values);
     expect(struct.pointerScalarArray.toString(), equals(values.toString()));
   });
 

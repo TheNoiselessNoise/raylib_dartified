@@ -7,41 +7,36 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .inlineStructArray: RArray(RStruct(ColorD.struct), 2),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .inlineStructArray: RArray(RStruct(ColorD.struct), 2),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _inlineStructArrayF = struct.structArray<ColorD>(.inlineStructArray, ColorD.pointer);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_inlineStructArray = structLayout.structArray<ColorD>(.inlineStructArray);
 
   List<ColorD> _inlineStructArray;
-  List<ColorD> get inlineStructArray => _inlineStructArray = _inlineStructArrayF.readOr(op?.ptr, _inlineStructArray);
-  set inlineStructArray(List<ColorD> value) {
-    assert(value.length <= _inlineStructArrayF.codec.type.count);
-    _inlineStructArray = _inlineStructArrayF.writeIf(op?.ptr, value);
-  }
+  List<ColorD> get inlineStructArray => _inlineStructArray = field_inlineStructArray.readOr(op?.ptr, _inlineStructArray);
+  set inlineStructArray(List<ColorD> value) => _inlineStructArray = field_inlineStructArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
     List<ColorD>? inlineStructArray,
-  }) : _inlineStructArray = inlineStructArray ?? .generate(_inlineStructArrayF.codec.type.count, (_) => .zero());
+  }) : _inlineStructArray = inlineStructArray ?? .generate(field_inlineStructArray.codec.type.count, (_) => .zero());
 
   @override
   MyStruct clone() => .new(op: op);
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _inlineStructArray = _inlineStructArrayF.read(p);
+    _inlineStructArray = field_inlineStructArray.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _inlineStructArrayF.write(p, _inlineStructArray);
+    field_inlineStructArray.write(p, _inlineStructArray);
   }
 }
 
@@ -54,15 +49,15 @@ void main() {
 
   test("Inline Struct Array - after assignment", () {
     final List<ColorD> values = [.WHITE, .RED];
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineStructArray = values;
     expect(struct.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Inline Struct Array - read live data", () {
     final List<ColorD> values = [.WHITE, .RED];
-    ColorD.pointer(ptr.offsetBy(MyStruct.struct.offset(.inlineStructArray))).writeArray(values);
-    expect(MyStruct.pointer(ptr).ref.inlineStructArray.toString(), equals(values.toString()));
+    ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
+    expect(MyStruct.struct.ptr(ptr).ref.inlineStructArray.toString(), equals(values.toString()));
   });
 
   tearDownAll(disposeRaylib);

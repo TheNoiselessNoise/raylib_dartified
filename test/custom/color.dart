@@ -10,11 +10,11 @@ void main() {
 
     try {
       // Write through memory mirror reference
-      final color = ColorD.pointer(ptr).ref;
+      final color = ColorD.struct.ptr(ptr).ref;
       color.r = x; color.g = x; color.b = x; color.a = x;
 
       // Read new instance backed by the exact same native memory pointer
-      final other = ColorD.pointer(ptr).ref;
+      final other = ColorD.struct.ptr(ptr).ref;
 
       // 1. Direct field checks
       expect(other.r, equals(x));

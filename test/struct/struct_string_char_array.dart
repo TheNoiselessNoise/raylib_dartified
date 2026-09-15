@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .stringCharArray: RArray(RChar(), 32),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .stringCharArray: RArray(RChar(), 32),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _stringCharArrayF = struct.stringAsCharArray<RChar>(.stringCharArray);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_stringCharArray = structLayout.stringAsCharArray<RChar>(.stringCharArray);
 
   String _stringCharArray;
-  String get stringCharArray => _stringCharArray = _stringCharArrayF.readOr(op?.ptr, _stringCharArray);
-  set stringCharArray(String value) => _stringCharArray = _stringCharArrayF.writeIf(op?.ptr, value);
+  String get stringCharArray => _stringCharArray = field_stringCharArray.readOr(op?.ptr, _stringCharArray);
+  set stringCharArray(String value) => _stringCharArray = field_stringCharArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,12 +31,12 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _stringCharArray = _stringCharArrayF.read(p);
+    _stringCharArray = field_stringCharArray.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _stringCharArrayF.write(p, _stringCharArray);
+    field_stringCharArray.write(p, _stringCharArray);
   }
 }
 
@@ -48,11 +46,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -69,7 +63,7 @@ void main() {
   test("String Char Array - reading live data", () {
     final String value = "Hello, World!";
     final struct = myStructAlloc.Allocate(.new()).ref;
-    struct.getOp().offsetBy(MyStruct.struct.offset(.stringCharArray)).cast<RChar>().writeString(value);
+    struct.getOp().offsetBy(MyStruct.structLayout.offset(.stringCharArray)).cast<RChar>().writeString(value);
     expect(struct.stringCharArray, equals(value));
   });
 

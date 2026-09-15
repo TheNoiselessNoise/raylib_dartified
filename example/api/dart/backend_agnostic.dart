@@ -7,20 +7,9 @@ import '../../base_dart.dart';
   Each backend supplies its own `runRaylib`, which calls `init` once,
   then drives `loop` every frame until `shouldClose` returns `true`,
   then calls `close` and `dispose`. You never write the loop yourself.
-
-  Note that `shouldClose` still branches on `currentRaylibPlatform`, WASM has
-  no exit condition of its own (the browser owns the loop) and `WindowShouldClose`
-  should not be called in WASM backend, so this one check is the honest boundary
-  of "agnostic" rather than a leak in the abstraction.
 */
 
-class BackendAgnosticRaylibExample<R extends RaylibBase> extends RaylibAppBase<R> {
-  @override
-  bool shouldClose(_) => switch (currentRaylibPlatform) {
-    .native => WindowShouldClose(),
-    .web => false,
-  };
-
+class BackendAgnosticRaylibExample extends RaylibAppBase<Raylib> {
   @override
   void init(_) {
     InitWindow(800, 450, 'Backend Agnostic Raylib Example');

@@ -2951,7 +2951,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   @override
   StructPointer<ColorD> LoadImageColors(
     ImageD image,
-  ) => ColorD.pointer(_ffi.LoadImageColors(
+  ) => ColorD.struct.ptr(_ffi.LoadImageColors(
     $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
   ).asMemoryPointer());
 
@@ -2960,7 +2960,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     ImageD image,
     int maxPaletteSize,
     MemoryPointer<RInt> colorCount,
-  ) => ColorD.pointer(_ffi.LoadImagePalette(
+  ) => ColorD.struct.ptr(_ffi.LoadImagePalette(
     $.Image$.Ref1(image).asNativePointer<ImageC>().ref,
     maxPaletteSize,
     colorCount.asNativePointer(),
@@ -3782,7 +3782,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
     int codepointCount,
     int type,
     MemoryPointer<RInt> glyphCount,
-  ) => GlyphInfoD.pointer(_ffi.LoadFontData(
+  ) => GlyphInfoD.struct.ptr(_ffi.LoadFontData(
     fileData.asNativePointer(),
     dataSize,
     fontSize,
@@ -5023,7 +5023,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   StructPointer<MaterialD> LoadMaterials(
     MemoryPointer<RChar> fileName,
     MemoryPointer<RInt> materialCount,
-  ) => MaterialD.pointer(_ffi.LoadMaterials(
+  ) => MaterialD.struct.ptr(_ffi.LoadMaterials(
     fileName.asNativePointer(),
     materialCount.asNativePointer(),
   ).asMemoryPointer());
@@ -5074,7 +5074,7 @@ class RaylibCoreFlat extends RaylibCoreFlatModule<Raylib> {
   StructPointer<ModelAnimationD> LoadModelAnimations(
     MemoryPointer<RChar> fileName,
     MemoryPointer<RInt> animCount,
-  ) => ModelAnimationD.pointer(_ffi.LoadModelAnimations(
+  ) => ModelAnimationD.struct.ptr(_ffi.LoadModelAnimations(
     fileName.asNativePointer(),
     animCount.asNativePointer(),
   ).asMemoryPointer());

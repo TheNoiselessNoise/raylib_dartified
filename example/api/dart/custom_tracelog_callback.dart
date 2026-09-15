@@ -16,8 +16,6 @@ void main()
 
   TraceLog(.LOG_INFO, "Hello");
   TraceLog(.LOG_INFO, "World");
-
-  print('RaylibPlatform: ${currentRaylibPlatform.name}');
   
   CloseWindowAndDispose();
 }

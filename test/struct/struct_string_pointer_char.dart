@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .stringPointerChar: RPointer(RChar()),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .stringPointerChar: RPointer(RChar()),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _stringPointerCharF = struct.stringAsPointerChar<RChar>(.stringPointerChar);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_stringPointerChar = structLayout.stringAsPointerChar<RChar>(.stringPointerChar);
 
   String _stringPointerChar;
-  String get stringPointerChar => _stringPointerChar = _stringPointerCharF.readOr(op?.ptr, _stringPointerChar);
-  set stringPointerChar(String value) => _stringPointerChar = _stringPointerCharF.writeIf(op?.ptr, value);
+  String get stringPointerChar => _stringPointerChar = field_stringPointerChar.readOr(op?.ptr, _stringPointerChar);
+  set stringPointerChar(String value) => _stringPointerChar = field_stringPointerChar.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _stringPointerCharF.allocate(temp, p, key, count: 32);
+    field_stringPointerChar.allocate(temp, p, key, count: 32);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _stringPointerChar = _stringPointerCharF.readSafe(p, _stringPointerChar);
+    _stringPointerChar = field_stringPointerChar.readSafe(p, _stringPointerChar);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _stringPointerCharF.write(p, _stringPointerChar);
+    field_stringPointerChar.write(p, _stringPointerChar);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("String Pointer Char - reading live data", () {
     final String value = "Hello, World!";
     final struct = myStructAlloc.Allocate(.new()).ref;
-    struct.getOp().offsetBy(MyStruct.struct.offset(.stringPointerChar)).readPtr().cast<RChar>().writeString(value);
+    struct.getOp().offsetBy(MyStruct.structLayout.offset(.stringPointerChar)).readPtr().cast<RChar>().writeString(value);
     expect(struct.stringPointerChar, equals(value));
   });
 

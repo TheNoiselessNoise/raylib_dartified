@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .pointerStructArray: RPointer(RStruct(ColorD.struct)), // exactly 2
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .pointerStructArray: RPointer(RStruct(ColorD.struct)), // exactly 2
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _pointerStructArrayF = struct.pointerStructArray<ColorD>(.pointerStructArray, ColorD.pointer);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_pointerStructArray = structLayout.pointerStructArray<ColorD>(.pointerStructArray);
 
   List<ColorD> _pointerStructArray;
-  List<ColorD> get pointerStructArray => _pointerStructArray = _pointerStructArrayF.readCountOr(op?.ptr, 2, _pointerStructArray);
-  set pointerStructArray(List<ColorD> value) => _pointerStructArray = _pointerStructArrayF.writeCountIf(op?.ptr, value);
+  List<ColorD> get pointerStructArray => _pointerStructArray = field_pointerStructArray.readCountOr(op?.ptr, 2, _pointerStructArray);
+  set pointerStructArray(List<ColorD> value) => _pointerStructArray = field_pointerStructArray.writeCountIf(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _pointerStructArrayF.allocate(temp, p, key);
+    field_pointerStructArray.allocate(temp, p, key);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerStructArray = _pointerStructArrayF.readCount(p, 2, _pointerStructArray);
+    _pointerStructArray = field_pointerStructArray.readCount(p, 2, _pointerStructArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _pointerStructArrayF.writeCount(p, _pointerStructArray);
+    field_pointerStructArray.writeCount(p, _pointerStructArray);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("Pointer Struct Array - reading live data", () {
     final List<ColorD> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
-    ColorD.pointer(struct.getOp().offsetBy(MyStruct.struct.offset(.pointerStructArray)).readPtr()).writeArray(values);
+    ColorD.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 

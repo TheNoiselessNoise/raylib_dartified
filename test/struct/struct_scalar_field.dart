@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .scalarField: RInt(),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .scalarField: RInt(),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _scalarFieldF = struct.scalar<int, RInt>(.scalarField);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_scalarField = structLayout.scalar<int, RInt>(.scalarField);
 
   int _scalarField;
-  int get scalarField => _scalarField = _scalarFieldF.readOr(op?.ptr, _scalarField);
-  set scalarField(int value) => _scalarField = _scalarFieldF.writeIf(op?.ptr, value);
+  int get scalarField => _scalarField = field_scalarField.readOr(op?.ptr, _scalarField);
+  set scalarField(int value) => _scalarField = field_scalarField.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,12 +31,12 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _scalarField = _scalarFieldF.read(p);
+    _scalarField = field_scalarField.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _scalarFieldF.write(p, _scalarField);
+    field_scalarField.write(p, _scalarField);
   }
 }
 
@@ -51,15 +49,15 @@ void main() {
 
   test("Scalar - after assignment", () {
     final value = 42;
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     struct.scalarField = value;
     expect(struct.scalarField, equals(value));
   });
 
   test("Scalar - read live data", () {
     final value = 42;
-    ptr.offsetBy(MyStruct.struct.offset(.scalarField)).writeInt(value);
-    expect(MyStruct.pointer(ptr).ref.scalarField, value);
+    ptr.offsetBy(MyStruct.structLayout.offset(.scalarField)).writeInt(value);
+    expect(MyStruct.struct.ptr(ptr).ref.scalarField, value);
   });
 
   tearDownAll(disposeRaylib);

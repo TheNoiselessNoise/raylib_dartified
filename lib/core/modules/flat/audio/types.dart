@@ -8,7 +8,7 @@ extension AudioStreamCPEx on Pointer<AudioStreamC> {
 
 extension AudioStreamCEx on AudioStreamC {
   AudioStreamD toDart([Pointer<AudioStreamC>? ptr]) => .new(
-    op: AudioStreamD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: AudioStreamD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -20,7 +20,7 @@ extension MusicCPEx on Pointer<MusicC> {
 
 extension MusicCEx on MusicC {
   MusicD toDart([Pointer<MusicC>? ptr]) => .new(
-    op: MusicD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: MusicD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -32,7 +32,7 @@ extension SoundCPEx on Pointer<SoundC> {
 
 extension SoundCEx on SoundC {
   SoundD toDart([Pointer<SoundC>? ptr]) => .new(
-    op: SoundD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: SoundD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -44,6 +44,6 @@ extension WaveCPEx on Pointer<WaveC> {
 
 extension WaveCEx on WaveC {
   WaveD toDart([Pointer<WaveC>? ptr]) => .new(
-    op: WaveD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: WaveD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

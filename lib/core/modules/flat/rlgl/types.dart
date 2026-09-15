@@ -8,7 +8,7 @@ extension RlDrawCallCPEx on Pointer<RlDrawCallC> {
 
 extension RlDrawCallCEx on RlDrawCallC {
   RlDrawCallD toDart([Pointer<RlDrawCallC>? ptr]) => .new(
-    op: RlDrawCallD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: RlDrawCallD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -20,7 +20,7 @@ extension RlRenderBatchCPEx on Pointer<RlRenderBatchC> {
 
 extension RlRenderBatchCEx on RlRenderBatchC {
   RlRenderBatchD toDart([Pointer<RlRenderBatchC>? ptr]) => .new(
-    op: RlRenderBatchD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: RlRenderBatchD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -32,6 +32,6 @@ extension RlVertexBufferCPEx on Pointer<RlVertexBufferC> {
 
 extension RlVertexBufferCEx on RlVertexBufferC {
   RlVertexBufferD toDart([Pointer<RlVertexBufferC>? ptr]) => .new(
-    op: RlVertexBufferD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: RlVertexBufferD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

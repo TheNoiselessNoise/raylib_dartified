@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .color: RStruct(ColorD.struct),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .color: RStruct(ColorD.struct),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _colorF = struct.struct(.color, ColorD.pointer);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_color = structLayout.struct<ColorD>(.color);
 
   ColorD _color;
-  ColorD get color => _color = _colorF.readOr(op?.ptr, _color);
-  set color(ColorD value) => _color = _colorF.writeIf(op?.ptr, value);
+  ColorD get color => _color = field_color.readOr(op?.ptr, _color);
+  set color(ColorD value) => _color = field_color.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,12 +31,12 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _color = _colorF.read(p);
+    _color = field_color.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _colorF.write(p, _color);
+    field_color.write(p, _color);
   }
 }
 
@@ -50,7 +48,7 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Struct - after assignment", () {
-    final struct = MyStruct.pointer(ptr).ref;
+    final struct = MyStruct.struct.ptr(ptr).ref;
     final color = ColorD.AQUA;
     struct.color = color;
     expect(struct.color.toString(), equals(color.toString()));
@@ -58,8 +56,8 @@ void main() {
 
   test("Struct - read live data", () {
     final color = ColorD.AQUA;
-    color.structWriteInto(ptr.offsetBy(MyStruct.struct.offset(.color)));
-    expect(MyStruct.pointer(ptr).ref.color.toString(), equals(color.toString()));
+    color.structWriteInto(ptr.offsetBy(MyStruct.structLayout.offset(.color)));
+    expect(MyStruct.struct.ptr(ptr).ref.color.toString(), equals(color.toString()));
   });
 
   tearDownAll(disposeRaylib);

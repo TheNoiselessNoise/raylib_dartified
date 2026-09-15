@@ -8,7 +8,7 @@ extension MsfGifResultCPEx on Pointer<MsfGifResultC> {
 
 extension MsfGifResultCEx on MsfGifResultC {
   MsfGifResultD toDart([Pointer<MsfGifResultC>? ptr]) => .new(
-    op: MsfGifResultD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: MsfGifResultD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -20,6 +20,6 @@ extension MsfGifStateCPEx on Pointer<MsfGifStateC> {
 
 extension MsfGifStateCEx on MsfGifStateC {
   MsfGifStateD toDart([Pointer<MsfGifStateC>? ptr]) => .new(
-    op: MsfGifStateD.pointer(NativeMemoryPointer.orNull(ptr?..ref = this)),
+    op: MsfGifStateD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

@@ -7,21 +7,19 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  @override
-  StructLayout<MyStructField> get structLayout => struct;
+  static final StructType<MyStruct> struct = .new(
+    factory: MyStruct.new,
+    layout: .aligned<MyStructField>({
+      .pointerScalarFixedArray: RPointer(RArray(RInt(), 4)),
+    }),
+  );
 
-  static final StructLayout<MyStructField> struct = .aligned({
-    .pointerScalarFixedArray: RPointer(RArray(RInt(), 4)),
-  });
-
-  static StructPointer<MyStruct> pointer(MemoryPointer? ptr)
-    => .nullable(ptr, struct, MyStruct.new, MyStruct.pointer);
-
-  static final _pointerScalarFixedArrayF = struct.pointerScalarFixedArray<int, RInt>(.pointerScalarFixedArray);
+  static final StructLayout<MyStructField> structLayout = struct.layoutOf();
+  static final field_pointerScalarFixedArray = structLayout.pointerScalarFixedArray<int, RInt>(.pointerScalarFixedArray);
 
   List<int> _pointerScalarFixedArray;
-  List<int> get pointerScalarFixedArray => _pointerScalarFixedArray = _pointerScalarFixedArrayF.readOr(op?.ptr, _pointerScalarFixedArray);
-  set pointerScalarFixedArray(List<int> value) => _pointerScalarFixedArray = _pointerScalarFixedArrayF.writeIf(op?.ptr, value);
+  List<int> get pointerScalarFixedArray => _pointerScalarFixedArray = field_pointerScalarFixedArray.readOr(op?.ptr, _pointerScalarFixedArray);
+  set pointerScalarFixedArray(List<int> value) => _pointerScalarFixedArray = field_pointerScalarFixedArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
@@ -33,17 +31,17 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structAllocateInto(RaylibTemp temp, MemoryPointer p, String key) {
-    _pointerScalarFixedArrayF.allocate(temp, p, key);
+    field_pointerScalarFixedArray.allocate(temp, p, key);
   }
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerScalarFixedArray = _pointerScalarFixedArrayF.readSafe(p, _pointerScalarFixedArray);
+    _pointerScalarFixedArray = field_pointerScalarFixedArray.readSafe(p, _pointerScalarFixedArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    _pointerScalarFixedArrayF.write(p, _pointerScalarFixedArray);
+    field_pointerScalarFixedArray.write(p, _pointerScalarFixedArray);
   }
 }
 
@@ -53,11 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(
-      layout: MyStruct.struct,
-      factory: MyStruct.new,
-      pointerFactory: MyStruct.pointer,
-    );
+    myStructAlloc = $.createStructAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -74,7 +68,7 @@ void main() {
   test("Pointer Scalar Array - reading live data", () {
     final List<int> values = .generate(4, (i) => i);
     final struct = myStructAlloc.Allocate(.new()).ref;
-    struct.getOp().offsetBy(MyStruct.struct.offset(.pointerScalarFixedArray)).readPtr().cast<RInt>().writeArray(values);
+    struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerScalarFixedArray)).readPtr().cast<RInt>().writeArray(values);
     expect(struct.pointerScalarFixedArray.toString(), equals(values.toString()));
   });
 
