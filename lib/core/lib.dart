@@ -126,41 +126,41 @@ class Raylib extends RaylibBase {
 
     // extensions
     registerModule(RaylibMatrixExt(this));
-    registerModule<RaylibMatrixFlatExt>(RaylibMatrixExtFlat(this));
+    registerModule<RaylibMatrixFlatExt>(RaylibMatrixExtFlatNative(this));
 
     registerModule(RaylibQuaternionExt(this));
-    registerModule<RaylibQuaternionFlatExt>(RaylibQuaternionExtFlat(this));
+    registerModule<RaylibQuaternionFlatExt>(RaylibQuaternionExtFlatNative(this));
 
     registerModule(RaylibVector2Ext(this));
-    registerModule<RaylibVector2FlatExt>(RaylibVector2ExtFlat(this));
+    registerModule<RaylibVector2FlatExt>(RaylibVector2ExtFlatNative(this));
 
     registerModule(RaylibVector3Ext(this));
-    registerModule<RaylibVector3FlatExt>(RaylibVector3ExtFlat(this));
+    registerModule<RaylibVector3FlatExt>(RaylibVector3ExtFlatNative(this));
 
     registerModule(RaylibVector4Ext(this));
-    registerModule<RaylibVector4FlatExt>(RaylibVector4ExtFlat(this));
+    registerModule<RaylibVector4FlatExt>(RaylibVector4ExtFlatNative(this));
 
     // modules
     registerModule(RaylibAudio(this));
-    registerModule<RaylibAudioFlatModule>(RaylibAudioFlat(this));
+    registerModule<RaylibAudioFlat>(RaylibAudioFlatNative(this));
 
     registerModule(RaylibCamera(this));
-    registerModule<RaylibCameraFlatModule>(RaylibCameraFlat(this));
+    registerModule<RaylibCameraFlat>(RaylibCameraFlatNative(this));
     
     registerModule(RaylibCore(this));
-    registerModule<RaylibCoreFlatModule>(RaylibCoreFlat(this));
+    registerModule<RaylibCoreFlat>(RaylibCoreFlatNative(this));
     
     registerModule(RaylibGui(this));
-    registerModule<RaylibGuiFlatModule>(RaylibGuiFlat(this));
+    registerModule<RaylibGuiFlat>(RaylibGuiFlatNative(this));
 
     registerModule(RaylibLight(this));
-    registerModule<RaylibLightFlatModule>(RaylibLightFlat(this));
+    registerModule<RaylibLightFlat>(RaylibLightFlatNative(this));
 
     registerModule(RaylibMsfGif(this));
-    registerModule<RaylibMsfGifFlatModule>(RaylibMsfGifFlat(this));
+    registerModule<RaylibMsfGifFlat>(RaylibMsfGifFlatNative(this));
     
     registerModule(RaylibRlgl(this));
-    registerModule<RaylibRlglFlatModule>(RaylibRlglFlat(this));
+    registerModule<RaylibRlglFlat>(RaylibRlglFlatNative(this));
   }
 
   // Custom dynamic libraries

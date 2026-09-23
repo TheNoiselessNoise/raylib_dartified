@@ -1,3 +1,7 @@
+## 6.0.1
+
+- [BREAKING] Comply with `raylib_dartified_base` module naming.
+
 ## 6.0.0
 
 - [BREAKING] Migrated to `raylib_dartified_base` 6.0.0's unified contract: implements `NativeMemoryPointer` as `MemoryPointer`, adopts `StructLayout`-based struct definitions and unified allocators

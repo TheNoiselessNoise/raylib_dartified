@@ -1,8 +1,8 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibGuiFlat extends RaylibGuiFlatModule<Raylib> {
+class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
-  RaylibGuiFlat(super.rl);
+  RaylibGuiFlatNative(super.rl);
 
   RaylibGui get _ffi => rl.module();
 

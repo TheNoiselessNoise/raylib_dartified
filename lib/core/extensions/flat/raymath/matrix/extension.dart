@@ -1,7 +1,7 @@
 part of '../../../../raylib_dartified.dart';
 
-class RaylibMatrixExtFlat extends RaylibMatrixFlatExt<Raylib> {
-  RaylibMatrixExtFlat(super.rl);
+class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
+  RaylibMatrixExtFlatNative(super.rl);
 
   RaylibMatrixExt get _ffi => rl.module();
 

@@ -15,9 +15,6 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   /* --- --------------- --- */
 
   @override
-  NativeMemoryPointer<Y> cast<Y extends RType>() => .new(_ptr);
-
-  @override
   bool get isNull => isFreed || _ptr == nullptr;
 
   @override

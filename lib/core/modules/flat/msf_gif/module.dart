@@ -1,8 +1,8 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibMsfGifFlat extends RaylibMsfGifFlatModule<Raylib> {
+class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
   
-  RaylibMsfGifFlat(super.rl);
+  RaylibMsfGifFlatNative(super.rl);
 
   RaylibMsfGif get _ffi => rl.module();
 
