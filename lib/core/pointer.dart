@@ -15,6 +15,9 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   /* --- --------------- --- */
 
   @override
+  NativeMemoryPointer<Y> cast<Y extends RType>() => .new(_ptr);
+
+  @override
   bool get isNull => isFreed || _ptr == nullptr;
 
   @override
@@ -106,6 +109,10 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   @override int readUnsignedInt([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readUnsignedInt', byteOffset); final ptr = _at<UnsignedInt>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'UnsignedInt', value); return value; }
   @override double readFloat([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readFloat', byteOffset); final ptr = _at<Float>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'Float', value); return value; }
   @override double readDouble([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readDouble', byteOffset); final ptr = _at<Double>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'Double', value); return value; }
+  @override int readLong([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readLong', byteOffset); final ptr = _at<Long>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'Long', value); return value; }
+  @override int readUnsignedLong([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readUnsignedLong', byteOffset); final ptr = _at<UnsignedLong>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'UnsignedLong', value); return value; }
+  @override int readLongLong([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readLongLong', byteOffset); final ptr = _at<LongLong>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'LongLong', value); return value; }
+  @override int readUnsignedLongLong([int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'readUnsignedLongLong', byteOffset); final ptr = _at<UnsignedLongLong>(byteOffset); final value = ptr.value; MemoryTrace.checkRead(ptr.address, 'UnsignedLongLong', value); return value; }
 
   @override void writeSize(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeSize', value, byteOffset); final ptr = _at<Size>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'Size', value); }
   @override void writeBool(bool value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeBool', value, byteOffset); final ptr = _at<Bool>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'Bool', value); }
@@ -127,6 +134,10 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   @override void writeUnsignedInt(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeUnsignedInt', value, byteOffset); final ptr = _at<UnsignedInt>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'UnsignedInt', value); }
   @override void writeFloat(double value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeFloat', value, byteOffset); final ptr = _at<Float>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'Float', value); }
   @override void writeDouble(double value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeDouble', value, byteOffset); final ptr = _at<Double>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'Double', value); }
+  @override void writeLong(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeLong', value, byteOffset); final ptr = _at<Long>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'Long', value); }
+  @override void writeUnsignedLong(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeUnsignedLong', value, byteOffset); final ptr = _at<UnsignedLong>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'UnsignedLong', value); }
+  @override void writeLongLong(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeLongLong', value, byteOffset); final ptr = _at<LongLong>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'LongLong', value); }
+  @override void writeUnsignedLongLong(int value, [int byteOffset = 0]) { MemoryDebug.checkPointer(this, 'writeUnsignedLongLong', value, byteOffset); final ptr = _at<UnsignedLongLong>(byteOffset); ptr.value = value; MemoryTrace.checkWrite(ptr.address, 'UnsignedLongLong', value); }
 }
 
 extension MemoryPointerAsNativePointer on MemoryPointer {
