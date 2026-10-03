@@ -21,7 +21,8 @@ void main() {
   setUp(() => ptr = Color$.$.Array(colorMatrix));
 
   test("readMatrix (direct)", () {
-    final extracted = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false);
+    // `materialize` is required
+    final extracted = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false, materialize: true);
     expect(extracted.toString(), colorMatrix.toString());
   });
 
@@ -55,11 +56,13 @@ void main() {
     final pColorIndex = 1;
     final expectedValue = 99;
 
-    final matrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false);
+    final matrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: true);
+    // we want to update the underlying memory, that's why we need to set `owned: true`
     matrix[pListIndex][pColorIndex].r = expectedValue;
     ptr.writeMatrix(matrix);
 
-    final newMatrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false);
+    // here, we can either use `owned: true` or (`owned: false` but with `materialize: true`)
+    final newMatrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false, materialize: true);
     expect(newMatrix[pListIndex][pColorIndex].r, equals(expectedValue));
   });
   

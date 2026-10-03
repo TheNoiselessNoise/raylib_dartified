@@ -19,8 +19,10 @@ void main() {
     Vector3 position = .vec3(10, 10, 10);
     Camera3D camera = .new(position: position);
 
-    Camera3D$.Allocate(camera);
-    expect(camera.op, isNotNull);
+    final ptr = Camera3D$.Allocate(camera);
+    expect(camera.op, isNull); // it's literal
+    camera.op = ptr; // we need to assign it back
+
     expect(camera.position.toString(), position.toString());
 
     camera.position.x = 5;

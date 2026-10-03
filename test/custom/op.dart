@@ -13,10 +13,12 @@ void main() {
   });
 
   test("op - shared ref", () {
-    Vector2$.Ref1(vec21);
-    Vector2$.Ref1(vec22);
-    expect(vec21.op, isNotNull);
-    expect(vec22.op, isNotNull);
+    final ptr1 = Vector2$.Ref1(vec21);
+    final ptr2 = Vector2$.Ref1(vec22);
+    expect(vec21.op, isNull);
+    expect(vec22.op, isNull);
+    vec21.op = ptr1;
+    vec22.op = ptr2;
     expect(vec21.getOp().address, equals(vec22.getOp().address));
 
     double value = 10;
@@ -25,20 +27,24 @@ void main() {
   });
 
   test("op - unique ref", () {
-    Vector2$.Ref1(vec21);
-    Vector2$.Ref2(vec22);
-    expect(vec21.op, isNotNull);
-    expect(vec22.op, isNotNull);
+    final ptr1 = Vector2$.Ref1(vec21);
+    final ptr2 = Vector2$.Ref2(vec22);
+    expect(vec21.op, isNull);
+    expect(vec22.op, isNull);
+    vec21.op = ptr1;
+    vec22.op = ptr2;
     expect(vec21.getOp().address, isNot(equals(vec22.getOp().address)));
   });
 
   test("op - unique ref (by tag)", () {
     vec21.structSetTag('vec21');
-    Vector2$.Ref1(vec21);
+    final ptr1 = Vector2$.Ref1(vec21);
     vec22.structSetTag('vec22');
-    Vector2$.Ref1(vec22); // using the same `Ref1`
-    expect(vec21.op, isNotNull);
-    expect(vec22.op, isNotNull);
+    final ptr2 = Vector2$.Ref1(vec22); // using the same `Ref1`
+    expect(vec21.op, isNull);
+    expect(vec22.op, isNull);
+    vec21.op = ptr1;
+    vec22.op = ptr2;
     expect(vec21.getOp().address, isNot(equals(vec22.getOp().address)));
   });
   
