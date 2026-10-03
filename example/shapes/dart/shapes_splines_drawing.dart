@@ -8,8 +8,8 @@ const int screenHeight = 450;
 const int MAX_SPLINE_POINTS = 21;
 
 class ControlPoint {
-  Vector2D start;
-  Vector2D end;
+  Vector2 start;
+  Vector2 end;
 
   ControlPoint({
     required this.start,
@@ -32,7 +32,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_splines_drawing");
   SetTargetFPS(60);
 
-  final List<Vector2D> points = .generate(MAX_SPLINE_POINTS, (i) => switch(i) {
+  final List<Vector2> points = .generate(MAX_SPLINE_POINTS, (i) => switch(i) {
     0 => .vec2( 50.0, 400.0),
     1 => .vec2(160.0, 220.0),
     2 => .vec2(340.0, 380.0),
@@ -41,15 +41,15 @@ void main()
     _ => .zero(),
   });
   
-  final List<Vector2D> pointsInterleaved = .generate(
+  final List<Vector2> pointsInterleaved = .generate(
     3*(MAX_SPLINE_POINTS - 1) + 1, (_) => .zero()
   );
   
   int pointCount = 5;
   int selectedPoint = -1;
   int focusedPoint = -1;
-  Vector2D? selectedControlPoint;
-  Vector2D? focusedControlPoint;
+  Vector2? selectedControlPoint;
+  Vector2? focusedControlPoint;
   
   List<ControlPoint> control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
     start: .vec2(points[i].x + 50, points[i].y),

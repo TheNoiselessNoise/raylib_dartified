@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_loading_iqm");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(10.0, 10.0, 10.0),
     target: .vec3(0.0, 4.0, 0.0),
     up: .vec3(0.0, 1.0, 0.0),
@@ -25,7 +25,7 @@ void main()
   final model = LoadModel("../resources/models/iqm/guy.iqm");
   final texture = LoadTexture("../resources/models/iqm/guytex.png");
   SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
-  final Vector3D position = .zero();
+  final Vector3 position = .zero();
 
   final anims = LoadModelAnimations("../resources/models/iqm/guyanim.iqm");
 

@@ -9,8 +9,8 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 class Branch {
-  Vector2D start = .zero();
-  Vector2D end = .zero();
+  Vector2 start = .zero();
+  Vector2 end = .zero();
   double angle = 0;
   double length = 0;
 }
@@ -22,7 +22,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_recursive_tree");
   SetTargetFPS(60);
 
-  final Vector2D start = .vec2((screenWidth/2.0) - 125.0, screenHeight);
+  final Vector2 start = .vec2((screenWidth/2.0) - 125.0, screenHeight);
   double angle = 40.0;
   double thick = 1.0;
   double treeDepth = 10.0;
@@ -38,7 +38,7 @@ void main()
     int maxBranches = math.pow(2, treeDepth.floor()).toInt();
     int count = 0;
 
-    final Vector2D initialEnd = .vec2(
+    final Vector2 initialEnd = .vec2(
       start.x + length*math.sin(0.0),
       start.y - length*math.cos(0.0)
     );
@@ -61,7 +61,7 @@ void main()
         final branchStart = branch.end;
 
         final angle1 = branch.angle + theta;
-        final Vector2D branchEnd1 = .vec2(
+        final Vector2 branchEnd1 = .vec2(
           branchStart.x + nextLength*math.sin(angle1),
           branchStart.y - nextLength*math.cos(angle1)
         );
@@ -73,7 +73,7 @@ void main()
         branches[current1].length = nextLength;
 
         final angle2 = branch.angle - theta;
-        final Vector2D branchEnd2 = .vec2(
+        final Vector2 branchEnd2 = .vec2(
           branchStart.x + nextLength*math.sin(angle2),
           branchStart.y - nextLength*math.cos(angle2)
         );

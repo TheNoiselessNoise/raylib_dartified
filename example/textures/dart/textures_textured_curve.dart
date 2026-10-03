@@ -8,19 +8,19 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-late TextureD texRoad;
+late Texture texRoad;
 bool showCurve = false;
 
 double curveWidth = 50;
 int curveSegments = 24;
 
-late Vector2D curveStartPosition;
-late Vector2D curveStartPositionTangent;
+late Vector2 curveStartPosition;
+late Vector2 curveStartPositionTangent;
 
-late Vector2D curveEndPosition;
-late Vector2D curveEndPositionTangent;
+late Vector2 curveEndPosition;
+late Vector2 curveEndPositionTangent;
 
-Vector2D? curveSelectedPoint;
+Vector2? curveSelectedPoint;
 
 void main()
 {
@@ -53,7 +53,7 @@ void main()
 
     if (!IsMouseButtonDown(.MOUSE_BUTTON_LEFT)) curveSelectedPoint = null;
 
-    if (curveSelectedPoint case Vector2D point) {
+    if (curveSelectedPoint case Vector2 point) {
       point.setDart(point.add(GetMouseDelta()));
     }
 
@@ -127,13 +127,13 @@ void DrawTexturedCurve()
 {
   final step = 1.0/curveSegments;
 
-  Vector2D previous = curveStartPosition.clone();
-  Vector2D previousTangent = .zero();
+  Vector2 previous = curveStartPosition.clone();
+  Vector2 previousTangent = .zero();
   double previousV = 0;
 
   bool tangentSet = false;
 
-  final Vector2D current = .zero();
+  final Vector2 current = .zero();
   double t = 0.0;
 
   for (int i = 1; i <= curveSegments; i++)
@@ -148,12 +148,12 @@ void DrawTexturedCurve()
     current.y = a*curveStartPosition.y + b*curveStartPositionTangent.y + c*curveEndPositionTangent.y + d*curveEndPosition.y;
     current.x = a*curveStartPosition.x + b*curveStartPositionTangent.x + c*curveEndPositionTangent.x + d*curveEndPosition.x;
 
-    final Vector2D delta = .vec2(
+    final Vector2 delta = .vec2(
       current.x - previous.x,
       current.y - previous.y
     );
 
-    final Vector2D normal = .vec2(-delta.y, delta.x).normalize();
+    final Vector2 normal = .vec2(-delta.y, delta.x).normalize();
 
     double v = previousV + delta.length;
 

@@ -1,5 +1,4 @@
-export 'package:raylib_dartified_base/abbr.dart';
-export 'package:raylib_dartified_base/abbr_flat.dart';
+export 'package:raylib_dartified_base/abbr/flat.dart';
 export 'package:raylib_dartified/raylib_dartified.dart';
 import '';
 

@@ -24,7 +24,7 @@ void main()
   int width = 960;
   int height = 480;
 
-  final List<ColorD> pixels = .generate(width*height, (_) => .BLACK);
+  final List<Color> pixels = .generate(width*height, (_) => .BLACK);
 
   for (int y = 0; y < height; y++)
   {
@@ -35,7 +35,7 @@ void main()
     }
   }
 
-  final checkedIm = ImageD(
+  final checkedIm = Image(
     data: .fromList(pixels.expand((p) => p.toArray()).toList()),
     width: width,
     height: height,

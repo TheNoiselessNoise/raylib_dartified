@@ -9,6 +9,7 @@ import 'package:ffi/ffi.dart' as ffi;
 import 'package:path/path.dart' as path;
 import 'package:logging/logging.dart';
 import 'package:raylib_dartified_base/raylib_dartified_base.dart';
+import 'package:raylib_dartified_base/abbr/allocators.dart';
 
 part 'ext.dart';
 part 'lib.dart';

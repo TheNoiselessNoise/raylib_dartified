@@ -30,25 +30,25 @@ void main()
   var showDonut = false;
   
   int hoveredSlice = -1;
-  final RectangleD scrollPanelBounds = .zero();
-  final Vector2D scrollContentOffset = .zero();
-  final RectangleD view = .zero();
+  final Rectangle scrollPanelBounds = .zero();
+  final Vector2 scrollContentOffset = .zero();
+  final Rectangle view = .zero();
 
   const int panelWidth = 270;
   const int panelMargin = 5;
 
-  final Vector2D panelPos = .vec2(
+  final Vector2 panelPos = .vec2(
     screenWidth - panelMargin - panelWidth,
     panelMargin,
   );
 
-  final RectangleD panelRect = .rect(
+  final Rectangle panelRect = .rect(
     panelPos.x, panelPos.y,
     panelWidth, screenHeight - 2.0*panelMargin
   );
 
-  final RectangleD canvas = .rect(0, 0, panelPos.x, screenHeight);
-  final Vector2D center = .vec2(canvas.width/2.0, canvas.height/2.0);
+  final Rectangle canvas = .rect(0, 0, panelPos.x, screenHeight);
+  final Vector2 center = .vec2(canvas.width/2.0, canvas.height/2.0);
   const double radius = 205.0;
 
   double totalValue = 0.0;
@@ -113,7 +113,7 @@ void main()
 
           final textSize = MeasureTextEx(GetFontDefault(), labelText, 20, 1);
           final labelRadius = radius*0.7;
-          final Vector2D labelPos = .vec2(
+          final Vector2 labelPos = .vec2(
             center.x + math.cos(midAngle*rl.DEG2RAD)*labelRadius - textSize.x/2.0,
             center.y + math.sin(midAngle*rl.DEG2RAD)*labelRadius - textSize.y/2.0
           );

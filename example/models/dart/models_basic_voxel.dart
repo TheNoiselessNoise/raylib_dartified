@@ -15,7 +15,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(-2, 0, -2),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -31,9 +31,9 @@ void main()
     return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
   });
 
-  final Vector2D screenCenter = .vec2(screenWidth/2, screenHeight/2);
-  final BoundingBoxD voxelBB = .zero();
-  final Vector3D modelPosition = .zero();
+  final Vector2 screenCenter = .vec2(screenWidth/2, screenHeight/2);
+  final BoundingBox voxelBB = .zero();
+  final Vector3 modelPosition = .zero();
 
   while (!WindowShouldClose())
   {

@@ -7,7 +7,7 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .inlineScalarArray: RArray(RInt(), 4),

@@ -9,10 +9,10 @@ const int screenHeight = 450;
 const int MAX_BULLETS = 500000;
 
 class Bullet {
-  Vector2D position;
-  Vector2D acceleration;
+  Vector2 position;
+  Vector2 acceleration;
   bool disabled;
-  ColorD color;
+  Color color;
 
   Bullet({
     required this.position,
@@ -34,7 +34,7 @@ void main()
   int bulletRadius = 10;
   double bulletSpeed = 3.0;
   int bulletRows = 6;
-  List<ColorD> bulletColor = [ .RED, .BLUE ];
+  List<Color> bulletColor = [ .RED, .BLUE ];
 
   double baseDirection = 0;
   int angleIncrement = 5;
@@ -52,7 +52,7 @@ void main()
 
   bool drawInPerformanceMode = true;
 
-  final ColorD color = .color(0, 0, 0, 200);
+  final Color color = .color(0, 0, 0, 200);
 
   while (!WindowShouldClose())
   {

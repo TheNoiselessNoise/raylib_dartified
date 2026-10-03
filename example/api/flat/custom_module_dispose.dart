@@ -8,8 +8,8 @@ class MyModule extends RaylibModule<Raylib> {
   MyModule(super.rl);
 
   // fields initialized in load(), which is called by registerModule()
-  late StructPointer<ColorD> background;
-  late StructPointer<Vector2D> position;
+  late StructPointer<Color> background;
+  late StructPointer<Vector2> position;
 
   @override
   void load() {
@@ -57,7 +57,7 @@ void main()
   
   registerModule(MyModule(rl));
 
-  $.debugFree(true);
+  Temp.debugFree(true);
   // NOTE: with `debugFree` enabled you should see output at the exit:
   // Freeing user-defined 1 Color$ slots
   // [FREE] background

@@ -27,7 +27,7 @@ void main()
   {
     final w = GetScreenWidth(), h = GetScreenHeight();
 
-    final RectangleD rec = .rect(
+    final Rectangle rec = .rect(
       (w - width - 250)/2, (h - height)/2.0,
       width, height
     );

@@ -16,33 +16,33 @@ void main()
 
   final nPatchTexture = LoadTexture("../resources/ninepatch_button.png");
 
-  Vector2D mousePosition = .zero();
-  final Vector2D origin = .zero();
+  Vector2 mousePosition = .zero();
+  final Vector2 origin = .zero();
 
-  final RectangleD dstRec1 = .rect(480.0, 160.0, 32.0, 32.0);
-  final RectangleD dstRec2 = .rect(160.0, 160.0, 32.0, 32.0);
-  final RectangleD dstRecH = .rect(160.0, 93.0, 32.0, 32.0);
-  final RectangleD dstRecV = .rect(92.0, 160.0, 32.0, 32.0);
+  final Rectangle dstRec1 = .rect(480.0, 160.0, 32.0, 32.0);
+  final Rectangle dstRec2 = .rect(160.0, 160.0, 32.0, 32.0);
+  final Rectangle dstRecH = .rect(160.0, 93.0, 32.0, 32.0);
+  final Rectangle dstRecV = .rect(92.0, 160.0, 32.0, 32.0);
 
-  final NPatchInfoD ninePatchInfo1 = .new(
+  final NPatchInfo ninePatchInfo1 = .new(
     source: .rect(0.0, 0.0, 64.0, 64.0),
     left: 12, top: 40, right: 12, bottom: 12,
     layout: .NPATCH_NINE_PATCH
   );
 
-  final NPatchInfoD ninePatchInfo2 = .new(
+  final NPatchInfo ninePatchInfo2 = .new(
     source: .rect(0.0, 128.0, 64.0, 64.0),
     left: 16, top: 16, right: 16, bottom: 16,
     layout: .NPATCH_NINE_PATCH
   );
 
-  final NPatchInfoD h3PatchInfo = .new(
+  final NPatchInfo h3PatchInfo = .new(
     source: .rect(0.0,  64.0, 64.0, 64.0),
     left: 8, top: 8, right: 8, bottom: 8,
     layout: .NPATCH_THREE_PATCH_HORIZONTAL
   );
 
-  final NPatchInfoD v3PatchInfo = .new(
+  final NPatchInfo v3PatchInfo = .new(
     source: .rect(0.0, 192.0, 64.0, 64.0),
     left: 6, top: 6, right: 6, bottom: 6,
     layout: .NPATCH_THREE_PATCH_VERTICAL

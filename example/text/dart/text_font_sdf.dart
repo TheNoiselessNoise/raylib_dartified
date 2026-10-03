@@ -19,14 +19,14 @@ void main()
 
   final fileData = LoadFileData("../resources/anonymous_pro_bold.ttf");
 
-  final fontDefault = FontD(baseSize: 16, glyphCount: 95);
+  final fontDefault = Font(baseSize: 16, glyphCount: 95);
   fontDefault.glyphs = LoadFontData(fileData, 16, null, 95, .FONT_DEFAULT);
   var (fontDefaultAtlas, fontDefaultRecs) = GenImageFontAtlas(fontDefault.glyphs, 16, 4, 0);
   fontDefault.recs = fontDefaultRecs;
   fontDefault.texture = LoadTextureFromImage(fontDefaultAtlas);
   UnloadImage(fontDefaultAtlas);
 
-  final fontSDF = FontD(baseSize: 16, glyphCount: 95);
+  final fontSDF = Font(baseSize: 16, glyphCount: 95);
   fontSDF.glyphs = LoadFontData(fileData, 16, null, 0, .FONT_SDF);
   var (fontSDFAtlas, fontSDFRects) = GenImageFontAtlas(fontSDF.glyphs, 16, 0, 1);
   fontSDF.recs = fontSDFRects;
@@ -36,8 +36,8 @@ void main()
   final shader = LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/sdf.fs");
   SetTextureFilter(fontSDF.texture, .TEXTURE_FILTER_BILINEAR);
 
-  final Vector2D fontPosition = .vec2(40, screenHeight/2.0 - 50);
-  Vector2D textSize = .vec2(0.0, 0.0);
+  final Vector2 fontPosition = .vec2(40, screenHeight/2.0 - 50);
+  Vector2 textSize = .vec2(0.0, 0.0);
   double fontSize = 16.0;
   int currentFont = 0;
 

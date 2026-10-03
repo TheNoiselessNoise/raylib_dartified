@@ -21,7 +21,7 @@ void main()
   final texPattern = LoadTexture("../resources/patterns.png");
   SetTextureFilter(texPattern, .TEXTURE_FILTER_TRILINEAR);
 
-  final recPattern = <RectangleD>[
+  final recPattern = <Rectangle>[
     .rect(3, 3, 66, 66),
     .rect(75, 3, 100, 100),
     .rect(3, 75, 66, 66),
@@ -30,12 +30,12 @@ void main()
     .rect(75, 154, 100, 60),
   ];
 
-  final colors = <ColorD>[
+  final colors = <Color>[
     .BLACK, .MAROON, .ORANGE, .BLUE, .PURPLE,
     .BEIGE, .LIME, .RED, .DARKGRAY, .SKYBLUE
   ];
 
-  final colorRec = <RectangleD>[];
+  final colorRec = <Rectangle>[];
 
   for (int i = 0, x = 0, y = 0; i < colors.length; i++)
   {
@@ -186,13 +186,13 @@ void main()
 }
 
 void DrawTextureTiled(
-  TextureD texture,
-  RectangleD source,
-  RectangleD dest,
-  Vector2D origin,
+  Texture texture,
+  Rectangle source,
+  Rectangle dest,
+  Vector2 origin,
   double rotation,
   double scale,
-  ColorD tint
+  Color tint
 ) {
   if ((texture.id <= 0) || (scale <= 0.0)) return;
   if ((source.width == 0) || (source.height == 0)) return;

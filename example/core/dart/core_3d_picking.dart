@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_3d_picking");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -20,11 +20,11 @@ void main() {
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  final Vector3D cubePosition = .vec3(0, 1, 0);
-  final Vector3D cubeSize = .vec3(2, 2, 2);
+  final Vector3 cubePosition = .vec3(0, 1, 0);
+  final Vector3 cubeSize = .vec3(2, 2, 2);
 
-  RayD ray = .zero();
-  RayCollisionD collision = .zero();
+  Ray ray = .zero();
+  RayCollision collision = .zero();
 
   while (!WindowShouldClose()) {
     if (IsCursorHidden())
@@ -42,7 +42,7 @@ void main() {
       {
         ray = GetScreenToWorldRay(GetMousePosition(), camera);
 
-        final BoundingBoxD bbox = .new(
+        final BoundingBox bbox = .new(
           min: cubePosition.sub(cubeSize.divideBy(2)),
           max: cubePosition.add(cubeSize.divideBy(2)),
         );

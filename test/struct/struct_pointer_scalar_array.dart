@@ -7,7 +7,7 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .pointerScalarArray: RPointer(RInt()), // exactly 4
@@ -51,7 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(MyStruct.struct);
+    myStructAlloc = structAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;

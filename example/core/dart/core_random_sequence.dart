@@ -7,8 +7,8 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 class ColorRect {
-  ColorD color = .zero();
-  RectangleD rect = .zero();
+  Color color = .zero();
+  Rectangle rect = .zero();
 }
 
 void main() {
@@ -64,7 +64,7 @@ void main() {
   CloseWindowAndDispose();
 }
 
-ColorD GenerateRandomColor() => .color(
+Color GenerateRandomColor() => .color(
   GetRandomValue(0, 255),
   GetRandomValue(0, 255),
   GetRandomValue(0, 255),

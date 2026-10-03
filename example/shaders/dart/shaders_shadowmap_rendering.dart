@@ -18,7 +18,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_shadowmap_rendering");
   SetTargetFPS(60);
 
-  final cam = Camera3DD(
+  final cam = Camera3D(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -34,8 +34,8 @@ void main()
   shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
     GetShaderLocation(shadowShader, "viewPos");
 
-  Vector3D lightDir = .normalized(0.35, -1.0, -0.35);
-  Vector4D lightColor = .colorNormalize(.WHITE);
+  Vector3 lightDir = .normalized(0.35, -1.0, -0.35);
+  Vector4 lightColor = .colorNormalize(.WHITE);
 
   void updateShaderLightDir() {
     SetShaderValue(shadowShader,
@@ -80,7 +80,7 @@ void main()
 
   final shadowMap = LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
 
-  final lightCam = Camera3DD(
+  final lightCam = Camera3D(
     position: lightDir.scale(-15.0),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -132,8 +132,8 @@ void main()
     lightCam.position = lightDir.scale(-15.0);
     updateShaderLightDir();
 
-    MatrixD lightView;
-    MatrixD lightProj;
+    Matrix lightView;
+    Matrix lightProj;
     
     BeginTextureMode(shadowMap);
       ClearBackground(.WHITE);
@@ -192,11 +192,11 @@ void main()
   CloseWindowAndDispose();
 }
 
-RenderTextureD LoadShadowmapRenderTexture(
+RenderTexture LoadShadowmapRenderTexture(
   int width,
   int height,
 ) {
-  final RenderTextureD target = .new();
+  final RenderTexture target = .new();
 
   target.id = rlLoadFramebuffer();
   target.texture.width = width;
@@ -235,7 +235,7 @@ RenderTextureD LoadShadowmapRenderTexture(
   return target;
 }
 
-void UnloadShadowmapRenderTexture(RenderTextureD target)
+void UnloadShadowmapRenderTexture(RenderTexture target)
 {
   if (target.id > 0)
   {
@@ -243,7 +243,7 @@ void UnloadShadowmapRenderTexture(RenderTextureD target)
   }
 }
 
-void DrawScene(ModelD cube, ModelD robot)
+void DrawScene(Model cube, Model robot)
 {
   DrawModelEx(
     cube,

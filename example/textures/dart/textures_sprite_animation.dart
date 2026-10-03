@@ -18,8 +18,8 @@ void main()
 
   final scarfy = LoadTexture("../resources/scarfy.png");
 
-  final Vector2D position = .vec2(350.0, 280.0);
-  final RectangleD frameRec = .rect(0.0, 0.0, scarfy.width/6, scarfy.height);
+  final Vector2 position = .vec2(350.0, 280.0);
+  final Rectangle frameRec = .rect(0.0, 0.0, scarfy.width/6, scarfy.height);
   int currentFrame = 0;
 
   int framesCounter = 0;

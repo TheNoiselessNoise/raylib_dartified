@@ -20,7 +20,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(1.5, 1.5, 1.5),
     target: .vec3(0, 0.4, 0),
     up: .vec3(0, 1, 0),
@@ -28,7 +28,7 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  final Vector3D position = .zero();
+  final Vector3 position = .zero();
 
   final modelFileName = "../resources/models/m3d/cesium_man.m3d";
   bool drawMesh = true;

@@ -40,13 +40,13 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   void GuiSetFont(
-    FontD font,
+    Font font,
   ) => _ffi.GuiSetFont(
-    $.Font$.Ref1(font).asNativePointer<FontC>().ref,
+    Font$.Ref1(font).asNativePointer<FontC>().ref,
   );
 
   @override
-  FontD GuiGetFont() => $.Font$.RefCaptureCached(
+  Font GuiGetFont() => Font$.RefCaptureCached(
     RaylibCaptureIds.GuiGetFont,
     (p) => _ffi.GuiGetFont().toDart(p.asNativePointer()),
   );
@@ -148,13 +148,13 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
     int posX,
     int posY,
     int pixelSize,
-    ColorD color,
+    Color color,
   ) => _ffi.GuiDrawIcon(
     iconId,
     posX,
     posY,
     pixelSize,
-    $.Color$.Ref1(color).asNativePointer<ColorC>().ref,
+    Color$.Ref1(color).asNativePointer<ColorC>().ref,
   );
 
   @override
@@ -166,145 +166,145 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiWindowBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> title,
   ) => _ffi.GuiWindowBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
   );
 
   @override
   int GuiGroupBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiGroupBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiLine(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiLine(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiPanel(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiPanel(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiScrollPanel(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
-    RectangleD content,
-    StructPointer<Vector2D> scroll,
-    StructPointer<RectangleD> view,
+    Rectangle content,
+    StructPointer<Vector2> scroll,
+    StructPointer<Rectangle> view,
   ) => _ffi.GuiScrollPanel(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
-    $.Rectangle$.Ref2(content).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref2(content).asNativePointer<RectangleC>().ref,
     scroll.asNativePointer(),
     view.asNativePointer(),
   );
 
   @override
   int GuiLabel(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiLabel(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiButton(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiButton(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiLabelButton(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiLabelButton(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiToggle(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RBool> active,
   ) => _ffi.GuiToggle(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
   );
 
   @override
   int GuiToggleGroup(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
   ) => _ffi.GuiToggleGroup(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
   );
 
   @override
   int GuiToggleSlider(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
   ) => _ffi.GuiToggleSlider(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
   );
 
   @override
   int GuiCheckBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RBool> checked,
   ) => _ffi.GuiCheckBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     checked.asNativePointer(),
   );
 
   @override
   int GuiComboBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
   ) => _ffi.GuiComboBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
   );
 
   @override
   int GuiDropdownBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> active,
     bool editMode,
   ) => _ffi.GuiDropdownBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     active.asNativePointer(),
     editMode,
@@ -312,14 +312,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiSpinner(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> value,
     int minValue,
     int maxValue,
     bool editMode,
   ) => _ffi.GuiSpinner(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
     minValue,
@@ -329,14 +329,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiValueBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> value,
     int minValue,
     int maxValue,
     bool editMode,
   ) => _ffi.GuiValueBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
     minValue,
@@ -346,13 +346,13 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiValueBoxFloat(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RChar> textValue,
     MemoryPointer<RFloat> value,
     bool editMode,
   ) => _ffi.GuiValueBoxFloat(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     textValue.asNativePointer(),
     value.asNativePointer(),
@@ -361,12 +361,12 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiTextBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     int textSize,
     bool editMode,
   ) => _ffi.GuiTextBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     textSize,
     editMode,
@@ -374,14 +374,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiSlider(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> textLeft,
     MemoryPointer<RChar> textRight,
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
   ) => _ffi.GuiSlider(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
     value.asNativePointer(),
@@ -391,14 +391,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiSliderBar(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> textLeft,
     MemoryPointer<RChar> textRight,
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
   ) => _ffi.GuiSliderBar(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
     value.asNativePointer(),
@@ -408,14 +408,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiProgressBar(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> textLeft,
     MemoryPointer<RChar> textRight,
     MemoryPointer<RFloat> value,
     double minValue,
     double maxValue,
   ) => _ffi.GuiProgressBar(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     textLeft.asNativePointer(),
     textRight.asNativePointer(),
     value.asNativePointer(),
@@ -425,31 +425,31 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiStatusBar(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiStatusBar(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiDummyRec(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
   ) => _ffi.GuiDummyRec(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
   );
 
   @override
   int GuiGrid(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     double spacing,
     int subdivs,
-    StructPointer<Vector2D> mouseCell,
+    StructPointer<Vector2> mouseCell,
   ) => _ffi.GuiGrid(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     spacing,
     subdivs,
@@ -458,12 +458,12 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiListView(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> scrollIndex,
     MemoryPointer<RInt> active,
   ) => _ffi.GuiListView(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     scrollIndex.asNativePointer(),
     active.asNativePointer(),
@@ -471,14 +471,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiListViewEx(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RPointer<RChar>> text,
     int count,
     MemoryPointer<RInt> scrollIndex,
     MemoryPointer<RInt> active,
     MemoryPointer<RInt> focus,
   ) => _ffi.GuiListViewEx(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     count,
     scrollIndex.asNativePointer(),
@@ -488,12 +488,12 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiTabBar(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RInt> hscroll,
     MemoryPointer<RInt> active,
   ) => _ffi.GuiTabBar(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     hscroll.asNativePointer(),
     active.asNativePointer(),
@@ -501,14 +501,14 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiTabBarEx(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RPointer<RChar>> text,
     int count,
     MemoryPointer<RInt> hscroll,
     MemoryPointer<RInt> active,
     MemoryPointer<RInt> focus,
   ) => _ffi.GuiTabBarEx(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     count,
     hscroll.asNativePointer(),
@@ -518,13 +518,13 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiMessageBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> title,
     MemoryPointer<RChar> message,
     MemoryPointer<RChar> btnText,
     MemoryPointer<RInt> btnActive,
   ) => _ffi.GuiMessageBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
     btnText.asNativePointer(),
@@ -533,7 +533,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiTextInputBox(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> title,
     MemoryPointer<RChar> message,
     MemoryPointer<RChar> text,
@@ -542,7 +542,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
     MemoryPointer<RInt> btnActive,
     MemoryPointer<RBool> secretViewActive,
   ) => _ffi.GuiTextInputBox(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     title.asNativePointer(),
     message.asNativePointer(),
     text.asNativePointer(),
@@ -554,66 +554,66 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   @override
   int GuiColorPicker(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
-    StructPointer<ColorD> color,
+    StructPointer<Color> color,
   ) => _ffi.GuiColorPicker(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     color.asNativePointer(),
   );
 
   @override
   int GuiColorPanel(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
-    StructPointer<ColorD> color,
+    StructPointer<Color> color,
   ) => _ffi.GuiColorPanel(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     color.asNativePointer(),
   );
 
   @override
   int GuiColorBarAlpha(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RFloat> alpha,
   ) => _ffi.GuiColorBarAlpha(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     alpha.asNativePointer(),
   );
 
   @override
   int GuiColorBarHue(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
     MemoryPointer<RFloat> value,
   ) => _ffi.GuiColorBarHue(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     value.asNativePointer(),
   );
 
   @override
   int GuiColorPickerHSV(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
-    StructPointer<Vector3D> colorHsv,
+    StructPointer<Vector3> colorHsv,
   ) => _ffi.GuiColorPickerHSV(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     colorHsv.asNativePointer(),
   );
 
   @override
   int GuiColorPanelHSV(
-    RectangleD bounds,
+    Rectangle bounds,
     MemoryPointer<RChar> text,
-    StructPointer<Vector3D> colorHsv,
+    StructPointer<Vector3> colorHsv,
   ) => _ffi.GuiColorPanelHSV(
-    $.Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
+    Rectangle$.Ref1(bounds).asNativePointer<RectangleC>().ref,
     text.asNativePointer(),
     colorHsv.asNativePointer(),
   );

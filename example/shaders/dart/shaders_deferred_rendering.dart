@@ -33,7 +33,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_deferred_rendering");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(5, 4, 5),
     target: .vec3(0, 1, 0),
     up: .vec3(0, 1, 0),
@@ -126,7 +126,7 @@ void main()
   model.materials[0].shader = gbufferShader;
   cube.materials[0].shader = gbufferShader;
 
-  List<LightD> lights = [];
+  List<Light> lights = [];
 
   lights.add(CreateLight(
     .LIGHT_POINT, .vec3(-2, 1, -2), .zero(), .YELLOW, deferredShader
@@ -145,7 +145,7 @@ void main()
   ));
 
   const double CUBE_SCALE = 0.25;
-  final List<Vector3D> cubePositions = .generate(MAX_CUBES, (_) => .vec3(
+  final List<Vector3> cubePositions = .generate(MAX_CUBES, (_) => .vec3(
     rl.randC()%10 - 5,
     rl.randC()%5,
     rl.randC()%10 - 5,
@@ -181,7 +181,7 @@ void main()
       UpdateLightValues(deferredShader, lights[i]);
     }
 
-    final TextureD texture = .new();
+    final Texture texture = .new();
 
     BeginDrawing();
         

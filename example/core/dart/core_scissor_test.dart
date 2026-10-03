@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_scissor_test");
   SetTargetFPS(60);
 
-  final RectangleD scissorArea = .rect(0, 0, 300, 300);
+  final Rectangle scissorArea = .rect(0, 0, 300, 300);
   bool scissorMode = true;
 
   while (!WindowShouldClose()) {

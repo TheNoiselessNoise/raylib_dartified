@@ -35,10 +35,10 @@ enum ParticleType {
 
 class Particle {
   ParticleType type = .FIRE;
-  Vector2D position = .zero();
-  Vector2D velocity = .zero();
+  Vector2 position = .zero();
+  Vector2 velocity = .zero();
   double radius = 0;
-  ColorD color = .zero();
+  Color color = .zero();
   double lifeTime = 0;
   bool alive = false;
 }
@@ -62,7 +62,7 @@ void main()
 
   int emissionRate = -2;
   ParticleType currentType = .WATER;
-  Vector2D emitterPosition = .vec2(screenWidth/2.0, screenHeight/2.0);
+  Vector2 emitterPosition = .vec2(screenWidth/2.0, screenHeight/2.0);
 
   int frameCount = 0;
   while (!WindowShouldClose())
@@ -120,7 +120,7 @@ void main()
   CloseWindowAndDispose();
 }
 
-void EmitParticle(CircularBuffer circularBuffer, Vector2D emitterPosition, ParticleType type)
+void EmitParticle(CircularBuffer circularBuffer, Vector2 emitterPosition, ParticleType type)
 {
   final newParticle = AddToCircularBuffer(circularBuffer);
 

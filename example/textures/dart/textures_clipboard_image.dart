@@ -8,8 +8,8 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 
 class TextureCollection {
-  final TextureD texture;
-  final Vector2D position;
+  final Texture texture;
+  final Vector2 position;
 
   TextureCollection(this.texture, this.position);
 }

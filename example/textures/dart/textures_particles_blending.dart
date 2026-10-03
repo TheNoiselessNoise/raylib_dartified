@@ -9,8 +9,8 @@ const int screenHeight = 450;
 const int MAX_PARTICLES = 200;
 
 class Particle {
-  Vector2D position;
-  ColorD color;
+  Vector2 position;
+  Color color;
   double alpha;
   double size;
   double rotation;

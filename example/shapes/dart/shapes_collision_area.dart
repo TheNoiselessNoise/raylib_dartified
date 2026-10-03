@@ -13,16 +13,16 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_collision_area");
   SetTargetFPS(60);
 
-  final RectangleD boxA = .rect(
+  final Rectangle boxA = .rect(
     10, GetScreenHeight()/2.0 - 50, 200, 100
   );
   int boxASpeedX = 4;
 
-  final RectangleD boxB = .rect(
+  final Rectangle boxB = .rect(
     GetScreenWidth()/2.0 - 30, GetScreenHeight()/2.0 - 30, 60, 60
   );
 
-  RectangleD boxCollision = .zero();
+  Rectangle boxCollision = .zero();
 
   int screenUpperLimit = 40;
 

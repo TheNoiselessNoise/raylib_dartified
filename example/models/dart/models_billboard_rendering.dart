@@ -15,7 +15,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_billboard_rendering");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(5, 4, 5),
     target: .vec3(0, 2, 0),
     up: .vec3(0, 1, 0),
@@ -24,15 +24,15 @@ void main()
   );
 
   final bill = LoadTexture("../resources/billboard.png");
-  Vector3D billPositionStatic = .vec3(0.0, 2.0, 0.0);
-  Vector3D billPositionRotating = .vec3(1.0, 2.0, 1.0);
+  Vector3 billPositionStatic = .vec3(0.0, 2.0, 0.0);
+  Vector3 billPositionRotating = .vec3(1.0, 2.0, 1.0);
 
-  RectangleD source = .rect(0.0, 0.0, bill.width, bill.height);
+  Rectangle source = .rect(0.0, 0.0, bill.width, bill.height);
 
-  Vector3D billUp = .vec3(0.0, 1.0, 0.0);
+  Vector3 billUp = .vec3(0.0, 1.0, 0.0);
 
-  Vector2D size = .vec2(source.width/source.height, 1.0);
-  Vector2D origin = size.scale(0.5);
+  Vector2 size = .vec2(source.width/source.height, 1.0);
+  Vector2 origin = size.scale(0.5);
 
   double distanceStatic;
   double distanceRotating;

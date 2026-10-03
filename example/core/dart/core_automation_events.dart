@@ -11,12 +11,12 @@ const double PLAYER_JUMP_SPD = 350.0;
 const double PLAYER_HOR_SPD = 200.0;
 
 class Player {
-  Vector2D position;
+  Vector2 position;
   double speed;
   bool canJump;
 
   Player({
-    Vector2D? position,
+    Vector2? position,
     this.speed = 0,
     this.canJump = false,
   }) :
@@ -24,9 +24,9 @@ class Player {
 }
 
 class EnvElement {
-  RectangleD rect;
+  Rectangle rect;
   bool blocking;
-  ColorD color;
+  Color color;
 
   EnvElement(this.rect, this.blocking , this.color);
 }
@@ -50,7 +50,7 @@ void main() {
     .new(.rect(650, 300,  100,  10),  true, .GRAY),
   ];
 
-  final camera = Camera2DD();
+  final camera = Camera2D();
   camera.target = player.position;
   camera.offset.set(screenWidth/2.0, screenHeight/2.0);
   camera.rotation = 0.0;

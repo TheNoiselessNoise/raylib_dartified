@@ -4,17 +4,17 @@ import 'package:raylib_dartified/abbr/dart.dart';
 void main() {
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
-  test("RaylibStructLiteral (ColorD) - support for backed memory", () {
+  test("RaylibStructLiteral (Color) - support for backed memory", () {
     final x = 123;
-    final ptr = MemoryPointer.malloc(ColorD.struct.byteSize);
+    final ptr = MemoryPointer.malloc(Color.struct.byteSize);
 
     try {
       // Write through memory mirror reference
-      final color = ColorD.struct.ptr(ptr).ref;
+      final color = Color.struct.ptr(ptr).ref;
       color.r = x; color.g = x; color.b = x; color.a = x;
 
       // Read new instance backed by the exact same native memory pointer
-      final other = ColorD.struct.ptr(ptr).ref;
+      final other = Color.struct.ptr(ptr).ref;
 
       // 1. Direct field checks
       expect(other.r, equals(x));

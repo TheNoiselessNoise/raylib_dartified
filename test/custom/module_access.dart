@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+import 'package:raylib_dartified_base/abbr/allocators.dart';
 import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {

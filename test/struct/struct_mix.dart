@@ -18,33 +18,33 @@ const int structArray_COUNT = 2;
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .intField: RInt(),
-      .colorField: RStruct(ColorD.struct),
+      .colorField: RStruct(Color.struct),
       .inlineIntArray: RArray(RInt(), intArray_COUNT),
       .pointerIntArray: RPointer(RInt()),
-      .inlineStructArray: RArray(RStruct(ColorD.struct), structArray_COUNT),
-      .pointerStructArray: RPointer(RStruct(ColorD.struct)),
+      .inlineStructArray: RArray(RStruct(Color.struct), structArray_COUNT),
+      .pointerStructArray: RPointer(RStruct(Color.struct)),
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
   static final field_intField = structLayout.scalar<int, RInt>(.intField);
-  static final field_colorField = structLayout.struct<ColorD>(.colorField);
+  static final field_colorField = structLayout.struct<Color>(.colorField);
   static final field_inlineIntArray = structLayout.scalarArray<int, RInt>(.inlineIntArray);
   static final field_pointerIntArray = structLayout.pointerScalarArray<int, RInt>(.pointerIntArray);
-  static final field_inlineStructArray = structLayout.structArray<ColorD>(.inlineStructArray);
-  static final field_pointerStructArray = structLayout.pointerStructArray<ColorD>(.pointerStructArray);
+  static final field_inlineStructArray = structLayout.structArray<Color>(.inlineStructArray);
+  static final field_pointerStructArray = structLayout.pointerStructArray<Color>(.pointerStructArray);
 
   int _intField;
   int get intField => _intField = field_intField.readOr(op?.ptr, _intField);
   set intField(int value) => _intField = field_intField.writeOr(op?.ptr, value);
 
-  ColorD _colorField;
-  ColorD get colorField => _colorField = field_colorField.readOr(op?.ptr, _colorField);
-  set colorField(ColorD value) => _colorField = field_colorField.writeOr(op?.ptr, value);
+  Color _colorField;
+  Color get colorField => _colorField = field_colorField.readOr(op?.ptr, _colorField);
+  set colorField(Color value) => _colorField = field_colorField.writeOr(op?.ptr, value);
 
   List<int> _inlineIntArray;
   List<int> get inlineIntArray => _inlineIntArray = field_inlineIntArray.readOr(op?.ptr, _inlineIntArray);
@@ -54,22 +54,22 @@ class MyStruct extends RaylibStruct<MyStruct> {
   List<int> get pointerIntArray => _pointerIntArray = field_pointerIntArray.readCountOr(op?.ptr, intArray_COUNT, _pointerIntArray);
   set pointerIntArray(List<int> value) => _pointerIntArray = field_pointerIntArray.writeCountIf(op?.ptr, value);
 
-  List<ColorD> _inlineStructArray;
-  List<ColorD> get inlineStructArray => _inlineStructArray = field_inlineStructArray.readOr(op?.ptr, _inlineStructArray);
-  set inlineStructArray(List<ColorD> value) => _inlineStructArray = field_inlineStructArray.writeOr(op?.ptr, value);
+  List<Color> _inlineStructArray;
+  List<Color> get inlineStructArray => _inlineStructArray = field_inlineStructArray.readOr(op?.ptr, _inlineStructArray);
+  set inlineStructArray(List<Color> value) => _inlineStructArray = field_inlineStructArray.writeOr(op?.ptr, value);
 
-  List<ColorD> _pointerStructArray;
-  List<ColorD> get pointerStructArray => _pointerStructArray = field_pointerStructArray.readCountOr(op?.ptr, structArray_COUNT, _pointerStructArray);
-  set pointerStructArray(List<ColorD> value) => _pointerStructArray = field_pointerStructArray.writeCountIf(op?.ptr, value);
+  List<Color> _pointerStructArray;
+  List<Color> get pointerStructArray => _pointerStructArray = field_pointerStructArray.readCountOr(op?.ptr, structArray_COUNT, _pointerStructArray);
+  set pointerStructArray(List<Color> value) => _pointerStructArray = field_pointerStructArray.writeCountIf(op?.ptr, value);
 
   MyStruct({
     super.op,
     int intField = 0,
-    ColorD? colorField,
+    Color? colorField,
     List<int>? inlineIntArray,
     List<int>? pointerIntArray,
-    List<ColorD>? inlineStructArray,
-    List<ColorD>? pointerStructArray,
+    List<Color>? inlineStructArray,
+    List<Color>? pointerStructArray,
   }) :
     _intField = intField,
     _colorField = colorField ?? .zero(),
@@ -114,7 +114,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(MyStruct.struct);
+    myStructAlloc = structAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -136,13 +136,13 @@ void main() {
 
   test("Struct - after assignment", () {
     final struct = MyStruct.struct.ptr(ptr).ref;
-    final color = ColorD.AQUA;
+    final color = Color.AQUA;
     struct.colorField = color;
     expect(struct.colorField.toString(), equals(color.toString()));
   });
 
   test("Struct - read live data", () {
-    final color = ColorD.AQUA;
+    final color = Color.AQUA;
     color.structWriteInto(ptr.offsetBy(MyStruct.structLayout.offset(.colorField)));
     expect(MyStruct.struct.ptr(ptr).ref.colorField.toString(), equals(color.toString()));
   });
@@ -174,7 +174,7 @@ void main() {
     expect(struct.pointerIntArray.toString(), equals(values.toString()));
   });
 
-  List<ColorD> generateColors() => .generate(structArray_COUNT, (i) => .color(
+  List<Color> generateColors() => .generate(structArray_COUNT, (i) => .color(
     (rand() * 256).toInt(),
     (rand() * 256).toInt(),
     (rand() * 256).toInt(),
@@ -183,28 +183,28 @@ void main() {
 
   test("Inline Struct Array - after assignment", () {
     final struct = MyStruct.struct.ptr(ptr).ref;
-    final List<ColorD> values = generateColors();
+    final List<Color> values = generateColors();
     struct.inlineStructArray = values;
     expect(struct.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Inline Struct Array - read live data", () {
-    final List<ColorD> values = generateColors();
-    ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
+    final List<Color> values = generateColors();
+    Color.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
     expect(MyStruct.struct.ptr(ptr).ref.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - after assignment", () {
-    final List<ColorD> values = generateColors();
+    final List<Color> values = generateColors();
     final struct = myStructAlloc.Allocate(.new()).ref;
     struct.pointerStructArray = values;
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - reading live data", () {
-    final List<ColorD> values = generateColors();
+    final List<Color> values = generateColors();
     final struct = myStructAlloc.Allocate(.new()).ref;
-    ColorD.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
+    Color.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 

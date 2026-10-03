@@ -12,9 +12,9 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  Vector2D mousePosition = .zero();
-  Vector2D windowPosition = .vec2(500, 200);
-  Vector2D panOffset = .zero();
+  Vector2 mousePosition = .zero();
+  Vector2 windowPosition = .vec2(500, 200);
+  Vector2 panOffset = .zero();
   bool dragWindow = false;
   bool exitWindow = false;
 

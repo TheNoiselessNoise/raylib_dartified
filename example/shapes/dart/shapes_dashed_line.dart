@@ -14,13 +14,13 @@ void main()
   SetTargetFPS(60);
   
   // Line Properties
-  Vector2D lineStartPosition = .vec2(20.0, 50.0);
-  Vector2D lineEndPosition = .vec2(780.0, 400.0);
+  Vector2 lineStartPosition = .vec2(20.0, 50.0);
+  Vector2 lineEndPosition = .vec2(780.0, 400.0);
   double dashLength = 25.0;
   double blankLength = 15.0;
 
   // Color selection
-  List<ColorD> lineColors = [
+  List<Color> lineColors = [
     .RED, .ORANGE, .GOLD, .GREEN,
     .BLUE, .VIOLET, .PINK, .BLACK
   ];

@@ -14,9 +14,9 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_2d_camera");
   SetTargetFPS(60);
 
-  final RectangleD player = .rect(400, 280, 40, 40);
-  final buildings = <RectangleD>[];
-  final colors = <ColorD>[];
+  final Rectangle player = .rect(400, 280, 40, 40);
+  final buildings = <Rectangle>[];
+  final colors = <Color>[];
 
   int spacing = 0;
   for (int i = 0; i < MAX_BUILDINGS; i++) {
@@ -37,7 +37,7 @@ void main() {
     ));
   }
 
-  final camera = Camera2DD(
+  final camera = Camera2D(
     offset: .vec2(screenWidth / 2, screenHeight / 2),
     target: .vec2(player.x + 20, player.y + 20),
     rotation: 0,

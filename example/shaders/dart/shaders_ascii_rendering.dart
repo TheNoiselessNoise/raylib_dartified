@@ -31,7 +31,7 @@ void main()
   final resolution = [ screenWidth, screenHeight ];
   SetShaderValue(shader, resolutionLoc, resolution, .SHADER_UNIFORM_VEC2);
 
-  final Vector2D circlePos = .vec2(40.0, screenHeight*0.5);
+  final Vector2 circlePos = .vec2(40.0, screenHeight*0.5);
   double circleSpeed = 1.0;
 
   final target = LoadRenderTexture(screenWidth, screenHeight);

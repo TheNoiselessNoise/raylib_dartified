@@ -14,8 +14,8 @@ void main() {
 
   int currentFps = 60;
 
-  final Vector2D deltaCircle = .vec2(0, screenHeight/3.0);
-  final Vector2D frameCircle = .vec2(0, screenHeight*(2.0/3.0));
+  final Vector2 deltaCircle = .vec2(0, screenHeight/3.0);
+  final Vector2 frameCircle = .vec2(0, screenHeight*(2.0/3.0));
 
   const double speed = 10.0;
   const double circleRadius = 32.0;

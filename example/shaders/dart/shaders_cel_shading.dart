@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_cel_shading");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(9.0, 6.0, 9.0),
     target: .vec3(0.0, 1.0, 0.0),
     up: .vec3(0.0, 1.0, 0.0),
@@ -46,7 +46,7 @@ void main()
   );
   int outlineThicknessLoc = GetShaderLocation(outlineShader, "outlineThickness");
 
-  final List<LightD> lights = [
+  final List<Light> lights = [
     CreateLight(
       .LIGHT_DIRECTIONAL,
       .vec3(50.0, 50.0, 50.0),

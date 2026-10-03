@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
+import 'package:raylib_dartified_base/abbr/allocators.dart';
 import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
   test("Nested Structs", () {
-    Vector3D position = .vec3(10, 10, 10);
-    Camera3DD camera = .new(position: position);
+    Vector3 position = .vec3(10, 10, 10);
+    Camera3D camera = .new(position: position);
 
     expect(camera.position.toString(), position.toString());
 
@@ -15,8 +16,8 @@ void main() {
   });
 
   test("Nested Structs - backed by memory", () {
-    Vector3D position = .vec3(10, 10, 10);
-    Camera3DD camera = .new(position: position);
+    Vector3 position = .vec3(10, 10, 10);
+    Camera3D camera = .new(position: position);
 
     Camera3D$.Allocate(camera);
     expect(camera.op, isNotNull);

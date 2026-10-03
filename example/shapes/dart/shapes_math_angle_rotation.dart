@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_math_angle_rotation");
   SetTargetFPS(60);
 
-  final Vector2D center = .vec2(screenWidth/2.0, screenHeight/2.0);
+  final Vector2 center = .vec2(screenWidth/2.0, screenHeight/2.0);
   const double lineLength = 150.0;
 
   List<int> angles = [ 0, 30, 60, 90 ];
@@ -33,12 +33,12 @@ void main()
       for (int i = 0; i < angles.length; i++)
       {
         final rad = angles[i]*rl.DEG2RAD;
-        final Vector2D end = .vec2(
+        final Vector2 end = .vec2(
           center.x + math.cos(rad)*lineLength,
           center.y + math.sin(rad)*lineLength
         );
 
-        final ColorD col = switch (i) {
+        final Color col = switch (i) {
           0 => .GREEN,
           1 => .ORANGE,
           2 => .BLUE,
@@ -48,7 +48,7 @@ void main()
 
         DrawLineEx(center, end, 5.0, col);
 
-        final Vector2D textPos = .vec2(
+        final Vector2 textPos = .vec2(
           center.x + math.cos(rad)*(lineLength + 20),
           center.y + math.sin(rad)*(lineLength + 20)
         );
@@ -56,7 +56,7 @@ void main()
       }
 
       final animRad = totalAngle*rl.DEG2RAD;
-      final Vector2D animEnd = .vec2(
+      final Vector2 animEnd = .vec2(
         center.x + math.cos(animRad)*lineLength,
         center.y + math.sin(animRad)*lineLength
       );

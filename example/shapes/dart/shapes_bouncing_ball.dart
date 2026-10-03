@@ -14,10 +14,10 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_bouncing_ball");
   SetTargetFPS(60);
 
-  final Vector2D ballPosition = .vec2(
+  final Vector2 ballPosition = .vec2(
     GetScreenWidth()/2.0, GetScreenHeight()/2.0
   );
-  final Vector2D ballSpeed = .vec2(5.0, 4.0);
+  final Vector2 ballSpeed = .vec2(5.0, 4.0);
   int ballRadius = 20;
 
   bool pause = false;

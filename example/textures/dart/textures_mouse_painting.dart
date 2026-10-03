@@ -10,7 +10,7 @@ void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final colors = <ColorD>[
+  final colors = <Color>[
     .RAYWHITE, .YELLOW, .GOLD, .ORANGE,
     .PINK, .RED, .MAROON, .GREEN,
     .LIME, .DARKGREEN, .SKYBLUE, .BLUE,
@@ -19,7 +19,7 @@ void main()
     .GRAY, .DARKGRAY, .BLACK,
   ];
 
-  final colorsRecs = <RectangleD>[];
+  final colorsRecs = <Rectangle>[];
   for (int i = 0; i < colors.length; i++) {
     colorsRecs.add(.new(
       x: (10 + 30*i + 2*i).toDouble(),
@@ -35,7 +35,7 @@ void main()
   double brushSize = 20;
   bool mouseWasPressed = false;
 
-  final RectangleD btnSaveRec = .rect(750, 10, 40, 30);
+  final Rectangle btnSaveRec = .rect(750, 10, 40, 30);
   bool btnSaveMouseHover = false;
   bool showSaveMessage = false;
   int saveMessageCounter = 0;

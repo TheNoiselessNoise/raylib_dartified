@@ -13,17 +13,17 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_2d_camera_split_screen");
   SetTargetFPS(60);
 
-  final RectangleD player1 = .rect(200, 200, PLAYER_SIZE, PLAYER_SIZE);
-  final RectangleD player2 = .rect(250, 200, PLAYER_SIZE, PLAYER_SIZE);
+  final Rectangle player1 = .rect(200, 200, PLAYER_SIZE, PLAYER_SIZE);
+  final Rectangle player2 = .rect(250, 200, PLAYER_SIZE, PLAYER_SIZE);
 
-  final camera1 = Camera2DD(
+  final camera1 = Camera2D(
     target: .vec2(player1.x, player1.y),
     offset: .vec2(200.0, 200.0),
     rotation: 0.0,
     zoom: 1.0,
   );
 
-  final camera2 = Camera2DD(
+  final camera2 = Camera2D(
     target: .vec2(player2.x, player2.y),
     offset: .vec2(200.0, 200.0),
     rotation: 0.0,
@@ -33,7 +33,7 @@ void main() {
   final screenCamera1 = LoadRenderTexture(screenWidth~/2, screenHeight);
   final screenCamera2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final RectangleD splitScreenRect = .rect(0.0, 0.0, screenCamera1.texture.width, -screenCamera1.texture.height);
+  final Rectangle splitScreenRect = .rect(0.0, 0.0, screenCamera1.texture.width, -screenCamera1.texture.height);
 
   while (!WindowShouldClose()) {
     if (IsKeyDown(.KEY_S)) player1.y += 3.0;

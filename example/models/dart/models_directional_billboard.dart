@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_directional_billboard");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(2.0, 1.0, 2.0),
     target: .vec3(0.0, 0.5, 0.0),
     up: .vec3(0.0, 1.0, 0.0),
@@ -41,7 +41,7 @@ void main()
 
     if (anim >= 4) anim = 0;
 
-    double dir = ((Vector2D.vec2(2.0, 0.0)
+    double dir = ((Vector2.vec2(2.0, 0.0)
       .angle(.vec2(camera.position.x, camera.position.z)) / PI * 4.0) + 0.25)
       .floorToDouble();
 

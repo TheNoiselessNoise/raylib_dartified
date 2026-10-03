@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .color: RStruct(ColorD.struct),
+      .color: RStruct(Color.struct),
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_color = structLayout.struct<ColorD>(.color);
+  static final field_color = structLayout.struct<Color>(.color);
 
-  ColorD _color;
-  ColorD get color => _color = field_color.readOr(op?.ptr, _color);
-  set color(ColorD value) => _color = field_color.writeOr(op?.ptr, value);
+  Color _color;
+  Color get color => _color = field_color.readOr(op?.ptr, _color);
+  set color(Color value) => _color = field_color.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
-    ColorD? color,
+    Color? color,
   }) : _color = color ?? .zero();
 
   @override
@@ -49,13 +49,13 @@ void main() {
 
   test("Struct - after assignment", () {
     final struct = MyStruct.struct.ptr(ptr).ref;
-    final color = ColorD.AQUA;
+    final color = Color.AQUA;
     struct.color = color;
     expect(struct.color.toString(), equals(color.toString()));
   });
 
   test("Struct - read live data", () {
-    final color = ColorD.AQUA;
+    final color = Color.AQUA;
     color.structWriteInto(ptr.offsetBy(MyStruct.structLayout.offset(.color)));
     expect(MyStruct.struct.ptr(ptr).ref.color.toString(), equals(color.toString()));
   });

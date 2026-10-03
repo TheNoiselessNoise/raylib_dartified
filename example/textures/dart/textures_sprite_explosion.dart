@@ -27,8 +27,8 @@ void main()
   int currentFrame = 0;
   int currentLine = 0;
 
-  final RectangleD frameRec = .rect(0, 0, frameWidth, frameHeight);
-  Vector2D position = .vec2(0.0, 0.0);
+  final Rectangle frameRec = .rect(0, 0, frameWidth, frameHeight);
+  Vector2 position = .vec2(0.0, 0.0);
 
   bool active = false;
   int framesCounter = 0;

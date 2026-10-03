@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerStruct: RPointer(RStruct(ColorD.struct)), // exactly 1 value
+      .pointerStruct: RPointer(RStruct(Color.struct)), // exactly 1 value
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_pointerStruct = structLayout.pointerStruct<ColorD>(.pointerStruct);
+  static final field_pointerStruct = structLayout.pointerStruct<Color>(.pointerStruct);
 
-  ColorD _pointerStruct;
-  ColorD get pointerStruct => _pointerStruct = field_pointerStruct.readOr(op?.ptr, _pointerStruct);
-  set pointerStruct(ColorD value) => _pointerStruct = field_pointerStruct.writeOr(op?.ptr, value);
+  Color _pointerStruct;
+  Color get pointerStruct => _pointerStruct = field_pointerStruct.readOr(op?.ptr, _pointerStruct);
+  set pointerStruct(Color value) => _pointerStruct = field_pointerStruct.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
-    ColorD? pointerStruct,
+    Color? pointerStruct,
   }) : _pointerStruct = pointerStruct ?? .zero();
 
   @override
@@ -51,7 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(MyStruct.struct);
+    myStructAlloc = structAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -59,17 +59,17 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Pointer Struct - after assignment", () {
-    final ColorD value = .AQUA;
+    final Color value = .AQUA;
     final struct = myStructAlloc.Allocate(.new()).ref;
     struct.pointerStruct = value;
     expect(struct.pointerStruct.toString(), equals(value.toString()));
   });
 
   test("Pointer Struct - reading live data", () {
-    final ColorD value = .AQUA;
+    final Color value = .AQUA;
     final struct = myStructAlloc.Allocate(.new()).ref;
     final colorPtr = struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStruct)).readPtr();
-    ColorD.struct.ptr(colorPtr).ref = value;
+    Color.struct.ptr(colorPtr).ref = value;
     expect(struct.pointerStruct.toString(), equals(value.toString()));
   });
 

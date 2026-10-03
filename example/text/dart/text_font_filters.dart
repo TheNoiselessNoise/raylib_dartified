@@ -21,7 +21,7 @@ void main()
   GenTextureMipmaps(fontTexture);
 
   double fontSize = font.baseSize.toDouble();
-  final Vector2D fontPosition = .vec2(40, screenHeight / 2 - 80);
+  final Vector2 fontPosition = .vec2(40, screenHeight / 2 - 80);
 
   TextureFilter currentFontFilter = .TEXTURE_FILTER_POINT;
   SetTextureFilter(fontTexture, currentFontFilter);

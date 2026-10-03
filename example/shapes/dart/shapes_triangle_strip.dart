@@ -14,8 +14,8 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_triangle_strip");
   SetTargetFPS(60);
 
-  final List<Vector2D> points = .generate(122, (_) => .zero());
-  final Vector2D center = .vec2((screenWidth/2.0) - 125.0, screenHeight/2.0);
+  final List<Vector2> points = .generate(122, (_) => .zero());
+  final Vector2 center = .vec2((screenWidth/2.0) - 125.0, screenHeight/2.0);
   double segments = 6.0;
   double insideRadius = 100.0;
   double outsideRadius = 150.0;

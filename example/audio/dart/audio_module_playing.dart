@@ -9,18 +9,18 @@ const int screenHeight = 450;
 const int MAX_CIRCLES = 64;
 
 class CircleWave {
-  Vector2D position;
+  Vector2 position;
   double radius;
   double alpha;
   double speed;
-  ColorD color;
+  Color color;
 
   CircleWave({
-    Vector2D? position,
+    Vector2? position,
     this.radius = 0,
     this.alpha = 0,
     this.speed = 0,
-    ColorD? color,
+    Color? color,
   }) :
     position = position ?? .zero(),
     color = color ?? .zero();
@@ -36,7 +36,7 @@ void main()
 
   InitAudioDevice();
 
-  final colors = <ColorD>[
+  final colors = <Color>[
     .ORANGE, .RED, .GOLD, .LIME,
     .BLUE, .VIOLET, .BROWN, .LIGHTGRAY,
     .PINK, .YELLOW, .GREEN, .SKYBLUE,

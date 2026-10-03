@@ -68,7 +68,7 @@ void main()
   final fftImage = GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, .WHITE);
   final fftTexture = LoadTextureFromImage(fftImage);
   final bufferA = LoadRenderTexture(screenWidth, screenHeight);
-  final Vector2D iResolution = .vec2(screenWidth, screenHeight);
+  final Vector2 iResolution = .vec2(screenWidth, screenHeight);
 
   final shader = LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/fft.fs");
 
@@ -229,7 +229,7 @@ void CaptureFrame(FFTData fftData, List<double> audioSamples) {
   fftData.historyPos = (fftData.historyPos + 1) % fftData.fftHistoryLen;
 }
 
-void RenderFrame(FFTData fftData, ImageD fftImage) {
+void RenderFrame(FFTData fftData, Image fftImage) {
   double framesSinceTapback = (fftData.tapbackPos/WINDOW_TIME).floorToDouble();
   framesSinceTapback = Clamp(framesSinceTapback, 0, fftData.fftHistoryLen - 1);
 

@@ -78,7 +78,7 @@ void main() {
 
       final text = "Can you see this?";
       final size = MeasureTextEx(GetFontDefault(), text, 20, 3);
-      final Vector2D pos = .vec2(GetScreenWidth() - size.x - 5, GetScreenHeight() - size.y - 5);
+      final Vector2 pos = .vec2(GetScreenWidth() - size.x - 5, GetScreenHeight() - size.y - 5);
       DrawTextEx(GetFontDefault(), text, pos, 20, 3, LIGHTGRAY);
 
     EndDrawing();
@@ -87,9 +87,9 @@ void main() {
   CloseWindowAndDispose();
 }
 
-void DrawTextCenter(String text, int x, int y, int fontSize, ColorD color)
+void DrawTextCenter(String text, int x, int y, int fontSize, Color color)
 {
   final size = MeasureTextEx(GetFontDefault(), text, fontSize.toDouble(), 3);
-  final Vector2D pos = .vec2(x - size.x/2, y - size.y/2);
+  final Vector2 pos = .vec2(x - size.x/2, y - size.y/2);
   DrawTextEx(GetFontDefault(), text, pos, fontSize.toDouble(), 3, color);
 }

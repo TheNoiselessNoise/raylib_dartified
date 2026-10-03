@@ -7,91 +7,91 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
 
   @override
   double MatrixDeterminant(
-    MatrixD mat,
+    Matrix mat,
   ) => _ffi.MatrixDeterminant(
-    $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
   );
 
   @override
   double MatrixTrace(
-    MatrixD mat,
+    Matrix mat,
   ) => _ffi.MatrixTrace(
-    $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
   );
 
   @override
-  MatrixD MatrixTranspose(
-    MatrixD mat,
-  ) => $.Matrix$.Extract2(
+  Matrix MatrixTranspose(
+    Matrix mat,
+  ) => Matrix$.Extract2(
     (p) => _ffi.MatrixTranspose(
-      $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixInvert(
-    MatrixD mat,
-  ) => $.Matrix$.Extract2(
+  Matrix MatrixInvert(
+    Matrix mat,
+  ) => Matrix$.Extract2(
     (p) => _ffi.MatrixInvert(
-      $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixIdentity() => $.Matrix$.Extract1(
+  Matrix MatrixIdentity() => Matrix$.Extract1(
     (p) => _ffi.MatrixIdentity().toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixAdd(
-    MatrixD left,
-    MatrixD right,
-  ) => $.Matrix$.Extract3(
+  Matrix MatrixAdd(
+    Matrix left,
+    Matrix right,
+  ) => Matrix$.Extract3(
     (p) => _ffi.MatrixAdd(
-      $.Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
-      $.Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixSubtract(
-    MatrixD left,
-    MatrixD right,
-  ) => $.Matrix$.Extract3(
+  Matrix MatrixSubtract(
+    Matrix left,
+    Matrix right,
+  ) => Matrix$.Extract3(
     (p) => _ffi.MatrixSubtract(
-      $.Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
-      $.Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixMultiply(
-    MatrixD left,
-    MatrixD right,
-  ) => $.Matrix$.Extract3(
+  Matrix MatrixMultiply(
+    Matrix left,
+    Matrix right,
+  ) => Matrix$.Extract3(
     (p) => _ffi.MatrixMultiply(
-      $.Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
-      $.Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref2(right).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixMultiplyValue(
-    MatrixD left,
+  Matrix MatrixMultiplyValue(
+    Matrix left,
     double value,
-  ) => $.Matrix$.Extract2(
+  ) => Matrix$.Extract2(
     (p) => _ffi.MatrixMultiplyValue(
-      $.Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(left).asNativePointer<MatrixC>().ref,
       value,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixTranslate(
+  Matrix MatrixTranslate(
     double x,
     double y,
     double z,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixTranslate(
       x,
       y,
@@ -100,67 +100,67 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
   );
 
   @override
-  MatrixD MatrixRotate(
-    Vector3D axis,
+  Matrix MatrixRotate(
+    Vector3 axis,
     double angle,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotate(
-      $.Vector3$.Ref1(axis).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref1(axis).asNativePointer<Vector3C>().ref,
       angle,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixRotateX(
+  Matrix MatrixRotateX(
     double angle,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotateX(
       angle,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixRotateY(
+  Matrix MatrixRotateY(
     double angle,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotateY(
       angle,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixRotateZ(
+  Matrix MatrixRotateZ(
     double angle,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotateZ(
       angle,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixRotateXYZ(
-    Vector3D angle,
-  ) => $.Matrix$.Extract1(
+  Matrix MatrixRotateXYZ(
+    Vector3 angle,
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotateXYZ(
-      $.Vector3$.Ref1(angle).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref1(angle).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixRotateZYX(
-    Vector3D angle,
-  ) => $.Matrix$.Extract1(
+  Matrix MatrixRotateZYX(
+    Vector3 angle,
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixRotateZYX(
-      $.Vector3$.Ref1(angle).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref1(angle).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixScale(
+  Matrix MatrixScale(
     double x,
     double y,
     double z,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixScale(
       x,
       y,
@@ -169,14 +169,14 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
   );
 
   @override
-  MatrixD MatrixFrustum(
+  Matrix MatrixFrustum(
     double left,
     double right,
     double bottom,
     double top,
     double nearPlane,
     double farPlane,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixFrustum(
       left,
       right,
@@ -188,12 +188,12 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
   );
 
   @override
-  MatrixD MatrixPerspective(
+  Matrix MatrixPerspective(
     double fovY,
     double aspect,
     double nearPlane,
     double farPlane,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixPerspective(
       fovY,
       aspect,
@@ -203,14 +203,14 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
   );
 
   @override
-  MatrixD MatrixOrtho(
+  Matrix MatrixOrtho(
     double left,
     double right,
     double bottom,
     double top,
     double nearPlane,
     double farPlane,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixOrtho(
       left,
       right,
@@ -222,48 +222,48 @@ class RaylibMatrixExtFlatNative extends RaylibMatrixFlatExt<Raylib> {
   );
 
   @override
-  MatrixD MatrixLookAt(
-    Vector3D eye,
-    Vector3D target,
-    Vector3D up,
-  ) => $.Matrix$.Extract1(
+  Matrix MatrixLookAt(
+    Vector3 eye,
+    Vector3 target,
+    Vector3 up,
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixLookAt(
-      $.Vector3$.Ref1(eye).asNativePointer<Vector3C>().ref,
-      $.Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
-      $.Vector3$.Ref3(up).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref1(eye).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref2(target).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref3(up).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  float16D MatrixToFloatV(
-    MatrixD mat,
-  ) => $.float16$.Extract1(
+  float16 MatrixToFloatV(
+    Matrix mat,
+  ) => float16$.Extract1(
     (p) => _ffi.MatrixToFloatV(
-      $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+      Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD MatrixCompose(
-    Vector3D translation,
-    QuaternionD rotation,
-    Vector3D scale,
-  ) => $.Matrix$.Extract1(
+  Matrix MatrixCompose(
+    Vector3 translation,
+    Quaternion rotation,
+    Vector3 scale,
+  ) => Matrix$.Extract1(
     (p) => _ffi.MatrixCompose(
-      $.Vector3$.Ref1(translation).asNativePointer<Vector3C>().ref,
-      $.Quaternion$.Ref1(rotation).asNativePointer<QuaternionC>().ref,
-      $.Vector3$.Ref2(scale).asNativePointer<Vector3C>().ref,
+      Vector3$.Ref1(translation).asNativePointer<Vector3C>().ref,
+      Quaternion$.Ref1(rotation).asNativePointer<QuaternionC>().ref,
+      Vector3$.Ref2(scale).asNativePointer<Vector3C>().ref,
     ).toDart(p.asNativePointer()),
   );
 
   @override
   void MatrixDecompose(
-    MatrixD mat,
-    StructPointer<Vector3D> translation,
-    StructPointer<QuaternionD> rotation,
-    StructPointer<Vector3D> scale,
+    Matrix mat,
+    StructPointer<Vector3> translation,
+    StructPointer<Quaternion> rotation,
+    StructPointer<Vector3> scale,
   ) => _ffi.MatrixDecompose(
-    $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
     translation.asNativePointer(),
     rotation.asNativePointer(),
     scale.asNativePointer(),

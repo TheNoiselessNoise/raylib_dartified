@@ -24,7 +24,7 @@ class ClockHand {
   double angle;
   int length;
   int thickness;
-  ColorD color;
+  Color color;
 
   ClockHand({
     this.value = 0,
@@ -137,19 +137,19 @@ void UpdateClock(Clock clock)
   clock.second.angle -= 90;
 }
 
-void DrawClockAnalog(Clock clock, Vector2D position)
+void DrawClockAnalog(Clock clock, Vector2 position)
 {
   DrawCircleV(position, clock.second.length + 40.0, .LIGHTGRAY);
   DrawCircleV(position, 12.0, .GRAY);
 
   for (int i = 0; i < 60; i++)
   {
-    final Vector2D v1 = .vec2(
+    final Vector2 v1 = .vec2(
       position.x + (clock.second.length + ((i%5>0)? 10 : 6))*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
       position.y + (clock.second.length + ((i%5>0)? 10 : 6))*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
     );
 
-    final Vector2D v2 = .vec2(
+    final Vector2 v2 = .vec2(
       position.x + (clock.second.length + 20)*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
       position.y + (clock.second.length + 20)*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
     );
@@ -191,7 +191,7 @@ void DrawClockAnalog(Clock clock, Vector2D position)
   );
 }
 
-void DrawClockDigital(Clock clock, Vector2D position)
+void DrawClockDigital(Clock clock, Vector2 position)
 {
   // Draw clock using custom 7-segments display (made of shapes)
   DrawDisplayValue(
@@ -240,7 +240,7 @@ void DrawClockDigital(Clock clock, Vector2D position)
   );
 }
 
-void DrawDisplayValue(Vector2D position, int value, ColorD colorOn, ColorD colorOff)
+void DrawDisplayValue(Vector2 position, int value, Color colorOn, Color colorOff)
 {
   switch (value)
   {
@@ -258,7 +258,7 @@ void DrawDisplayValue(Vector2D position, int value, ColorD colorOn, ColorD color
   }
 }
 
-void Draw7SDisplay(Vector2D position, int segments, ColorD colorOn, ColorD colorOff)
+void Draw7SDisplay(Vector2 position, int segments, Color colorOn, Color colorOff)
 {
   int segmentLen = 60;
   int segmentThick = 20;
@@ -287,12 +287,12 @@ void Draw7SDisplay(Vector2D position, int segments, ColorD colorOn, ColorD color
     segmentLen, segmentThick, false, (segments & 01000000.b) > 0 ? colorOn : colorOff);
 }
 
-void DrawDisplaySegment(Vector2D center, int length, int thick, bool vertical, ColorD color)
+void DrawDisplaySegment(Vector2 center, int length, int thick, bool vertical, Color color)
 {
   if (!vertical)
   {
     // Horizontal segment points
-    final segmentPoints = <Vector2D>[
+    final segmentPoints = <Vector2>[
       .vec2(center.x - length/2.0 - thick/2.0,  center.y), // Point 1
       .vec2(center.x - length/2.0,  center.y + thick/2.0), // Point 2
       .vec2(center.x - length/2.0, center.y - thick/2.0), // Point 3
@@ -306,7 +306,7 @@ void DrawDisplaySegment(Vector2D center, int length, int thick, bool vertical, C
   else
   {
     // Vertical segment points
-    final segmentPoints = <Vector2D>[
+    final segmentPoints = <Vector2>[
       .vec2(center.x,  center.y - length/2.0 - thick/2.0), // Point 1
       .vec2(center.x - thick/2.0,  center.y - length/2.0), // Point 2
       .vec2(center.x + thick/2.0, center.y - length/2.0), // Point 3

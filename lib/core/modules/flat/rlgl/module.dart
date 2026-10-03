@@ -616,10 +616,10 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   NativeMemoryPointer<RInt> rlGetShaderLocsDefault() => _ffi.rlGetShaderLocsDefault().asMemoryPointer();
 
   @override
-  RlRenderBatchD rlLoadRenderBatch(
+  RlRenderBatch rlLoadRenderBatch(
     int numBuffers,
     int bufferElements,
-  ) => $.RlRenderBatch$.RefCapture(
+  ) => RlRenderBatch$.RefCapture(
     RaylibCaptureIds.rlLoadRenderBatch,
     (p) => _ffi.rlLoadRenderBatch(
       numBuffers,
@@ -629,21 +629,21 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
 
   @override
   void rlUnloadRenderBatch(
-    RlRenderBatchD batch,
+    RlRenderBatch batch,
   ) => _ffi.rlUnloadRenderBatch(
-    $.RlRenderBatch$.Ref1(batch).asNativePointer<RlRenderBatchC>().ref,
+    RlRenderBatch$.Ref1(batch).asNativePointer<RlRenderBatchC>().ref,
   );
 
   @override
   void rlDrawRenderBatch(
-    StructPointer<RlRenderBatchD> batch,
+    StructPointer<RlRenderBatch> batch,
   ) => _ffi.rlDrawRenderBatch(
     batch.asNativePointer(),
   );
 
   @override
   void rlSetRenderBatchActive(
-    StructPointer<RlRenderBatchD> batch,
+    StructPointer<RlRenderBatch> batch,
   ) => _ffi.rlSetRenderBatchActive(
     batch.asNativePointer(),
   );
@@ -1075,16 +1075,16 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   @override
   void rlSetUniformMatrix(
     int locIndex,
-    MatrixD mat,
+    Matrix mat,
   ) => _ffi.rlSetUniformMatrix(
     locIndex,
-    $.Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
   );
 
   @override
   void rlSetUniformMatrices(
     int locIndex,
-    StructPointer<MatrixD> mat,
+    StructPointer<Matrix> mat,
     int count,
   ) => _ffi.rlSetUniformMatrices(
     locIndex,
@@ -1210,33 +1210,33 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   );
 
   @override
-  MatrixD rlGetMatrixModelview() => $.Matrix$.Extract1(
+  Matrix rlGetMatrixModelview() => Matrix$.Extract1(
     (p) => _ffi.rlGetMatrixModelview().toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD rlGetMatrixProjection() => $.Matrix$.Extract1(
+  Matrix rlGetMatrixProjection() => Matrix$.Extract1(
     (p) => _ffi.rlGetMatrixProjection().toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD rlGetMatrixTransform() => $.Matrix$.Extract1(
+  Matrix rlGetMatrixTransform() => Matrix$.Extract1(
     (p) => _ffi.rlGetMatrixTransform().toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD rlGetMatrixProjectionStereo(
+  Matrix rlGetMatrixProjectionStereo(
     int eye,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.rlGetMatrixProjectionStereo(
       eye,
     ).toDart(p.asNativePointer()),
   );
 
   @override
-  MatrixD rlGetMatrixViewOffsetStereo(
+  Matrix rlGetMatrixViewOffsetStereo(
     int eye,
-  ) => $.Matrix$.Extract1(
+  ) => Matrix$.Extract1(
     (p) => _ffi.rlGetMatrixViewOffsetStereo(
       eye,
     ).toDart(p.asNativePointer()),
@@ -1244,34 +1244,34 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
 
   @override
   void rlSetMatrixProjection(
-    MatrixD proj,
+    Matrix proj,
   ) => _ffi.rlSetMatrixProjection(
-    $.Matrix$.Ref1(proj).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(proj).asNativePointer<MatrixC>().ref,
   );
 
   @override
   void rlSetMatrixModelview(
-    MatrixD view,
+    Matrix view,
   ) => _ffi.rlSetMatrixModelview(
-    $.Matrix$.Ref1(view).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(view).asNativePointer<MatrixC>().ref,
   );
 
   @override
   void rlSetMatrixProjectionStereo(
-    MatrixD right,
-    MatrixD left,
+    Matrix right,
+    Matrix left,
   ) => _ffi.rlSetMatrixProjectionStereo(
-    $.Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
-    $.Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
   );
 
   @override
   void rlSetMatrixViewOffsetStereo(
-    MatrixD right,
-    MatrixD left,
+    Matrix right,
+    Matrix left,
   ) => _ffi.rlSetMatrixViewOffsetStereo(
-    $.Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
-    $.Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref1(right).asNativePointer<MatrixC>().ref,
+    Matrix$.Ref2(left).asNativePointer<MatrixC>().ref,
   );
 
   @override

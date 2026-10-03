@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_3d_camera_mode");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(0, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -20,7 +20,7 @@ void main() {
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  final Vector3D cubePosition = .vec3(0, 0, 0);
+  final Vector3 cubePosition = .vec3(0, 0, 0);
 
   while (!WindowShouldClose()) {
     BeginDrawing();

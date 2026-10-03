@@ -10,7 +10,7 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(0, 2, 4),
     target: .vec3(0, 2, 0),
     up: .vec3(0, 1, 0),
@@ -20,7 +20,7 @@ void main() {
 
   CameraMode cameraMode = .CAMERA_FIRST_PERSON;
   List<double> heights = [];
-  final positions = <Vector3D>[];
+  final positions = <Vector3>[];
 
   final colors = List.generate(MAX_COLUMNS, (i) {
     heights.add(GetRandomValue(1, 12).toDouble());
@@ -31,7 +31,7 @@ void main() {
       GetRandomValue(-15, 15),
     ));
 
-    return ColorD(
+    return Color(
       r: GetRandomValue(20, 255),
       g: GetRandomValue(10, 55),
       b: 30,

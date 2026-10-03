@@ -37,7 +37,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_postprocessing");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(2.0, 3.0, 2.0),
     target: .vec3(0.0, 1.0, 0.0),
     up: .vec3(0, 1, 0),
@@ -49,7 +49,7 @@ void main()
   final texture = LoadTexture("../resources/models/church_diffuse.png");
   model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final shaders = <PostproShader, ShaderD>{
+  final shaders = <PostproShader, Shader>{
     .GRAYSCALE: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs"),
     .POSTERIZATION: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/posterization.fs"),
     .DREAM_VISION: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/dream_vision.fs"),

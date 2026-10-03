@@ -14,8 +14,8 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_lines_bezier");
   SetTargetFPS(60);
 
-  Vector2D startPoint = .vec2(30, 30);
-  Vector2D endPoint = .vec2(screenWidth - 30, screenHeight - 30);
+  Vector2 startPoint = .vec2(30, 30);
+  Vector2 endPoint = .vec2(screenWidth - 30, screenHeight - 30);
   bool moveStartPoint = false;
   bool moveEndPoint = false;
 

@@ -5,7 +5,7 @@ import 'dart:math' as math;
 import '../../base_dart.dart';
 
 class Player {
-  Vector2D position;
+  Vector2 position;
   double speed;
   bool canJump;
 
@@ -17,9 +17,9 @@ class Player {
 }
 
 class EnvItem {
-  RectangleD rect;
+  Rectangle rect;
   bool blocking;
-  ColorD color;
+  Color color;
 
   EnvItem({
     required this.rect,
@@ -34,8 +34,8 @@ const int G = 400;
 const double PLAYER_JUMP_SPD = 350;
 const double PLAYER_HOR_SPD = 200;
 
-Vector2D minVec = .zero();
-Vector2D maxVec = .zero();
+Vector2 minVec = .zero();
+Vector2 maxVec = .zero();
 
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
@@ -75,7 +75,7 @@ void main() {
 
   assert(cameraDescriptions.length == cameraUpdaters.length);
 
-  final camera = Camera2DD(
+  final camera = Camera2D(
     target: player.position.copy(),
     offset: .vec2(screenWidth/2, screenHeight/2),
     rotation: 0,
@@ -188,12 +188,12 @@ void UpdatePlayer(Player player, List<EnvItem> envItems, double delta)
   }
 }
 
-void UpdateCameraCenter(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenter(Camera2D camera, Player player, List<EnvItem> envItems, double deltaTime) {
   camera.offset.set(screenWidth/2, screenHeight/2);
   camera.target = player.position.copy();
 }
 
-void UpdateCameraCenterInsideMap(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenterInsideMap(Camera2D camera, Player player, List<EnvItem> envItems, double deltaTime) {
   camera.target = player.position.copy();
   camera.offset.set(screenWidth/2, screenHeight/2);
   double minX = 1000, minY = 1000, maxX = -1000, maxY = -1000;
@@ -216,7 +216,7 @@ void UpdateCameraCenterInsideMap(Camera2DD camera, Player player, List<EnvItem> 
   if (min.y > 0) camera.offset.y = screenHeight/2 - min.y;
 }
 
-void UpdateCameraCenterSmoothFollow(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraCenterSmoothFollow(Camera2D camera, Player player, List<EnvItem> envItems, double deltaTime) {
   final minSpeed = 30;
   final minEffectLength = 10;
   final fractionSpeed = 0.8;
@@ -234,7 +234,7 @@ void UpdateCameraCenterSmoothFollow(Camera2DD camera, Player player, List<EnvIte
 
 bool eveningOut = false;
 double evenOutTarget = 0;
-void UpdateCameraEvenOutOnLanding(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
+void UpdateCameraEvenOutOnLanding(Camera2D camera, Player player, List<EnvItem> envItems, double deltaTime) {
   double evenOutSpeed = 700;
 
   camera.offset.set(screenWidth/2.0, screenHeight/2.0);
@@ -273,8 +273,8 @@ void UpdateCameraEvenOutOnLanding(Camera2DD camera, Player player, List<EnvItem>
   }
 }
 
-void UpdateCameraPlayerBoundsPush(Camera2DD camera, Player player, List<EnvItem> envItems, double deltaTime) {
-  final Vector2D bbox = .vec2(0.2, 0.2);
+void UpdateCameraPlayerBoundsPush(Camera2D camera, Player player, List<EnvItem> envItems, double deltaTime) {
+  final Vector2 bbox = .vec2(0.2, 0.2);
 
   minVec.set(
     (1 - bbox.x)*0.5*screenWidth,

@@ -42,7 +42,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_rlgl_compute");
   SetTargetFPS(60);
 
-  final Vector2D resolution = .vec2(GOL_WIDTH, GOL_WIDTH);
+  final Vector2 resolution = .vec2(GOL_WIDTH, GOL_WIDTH);
   int brushSize = 8;
 
   final golLogicCode = LoadFileText("../resources/shaders/glsl430/gol.glsl");

@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_mesh_instancing");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(-125, 125, -125),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -27,20 +27,20 @@ void main()
 
   final cube = GenMeshCube(1.0, 1.0, 1.0);
   final transforms = List.generate(MAX_INSTANCES, (i) {
-    final MatrixD translation = .translate(
+    final Matrix translation = .translate(
       GetRandomValue(-50, 50),
       GetRandomValue(-50, 50),
       GetRandomValue(-50, 50)
     );
 
-    final Vector3D axis = .normalized(
+    final Vector3 axis = .normalized(
       GetRandomValue(0, 360),
       GetRandomValue(0, 360),
       GetRandomValue(0, 360)
     );
 
     double angle = GetRandomValue(0, 10)*rl.DEG2RAD;
-    final MatrixD rotation = .rotateAngle(axis, angle);
+    final Matrix rotation = .rotateAngle(axis, angle);
     
     return rotation.mul(translation);
   });

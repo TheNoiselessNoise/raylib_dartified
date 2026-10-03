@@ -13,7 +13,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_tesseract_view");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(4.0, 4.0, 4.0),
     target: .vec3(0.0, 0.0, 0.0),
     up: .vec3(0.0, 0.0, 1.0),
@@ -21,7 +21,7 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  List<Vector4D> tesseract = [
+  List<Vector4> tesseract = [
     .vec4(  1,  1,  1, 1 ), .vec4(  1,  1,  1, -1 ),
     .vec4(  1,  1, -1, 1 ), .vec4(  1,  1, -1, -1 ),
     .vec4(  1, -1,  1, 1 ), .vec4(  1, -1,  1, -1 ),
@@ -33,7 +33,7 @@ void main()
   ];
 
   double rotation = 0.0;
-  List<Vector3D> transformed = .generate(16, (_) => .zero());
+  List<Vector3> transformed = .generate(16, (_) => .zero());
   List<double> wValues = .filled(16, 0);
 
   while (!WindowShouldClose())
@@ -44,7 +44,7 @@ void main()
     {
       final p = tesseract[i].copy();
 
-      final rotXW = Vector2D.vec2(p.x, p.w).rotate(rotation);
+      final rotXW = Vector2.vec2(p.x, p.w).rotate(rotation);
       p.x = rotXW.x;
       p.w = rotXW.y;
 

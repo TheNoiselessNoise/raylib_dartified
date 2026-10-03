@@ -7,8 +7,8 @@ const int screenHeight = 450;
 class MyModule extends RaylibModule<Raylib> {
   MyModule(super.rl);
 
-  ColorD background = RAYWHITE;
-  Vector2D position = .zero();
+  Color background = RAYWHITE;
+  Vector2 position = .zero();
 
   void Update() {
     position = GetMousePosition();
@@ -42,11 +42,11 @@ void main()
   
   registerModule(MyModule(rl));
 
-  $.debugFree(true);
+  Temp.debugFree(true);
   // NOTE: with `debugFree` enabled you should see output at the exit:
-  // Freeing user-defined 1 ColorD slots
+  // Freeing user-defined 1 Color slots
   // [FREE] ColorD_struct_1
-  // Freeing user-defined 1 Vector2D slots
+  // Freeing user-defined 1 Vector2 slots
   // [FREE] Vector2D_struct_1
 
   InitWindow(screenWidth, screenHeight, "custom_module_dispose");

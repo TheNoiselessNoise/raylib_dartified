@@ -12,8 +12,8 @@ const int MAX_LIGHTS = 4;
 class LightDEx {
   LightType type;
   bool enabled;
-  Vector3D position;
-  Vector3D target;
+  Vector3 position;
+  Vector3 target;
   List<double> color;
   double intensity;
   int typeLoc;
@@ -26,8 +26,8 @@ class LightDEx {
   LightDEx({
     this.type = .LIGHT_POINT,
     this.enabled = true,
-    Vector3D? position,
-    Vector3D? target,
+    Vector3? position,
+    Vector3? target,
     List<double>? color,
     this.intensity = 0,
     this.typeLoc = -1,
@@ -52,7 +52,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_basic_pbr");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(2, 2, 6),
     target: .vec3(0, 0.5, 0),
     up: .vec3(0, 1, 0),
@@ -86,8 +86,8 @@ void main()
   );
 
   final ambientIntensity = 0.02;
-  final ColorD ambientColor = .color(26, 32, 135, 255);
-  final Vector3D ambientColorNormalized = .vec3(
+  final Color ambientColor = .color(26, 32, 135, 255);
+  final Vector3 ambientColorNormalized = .vec3(
     ambientColor.r/255.0,
     ambientColor.g/255.0,
     ambientColor.b/255.0,
@@ -146,8 +146,8 @@ void main()
   floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture =
     LoadTexture("../resources/road_n.png");
 
-  final Vector2D carTextureTiling = .vec2(0.5, 0.5);
-  final Vector2D floorTextureTiling = .vec2(0.5, 0.5);
+  final Vector2 carTextureTiling = .vec2(0.5, 0.5);
+  final Vector2 floorTextureTiling = .vec2(0.5, 0.5);
 
   final usage = 1;
   SetShaderValue(
@@ -224,7 +224,7 @@ void main()
           .SHADER_UNIFORM_VEC2,
         );
 
-        final Vector4D floorEmissiveColor = .colorNormalize(
+        final Vector4 floorEmissiveColor = .colorNormalize(
           floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color
         );
 
@@ -244,7 +244,7 @@ void main()
           .SHADER_UNIFORM_VEC2,
         );
         
-        final Vector4D carEmissiveColor = .colorNormalize(
+        final Vector4 carEmissiveColor = .colorNormalize(
           car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color
         );
 
@@ -267,7 +267,7 @@ void main()
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
-          final ColorD lightColor = .color(
+          final Color lightColor = .color(
             lights[i].color[0]*255,
             lights[i].color[1]*255,
             lights[i].color[2]*255,
@@ -308,11 +308,11 @@ void main()
 
 LightDEx CreateLight(
   LightType type,
-  Vector3D position,
-  Vector3D target,
-  ColorD color,
+  Vector3 position,
+  Vector3 target,
+  Color color,
   double intensity,
-  ShaderD shader,
+  Shader shader,
 ) {
   final LightDEx light = .new();
 
@@ -344,7 +344,7 @@ LightDEx CreateLight(
   return light;
 }
 
-void UpdateLight(ShaderD shader, LightDEx light)
+void UpdateLight(Shader shader, LightDEx light)
 {
   SetShaderValue(shader, light.enabledLoc, [light.enabled.toInt()], .SHADER_UNIFORM_INT);
   SetShaderValue(shader, light.typeLoc, [light.type.value], .SHADER_UNIFORM_INT);

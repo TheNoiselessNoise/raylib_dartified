@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_yaw_pitch_roll");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(0, 50, -120),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),

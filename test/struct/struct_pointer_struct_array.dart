@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerStructArray: RPointer(RStruct(ColorD.struct)), // exactly 2
+      .pointerStructArray: RPointer(RStruct(Color.struct)), // exactly 2
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_pointerStructArray = structLayout.pointerStructArray<ColorD>(.pointerStructArray);
+  static final field_pointerStructArray = structLayout.pointerStructArray<Color>(.pointerStructArray);
 
-  List<ColorD> _pointerStructArray;
-  List<ColorD> get pointerStructArray => _pointerStructArray = field_pointerStructArray.readCountOr(op?.ptr, 2, _pointerStructArray);
-  set pointerStructArray(List<ColorD> value) => _pointerStructArray = field_pointerStructArray.writeCountIf(op?.ptr, value);
+  List<Color> _pointerStructArray;
+  List<Color> get pointerStructArray => _pointerStructArray = field_pointerStructArray.readCountOr(op?.ptr, 2, _pointerStructArray);
+  set pointerStructArray(List<Color> value) => _pointerStructArray = field_pointerStructArray.writeCountIf(op?.ptr, value);
 
   MyStruct({
     super.op,
-    List<ColorD>? pointerStructArray,
+    List<Color>? pointerStructArray,
   }) : _pointerStructArray = pointerStructArray ?? .generate(2, (_) => .zero());
 
   @override
@@ -51,7 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(MyStruct.struct);
+    myStructAlloc = structAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -59,16 +59,16 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Pointer Struct Array - after assignment", () {
-    final List<ColorD> values = [.WHITE, .RED];
+    final List<Color> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
     struct.pointerStructArray = values;
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - reading live data", () {
-    final List<ColorD> values = [.WHITE, .RED];
+    final List<Color> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
-    ColorD.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
+    Color.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 

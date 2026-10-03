@@ -16,10 +16,10 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_math_sine_cosine");
   SetTargetFPS(60);
 
-  final List<Vector2D> sinePoints = .generate(WAVE_POINTS, (_) => .zero());
-  final List<Vector2D> cosPoints = .generate(WAVE_POINTS, (_) => .zero());
-  final Vector2D center = .vec2((screenWidth/2.0) - 30.0, screenHeight/2.0);
-  final RectangleD start = .rect(20.0, screenHeight - 120.0, 200.0, 100.0);
+  final List<Vector2> sinePoints = .generate(WAVE_POINTS, (_) => .zero());
+  final List<Vector2> cosPoints = .generate(WAVE_POINTS, (_) => .zero());
+  final Vector2 center = .vec2((screenWidth/2.0) - 30.0, screenHeight/2.0);
+  final Rectangle start = .rect(20.0, screenHeight - 120.0, 200.0, 100.0);
   double radius = 130.0;
   double angle = 0.0;
   bool pause = false;
@@ -38,9 +38,9 @@ void main()
     final cosRad = math.cos(angleRad);
     final sinRad = math.sin(angleRad);
 
-    final Vector2D point = .vec2(center.x + cosRad*radius, center.y - sinRad*radius);
-    final Vector2D limitMin = .vec2(center.x - radius, center.y - radius);
-    final Vector2D limitMax = .vec2(center.x + radius, center.y + radius);
+    final Vector2 point = .vec2(center.x + cosRad*radius, center.y - sinRad*radius);
+    final Vector2 limitMin = .vec2(center.x - radius, center.y - radius);
+    final Vector2 limitMax = .vec2(center.x + radius, center.y + radius);
 
     final complementary = 90.0 - angle;
     final supplementary = 180.0 - angle;
@@ -48,8 +48,8 @@ void main()
 
     final tangent = Clamp(math.tan(angleRad), -10.0, 10.0);
     final cotangent = (tangent.abs() > 0.001) ? Clamp(1.0/tangent, -radius, radius) : 0.0;
-    final Vector2D tangentPoint = .vec2(center.x + radius, center.y - tangent*radius);
-    final Vector2D cotangentPoint = .vec2(center.x + cotangent*radius, center.y - radius);
+    final Vector2 tangentPoint = .vec2(center.x + radius, center.y - tangent*radius);
+    final Vector2 cotangentPoint = .vec2(center.x + cotangent*radius, center.y - radius);
 
     angle = Wrap(angle + (!pause ? 1.0 : 0.0), 0.0, 360.0);
 

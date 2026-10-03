@@ -102,7 +102,7 @@ void main()
       updateShaderZoom();
 
       final mousePos = GetMousePosition();
-      final Vector2D offsetVelocity = .zero();
+      final Vector2 offsetVelocity = .zero();
 
       offsetVelocity.x = (mousePos.x/screenWidth - 0.5)*offsetSpeedMul/zoom;
       offsetVelocity.y = (mousePos.y/screenHeight - 0.5)*offsetSpeedMul/zoom;

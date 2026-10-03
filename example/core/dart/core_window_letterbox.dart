@@ -21,7 +21,7 @@ void main() {
   final target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
   SetTextureFilter(target.texture, .TEXTURE_FILTER_BILINEAR);
 
-  final List<ColorD> colors = .generate(10, (_) => .zero());
+  final List<Color> colors = .generate(10, (_) => .zero());
   for (int i = 0; i < 10; i++) colors[i] = .color(GetRandomValue(100, 250), GetRandomValue(50, 150), GetRandomValue(10, 100), 255);
 
   while (!WindowShouldClose()) {
@@ -33,7 +33,7 @@ void main() {
     }
 
     final mouse = GetMousePosition();
-    Vector2D virtualMouse = .vec2(
+    Vector2 virtualMouse = .vec2(
       (mouse.x - (GetScreenWidth() - (gameScreenWidth*scale))*0.5)/scale,
       (mouse.y - (GetScreenHeight() - (gameScreenHeight*scale))*0.5)/scale,
     );

@@ -1,4 +1,4 @@
-export 'package:raylib_dartified_base/abbr.dart';
+export 'package:raylib_dartified_base/abbr/generic.dart';
 export 'package:raylib_dartified/raylib_dartified.dart';
 export '../core/extensions/ffi/abbr.dart';
 export '../core/modules/ffi/abbr.dart';

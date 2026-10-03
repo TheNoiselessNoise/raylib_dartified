@@ -12,7 +12,7 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_3d_camera_split_screen");
   SetTargetFPS(60);
 
-  final cameraPlayer1 = Camera3DD();
+  final cameraPlayer1 = Camera3D();
   cameraPlayer1.fovy = 45.0;
   cameraPlayer1.up.y = 1.0;
   cameraPlayer1.target.y = 1.0;
@@ -21,7 +21,7 @@ void main() {
 
   final screenPlayer1 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final cameraPlayer2 = Camera3DD();
+  final cameraPlayer2 = Camera3D();
   cameraPlayer2.fovy = 45.0;
   cameraPlayer2.up.y = 1.0;
   cameraPlayer2.target.y = 3.0;
@@ -30,7 +30,7 @@ void main() {
 
   final screenPlayer2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final RectangleD splitScreenRect = .rect(0.0, 0.0, screenPlayer1.texture.width, -screenPlayer1.texture.height);
+  final Rectangle splitScreenRect = .rect(0.0, 0.0, screenPlayer1.texture.width, -screenPlayer1.texture.height);
   
   int count = 5;
   double spacing = 4;

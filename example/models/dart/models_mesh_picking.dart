@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_mesh_picking");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(20, 20, 20),
     target: .vec3(0, 8, 0),
     up: .vec3(0, 1.6, 0),
@@ -22,29 +22,29 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  late RayD ray;
+  late Ray ray;
 
   final tower = LoadModel("../resources/models/obj/turret.obj");
   final texture = LoadTexture("../resources/models/obj/turret_diffuse.png");
   tower.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final Vector3D towerPos = .zero();
+  final Vector3 towerPos = .zero();
   final towerBBox = GetMeshBoundingBox(tower.meshes[0]);
 
-  final Vector3D g0 = .vec3(-50.0, 0.0, -50.0);
-  final Vector3D g1 = .vec3(-50.0, 0.0,  50.0);
-  final Vector3D g2 = .vec3( 50.0, 0.0,  50.0);
-  final Vector3D g3 = .vec3( 50.0, 0.0, -50.0);
+  final Vector3 g0 = .vec3(-50.0, 0.0, -50.0);
+  final Vector3 g1 = .vec3(-50.0, 0.0,  50.0);
+  final Vector3 g2 = .vec3( 50.0, 0.0,  50.0);
+  final Vector3 g3 = .vec3( 50.0, 0.0, -50.0);
 
   // Test triangle
-  final Vector3D ta = .vec3(-25.0, 0.5, 0.0);
-  final Vector3D tb = .vec3(-4.0, 2.5, 1.0);
-  final Vector3D tc = .vec3(-8.0, 6.5, 0.0);
+  final Vector3 ta = .vec3(-25.0, 0.5, 0.0);
+  final Vector3 tb = .vec3(-4.0, 2.5, 1.0);
+  final Vector3 tc = .vec3(-8.0, 6.5, 0.0);
 
-  Vector3D bary = .zero();
+  Vector3 bary = .zero();
 
   // Test sphere
-  final Vector3D sp = .vec3(-30.0, 5.0, 5.0);
+  final Vector3 sp = .vec3(-30.0, 5.0, 5.0);
   double sr = 4.0;
 
   while (!WindowShouldClose())
@@ -57,11 +57,11 @@ void main()
       else DisableCursor();
     }
 
-    RayCollisionD collision = .zero();
+    RayCollision collision = .zero();
     String hitObjectName = "None";
     collision.distance = double.maxFinite;
     collision.hit = false;
-    ColorD cursorColor = .WHITE;
+    Color cursorColor = .WHITE;
 
     // Get ray and test against objects
     ray = GetScreenToWorldRay(GetMousePosition(), camera);
@@ -108,7 +108,7 @@ void main()
       hitObjectName = "Box";
 
       // Check ray collision against model meshes
-      RayCollisionD meshHitInfo = .zero();
+      RayCollision meshHitInfo = .zero();
       for (int m = 0; m < tower.meshCount; m++)
       {
         // NOTE: We consider the model.transform for the collision check but 

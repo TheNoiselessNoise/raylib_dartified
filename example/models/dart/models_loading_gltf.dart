@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_loading_gltf");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(6, 6, 6),
     target: .vec3(0, 2, 0),
     up: .vec3(0, 1, 0),

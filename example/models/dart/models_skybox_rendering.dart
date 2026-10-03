@@ -17,7 +17,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(1, 1, 1),
     target: .vec3(4, 1, 4),
     up: .vec3(0, 1, 0),
@@ -160,9 +160,9 @@ void main()
   CloseWindowAndDispose();
 }
 
-TextureD GenTextureCubemap(ShaderD shader, TextureD panorama, int size, PixelFormat format)
+Texture GenTextureCubemap(Shader shader, Texture panorama, int size, PixelFormat format)
 {
-  final cubemap = TextureD();
+  final cubemap = Texture();
 
   rlDisableBackfaceCulling();
 
@@ -204,7 +204,7 @@ TextureD GenTextureCubemap(ShaderD shader, TextureD panorama, int size, PixelFor
 
   rlSetUniformMatrix(shader.locs[ShaderLocationIndex.SHADER_LOC_MATRIX_PROJECTION.value], matFboProjection);
 
-  final fboViews = <MatrixD>[
+  final fboViews = <Matrix>[
     .lookAt(.vec3(0, 0, 0), .vec3( 1.0,  0.0,  0.0), .vec3(0.0, -1.0,  0.0)),
     .lookAt(.vec3(0, 0, 0), .vec3(-1.0,  0.0,  0.0), .vec3(0.0, -1.0,  0.0)),
     .lookAt(.vec3(0, 0, 0), .vec3( 0.0,  1.0,  0.0), .vec3(0.0,  0.0,  1.0)),

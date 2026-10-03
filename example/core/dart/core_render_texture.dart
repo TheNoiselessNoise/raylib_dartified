@@ -16,8 +16,8 @@ void main() {
   int renderTextureHeight = 300;
   final target = LoadRenderTexture(renderTextureWidth, renderTextureHeight);
 
-  final Vector2D ballPosition = .vec2(renderTextureWidth/2.0, renderTextureHeight/2.0);
-  final Vector2D ballSpeed = .vec2(5.0, 4.0);
+  final Vector2 ballPosition = .vec2(renderTextureWidth/2.0, renderTextureHeight/2.0);
+  final Vector2 ballSpeed = .vec2(5.0, 4.0);
   int ballRadius = 20;
 
   double rotation = 0.0;

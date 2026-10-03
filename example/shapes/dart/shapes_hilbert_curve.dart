@@ -80,12 +80,12 @@ void main()
   CloseWindowAndDispose();
 }
 
-List<Vector2D> LoadHilbertPath(int order, double size)
+List<Vector2> LoadHilbertPath(int order, double size)
 {
   int N = 1 << order;
   double len = size/N;
 
-  final List<Vector2D> hilbertPath = .generate(N*N, (_) => .zero());
+  final List<Vector2> hilbertPath = .generate(N*N, (_) => .zero());
 
   for (int i = 0; i < hilbertPath.length; i++)
   {
@@ -97,7 +97,7 @@ List<Vector2D> LoadHilbertPath(int order, double size)
   return hilbertPath;
 }
 
-void ComputeHilbertStep(List<Vector2D> hilbertPath, int order, int index)
+void ComputeHilbertStep(List<Vector2> hilbertPath, int order, int index)
 {
   final originalIndex = index;
 

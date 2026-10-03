@@ -157,7 +157,7 @@ void UpdateEnvelope(Envelope env)
   }
 }
 
-void DrawADSRGraph(Envelope env, RectangleD bounds)
+void DrawADSRGraph(Envelope env, Rectangle bounds)
 {
   DrawRectangleRec(bounds, Fade(LIGHTGRAY, 0.3));
   DrawRectangleLinesEx(bounds, 1, GRAY);
@@ -169,11 +169,11 @@ void DrawADSRGraph(Envelope env, RectangleD bounds)
   final scaleX = bounds.width/totalTime;
   final scaleY = bounds.height;
 
-  final Vector2D start = .vec2(bounds.x, bounds.y + bounds.height);
-  final Vector2D peak = .vec2(start.x + (env.attackTime*scaleX), bounds.y);
-  final Vector2D sustain = .vec2(peak.x + (env.decayTime*scaleX), bounds.y + (1.0 - env.sustainLevel)*scaleY);
-  final Vector2D rel = .vec2(sustain.x + (sustainWidth*scaleX), sustain.y);
-  final Vector2D end = .vec2(rel.x + (env.releaseTime*scaleX), bounds.y + bounds.height);
+  final Vector2 start = .vec2(bounds.x, bounds.y + bounds.height);
+  final Vector2 peak = .vec2(start.x + (env.attackTime*scaleX), bounds.y);
+  final Vector2 sustain = .vec2(peak.x + (env.decayTime*scaleX), bounds.y + (1.0 - env.sustainLevel)*scaleY);
+  final Vector2 rel = .vec2(sustain.x + (sustainWidth*scaleX), sustain.y);
+  final Vector2 end = .vec2(rel.x + (env.releaseTime*scaleX), bounds.y + bounds.height);
 
   DrawLineV(start, peak, SKYBLUE);
   DrawLineV(peak, sustain, BLUE);

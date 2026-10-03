@@ -13,8 +13,8 @@ const int MAX_DECALS = 256;
 class MeshBuilder {
   int vertexCount = 0;
   int vertexCapacity = 0;
-  List<Vector3D> vertices = [];
-  List<Vector2D> uvs = [];
+  List<Vector3> vertices = [];
+  List<Vector2> uvs = [];
 }
 
 void main()
@@ -24,7 +24,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_decals");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(5.0, 5.0, 5.0),
     target: .vec3(0.0, 1.0, 0.0),
     up: .vec3(0.0, 1.6, 0.0),
@@ -70,7 +70,7 @@ void main()
   decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].color = RAYWHITE;
 
   bool showModel = true;
-  final List<ModelD> decalModels = [];
+  final List<Model> decalModels = [];
 
   while (!WindowShouldClose())
   {
@@ -78,7 +78,7 @@ void main()
       UpdateCamera(camera, .CAMERA_THIRD_PERSON);
     }
 
-    var collision = RayCollisionD();
+    var collision = RayCollision();
     collision.distance = FLT_MAX;
     collision.hit = false;
 
@@ -88,7 +88,7 @@ void main()
 
     if ((boxHitInfo.hit) && (decalModels.length < MAX_DECALS))
     {
-      var meshHitInfo = RayCollisionD();
+      var meshHitInfo = RayCollision();
       for (int m = 0; m < model.meshCount; m++)
       {
         meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform);
@@ -104,7 +104,7 @@ void main()
     if (collision.hit && IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) && (decalModels.length < MAX_DECALS))
     {
       final origin = collision.point.add(collision.normal.scale(1.0));
-      MatrixD splat = .lookAt(collision.point, origin, .vec3(0.0, 1.0, 0.0));
+      Matrix splat = .lookAt(collision.point, origin, .vec3(0.0, 1.0, 0.0));
 
       splat = splat.mul(.rotateZ(DEG2RAD*GetRandomValue(-180, 180)));
 
@@ -128,7 +128,7 @@ void main()
         if (collision.hit)
         {
           final origin = collision.point.add(collision.normal.scale(1.0));
-          MatrixD splat = .lookAt(collision.point, origin, .vec3(0.0, 1.0, 0.0));
+          Matrix splat = .lookAt(collision.point, origin, .vec3(0.0, 1.0, 0.0));
           placementCube.transform = splat.invert();
           DrawModel(placementCube, .zero(), 1.0, Fade(WHITE, 0.5));
         }
@@ -215,12 +215,12 @@ void main()
   CloseWindowAndDispose();
 }
 
-void AddTriangleToMeshBuilder(MeshBuilder mb, List<Vector3D> vertices)
+void AddTriangleToMeshBuilder(MeshBuilder mb, List<Vector3> vertices)
 {
   if (mb.vertexCapacity <= (mb.vertexCount + 3))
   {
     int newVertexCapacity = (1 + (mb.vertexCapacity~/256))*256;
-    final List<Vector3D> newVertices = .generate(newVertexCapacity, (_) => .zero());
+    final List<Vector3> newVertices = .generate(newVertexCapacity, (_) => .zero());
 
     if (mb.vertexCapacity > 0)
     {
@@ -239,9 +239,9 @@ void AddTriangleToMeshBuilder(MeshBuilder mb, List<Vector3D> vertices)
   for (int i = 0; i < 3; i++) mb.vertices[index+i] = vertices[i].copy();
 }
 
-MeshD BuildMesh(MeshBuilder mb)
+Mesh BuildMesh(MeshBuilder mb)
 {
-  final outMesh = MeshD();
+  final outMesh = Mesh();
 
   outMesh.vertexCount = mb.vertexCount;
   outMesh.triangleCount = mb.vertexCount~/3;
@@ -266,7 +266,7 @@ MeshD BuildMesh(MeshBuilder mb)
   return outMesh;
 }
 
-Vector3D ClipSegment(Vector3D v0, Vector3D v1, Vector3D p, double s)
+Vector3 ClipSegment(Vector3 v0, Vector3 v1, Vector3 p, double s)
 {
   final d0 = v0.dotProduct(p) - s;
   final d1 = v1.dotProduct(p) - s;
@@ -276,7 +276,7 @@ Vector3D ClipSegment(Vector3D v0, Vector3D v1, Vector3D p, double s)
 
 List<MeshBuilder> meshBuilders = [.new(), .new()];
 
-MeshD GenMeshDecal(ModelD target, MatrixD projection, double decalSize, double decalOffset)
+Mesh GenMeshDecal(Model target, Matrix projection, double decalSize, double decalOffset)
 {
   final invProj = projection.invert();
 
@@ -291,7 +291,7 @@ MeshD GenMeshDecal(ModelD target, MatrixD projection, double decalSize, double d
     
     for (int tri = 0; tri < mesh.triangleCount; tri++)
     {
-      final List<Vector3D> vertices = [.zero(), .zero(), .zero()];
+      final List<Vector3> vertices = [.zero(), .zero(), .zero()];
 
       if (mesh.indices.isEmpty)
       {
@@ -330,7 +330,7 @@ MeshD GenMeshDecal(ModelD target, MatrixD projection, double decalSize, double d
     }
   }
 
-  final List<Vector3D> planes = [
+  final List<Vector3> planes = [
     .vec3( 1,  0,  0),
     .vec3(-1,  0,  0),
     .vec3( 0,  1,  0),
@@ -352,7 +352,7 @@ MeshD GenMeshDecal(ModelD target, MatrixD projection, double decalSize, double d
 
     for (int i = 0; i < inMesh.vertexCount; i += 3)
     {
-      late Vector3D nV1, nV2, nV3, nV4;
+      late Vector3 nV1, nV2, nV3, nV4;
 
       final d1 = inMesh.vertices[ i + 0 ].dotProduct(planes[face]) - s;
       final d2 = inMesh.vertices[ i + 1 ].dotProduct(planes[face]) - s;
@@ -463,7 +463,7 @@ MeshD GenMeshDecal(ModelD target, MatrixD projection, double decalSize, double d
   }
 }
 
-bool GuiButton(RectangleD rec, String label)
+bool GuiButton(Rectangle rec, String label)
 {
   var bgColor = GRAY;
   bool pressed = false;

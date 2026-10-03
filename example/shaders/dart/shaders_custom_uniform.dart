@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_custom_uniform");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(8, 8, 8),
     target: .vec3(0, 1.5, 0),
     up: .vec3(0, 1, 0),

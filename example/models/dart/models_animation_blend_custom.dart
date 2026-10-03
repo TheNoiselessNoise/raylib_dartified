@@ -17,7 +17,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_animation_blend_custom");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(4.0, 4.0, 4.0),
     target: .vec3(0.0, 1.0, 0.0),
     up: .vec3(0.0, 1.0, 0.0),
@@ -26,7 +26,7 @@ void main()
   );
 
   final model = LoadModel("../resources/models/gltf/greenman.glb");
-  final Vector3D position = .vec3(0.0, 0.0, 0.0);
+  final Vector3 position = .vec3(0.0, 0.0, 0.0);
 
   final skinningShader = LoadShader(
     "../resources/shaders/glsl$GLSL_VERSION/skinning.vs",
@@ -128,10 +128,10 @@ bool IsUpperBodyBone(String boneName)
 }
 
 void UpdateModelAnimationBones(
-  ModelD model,
-  ModelAnimationD anim0,
+  Model model,
+  ModelAnimation anim0,
   int frame0,
-  ModelAnimationD anim1,
+  ModelAnimation anim1,
   int frame1,
   double blend,
   bool upperBodyBlend
@@ -177,17 +177,17 @@ void UpdateModelAnimationBones(
       final animTransform0 = anim0.keyframePoses[frame0][boneIndex];
       final animTransform1 = anim1.keyframePoses[frame1][boneIndex];
 
-      final blended = TransformD();
+      final blended = Transform();
       blended.translation = animTransform0.translation.lerp(animTransform1.translation, boneBlendFactor);
       blended.rotation = animTransform0.rotation.sLerp(animTransform1.rotation, boneBlendFactor);
       blended.scale = animTransform0.scale.lerp(animTransform1.scale, boneBlendFactor);
 
-      final MatrixD bindMatrix =
+      final Matrix bindMatrix =
         .scale(bindTransform.scale.x, bindTransform.scale.y, bindTransform.scale.z)
         .mul(bindTransform.rotation.toMatrix())
         .mul(.translate(bindTransform.translation.x, bindTransform.translation.y, bindTransform.translation.z));
 
-      final MatrixD blendedMatrix =
+      final Matrix blendedMatrix =
         .scale(blended.scale.x, blended.scale.y, blended.scale.z)
         .mul(blended.rotation.toMatrix())
         .mul(.translate(blended.translation.x, blended.translation.y, blended.translation.z));
@@ -198,8 +198,8 @@ void UpdateModelAnimationBones(
     for (int m = 0; m < model.meshCount; m++)
     {
       final mesh = model.meshes[m];
-      Vector3D animVertex = .zero();
-      Vector3D animNormal = .zero();
+      Vector3 animVertex = .zero();
+      Vector3 animNormal = .zero();
       int vertexValuesCount = mesh.vertexCount * 3;
 
       int boneIndex = 0;

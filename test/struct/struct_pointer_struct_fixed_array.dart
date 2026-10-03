@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerStructFixedArray: RPointer(RArray(RStruct(ColorD.struct), 2)),
+      .pointerStructFixedArray: RPointer(RArray(RStruct(Color.struct), 2)),
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_pointerStructFixedArray = structLayout.pointerStructFixedArray<ColorD>(.pointerStructFixedArray);
+  static final field_pointerStructFixedArray = structLayout.pointerStructFixedArray<Color>(.pointerStructFixedArray);
 
-  List<ColorD> _pointerStructFixedArray;
-  List<ColorD> get pointerStructFixedArray => _pointerStructFixedArray = field_pointerStructFixedArray.readOr(op?.ptr, _pointerStructFixedArray);
-  set pointerStructFixedArray(List<ColorD> value) => _pointerStructFixedArray = field_pointerStructFixedArray.writeOr(op?.ptr, value);
+  List<Color> _pointerStructFixedArray;
+  List<Color> get pointerStructFixedArray => _pointerStructFixedArray = field_pointerStructFixedArray.readOr(op?.ptr, _pointerStructFixedArray);
+  set pointerStructFixedArray(List<Color> value) => _pointerStructFixedArray = field_pointerStructFixedArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
-    List<ColorD>? pointerStructFixedArray,
+    List<Color>? pointerStructFixedArray,
   }) : _pointerStructFixedArray = pointerStructFixedArray ?? .generate(2, (_) => .zero());
 
   @override
@@ -51,7 +51,7 @@ void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
     
-    myStructAlloc = $.createStructAllocator(MyStruct.struct);
+    myStructAlloc = structAllocator(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -59,16 +59,16 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Pointer Struct Array - after assignment", () {
-    final List<ColorD> values = [.WHITE, .RED];
+    final List<Color> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
     struct.pointerStructFixedArray = values;
     expect(struct.pointerStructFixedArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - reading live data", () {
-    final List<ColorD> values = [.WHITE, .RED];
+    final List<Color> values = [.WHITE, .RED];
     final struct = myStructAlloc.Allocate(.new()).ref;
-    ColorD.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructFixedArray)).readPtr()).writeArray(values);
+    Color.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructFixedArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructFixedArray.toString(), equals(values.toString()));
   });
 

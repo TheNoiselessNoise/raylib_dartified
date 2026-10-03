@@ -8,8 +8,8 @@ const int screenHeight = 450;
 const int MAX_DRAW_LINES = 8192;
 
 class Line {
-  Vector2D start = .zero();
-  Vector2D end = .zero();
+  Vector2 start = .zero();
+  Vector2 end = .zero();
 }
 
 void main()
@@ -26,15 +26,15 @@ void main()
   int symmetry = 6;
   double angle = 360.0/symmetry;
   double thickness = 3.0;
-  final RectangleD resetButtonRec = .rect(screenWidth - 55.0, 5.0, 50, 25);
-  final RectangleD backButtonRec = .rect(screenWidth - 55.0, screenHeight - 30.0, 25, 25);
-  final RectangleD nextButtonRec = .rect(screenWidth - 30.0, screenHeight - 30.0, 25, 25);
-  Vector2D mousePos = .zero();
-  Vector2D prevMousePos = .zero();
-  final Vector2D scaleVector = .vec2(1.0, -1.0);
-  final Vector2D offset = .vec2(screenWidth/2.0, screenHeight/2.0);
+  final Rectangle resetButtonRec = .rect(screenWidth - 55.0, 5.0, 50, 25);
+  final Rectangle backButtonRec = .rect(screenWidth - 55.0, screenHeight - 30.0, 25, 25);
+  final Rectangle nextButtonRec = .rect(screenWidth - 30.0, screenHeight - 30.0, 25, 25);
+  Vector2 mousePos = .zero();
+  Vector2 prevMousePos = .zero();
+  final Vector2 scaleVector = .vec2(1.0, -1.0);
+  final Vector2 offset = .vec2(screenWidth/2.0, screenHeight/2.0);
 
-  final camera = Camera2DD(
+  final camera = Camera2D(
     target: .vec2(0, 0),
     offset: offset,
     rotation: 0.0,

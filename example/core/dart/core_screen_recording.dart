@@ -19,12 +19,12 @@ void main() {
 
   bool gifRecording = false;
   int gifFrameCounter = 0;
-  final MsfGifStateD gifState = .zero();
+  final MsfGifState gifState = .zero();
 
-  final Vector2D circlePosition = .vec2(0.0, screenHeight/2.0);
+  final Vector2 circlePosition = .vec2(0.0, screenHeight/2.0);
   double timeCounter = 0.0;
 
-  final List<Vector2D> sinePoints = .generate(MAX_SINEWAVE_POINTS, (_) => .zero());
+  final List<Vector2> sinePoints = .generate(MAX_SINEWAVE_POINTS, (_) => .zero());
   for (int i = 0; i < MAX_SINEWAVE_POINTS; i++)
   {
     sinePoints[i].x = i*GetScreenWidth()/180.0;

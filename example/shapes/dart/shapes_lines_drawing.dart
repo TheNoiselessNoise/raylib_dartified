@@ -39,7 +39,7 @@ void main()
 
     if (leftButtonDown || rightButtonDown)
     {
-      ColorD drawColor = .WHITE;
+      Color drawColor = .WHITE;
 
       if (leftButtonDown)
       {

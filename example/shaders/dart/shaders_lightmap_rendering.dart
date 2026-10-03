@@ -18,7 +18,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shaders_lightmap_rendering");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(4, 6, 8),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),

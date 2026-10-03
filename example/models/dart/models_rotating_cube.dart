@@ -14,7 +14,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_rotating_cube");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(0.0, 3.0, 3.0),
     target: .vec3(0.0, 0.0, 0.0),
     up: .vec3(0.0, 1.0, 0.0),

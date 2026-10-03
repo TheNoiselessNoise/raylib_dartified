@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
   
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .inlineStructArray: RArray(RStruct(ColorD.struct), 4),
+      .inlineStructArray: RArray(RStruct(Color.struct), 4),
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_inlineStructArray = structLayout.structArray<ColorD>(.inlineStructArray);
+  static final field_inlineStructArray = structLayout.structArray<Color>(.inlineStructArray);
 
-  late final StructLiveList<ColorD, RStruct> _inlineStructArray;
-  StructLiveList<ColorD, RStruct> get inlineStructArray => _inlineStructArray;
-  set inlineStructArray(List<ColorD> value) => _inlineStructArray.inner = value;
+  late final StructLiveList<Color, RStruct> _inlineStructArray;
+  StructLiveList<Color, RStruct> get inlineStructArray => _inlineStructArray;
+  set inlineStructArray(List<Color> value) => _inlineStructArray.inner = value;
 
   MyStruct({
     super.op,
-    List<ColorD>? inlineStructArray,
+    List<Color>? inlineStructArray,
   }) {
     _inlineStructArray = .array(() => op, field_inlineStructArray, .generate(field_inlineStructArray.codec.type.count, (_) => .zero()));
   }
@@ -50,30 +50,30 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Live List - Inline Struct Array - after assignment", () {
-    final List<ColorD> values = [.WHITE, .RED, .AQUA, .BLUE];
+    final List<Color> values = [.WHITE, .RED, .AQUA, .BLUE];
     final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineStructArray = values;
     expect(struct.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Live List - Inline Struct Array - read live data", () {
-    final List<ColorD> values = [.WHITE, .RED, .AQUA, .BLUE];
-    ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
+    final List<Color> values = [.WHITE, .RED, .AQUA, .BLUE];
+    Color.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
     expect(MyStruct.struct.ptr(ptr).ref.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Live List - Inline Struct Array - write through live list and check live data", () {
-    final List<ColorD> values = [.WHITE, .RED, .AQUA, .BLUE];
+    final List<Color> values = [.WHITE, .RED, .AQUA, .BLUE];
     final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineStructArray = values;
-    final result = ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray)))
+    final result = Color.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray)))
       .readArray(values.length);
     expect(result.toString(), values.toString());
   });
 
   test("Live List - Inline Struct Array - change element", () {
-    final List<ColorD> values = [.WHITE, .RED, .AQUA, .BLUE];
-    final List<ColorD> expected = .of(values);
+    final List<Color> values = [.WHITE, .RED, .AQUA, .BLUE];
+    final List<Color> expected = .of(values);
     expected[1] = .YELLOW;
 
     final struct = MyStruct.struct.ptr(ptr).ref;
@@ -81,7 +81,7 @@ void main() {
     struct.inlineStructArray[1] = .YELLOW;
 
     // read as live data
-    final result = ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray)))
+    final result = Color.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray)))
       .readArray(expected.length);
 
     expect(result.toString(), expected.toString());

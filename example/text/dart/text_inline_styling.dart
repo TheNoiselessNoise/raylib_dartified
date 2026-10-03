@@ -14,8 +14,8 @@ void main()
   SetTargetFPS(60);
 
   final font = GetFontDefault();
-  Vector2D textSize = .zero();
-  final ColorD colRandom = .RED;
+  Vector2 textSize = .zero();
+  final Color colRandom = .RED;
   int frameCounter = 0; 
 
   while (!WindowShouldClose())
@@ -69,15 +69,15 @@ void main()
   CloseWindowAndDispose();
 }
 
-void DrawTextStyled(FontD font, String text, Vector2D position, double fontSize, double spacing, ColorD color)
+void DrawTextStyled(Font font, String text, Vector2 position, double fontSize, double spacing, Color color)
 {
   if (font.texture.id == 0) font = GetFontDefault();
 
   final codepoints = text.runes.toList();
   int textLen = codepoints.length;
 
-  ColorD colFront = color;
-  ColorD colBack = .BLANK;
+  Color colFront = color;
+  Color colBack = .BLANK;
   int backRecPadding = 4;
 
   double textOffsetY = 0.0;
@@ -166,9 +166,9 @@ void DrawTextStyled(FontD font, String text, Vector2D position, double fontSize,
   }
 }
 
-Vector2D MeasureTextStyled(FontD font, String text, double fontSize, double spacing)
+Vector2 MeasureTextStyled(Font font, String text, double fontSize, double spacing)
 {
-  final Vector2D textSize = .zero();
+  final Vector2 textSize = .zero();
 
   if ((font.texture.id == 0) || text.isEmpty) return textSize;
 

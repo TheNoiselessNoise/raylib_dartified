@@ -82,7 +82,7 @@ void main() {
     _k(.KEY_RIGHT_CONTROL), _k(.KEY_LEFT), _k(.KEY_DOWN), _k(.KEY_RIGHT)
   ];
 
-  final Vector2D keyboardOffset = .vec2(26, 80);
+  final Vector2 keyboardOffset = .vec2(26, 80);
 
   while (!WindowShouldClose()) {
     int key = GetKeyPressed();
@@ -177,7 +177,7 @@ String GetKeyText(int key){
   }
 }
 
-void GuiKeyboardKey(RectangleD bounds, int key)
+void GuiKeyboardKey(Rectangle bounds, int key)
 {
   if (key == KeyboardKey.KEY_NULL.value) DrawRectangleLinesEx(bounds, 2.0, LIGHTGRAY);
   else

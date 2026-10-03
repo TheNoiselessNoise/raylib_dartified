@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(30, 20, 30),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -50,7 +50,7 @@ void main()
               final blockScale = (x + y + z)/30.0;
               final scatter = math.sin(blockScale*20.0 + (time*4.0));
 
-              final Vector3D cubePos = .vec3(
+              final Vector3 cubePos = .vec3(
                 (x - NUM_BLOCKS/2)*(scale*3.0) + scatter,
                 (y - NUM_BLOCKS/2)*(scale*2.0) + scatter,
                 (z - NUM_BLOCKS/2)*(scale*3.0) + scatter

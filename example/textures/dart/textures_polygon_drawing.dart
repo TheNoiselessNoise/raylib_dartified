@@ -16,7 +16,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "textures_polygon_drawing");
   SetTargetFPS(60);
 
-  final List<Vector2D> texcoords = [
+  final List<Vector2> texcoords = [
     .vec2(0.75, 0.0),
     .vec2(0.25, 0.0),
     .vec2(0.0, 0.5),
@@ -30,14 +30,14 @@ void main()
     .vec2(0.75, 0.0),
   ];
 
-  final List<Vector2D> points = .generate(MAX_POINTS, (_) => .zero());
+  final List<Vector2> points = .generate(MAX_POINTS, (_) => .zero());
   for (int i = 0; i < MAX_POINTS; i++)
   {
     points[i].x = (texcoords[i].x - 0.5)*256.0;
     points[i].y = (texcoords[i].y - 0.5)*256.0;
   }
 
-  final List<Vector2D> positions = .generate(MAX_POINTS, (_) => .zero());
+  final List<Vector2> positions = .generate(MAX_POINTS, (_) => .zero());
   for (int i = 0; i < MAX_POINTS; i++) {
     positions[i] = points[i];
   }
@@ -75,7 +75,7 @@ void main()
   CloseWindowAndDispose();
 }
 
-void DrawTexturePoly(TextureD texture, Vector2D center, List<Vector2D> points, List<Vector2D> texcoords, ColorD tint)
+void DrawTexturePoly(Texture texture, Vector2 center, List<Vector2> points, List<Vector2> texcoords, Color tint)
 {
   rlSetTexture(texture.id);
   rlBegin(.RL_TRIANGLES);

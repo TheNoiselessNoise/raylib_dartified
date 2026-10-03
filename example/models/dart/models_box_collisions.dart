@@ -13,7 +13,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "models_box_collisions");
   SetTargetFPS(60);
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(0, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -21,14 +21,14 @@ void main()
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  final Vector3D playerPosition = .vec3(0, 1, 2);
-  final Vector3D playerSize = .vec3(1, 2, 1);
-  ColorD playerColor = .GREEN;
+  final Vector3 playerPosition = .vec3(0, 1, 2);
+  final Vector3 playerSize = .vec3(1, 2, 1);
+  Color playerColor = .GREEN;
 
-  final Vector3D enemyBoxPos = .vec3(-4, 1, 0);
-  final Vector3D enemyBoxSize = .vec3(2, 2, 2);
+  final Vector3 enemyBoxPos = .vec3(-4, 1, 0);
+  final Vector3 enemyBoxSize = .vec3(2, 2, 2);
 
-  final Vector3D enemySpherePos = .vec3(4, 0, 0);
+  final Vector3 enemySpherePos = .vec3(4, 0, 0);
   double enemySphereSize = 1.5;
 
   while (!WindowShouldClose())
@@ -41,7 +41,7 @@ void main()
     bool collision = false;
 
     // Check collisions player vs enemy-box
-    final playerBBox = BoundingBoxD(
+    final playerBBox = BoundingBox(
       min: .vec3(
         playerPosition.x - playerSize.x/2,
         playerPosition.y - playerSize.y/2,
@@ -54,7 +54,7 @@ void main()
       ),
     );
 
-    final enemyBBox = BoundingBoxD(
+    final enemyBBox = BoundingBox(
       min: .vec3(
         enemyBoxPos.x - enemyBoxSize.x/2,
         enemyBoxPos.y - enemyBoxSize.y/2,

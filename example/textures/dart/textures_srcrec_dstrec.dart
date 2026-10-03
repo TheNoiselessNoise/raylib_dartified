@@ -19,17 +19,17 @@ void main()
   int frameWidth = scarfy.width~/6;
   int frameHeight = scarfy.height;
 
-  final RectangleD sourceRec = .rect(
+  final Rectangle sourceRec = .rect(
     0.0, 0.0,
     frameWidth, frameHeight
   );
 
-  final RectangleD destRec = .rect(
+  final Rectangle destRec = .rect(
     screenWidth/2.0, screenHeight/2.0,
     frameWidth*2.0, frameHeight*2.0
   );
 
-  final Vector2D origin = .vec2(frameWidth, frameHeight);
+  final Vector2 origin = .vec2(frameWidth, frameHeight);
 
   int rotation = 0;
 

@@ -38,7 +38,7 @@ void main()
 
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final List<ColorD> colors = [
+  final List<Color> colors = [
     .MAROON, .ORANGE, .DARKGREEN, .DARKBLUE,
     .DARKPURPLE, .LIME, .GOLD, .RED
   ];
@@ -49,7 +49,7 @@ void main()
   
   final fonts = fontPaths.map((path) => LoadFont(path)).toList();
 
-  final positions = <Vector2D>[];
+  final positions = <Vector2>[];
   for (int i = 0; i < fontPaths.length; i++) {
     final fontSize = MeasureTextEx(
       fonts[i],

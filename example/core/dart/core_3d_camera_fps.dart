@@ -5,9 +5,9 @@ import 'dart:math' as math;
 import '../../base_dart.dart';
 
 class Body {
-  Vector3D position;
-  Vector3D velocity;
-  Vector3D dir;
+  Vector3 position;
+  Vector3 velocity;
+  Vector3 dir;
   bool isGrounded;
 
   Body({
@@ -31,18 +31,18 @@ const double STAND_HEIGHT = 1.0;
 const double BOTTOM_HEIGHT = 0.5;
 const bool NORMALIZE_INPUT = false;
 
-final Vector2D sensitivity = .vec2(0.001, 0.001);
+final Vector2 sensitivity = .vec2(0.001, 0.001);
 Body player = Body(
   position: .zero(),
   velocity: .zero(),
   dir: .zero(),
   isGrounded: false,
 );
-final Vector2D lookRotation = .zero();
+final Vector2 lookRotation = .zero();
 double headTimer = 0.0;
 double walkLerp = 0.0;
 double headLerp = STAND_HEIGHT;
-final Vector2D lean = .zero();
+final Vector2 lean = .zero();
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -50,7 +50,7 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(
       player.position.x,
       player.position.y + (BOTTOM_HEIGHT + headLerp),
@@ -120,7 +120,7 @@ void main() {
       DrawText("- Move keys: W, A, S, D, Space, Left-Ctrl", 15, 30, 10, .BLACK);
       DrawText("- Look around: arrow keys or mouse", 15, 45, 10, .BLACK);
 
-      double velLen = Vector2D.vec2(player.velocity.x, player.velocity.z).length;
+      double velLen = Vector2.vec2(player.velocity.x, player.velocity.z).length;
       DrawText("- Velocity Len: (${velLen.f3})", 15, 60, 10, .BLACK);
 
     EndDrawing();
@@ -129,12 +129,12 @@ void main() {
   CloseWindowAndDispose();
 }
 
-void UpdateCameraFPS(Camera3DD camera)
+void UpdateCameraFPS(Camera3D camera)
 {
-  final Vector3D up = .vec3(0.0, 1.0, 0.0);
-  final Vector3D targetOffset = .vec3(0.0, 0.0, -1.0);
+  final Vector3 up = .vec3(0.0, 1.0, 0.0);
+  final Vector3 targetOffset = .vec3(0.0, 0.0, -1.0);
 
-  Vector3D yaw = targetOffset.rotateByAxisAngle(up, lookRotation.x);
+  Vector3 yaw = targetOffset.rotateByAxisAngle(up, lookRotation.x);
 
   double maxAngleUp = up.angle(yaw);
   maxAngleUp -= 0.001;
@@ -145,11 +145,11 @@ void UpdateCameraFPS(Camera3DD camera)
   maxAngleDown += 0.001;
   if (-(lookRotation.y) < maxAngleDown) { lookRotation.y = -maxAngleDown; }
 
-  Vector3D right = yaw.crossProduct(up).normalize();
+  Vector3 right = yaw.crossProduct(up).normalize();
 
   double pitchAngle = -lookRotation.y - lean.y;
   pitchAngle = Clamp(pitchAngle, -PI/2 + 0.0001, PI/2 - 0.0001);
-  Vector3D pitch = yaw.rotateByAxisAngle(right, pitchAngle);
+  Vector3 pitch = yaw.rotateByAxisAngle(right, pitchAngle);
 
   double headSin = math.sin(headTimer*PI);
   double headCos = math.cos(headTimer*PI);
@@ -158,7 +158,7 @@ void UpdateCameraFPS(Camera3DD camera)
 
   final double bobSide = 0.1;
   final double bobUp = 0.15;
-  Vector3D bobbing = right.scale(headSin*bobSide);
+  Vector3 bobbing = right.scale(headSin*bobSide);
   bobbing.y = (headCos*bobUp).abs();
 
   camera.position = camera.position.add(bobbing.scale(walkLerp));
@@ -167,7 +167,7 @@ void UpdateCameraFPS(Camera3DD camera)
 
 void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, bool crouchHold)
 {
-  Vector2D input = .vec2(side, -forward);
+  Vector2 input = .vec2(side, -forward);
 
   if (NORMALIZE_INPUT) {
     if ((side != 0) && (forward != 0)) input = input.normalize();
@@ -186,10 +186,10 @@ void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, 
     //rl.Audio.PlaySound(fxJump);
   }
 
-  final Vector3D front = .vec3(math.sin(rot), 0, math.cos(rot));
-  final Vector3D right = .vec3(math.cos(-rot), 0, math.sin(-rot));
+  final Vector3 front = .vec3(math.sin(rot), 0, math.cos(rot));
+  final Vector3 right = .vec3(math.cos(-rot), 0, math.sin(-rot));
 
-  final Vector3D desiredDir = .vec3(
+  final Vector3 desiredDir = .vec3(
     input.x*right.x + input.y*front.x,
     0.0,
     input.x*right.z + input.y*front.z
@@ -197,7 +197,7 @@ void UpdateBody(Body body, double rot, int side, int forward, bool jumpPressed, 
   body.dir = body.dir.lerp(desiredDir, CONTROL*delta);
 
   double decel = (body.isGrounded ? FRICTION : AIR_DRAG);
-  Vector3D hvel = .vec3(body.velocity.x*decel, 0.0, body.velocity.z*decel);
+  Vector3 hvel = .vec3(body.velocity.x*decel, 0.0, body.velocity.z*decel);
 
   double hvelLength = hvel.length;
   if (hvelLength < (MAX_SPEED*0.01)) hvel = .zero();
@@ -229,7 +229,7 @@ void DrawLevel()
   final int floorExtent = 25;
   final double tileSize = 5.0;
 
-  final ColorD color = .color(150, 200, 200, 255);
+  final Color color = .color(150, 200, 200, 255);
 
   for (int y = -floorExtent; y < floorExtent; y++)
   {
@@ -254,8 +254,8 @@ void DrawLevel()
     }
   }
 
-  final Vector3D towerSize = .vec3(16.0, 32.0, 16.0);
-  final Vector3D towerPos = .vec3(16.0, 16.0, 16.0);
+  final Vector3 towerSize = .vec3(16.0, 32.0, 16.0);
+  final Vector3 towerPos = .vec3(16.0, 16.0, 16.0);
 
   DrawCubeV(towerPos, towerSize, color);
   DrawCubeWiresV(towerPos, towerSize, .DARKBLUE);

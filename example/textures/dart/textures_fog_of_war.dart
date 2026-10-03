@@ -36,7 +36,7 @@ void main()
   map.tileIds = .filled(map.tilesX*map.tilesY, 0);
   map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
-  final Vector2D playerPosition = .zero();
+  final Vector2 playerPosition = .zero();
   int playerTileX = 0;
   int playerTileY = 0;
 

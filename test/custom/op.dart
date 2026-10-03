@@ -1,11 +1,12 @@
 import 'package:test/test.dart';
+import 'package:raylib_dartified_base/abbr/allocators.dart';
 import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
-  late Vector2D vec21;
-  late Vector2D vec22;
+  late Vector2 vec21;
+  late Vector2 vec22;
   setUp(() {
     vec21 = .new();
     vec22 = .new();

@@ -140,7 +140,7 @@ void DrawTestResults(bool allPassed) {
   const int fontSize = 18;
   const int smallFont = 13;
 
-  final ColorD headerColor = allPassed ? .DARKGREEN : .MAROON;
+  final Color headerColor = allPassed ? .DARKGREEN : .MAROON;
   final headerText  = allPassed ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
   DrawText(headerText, padX, padY, 24, headerColor);
 
@@ -149,8 +149,8 @@ void DrawTestResults(bool allPassed) {
   for (int i = 0; i < results.length; i++) {
     final r   = results[i];
     final y   = padY + 44 + i * rowH;
-    final ColorD bg  = r.passed ? .color(220, 255, 220, 255) : .color(255, 220, 220, 255);
-    final ColorD dot = r.passed ? .GREEN : .RED;
+    final Color bg  = r.passed ? .color(220, 255, 220, 255) : .color(255, 220, 220, 255);
+    final Color dot = r.passed ? .GREEN : .RED;
 
     DrawRectangle(padX, y, screenWidth - padX * 2, rowH - 4, bg);
     DrawRectangleLines(padX, y, screenWidth - padX * 2, rowH - 4, dot);
@@ -174,7 +174,7 @@ void DrawTestResults(bool allPassed) {
   }
 }
 
-void DrawCheckmark(int x, int y, int size, ColorD color) {
+void DrawCheckmark(int x, int y, int size, Color color) {
   DrawLineEx(
     .vec2(x + size * 0.15, y + size * 0.50),
     .vec2(x + size * 0.40, y + size * 0.75),
@@ -187,7 +187,7 @@ void DrawCheckmark(int x, int y, int size, ColorD color) {
   );
 }
 
-void DrawXSign(int x, int y, int size, ColorD color) {
+void DrawXSign(int x, int y, int size, Color color) {
   DrawLineEx(
     .vec2(x + size * 0.20, y + size * 0.20),
     .vec2(x + size * 0.80, y + size * 0.80),

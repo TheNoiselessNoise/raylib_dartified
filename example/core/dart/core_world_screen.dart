@@ -9,7 +9,7 @@ const int screenHeight = 450;
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(10, 10, 10),
     target: .vec3(0, 0, 0),
     up: .vec3(0, 1, 0),
@@ -17,9 +17,9 @@ void main() {
     projection: .CAMERA_PERSPECTIVE,
   );
 
-  Vector3D cubePosition = .zero();
-  Vector2D cubeScreenPosition = .zero();
-  Vector3D worldPosition = .zero();
+  Vector3 cubePosition = .zero();
+  Vector2 cubeScreenPosition = .zero();
+  Vector3 worldPosition = .zero();
 
   InitWindow(screenWidth, screenHeight, "core_world_screen");
   DisableCursor();

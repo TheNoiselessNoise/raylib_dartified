@@ -22,9 +22,9 @@ void main()
   double pointScale = 150.0;
   double value = 0;
 
-  final Vector2D center = .vec2(screenWidth/2.0, screenHeight/2.0);
-  Vector2D circlePosition = center.copy();
-  ColorD color = .WHITE;
+  final Vector2 center = .vec2(screenWidth/2.0, screenHeight/2.0);
+  Vector2 circlePosition = center.copy();
+  Color color = .WHITE;
 
   bool sliderClicked = false;
   bool settingColor = false;
@@ -35,7 +35,7 @@ void main()
     triangleCount += GetMouseWheelMove().toInt();
     triangleCount = Clamp(triangleCount, pointsMin, pointsMax).toInt();
 
-    final RectangleD sliderRectangle = .rect(42.0, 16.0 + 64.0 + 45.0, 64.0, 16.0);
+    final Rectangle sliderRectangle = .rect(42.0, 16.0 + 64.0 + 45.0, 64.0, 16.0);
     final mousePosition = GetMousePosition();
 
     bool sliderHover = (
@@ -83,7 +83,7 @@ void main()
       }
 
       double distance = center.distance(circlePosition) / pointScale;
-      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
+      double angle = (Vector2.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
 
       if (distance > 1.0)
       {
@@ -112,7 +112,7 @@ void main()
 
       double distance = center.distance(circlePosition)/pointScale;
 
-      double angle = (Vector2D.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
+      double angle = (Vector2.vec2(0, -pointScale).angle(center.sub(circlePosition)) / PI + 1) / 2;
       if (settingColor && distance > 1.0) {
         circlePosition = .vec2(
           math.sin(angle*(PI*2.0))*pointScale,
@@ -145,9 +145,9 @@ void main()
       double angle = angleOffset*i;
       double angleOffsetCalculated = (i + 1)*angleOffset;
 
-      final Vector2D scale = .vec2(pointScale, pointScale);
-      final Vector2D offset = .vec2(math.sin(angle), -math.cos(angle)).mul(scale);
-      final Vector2D offset2 = .vec2(math.sin(angleOffsetCalculated), -math.cos(angleOffsetCalculated)).mul(scale);
+      final Vector2 scale = .vec2(pointScale, pointScale);
+      final Vector2 offset = .vec2(math.sin(angle), -math.cos(angle)).mul(scale);
+      final Vector2 offset2 = .vec2(math.sin(angleOffsetCalculated), -math.cos(angleOffsetCalculated)).mul(scale);
       final position = center.add(offset);
       final position2 = center.add(offset2);
 
@@ -171,7 +171,7 @@ void main()
         rlColor4ub(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
         rlVertex2f(position.x, position.y);
         
-        final ColorD white = .WHITE;
+        final Color white = .WHITE;
         rlColor4ub(white.r, white.g, white.b, white.a);
         rlVertex2f(center.x, center.y);
 
@@ -186,7 +186,7 @@ void main()
     }
     rlEnd();
 
-    ColorD handleColor = .BLACK;
+    Color handleColor = .BLACK;
 
     if (center.distance(circlePosition)/pointScale <= 0.5 && value <= 0.5)
     {
@@ -220,7 +220,7 @@ void main()
       8, 8 + 64 + 8, 20, .DARKGRAY
     );
 
-    ColorD copyColor = .DARKGRAY;
+    Color copyColor = .DARKGRAY;
     int offset = 0;
     if (IsKeyDown(.KEY_LEFT_CONTROL) && IsKeyDown(.KEY_C))
     {

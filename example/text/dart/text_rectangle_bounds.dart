@@ -21,11 +21,11 @@ void main()
   bool resizing = false;
   bool wordWrap = true;
 
-  final RectangleD container = .rect(
+  final Rectangle container = .rect(
     25.0, 25.0,
     screenWidth - 50.0, screenHeight - 250.0
   );
-  final RectangleD resizer = .rect(
+  final Rectangle resizer = .rect(
     container.x + container.width - 17, container.y + container.height - 17,
     14, 14
   );
@@ -35,8 +35,8 @@ void main()
   final maxWidth = screenWidth - 50.0;
   final maxHeight = screenHeight - 160.0;
 
-  Vector2D lastMouse = .zero();
-  ColorD borderColor = .MAROON;
+  Vector2 lastMouse = .zero();
+  Color borderColor = .MAROON;
   final font = GetFontDefault();
 
   while (!WindowShouldClose())
@@ -130,13 +130,13 @@ void main()
 }
 
 void DrawTextBoxed(
-  FontD font,
+  Font font,
   String text,
-  RectangleD rec,
+  Rectangle rec,
   double fontSize,
   double spacing,
   bool wordWrap,
-  ColorD tint,
+  Color tint,
 ) => DrawTextBoxedSelectable(
   font, text, rec, fontSize, spacing,
   wordWrap, tint, 0, 0, .WHITE, .WHITE
@@ -149,17 +149,17 @@ State nextState(State current) => switch (current) {
 };
 
 void DrawTextBoxedSelectable(
-  FontD font,
+  Font font,
   String text,
-  RectangleD rec,
+  Rectangle rec,
   double fontSize,
   double spacing,
   bool wordWrap,
-  ColorD tint,
+  Color tint,
   int selectStart,
   int selectLength,
-  ColorD selectTint,
-  ColorD selectBackTint,
+  Color selectTint,
+  Color selectBackTint,
 ) {
   double textOffsetY = 0;
   double textOffsetX = 0.0;

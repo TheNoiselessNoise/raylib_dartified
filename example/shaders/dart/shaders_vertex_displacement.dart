@@ -16,7 +16,7 @@ void main()
   SetTargetFPS(60);
   DisableCursor();
 
-  final camera = Camera3DD(
+  final camera = Camera3D(
     position: .vec3(20.0, 5.0, -20.0),
     target: .vec3(0.0, 0.0, 0.0),
     up: .vec3(0, 1, 0),

@@ -3,72 +3,72 @@ part of '../../../raylib_dartified.dart';
 // AutomationEventList
 
 extension AutomationEventListCPEx on Pointer<AutomationEventListC> {
-  AutomationEventListD toDart() => ref.toDart(this);
+  AutomationEventList toDart() => ref.toDart(this);
 }
 
 extension AutomationEventListCEx on AutomationEventListC {
-  AutomationEventListD toDart([Pointer<AutomationEventListC>? ptr]) => .new(
-    op: AutomationEventListD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  AutomationEventList toDart([Pointer<AutomationEventListC>? ptr]) => .new(
+    op: AutomationEventList.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // AutomationEvent
 
 extension AutomationEventCPEx on Pointer<AutomationEventC> {
-  AutomationEventD toDart() => ref.toDart(this);
+  AutomationEvent toDart() => ref.toDart(this);
 }
 
 extension AutomationEventCEx on AutomationEventC {
-  AutomationEventD toDart([Pointer<AutomationEventC>? ptr]) => .new(
-    op: AutomationEventD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  AutomationEvent toDart([Pointer<AutomationEventC>? ptr]) => .new(
+    op: AutomationEvent.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // BoneInfo
 
 extension BoneInfoCPEx on Pointer<BoneInfoC> {
-  BoneInfoD toDart() => ref.toDart(this);
+  BoneInfo toDart() => ref.toDart(this);
 }
 
 extension BoneInfoCEx on BoneInfoC {
-  BoneInfoD toDart([Pointer<BoneInfoC>? ptr]) => .new(
-    op: BoneInfoD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  BoneInfo toDart([Pointer<BoneInfoC>? ptr]) => .new(
+    op: BoneInfo.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // BoundingBox
 
 extension BoundingBoxCPEx on Pointer<BoundingBoxC> {
-  BoundingBoxD toDart() => ref.toDart(this);
+  BoundingBox toDart() => ref.toDart(this);
 }
 
 extension BoundingBoxCEx on BoundingBoxC {
-  BoundingBoxD toDart([Pointer<BoundingBoxC>? ptr]) => .new(
-    op: BoundingBoxD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  BoundingBox toDart([Pointer<BoundingBoxC>? ptr]) => .new(
+    op: BoundingBox.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Camera2D
 
 extension Camera2DCPEx on Pointer<Camera2DC> {
-  Camera2DD toDart() => ref.toDart(this);
+  Camera2D toDart() => ref.toDart(this);
 }
 
 extension Camera2DCEx on Camera2DC {
-  Camera2DD toDart([Pointer<Camera2DC>? ptr]) => .new(
-    op: Camera2DD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Camera2D toDart([Pointer<Camera2DC>? ptr]) => .new(
+    op: Camera2D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Camera3D
 
 extension Camera3DCPEx on Pointer<Camera3DC> {
-  Camera3DD toDart() => ref.toDart(this);
+  Camera3D toDart() => ref.toDart(this);
 }
 
 extension Camera3DCEx on Camera3DC {
-  Camera3DD toDart([Pointer<Camera3DC>? ptr]) => .new(
-    op: Camera3DD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Camera3D toDart([Pointer<Camera3DC>? ptr]) => .new(
+    op: Camera3D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -76,7 +76,7 @@ extension Camera3DCEx on Camera3DC {
 
 extension ColorCPEx on Pointer<ColorC> {
   Pointer<ColorC> set(num r, num g, num b, num a) { ref.set(r, g, b, a); return this; }
-  ColorD toDart() => ref.toDart(this);
+  Color toDart() => ref.toDart(this);
 }
 
 extension ColorCEx on ColorC {
@@ -88,320 +88,320 @@ extension ColorCEx on ColorC {
     return this;
   }
 
-  ColorD toDart([Pointer<ColorC>? ptr]) => .new(
-    op: ColorD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Color toDart([Pointer<ColorC>? ptr]) => .new(
+    op: Color.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // FilePathList
 
 extension FilePathListCPEx on Pointer<FilePathListC> {
-  FilePathListD toDart() => ref.toDart(this);
+  FilePathList toDart() => ref.toDart(this);
 }
 
 extension FilePathListCEx on FilePathListC {
-  FilePathListD toDart([Pointer<FilePathListC>? ptr]) => .new(
-    op: FilePathListD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  FilePathList toDart([Pointer<FilePathListC>? ptr]) => .new(
+    op: FilePathList.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Font
 
 extension FontCPEx on Pointer<FontC> {
-  FontD toDart() => ref.toDart(this);
+  Font toDart() => ref.toDart(this);
 }
 
 extension FontCEx on FontC {
-  FontD toDart([Pointer<FontC>? ptr]) => .new(
-    op: FontD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Font toDart([Pointer<FontC>? ptr]) => .new(
+    op: Font.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // GestureEvent
 
 extension GestureEventCPEx on Pointer<GestureEventC> {
-  GestureEventD toDart() => ref.toDart(this);
+  GestureEvent toDart() => ref.toDart(this);
 }
 
 extension GestureEventCEx on GestureEventC {
-  GestureEventD toDart([Pointer<GestureEventC>? ptr]) => .new(
-    op: GestureEventD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  GestureEvent toDart([Pointer<GestureEventC>? ptr]) => .new(
+    op: GestureEvent.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // GlyphInfo
 
 extension GlyphInfoCPEx on Pointer<GlyphInfoC> {
-  GlyphInfoD toDart() => ref.toDart(this);
+  GlyphInfo toDart() => ref.toDart(this);
 }
 
 extension GlyphInfoCEx on GlyphInfoC {
-  GlyphInfoD toDart([Pointer<GlyphInfoC>? ptr]) => .new(
-    op: GlyphInfoD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  GlyphInfo toDart([Pointer<GlyphInfoC>? ptr]) => .new(
+    op: GlyphInfo.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Image
 
 extension ImageCPEx on Pointer<ImageC> {
-  ImageD toDart() => ref.toDart(this);
+  Image toDart() => ref.toDart(this);
 }
 
 extension ImageCEx on ImageC {
-  ImageD toDart([Pointer<ImageC>? ptr]) => .new(
-    op: ImageD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Image toDart([Pointer<ImageC>? ptr]) => .new(
+    op: Image.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // MaterialMap
 
 extension MaterialMapCPEx on Pointer<MaterialMapC> {
-  MaterialMapD toDart() => ref.toDart(this);
+  MaterialMap toDart() => ref.toDart(this);
 }
 
 extension MaterialMapCEx on MaterialMapC {
-  MaterialMapD toDart([Pointer<MaterialMapC>? ptr]) => .new(
-    op: MaterialMapD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  MaterialMap toDart([Pointer<MaterialMapC>? ptr]) => .new(
+    op: MaterialMap.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Material
 
 extension MaterialCPEx on Pointer<MaterialC> {
-  MaterialD toDart() => ref.toDart(this);
+  Material toDart() => ref.toDart(this);
 }
 
 extension MaterialCEx on MaterialC {
-  MaterialD toDart([Pointer<MaterialC>? ptr]) => .new(
-    op: MaterialD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Material toDart([Pointer<MaterialC>? ptr]) => .new(
+    op: Material.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Matrix
 
 extension MatrixCPEx on Pointer<MatrixC> {
-  MatrixD toDart() => ref.toDart(this);
+  Matrix toDart() => ref.toDart(this);
 }
 
 extension MatrixCEx on MatrixC {
-  MatrixD toDart([Pointer<MatrixC>? ptr]) => .new(
-    op: MatrixD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Matrix toDart([Pointer<MatrixC>? ptr]) => .new(
+    op: Matrix.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Mesh
 
 extension MeshCPEx on Pointer<MeshC> {
-  MeshD toDart() => ref.toDart(this);
+  Mesh toDart() => ref.toDart(this);
 }
 
 extension MeshCEx on MeshC {
-  MeshD toDart([Pointer<MeshC>? ptr]) => .new(
-    op: MeshD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Mesh toDart([Pointer<MeshC>? ptr]) => .new(
+    op: Mesh.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // ModelAnimation
 
 extension ModelAnimationCPEx on Pointer<ModelAnimationC> {
-  ModelAnimationD toDart() => ref.toDart(this);
+  ModelAnimation toDart() => ref.toDart(this);
 }
 
 extension ModelAnimationCEx on ModelAnimationC {
-  ModelAnimationD toDart([Pointer<ModelAnimationC>? ptr]) => .new(
-    op: ModelAnimationD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  ModelAnimation toDart([Pointer<ModelAnimationC>? ptr]) => .new(
+    op: ModelAnimation.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // ModelSkeleton
 
 extension ModelSkeletonCPEx on Pointer<ModelSkeletonC> {
-  ModelSkeletonD toDart() => ref.toDart(this);
+  ModelSkeleton toDart() => ref.toDart(this);
 }
 
 extension ModelSkeletonCEx on ModelSkeletonC {
-  ModelSkeletonD toDart([Pointer<ModelSkeletonC>? ptr]) => .new(
-    op: ModelSkeletonD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  ModelSkeleton toDart([Pointer<ModelSkeletonC>? ptr]) => .new(
+    op: ModelSkeleton.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Model
 
 extension ModelCPEx on Pointer<ModelC> {
-  ModelD toDart() => ref.toDart(this);
+  Model toDart() => ref.toDart(this);
 }
 
 extension ModelCEx on ModelC {
-  ModelD toDart([Pointer<ModelC>? ptr]) => .new(
-    op: ModelD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Model toDart([Pointer<ModelC>? ptr]) => .new(
+    op: Model.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // NPatchInfo
 
 extension NPatchInfoCPEx on Pointer<NPatchInfoC> {
-  NPatchInfoD toDart() => ref.toDart(this);
+  NPatchInfo toDart() => ref.toDart(this);
 }
 
 extension NPatchInfoCEx on NPatchInfoC {
-  NPatchInfoD toDart([Pointer<NPatchInfoC>? ptr]) => .new(
-    op: NPatchInfoD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  NPatchInfo toDart([Pointer<NPatchInfoC>? ptr]) => .new(
+    op: NPatchInfo.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Quaternion
 
 extension QuaternionCPEx on Pointer<QuaternionC> {
-  QuaternionD toDart() => ref.toDart(this);
+  Quaternion toDart() => ref.toDart(this);
 }
 
 extension QuaternionCEx on QuaternionC {
-  QuaternionD toDart([Pointer<QuaternionC>? ptr]) => .new(
-    op: QuaternionD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Quaternion toDart([Pointer<QuaternionC>? ptr]) => .new(
+    op: Quaternion.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // RayCollision
 
 extension RayCollisionCPEx on Pointer<RayCollisionC> {
-  RayCollisionD toDart() => ref.toDart(this);
+  RayCollision toDart() => ref.toDart(this);
 }
 
 extension RayCollisionCEx on RayCollisionC {
-  RayCollisionD toDart([Pointer<RayCollisionC>? ptr]) => .new(
-    op: RayCollisionD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  RayCollision toDart([Pointer<RayCollisionC>? ptr]) => .new(
+    op: RayCollision.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Ray
 
 extension RayCPEx on Pointer<RayC> {
-  RayD toDart() => ref.toDart(this);
+  Ray toDart() => ref.toDart(this);
 }
 
 extension RayCEx on RayC {
-  RayD toDart([Pointer<RayC>? ptr]) => .new(
-    op: RayD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Ray toDart([Pointer<RayC>? ptr]) => .new(
+    op: Ray.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Rectangle
 
 extension RectangleCPEx on Pointer<RectangleC> {
-  RectangleD toDart() => ref.toDart(this);
+  Rectangle toDart() => ref.toDart(this);
 }
 
 extension RectangleCEx on RectangleC {
-  RectangleD toDart([Pointer<RectangleC>? ptr]) => .new(
-    op: RectangleD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Rectangle toDart([Pointer<RectangleC>? ptr]) => .new(
+    op: Rectangle.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // RenderTexture
 
 extension RenderTextureCPEx on Pointer<RenderTextureC> {
-  RenderTextureD toDart() => ref.toDart(this);
+  RenderTexture toDart() => ref.toDart(this);
 }
 
 extension RenderTextureCEx on RenderTextureC {
-  RenderTextureD toDart([Pointer<RenderTextureC>? ptr]) => .new(
-    op: RenderTextureD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  RenderTexture toDart([Pointer<RenderTextureC>? ptr]) => .new(
+    op: RenderTexture.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Shader
 
 extension ShaderCPEx on Pointer<ShaderC> {
-  ShaderD toDart() => ref.toDart(this);
+  Shader toDart() => ref.toDart(this);
 }
 
 extension ShaderCEx on ShaderC {
-  ShaderD toDart([Pointer<ShaderC>? ptr]) => .new(
-    op: ShaderD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Shader toDart([Pointer<ShaderC>? ptr]) => .new(
+    op: Shader.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Texture
 
 extension TextureCPEx on Pointer<TextureC> {
-  TextureD toDart() => ref.toDart(this);
+  Texture toDart() => ref.toDart(this);
 }
 
 extension TextureCEx on TextureC {
-  TextureD toDart([Pointer<TextureC>? ptr]) => .new(
-    op: TextureD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Texture toDart([Pointer<TextureC>? ptr]) => .new(
+    op: Texture.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Transform
 
 extension TransformCPEx on Pointer<TransformC> {
-  TransformD toDart() => ref.toDart(this);
+  Transform toDart() => ref.toDart(this);
 }
 
 extension TransformCEx on TransformC {
-  TransformD toDart([Pointer<TransformC>? ptr]) => .new(
-    op: TransformD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Transform toDart([Pointer<TransformC>? ptr]) => .new(
+    op: Transform.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Vector2
 
 extension Vector2CPEx on Pointer<Vector2C> {
-  Vector2D toDart() => ref.toDart(this);
+  Vector2 toDart() => ref.toDart(this);
 }
 
 extension Vector2CEx on Vector2C {
-  Vector2D toDart([Pointer<Vector2C>? ptr]) => .new(
-    op: Vector2D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Vector2 toDart([Pointer<Vector2C>? ptr]) => .new(
+    op: Vector2.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Vector3
 
 extension Vector3CPEx on Pointer<Vector3C> {
-  Vector3D toDart() => ref.toDart(this);
+  Vector3 toDart() => ref.toDart(this);
 }
 
 extension Vector3CEx on Vector3C {
-  Vector3D toDart([Pointer<Vector3C>? ptr]) => .new(
-    op: Vector3D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Vector3 toDart([Pointer<Vector3C>? ptr]) => .new(
+    op: Vector3.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // Vector4
 
 extension Vector4CPEx on Pointer<Vector4C> {
-  Vector4D toDart() => ref.toDart(this);
+  Vector4 toDart() => ref.toDart(this);
 }
 
 extension Vector4CEx on Vector4C {
-  Vector4D toDart([Pointer<Vector4C>? ptr]) => .new(
-    op: Vector4D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  Vector4 toDart([Pointer<Vector4C>? ptr]) => .new(
+    op: Vector4.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // VrDeviceInfo
 
 extension VrDeviceInfoCPEx on Pointer<VrDeviceInfoC> {
-  VrDeviceInfoD toDart() => ref.toDart(this);
+  VrDeviceInfo toDart() => ref.toDart(this);
 }
 
 extension VrDeviceInfoCEx on VrDeviceInfoC {
-  VrDeviceInfoD toDart([Pointer<VrDeviceInfoC>? ptr]) => .new(
-    op: VrDeviceInfoD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  VrDeviceInfo toDart([Pointer<VrDeviceInfoC>? ptr]) => .new(
+    op: VrDeviceInfo.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
 // VrStereoConfig
 
 extension VrStereoConfigCPEx on Pointer<VrStereoConfigC> {
-  VrStereoConfigD toDart() => ref.toDart(this);
+  VrStereoConfig toDart() => ref.toDart(this);
 }
 
 extension VrStereoConfigCEx on VrStereoConfigC {
-  VrStereoConfigD toDart([Pointer<VrStereoConfigC>? ptr]) => .new(
-    op: VrStereoConfigD.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  VrStereoConfig toDart([Pointer<VrStereoConfigC>? ptr]) => .new(
+    op: VrStereoConfig.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -409,13 +409,13 @@ extension VrStereoConfigCEx on VrStereoConfigC {
 
 // ignore: camel_case_extensions
 extension float16CPEx on Pointer<float16C> {
-  float16D toDart() => ref.toDart(this);
+  float16 toDart() => ref.toDart(this);
 }
 
 // ignore: camel_case_extensions
 extension float16CEx on float16C {
-  float16D toDart([Pointer<float16C>? ptr]) => .new(
-    op: float16D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  float16 toDart([Pointer<float16C>? ptr]) => .new(
+    op: float16.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }
 
@@ -423,12 +423,12 @@ extension float16CEx on float16C {
 
 // ignore: camel_case_extensions
 extension float3CPEx on Pointer<float3C> {
-  float3D toDart() => ref.toDart(this);
+  float3 toDart() => ref.toDart(this);
 }
 
 // ignore: camel_case_extensions
 extension float3CEx on float3C {
-  float3D toDart([Pointer<float3C>? ptr]) => .new(
-    op: float3D.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
+  float3 toDart([Pointer<float3C>? ptr]) => .new(
+    op: float3.struct.ptr(NativeMemoryPointer.orNull(ptr?..ref = this)),
   );
 }

@@ -13,10 +13,10 @@ const int MAX_SHADOWS = MAX_BOXES*3;
 const int MAX_LIGHTS = 16;
 
 class ShadowGeometry {
-  List<Vector2D> vertices;
+  List<Vector2> vertices;
 
   ShadowGeometry({
-    List<Vector2D>? vertices,
+    List<Vector2>? vertices,
   }) : 
     vertices = vertices ?? .generate(4, (k) => .zero());
 }
@@ -26,10 +26,10 @@ class LightInfo {
   bool dirty;
   bool valid;
 
-  Vector2D position;
-  RenderTextureD mask;
+  Vector2 position;
+  RenderTexture mask;
   double outerRadius;
-  RectangleD bounds;
+  Rectangle bounds;
 
   List<ShadowGeometry> shadows;
   int shadowCount;
@@ -38,10 +38,10 @@ class LightInfo {
     this.active = false,
     this.dirty = false,
     this.valid = false,
-    Vector2D? position,
-    RenderTextureD? mask,
+    Vector2? position,
+    RenderTexture? mask,
     this.outerRadius = 0,
-    RectangleD? bounds,
+    Rectangle? bounds,
     List<ShadowGeometry>? shadows,
     this.shadowCount = 0,
   }) :
@@ -62,7 +62,7 @@ void main()
 
   lights = .generate(MAX_LIGHTS, (i) => .new());
 
-  final List<RectangleD> boxes = .generate(MAX_BOXES, (i) => switch (i) {
+  final List<Rectangle> boxes = .generate(MAX_BOXES, (i) => switch (i) {
     0 => .rect(150, 80, 40, 40),
     1 => .rect(1200, 700, 40, 40),
     2 => .rect(200, 600, 40, 40),
@@ -221,17 +221,17 @@ void MoveLight(int slot, double x, double y)
   lights[slot].bounds.y = y - lights[slot].outerRadius;
 }
 
-void ComputeShadowVolumeForEdge(int slot, Vector2D sp, Vector2D ep)
+void ComputeShadowVolumeForEdge(int slot, Vector2 sp, Vector2 ep)
 {
   if (lights[slot].shadowCount >= MAX_SHADOWS) return;
 
   double extension = lights[slot].outerRadius*2;
 
-  Vector2D spVector = sp.sub(lights[slot].position).normalize();
-  Vector2D spProjection = sp.add(spVector.scale(extension));
+  Vector2 spVector = sp.sub(lights[slot].position).normalize();
+  Vector2 spProjection = sp.add(spVector.scale(extension));
 
-  Vector2D epVector = ep.sub(lights[slot].position).normalize();
-  Vector2D epProjection = ep.add(epVector.scale(extension));
+  Vector2 epVector = ep.sub(lights[slot].position).normalize();
+  Vector2 epProjection = ep.add(epVector.scale(extension));
 
   lights[slot].shadows[lights[slot].shadowCount].vertices[0] = sp.copy();
   lights[slot].shadows[lights[slot].shadowCount].vertices[1] = ep.copy();
@@ -290,7 +290,7 @@ void SetupLight(int slot, double x, double y, double radius)
   DrawLightMask(slot);
 }
 
-bool UpdateLight(int slot, List<RectangleD> boxes)
+bool UpdateLight(int slot, List<Rectangle> boxes)
 {
   if (!lights[slot].active || !lights[slot].dirty) return false;
 
@@ -304,8 +304,8 @@ bool UpdateLight(int slot, List<RectangleD> boxes)
 
     if (!CheckCollisionRecs(lights[slot].bounds, boxes[i])) continue;
 
-    Vector2D sp = .vec2(boxes[i].x, boxes[i].y);
-    Vector2D ep = .vec2(boxes[i].x + boxes[i].width, boxes[i].y);
+    Vector2 sp = .vec2(boxes[i].x, boxes[i].y);
+    Vector2 ep = .vec2(boxes[i].x + boxes[i].width, boxes[i].y);
 
     if (lights[slot].position.y > ep.y) ComputeShadowVolumeForEdge(slot, sp, ep);
 

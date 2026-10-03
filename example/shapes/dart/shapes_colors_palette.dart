@@ -13,7 +13,7 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_colors_palette");
   SetTargetFPS(60);
   
-  final colors = <String, ColorD>{
+  final colors = <String, Color>{
     'DARKGRAY': .DARKGRAY, 'MAROON': .MAROON, 'ORANGE': .ORANGE,
     'DARKGREEN': .DARKGREEN, 'DARKBLUE': .DARKBLUE, 'DARKPURPLE': .DARKPURPLE,
     'DARKBROWN': .DARKBROWN, 'GRAY': .GRAY, 'RED': .RED, 'GOLD': .GOLD,
@@ -22,7 +22,7 @@ void main()
     'GREEN': .GREEN, 'SKYBLUE': .SKYBLUE, 'PURPLE': .PURPLE, 'BEIGE': .BEIGE
   };
 
-  final List<RectangleD> colorsRecs = .generate(colors.length, (i) => .new(
+  final List<Rectangle> colorsRecs = .generate(colors.length, (i) => .new(
     x: 20.0 + 100.0 * (i%7) + 10.0 * (i%7),
     y: 80.0 + 100.0 * (i~/7) + 10.0 * (i~/7),
     width: 100.0,
@@ -31,7 +31,7 @@ void main()
 
   final colorState = List.filled(colors.length, false);
 
-  Vector2D mousePoint = .zero();
+  Vector2 mousePoint = .zero();
 
   while (!WindowShouldClose())
   {

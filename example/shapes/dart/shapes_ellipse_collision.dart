@@ -14,11 +14,11 @@ void main()
   InitWindow(screenWidth, screenHeight, "shapes_ellipse_collision");
   SetTargetFPS(60);
 
-  Vector2D ellipseACenter = .vec2(screenWidth/4, screenHeight/2);
+  Vector2 ellipseACenter = .vec2(screenWidth/4, screenHeight/2);
   double ellipseARx = 120.0;
   double ellipseARy = 70.0;
 
-  Vector2D ellipseBCenter = .vec2(screenWidth*3/4, screenHeight/2);
+  Vector2 ellipseBCenter = .vec2(screenWidth*3/4, screenHeight/2);
   double ellipseBRx = 90.0;
   double ellipseBRy = 140.0;
 
@@ -71,14 +71,14 @@ void main()
   CloseWindowAndDispose();
 }
 
-bool CheckCollisionPointEllipse(Vector2D point, Vector2D center, double rx, double ry)
+bool CheckCollisionPointEllipse(Vector2 point, Vector2 center, double rx, double ry)
 {
   final dx = (point.x - center.x)/rx;
   final dy = (point.y - center.y)/ry;
   return (dx*dx + dy*dy) <= 1.0;
 }
 
-bool CheckCollisionEllipses(Vector2D c1, double rx1, double ry1, Vector2D c2, double rx2, double ry2)
+bool CheckCollisionEllipses(Vector2 c1, double rx1, double ry1, Vector2 c2, double rx2, double ry2)
 {
   final dx = c2.x - c1.x;
   final dy = c2.y - c1.y;

@@ -21,15 +21,15 @@ void main()
   const double clockFaceSpacing = 8.0;
   const double sectionSpacing = 16.0;
 
-  final Vector2D TL = .vec2(  0.0,  90.0); // Top-left corner
-  final Vector2D TR = .vec2( 90.0, 180.0); // Top-right corner
-  final Vector2D BR = .vec2(180.0, 270.0); // Bottom-right corner
-  final Vector2D BL = .vec2(  0.0, 270.0); // Bottom-left corner
-  final Vector2D HH = .vec2(  0.0, 180.0); // Horizontal line
-  final Vector2D VV = .vec2( 90.0, 270.0); // Vertical line
-  final Vector2D ZZ = .vec2(135.0, 135.0); // Not relevant
+  final Vector2 TL = .vec2(  0.0,  90.0); // Top-left corner
+  final Vector2 TR = .vec2( 90.0, 180.0); // Top-right corner
+  final Vector2 BR = .vec2(180.0, 270.0); // Bottom-right corner
+  final Vector2 BL = .vec2(  0.0, 270.0); // Bottom-left corner
+  final Vector2 HH = .vec2(  0.0, 180.0); // Horizontal line
+  final Vector2 VV = .vec2( 90.0, 270.0); // Vertical line
+  final Vector2 ZZ = .vec2(135.0, 135.0); // Not relevant
 
-  List<List<Vector2D>> digitAngles = [
+  List<List<Vector2>> digitAngles = [
     /* 0 */ [ TL,HH,HH,TR, /* */ VV,TL,TR,VV,/* */ VV,VV,VV,VV,/* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
     /* 1 */ [ TL,HH,TR,ZZ, /* */ BL,TR,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ TL,BR,BL,TR,/* */ BL,HH,HH,BR ],
     /* 2 */ [ TL,HH,HH,TR, /* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ BL,HH,HH,BR ],
@@ -46,9 +46,9 @@ void main()
 
   int prevSeconds = -1;
   
-  final List<List<Vector2D>> currentAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
-  final List<List<Vector2D>> srcAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
-  final List<List<Vector2D>> dstAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+  final List<List<Vector2>> currentAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+  final List<List<Vector2>> srcAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+  final List<List<Vector2>> dstAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
 
   double handsMoveTimer = 0.0;
   int hourMode = 24;
@@ -113,7 +113,7 @@ void main()
         {
           for (int col = 0; col < 4; col++)
           {
-            final Vector2D centre = .vec2(
+            final Vector2 centre = .vec2(
               xOffset + col*(clockFaceSize+clockFaceSpacing) + clockFaceSize*0.5,
               100 + row*(clockFaceSize+clockFaceSpacing) + clockFaceSize*0.5
             );

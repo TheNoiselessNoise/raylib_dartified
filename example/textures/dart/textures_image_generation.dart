@@ -8,8 +8,8 @@ const int screenHeight = 450;
 
 class TexInfo {
   final String name;
-  final TextureD tex;
-  final ColorD textColor;
+  final Texture tex;
+  final Color textColor;
 
   TexInfo(this.name, this.tex, this.textColor);
 }

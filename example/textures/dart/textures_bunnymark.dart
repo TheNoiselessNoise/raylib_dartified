@@ -11,9 +11,9 @@ const int MAX_BUNNIES = 50000;
 const int MAX_BATCH_ELEMENTS = 8192;
 
 class Bunny {
-  Vector2D position;
-  Vector2D speed;
-  ColorD color;
+  Vector2 position;
+  Vector2 speed;
+  Color color;
 
   Bunny({
     required this.position,

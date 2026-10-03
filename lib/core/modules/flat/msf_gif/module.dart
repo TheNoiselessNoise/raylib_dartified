@@ -14,7 +14,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   int msf_gif_begin(
-    StructPointer<MsfGifStateD> handle,
+    StructPointer<MsfGifState> handle,
     int width,
     int height,
   ) => _ffi.msf_gif_begin(
@@ -25,7 +25,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   int msf_gif_frame(
-    StructPointer<MsfGifStateD> handle,
+    StructPointer<MsfGifState> handle,
     MemoryPointer<RUint8> pixelData,
     int centiSecondsPerFame,
     int maxBitDepth,
@@ -39,9 +39,9 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
   );
 
   @override
-  MsfGifResultD msf_gif_end(
-    StructPointer<MsfGifStateD> handle,
-  ) => $.MsfGifResult$.RefCapture(
+  MsfGifResult msf_gif_end(
+    StructPointer<MsfGifState> handle,
+  ) => MsfGifResult$.RefCapture(
     RaylibCaptureIds.msf_gif_end,
     (p) => _ffi.msf_gif_end(
       handle.asNativePointer(),
@@ -50,7 +50,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   void msf_gif_free(
-    MsfGifResultD result,
+    MsfGifResult result,
   ) => disposeStructWithOpFreed(result, (ptr) {
     _ffi.msf_gif_free(
       ptr.asNativePointer<MsfGifResultC>().ref,
@@ -59,7 +59,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   int msf_gif_begin_to_file(
-    StructPointer<MsfGifStateD> handle,
+    StructPointer<MsfGifState> handle,
     int width,
     int height,
     MemoryPointer<RFunction> func,
@@ -74,7 +74,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   int msf_gif_frame_to_file(
-    StructPointer<MsfGifStateD> handle,
+    StructPointer<MsfGifState> handle,
     MemoryPointer<RUint8> pixelData,
     int centiSecondsPerFame,
     int maxBitDepth,
@@ -89,7 +89,7 @@ class RaylibMsfGifFlatNative extends RaylibMsfGifFlat<Raylib> {
 
   @override
   int msf_gif_end_to_file(
-    StructPointer<MsfGifStateD> handle,
+    StructPointer<MsfGifState> handle,
   ) => _ffi.msf_gif_end_to_file(
     handle.asNativePointer(),
   );

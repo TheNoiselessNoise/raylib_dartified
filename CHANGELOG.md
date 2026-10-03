@@ -1,3 +1,7 @@
+## 6.0.3
+
+- complements `raylib_dartified_base` version `6.0.3`
+
 ## 6.0.2
 
 - complements `raylib_dartified_base` version `6.0.2`

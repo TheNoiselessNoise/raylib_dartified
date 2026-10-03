@@ -7,23 +7,23 @@ enum MyStructField with StructFields {
 
 class MyStruct extends RaylibStruct<MyStruct> {
 
-  static final StructType<MyStruct> struct = .new(
+  static final StructType<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .inlineStructArray: RArray(RStruct(ColorD.struct), 2),
+      .inlineStructArray: RArray(RStruct(Color.struct), 2),
     }),
   );
 
   static final StructLayout<MyStructField> structLayout = struct.layoutOf();
-  static final field_inlineStructArray = structLayout.structArray<ColorD>(.inlineStructArray);
+  static final field_inlineStructArray = structLayout.structArray<Color>(.inlineStructArray);
 
-  List<ColorD> _inlineStructArray;
-  List<ColorD> get inlineStructArray => _inlineStructArray = field_inlineStructArray.readOr(op?.ptr, _inlineStructArray);
-  set inlineStructArray(List<ColorD> value) => _inlineStructArray = field_inlineStructArray.writeOr(op?.ptr, value);
+  List<Color> _inlineStructArray;
+  List<Color> get inlineStructArray => _inlineStructArray = field_inlineStructArray.readOr(op?.ptr, _inlineStructArray);
+  set inlineStructArray(List<Color> value) => _inlineStructArray = field_inlineStructArray.writeOr(op?.ptr, value);
 
   MyStruct({
     super.op,
-    List<ColorD>? inlineStructArray,
+    List<Color>? inlineStructArray,
   }) : _inlineStructArray = inlineStructArray ?? .generate(field_inlineStructArray.codec.type.count, (_) => .zero());
 
   @override
@@ -48,15 +48,15 @@ void main() {
   tearDown(() => ptr.free());
 
   test("Inline Struct Array - after assignment", () {
-    final List<ColorD> values = [.WHITE, .RED];
+    final List<Color> values = [.WHITE, .RED];
     final struct = MyStruct.struct.ptr(ptr).ref;
     struct.inlineStructArray = values;
     expect(struct.inlineStructArray.toString(), equals(values.toString()));
   });
 
   test("Inline Struct Array - read live data", () {
-    final List<ColorD> values = [.WHITE, .RED];
-    ColorD.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
+    final List<Color> values = [.WHITE, .RED];
+    Color.struct.ptr(ptr.offsetBy(MyStruct.structLayout.offset(.inlineStructArray))).writeArray(values);
     expect(MyStruct.struct.ptr(ptr).ref.inlineStructArray.toString(), equals(values.toString()));
   });
 

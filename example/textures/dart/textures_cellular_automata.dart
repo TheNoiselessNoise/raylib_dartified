@@ -21,7 +21,7 @@ const int presetsSizeY = 22;
 
 const int linesUpdatedPerFrame = 4;
 
-void ComputeLine(ImageD image, int line, int rule)
+void ComputeLine(Image image, int line, int rule)
 {
   for (int i = 1; i < imageWidth - 1; i++)
   {

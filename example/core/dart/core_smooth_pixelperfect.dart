@@ -16,22 +16,22 @@ void main() {
   InitWindow(screenWidth, screenHeight, "core_smooth_pixelperfect");
   SetTargetFPS(60);
 
-  final worldSpaceCamera = Camera2DD();
+  final worldSpaceCamera = Camera2D();
   worldSpaceCamera.zoom = 1.0;
 
-  final screenSpaceCamera = Camera2DD();
+  final screenSpaceCamera = Camera2D();
   screenSpaceCamera.zoom = 1.0;
 
   final target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
 
-  final RectangleD rec01 = .rect(70.0, 35.0, 20.0, 20.0);
-  final RectangleD rec02 = .rect(90.0, 55.0, 30.0, 10.0);
-  final RectangleD rec03 = .rect(80.0, 65.0, 15.0, 25.0);
+  final Rectangle rec01 = .rect(70.0, 35.0, 20.0, 20.0);
+  final Rectangle rec02 = .rect(90.0, 55.0, 30.0, 10.0);
+  final Rectangle rec03 = .rect(80.0, 65.0, 15.0, 25.0);
 
-  final RectangleD sourceRec = .rect(0.0, 0.0, target.texture.width, -target.texture.height);
-  final RectangleD destRec = .rect(-virtualRatio, -virtualRatio, screenWidth + (virtualRatio*2), screenHeight + (virtualRatio*2));
+  final Rectangle sourceRec = .rect(0.0, 0.0, target.texture.width, -target.texture.height);
+  final Rectangle destRec = .rect(-virtualRatio, -virtualRatio, screenWidth + (virtualRatio*2), screenHeight + (virtualRatio*2));
 
-  final Vector2D origin = .vec2(0.0, 0.0);
+  final Vector2 origin = .vec2(0.0, 0.0);
 
   double rotation = 0.0;
 

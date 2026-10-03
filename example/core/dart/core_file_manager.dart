@@ -59,12 +59,12 @@ class TextBoxFocus {
 
 class BetterTextBox {
   final TextBoxFocus focus;
-  RectangleD rect;
+  Rectangle rect;
   String oldText;
   String text;
 
   BetterTextBox(this.focus, {
-    RectangleD? rect,
+    Rectangle? rect,
     this.text = '',
   }) : oldText = text, rect = rect ?? .zero();
 
@@ -79,7 +79,7 @@ class BetterTextBox {
     ) focus.claim(this);
   }
 
-  void draw([RectangleD? newRect]) {
+  void draw([Rectangle? newRect]) {
     _update();
     if (newRect != null) rect = newRect;
     final (_, newText) = GuiTextBox(rect, text, 255, editMode);
@@ -91,21 +91,21 @@ class BetterTextBox {
 // ─── Colors ───────────────────────────────────────────────────────────────────
 
 class Colors {
-  static ColorD RAYWHITE  = .color(245, 245, 245, 255);
-  static ColorD PANEL_BG  = .color(230, 230, 235, 255);
-  static ColorD INFO_BG   = .color(220, 220, 228, 255);
-  static ColorD SELECTED  = .color(100, 149, 237, 180);
-  static ColorD HOVERED   = .color(200, 215, 240, 180);
-  static ColorD DIR_COLOR = .color( 60, 120, 200, 255);
-  static ColorD IMG_COLOR = .color(220, 130,  40, 255);
-  static ColorD BIN_COLOR = .color(180,  60,  60, 255);
-  static ColorD TXT_COLOR = .color( 80,  80,  80, 255);
-  static ColorD SHD_COLOR = .color(150, 120, 220, 255);
-  static ColorD DEF_COLOR = .color(120, 120, 120, 255);
-  static ColorD CRUMB_ACT = .color( 40,  90, 180, 255);
-  static ColorD CRUMB_SEP = .color(150, 150, 150, 255);
-  static ColorD SORT_HDR  = .color(210, 210, 218, 255);
-  static ColorD SORT_ACT  = .color(100, 149, 237, 255);
+  static Color RAYWHITE  = .color(245, 245, 245, 255);
+  static Color PANEL_BG  = .color(230, 230, 235, 255);
+  static Color INFO_BG   = .color(220, 220, 228, 255);
+  static Color SELECTED  = .color(100, 149, 237, 180);
+  static Color HOVERED   = .color(200, 215, 240, 180);
+  static Color DIR_COLOR = .color( 60, 120, 200, 255);
+  static Color IMG_COLOR = .color(220, 130,  40, 255);
+  static Color BIN_COLOR = .color(180,  60,  60, 255);
+  static Color TXT_COLOR = .color( 80,  80,  80, 255);
+  static Color SHD_COLOR = .color(150, 120, 220, 255);
+  static Color DEF_COLOR = .color(120, 120, 120, 255);
+  static Color CRUMB_ACT = .color( 40,  90, 180, 255);
+  static Color CRUMB_SEP = .color(150, 150, 150, 255);
+  static Color SORT_HDR  = .color(210, 210, 218, 255);
+  static Color SORT_ACT  = .color(100, 149, 237, 255);
 }
 
 // ─── File info ────────────────────────────────────────────────────────────────
@@ -137,7 +137,7 @@ class FileEntry {
     '${modified.month.toString().padLeft(2,"0")}-'
     '${modified.day.toString().padLeft(2,"0")}';
 
-  ColorD get color {
+  Color get color {
     if (isDir) return Colors.DIR_COLOR;
     if (IMAGE_EXTS.contains(ext)) return Colors.IMG_COLOR;
     if (BIN_EXTS.contains(ext)) return Colors.BIN_COLOR;
@@ -256,10 +256,10 @@ void main() {
   int listW = screenWidth - PANEL_WIDTH;
   int listH = screenHeight - listTop;
 
-  final Map<String, ImageD> cachedImages = {};
-  final Map<String, TextureD> cachedTextures = {};
+  final Map<String, Image> cachedImages = {};
+  final Map<String, Texture> cachedTextures = {};
 
-  ImageD getImageFromFile(String path, int width, int height) {
+  Image getImageFromFile(String path, int width, int height) {
     if (cachedImages.containsKey(path)) return cachedImages[path]!;
     final image = LoadImage(path);
     ImageResize(image, width, height);
@@ -267,7 +267,7 @@ void main() {
     return image;
   }
 
-  TextureD getTextureFromFile(String path, int width, int height) {
+  Texture getTextureFromFile(String path, int width, int height) {
     if (cachedTextures.containsKey(path)) return cachedTextures[path]!;
     final image = getImageFromFile(path, width, height);
     final texture = LoadTextureFromImage(image);
@@ -405,7 +405,7 @@ void main() {
 
       for (int i = scrollOffset; i < visibleEntries.length && i < scrollOffset + maxVisible + 1; i++) {
         final entry = visibleEntries[i];
-        final RectangleD row = .rect(listLeft, drawY, listW, ITEM_HEIGHT);
+        final Rectangle row = .rect(listLeft, drawY, listW, ITEM_HEIGHT);
         final mouse = GetMousePosition();
         final hovered = CheckCollisionPointRec(mouse, row);
 
