@@ -7,7 +7,7 @@ const int screenHeight = 450;
 class MyModule extends RaylibModule<Raylib> {
   MyModule(super.rl);
 
-  Color background = RAYWHITE;
+  Color background = .RAYWHITE;
   Vector2 position = .zero();
 
   void Update() {
@@ -34,15 +34,13 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => Raylib.instance.module();
-
 void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
   
-  registerModule(MyModule(rl));
+  final myModule = registerModule(MyModule(rl));
 
-  Temp.debugFree(true);
+  MemoryTemp.instance.debugFree(true);
   // NOTE: with `debugFree` enabled you should see output at the exit:
   // Freeing user-defined 1 Color slots
   // [FREE] ColorD_struct_1

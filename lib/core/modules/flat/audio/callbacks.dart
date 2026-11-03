@@ -7,8 +7,8 @@ typedef _AudioCallbackFunction = void Function(
   int frames,
 );
 
-abstract class AudioCallbackD extends AudioCallbackBase {
-  AudioCallbackD([super.name]);
+abstract class AudioCallback extends AudioCallbackBase {
+  AudioCallback([super.name]);
 
   /// The actual trampoline.
   _AudioCallbackFunction get _rawFunction =>
@@ -32,13 +32,13 @@ abstract class AudioCallbackD extends AudioCallbackBase {
     super.dispose();
   }
 
-  factory AudioCallbackD.function(AudioCallbackFunction f, {String? name})
-    => _AudioCallbackD(f, name: name);
+  factory AudioCallback.function(AudioCallbackFunction f, {String? name})
+    => _AudioCallback(f, name: name);
 }
 
-class _AudioCallbackD extends AudioCallbackD {
+class _AudioCallback extends AudioCallback {
   final AudioCallbackFunction _f;
-  _AudioCallbackD(this._f, {String? name}) : super(name);
+  _AudioCallback(this._f, {String? name}) : super(name);
 
   @override
   AudioCallbackFunction get function => _f;

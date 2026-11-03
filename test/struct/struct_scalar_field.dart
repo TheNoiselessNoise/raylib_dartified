@@ -31,17 +31,20 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _scalarField = field_scalarField.read(p);
+    scalarField = field_scalarField.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_scalarField.write(p, _scalarField);
+    field_scalarField.write(p, scalarField);
   }
 }
 
 void main() {
-  setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
+  setUpAll(() {
+    findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
+    StructTypes.register(MyStruct.struct);
+  });
 
   late MemoryPointer<RStruct> ptr;
   setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));

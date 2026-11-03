@@ -5,6 +5,7 @@
 
 // WARNING: This example uses GPU skinning.
 // It requires raylib to be built with `SUPPORT_GPU_SKINNING=1` (NOT the raylib default).
+// And [RaylibConfig.SUPPORT_GPU_SKINNING] to be set to `true` before loading Raylib.
 import '../../base_dart.dart';
 
 const int GLSL_VERSION = 330;

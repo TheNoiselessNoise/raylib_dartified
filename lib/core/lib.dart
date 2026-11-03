@@ -22,7 +22,10 @@ class RaylibExternalLibs {
   }
 }
 
-NativeMemoryPointer<Y> _nativeFromAddress<Y extends RType>(int address) => .new(.fromAddress(address));
+NativeMemoryPointer<R> _nativeFactory<R extends RType>(MemoryPointer src)
+  => .new((src as NativeMemoryPointer)._ptr);
+
+NativeMemoryPointer<R> _nativeFromAddress<R extends RType>(int address) => .new(.fromAddress(address));
 
 NativeMemoryPointer<RVoid> _nativeFromBytes<T extends TypedDataList>(T data) {
   final byteLength = data.buffer.lengthInBytes - data.offsetInBytes;
@@ -32,25 +35,26 @@ NativeMemoryPointer<RVoid> _nativeFromBytes<T extends TypedDataList>(T data) {
   return .new(ptr.cast());
 }
 
-NativeMemoryPointer<Y> _nativeNullptrFactory<Y extends RType>() => .new(nullptr);
+NativeMemoryPointer<R> _nativeNullptrFactory<R extends RType>() => .new(nullptr);
 
 NativeMemoryPointer<RUint8> _nativeFromString(String text, [int? bufferSize]) {
   final bytes = utf8.encode(text);
   final len = bytes.length + 1;
   final bufSize = bufferSize != null ? (bufferSize > len ? bufferSize : len) : len;
-  final ptr = calloc<Uint8>(bufSize);
+  final ptr = ffi.calloc<Uint8>(bufSize);
   ptr.asTypedList(bufSize).setRange(0, bytes.length, bytes);
   return .new(ptr);
 }
 
-NativeMemoryPointer<Y> _nativeMalloc<Y extends RType>(int size)
+NativeMemoryPointer<R> _nativeMalloc<R extends RType>(int size)
   => .new(ffi.malloc.allocate(size));
 
-NativeMemoryPointer<Y> _nativeCalloc<Y extends RType>(int nmemb, int size)
+NativeMemoryPointer<R> _nativeCalloc<R extends RType>(int nmemb, int size)
   => .new(ffi.calloc.allocate(nmemb * size));
 
 void bootMemoryBackend() {
   RType.nativeWordSize = sizeOf<IntPtr>();
+  MemoryPointer.factory = _nativeFactory;
   MemoryPointer.fromAddress = _nativeFromAddress;
   MemoryPointer.fromBytes = _nativeFromBytes;
   MemoryPointer.fromString = _nativeFromString;

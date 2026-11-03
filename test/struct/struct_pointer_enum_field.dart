@@ -36,38 +36,33 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerEnumField = field_pointerEnumField.readSafe(p, _pointerEnumField);
+    pointerEnumField = field_pointerEnumField.readSafe(p, pointerEnumField);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_pointerEnumField.writeSafe(p, _pointerEnumField);
+    field_pointerEnumField.writeSafe(p, pointerEnumField);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("Pointer Enum - after assignment", () {
     final value = KeyboardKey.KEY_DELETE; // 261
-    final struct = myStructAlloc.Allocate(.new()).ref;
+
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerEnumField = value;
     expect(struct.pointerEnumField, equals(value));
   });
 
   test("Pointer Enum - read live data", () {
     final value = KeyboardKey.KEY_DELETE;
-    final struct = myStructAlloc.Allocate(.new()).ref;
+
+    final struct = structAllocator<MyStruct>().$new;
     struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerEnumField)).readPtr().writeInt(value.value);
     expect(struct.pointerEnumField, value);
   });

@@ -10,11 +10,10 @@ void main()
 
   InitWindow(screenWidth, screenHeight, 'custom_tracelog_callback'.toC);
 
-  final TraceLogCallbackD traceLogCallback = .function((logLevel, text, args) {
-      // args intentionally unused - see LIMITATIONS.md
-      print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toDartString()}');
-    }
-  );
+  final TraceLogCallback traceLogCallback = .function((logLevel, text, args) {
+    // args intentionally unused - see LIMITATIONS.md
+    print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toDartString()}');
+  });
   SetTraceLogCallback(traceLogCallback.nativeFunction);
 
   TraceLog(TraceLogLevel.LOG_INFO.value, "Hello".toC);

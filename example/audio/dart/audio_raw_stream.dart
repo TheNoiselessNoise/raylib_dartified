@@ -28,7 +28,7 @@ void main() async {
 
   final stream = LoadAudioStream(44100, 16, 1);
 
-  SetAudioStreamCallback(stream, AudioCallbackD.function((buffer, frames) {
+  SetAudioStreamCallback(stream, AudioCallback.function((buffer, frames) {
     audioFrequency = frequency + (audioFrequency - frequency)*0.95;
 
     final incr = audioFrequency/44100.0;

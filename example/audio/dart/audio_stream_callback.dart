@@ -24,7 +24,7 @@ int newWaveFrequency = 440;
 int waveIndex = 0;
 
 Float32List buffer = .new(SAMPLE_RATE);
-List<AudioCallbackD> waveCallbacks = [
+List<AudioCallback> waveCallbacks = [
   .function(SineCallback),
   .function(SquareCallback),
   .function(TriangleCallback),

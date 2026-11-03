@@ -22,7 +22,7 @@ void main() {
 
   test("readMatrix (direct)", () {
     // `materialize` is required
-    final extracted = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false, materialize: true);
+    final extracted = ptr.readMatrix<Color>(colorMatrix.length, N, materialize: true);
     expect(extracted.toString(), colorMatrix.toString());
   });
 
@@ -32,7 +32,7 @@ void main() {
     final expectedValue = 42;
     
     // read the matrix and change a color
-    final ownedMatrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: true);
+    final ownedMatrix = ptr.readMatrix<Color>(colorMatrix.length, N);
     final someColor = ownedMatrix[pListIndex][pColorIndex];
     // should reflect to underlying memory
     someColor.r = expectedValue;
@@ -45,7 +45,7 @@ void main() {
       .offsetBy(pColorIndex * Color.struct.byteSize);
 
     // test the values on dart-side detached synced object 
-    final ref = Color.struct.ptr(colorPtr).detached;
+    final ref = Color.struct.ptr(colorPtr).value;
     expect(ref.r, equals(expectedValue));
     expect(ref.g, equals(expectedValue));
     expect(ref.b, equals(expectedValue));
@@ -56,13 +56,11 @@ void main() {
     final pColorIndex = 1;
     final expectedValue = 99;
 
-    final matrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: true);
-    // we want to update the underlying memory, that's why we need to set `owned: true`
+    final matrix = ptr.readMatrix<Color>(colorMatrix.length, N);
     matrix[pListIndex][pColorIndex].r = expectedValue;
     ptr.writeMatrix(matrix);
 
-    // here, we can either use `owned: true` or (`owned: false` but with `materialize: true`)
-    final newMatrix = ptr.readMatrix<Color>(colorMatrix.length, N, owned: false, materialize: true);
+    final newMatrix = ptr.readMatrix<Color>(colorMatrix.length, N, materialize: true);
     expect(newMatrix[pListIndex][pColorIndex].r, equals(expectedValue));
   });
   

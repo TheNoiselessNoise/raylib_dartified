@@ -8,9 +8,8 @@ part of '../../../raylib_dartified.dart';
 class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Raylib> {
   final List<Pointer<LightC>> _lights = [];
 
-  final Pointer<Int8> _lightInt8ValuePtr = calloc<Int8>();
-  final Pointer<Float> _lightFloat3ValuePtr = calloc<Float>(3);
-  final Pointer<Float> _lightFloat4ValuePtr = calloc<Float>(4);
+  final Pointer<Int8> _int8Ptr = ffi.calloc<Int8>();
+  final Pointer<Float> _float4Ptr = ffi.calloc<Float>(4);
   
   RaylibLight(super.rl);
 
@@ -20,10 +19,9 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
   @DoNotAbbreviate()
   void dispose() {
     super.dispose();
-    _lights.forEach(calloc.free);
-    calloc.free(_lightInt8ValuePtr);
-    calloc.free(_lightFloat3ValuePtr);
-    calloc.free(_lightFloat4ValuePtr);
+    _lights.forEach(ffi.calloc.free);
+    ffi.calloc.free(_int8Ptr);
+    ffi.calloc.free(_float4Ptr);
   }
 
   /// Create a light and get its shader locations
@@ -34,7 +32,7 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     ColorC color,
     ShaderC shader,
   ) {
-    final light = calloc<LightC>();
+    final light = ffi.calloc<LightC>();
     light.ref.enabled = true;
     light.ref.type = type;
     light.ref.position = position;
@@ -42,21 +40,11 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
     light.ref.color = color;
 
     int index = _lights.length;
-    light.ref.enabledLoc = _coreFfi.GetShaderLocation(
-      shader, String$.Value("lights[$index].enabled").asNativePointer(),
-    );
-    light.ref.typeLoc = _coreFfi.GetShaderLocation(
-      shader, String$.Value("lights[$index].type").asNativePointer(),
-    );
-    light.ref.positionLoc = _coreFfi.GetShaderLocation(
-      shader, String$.Value("lights[$index].position").asNativePointer(),
-    );
-    light.ref.targetLoc = _coreFfi.GetShaderLocation(
-      shader, String$.Value("lights[$index].target").asNativePointer(),
-    );
-    light.ref.colorLoc = _coreFfi.GetShaderLocation(
-      shader, String$.Value("lights[$index].color").asNativePointer(),
-    );
+    light.ref.enabledLoc = _coreFfi.GetShaderLocation(shader, String$.Value("lights[$index].enabled").asNativePointer());
+    light.ref.typeLoc = _coreFfi.GetShaderLocation(shader, String$.Value("lights[$index].type").asNativePointer());
+    light.ref.positionLoc = _coreFfi.GetShaderLocation(shader, String$.Value("lights[$index].position").asNativePointer());
+    light.ref.targetLoc = _coreFfi.GetShaderLocation(shader, String$.Value("lights[$index].target").asNativePointer());
+    light.ref.colorLoc = _coreFfi.GetShaderLocation(shader, String$.Value("lights[$index].color").asNativePointer());
 
     UpdateLightValues(shader, light.ref);
 
@@ -67,51 +55,26 @@ class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Rayl
 
   /// Send light properties to shader
   void UpdateLightValues(ShaderC shader, LightC light) {
-    _lightInt8ValuePtr.value = light.enabled.toInt();
-    _coreFfi.SetShaderValue(
-      shader,
-      light.enabledLoc,
-      _lightInt8ValuePtr.cast(),
-      ShaderUniformDataType.SHADER_UNIFORM_INT.value
-    );
+    _int8Ptr.value = light.enabled.toInt();
+    _coreFfi.SetShaderValue(shader, light.enabledLoc, _int8Ptr.cast(), ShaderUniformDataType.SHADER_UNIFORM_INT.value);
 
-    _lightInt8ValuePtr.value = light.type;
-    _coreFfi.SetShaderValue(
-      shader,
-      light.typeLoc,
-      _lightInt8ValuePtr.cast(),
-      ShaderUniformDataType.SHADER_UNIFORM_INT.value
-    );
+    _int8Ptr.value = light.type;
+    _coreFfi.SetShaderValue(shader, light.typeLoc, _int8Ptr.cast(), ShaderUniformDataType.SHADER_UNIFORM_INT.value);
 
-    _lightFloat3ValuePtr[0] = light.position.x;
-    _lightFloat3ValuePtr[1] = light.position.y;
-    _lightFloat3ValuePtr[2] = light.position.z;
-    _coreFfi.SetShaderValue(
-      shader,
-      light.positionLoc,
-      _lightFloat3ValuePtr.cast(),
-      ShaderUniformDataType.SHADER_UNIFORM_VEC3.value
-    );
+    _float4Ptr[0] = light.position.x;
+    _float4Ptr[1] = light.position.y;
+    _float4Ptr[2] = light.position.z;
+    _coreFfi.SetShaderValue(shader, light.positionLoc, _float4Ptr.cast(), ShaderUniformDataType.SHADER_UNIFORM_VEC3.value);
 
-    _lightFloat3ValuePtr[0] = light.target.x;
-    _lightFloat3ValuePtr[1] = light.target.y;
-    _lightFloat3ValuePtr[2] = light.target.z;
-    _coreFfi.SetShaderValue(
-      shader,
-      light.targetLoc,
-      _lightFloat3ValuePtr.cast(),
-      ShaderUniformDataType.SHADER_UNIFORM_VEC3.value
-    );
+    _float4Ptr[0] = light.target.x;
+    _float4Ptr[1] = light.target.y;
+    _float4Ptr[2] = light.target.z;
+    _coreFfi.SetShaderValue(shader, light.targetLoc, _float4Ptr.cast(), ShaderUniformDataType.SHADER_UNIFORM_VEC3.value);
 
-    _lightFloat4ValuePtr[0] = light.color.r / 255;
-    _lightFloat4ValuePtr[1] = light.color.g / 255;
-    _lightFloat4ValuePtr[2] = light.color.b / 255;
-    _lightFloat4ValuePtr[3] = light.color.a / 255;
-    _coreFfi.SetShaderValue(
-      shader,
-      light.colorLoc,
-      _lightFloat4ValuePtr.cast(),
-      ShaderUniformDataType.SHADER_UNIFORM_VEC4.value
-    );
+    _float4Ptr[0] = light.color.r / 255;
+    _float4Ptr[1] = light.color.g / 255;
+    _float4Ptr[2] = light.color.b / 255;
+    _float4Ptr[3] = light.color.a / 255;
+    _coreFfi.SetShaderValue(shader, light.colorLoc, _float4Ptr.cast(), ShaderUniformDataType.SHADER_UNIFORM_VEC4.value);
   }
 }

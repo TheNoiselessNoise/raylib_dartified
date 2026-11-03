@@ -8,6 +8,7 @@ const int screenHeight = 450;
 
 void main() {
   findRaylib('raylib-6.0_linux_amd64/lib');
+  rl.debugEverything(true);
 
   InitWindow(screenWidth, screenHeight, "core_directory_files");
   SetTargetFPS(60);

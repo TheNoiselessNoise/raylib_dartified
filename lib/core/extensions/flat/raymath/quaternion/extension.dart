@@ -9,7 +9,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionAdd(
     Quaternion q1,
     Quaternion q2,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionAdd(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -20,7 +20,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionAddValue(
     Quaternion q,
     double add,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionAddValue(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
       add,
@@ -31,7 +31,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionSubtract(
     Quaternion q1,
     Quaternion q2,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionSubtract(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -42,7 +42,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionSubtractValue(
     Quaternion q,
     double sub,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionSubtractValue(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
       sub,
@@ -50,7 +50,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   );
 
   @override
-  Quaternion QuaternionIdentity() => Quaternion$.Extract1(
+  Quaternion QuaternionIdentity() => Quaternion$.Extract(
     (p) => _ffi.QuaternionIdentity().toDart(p.asNativePointer()),
   );
 
@@ -64,7 +64,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   @override
   Quaternion QuaternionNormalize(
     Quaternion q,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionNormalize(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
     ).toDart(p.asNativePointer()),
@@ -73,7 +73,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   @override
   Quaternion QuaternionInvert(
     Quaternion q,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionInvert(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
     ).toDart(p.asNativePointer()),
@@ -83,7 +83,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionMultiply(
     Quaternion q1,
     Quaternion q2,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionMultiply(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -94,7 +94,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionScale(
     Quaternion q,
     double mul,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionScale(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
       mul,
@@ -105,7 +105,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionDivide(
     Quaternion q1,
     Quaternion q2,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionDivide(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -117,7 +117,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
     Quaternion q1,
     Quaternion q2,
     double amount,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionLerp(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -130,7 +130,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
     Quaternion q1,
     Quaternion q2,
     double amount,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionNlerp(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -143,7 +143,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
     Quaternion q1,
     Quaternion q2,
     double amount,
-  ) => Quaternion$.Extract3(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionSlerp(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(q2).asNativePointer<QuaternionC>().ref,
@@ -158,7 +158,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
     Quaternion q2,
     Quaternion inTangent2,
     double t,
-  ) => Quaternion$.Extract5(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionCubicHermiteSpline(
       Quaternion$.Ref1(q1).asNativePointer<QuaternionC>().ref,
       Quaternion$.Ref2(outTangent1).asNativePointer<QuaternionC>().ref,
@@ -172,7 +172,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionFromVector3ToVector3(
     Vector3 from,
     Vector3 to,
-  ) => Quaternion$.Extract1(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionFromVector3ToVector3(
       Vector3$.Ref1(from).asNativePointer<Vector3C>().ref,
       Vector3$.Ref2(to).asNativePointer<Vector3C>().ref,
@@ -182,7 +182,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   @override
   Quaternion QuaternionFromMatrix(
     Matrix mat,
-  ) => Quaternion$.Extract1(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionFromMatrix(
       Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,
     ).toDart(p.asNativePointer()),
@@ -191,7 +191,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   @override
   Matrix QuaternionToMatrix(
     Quaternion q,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.QuaternionToMatrix(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
     ).toDart(p.asNativePointer()),
@@ -201,7 +201,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionFromAxisAngle(
     Vector3 axis,
     double angle,
-  ) => Quaternion$.Extract1(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionFromAxisAngle(
       Vector3$.Ref1(axis).asNativePointer<Vector3C>().ref,
       angle,
@@ -224,7 +224,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
     double pitch,
     double yaw,
     double roll,
-  ) => Quaternion$.Extract1(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionFromEuler(
       pitch,
       yaw,
@@ -235,7 +235,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   @override
   Vector3 QuaternionToEuler(
     Quaternion q,
-  ) => Vector3$.Extract1(
+  ) => Vector3$.Extract(
     (p) => _ffi.QuaternionToEuler(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
     ).toDart(p.asNativePointer()),
@@ -245,7 +245,7 @@ class RaylibQuaternionExtFlatNative extends RaylibQuaternionFlatExt<Raylib> {
   Quaternion QuaternionTransform(
     Quaternion q,
     Matrix mat,
-  ) => Quaternion$.Extract2(
+  ) => Quaternion$.Extract(
     (p) => _ffi.QuaternionTransform(
       Quaternion$.Ref1(q).asNativePointer<QuaternionC>().ref,
       Matrix$.Ref1(mat).asNativePointer<MatrixC>().ref,

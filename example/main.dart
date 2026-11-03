@@ -14,13 +14,10 @@ void main() {
     BeginDrawing();
 
       ClearBackground(.BLACK);
-
       final mouse = GetMousePosition();
-
       final text = '$mouse'; // Vector2(x: <x>, y: <y>)
       final textWidth = MeasureText(text, 32);
       DrawText(text, width / 2 - (textWidth / 2), height / 2, 32, .WHITE);
-
       DrawCircleV(mouse, 32, Fade(.RED, .5));
 
     EndDrawing();

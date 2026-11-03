@@ -180,7 +180,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Vector2 GetMonitorPosition(
     int monitor,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetMonitorPosition(
       monitor,
     ).toDart(p.asNativePointer()),
@@ -222,12 +222,12 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   );
 
   @override
-  Vector2 GetWindowPosition() => Vector2$.Extract1(
+  Vector2 GetWindowPosition() => Vector2$.Extract(
     (p) => _ffi.GetWindowPosition().toDart(p.asNativePointer()),
   );
 
   @override
-  Vector2 GetWindowScaleDPI() => Vector2$.Extract1(
+  Vector2 GetWindowScaleDPI() => Vector2$.Extract(
     (p) => _ffi.GetWindowScaleDPI().toDart(p.asNativePointer()),
   );
 
@@ -485,7 +485,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Ray GetScreenToWorldRay(
     Vector2 position,
     Camera3D camera,
-  ) => Ray$.Extract1(
+  ) => Ray$.Extract(
     (p) => _ffi.GetScreenToWorldRay(
       Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
       Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
@@ -498,7 +498,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Camera3D camera,
     int width,
     int height,
-  ) => Ray$.Extract1(
+  ) => Ray$.Extract(
     (p) => _ffi.GetScreenToWorldRayEx(
       Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
       Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
@@ -511,7 +511,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Vector2 GetWorldToScreen(
     Vector3 position,
     Camera3D camera,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetWorldToScreen(
       Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
       Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
@@ -524,7 +524,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Camera3D camera,
     int width,
     int height,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetWorldToScreenEx(
       Vector3$.Ref1(position).asNativePointer<Vector3C>().ref,
       Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
@@ -537,7 +537,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Vector2 GetWorldToScreen2D(
     Vector2 position,
     Camera2D camera,
-  ) => Vector2$.Extract2(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetWorldToScreen2D(
       Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
       Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
@@ -548,7 +548,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Vector2 GetScreenToWorld2D(
     Vector2 position,
     Camera2D camera,
-  ) => Vector2$.Extract2(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetScreenToWorld2D(
       Vector2$.Ref1(position).asNativePointer<Vector2C>().ref,
       Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
@@ -558,7 +558,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Matrix GetCameraMatrix(
     Camera3D camera,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.GetCameraMatrix(
       Camera3D$.Ref1(camera).asNativePointer<Camera3DC>().ref,
     ).toDart(p.asNativePointer()),
@@ -567,7 +567,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Matrix GetCameraMatrix2D(
     Camera2D camera,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.GetCameraMatrix2D(
       Camera2D$.Ref1(camera).asNativePointer<Camera2DC>().ref,
     ).toDart(p.asNativePointer()),
@@ -1311,12 +1311,12 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   int GetMouseY() => _ffi.GetMouseY();
 
   @override
-  Vector2 GetMousePosition() => Vector2$.Extract1(
+  Vector2 GetMousePosition() => Vector2$.Extract(
     (p) => _ffi.GetMousePosition().toDart(p.asNativePointer()),
   );
 
   @override
-  Vector2 GetMouseDelta() => Vector2$.Extract1(
+  Vector2 GetMouseDelta() => Vector2$.Extract(
     (p) => _ffi.GetMouseDelta().toDart(p.asNativePointer()),
   );
 
@@ -1351,7 +1351,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   double GetMouseWheelMove() => _ffi.GetMouseWheelMove();
 
   @override
-  Vector2 GetMouseWheelMoveV() => Vector2$.Extract1(
+  Vector2 GetMouseWheelMoveV() => Vector2$.Extract(
     (p) => _ffi.GetMouseWheelMoveV().toDart(p.asNativePointer()),
   );
 
@@ -1371,7 +1371,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Vector2 GetTouchPosition(
     int index,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetTouchPosition(
       index,
     ).toDart(p.asNativePointer()),
@@ -1408,7 +1408,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   double GetGestureHoldDuration() => _ffi.GetGestureHoldDuration();
 
   @override
-  Vector2 GetGestureDragVector() => Vector2$.Extract1(
+  Vector2 GetGestureDragVector() => Vector2$.Extract(
     (p) => _ffi.GetGestureDragVector().toDart(p.asNativePointer()),
   );
 
@@ -1416,7 +1416,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   double GetGestureDragAngle() => _ffi.GetGestureDragAngle();
 
   @override
-  Vector2 GetGesturePinchVector() => Vector2$.Extract1(
+  Vector2 GetGesturePinchVector() => Vector2$.Extract(
     (p) => _ffi.GetGesturePinchVector().toDart(p.asNativePointer()),
   );
 
@@ -1465,12 +1465,12 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   );
 
   @override
-  Texture GetShapesTexture() => Texture$.Extract1(
+  Texture GetShapesTexture() => Texture$.Extract(
     (p) => _ffi.GetShapesTexture().toDart(p.asNativePointer()),
   );
 
   @override
-  Rectangle GetShapesTextureRectangle() => Rectangle$.Extract1(
+  Rectangle GetShapesTextureRectangle() => Rectangle$.Extract(
     (p) => _ffi.GetShapesTextureRectangle().toDart(p.asNativePointer()),
   );
 
@@ -2169,7 +2169,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector2 startPos,
     Vector2 endPos,
     double t,
-  ) => Vector2$.Extract3(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetSplinePointLinear(
       Vector2$.Ref1(startPos).asNativePointer<Vector2C>().ref,
       Vector2$.Ref2(endPos).asNativePointer<Vector2C>().ref,
@@ -2184,7 +2184,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector2 p3,
     Vector2 p4,
     double t,
-  ) => Vector2$.Extract5(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetSplinePointBasis(
       Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
       Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
@@ -2201,7 +2201,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector2 p3,
     Vector2 p4,
     double t,
-  ) => Vector2$.Extract5(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetSplinePointCatmullRom(
       Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
       Vector2$.Ref2(p2).asNativePointer<Vector2C>().ref,
@@ -2217,7 +2217,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector2 c2,
     Vector2 p3,
     double t,
-  ) => Vector2$.Extract4(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetSplinePointBezierQuad(
       Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
       Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
@@ -2233,7 +2233,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector2 c3,
     Vector2 p4,
     double t,
-  ) => Vector2$.Extract5(
+  ) => Vector2$.Extract(
     (p) => _ffi.GetSplinePointBezierCubic(
       Vector2$.Ref1(p1).asNativePointer<Vector2C>().ref,
       Vector2$.Ref2(c2).asNativePointer<Vector2C>().ref,
@@ -2365,7 +2365,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Rectangle GetCollisionRec(
     Rectangle rec1,
     Rectangle rec2,
-  ) => Rectangle$.Extract3(
+  ) => Rectangle$.Extract(
     (p) => _ffi.GetCollisionRec(
       Rectangle$.Ref1(rec1).asNativePointer<RectangleC>().ref,
       Rectangle$.Ref2(rec2).asNativePointer<RectangleC>().ref,
@@ -2984,7 +2984,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Rectangle GetImageAlphaBorder(
     Image image,
     double threshold,
-  ) => Rectangle$.Extract1(
+  ) => Rectangle$.Extract(
     (p) => _ffi.GetImageAlphaBorder(
       Image$.Ref1(image).asNativePointer<ImageC>().ref,
       threshold,
@@ -2996,7 +2996,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Image image,
     int x,
     int y,
-  ) => Color$.Extract1(
+  ) => Color$.Extract(
     (p) => _ffi.GetImageColor(
       Image$.Ref1(image).asNativePointer<ImageC>().ref,
       x,
@@ -3534,7 +3534,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color Fade(
     Color color,
     double alpha,
-  ) => Color$.Extract2(
+  ) => Color$.Extract(
     (p) => _ffi.Fade(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
       alpha,
@@ -3551,7 +3551,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Vector4 ColorNormalize(
     Color color,
-  ) => Vector4$.Extract1(
+  ) => Vector4$.Extract(
     (p) => _ffi.ColorNormalize(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
@@ -3560,7 +3560,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Color ColorFromNormalized(
     Vector4 normalized,
-  ) => Color$.Extract1(
+  ) => Color$.Extract(
     (p) => _ffi.ColorFromNormalized(
       Vector4$.Ref1(normalized).asNativePointer<Vector4C>().ref,
     ).toDart(p.asNativePointer()),
@@ -3569,7 +3569,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Vector3 ColorToHSV(
     Color color,
-  ) => Vector3$.Extract1(
+  ) => Vector3$.Extract(
     (p) => _ffi.ColorToHSV(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
     ).toDart(p.asNativePointer()),
@@ -3580,7 +3580,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     double hue,
     double saturation,
     double value,
-  ) => Color$.Extract1(
+  ) => Color$.Extract(
     (p) => _ffi.ColorFromHSV(
       hue,
       saturation,
@@ -3592,7 +3592,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color ColorTint(
     Color color,
     Color tint,
-  ) => Color$.Extract3(
+  ) => Color$.Extract(
     (p) => _ffi.ColorTint(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
       Color$.Ref2(tint).asNativePointer<ColorC>().ref,
@@ -3603,7 +3603,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color ColorBrightness(
     Color color,
     double factor,
-  ) => Color$.Extract2(
+  ) => Color$.Extract(
     (p) => _ffi.ColorBrightness(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
       factor,
@@ -3614,7 +3614,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color ColorContrast(
     Color color,
     double contrast,
-  ) => Color$.Extract2(
+  ) => Color$.Extract(
     (p) => _ffi.ColorContrast(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
       contrast,
@@ -3625,7 +3625,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color ColorAlpha(
     Color color,
     double alpha,
-  ) => Color$.Extract2(
+  ) => Color$.Extract(
     (p) => _ffi.ColorAlpha(
       Color$.Ref1(color).asNativePointer<ColorC>().ref,
       alpha,
@@ -3637,7 +3637,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Color dst,
     Color src,
     Color tint,
-  ) => Color$.Extract4(
+  ) => Color$.Extract(
     (p) => _ffi.ColorAlphaBlend(
       Color$.Ref1(dst).asNativePointer<ColorC>().ref,
       Color$.Ref2(src).asNativePointer<ColorC>().ref,
@@ -3650,7 +3650,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Color color1,
     Color color2,
     double factor,
-  ) => Color$.Extract3(
+  ) => Color$.Extract(
     (p) => _ffi.ColorLerp(
       Color$.Ref1(color1).asNativePointer<ColorC>().ref,
       Color$.Ref2(color2).asNativePointer<ColorC>().ref,
@@ -3661,7 +3661,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Color GetColor(
     int hexValue,
-  ) => Color$.Extract1(
+  ) => Color$.Extract(
     (p) => _ffi.GetColor(
       hexValue,
     ).toDart(p.asNativePointer()),
@@ -3671,7 +3671,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Color GetPixelColor(
     MemoryPointer<RVoid> srcPtr,
     int format,
-  ) => Color$.Extract1(
+  ) => Color$.Extract(
     (p) => _ffi.GetPixelColor(
       srcPtr.asNativePointer(),
       format,
@@ -3701,7 +3701,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   );
 
   @override
-  Font GetFontDefault() => Font$.RefCaptureCached(
+  Font GetFontDefault() => Font$.RefCached(
     RaylibCaptureIds.GetFontDefault,
     (p) => _ffi.GetFontDefault().toDart(p.asNativePointer()),
   );
@@ -3955,7 +3955,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     MemoryPointer<RChar> text,
     double fontSize,
     double spacing,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.MeasureTextEx(
       Font$.Ref1(font).asNativePointer<FontC>().ref,
       text.asNativePointer(),
@@ -3971,7 +3971,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     int length,
     double fontSize,
     double spacing,
-  ) => Vector2$.Extract1(
+  ) => Vector2$.Extract(
     (p) => _ffi.MeasureTextCodepoints(
       Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoints.asNativePointer(),
@@ -3994,7 +3994,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   GlyphInfo GetGlyphInfo(
     Font font,
     int codepoint,
-  ) => GlyphInfo$.Extract1(
+  ) => GlyphInfo$.Extract(
     (p) => _ffi.GetGlyphInfo(
       Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoint,
@@ -4005,7 +4005,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   Rectangle GetGlyphAtlasRec(
     Font font,
     int codepoint,
-  ) => Rectangle$.Extract1(
+  ) => Rectangle$.Extract(
     (p) => _ffi.GetGlyphAtlasRec(
       Font$.Ref1(font).asNativePointer<FontC>().ref,
       codepoint,
@@ -4640,7 +4640,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   BoundingBox GetModelBoundingBox(
     Model model,
-  ) => BoundingBox$.Extract1(
+  ) => BoundingBox$.Extract(
     (p) => _ffi.GetModelBoundingBox(
       Model$.Ref1(model).asNativePointer<ModelC>().ref,
     ).toDart(p.asNativePointer()),
@@ -4834,7 +4834,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   BoundingBox GetMeshBoundingBox(
     Mesh mesh,
-  ) => BoundingBox$.Extract1(
+  ) => BoundingBox$.Extract(
     (p) => _ffi.GetMeshBoundingBox(
       Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
     ).toDart(p.asNativePointer()),
@@ -5163,7 +5163,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Ray ray,
     Vector3 center,
     double radius,
-  ) => RayCollision$.Extract1(
+  ) => RayCollision$.Extract(
     (p) => _ffi.GetRayCollisionSphere(
       Ray$.Ref1(ray).asNativePointer<RayC>().ref,
       Vector3$.Ref1(center).asNativePointer<Vector3C>().ref,
@@ -5175,7 +5175,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   RayCollision GetRayCollisionBox(
     Ray ray,
     BoundingBox box,
-  ) => RayCollision$.Extract1(
+  ) => RayCollision$.Extract(
     (p) => _ffi.GetRayCollisionBox(
       Ray$.Ref1(ray).asNativePointer<RayC>().ref,
       BoundingBox$.Ref1(box).asNativePointer<BoundingBoxC>().ref,
@@ -5187,7 +5187,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Ray ray,
     Mesh mesh,
     Matrix transform,
-  ) => RayCollision$.Extract1(
+  ) => RayCollision$.Extract(
     (p) => _ffi.GetRayCollisionMesh(
       Ray$.Ref1(ray).asNativePointer<RayC>().ref,
       Mesh$.Ref1(mesh).asNativePointer<MeshC>().ref,
@@ -5201,7 +5201,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector3 p1,
     Vector3 p2,
     Vector3 p3,
-  ) => RayCollision$.Extract1(
+  ) => RayCollision$.Extract(
     (p) => _ffi.GetRayCollisionTriangle(
       Ray$.Ref1(ray).asNativePointer<RayC>().ref,
       Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,
@@ -5217,7 +5217,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
     Vector3 p2,
     Vector3 p3,
     Vector3 p4,
-  ) => RayCollision$.Extract1(
+  ) => RayCollision$.Extract(
     (p) => _ffi.GetRayCollisionQuad(
       Ray$.Ref1(ray).asNativePointer<RayC>().ref,
       Vector3$.Ref1(p1).asNativePointer<Vector3C>().ref,

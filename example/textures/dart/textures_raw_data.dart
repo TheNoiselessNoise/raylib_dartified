@@ -9,7 +9,7 @@ const int screenHeight = 450;
 
 void main()
 {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+  findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
 
   InitWindow(screenWidth, screenHeight, "textures_raw_data");
   SetTargetFPS(60);

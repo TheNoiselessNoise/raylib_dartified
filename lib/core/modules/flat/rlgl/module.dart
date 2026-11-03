@@ -1210,24 +1210,24 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   );
 
   @override
-  Matrix rlGetMatrixModelview() => Matrix$.Extract1(
+  Matrix rlGetMatrixModelview() => Matrix$.Extract(
     (p) => _ffi.rlGetMatrixModelview().toDart(p.asNativePointer()),
   );
 
   @override
-  Matrix rlGetMatrixProjection() => Matrix$.Extract1(
+  Matrix rlGetMatrixProjection() => Matrix$.Extract(
     (p) => _ffi.rlGetMatrixProjection().toDart(p.asNativePointer()),
   );
 
   @override
-  Matrix rlGetMatrixTransform() => Matrix$.Extract1(
+  Matrix rlGetMatrixTransform() => Matrix$.Extract(
     (p) => _ffi.rlGetMatrixTransform().toDart(p.asNativePointer()),
   );
 
   @override
   Matrix rlGetMatrixProjectionStereo(
     int eye,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.rlGetMatrixProjectionStereo(
       eye,
     ).toDart(p.asNativePointer()),
@@ -1236,7 +1236,7 @@ class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   @override
   Matrix rlGetMatrixViewOffsetStereo(
     int eye,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.rlGetMatrixViewOffsetStereo(
       eye,
     ).toDart(p.asNativePointer()),

@@ -36,38 +36,31 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerStruct = field_pointerStruct.readSafe(p, _pointerStruct);
+    pointerStruct = field_pointerStruct.readSafe(p, pointerStruct);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_pointerStruct.writeSafe(p, _pointerStruct);
+    field_pointerStruct.writeSafe(p, pointerStruct);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("Pointer Struct - after assignment", () {
     final Color value = .AQUA;
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerStruct = value;
     expect(struct.pointerStruct.toString(), equals(value.toString()));
   });
 
   test("Pointer Struct - reading live data", () {
     final Color value = .AQUA;
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     final colorPtr = struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStruct)).readPtr();
     Color.struct.ptr(colorPtr).ref = value;
     expect(struct.pointerStruct.toString(), equals(value.toString()));

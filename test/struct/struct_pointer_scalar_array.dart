@@ -36,38 +36,31 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerScalarArray = field_pointerScalarArray.readCount(p, 4, _pointerScalarArray);
+    pointerScalarArray = field_pointerScalarArray.readCount(p, 4, pointerScalarArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_pointerScalarArray.writeCount(p, _pointerScalarArray);
+    field_pointerScalarArray.writeCount(p, pointerScalarArray);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("Pointer Scalar Array - after assignment", () {
     final List<int> values = .generate(4, (i) => i);
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerScalarArray = values;
     expect(struct.pointerScalarArray, equals(values));
   });
 
   test("Pointer Scalar Array - reading live data", () {
     final List<int> values = .generate(4, (i) => i);
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerScalarArray)).readPtr().cast<RInt>().writeArray(values);
     expect(struct.pointerScalarArray.toString(), equals(values.toString()));
   });

@@ -9,8 +9,8 @@ typedef _MsfGifFileWriteFunction = int Function(
   Pointer<Void> stream,
 );
 
-abstract class MsfGifFileWriteCallbackD extends MsfGifFileWriteCallbackBase {
-  MsfGifFileWriteCallbackD([super.name]);
+abstract class MsfGifFileWriteCallback extends MsfGifFileWriteCallbackBase {
+  MsfGifFileWriteCallback([super.name]);
 
   /// The actual trampoline.
   _MsfGifFileWriteFunction get _rawFunction =>
@@ -36,14 +36,14 @@ abstract class MsfGifFileWriteCallbackD extends MsfGifFileWriteCallbackBase {
     super.dispose();
   }
 
-  factory MsfGifFileWriteCallbackD.function(MsfGifFileWriteFunction f, {String? name})
-    => _MsfGifFileWriteCallbackD(f, name: name);
+  factory MsfGifFileWriteCallback.function(MsfGifFileWriteFunction f, {String? name})
+    => _MsfGifFileWriteCallback(f, name: name);
 }
 
-class _MsfGifFileWriteCallbackD extends MsfGifFileWriteCallbackD {
+class _MsfGifFileWriteCallback extends MsfGifFileWriteCallback {
   final MsfGifFileWriteFunction _f;
 
-  _MsfGifFileWriteCallbackD(this._f, {String? name}) : super(name);
+  _MsfGifFileWriteCallback(this._f, {String? name}) : super(name);
 
   @override
   MsfGifFileWriteFunction get function => _f;

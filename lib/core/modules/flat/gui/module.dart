@@ -46,7 +46,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
   );
 
   @override
-  Font GuiGetFont() => Font$.RefCaptureCached(
+  Font GuiGetFont() => Font$.RefCached(
     RaylibCaptureIds.GuiGetFont,
     (p) => _ffi.GuiGetFont().toDart(p.asNativePointer()),
   );

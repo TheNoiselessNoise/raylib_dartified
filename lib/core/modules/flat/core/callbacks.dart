@@ -8,8 +8,8 @@ typedef _TraceLogCallbackFunction = void Function(
   Pointer<Void> args,
 );
 
-abstract class TraceLogCallbackD extends TraceLogCallbackBase {
-  TraceLogCallbackD([super.name]);
+abstract class TraceLogCallback extends TraceLogCallbackBase {
+  TraceLogCallback([super.name]);
 
   /// The actual trampoline.
   _TraceLogCallbackFunction get _rawFunction =>
@@ -34,24 +34,24 @@ abstract class TraceLogCallbackD extends TraceLogCallbackBase {
     super.dispose();
   }
 
-  factory TraceLogCallbackD.function(TraceLogCallbackFunction f, {String? name})
-    => _TraceLogCallbackD(f, name: name);
+  factory TraceLogCallback.function(TraceLogCallbackFunction f, {String? name})
+    => _TraceLogCallback(f, name: name);
 
-  factory TraceLogCallbackD.friendly(TraceLogCallbackFriendlyFunction f, {String? name})
-    => _TraceLogCallbackFriendlyD(f, name: name);
+  factory TraceLogCallback.friendly(TraceLogCallbackFriendlyFunction f, {String? name})
+    => _TraceLogCallbackFriendly(f, name: name);
 }
 
-class _TraceLogCallbackD extends TraceLogCallbackD {
+class _TraceLogCallback extends TraceLogCallback {
   final TraceLogCallbackFunction _f;
-  _TraceLogCallbackD(this._f, {String? name}) : super(name);
+  _TraceLogCallback(this._f, {String? name}) : super(name);
 
   @override
   TraceLogCallbackFunction get function => _f;
 }
 
-class _TraceLogCallbackFriendlyD extends TraceLogCallbackD {
+class _TraceLogCallbackFriendly extends TraceLogCallback {
   final TraceLogCallbackFriendlyFunction _f;
-  _TraceLogCallbackFriendlyD(this._f, {String? name}) : super(name);
+  _TraceLogCallbackFriendly(this._f, {String? name}) : super(name);
 
   @override
   TraceLogCallbackFunction get function => (logLevel, text, args) {
@@ -66,8 +66,8 @@ typedef _LoadFileDataCallbackFunction = Pointer<UnsignedChar> Function(
   Pointer<Int> dataSize,
 );
 
-abstract class LoadFileDataCallbackD extends LoadFileDataCallbackBase {
-  LoadFileDataCallbackD([super.name]);
+abstract class LoadFileDataCallback extends LoadFileDataCallbackBase {
+  LoadFileDataCallback([super.name]);
 
   /// The actual trampoline.
   _LoadFileDataCallbackFunction get _rawFunction =>
@@ -90,24 +90,24 @@ abstract class LoadFileDataCallbackD extends LoadFileDataCallbackBase {
     super.dispose();
   }
 
-  factory LoadFileDataCallbackD.function(LoadFileDataCallbackFunction f, {String? name})
-    => _LoadFileDataCallbackD(f, name: name);
+  factory LoadFileDataCallback.function(LoadFileDataCallbackFunction f, {String? name})
+    => _LoadFileDataCallback(f, name: name);
 
-  factory LoadFileDataCallbackD.friendly(LoadFileDataCallbackFriendlyFunction f, {String? name})
-    => _LoadFileDataCallbackFriendlyD(f, name: name);
+  factory LoadFileDataCallback.friendly(LoadFileDataCallbackFriendlyFunction f, {String? name})
+    => _LoadFileDataCallbackFriendly(f, name: name);
 }
 
-class _LoadFileDataCallbackD extends LoadFileDataCallbackD {
+class _LoadFileDataCallback extends LoadFileDataCallback {
   final LoadFileDataCallbackFunction _f;
-  _LoadFileDataCallbackD(this._f, {String? name}) : super(name);
+  _LoadFileDataCallback(this._f, {String? name}) : super(name);
 
   @override
   LoadFileDataCallbackFunction get function => _f;
 }
 
-class _LoadFileDataCallbackFriendlyD extends LoadFileDataCallbackD {
+class _LoadFileDataCallbackFriendly extends LoadFileDataCallback {
   final LoadFileDataCallbackFriendlyFunction _f;
-  _LoadFileDataCallbackFriendlyD(this._f, {String? name}) : super(name);
+  _LoadFileDataCallbackFriendly(this._f, {String? name}) : super(name);
 
   @override
   LoadFileDataCallbackFunction get function => (fileName, dataSize) {
@@ -123,8 +123,8 @@ typedef _SaveFileDataCallbackFunction = bool Function(
   int dataSize,
 );
 
-abstract class SaveFileDataCallbackD extends SaveFileDataCallbackBase {
-  SaveFileDataCallbackD([super.name]);
+abstract class SaveFileDataCallback extends SaveFileDataCallbackBase {
+  SaveFileDataCallback([super.name]);
   
   /// The actual trampoline.
   _SaveFileDataCallbackFunction get _rawFunction =>
@@ -149,24 +149,24 @@ abstract class SaveFileDataCallbackD extends SaveFileDataCallbackBase {
     super.dispose();
   }
 
-  factory SaveFileDataCallbackD.function(SaveFileDataCallbackFunction f, {String? name})
-    => _SaveFileDataCallbackD(f, name: name);
+  factory SaveFileDataCallback.function(SaveFileDataCallbackFunction f, {String? name})
+    => _SaveFileDataCallback(f, name: name);
 
-  factory SaveFileDataCallbackD.friendly(SaveFileDataCallbackFriendlyFunction f, {String? name})
-    => _SaveFileDataCallbackFriendlyD(f, name: name);
+  factory SaveFileDataCallback.friendly(SaveFileDataCallbackFriendlyFunction f, {String? name})
+    => _SaveFileDataCallbackFriendly(f, name: name);
 }
 
-class _SaveFileDataCallbackD extends SaveFileDataCallbackD {
+class _SaveFileDataCallback extends SaveFileDataCallback {
   final SaveFileDataCallbackFunction _f;
-  _SaveFileDataCallbackD(this._f, {String? name}) : super(name);
+  _SaveFileDataCallback(this._f, {String? name}) : super(name);
 
   @override
   SaveFileDataCallbackFunction get function => _f;
 }
 
-class _SaveFileDataCallbackFriendlyD extends SaveFileDataCallbackD {
+class _SaveFileDataCallbackFriendly extends SaveFileDataCallback {
   final SaveFileDataCallbackFriendlyFunction _f;
-  _SaveFileDataCallbackFriendlyD(this._f, {String? name}) : super(name);
+  _SaveFileDataCallbackFriendly(this._f, {String? name}) : super(name);
 
   @override
   SaveFileDataCallbackFunction get function => (fileName, data, dataSize) {
@@ -180,8 +180,8 @@ typedef _LoadFileTextCallbackFunction = Pointer<Char> Function(
   Pointer<Char> fileName,
 );
 
-abstract class LoadFileTextCallbackD extends LoadFileTextCallbackBase {
-  LoadFileTextCallbackD([super.name]);
+abstract class LoadFileTextCallback extends LoadFileTextCallbackBase {
+  LoadFileTextCallback([super.name]);
 
   /// The actual trampoline.
   _LoadFileTextCallbackFunction get _rawFunction =>
@@ -190,7 +190,7 @@ abstract class LoadFileTextCallbackD extends LoadFileTextCallbackBase {
         NativeMemoryPointer(fileName.cast()),
       );
       if (result.isNull) return nullptr;
-      return (result as NativeMemoryPointer).asPointer();
+      return (result as NativeMemoryPointer).asNativePointer();
     };
 
   late final NativeCallable<LoadFileTextCallbackFunctionC> _callable;
@@ -207,28 +207,28 @@ abstract class LoadFileTextCallbackD extends LoadFileTextCallbackBase {
     super.dispose();
   }
 
-  factory LoadFileTextCallbackD.function(LoadFileTextCallbackFunction f, {String? name})
-    => _LoadFileTextCallbackD(f, name: name);
+  factory LoadFileTextCallback.function(LoadFileTextCallbackFunction f, {String? name})
+    => _LoadFileTextCallback(f, name: name);
 
-  factory LoadFileTextCallbackD.friendly(LoadFileTextCallbackFriendlyFunction f, {String? name})
-    => _LoadFileTextCallbackFriendlyD(f, name: name);
+  factory LoadFileTextCallback.friendly(LoadFileTextCallbackFriendlyFunction f, {String? name})
+    => _LoadFileTextCallbackFriendly(f, name: name);
 }
 
-class _LoadFileTextCallbackD extends LoadFileTextCallbackD {
+class _LoadFileTextCallback extends LoadFileTextCallback {
   final LoadFileTextCallbackFunction _f;
-  _LoadFileTextCallbackD(this._f, {String? name}) : super(name);
+  _LoadFileTextCallback(this._f, {String? name}) : super(name);
 
   @override
   LoadFileTextCallbackFunction get function => _f;
 }
 
-class _LoadFileTextCallbackFriendlyD extends LoadFileTextCallbackD {
+class _LoadFileTextCallbackFriendly extends LoadFileTextCallback {
   final LoadFileTextCallbackFriendlyFunction _f;
-  _LoadFileTextCallbackFriendlyD(this._f, {String? name}) : super(name);
+  _LoadFileTextCallbackFriendly(this._f, {String? name}) : super(name);
 
   @override
   LoadFileTextCallbackFunction get function => (fileName) {
-    return NativeMemoryPointer(_f(fileName.toDartString()).toNativeUtf8().cast());
+    return NativeMemoryPointer(_f(fileName.toDartString()).toNativeUtf8());
   };
 }
 
@@ -239,8 +239,8 @@ typedef _SaveFileTextCallbackFunction = bool Function(
   Pointer<Char> text,
 );
 
-abstract class SaveFileTextCallbackD extends SaveFileTextCallbackBase {
-  SaveFileTextCallbackD([super.name]);
+abstract class SaveFileTextCallback extends SaveFileTextCallbackBase {
+  SaveFileTextCallback([super.name]);
 
   /// The actual trampoline.
   _SaveFileTextCallbackFunction get _rawFunction =>
@@ -264,24 +264,24 @@ abstract class SaveFileTextCallbackD extends SaveFileTextCallbackBase {
     super.dispose();
   }
 
-  factory SaveFileTextCallbackD.function(SaveFileTextCallbackFunction f, {String? name})
-    => _SaveFileTextCallbackD(f, name: name);
+  factory SaveFileTextCallback.function(SaveFileTextCallbackFunction f, {String? name})
+    => _SaveFileTextCallback(f, name: name);
   
-  factory SaveFileTextCallbackD.friendly(SaveFileTextCallbackFriendlyFunction f, {String? name})
-    => _SaveFileTextCallbackFriendlyD(f, name: name);
+  factory SaveFileTextCallback.friendly(SaveFileTextCallbackFriendlyFunction f, {String? name})
+    => _SaveFileTextCallbackFriendly(f, name: name);
 }
 
-class _SaveFileTextCallbackD extends SaveFileTextCallbackD {
+class _SaveFileTextCallback extends SaveFileTextCallback {
   final SaveFileTextCallbackFunction _f;
-  _SaveFileTextCallbackD(this._f, {String? name}) : super(name);
+  _SaveFileTextCallback(this._f, {String? name}) : super(name);
 
   @override
   SaveFileTextCallbackFunction get function => _f;
 }
 
-class _SaveFileTextCallbackFriendlyD extends SaveFileTextCallbackD {
+class _SaveFileTextCallbackFriendly extends SaveFileTextCallback {
   final SaveFileTextCallbackFriendlyFunction _f;
-  _SaveFileTextCallbackFriendlyD(this._f, {String? name}) : super(name);
+  _SaveFileTextCallbackFriendly(this._f, {String? name}) : super(name);
 
   @override
   SaveFileTextCallbackFunction get function => (fileName, text) {

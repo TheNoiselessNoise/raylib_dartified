@@ -31,17 +31,20 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _enumField = field_enum.read(p);
+    enumField = field_enum.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_enum.write(p, _enumField);
+    field_enum.write(p, enumField);
   }
 }
 
 void main() {
-  setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
+  setUpAll(() {
+    findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
+    StructTypes.register(MyStruct.struct);
+  });
 
   final value = KeyboardKey.KEY_DELETE; // 261
   late MemoryPointer<RStruct> ptr;
@@ -76,21 +79,21 @@ void main() {
     MyStruct.field_enum.write(ptr, value);
     // `detached` is like `value` (without underlying memory), but it will actually
     // throw an exception if it's used on structs which REQUIRES underlying memory pointer
-    final struct = MyStruct.struct.ptr(ptr).detached; 
+    final struct = MyStruct.struct.ptr(ptr).value; 
     // now let's test our Dart side
     expect(struct.enumField, value);
   });
 
-  test("Enum - reference is live, detached is a snapshot", () {
+  test("Enum - reference is live, snapshot is a snapshot", () {
     final reference = MyStruct.struct.ptr(ptr).ref;
-    final detached = MyStruct.struct.ptr(ptr).detached;
+    final snapshot = MyStruct.struct.ptr(ptr).snapshot;
 
     reference.enumField = .KEY_DELETE;
 
     expect(reference.enumField, KeyboardKey.KEY_DELETE);
-    expect(detached.enumField, KeyboardKey.KEY_NULL);
+    expect(snapshot.enumField, KeyboardKey.KEY_NULL);
 
-    detached.enumField = .KEY_NULL;
+    snapshot.enumField = .KEY_NULL;
 
     expect(reference.enumField, KeyboardKey.KEY_DELETE);
   });
@@ -98,7 +101,7 @@ void main() {
   test("Enum - detached is initialized from memory", () {
     MyStruct.field_enum.write(ptr, .KEY_DELETE);
 
-    final detached = MyStruct.struct.ptr(ptr).detached;
+    final detached = MyStruct.struct.ptr(ptr).value;
 
     expect(detached.enumField, KeyboardKey.KEY_DELETE);
   });

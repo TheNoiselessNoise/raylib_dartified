@@ -1,5 +1,4 @@
 import 'package:test/test.dart';
-import 'package:raylib_dartified_base/abbr/allocators.dart';
 import 'package:raylib_dartified/abbr/dart.dart';
 
 void main() {
@@ -19,9 +18,9 @@ void main() {
     Vector3 position = .vec3(10, 10, 10);
     Camera3D camera = .new(position: position);
 
-    final ptr = Camera3D$.Allocate(camera);
-    expect(camera.op, isNull); // it's literal
-    camera.op = ptr; // we need to assign it back
+    final ptr = camera.ptr$();
+    expect(camera.op, isNull);
+    camera.bind$(ptr);
 
     expect(camera.position.toString(), position.toString());
 

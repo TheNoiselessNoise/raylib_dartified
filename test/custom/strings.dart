@@ -8,7 +8,7 @@ void main() {
   group('UTF-8 (RChar)', () {
     late MemoryPointer<RChar> ptr;
 
-    setUp(() => ptr = MemoryPointer.calloc(32, RChar.scalarByteSize).cast<RChar>());
+    setUp(() => ptr = MemoryPointer.calloc(32, RChar.size).cast<RChar>());
     tearDown(() => ptr.free());
 
     test('round-trips ASCII', () {
@@ -77,7 +77,7 @@ void main() {
   group('UTF-16 (RInt16)', () {
     late MemoryPointer<RInt16> ptr;
 
-    setUp(() => ptr = MemoryPointer.calloc(32, RInt16.scalarByteSize).cast<RInt16>());
+    setUp(() => ptr = MemoryPointer.calloc(32, RInt16.size).cast<RInt16>());
     tearDown(() => ptr.free());
 
     test('round-trips ASCII', () {
@@ -137,7 +137,7 @@ void main() {
   group('UTF-32 (RInt32)', () {
     late MemoryPointer<RInt32> ptr;
 
-    setUp(() => ptr = MemoryPointer.calloc(32, RInt32.scalarByteSize).cast<RInt32>());
+    setUp(() => ptr = MemoryPointer.calloc(32, RInt32.size).cast<RInt32>());
     tearDown(() => ptr.free());
 
     test('round-trips ASCII', () {

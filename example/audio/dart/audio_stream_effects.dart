@@ -14,7 +14,7 @@ int delayBufferSize = 0;
 int delayReadIndex = 2;
 int delayWriteIndex = 0;
 
-AudioCallbackD AudioProcessEffectLPF = .function((buffer, frames) {
+AudioCallback AudioProcessEffectLPF = .function((buffer, frames) {
   final low = <double>[0.0, 0.0];
   final cutoff = 70.0 / 44100.0;
   final k = cutoff / (cutoff + 0.1591549431);
@@ -32,7 +32,7 @@ AudioCallbackD AudioProcessEffectLPF = .function((buffer, frames) {
   }
 });
 
-AudioCallbackD AudioProcessEffectDelay = .function((buffer, frames) {
+AudioCallback AudioProcessEffectDelay = .function((buffer, frames) {
   final bufferData = buffer.asView<Float32List>(frames * 2);
   for (int i = 0; i < frames*2; i += 2)
   {

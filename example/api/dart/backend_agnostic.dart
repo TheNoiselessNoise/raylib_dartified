@@ -18,8 +18,8 @@ class BackendAgnosticRaylibExample extends RaylibAppBase<Raylib> {
   @override
   Future<void> loop(_) async {
     BeginDrawing();
-    ClearBackground(.BLACK);
-    DrawCircleV(GetMousePosition(), 25, .RED);
+      ClearBackground(.BLACK);
+      DrawCircleV(GetMousePosition(), 25, .RED);
     EndDrawing();
   }
 }

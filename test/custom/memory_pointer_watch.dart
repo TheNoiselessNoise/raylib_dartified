@@ -12,7 +12,7 @@ void main() {
     setUp(() {
       reads = 0;
       writes = 0;
-      ptr = MemoryPointer.calloc(1, RFloat32.scalarByteSize);
+      ptr = MemoryPointer.calloc(1, RFloat32.size);
 
       MemoryTrace.watchReadAny((_, _, _) => reads++);
       MemoryTrace.watchWriteAny((_, _, _) => writes++);
@@ -45,8 +45,8 @@ void main() {
       reads = 0;
       writes = 0;
 
-      ptr1 = MemoryPointer.calloc(1, RFloat32.scalarByteSize);
-      ptr2 = MemoryPointer.calloc(1, RFloat32.scalarByteSize);
+      ptr1 = MemoryPointer.calloc(1, RFloat32.size);
+      ptr2 = MemoryPointer.calloc(1, RFloat32.size);
 
       MemoryTrace.watchReadAny((ptr, _, _) { if (ptr == ptr1) reads++; });
       MemoryTrace.watchWriteAny((ptr, _, _) { if (ptr == ptr1) writes++; });

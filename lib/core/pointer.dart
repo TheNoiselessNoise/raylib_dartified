@@ -1,21 +1,15 @@
 part of 'raylib_dartified.dart';
 
-class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
+class NativeMemoryPointer<R extends RType> extends MemoryPointer<R> {
   final Pointer _ptr; // untyped pointer
 
   NativeMemoryPointer(this._ptr);
 
   /* --- NATIVE SPECIFIC --- */
 
-  Pointer<R> asPointer<R extends NativeType>() => _ptr.cast<R>();
-
-  static NativeMemoryPointer<Y>? orNull<Y extends RType>(Pointer? p)
-    => p == null ? null : .new(p);
+  Pointer<Y> _asPointer<Y extends NativeType>() => _ptr.cast();
 
   /* --- --------------- --- */
-
-  @override
-  NativeMemoryPointer<Y> cast<Y extends RType>() => .new(_ptr);
 
   @override
   bool get isNull => isFreed || _ptr == nullptr;
@@ -24,7 +18,7 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
   void free() {
     if (_ptr == nullptr) return;
     MemoryDebug.checkPointer(this, 'free');
-    isFreed = true;
+    super.free();
     ffi.malloc.free(_ptr);
   }
 
@@ -141,7 +135,7 @@ class NativeMemoryPointer<X extends RType> extends MemoryPointer<X> {
 }
 
 extension MemoryPointerAsNativePointer on MemoryPointer {
-  Pointer<R> asNativePointer<R extends NativeType>() => (this as NativeMemoryPointer).asPointer();
+  Pointer<R> asNativePointer<R extends NativeType>() => (this as NativeMemoryPointer)._asPointer();
 }
 
 extension StructPointerAsNativePointer on StructPointer {

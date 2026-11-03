@@ -32,7 +32,7 @@ In short: **`ffigen` gives you the raw function table. This project gives you so
 # Version 6.0
 
 Version 6.0 is a full rewrite of the binding layer around a backend-agnostic
-core: a single `MemoryPointer<X extends RType>` abstraction replaces the
+core: a single `MemoryPointer<R extends RType>` abstraction replaces the
 separate native (dart:ffi) and WASM struct implementations, collapsing what
 was previously duplicated per-backend code.
 

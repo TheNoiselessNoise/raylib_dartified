@@ -89,32 +89,29 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _intField = field_intField.read(p);
-    _colorField = field_colorField.read(p);
-    _inlineIntArray = field_inlineIntArray.read(p);
-    _pointerIntArray = field_pointerIntArray.readCount(p, intArray_COUNT, _pointerIntArray);
-    _inlineStructArray = field_inlineStructArray.read(p);
-    _pointerStructArray = field_pointerStructArray.readCount(p, structArray_COUNT, _pointerStructArray);
+    intField = field_intField.read(p);
+    colorField = field_colorField.read(p);
+    inlineIntArray = field_inlineIntArray.read(p);
+    pointerIntArray = field_pointerIntArray.readCount(p, intArray_COUNT, pointerIntArray);
+    inlineStructArray = field_inlineStructArray.read(p);
+    pointerStructArray = field_pointerStructArray.readCount(p, structArray_COUNT, pointerStructArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_intField.write(p, _intField);
-    field_colorField.write(p, _colorField);
-    field_inlineIntArray.write(p, _inlineIntArray);
-    field_pointerIntArray.writeCount(p, _pointerIntArray);
-    field_inlineStructArray.write(p, _inlineStructArray);
-    field_pointerStructArray.writeCount(p, _pointerStructArray);
+    field_intField.write(p, intField);
+    field_colorField.write(p, colorField);
+    field_inlineIntArray.write(p, inlineIntArray);
+    field_pointerIntArray.writeCount(p, pointerIntArray);
+    field_inlineStructArray.write(p, inlineStructArray);
+    field_pointerStructArray.writeCount(p, pointerStructArray);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
 
   late MemoryPointer<RStruct> ptr;
@@ -162,14 +159,14 @@ void main() {
 
   test("Pointer Scalar Array - after assignment", () {
     final List<int> values = .generate(intArray_COUNT, (i) => i);
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerIntArray = values;
     expect(struct.pointerIntArray, equals(values));
   });
 
   test("Pointer Scalar Array - reading live data", () {
     final List<int> values = .generate(intArray_COUNT, (i) => i);
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerIntArray)).readPtr().cast<RInt>().writeArray(values);
     expect(struct.pointerIntArray.toString(), equals(values.toString()));
   });
@@ -196,14 +193,14 @@ void main() {
 
   test("Pointer Struct Array - after assignment", () {
     final List<Color> values = generateColors();
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerStructArray = values;
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - reading live data", () {
     final List<Color> values = generateColors();
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     Color.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });

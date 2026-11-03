@@ -9,7 +9,7 @@ class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
   @override
   Vector3 GetCameraForward(
     StructPointer<Camera3D> camera,
-  ) => Vector3$.Extract1(
+  ) => Vector3$.Extract(
     (p) => _ffi.GetCameraForward(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
@@ -18,7 +18,7 @@ class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
   @override
   Vector3 GetCameraUp(
     StructPointer<Camera3D> camera,
-  ) => Vector3$.Extract1(
+  ) => Vector3$.Extract(
     (p) => _ffi.GetCameraUp(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
@@ -27,7 +27,7 @@ class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
   @override
   Vector3 GetCameraRight(
     StructPointer<Camera3D> camera,
-  ) => Vector3$.Extract1(
+  ) => Vector3$.Extract(
     (p) => _ffi.GetCameraRight(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer())
@@ -111,7 +111,7 @@ class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
   @override
   Matrix GetCameraViewMatrix(
     StructPointer<Camera3D> camera,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.GetCameraViewMatrix(
       camera.asNativePointer(),
     ).toDart(p.asNativePointer()),
@@ -121,7 +121,7 @@ class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
   Matrix GetCameraProjectionMatrix(
     StructPointer<Camera3D> camera,
     double aspect,
-  ) => Matrix$.Extract1(
+  ) => Matrix$.Extract(
     (p) => _ffi.GetCameraProjectionMatrix(
       camera.asNativePointer(),
       aspect.toDouble(),

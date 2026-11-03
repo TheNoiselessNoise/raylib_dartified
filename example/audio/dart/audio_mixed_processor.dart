@@ -20,7 +20,7 @@ void main() async {
 
   InitAudioDevice();
 
-  AttachAudioMixedProcessor(AudioCallbackD.function((buffer, frames) {
+  AttachAudioMixedProcessor(AudioCallback.function((buffer, frames) {
     final samples = buffer.asView<Float32List>(frames * 2);
 
     double average = 0.0;

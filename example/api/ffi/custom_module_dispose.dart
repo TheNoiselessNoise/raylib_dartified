@@ -50,14 +50,12 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => Raylib.instance.module();
-
 void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
   allocateRaylibColors();
   
-  registerModule(MyModule(rl));
+  final myModule = registerModule(MyModule(rl));
 
   InitWindow(screenWidth, screenHeight, "custom_module_dispose".toC);
   SetTargetFPS(60);

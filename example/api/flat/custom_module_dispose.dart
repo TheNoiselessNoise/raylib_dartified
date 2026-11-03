@@ -14,12 +14,12 @@ class MyModule extends RaylibModule<Raylib> {
   @override
   void load() {
     // automatically disposed
-    background = Color$.AtUniqueStruct();
+    background = Color$.AtUnique();
     background.ref = RAYWHITE;
     // or simply: background = Color$.ValueUnique(RAYWHITE);
 
     // using raw (untracked) - we own this, must free in dispose()
-    position = Vector2$.RawStruct();
+    position = Vector2$.Raw();
   }
 
   @override
@@ -49,15 +49,13 @@ class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-MyModule get myModule => Raylib.instance.module();
-
 void main()
 {
   findRaylib('raylib-6.0_linux_amd64/lib');
   
-  registerModule(MyModule(rl));
+  final myModule = registerModule(MyModule(rl));
 
-  Temp.debugFree(true);
+  MemoryTemp.instance.debugFree(true);
   // NOTE: with `debugFree` enabled you should see output at the exit:
   // Freeing user-defined 1 Color$ slots
   // [FREE] background

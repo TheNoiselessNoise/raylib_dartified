@@ -36,38 +36,31 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _stringPointerChar = field_stringPointerChar.readSafe(p, _stringPointerChar);
+    stringPointerChar = field_stringPointerChar.readSafe(p, stringPointerChar);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_stringPointerChar.write(p, _stringPointerChar);
+    field_stringPointerChar.write(p, stringPointerChar);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("String Pointer Char - after assignment", () {
     final String value = "Hello, World!";
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.stringPointerChar = value;
     expect(struct.stringPointerChar, equals(value));
   });
 
   test("String Pointer Char - reading live data", () {
     final String value = "Hello, World!";
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.getOp().offsetBy(MyStruct.structLayout.offset(.stringPointerChar)).readPtr().cast<RChar>().writeString(value);
     expect(struct.stringPointerChar, equals(value));
   });

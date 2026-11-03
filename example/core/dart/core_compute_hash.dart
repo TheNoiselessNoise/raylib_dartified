@@ -74,11 +74,11 @@ void main() {
     GuiLabel(.rect(40, 200, 120, 32), "CRC32 [32 bit]:");
     GuiTextBox(.rect(40 + 120, 200, 720 - 120, 32), hashCRC32.hex, 120, false);
     GuiLabel(.rect(40, 200 + 36, 120, 32), "MD5 [128 bit]:");
-    GuiTextBox(.rect(40 + 120, 200 + 36, 720 - 120, 32), GetDataAsHexText(hashMD5, rl.Utils.md5Uint32HashLength), 120, false);
+    GuiTextBox(.rect(40 + 120, 200 + 36, 720 - 120, 32), GetDataAsHexText(hashMD5, 4), 120, false);
     GuiLabel(.rect(40, 200 + 36*2, 120, 32), "SHA1 [160 bit]:");
-    GuiTextBox(.rect(40 + 120, 200 + 36*2, 720 - 120, 32), GetDataAsHexText(hashSHA1, rl.Utils.sha1Uint32HashLength), 120, false);
+    GuiTextBox(.rect(40 + 120, 200 + 36*2, 720 - 120, 32), GetDataAsHexText(hashSHA1, 5), 120, false);
     GuiLabel(.rect(40, 200 + 36*3, 120, 32), "SHA256 [256 bit]:");
-    GuiTextBox(.rect(40 + 120, 200 + 36*3, 720 - 120, 32), GetDataAsHexText(hashSHA256, rl.Utils.sha256Uint32HashLength), 120, false);
+    GuiTextBox(.rect(40 + 120, 200 + 36*3, 720 - 120, 32), GetDataAsHexText(hashSHA256, 8), 120, false);
 
     GuiSetState(.STATE_FOCUSED);
     GuiLabel(.rect(40, 200 + 36*5 - 30, 320, 32), "BONUS - BAS64 ENCODED STRING:");

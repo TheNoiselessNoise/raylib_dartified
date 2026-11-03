@@ -36,38 +36,31 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _pointerStructArray = field_pointerStructArray.readCount(p, 2, _pointerStructArray);
+    pointerStructArray = field_pointerStructArray.readCount(p, 2, pointerStructArray);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_pointerStructArray.writeCount(p, _pointerStructArray);
+    field_pointerStructArray.writeCount(p, pointerStructArray);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("Pointer Struct Array - after assignment", () {
     final List<Color> values = [.WHITE, .RED];
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.pointerStructArray = values;
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });
 
   test("Pointer Struct Array - reading live data", () {
     final List<Color> values = [.WHITE, .RED];
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     Color.struct.ptr(struct.getOp().offsetBy(MyStruct.structLayout.offset(.pointerStructArray)).readPtr()).writeArray(values);
     expect(struct.pointerStructArray.toString(), equals(values.toString()));
   });

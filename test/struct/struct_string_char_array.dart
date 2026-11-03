@@ -31,38 +31,31 @@ class MyStruct extends RaylibStruct<MyStruct> {
 
   @override
   void structReadFrom(MemoryPointer p) {
-    _stringCharArray = field_stringCharArray.read(p);
+    stringCharArray = field_stringCharArray.read(p);
   }
 
   @override
   void structWriteInto(MemoryPointer p) {
-    field_stringCharArray.write(p, _stringCharArray);
+    field_stringCharArray.write(p, stringCharArray);
   }
 }
 
 void main() {
-  late RaylibTempStructAllocator<MyStruct> myStructAlloc;
-
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    
-    myStructAlloc = structAllocator(MyStruct.struct);
+    StructTypes.register(MyStruct.struct);
   });
-
-  late MemoryPointer<RStruct> ptr;
-  setUp(() => ptr = MemoryPointer.calloc(1, MyStruct.struct.byteSize));
-  tearDown(() => ptr.free());
 
   test("String Char Array - after assignment", () {
     final String value = "Hello, World!";
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.stringCharArray = value;
     expect(struct.stringCharArray, equals(value));
   });
 
   test("String Char Array - reading live data", () {
     final String value = "Hello, World!";
-    final struct = myStructAlloc.Allocate(.new()).ref;
+    final struct = structAllocator<MyStruct>().$new;
     struct.getOp().offsetBy(MyStruct.structLayout.offset(.stringCharArray)).cast<RChar>().writeString(value);
     expect(struct.stringCharArray, equals(value));
   });
