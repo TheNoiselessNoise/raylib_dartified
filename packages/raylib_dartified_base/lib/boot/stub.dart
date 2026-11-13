@@ -1,0 +1,1 @@
+void bootMemoryBackend() => throw UnsupportedError('No platform implementation available for: bootMemoryBackend');

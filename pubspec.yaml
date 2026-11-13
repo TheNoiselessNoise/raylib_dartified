@@ -1,21 +1,20 @@
-name: raylib_dartified
-description: Dart-native Raylib bindings that don't make you feel like you're writing C.
-version: 6.0.4
-repository: https://github.com/TheNoiselessNoise/raylib_dartified
-publish_to: none
-
+name: raylib_dartified_workspace
 environment:
-  sdk: ^3.10.7
-
-dependencies:
-  path: ^1.9.1
-  meta: ^1.17.0
-  ffi: ^2.2.0
-  logging: ^1.3.0
-  # raylib_dartified_base: ^6.0.3
-  raylib_dartified_base:
-    path: ../raylib_dartified_base
-
+  sdk: ^3.13.1
+workspace:
+  - packages/**
 dev_dependencies:
+  melos: ^7.0.0
   lints: ^6.0.0
-  test: ^1.31.2
+  test: ^1.25.6
+dependency_overrides:
+  xffi_core:
+    path: ../xffi/packages/xffi_core
+  xffi_native:
+    path: ../xffi/packages/xffi_native
+  xffi_web:
+    path: ../xffi/packages/xffi_web
+  xffi_web_vanilla:
+    path: ../xffi/packages/xffi_web_vanilla
+  xffi_web_emscripten:
+    path: ../xffi/packages/xffi_web_emscripten

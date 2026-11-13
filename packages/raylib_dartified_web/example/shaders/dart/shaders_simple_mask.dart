@@ -1,0 +1,97 @@
+// Example dartified, see original for reference:
+// https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_simple_mask.c
+// WARNING: expects resources from the raylib source
+import '../../base_dart.dart';
+
+const String GLSL_VERSION = '300es';
+const int screenWidth = 800;
+const int screenHeight = 450;
+
+void main() => Raylib((rl) {
+  InitWindow(screenWidth, screenHeight, "shaders_simple_mask");
+  SetTargetFPS(60);
+  DisableCursor();
+
+  final camera = Camera3D(
+    position: .vec3(0.0, 1.0, 2.0),
+    target: .vec3(0.0, 0.0, 0.0),
+    up: .vec3(0, 1, 0),
+    fovy: 45,
+    projection: .CAMERA_PERSPECTIVE,
+  );
+
+  final torus = GenMeshTorus(0.3, 1, 16, 32);
+  final model1 = LoadModelFromMesh(torus);
+
+  final cube = GenMeshCube(0.8, 0.8, 0.8);
+  final model2 = LoadModelFromMesh(cube);
+
+  final sphere = GenMeshSphere(1, 16, 16);
+  final model3 = LoadModelFromMesh(sphere);
+
+  final shader = LoadShader(
+    null,
+    "../resources/shaders/glsl$GLSL_VERSION/mask.fs",
+  );
+
+  final texDiffuse = LoadTexture("../resources/plasma.png");
+  model1.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
+  model2.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
+
+  final texMask = LoadTexture("../resources/mask.png");
+  model1.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
+  model2.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
+  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_EMISSION.value] =
+    GetShaderLocation(shader, "mask");
+
+  int shaderFrame = GetShaderLocation(shader, "frame");
+
+  model1.materials[0].shader = shader;
+  model2.materials[0].shader = shader;
+
+  int framesCounter = 0;
+  final Vector3 rotation = .zero();
+
+  rl.setMainLoop(() {
+    UpdateCamera(camera, .CAMERA_FIRST_PERSON);
+        
+    framesCounter++;
+    rotation.x += 0.01;
+    rotation.y += 0.005;
+    rotation.z -= 0.0025;
+
+    SetShaderValue(shader, shaderFrame,
+      [framesCounter],
+      .SHADER_UNIFORM_INT,
+    );
+
+    model1.transform = .rotateXYZ(rotation);
+
+    BeginDrawing();
+
+      ClearBackground(.DARKBLUE);
+
+      BeginMode3D(camera);
+
+        DrawModel(model1, .vec3(0.5, 0.0, 0.0), 1, .WHITE);
+        DrawModelEx(model2,
+          .vec3(-0.5, 0.0, 0.0),
+          .vec3(1.0, 1.0, 0.0),
+          50,
+          .vec3(1.0, 1.0, 1.0),
+          .WHITE
+        );
+        DrawModel(model3, .vec3(0.0, 0.0, -1.5), 1, .WHITE);
+        DrawGrid(10, 1.0);
+
+      EndMode3D();
+
+      final text = "Frame: $framesCounter";
+      DrawRectangle(16, 698, MeasureText(text, 20) + 8, 42, .BLUE);
+      DrawText(text, 20, 700, 20, .WHITE);
+
+      DrawFPS(10, 10);
+
+    EndDrawing();
+  });
+});
