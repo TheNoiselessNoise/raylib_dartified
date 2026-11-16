@@ -7,7 +7,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_CIRCLES = 64;
 
-class CircleWave {
+final class CircleWave {
   Vector2 position;
   double radius;
   double alpha;

@@ -16,17 +16,17 @@ enum MyStructField with XFields {
 const int intArray_COUNT = 4;
 const int structArray_COUNT = 2;
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .intField: XInt(),
-      .colorField: XRawStruct(Color.struct),
+      .colorField: XStructType(Color.struct),
       .inlineIntArray: XArray(XInt(), intArray_COUNT),
-      .pointerIntArray: XRawPtr(XInt()),
-      .inlineStructArray: XArray(XRawStruct(Color.struct), structArray_COUNT),
-      .pointerStructArray: XRawPtr(XRawStruct(Color.struct)),
+      .pointerIntArray: XPtrType(XInt()),
+      .inlineStructArray: XArray(XStructType(Color.struct), structArray_COUNT),
+      .pointerStructArray: XPtrType(XStructType(Color.struct)),
     }),
   );
 
@@ -64,14 +64,13 @@ class MyStruct extends XStruct<MyStruct> {
 
   MyStruct({
     super.op,
-    int intField = 0,
+    this._intField = 0,
     Color? colorField,
     List<int>? inlineIntArray,
     List<int>? pointerIntArray,
     List<Color>? inlineStructArray,
     List<Color>? pointerStructArray,
   }) :
-    _intField = intField,
     _colorField = colorField ?? .zero(),
     _inlineIntArray = inlineIntArray ?? .filled(field_inlineIntArray.codec.type.count, 0),
     _pointerIntArray = pointerIntArray ?? .filled(intArray_COUNT, 0),
@@ -111,10 +110,10 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
-  late XPtr<XRawStruct> ptr;
+  late XPtr<XStructType> ptr;
   setUp(() => ptr = XPtr.calloc(1, MyStruct.struct.byteSize));
   tearDown(() => ptr.free());
 

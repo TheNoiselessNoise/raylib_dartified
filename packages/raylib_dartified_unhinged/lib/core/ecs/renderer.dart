@@ -18,7 +18,7 @@ class RenderLayer {
   RenderLayer(this.name, this.order);
 }
 
-class Renderer<T extends App<T>> extends AppService<T> {
+final class Renderer<T extends App<T>> extends AppService<T> {
   List<RenderLayer> layers = [];
 
   Renderer(super.app) {

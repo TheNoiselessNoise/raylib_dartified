@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibCore extends RaylibModuleWasm {  
+final class RaylibCore extends RaylibModuleWasm {  
   /// Initialize window and OpenGL context
   late final XF3<void> InitWindow;
   /// Close window and unload OpenGL context
@@ -890,7 +890,7 @@ class RaylibCore extends RaylibModuleWasm {
   /// Encode one codepoint into UTF-8 byte array (array length returned as parameter)
   late final XF2<XWasmPtr<XChar>> CodepointToUTF8;
   /// Load text as separate lines ('\n')
-  late final XF2<XWasmPtr<XRawPtr<XChar>>> LoadTextLines;
+  late final XF2<XWasmPtr<XPtrType<XChar>>> LoadTextLines;
   /// Unload text lines
   late final XF2<void> UnloadTextLines;
   /// Copy one string to another, returns bytes copied
@@ -922,7 +922,7 @@ class RaylibCore extends RaylibModuleWasm {
   /// Join text strings with delimiter ([delimiter] is expected to be length of 1)
   late final XF3<XWasmPtr<XChar>> TextJoin;
   /// Split text into multiple strings
-  late final XF3<XWasmPtr<XRawPtr<XChar>>> TextSplit;
+  late final XF3<XWasmPtr<XPtrType<XChar>>> TextSplit;
   /// Append text at specific position and move cursor
   late final XF3<void> TextAppend;
   /// Find first text occurrence within a string, -1 if not found

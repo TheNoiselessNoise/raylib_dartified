@@ -64,15 +64,7 @@ class CSprite<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CSprite<T> createInstance() {
-    final c = CSprite<T>(app,
-      size: size.copy(),
-      color: color,
-    );
-    c.rect = rect.copy();
-    c.origin = origin.copy();
-    return c;
-  }
+  CSprite<T> createInstance() => .new(app);
   
   // state
 

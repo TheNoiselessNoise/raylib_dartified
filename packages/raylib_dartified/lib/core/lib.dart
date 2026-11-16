@@ -2,7 +2,9 @@ part of 'raylib_dartified.dart';
 
 typedef RaylibLookup = Pointer<T> Function<T extends NativeType>(String symbolName);
 
-class RaylibExternalLibs {
+final class RaylibExternalLibs {
+  RaylibExternalLibs._();
+
   final Map<Type, DynamicLibrary> _libs = {};
 
   void register<T extends RaylibModule<Raylib>>(String path) {
@@ -26,7 +28,7 @@ class RaylibExternalLibs {
 //       If you try to use anything from rl.Gui.* and your dynamic library was not loaded:
 //       LateInitializationError: Field 'Gui' has not been initialized.
 //       That's expected behavior!
-class Raylib extends RaylibBase {
+final class Raylib extends RaylibBase {
   static Raylib get instance => RaylibBase.getInstance();
 
   Logger logger = Logger.detached('Raylib');
@@ -40,7 +42,7 @@ class Raylib extends RaylibBase {
   @override
   void logError(Object? message) => logger.severe('[Raylib] $message');
 
-  final _externalLibs = RaylibExternalLibs();
+  final _externalLibs = RaylibExternalLibs._();
 
   Map<RaylibSupportedLibs, void Function(String)> get _moduleRegistrars => {
     .raylib: (p) => _externalLibs.register<RaylibCore>(p),

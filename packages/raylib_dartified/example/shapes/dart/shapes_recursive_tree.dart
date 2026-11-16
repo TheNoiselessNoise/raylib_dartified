@@ -8,7 +8,7 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class Branch {
+final class Branch {
   Vector2 start = .zero();
   Vector2 end = .zero();
   double angle = 0;

@@ -5,7 +5,7 @@ void main() {
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
   test('one simple int field', () {
-    final dynType = XStructType.createDynamic({
+    final dynType = XStructDef.createDynamic({
       'field': XInt32(),
     });
 
@@ -18,13 +18,13 @@ void main() {
   });
 
   test('nested struct', () {
-    final nestedType = XStructType.createDynamic({
+    final nestedType = XStructDef.createDynamic({
       'field': XInt32(),
     });
 
-    final dynType = XStructType.createDynamic({
+    final dynType = XStructDef.createDynamic({
       'field': XInt32(),
-      'nested': XRawStruct(nestedType),
+      'nested': XStructType(nestedType),
     });
 
     final ptr = dynType.calloc();
@@ -36,7 +36,7 @@ void main() {
   });
 
   test('getter / setter', () {
-    final dynType = XStructType.createDynamic({
+    final dynType = XStructDef.createDynamic({
       'x': XInt32(),
       'y': XInt32(),
     });
@@ -51,7 +51,7 @@ void main() {
   });
 
   test('equality', () {
-    final dynType = XStructType.createDynamic({
+    final dynType = XStructDef.createDynamic({
       'x': XInt32(),
       'y': XInt32(),
     });
@@ -72,11 +72,11 @@ void main() {
   });
 
   test('equality of different types', () {
-    final dynType1 = XStructType.createDynamic({
+    final dynType1 = XStructDef.createDynamic({
       'x': XInt32(),
     });
 
-    final dynType2 = XStructType.createDynamic({
+    final dynType2 = XStructDef.createDynamic({
       'x': XInt32(),
     });
 
@@ -90,11 +90,11 @@ void main() {
   });
 
   test('setDart', () {
-    final aType = XStructType.createDynamic({
+    final aType = XStructDef.createDynamic({
       'x': XInt32(),
     });
 
-    final bType = XStructType.createDynamic({
+    final bType = XStructDef.createDynamic({
       'y': XInt32(),
     });
 
@@ -123,7 +123,7 @@ void main() {
     final count = 10;
     final value = 100;
 
-    final type = XStructType.createDynamic({
+    final type = XStructDef.createDynamic({
       xField: XInt32(),
     });
 
@@ -158,8 +158,8 @@ void main() {
     const ptrToArrayOf2ArraysOf2Ints = 'ptrToArrayOf2ArraysOf2Ints';
     const ptrToArrayOf2ArraysOf2Structs = 'ptrToArrayOf2ArraysOf2Structs';
 
-    late XStructType<XDynStruct> inner;
-    late XStructType<XDynStruct> type;
+    late XStructDef<XDynStruct> inner;
+    late XStructDef<XDynStruct> type;
     late XPtr ptr;
 
     setUp(() {
@@ -172,14 +172,14 @@ void main() {
         string: XString<XInt8>(5),
         stringUTF32: XString<XInt32>(2),
         stringArray3: XArray(XString<XInt8>(5), 3),
-        ptrToString: XRawPtr(XString<XInt8>()),
-        ptrToBool: XRawPtr(XBool()),
-        ptrToInt: XRawPtr(XInt32()),
-        ptrToArrayOf3Ints: XRawPtr(XArray(XInt32(), 3)),
-        ptrToStruct: XRawPtr(XRawStruct(inner)),
-        ptrToArrayOf2Structs: XRawPtr(XArray(XRawStruct(inner), 2)),
-        ptrToArrayOf2ArraysOf2Ints: XRawPtr(XArray(XArray(XInt32(), 2), 2)),
-        ptrToArrayOf2ArraysOf2Structs: XRawPtr(XArray(XArray(XRawStruct(inner), 2), 2)),
+        ptrToString: XPtrType(XString<XInt8>()),
+        ptrToBool: XPtrType(XBool()),
+        ptrToInt: XPtrType(XInt32()),
+        ptrToArrayOf3Ints: XPtrType(XArray(XInt32(), 3)),
+        ptrToStruct: XPtrType(XStructType(inner)),
+        ptrToArrayOf2Structs: XPtrType(XArray(XStructType(inner), 2)),
+        ptrToArrayOf2ArraysOf2Ints: XPtrType(XArray(XArray(XInt32(), 2), 2)),
+        ptrToArrayOf2ArraysOf2Structs: XPtrType(XArray(XArray(XStructType(inner), 2), 2)),
       });
 
       ptr = type.calloc();
@@ -340,7 +340,7 @@ void main() {
     });
   });
 
-  tearDown(() => XStructTypes.unregisterDynamic());
+  tearDown(() => XStructDefinitions.unregisterDynamic());
 
   tearDownAll(disposeRaylib);
 }

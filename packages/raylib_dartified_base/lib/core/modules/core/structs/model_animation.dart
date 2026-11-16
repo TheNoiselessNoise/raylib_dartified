@@ -8,7 +8,7 @@ enum ModelAnimationField with XFields {
 }
 
 /// ModelAnimation, contains a full animation sequence
-class ModelAnimation extends XStruct<ModelAnimation> {
+final class ModelAnimation extends XStruct<ModelAnimation> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,13 +20,13 @@ class ModelAnimation extends XStruct<ModelAnimation> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<ModelAnimation> struct = .create(
+  static final XStructDef<ModelAnimation> struct = .create(
     factory: ModelAnimation.new,
     layout: .aligned<ModelAnimationField>({
       .name:          XArray(XChar(), BASE_nameLength), // Animation name
       .boneCount:     XInt(), // Number of bones (per pose)
       .keyframeCount: XInt(), // Number of animation key frames
-      .keyframePoses: XRawPtr(XRawPtr(XRawStruct(Transform.struct))), // Animation sequence keyframe poses [keyframe][pose]
+      .keyframePoses: XPtrType(XPtrType(XStructType(Transform.struct))), // Animation sequence keyframe poses [keyframe][pose]
     }),
   );
 

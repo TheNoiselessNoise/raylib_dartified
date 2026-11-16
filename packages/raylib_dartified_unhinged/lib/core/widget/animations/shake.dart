@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FShake<T extends App<T>> extends FWidget<T> {  
+final class FShake<T extends App<T>> extends FWidget<T> {  
   bool autoStart;
 
   FShake(super.app, {

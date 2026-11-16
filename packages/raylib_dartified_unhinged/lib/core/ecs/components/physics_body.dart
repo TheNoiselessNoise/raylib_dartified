@@ -57,11 +57,7 @@ class CPhysicsBody<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CPhysicsBody<T> createInstance() => .new(app,
-    mass: mass,
-    restitution: restitution,
-    transferVelocity: transferVelocity,
-  );
+  CPhysicsBody<T> createInstance() => .new(app);
 
   // state
 

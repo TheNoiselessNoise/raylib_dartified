@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import '_base.dart';
 
-class MyComp extends Comp<G> {
+final class MyComp extends Comp<G> {
   MyComp(super.app, {
     super.populateDefaults,
   });
@@ -18,7 +18,7 @@ class MyComp extends Comp<G> {
   @override String get persistentTypeId => typeId;
 }
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   MyEntity(super.app, {
     super.populateDefaults,
   }) {
@@ -37,7 +37,7 @@ class MyEntity extends Entity<G> {
   @override String get persistentTypeId => typeId;
 }
 
-class TestPersistenceScene extends Scene<G> {
+final class TestPersistenceScene extends Scene<G> {
   late MyEntity myEntity;
 
   TestPersistenceScene(super.app, {
@@ -58,7 +58,7 @@ class TestPersistenceScene extends Scene<G> {
 
 typedef G = TestPersistenceApp;
 
-class TestPersistenceApp extends ExampleRaylibApp<G> {
+final class TestPersistenceApp extends ExampleRaylibApp<G> {
   late TestPersistenceScene mainScene;
 
   TestPersistenceApp(super.backend) {

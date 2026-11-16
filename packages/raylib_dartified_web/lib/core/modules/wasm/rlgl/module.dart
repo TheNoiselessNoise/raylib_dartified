@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibRlgl extends RaylibModuleWasm with RaylibRlglModuleExtras<Raylib> {
+final class RaylibRlgl extends RaylibModuleWasm with RaylibRlglModuleExtras<Raylib> {
   /// Choose the current matrix to be transformed
   late final XF1<void> rlMatrixMode;
   /// Push the current matrix to stack

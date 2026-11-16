@@ -45,9 +45,9 @@ XF1<void> get GuiSetIconScale => _module.GuiSetIconScale;
 /// See [RaylibGui.GuiGetIcons].
 XF0<XWasmPtr<XUnsignedInt>> get GuiGetIcons => _module.GuiGetIcons;
 /// See [RaylibGui.GuiLoadIcons].
-XF2<XWasmPtr<XRawPtr<XChar>>> get GuiLoadIcons => _module.GuiLoadIcons;
+XF2<XWasmPtr<XPtrType<XChar>>> get GuiLoadIcons => _module.GuiLoadIcons;
 /// See [RaylibGui.GuiLoadIconsFromMemory].
-XF3<XWasmPtr<XRawPtr<XChar>>> get GuiLoadIconsFromMemory => _module.GuiLoadIconsFromMemory;
+XF3<XWasmPtr<XPtrType<XChar>>> get GuiLoadIconsFromMemory => _module.GuiLoadIconsFromMemory;
 /// See [RaylibGui.GuiDrawIcon].
 XF5<void> get GuiDrawIcon => _module.GuiDrawIcon;
 /// See [RaylibGui.GuiGetTextWidth].

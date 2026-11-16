@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibAudioFlatWeb extends RaylibAudioFlat<Raylib> {
+final class RaylibAudioFlatWeb extends RaylibAudioFlat<Raylib> {
 
   RaylibAudioFlatWeb(super.rl);
 

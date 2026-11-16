@@ -5,9 +5,9 @@ enum MyStructField with XFields {
   stringCharArray,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .stringCharArray: XArray(XChar(), 32),
@@ -23,8 +23,8 @@ class MyStruct extends XStruct<MyStruct> {
 
   MyStruct({
     super.op,
-    String stringCharArray = '',
-  }) : _stringCharArray = stringCharArray;
+    this._stringCharArray = '',
+  });
 
   @override
   MyStruct clone() => .new(op: op);
@@ -43,7 +43,7 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
   test("String Char Array - after assignment", () {

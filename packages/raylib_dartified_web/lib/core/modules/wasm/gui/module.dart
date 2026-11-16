@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibGui extends RaylibModuleWasm with RaylibGuiModuleExtras<Raylib> {
+final class RaylibGui extends RaylibModuleWasm with RaylibGuiModuleExtras<Raylib> {
   /// Enable gui controls (global state)
   late final XF0<void> GuiEnable;
   /// Disable gui controls (global state)
@@ -44,9 +44,9 @@ class RaylibGui extends RaylibModuleWasm with RaylibGuiModuleExtras<Raylib> {
   /// Get raygui icons data
   late final XF0<XWasmPtr<XUnsignedInt>> GuiGetIcons;
   /// Load raygui icons file (.rgi) into internal icons data
-  late final XF2<XWasmPtr<XRawPtr<XChar>>> GuiLoadIcons;
+  late final XF2<XWasmPtr<XPtrType<XChar>>> GuiLoadIcons;
   /// Load raygui icons file (.rgi) from memory into internal icons data
-  late final XF3<XWasmPtr<XRawPtr<XChar>>> GuiLoadIconsFromMemory;
+  late final XF3<XWasmPtr<XPtrType<XChar>>> GuiLoadIconsFromMemory;
   /// Draw icon using pixel size at specified position
   late final XF5<void> GuiDrawIcon;
   /// Get text width considering gui style and icon size (if required)

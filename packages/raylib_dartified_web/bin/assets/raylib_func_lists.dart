@@ -1,4 +1,5 @@
 const String EmscriptenFuncList = r"""
+_vsnprintf
 _malloc
 _calloc
 _free

@@ -40,31 +40,31 @@ import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
   EVENTS
 ========================= */
 
-class BallHitBrickEvent extends Event<G> {
+final class BallHitBrickEvent extends Event<G> {
   final BallEntity ball;
   final BrickEntity brick;
   
   BallHitBrickEvent(super.app, this.ball, this.brick);
 }
 
-class BallLostEvent extends Event<G> {
+final class BallLostEvent extends Event<G> {
   final BallEntity ball;
   
   BallLostEvent(super.app, this.ball);
 }
 
-class SpawnBallEvent extends Event<G> {
+final class SpawnBallEvent extends Event<G> {
   SpawnBallEvent(super.app);
 }
 
-class PowerUpCollectedEvent extends Event<G> {
+final class PowerUpCollectedEvent extends Event<G> {
   final PowerUpType type;
   final PaddleEntity paddle;
 
   PowerUpCollectedEvent(super.app, this.type, this.paddle);
 }
 
-class LevelCompleteEvent extends Event<G> {
+final class LevelCompleteEvent extends Event<G> {
   LevelCompleteEvent(super.app);
 }
 
@@ -72,7 +72,7 @@ class LevelCompleteEvent extends Event<G> {
   PADDLE
 ========================= */
 
-class PaddleEntity extends Entity<G> {
+final class PaddleEntity extends Entity<G> {
   static final String TAG = 'paddle'; 
 
   final String K_left = 'left';
@@ -121,7 +121,7 @@ class PaddleEntity extends Entity<G> {
   BALL
 ========================= */
 
-class BallEntity extends Entity<G> {
+final class BallEntity extends Entity<G> {
   static final String TAG = 'ball'; 
 
   int damage = 1;
@@ -180,7 +180,7 @@ class BallEntity extends Entity<G> {
   BRICK
 ========================= */
 
-class BrickEntity extends Entity<G> {
+final class BrickEntity extends Entity<G> {
   static final String TAG = 'brick'; 
 
   final Vector2 position;
@@ -282,7 +282,7 @@ enum PowerUpType {
   }
 }
 
-class PowerUpBrick extends BrickEntity {
+final class PowerUpBrick extends BrickEntity {
   final PowerUpType type;
 
   PowerUpBrick(super.app, {
@@ -293,7 +293,7 @@ class PowerUpBrick extends BrickEntity {
   }) : super(color: type.color);
 }
 
-class PickablePowerUp extends Entity<G> {
+final class PickablePowerUp extends Entity<G> {
   static final String TAG = 'powerup';
 
   final PowerUpType type;
@@ -324,7 +324,7 @@ class PickablePowerUp extends Entity<G> {
   EVENT HANDLING
 ========================= */
 
-class ArkanoidEventHandler extends SceneSystem<G> {
+final class ArkanoidEventHandler extends SceneSystem<G> {
   ArkanoidEventHandler(super.app);
 
   @override
@@ -378,7 +378,7 @@ class ArkanoidEventHandler extends SceneSystem<G> {
 ========================= */
 
 // NOTE: `CollisionResolverSystem` is really bad
-class ArkanoidCollisionResolver extends CollisionResolverSystem<G> {
+final class ArkanoidCollisionResolver extends CollisionResolverSystem<G> {
   ArkanoidCollisionResolver(super.app);
 
   @override
@@ -442,7 +442,7 @@ extension on HasAppAccess<G> {
   ArkanoidStatsSystem get statsSystem => app.getSystem()!;
 }
 
-class ArkanoidStatsSystem extends AppSystem<G> {
+final class ArkanoidStatsSystem extends AppSystem<G> {
   bool cheatMode = false;
   final _cheatModeKey = 'CHEAT';
 
@@ -514,7 +514,7 @@ class ArkanoidStatsSystem extends AppSystem<G> {
   GAME OVER SCENE
 ========================= */
 
-class ArkanoidGameOverWidget extends FWidget<G> {
+final class ArkanoidGameOverWidget extends FWidget<G> {
 
   ArkanoidGameOverWidget(super.app);
 
@@ -654,7 +654,7 @@ extension on HasAppAccess<G> {
   ArkanoidGameOverScene get gameOverScene => app.getScene()!;
 }
 
-class ArkanoidGameOverScene extends FWidgetScene<G> {
+final class ArkanoidGameOverScene extends FWidgetScene<G> {
   static final String KEY = '$ArkanoidGameOverScene';
 
   late ArkanoidGameOverWidget gameOverWidget;
@@ -675,7 +675,7 @@ extension on HasAppAccess<G> {
   ArkanoidScene get arkanoidScene => app.getScene()!;
 }
 
-class ArkanoidScene extends DrawScene<G> {
+final class ArkanoidScene extends DrawScene<G> {
   static final String KEY = '$ArkanoidScene';
 
   ArkanoidScene(super.app) : super(key: KEY);
@@ -876,7 +876,7 @@ typedef G = Arkanoid;
 ///
 /// It really does not matter where you handle the window initialization.
 /// Just make sure window is initialized before the first frame of [DrawScene].
-class Arkanoid extends App<G> {
+final class Arkanoid extends App<G> {
   Arkanoid(super.backend);
 
   bool gamePaused = false;
@@ -915,9 +915,9 @@ class Arkanoid extends App<G> {
 ///
 /// Implements [UnhingedRaylibApp] to decouple app creation from the underlying
 /// Raylib backend, allowing the same game to run on native and web.
-class ArkanoidStructureFirst extends UnhingedRaylibApp<G> {
+final class ArkanoidStructureFirst extends UnhingedRaylibApp<G> {
   @override
-  G create(RaylibBackend backend) => G(backend);
+  G create(backend) => G(backend);
 }
 
 void main() => runRaylib(

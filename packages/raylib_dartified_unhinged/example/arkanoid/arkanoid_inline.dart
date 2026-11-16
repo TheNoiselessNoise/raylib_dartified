@@ -7,18 +7,18 @@ import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
   EVENTS
 ========================= */
 
-class BallHitBrick extends Event<G> {
+final class BallHitBrick extends Event<G> {
   final Entity<G> ball;
   final Entity<G> brick;
   BallHitBrick(super.app, this.ball, this.brick);
 }
 
-class BallLost extends Event<G> {
+final class BallLost extends Event<G> {
   final Entity<G> ball;
   BallLost(super.app, this.ball);
 }
 
-class LevelComplete extends Event<G> {
+final class LevelComplete extends Event<G> {
   LevelComplete(super.app);
 }
 
@@ -26,10 +26,10 @@ class LevelComplete extends Event<G> {
   IDENTIFIERS
 ========================= */
 
-class CIsPaddle extends Comp<G>    { CIsPaddle(super.app); }
-class CIsBall extends Comp<G>      { CIsBall(super.app); }
-class CIsBrick extends Comp<G>     { CIsBrick(super.app); }
-class CIsDestroyed extends Comp<G> { CIsDestroyed(super.app); }
+final class CIsPaddle extends Comp<G>    { CIsPaddle(super.app); }
+final class CIsBall extends Comp<G>      { CIsBall(super.app); }
+final class CIsBrick extends Comp<G>     { CIsBrick(super.app); }
+final class CIsDestroyed extends Comp<G> { CIsDestroyed(super.app); }
 
 /* =========================
   GAME
@@ -39,11 +39,11 @@ class CIsDestroyed extends Comp<G> { CIsDestroyed(super.app); }
 //       this is the minimal example required
 //       Take it as a namespace for your universe.
 typedef G = Arkanoid;
-class Arkanoid extends App<G> {
+final class Arkanoid extends App<G> {
   Arkanoid(super.backend);
 }
 
-class ArkanoidInline extends UnhingedRaylibApp<G> {
+final class ArkanoidInline extends UnhingedRaylibApp<G> {
   @override
   G create(UnhingedBackend backend) => G(backend).onSelf((app) {
     final rl = (backend as RaylibBackend).rl;

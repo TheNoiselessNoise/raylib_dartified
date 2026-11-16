@@ -1,7 +1,7 @@
 part of '../../raylib_dartified_base.dart';
 
 /// Dart-side mirror of compile-time constants.
-class RaylibGuiConstants {
+final class RaylibGuiConstants {
 
   /// `RAYGUI_VERSION_MAJOR`
   static int RAYGUI_VERSION_MAJOR = 5;

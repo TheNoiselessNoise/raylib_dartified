@@ -57,18 +57,7 @@ class CTransform<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  @mustCallSuper
-  CTransform<T> createInstance() {
-    final c = CTransform<T>(app,
-      position: position.copy(),
-      rotation: rotation,
-      scale: scale.copy(),
-    );
-
-    c.prevPosition = prevPosition.copy();
-
-    return c;
-  }
+  CTransform<T> createInstance() => .new(app);
 
   // state
 

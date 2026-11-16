@@ -2,7 +2,7 @@ part of '../../raylib_dartified_base.dart';
 
 /// Produces stable slot key strings identifying the allocation origin of each
 /// Core module function's captured Struct.
-class _RaylibCoreDartCaptureIds {
+final class _RaylibCoreDartCaptureIds {
     
   /// Capture ID for [RaylibCoreDart.GetClipboardImage].
   String get GetClipboardImage => 'GetClipboardImage';

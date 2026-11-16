@@ -18,7 +18,7 @@ enum ADSRState {
   RELEASE,
 }
 
-class Envelope {
+final class Envelope {
   double attackTime = 0;
   double decayTime = 0;
   double sustainLevel = 0;

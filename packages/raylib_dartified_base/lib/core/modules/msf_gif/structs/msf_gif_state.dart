@@ -23,13 +23,13 @@ enum MsfGifStateField with XFields {
   framesSubmitted,
 }
 
-class _MsfGifCookedFrame extends XStruct<_MsfGifCookedFrame> {
+final class _MsfGifCookedFrame extends XStruct<_MsfGifCookedFrame> {
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<_MsfGifCookedFrame> struct = .create(
+  static final XStructDef<_MsfGifCookedFrame> struct = .create(
     factory: _MsfGifCookedFrame.new,
     layout: .aligned<MsfGifCookedFrameField>({
-      .pixels: XRawPtr(XUint32()),
+      .pixels: XPtrType(XUint32()),
       .depth:  XInt(),
       .count:  XInt(),
       .rbits:  XInt(),
@@ -42,7 +42,7 @@ class _MsfGifCookedFrame extends XStruct<_MsfGifCookedFrame> {
 }
 
 /// MsfGifState
-class MsfGifState extends XStruct<MsfGifState> {
+final class MsfGifState extends XStruct<MsfGifState> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -54,19 +54,19 @@ class MsfGifState extends XStruct<MsfGifState> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<MsfGifState> struct = .create(
+  static final XStructDef<MsfGifState> struct = .create(
     factory: MsfGifState.new,
     layout: .aligned<MsfGifStateField>({
-      .fileWriteFunc:          XRawPtr(XFunction<MsfGifFileWriteCallbackBase>()),
-      .fileWriteData:          XRawPtr(XVoid()),
-      .previousFrame:          XRawStruct(_MsfGifCookedFrame.struct),
-      .currentFrame:           XRawStruct(_MsfGifCookedFrame.struct),
-      .lzwMem:                 XRawPtr(XInt16()),
-      .listHead:               XRawPtr(XOpaque()),
-      .listTail:               XRawPtr(XOpaque()),
+      .fileWriteFunc:          XPtrType(XFunction<MsfGifFileWriteCallbackBase>()),
+      .fileWriteData:          XPtrType(XVoid()),
+      .previousFrame:          XStructType(_MsfGifCookedFrame.struct),
+      .currentFrame:           XStructType(_MsfGifCookedFrame.struct),
+      .lzwMem:                 XPtrType(XInt16()),
+      .listHead:               XPtrType(XOpaque()),
+      .listTail:               XPtrType(XOpaque()),
       .width:                  XInt(),
       .height:                 XInt(),
-      .customAllocatorContext: XRawPtr(XVoid()),
+      .customAllocatorContext: XPtrType(XVoid()),
       .framesSubmitted:        XInt(),
     }),
   );

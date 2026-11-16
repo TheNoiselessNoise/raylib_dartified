@@ -1,3 +1,8 @@
+## 6.0.4
+
+- fix widgets rendering
+- attach/detach entity
+
 ## 6.0.3
 
 - Remove `IsUpdatable`

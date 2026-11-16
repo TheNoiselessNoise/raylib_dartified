@@ -6,7 +6,7 @@ enum FCheckboxVariant {
   success,
 }
 
-class FCheckboxTheme {
+final class FCheckboxTheme {
   final Color border;
   final Color borderHovered;
   final Color fill;
@@ -36,7 +36,7 @@ class FCheckboxTheme {
   }
 }
 
-class _FCheckboxVariantPalette {
+final class _FCheckboxVariantPalette {
   final Color solid;
   final Color solidHover;
 
@@ -61,7 +61,7 @@ Map<FCheckboxVariant, _FCheckboxVariantPalette> get _fCheckboxVariantColors => {
   ),
 };
 
-class FCheckbox<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FCheckbox<T>> {
+final class FCheckbox<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FCheckbox<T>> {
   bool checked;
   double boxSize;
   double borderWidth;

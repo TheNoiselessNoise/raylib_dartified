@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FSeparator<T extends App<T>> extends FWidgetLeaf<T> {
+final class FSeparator<T extends App<T>> extends FWidgetLeaf<T> {
   double thickness;
   Color color;
   FLabel<T>? label;

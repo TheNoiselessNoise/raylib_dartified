@@ -13,7 +13,7 @@ enum ModelField with XFields {
 }
 
 /// Model, meshes, materials and animation data
-class Model extends XStruct<Model> {
+final class Model extends XStruct<Model> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -25,22 +25,22 @@ class Model extends XStruct<Model> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Model> struct = .create(
+  static final XStructDef<Model> struct = .create(
     factory: Model.new,
     layout: .aligned<ModelField>({
-      .transform:     XRawStruct(Matrix.struct), // Local transform matrix
+      .transform:     XStructType(Matrix.struct), // Local transform matrix
       .meshCount:     XInt(), // Number of meshes
       .materialCount: XInt(), // Number of materials
-      .meshes:        XRawPtr(XRawStruct(Mesh.struct)), // Meshes array
-      .materials:     XRawPtr(XRawStruct(Material.struct)), // Materials array
-      .meshMaterial:  XRawPtr(XInt()), // Mesh material number
+      .meshes:        XPtrType(XStructType(Mesh.struct)), // Meshes array
+      .materials:     XPtrType(XStructType(Material.struct)), // Materials array
+      .meshMaterial:  XPtrType(XInt()), // Mesh material number
 
       // Animation data
-      .skeleton:      XRawStruct(ModelSkeleton.struct), // Skeleton for animation
+      .skeleton:      XStructType(ModelSkeleton.struct), // Skeleton for animation
 
       // Runtime animation data (CPU/GPU skinning)
-      .currentPose:   XRawPtr(XRawStruct(Transform.struct)), // Current animation pose (Transform[])
-      .boneMatrices:  XRawPtr(XRawStruct(Matrix.struct)), // Bones animated transformation matrices
+      .currentPose:   XPtrType(XStructType(Transform.struct)), // Current animation pose (Transform[])
+      .boneMatrices:  XPtrType(XStructType(Matrix.struct)), // Bones animated transformation matrices
     }),
   );
 

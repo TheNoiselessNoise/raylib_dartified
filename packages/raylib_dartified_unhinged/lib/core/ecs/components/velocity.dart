@@ -86,13 +86,7 @@ class CVelocity<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CVelocity<T> createInstance() => .new(app,
-    velocity: velocity.copy(),
-    angularVelocity: angularVelocity,
-    linearDamping: linearDamping,
-    angularDamping: angularDamping,
-    maxVelocity: maxVelocity,
-  );
+  CVelocity<T> createInstance() => .new(app);
 
   // state
 

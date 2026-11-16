@@ -3,8 +3,6 @@ part of '../../raylib_dartified_base.dart';
 /// Backend-agnostic Raylib Light module.
 final class RaylibLightDart<R extends RaylibBase> extends RaylibModule<R> with RaylibLightModuleExtras<R> {
 
-  final _debugLabels = _RaylibLightDartDebugLabels();
-
   RaylibLightDart(super.rl);
 
   RaylibLightFlat get _flat => rl.module();
@@ -17,7 +15,7 @@ final class RaylibLightDart<R extends RaylibBase> extends RaylibModule<R> with R
     Color color,
     Shader shader,
   ) => debugRun(
-    () => _debugLabels.CreateLight(type, position, target, color, shader),
+    () => 'CreateLight(${type.name}, $position, $target, $color, $shader)',
     () => _flat.CreateLight(
       type.value,
       position,
@@ -32,7 +30,7 @@ final class RaylibLightDart<R extends RaylibBase> extends RaylibModule<R> with R
     Shader shader,
     Light light,
   ) => debugRun(
-    () => _debugLabels.UpdateLightValues(shader, light),
+    () => 'UpdateLightValues($shader, $light)',
     () => _flat.UpdateLightValues(
       shader,
       light,

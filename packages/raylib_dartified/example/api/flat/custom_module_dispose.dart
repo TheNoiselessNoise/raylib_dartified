@@ -4,7 +4,7 @@ import '../../base_flat.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class MyModule extends RaylibModule<Raylib> {
+final class MyModule extends RaylibModule<Raylib> {
   MyModule(super.rl);
 
   // fields initialized in load(), which is called by registerModule()

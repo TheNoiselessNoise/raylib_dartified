@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
+final class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
 
   RaylibCoreFlatWeb(super.rl);
 
@@ -3880,7 +3880,7 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
   @override
   Image GenImageFontAtlas(
     XStructPtr<GlyphInfo> glyphs,
-    XPtr<XRawPtr<XRawStruct>> glyphRecs, // Rectangle
+    XPtr<XPtrType<XStructType>> glyphRecs, // Rectangle
     int glyphCount,
     int fontSize,
     int padding,
@@ -4178,7 +4178,7 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
   );
 
   @override
-  XWasmPtr<XRawPtr<XChar>> LoadTextLines(
+  XWasmPtr<XPtrType<XChar>> LoadTextLines(
     XPtr<XChar> text,
     XPtr<XInt> count,
   ) => _wasm.LoadTextLines(
@@ -4188,7 +4188,7 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
 
   @override
   void UnloadTextLines(
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int lineCount,
   ) => _wasm.UnloadTextLines(
     text.toJS,
@@ -4321,7 +4321,7 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
 
   @override
   XWasmPtr<XChar> TextJoin(
-    XPtr<XRawPtr<XChar>> textList,
+    XPtr<XPtrType<XChar>> textList,
     int count,
     XPtr<XChar> delimiter,
   ) => _wasm.TextJoin(
@@ -4331,7 +4331,7 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
   );
 
   @override
-  XWasmPtr<XRawPtr<XChar>> TextSplit(
+  XWasmPtr<XPtrType<XChar>> TextSplit(
     XPtr<XChar> text,
     int delimiter,
     XPtr<XInt> count,
@@ -4842,10 +4842,10 @@ class RaylibCoreFlatWeb extends RaylibCoreFlat<Raylib> {
 
   @override
   @Deprecated(
-    "Broken by a dart:ffi bug: the trailing Color argument gets corrupted "
-    "(or crashes) once the preceding float-only args exceed the CPU's 8 "
-    "float registers. Use DrawBillboard/DrawBillboardRec, or wait for the fix. "
-    "See dart-lang/sdk#63976."
+    "On Dart < 3.14.0, the trailing Color argument is corrupted (or crashes) "
+    "once the preceding float-only args exceed the 8 float registers "
+    "(dart-lang/sdk#63976). Fixed in Dart 3.14.0; ignore on newer SDKs, "
+    "otherwise use DrawBillboard."
   )
   void DrawBillboardPro(
     Camera3D camera,

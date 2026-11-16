@@ -92,10 +92,7 @@ class CParticleEmitter<T extends App<T>, E extends Entity<T>> extends Comp<T> {
   // clone
 
   @override
-  CParticleEmitter<T, E> createInstance() => .new(app,
-    rate: rate,
-    factory: factory,
-  );
+  CParticleEmitter<T, E> createInstance() => .new(app);
 
   // state
 

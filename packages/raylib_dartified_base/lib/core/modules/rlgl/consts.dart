@@ -1,7 +1,7 @@
 part of '../../raylib_dartified_base.dart';
 
 /// Dart-side mirror of compile-time constants.
-class RaylibRlglConstants {
+final class RaylibRlglConstants {
   
   /// `RLGL_VERSION`
   static String RLGL_VERSION = '6.0';

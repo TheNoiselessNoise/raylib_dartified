@@ -4,7 +4,7 @@ import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
 
 typedef G = TestDoubleFreeApp;
 
-class TestDoubleFreeApp extends App<G> {
+final class TestDoubleFreeApp extends App<G> {
   TestDoubleFreeApp(super.backend);
 
   @override
@@ -14,9 +14,9 @@ class TestDoubleFreeApp extends App<G> {
   void onExit() => CloseWindow();
 }
 
-class Bridge extends UnhingedRaylibApp<G> {
+final class Bridge extends UnhingedRaylibApp<G> {
   @override
-  G create(RaylibBackend backend) => .new(backend);
+  G create(backend) => .new(backend);
 }
 
 void main() => runRaylib(

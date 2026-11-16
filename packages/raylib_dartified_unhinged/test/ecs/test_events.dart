@@ -13,7 +13,7 @@ void addTestResult<T extends App<T>>(Event<T> event, TestingEmitterType emitter)
   testCounts[emitter] = testCounts.putIfAbsent(emitter, () => 0) + 1;
 }
 
-class TestEventPropagationResult {
+final class TestEventPropagationResult {
   ExpectedValues expected = .new({}, 0, 0);
   Set<(TestingEmitterType, int)> got = {};
 
@@ -109,7 +109,7 @@ enum EventMethod {
   dispatch,
 }
 
-class ExpectedValues {
+final class ExpectedValues {
   final int appEventCount;
   final int holderEventCount;
   final Set<TestingEmitterType> allEvents;
@@ -203,7 +203,7 @@ const Map<(TestingEmitterType, EventScope), ExpectedValues> expectedReceivers = 
 
 typedef G = TestApp;
 
-class TestApp extends TestingApp<G> {
+final class TestApp extends TestingApp<G> {
   TestApp(super.backend, {
     super.onEventCallbackPackage,
   });

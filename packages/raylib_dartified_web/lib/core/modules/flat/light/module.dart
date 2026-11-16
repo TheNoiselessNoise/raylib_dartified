@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibLightFlatWeb extends RaylibLightFlat<Raylib> {
+final class RaylibLightFlatWeb extends RaylibLightFlat<Raylib> {
 
   RaylibLightFlatWeb(super.rl);
 

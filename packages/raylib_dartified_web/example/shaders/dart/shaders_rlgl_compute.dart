@@ -9,7 +9,7 @@ const int screenHeight = 450;
 const int GOL_WIDTH = 768;
 const int MAX_BUFFERED_TRANSFERTS = 48;
 
-class GolUpdateCmd {
+final class GolUpdateCmd {
   int x;
   int y;
   int w;
@@ -25,7 +25,7 @@ class GolUpdateCmd {
   List<int> get data => [x, y, w, enabled.toInt()];
 }
 
-class GolUpdateSSBO {
+final class GolUpdateSSBO {
   int count;
   List<GolUpdateCmd> commands;
 

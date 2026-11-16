@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibQuaternionExt extends RaylibModuleWasm {
+final class RaylibQuaternionExt extends RaylibModuleWasm {
   /// Add two quaternions
   late final XF3<void> QuaternionAdd;
   /// Add quaternion and double value

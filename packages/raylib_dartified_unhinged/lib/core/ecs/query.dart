@@ -15,7 +15,7 @@ typedef QueryFilterFn<T extends App<T>, E extends IsComponentManagable<T, E>> = 
 ///
 /// Groups are created implicitly by [QueryComponentManagable.Or] and
 /// [QueryComponentManagable.Not]; you rarely construct one directly.
-class QueryGroup<T extends App<T>, E extends IsComponentManagable<T, E>> {
+final class QueryGroup<T extends App<T>, E extends IsComponentManagable<T, E>> {
   final List<QueryFilterFn<T, E>> filters = [];
 
   /// When `true`, the entire group's result is negated before being applied.
@@ -576,7 +576,7 @@ abstract class QueryComponentManagable<
 ///   .Except<Dead>()
 ///   .DoForEachWith<Health>((e, h) => h.regen());
 /// ```
-class QueryEntities<T extends App<T>, E extends IsEntityManagable<T, E, Entity<T>>> extends QueryComponentManagable<T, Entity<T>, QueryEntities<T, E>> {
+final class QueryEntities<T extends App<T>, E extends IsEntityManagable<T, E, Entity<T>>> extends QueryComponentManagable<T, Entity<T>, QueryEntities<T, E>> {
   final E origin;
 
   QueryEntities(super.app, this.origin);
@@ -592,7 +592,7 @@ class QueryEntities<T extends App<T>, E extends IsEntityManagable<T, E, Entity<T
 ///
 /// Only components attached directly to [entity] are considered; for a
 /// recursive search across child entities use [QueryEntityComponentDeep].
-class QueryEntityComponent<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryEntityComponent<T>> {
+final class QueryEntityComponent<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryEntityComponent<T>> {
   final Entity<T> entity;
 
   QueryEntityComponent(super.app, this.entity);
@@ -608,7 +608,7 @@ class QueryEntityComponent<T extends App<T>> extends QueryComponentManagable<T, 
 /// attached to nested child entities.
 ///
 /// For shallow (direct-only) component queries use [QueryEntityComponent].
-class QueryEntityComponentDeep<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryEntityComponentDeep<T>> {
+final class QueryEntityComponentDeep<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryEntityComponentDeep<T>> {
   final Entity<T> entity;
 
   QueryEntityComponentDeep(super.app, this.entity);
@@ -624,7 +624,7 @@ class QueryEntityComponentDeep<T extends App<T>> extends QueryComponentManagable
 ///
 /// Only components attached directly to [component] are considered; for a
 /// recursive search across nested child components use [QueryComponentComponentDeep].
-class QueryComponentComponent<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryComponentComponent<T>> {
+final class QueryComponentComponent<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryComponentComponent<T>> {
   final Comp<T> component;
 
   QueryComponentComponent(super.app, this.component);
@@ -640,7 +640,7 @@ class QueryComponentComponent<T extends App<T>> extends QueryComponentManagable<
 /// attached to nested child components.
 ///
 /// For shallow (direct-only) component queries use [QueryComponentComponent].
-class QueryComponentComponentDeep<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryComponentComponentDeep<T>> {
+final class QueryComponentComponentDeep<T extends App<T>> extends QueryComponentManagable<T, Comp<T>, QueryComponentComponentDeep<T>> {
   final Comp<T> component;
 
   QueryComponentComponentDeep(super.app, this.component);

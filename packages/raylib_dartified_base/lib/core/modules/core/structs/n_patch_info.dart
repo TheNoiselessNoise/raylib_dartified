@@ -10,7 +10,7 @@ enum NPatchInfoField with XFields {
 }
 
 /// NPatchInfo, n-patch layout info
-class NPatchInfo extends XStruct<NPatchInfo> {
+final class NPatchInfo extends XStruct<NPatchInfo> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,10 +22,10 @@ class NPatchInfo extends XStruct<NPatchInfo> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<NPatchInfo> struct = .createValue(
+  static final XStructDef<NPatchInfo> struct = .createValue(
     factory: NPatchInfo.new,
     layout: .aligned<NPatchInfoField>({
-      .source: XRawStruct(Rectangle.struct), // Texture source rectangle
+      .source: XStructType(Rectangle.struct), // Texture source rectangle
       .left:   XInt(), // Left border offset
       .top:    XInt(), // Top border offset
       .right:  XInt(), // Right border offset
@@ -91,18 +91,13 @@ class NPatchInfo extends XStruct<NPatchInfo> {
   NPatchInfo({
     super.op,
     Rectangle? source,
-    int left = 0,
-    int top = 0,
-    int right = 0,
-    int bottom = 0,
-    NPatchLayout layout = .NPATCH_NINE_PATCH,
+    this._left = 0,
+    this._top = 0,
+    this._right = 0,
+    this._bottom = 0,
+    this._layout = .NPATCH_NINE_PATCH,
   }) :
-    _source = source ?? .new(),
-    _left = left,
-    _top = top,
-    _right = right,
-    _bottom = bottom,
-    _layout = layout;
+    _source = source ?? .new();
 
   factory NPatchInfo.zero() => .new();
 

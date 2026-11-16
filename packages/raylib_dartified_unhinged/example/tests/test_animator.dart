@@ -1,7 +1,7 @@
 // Run it: dart run test_animator.dart
 import '_base.dart';
 
-class PlayerEntity extends Entity<G> {
+final class PlayerEntity extends Entity<G> {
   final String K_up = 'up';
   final String K_down = 'down';
   final String K_left = 'left';
@@ -72,7 +72,7 @@ class PlayerEntity extends Entity<G> {
   });
 }
 
-class MyScene extends DrawScene<G> {
+final class MyScene extends DrawScene<G> {
   late PlayerEntity player; 
 
   MyScene(super.app);
@@ -176,7 +176,7 @@ class MyScene extends DrawScene<G> {
 
 typedef G = MyGame;
 
-class MyGame extends ExampleRaylibApp<G> {
+final class MyGame extends ExampleRaylibApp<G> {
   MyGame(super.backend);
 
   @override

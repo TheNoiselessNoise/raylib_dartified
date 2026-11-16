@@ -59,7 +59,7 @@ Events in the queue are sorted by `priority` (higher value = processed first). E
 Extend `Event<T>` to carry additional data:
 
 ```dart
-class DamageEvent<T extends App<T>> extends Event<T> {
+final class DamageEvent<T extends App<T>> extends Event<T> {
   final int amount;
   final Entity<T> source;
 

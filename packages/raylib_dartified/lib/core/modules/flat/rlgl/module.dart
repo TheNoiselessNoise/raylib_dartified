@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
+final class RaylibRlglFlatNative extends RaylibRlglFlat<Raylib> {
   
   RaylibRlglFlatNative(super.rl);
 

@@ -8,7 +8,7 @@ const int PLAYER_TILE_VISIBILITY = 2;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class ExampleMap {
+final class ExampleMap {
   int tilesX;
   int tilesY;
   List<int> tileIds;

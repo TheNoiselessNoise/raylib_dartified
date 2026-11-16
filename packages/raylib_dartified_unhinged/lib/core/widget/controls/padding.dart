@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FPadding<T extends App<T>> extends FWidgetLeaf<T> {
+final class FPadding<T extends App<T>> extends FWidgetLeaf<T> {
   double left, top, right, bottom;
 
   FPadding(super.app, {

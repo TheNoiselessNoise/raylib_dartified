@@ -51,14 +51,14 @@ abstract class TestDisposableScene extends DrawScene<G> {
   }
 }
 
-class TestScene1 extends TestDisposableScene {
+final class TestScene1 extends TestDisposableScene {
   TestScene1(super.app);
 
   @override
   SceneFactory get nextScene => TestScene2.new;
 }
 
-class TestScene2 extends TestDisposableScene {
+final class TestScene2 extends TestDisposableScene {
   TestScene2(super.app);
 
   @override
@@ -67,7 +67,7 @@ class TestScene2 extends TestDisposableScene {
 
 typedef G = TestDisposableApp;
 
-class TestDisposableApp extends ExampleRaylibApp<G> {
+final class TestDisposableApp extends ExampleRaylibApp<G> {
   TestDisposableApp(super.backend);
 
   @override

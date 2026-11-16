@@ -1,7 +1,7 @@
 // Run it: dart run test_scenes_and_buttons.dart
 import '_base.dart';
 
-class IntroScene extends FWidgetScene<G> {
+final class IntroScene extends FWidgetScene<G> {
   IntroScene(super.app);
 
   @override
@@ -40,7 +40,7 @@ class IntroScene extends FWidgetScene<G> {
   }
 }
 
-class MainMenuScene extends FWidgetScene<G> {
+final class MainMenuScene extends FWidgetScene<G> {
   late Map<String, void Function(FWidget<G> btn)> buttonInfo;
 
   MainMenuScene(super.app);
@@ -77,7 +77,7 @@ class MainMenuScene extends FWidgetScene<G> {
   }
 }
 
-class MainMenuOptionsWidget extends FWidget<G> {
+final class MainMenuOptionsWidget extends FWidget<G> {
   double volume = 1.0;
 
   late FButton<G> applyButton;
@@ -201,7 +201,7 @@ class MainMenuOptionsWidget extends FWidget<G> {
   );
 }
 
-class MainMenuOptionsScene extends FWidgetScene<G> {
+final class MainMenuOptionsScene extends FWidgetScene<G> {
   MainMenuOptionsScene(super.app);
 
   late MainMenuOptionsWidget widget;
@@ -215,7 +215,7 @@ class MainMenuOptionsScene extends FWidgetScene<G> {
   }
 }
 
-class GameScene extends FWidgetScene<G> {
+final class GameScene extends FWidgetScene<G> {
   GameScene(super.app);
 
   @override
@@ -266,7 +266,7 @@ extension on HasAppAccess<G> {
   void goToGame() => app.callback(() => app.setScene(gameScene));
 }
 
-class MyGame extends ExampleRaylibApp<G> {
+final class MyGame extends ExampleRaylibApp<G> {
   MyGame(super.backend);
 
   @override

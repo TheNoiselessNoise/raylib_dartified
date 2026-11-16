@@ -12,7 +12,7 @@ enum VrStereoConfigField with XFields {
 }
 
 /// VrStereoConfig, VR stereo rendering configuration for simulator
-class VrStereoConfig extends XStruct<VrStereoConfig> {
+final class VrStereoConfig extends XStruct<VrStereoConfig> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -24,11 +24,11 @@ class VrStereoConfig extends XStruct<VrStereoConfig> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<VrStereoConfig> struct = .create(
+  static final XStructDef<VrStereoConfig> struct = .create(
     factory: VrStereoConfig.new,
     layout: .aligned<VrStereoConfigField>({
-      .projection:        XArray(XRawStruct(Matrix.struct), BASE_paramsCount), // VR projection matrices (per eye)
-      .viewOffset:        XArray(XRawStruct(Matrix.struct), BASE_paramsCount), // VR view offset matrices (per eye)
+      .projection:        XArray(XStructType(Matrix.struct), BASE_paramsCount), // VR projection matrices (per eye)
+      .viewOffset:        XArray(XStructType(Matrix.struct), BASE_paramsCount), // VR view offset matrices (per eye)
       .leftLensCenter:    XArray(XFloat(), BASE_paramsCount), // VR left lens center
       .rightLensCenter:   XArray(XFloat(), BASE_paramsCount), // VR right lens center
       .leftScreenCenter:  XArray(XFloat(), BASE_paramsCount), // VR left screen center

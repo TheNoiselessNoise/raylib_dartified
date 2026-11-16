@@ -104,13 +104,7 @@ class CBoundsBounce<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CBoundsBounce<T> createInstance() => .new(app,
-    restitution: restitution,
-    left: left,
-    top: top,
-    right: right,
-    bottom: bottom,
-  );
+  CBoundsBounce<T> createInstance() => .new(app);
   
   // state
 

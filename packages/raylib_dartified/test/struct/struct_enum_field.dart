@@ -5,9 +5,9 @@ enum MyStructField with XFields {
   enumField,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
       .enumField: XInt(),
@@ -23,8 +23,8 @@ class MyStruct extends XStruct<MyStruct> {
 
   MyStruct({
     super.op,
-    KeyboardKey enumField = .KEY_NULL,
-  }) : _enumField = enumField;
+    this._enumField = .KEY_NULL,
+  });
 
   @override
   MyStruct clone() => .new(op: op);
@@ -43,11 +43,11 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
   final value = KeyboardKey.KEY_DELETE; // 261
-  late XPtr<XRawStruct> ptr;
+  late XPtr<XStructType> ptr;
   setUp(() => ptr = XPtr.calloc(1, MyStruct.struct.byteSize));
   tearDown(() => ptr.free());
 

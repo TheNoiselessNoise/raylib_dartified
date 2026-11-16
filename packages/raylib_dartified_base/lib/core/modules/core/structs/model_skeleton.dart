@@ -7,7 +7,7 @@ enum ModelSkeletonField with XFields {
 }
 
 /// Skeleton, animation bones hierarchy
-class ModelSkeleton extends XStruct<ModelSkeleton> {
+final class ModelSkeleton extends XStruct<ModelSkeleton> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,12 +19,12 @@ class ModelSkeleton extends XStruct<ModelSkeleton> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<ModelSkeleton> struct = .create(
+  static final XStructDef<ModelSkeleton> struct = .create(
     factory: ModelSkeleton.new,
     layout: .aligned<ModelSkeletonField>({
       .boneCount: XInt(), // Number of bones
-      .bones:     XRawPtr(XRawStruct(BoneInfo.struct)), // Bones information (skeleton)
-      .bindPose:  XRawPtr(XRawStruct(Transform.struct)), // Bones base transformation (Transform[])
+      .bones:     XPtrType(XStructType(BoneInfo.struct)), // Bones information (skeleton)
+      .bindPose:  XPtrType(XStructType(Transform.struct)), // Bones base transformation (Transform[])
     }),
   );
 

@@ -6,7 +6,7 @@ enum FSelectVariant {
   success,
 }
 
-class FSelectTheme {
+final class FSelectTheme {
   final Color background;
   final Color backgroundHovered;
   final Color border;
@@ -59,7 +59,7 @@ class FSelectTheme {
   }
 }
 
-class _FSelectVariantPalette {
+final class _FSelectVariantPalette {
   final Color solid;
   final Color solidHover;
 
@@ -84,7 +84,7 @@ Map<FSelectVariant, _FSelectVariantPalette> get _fSelectVariantColors => {
   ),
 };
 
-class FSelect<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FSelect<T>> {
+final class FSelect<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FSelect<T>> {
   List<String> options;
   int selectedIndex;
   double controlWidth;

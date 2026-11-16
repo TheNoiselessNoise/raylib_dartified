@@ -11,7 +11,7 @@ const int MAX_BOXES = 20;
 const int MAX_SHADOWS = MAX_BOXES*3;
 const int MAX_LIGHTS = 16;
 
-class ShadowGeometry {
+final class ShadowGeometry {
   List<Vector2> vertices;
 
   ShadowGeometry({
@@ -20,7 +20,7 @@ class ShadowGeometry {
     vertices = vertices ?? .generate(4, (k) => .zero());
 }
 
-class LightInfo {
+final class LightInfo {
   bool active;
   bool dirty;
   bool valid;

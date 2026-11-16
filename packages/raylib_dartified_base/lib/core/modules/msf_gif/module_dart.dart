@@ -3,8 +3,6 @@ part of '../../raylib_dartified_base.dart';
 /// Backend-agnostic MsfGif module.
 final class RaylibMsfGifDart<R extends RaylibBase> extends RaylibModule<R> {
 
-  final _debugLabels = _RaylibMsfGifDartDebugLabels();
-  
   RaylibMsfGifDart(super.rl);
 
   RaylibMsfGifFlat get _flat => rl.module();
@@ -23,7 +21,7 @@ final class RaylibMsfGifDart<R extends RaylibBase> extends RaylibModule<R> {
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.msf_gif_begin(handle, width, height),
+    () => 'msf_gif_begin($handle, $width, $height)',
     () => _flat.msf_gif_begin(
       MsfGifState$.Ref1(handle),
       width.toInt(),
@@ -39,7 +37,7 @@ final class RaylibMsfGifDart<R extends RaylibBase> extends RaylibModule<R> {
     num maxBitDepth,
     num pitchInBytes,
   ) => debugRun(
-    () => _debugLabels.msf_gif_frame(handle, pixelData, centiSecondsPerFame, maxBitDepth, pitchInBytes),
+    () => 'msf_gif_frame($handle, pixelData: ${pixelData.length})',
     () => _flat.msf_gif_frame(
       MsfGifState$.Ref1(handle),
       TypedDataList$.Array(pixelData).cast(),
@@ -53,7 +51,7 @@ final class RaylibMsfGifDart<R extends RaylibBase> extends RaylibModule<R> {
   MsfGifResult msf_gif_end(
     MsfGifState handle,
   ) => debugRun(
-    () => _debugLabels.msf_gif_end(handle),
+    () => 'msf_gif_end($handle)',
     () => _flat.msf_gif_end(
       MsfGifState$.Ref1(handle),
     ),
@@ -63,7 +61,7 @@ final class RaylibMsfGifDart<R extends RaylibBase> extends RaylibModule<R> {
   void msf_gif_free(
     MsfGifResult result,
   ) => debugRun(
-    () => _debugLabels.msf_gif_free(result),
+    () => 'msf_gif_free($result)',
     () => _flat.msf_gif_free(
       result,
     ),

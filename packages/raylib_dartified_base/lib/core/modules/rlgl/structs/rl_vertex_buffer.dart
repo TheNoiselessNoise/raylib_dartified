@@ -12,7 +12,7 @@ enum RlVertexBufferField with XFields {
 }
 
 /// RLGL Vertex buffer
-class RlVertexBuffer extends XStruct<RlVertexBuffer> {
+final class RlVertexBuffer extends XStruct<RlVertexBuffer> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -24,17 +24,17 @@ class RlVertexBuffer extends XStruct<RlVertexBuffer> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<RlVertexBuffer> struct = .create(
+  static final XStructDef<RlVertexBuffer> struct = .create(
     factory: RlVertexBuffer.new,
     layout: .aligned<RlVertexBufferField>({
       .elementCount: XInt(), // Number of elements in the buffer (QUADS)
-      .vertices:     XRawPtr(XFloat()), // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-      .texcoords:    XRawPtr(XFloat()), // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-      .normals:      XRawPtr(XFloat()), // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
-      .colors:       XRawPtr(XUnsignedChar()), // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-      .indices: switch (currentMemoryPlatform.type) {
-        .native   => XRawPtr(XUnsignedInt()), // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-        .web      => XRawPtr(XUnsignedShort()), // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+      .vertices:     XPtrType(XFloat()), // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+      .texcoords:    XPtrType(XFloat()), // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+      .normals:      XPtrType(XFloat()), // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
+      .colors:       XPtrType(XUnsignedChar()), // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+      .indices: switch (currentMemoryPlatformType) {
+        .native   => XPtrType(XUnsignedInt()), // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+        .web      => XPtrType(XUnsignedShort()), // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
       },
       .vaoId:        XUnsignedInt(), // OpenGL Vertex Array Object id
       .vboId:        XArray(XUnsignedInt(), BASE_vboIdCount), // OpenGL Vertex Buffer Objects id (5 types of vertex data)
@@ -55,7 +55,7 @@ class RlVertexBuffer extends XStruct<RlVertexBuffer> {
   /// Field descriptor for [colors].
   static final field_colors = _l.ptrScalarArray<int, XUnsignedChar>(.colors);
   /// Field descriptor for [indices].
-  static final XPtrArrayField<int, XTypeIntLike> field_indices = switch (currentMemoryPlatform.type) {
+  static final XPtrArrayField<int, XTypeIntLike> field_indices = switch (currentMemoryPlatformType) {
     .native => _l.ptrScalarArray<int, XUnsignedInt>(.indices),
     .web    => _l.ptrScalarArray<int, XUnsignedShort>(.indices),
   };
@@ -158,18 +158,15 @@ class RlVertexBuffer extends XStruct<RlVertexBuffer> {
 
   RlVertexBuffer({
     super.op,
-    int elementCount = 0,
+    this._elementCount = 0,
     List<double>? vertices,
     List<double>? texcoords,
     List<double>? normals,
     List<int>? colors,
     List<int>? indices,
-    int vaoId = 0,
+    this._vaoId = 0,
     List<int>? vboId,
-  }) :
-    _elementCount = elementCount,
-    _vaoId = vaoId
-  {
+  }) {
     _vertices = field_vertices.live(() => op, vertices ?? .filled(verticesCount, 0));
     _texcoords = field_texcoords.live(() => op, texcoords ?? .filled(texcoordsCount, 0));
     _normals = field_normals.live(() => op, normals ?? .filled(normalsCount, 0));

@@ -184,17 +184,7 @@ class CStateMachine<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CStateMachine<T> createInstance() {
-    final c = CStateMachine<T>(app);
-    c._states = .from(_states);
-    c._transitions = .from(_transitions);
-    c._current = _current;
-    c._timeInState = _timeInState;
-    c._started = _started;
-    c._entered = _entered;
-    c.multipleTransitionsPerFrame = multipleTransitionsPerFrame;
-    return c;
-  }
+  CStateMachine<T> createInstance() => .new(app);
 
   // state
 

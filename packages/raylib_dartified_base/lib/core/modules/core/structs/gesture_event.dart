@@ -8,7 +8,7 @@ enum GestureEventField with XFields {
 }
 
 /// Gesture event
-class GestureEvent extends XStruct<GestureEvent> {
+final class GestureEvent extends XStruct<GestureEvent> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,13 +20,13 @@ class GestureEvent extends XStruct<GestureEvent> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<GestureEvent> struct = .create(
+  static final XStructDef<GestureEvent> struct = .create(
     factory: GestureEvent.new,
     layout: .aligned<GestureEventField>({
       .touchAction: XInt(),
       .pointCount:  XInt(),
       .pointId:     XArray(XInt(), BASE_maxTouchPoints),
-      .position:    XArray(XRawStruct(Vector2.struct), BASE_maxTouchPoints),
+      .position:    XArray(XStructType(Vector2.struct), BASE_maxTouchPoints),
     }),
   );
 
@@ -86,14 +86,11 @@ class GestureEvent extends XStruct<GestureEvent> {
 
   GestureEvent({
     super.op,
-    TouchAction touchAction = .TOUCH_ACTION_DOWN,
-    int pointCount = 0,
+    this._touchAction = .TOUCH_ACTION_DOWN,
+    this._pointCount = 0,
     List<int>? pointId,
     List<Vector2>? position,
-  }) :
-    _touchAction = touchAction,
-    _pointCount = pointCount
-  {
+  }) {
     _pointId = field_pointId.live(() => op, pointId ?? .filled(field_pointId.codec.type.count, 0));
     _position = field_position.live(() => op, position ?? .generate(field_position.codec.type.count, (_) => .zero()));
   }

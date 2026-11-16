@@ -3,9 +3,7 @@ part of '../../../raylib_dartified_base.dart';
 /// Exposes Raylib's matrix math API as module-level functions by delegating
 /// to the corresponding [Matrix] methods/factories.
 /// Exists purely for Raylib API symmetry.
-class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
-
-  final _debugLabels = _RaylibMatrixExtDartDebugLabels();
+final class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
 
   RaylibMatrixExtDart(super.rl);
 
@@ -13,7 +11,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double MatrixDeterminant(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixDeterminant(mat),
+    () => 'MatrixDeterminant($mat)',
     () => mat.determinant(),
   );
 
@@ -21,7 +19,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double MatrixTrace(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixTrace(mat),
+    () => 'MatrixTrace($mat)',
     () => mat.trace(),
   );
 
@@ -29,7 +27,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixTranspose(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixTranspose(mat),
+    () => 'MatrixTranspose($mat)',
     () => mat.transpose(),
   );
 
@@ -37,13 +35,13 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixInvert(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixInvert(mat),
+    () => 'MatrixInvert($mat)',
     () => mat.invert(),
   );
 
   /// See [Matrix.identity].
   Matrix MatrixIdentity() => debugRun(
-    () => _debugLabels.MatrixIdentity(),
+    () => 'MatrixIdentity()',
     () => .identity(),
   );
 
@@ -52,7 +50,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Matrix left,
     Matrix right,
   ) => debugRun(
-    () => _debugLabels.MatrixAdd(left, right),
+    () => 'MatrixAdd($left, $right)',
     () => left.add(right),
   );
 
@@ -61,7 +59,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Matrix left,
     Matrix right,
   ) => debugRun(
-    () => _debugLabels.MatrixSubtract(left, right),
+    () => 'MatrixSubtract($left, $right)',
     () => left.sub(right),
   );
 
@@ -70,7 +68,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Matrix left,
     Matrix right,
   ) => debugRun(
-    () => _debugLabels.MatrixMultiply(left, right),
+    () => 'MatrixMultiply($left, $right)',
     () => left.mul(right),
   );
 
@@ -79,7 +77,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Matrix left,
     double value,
   ) => debugRun(
-    () => _debugLabels.MatrixMultiplyValue(left, value),
+    () => 'MatrixMultiplyValue($left, $value)',
     () => left.mulValue(value),
   );
 
@@ -89,7 +87,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double y,
     double z,
   ) => debugRun(
-    () => _debugLabels.MatrixTranslate(x, y, z),
+    () => 'MatrixTranslate($x, $y, $z)',
     () => .translate(x, y, z),
   );
 
@@ -98,7 +96,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector3 axis,
     double angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotate(axis, angle),
+    () => 'MatrixRotate($axis, $angle)',
     () => .rotateAngle(axis, angle),
   );
 
@@ -106,7 +104,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixRotateX(
     double angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotateX(angle),
+    () => 'MatrixRotateX($angle)',
     () => .rotateX(angle),
   );
 
@@ -114,7 +112,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixRotateY(
     double angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotateY(angle),
+    () => 'MatrixRotateY($angle)',
     () => .rotateY(angle),
   );
 
@@ -122,7 +120,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixRotateZ(
     double angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotateZ(angle),
+    () => 'MatrixRotateZ($angle)',
     () => .rotateZ(angle),
   );
 
@@ -130,7 +128,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixRotateXYZ(
     Vector3 angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotateXYZ(angle),
+    () => 'MatrixRotateXYZ($angle)',
     () => .rotateXYZ(angle),
   );
 
@@ -138,7 +136,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix MatrixRotateZYX(
     Vector3 angle,
   ) => debugRun(
-    () => _debugLabels.MatrixRotateZYX(angle),
+    () => 'MatrixRotateZYX($angle)',
     () => .rotateZYX(angle),
   );
 
@@ -148,7 +146,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double y,
     double z,
   ) => debugRun(
-    () => _debugLabels.MatrixScale(x, y, z),
+    () => 'MatrixScale($x, $y, $z)',
     () => .scale(x, y, z),
   );
 
@@ -161,7 +159,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double nearPlane,
     double farPlane,
   ) => debugRun(
-    () => _debugLabels.MatrixFrustum(left, right, bottom, top, nearPlane, farPlane),
+    () => 'MatrixFrustum($left, $right, $bottom, $top, $nearPlane, $farPlane)',
     () => .frustum(left, right, bottom, top, nearPlane, farPlane),
   );
 
@@ -172,7 +170,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double nearPlane,
     double farPlane,
   ) => debugRun(
-    () => _debugLabels.MatrixPerspective(fovY, aspect, nearPlane, farPlane),
+    () => 'MatrixPerspective($fovY, $aspect, $nearPlane, $farPlane)',
     () => .perspective(fovY, aspect, nearPlane, farPlane),
   );
 
@@ -185,7 +183,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double nearPlane,
     double farPlane,
   ) => debugRun(
-    () => _debugLabels.MatrixOrtho(left, right, bottom, top, nearPlane, farPlane),
+    () => 'MatrixOrtho($left, $right, $bottom, $top, $nearPlane, $farPlane)',
     () => .ortho(left, right, bottom, top, nearPlane, farPlane),
   );
 
@@ -195,7 +193,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector3 target,
     Vector3 up,
   ) => debugRun(
-    () => _debugLabels.MatrixLookAt(eye, target, up),
+    () => 'MatrixLookAt($eye, $target, $up)',
     () => .lookAt(eye, target, up),
   );
   
@@ -203,7 +201,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   float16 MatrixToFloatV(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixToFloatV(mat),
+    () => 'MatrixToFloatV($mat)',
     () => mat.toFloatV(),
   );
 
@@ -213,7 +211,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion rotation, 
     Vector3 scale,
   ) => debugRun(
-    () => _debugLabels.MatrixCompose(translation, rotation, scale),
+    () => 'MatrixCompose($translation, $rotation, $scale)',
     () => .compose(translation, rotation, scale),
   );
 
@@ -221,7 +219,7 @@ class RaylibMatrixExtDart<R extends RaylibBase> extends RaylibModule<R> {
   (Vector3 translation, Quaternion rotation, Vector3 scale) MatrixDecompose(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.MatrixDecompose(mat),
+    () => 'MatrixDecompose($mat)',
     () => mat.decompose(),
   );
 }

@@ -450,7 +450,7 @@ packages:
     source: hosted
     version: "1.2.2"
   test:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: test
       sha256: "44b2fccf4407bcdb5e105c064c5d6b5e2a640c87761f8b03cdce8cf532d98cfa"
@@ -597,4 +597,4 @@ packages:
     source: hosted
     version: "2.2.4"
 sdks:
-  dart: ">=3.13.1 <4.0.0"
+  dart: ">=3.13.0 <4.0.0"

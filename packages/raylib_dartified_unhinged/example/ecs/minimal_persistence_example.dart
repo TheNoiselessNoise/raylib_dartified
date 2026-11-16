@@ -3,7 +3,7 @@ import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
 
 typedef G = MinimalPersistenceExampleApp;
 
-class MyScene extends Scene<G> {
+final class MyScene extends Scene<G> {
   int intValue = 0;
   double doubleValue = 0;
 
@@ -34,7 +34,7 @@ class MyScene extends Scene<G> {
   }
 }
 
-class MinimalPersistenceExampleApp extends App<G> {
+final class MinimalPersistenceExampleApp extends App<G> {
   MinimalPersistenceExampleApp(super.backend, {
     super.populateDefaults,
   }) {

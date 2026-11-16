@@ -6,7 +6,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_SPLINE_POINTS = 21;
 
-class ControlPoint {
+final class ControlPoint {
   Vector2 start;
   Vector2 end;
 

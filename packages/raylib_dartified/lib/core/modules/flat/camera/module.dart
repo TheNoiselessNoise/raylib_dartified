@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
+final class RaylibCameraFlatNative extends RaylibCameraFlat<Raylib> {
 
   RaylibCameraFlatNative(super.rl);
 

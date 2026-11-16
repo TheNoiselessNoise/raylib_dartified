@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibMsfGif extends RaylibModule<Raylib> {
+final class RaylibMsfGif extends RaylibModule<Raylib> {
   RaylibMsfGif(super.rl);
 
   RaylibLookup get _lookup => rl.lookup<RaylibMsfGif>();

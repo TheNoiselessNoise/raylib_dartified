@@ -9,7 +9,7 @@ const int MAX_TEXT_LENGTH = 100;
 const int MAX_TEXT_PARTICLES = 100;
 const int FONT_SIZE = 30;
 
-class TextParticle {
+final class TextParticle {
   String text = '';
   Rectangle rect = .zero();
   Vector2 vel = .zero();

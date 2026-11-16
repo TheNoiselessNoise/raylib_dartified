@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibVector4ExtFlatWeb extends RaylibVector4FlatExt<Raylib> {
+final class RaylibVector4ExtFlatWeb extends RaylibVector4FlatExt<Raylib> {
   RaylibVector4ExtFlatWeb(super.rl);
 
   RaylibVector4Ext get _wasm => rl.module();

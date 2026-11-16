@@ -13,7 +13,7 @@ abstract class RaylibModuleWasm extends RaylibModule<Raylib> with WasmBindings {
   RaylibModuleWasm(super.rl);
 }
 
-class Raylib extends RaylibBase {
+final class Raylib extends RaylibBase {
   static Raylib get instance => RaylibBase.getInstance();
 
   @override

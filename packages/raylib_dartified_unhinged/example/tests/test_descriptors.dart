@@ -1,13 +1,13 @@
 // Run it: dart run test_descriptors.dart
 import '_base.dart';
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   MyEntity(super.app) {
     add(CTransform(app));
   }
 }
 
-class TestDescriptorsScene extends DrawScene<G> {
+final class TestDescriptorsScene extends DrawScene<G> {
   late MyEntity origEntity;
 
   TestDescriptorsScene(super.app);
@@ -34,7 +34,7 @@ class TestDescriptorsScene extends DrawScene<G> {
 
 typedef G = TestDescriptorsApp;
 
-class TestDescriptorsApp extends ExampleRaylibApp<G> {
+final class TestDescriptorsApp extends ExampleRaylibApp<G> {
   TestDescriptorsApp(super.backend);
 
   @override

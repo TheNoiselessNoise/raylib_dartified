@@ -8,7 +8,7 @@ enum Camera2DField with XFields {
 }
 
 /// Camera2D, defines position/orientation in 2d space
-class Camera2D extends XStruct<Camera2D> {
+final class Camera2D extends XStruct<Camera2D> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,11 +20,11 @@ class Camera2D extends XStruct<Camera2D> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Camera2D> struct = .createValue(
+  static final XStructDef<Camera2D> struct = .createValue(
     factory: Camera2D.new,
     layout: .aligned<Camera2DField>({
-      .offset:   XRawStruct(Vector2.struct), // Camera offset (screen space offset from window origin)
-      .target:   XRawStruct(Vector2.struct), // Camera target (world space target point that is mapped to screen space offset)
+      .offset:   XStructType(Vector2.struct), // Camera offset (screen space offset from window origin)
+      .target:   XStructType(Vector2.struct), // Camera target (world space target point that is mapped to screen space offset)
       .rotation: XFloat(), // Camera rotation in degrees (pivots around target)
       .zoom:     XFloat(), // Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale
     }),
@@ -74,13 +74,11 @@ class Camera2D extends XStruct<Camera2D> {
     super.op,
     Vector2? offset,
     Vector2? target,
-    double rotation = 0,
-    double zoom = 1,
+    this._rotation = 0,
+    this._zoom = 1,
   }) :
     _offset = offset ?? .zero(),
-    _target = target ?? .zero(),
-    _rotation = rotation,
-    _zoom = zoom;
+    _target = target ?? .zero();
 
   factory Camera2D.zero() => .new();
 

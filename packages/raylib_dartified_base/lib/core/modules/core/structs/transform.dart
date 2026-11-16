@@ -7,7 +7,7 @@ enum TransformField with XFields {
 }
 
 /// Transform, vertex transformation data
-class Transform extends XStruct<Transform> {
+final class Transform extends XStruct<Transform> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,12 +19,12 @@ class Transform extends XStruct<Transform> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Transform> struct = .createValue(
+  static final XStructDef<Transform> struct = .createValue(
     factory: Transform.new,
     layout: .aligned<TransformField>({
-      .translation: XRawStruct(Vector3.struct), // Translation
-      .rotation: XRawStruct(Quaternion.struct), // Rotation
-      .scale: XRawStruct(Vector3.struct), // Scale
+      .translation: XStructType(Vector3.struct), // Translation
+      .rotation: XStructType(Quaternion.struct), // Rotation
+      .scale: XStructType(Vector3.struct), // Scale
     }),
   );
 

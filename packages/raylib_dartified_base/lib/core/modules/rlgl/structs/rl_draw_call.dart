@@ -8,7 +8,7 @@ enum RlDrawCallField with XFields {
 }
 
 /// Draw call type
-class RlDrawCall extends XStruct<RlDrawCall> {
+final class RlDrawCall extends XStruct<RlDrawCall> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,7 +20,7 @@ class RlDrawCall extends XStruct<RlDrawCall> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<RlDrawCall> struct = .create(
+  static final XStructDef<RlDrawCall> struct = .create(
     factory: RlDrawCall.new,
     layout: .aligned<RlDrawCallField>({
       .mode:            XInt(), // Drawing mode: LINES, TRIANGLES, QUADS
@@ -72,15 +72,11 @@ class RlDrawCall extends XStruct<RlDrawCall> {
   
   RlDrawCall({
     super.op,
-    RlDrawMode mode = .RL_NONE,
-    int vertexCount = 0,
-    int vertexAlignment = 0,
-    int textureId = 0,
-  }) :
-    _mode = mode,
-    _vertexCount = vertexCount,
-    _vertexAlignment = vertexAlignment,
-    _textureId = textureId;
+    this._mode = .RL_NONE,
+    this._vertexCount = 0,
+    this._vertexAlignment = 0,
+    this._textureId = 0,
+  });
 
   factory RlDrawCall.zero() => .new();
 

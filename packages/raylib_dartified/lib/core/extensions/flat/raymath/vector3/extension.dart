@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified.dart';
 
-class RaylibVector3ExtFlatNative extends RaylibVector3FlatExt<Raylib> {
+final class RaylibVector3ExtFlatNative extends RaylibVector3FlatExt<Raylib> {
   RaylibVector3ExtFlatNative(super.rl);
 
   RaylibVector3Ext get _ffi => rl.module();

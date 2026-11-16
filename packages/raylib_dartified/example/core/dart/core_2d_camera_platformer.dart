@@ -4,7 +4,7 @@
 import 'dart:math' as math;
 import '../../base_dart.dart';
 
-class Player {
+final class Player {
   Vector2 position;
   double speed;
   bool canJump;
@@ -16,7 +16,7 @@ class Player {
   });
 }
 
-class EnvItem {
+final class EnvItem {
   Rectangle rect;
   bool blocking;
   Color color;

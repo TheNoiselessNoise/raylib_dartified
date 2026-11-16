@@ -5,7 +5,7 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class TexInfo {
+final class TexInfo {
   final String name;
   final Texture tex;
   final Color textColor;

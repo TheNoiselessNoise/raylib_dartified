@@ -50,9 +50,7 @@ class CBoundsConstraint<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CBoundsConstraint<T> createInstance() => .new(app,
-    area: area.copy(),
-  );
+  CBoundsConstraint<T> createInstance() => .new(app);
 
   // state
 

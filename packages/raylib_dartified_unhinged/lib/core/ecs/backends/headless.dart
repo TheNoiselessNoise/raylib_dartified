@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class HeadlessRenderBackend extends RenderBackend {
+final class HeadlessRenderBackend extends RenderBackend {
   @override
   void drawText(String text, num posX, num posY, num fontSize, Color color) {}
 
@@ -74,7 +74,7 @@ class HeadlessRenderBackend extends RenderBackend {
   void drawRectangleLinesRotated(Rectangle rect, num rotationDegrees, num lineThick, Color color) {}
 }
 
-class HeadlessInputBackend extends InputBackend {
+final class HeadlessInputBackend extends InputBackend {
   @override
   bool isKeyPressed(KeyboardKey key) => false;
 
@@ -100,7 +100,7 @@ class HeadlessInputBackend extends InputBackend {
   bool isMouseButtonDown(MouseButton button) => false;
 }
 
-class HeadlessCollisionBackend extends CollisionBackend {
+final class HeadlessCollisionBackend extends CollisionBackend {
   @override
   bool circles(Vector2 center1, num radius1, Vector2 center2, num radius2) => false;
   
@@ -114,7 +114,7 @@ class HeadlessCollisionBackend extends CollisionBackend {
   bool pointRectangle(Vector2 point, Rectangle rec) => false;
 }
 
-class HeadlessAssetManager extends AssetManager {
+final class HeadlessAssetManager extends AssetManager {
   @override
   UnhingedAsset<Image> image(String id, {String? path}) => .new(id, .zero());
 
@@ -125,7 +125,7 @@ class HeadlessAssetManager extends AssetManager {
   UnhingedAsset<Font> font(String id, {String? path, int fontSize = 32}) => .new(id, .zero());
 }
 
-class HeadlessBackend extends UnhingedBackend {
+final class HeadlessBackend extends UnhingedBackend {
   HeadlessBackend() : super(
     render: HeadlessRenderBackend(),
     input: HeadlessInputBackend(),

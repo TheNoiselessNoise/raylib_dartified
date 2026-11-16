@@ -7,7 +7,7 @@ const String GLSL_VERSION = '300es';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class RoundedRectangle {
+final class RoundedRectangle {
   Vector4 cornerRadius = .zero();
   double shadowRadius = 0;
   Vector2 shadowOffset = .zero();

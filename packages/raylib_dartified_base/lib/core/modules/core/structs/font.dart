@@ -10,7 +10,7 @@ enum FontField with XFields {
 }
 
 /// Font, font texture and GlyphInfo array data
-class Font extends XStruct<Font> {
+final class Font extends XStruct<Font> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,15 +22,15 @@ class Font extends XStruct<Font> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Font> struct = .create(
+  static final XStructDef<Font> struct = .create(
     factory: Font.new,
     layout: .aligned<FontField>({
       .baseSize:     XInt(), // Base size (default chars height)
       .glyphCount:   XInt(), // Number of glyph characters
       .glyphPadding: XInt(), // Padding around the glyph characters
-      .texture:      XRawStruct(Texture.struct), // Texture atlas containing the glyphs
-      .recs:         XRawPtr(XRawStruct(Rectangle.struct)), // Rectangles in texture for the glyphs
-      .glyphs:       XRawPtr(XRawStruct(GlyphInfo.struct)), // Glyphs info data
+      .texture:      XStructType(Texture.struct), // Texture atlas containing the glyphs
+      .recs:         XPtrType(XStructType(Rectangle.struct)), // Rectangles in texture for the glyphs
+      .glyphs:       XPtrType(XStructType(GlyphInfo.struct)), // Glyphs info data
     }),
   );
 
@@ -90,16 +90,13 @@ class Font extends XStruct<Font> {
 
   Font({
     super.op,
-    int baseSize = 0,
-    int glyphCount = 0,
-    int glyphPadding = 0,
+    this._baseSize = 0,
+    this._glyphCount = 0,
+    this._glyphPadding = 0,
     Texture? texture,
     List<Rectangle>? recs,
     List<GlyphInfo>? glyphs,
   }) :
-    _baseSize = baseSize,
-    _glyphCount = glyphCount,
-    _glyphPadding = glyphPadding,
     _texture = texture ?? .new()
   {
     _recs = field_recs.live(() => op, recs ?? []);

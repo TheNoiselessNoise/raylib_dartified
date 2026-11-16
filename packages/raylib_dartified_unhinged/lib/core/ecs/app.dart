@@ -5,7 +5,7 @@ part of '../raylib_dartified_unhinged.dart';
 ///
 /// Time values are updated once per frame via [_update], which is expected
 /// to be driven by the app's main loop.
-class AppTime<T extends App<T>> {
+final class AppTime<T extends App<T>> {
   final T app;
 
   AppTime(this.app);
@@ -534,7 +534,7 @@ class App<T extends App<T>> extends ECSBase<T> with
 
   // persistence
 
-  late final ECSFactoryRegistry<T> factories = .new();
+  late final ECSFactoryRegistry<T> factories = ._();
 
   static const typeId = '__app__';
   

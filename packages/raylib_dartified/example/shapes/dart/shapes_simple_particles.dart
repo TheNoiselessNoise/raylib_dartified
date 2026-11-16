@@ -33,7 +33,7 @@ enum ParticleType {
   };
 }
 
-class Particle {
+final class Particle {
   ParticleType type = .FIRE;
   Vector2 position = .zero();
   Vector2 velocity = .zero();
@@ -43,7 +43,7 @@ class Particle {
   bool alive = false;
 }
 
-class CircularBuffer {
+final class CircularBuffer {
   int head = 0;
   int tail = 0;
   List<Particle> buffer = [];

@@ -7,7 +7,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_BULLETS = 500000;
 
-class Bullet {
+final class Bullet {
   Vector2 position;
   Vector2 acceleration;
   bool disabled;

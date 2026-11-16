@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FCenter<T extends App<T>> extends FWidgetLeaf<T> {
+final class FCenter<T extends App<T>> extends FWidgetLeaf<T> {
   bool vertical;
 
   FCenter(super.app, {

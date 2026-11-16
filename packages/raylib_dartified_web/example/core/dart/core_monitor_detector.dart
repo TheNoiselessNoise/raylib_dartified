@@ -5,7 +5,7 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class MonitorInfo {
+final class MonitorInfo {
   Vector2 position = .zero();
   String name = '';
   int width = 0;

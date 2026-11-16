@@ -3,7 +3,7 @@ import '_base.dart';
 
 typedef G = TestDisposeApp;
 
-class EventPing extends Event<G> {
+final class EventPing extends Event<G> {
   EventPing(super.app);
 }
 
@@ -22,13 +22,13 @@ void checkEq(Object? actual, Object? expected, String msg) {
   print('ok: $msg');
 }
 
-class CompC extends Comp<G> {
+final class CompC extends Comp<G> {
   CompC(super.app) {
     listen<EventPing>((_) { if (armed) heardByC++; });
   }
 }
 
-class CompA extends Comp<G> {
+final class CompA extends Comp<G> {
   late final CompB b;
   CompA(super.app) {
     listen<EventPing>((_) {
@@ -39,17 +39,17 @@ class CompA extends Comp<G> {
   }
 }
 
-class CompB extends Comp<G> {
+final class CompB extends Comp<G> {
   CompB(super.app) {
     listen<EventPing>((_) { if (armed) heardByB++; });
   }
 }
 
-class TestScene extends DrawScene<G> {
+final class TestScene extends DrawScene<G> {
   TestScene(super.app);
 }
 
-class TestDisposeApp extends ExampleRaylibApp<G> {
+final class TestDisposeApp extends ExampleRaylibApp<G> {
   TestDisposeApp(super.backend);
 
   @override

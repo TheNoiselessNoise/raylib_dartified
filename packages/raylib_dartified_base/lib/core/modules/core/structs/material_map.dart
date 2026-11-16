@@ -7,7 +7,7 @@ enum MaterialMapField with XFields {
 }
 
 /// Material map
-class MaterialMap extends XStruct<MaterialMap> {
+final class MaterialMap extends XStruct<MaterialMap> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,11 +19,11 @@ class MaterialMap extends XStruct<MaterialMap> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<MaterialMap> struct = .create(
+  static final XStructDef<MaterialMap> struct = .create(
     factory: MaterialMap.new,
     layout: .aligned<MaterialMapField>({
-      .texture: XRawStruct(Texture.struct), // Material map texture
-      .color:   XRawStruct(Color.struct), // Material map color
+      .texture: XStructType(Texture.struct), // Material map texture
+      .color:   XStructType(Color.struct), // Material map color
       .value:   XFloat(), // Material map value
     }),
   );
@@ -65,11 +65,10 @@ class MaterialMap extends XStruct<MaterialMap> {
     super.op,
     Texture? texture,
     Color? color,
-    double value = 0,
+    this._value = 0,
   }) :
     _texture = texture ?? .zero(),
-    _color = color ?? .zero(),
-    _value = value;
+    _color = color ?? .zero();
 
   factory MaterialMap.zero() => .new();
 

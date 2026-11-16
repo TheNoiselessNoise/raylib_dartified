@@ -20,7 +20,7 @@ enum MeshField with XFields {
 }
 
 /// Mesh, vertex data and vao/vbo
-class Mesh extends XStruct<Mesh> {
+final class Mesh extends XStruct<Mesh> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -32,34 +32,34 @@ class Mesh extends XStruct<Mesh> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Mesh> struct = .create(
+  static final XStructDef<Mesh> struct = .create(
     factory: Mesh.new,
     layout: .aligned<MeshField>({
       .vertexCount:   XInt(), // Number of vertices stored in arrays
       .triangleCount: XInt(), // Number of triangles stored (indexed or not)
 
       // Vertex attributes data
-      .vertices:      XRawPtr(XFloat()), // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-      .texcoords:     XRawPtr(XFloat()), // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-      .texcoords2:    XRawPtr(XFloat()), // Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
-      .normals:       XRawPtr(XFloat()), // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
-      .tangents:      XRawPtr(XFloat()), // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
-      .colors:        XRawPtr(XUnsignedChar()), // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-      .indices:       XRawPtr(XUnsignedShort()), // Vertex indices (in case vertex data comes indexed)
+      .vertices:      XPtrType(XFloat()), // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+      .texcoords:     XPtrType(XFloat()), // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+      .texcoords2:    XPtrType(XFloat()), // Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+      .normals:       XPtrType(XFloat()), // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+      .tangents:      XPtrType(XFloat()), // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+      .colors:        XPtrType(XUnsignedChar()), // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+      .indices:       XPtrType(XUnsignedShort()), // Vertex indices (in case vertex data comes indexed)
 
       // Skin data for animation
       .boneCount:     XInt(), // Number of bones (MAX: 256 bones)
-      .boneIndices:   XRawPtr(XUnsignedChar()), // Vertex bone indices, up to 4 bones influence by vertex (skinning) (shader-location = 6)
-      .boneWeights:   XRawPtr(XFloat()), // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+      .boneIndices:   XPtrType(XUnsignedChar()), // Vertex bone indices, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+      .boneWeights:   XPtrType(XFloat()), // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
 
       // Runtime animation vertex data (CPU skinning)
       // NOTE: In case of GPU skinning, not used, pointers are NULL
-      .animVertices:  XRawPtr(XFloat()), // Animated vertex positions (after bones transformations)
-      .animNormals:   XRawPtr(XFloat()), // Animated normals (after bones transformations)
+      .animVertices:  XPtrType(XFloat()), // Animated vertex positions (after bones transformations)
+      .animNormals:   XPtrType(XFloat()), // Animated normals (after bones transformations)
 
       // OpenGL identifiers
       .vaoId:         XUnsignedInt(), // OpenGL Vertex Array Object id
-      .vboId:         XRawPtr(XUnsignedInt()), // OpenGL Vertex Buffer Objects id (default vertex data)
+      .vboId:         XPtrType(XUnsignedInt()), // OpenGL Vertex Buffer Objects id (default vertex data)
     }),
   );
 
@@ -275,9 +275,9 @@ class Mesh extends XStruct<Mesh> {
 
   Mesh({
     super.op,
-    int vertexCount = 0,
-    int triangleCount = 0,
-    int boneCount = 0,
+    this._vertexCount = 0,
+    this._triangleCount = 0,
+    this._boneCount = 0,
     List<double>? vertices,
     List<double>? texcoords,
     List<double>? texcoords2,
@@ -289,14 +289,9 @@ class Mesh extends XStruct<Mesh> {
     List<double>? boneWeights,
     List<double>? animVertices,
     List<double>? animNormals,
-    int vaoId = 0,
+    this._vaoId = 0,
     List<int>? vboId,
-  }) :
-    _vertexCount = vertexCount,
-    _triangleCount = triangleCount,
-    _boneCount = boneCount,
-    _vaoId = vaoId
-  {
+  }) {
     _vertices = field_vertices.live(() => op, vertices ?? []);
     _texcoords = field_texcoords.live(() => op, texcoords ?? []);
     _texcoords2 = field_texcoords2.live(() => op, texcoords2 ?? []);

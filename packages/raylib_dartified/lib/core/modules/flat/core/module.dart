@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
+final class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
 
   RaylibCoreFlatNative(super.rl);
 
@@ -3795,7 +3795,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   @override
   Image GenImageFontAtlas(
     XStructPtr<GlyphInfo> glyphs,
-    XPtr<XRawPtr<XRawStruct>> glyphRecs, // Rectangle
+    XPtr<XPtrType<XStructType>> glyphRecs, // Rectangle
     int glyphCount,
     int fontSize,
     int padding,
@@ -4088,7 +4088,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   ).asXPtr();
 
   @override
-  XNativePtr<XRawPtr<XChar>> LoadTextLines(
+  XNativePtr<XPtrType<XChar>> LoadTextLines(
     XPtr<XChar> text,
     XPtr<XInt> count,
   ) => _ffi.LoadTextLines(
@@ -4098,7 +4098,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
 
   @override
   void UnloadTextLines(
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int lineCount,
   ) => _ffi.UnloadTextLines(
     text.asNative(),
@@ -4231,7 +4231,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
 
   @override
   XNativePtr<XChar> TextJoin(
-    XPtr<XRawPtr<XChar>> textList,
+    XPtr<XPtrType<XChar>> textList,
     int count,
     XPtr<XChar> delimiter,
   ) => _ffi.TextJoin(
@@ -4241,7 +4241,7 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
   ).asXPtr();
 
   @override
-  XNativePtr<XRawPtr<XChar>> TextSplit(
+  XNativePtr<XPtrType<XChar>> TextSplit(
     XPtr<XChar> text,
     int delimiter,
     XPtr<XInt> count,
@@ -4749,10 +4749,10 @@ class RaylibCoreFlatNative extends RaylibCoreFlat<Raylib> {
 
   @override
   @Deprecated(
-    "Broken by a dart:ffi bug: the trailing Color argument gets corrupted "
-    "(or crashes) once the preceding float-only args exceed the CPU's 8 "
-    "float registers. Use DrawBillboard/DrawBillboardRec, or wait for the fix. "
-    "See dart-lang/sdk#63976."
+    "On Dart < 3.14.0, the trailing Color argument is corrupted (or crashes) "
+    "once the preceding float-only args exceed the 8 float registers "
+    "(dart-lang/sdk#63976). Fixed in Dart 3.14.0; ignore on newer SDKs, "
+    "otherwise use DrawBillboard."
   )
   void DrawBillboardPro(
     Camera3D camera,

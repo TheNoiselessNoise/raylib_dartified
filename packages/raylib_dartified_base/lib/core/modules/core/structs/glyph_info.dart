@@ -9,7 +9,7 @@ enum GlyphInfoField with XFields {
 }
 
 /// GlyphInfo, font characters glyphs info
-class GlyphInfo extends XStruct<GlyphInfo> {
+final class GlyphInfo extends XStruct<GlyphInfo> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,14 +21,14 @@ class GlyphInfo extends XStruct<GlyphInfo> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<GlyphInfo> struct = .create(
+  static final XStructDef<GlyphInfo> struct = .create(
     factory: GlyphInfo.new,
     layout: .aligned<GlyphInfoField>({
       .value:    XInt(), // Character value (Unicode)
       .offsetX:  XInt(), // Character offset X when drawing
       .offsetY:  XInt(), // Character offset Y when drawing
       .advanceX: XInt(), // Character advance position X
-      .image:    XRawStruct(Image.struct), // Character image data
+      .image:    XStructType(Image.struct), // Character image data
     }),
   );
 
@@ -81,16 +81,12 @@ class GlyphInfo extends XStruct<GlyphInfo> {
 
   GlyphInfo({
     super.op,
-    int value = 0,
-    int offsetX = 0,
-    int offsetY = 0,
-    int advanceX = 0,
+    this._value = 0,
+    this._offsetX = 0,
+    this._offsetY = 0,
+    this._advanceX = 0,
     Image? image,
   }) :
-    _value = value,
-    _offsetX = offsetX,
-    _offsetY = offsetY,
-    _advanceX = advanceX,
     _image = image ?? .zero();
 
   factory GlyphInfo.zero() => .new();

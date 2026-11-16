@@ -6,7 +6,7 @@ enum ShaderField with XFields {
 }
 
 /// Shader
-class Shader extends XStruct<Shader> {
+final class Shader extends XStruct<Shader> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,11 +18,11 @@ class Shader extends XStruct<Shader> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Shader> struct = .create(
+  static final XStructDef<Shader> struct = .create(
     factory: Shader.new,
     layout: .aligned<ShaderField>({
       .id:   XUnsignedInt(), // Shader program id
-      .locs: XRawPtr(XArray(XInt(), BASE_shaderLocsCount)), // Shader locations array (RL_MAX_SHADER_LOCATIONS)
+      .locs: XPtrType(XArray(XInt(), BASE_shaderLocsCount)), // Shader locations array (RL_MAX_SHADER_LOCATIONS)
     }),
   );
 
@@ -65,11 +65,9 @@ class Shader extends XStruct<Shader> {
 
   Shader({
     super.op,
-    int id = 0,
+    this._id = 0,
     List<int>? locs,
-  }) :
-    _id = id
-  {
+  }) {
     _locs = field_locs.live(() => op, locs ?? .filled(BASE_shaderLocsCount, 0));
   }
 

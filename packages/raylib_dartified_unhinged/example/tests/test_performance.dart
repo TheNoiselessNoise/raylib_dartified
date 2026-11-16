@@ -1,7 +1,7 @@
 // dart run test_performance.dart
 import '_base.dart';
 
-class PerformanceScene extends DrawScene<G> {
+final class PerformanceScene extends DrawScene<G> {
   PerformanceScene(super.app);
 
   int ballCount = 1000;
@@ -81,7 +81,7 @@ class PerformanceScene extends DrawScene<G> {
 
 typedef G = PerformanceTest;
 
-class PerformanceTest extends ExampleRaylibApp<G> {
+final class PerformanceTest extends ExampleRaylibApp<G> {
   PerformanceTest(super.backend);
 
   @override

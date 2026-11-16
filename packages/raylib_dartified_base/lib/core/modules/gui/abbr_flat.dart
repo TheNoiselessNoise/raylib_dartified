@@ -91,13 +91,13 @@ void GuiSetIconScale(
 XPtr<XUnsignedInt> GuiGetIcons() => _module.GuiGetIcons();
 
 /// See [RaylibGuiFlat.GuiLoadIcons].
-XPtr<XRawPtr<XChar>> GuiLoadIcons(
+XPtr<XPtrType<XChar>> GuiLoadIcons(
   XPtr<XChar> fileName,
   bool loadIconsName,
 ) => _module.GuiLoadIcons(fileName, loadIconsName);
 
 /// See [RaylibGuiFlat.GuiLoadIconsFromMemory].
-XPtr<XRawPtr<XChar>> GuiLoadIconsFromMemory(
+XPtr<XPtrType<XChar>> GuiLoadIconsFromMemory(
   XPtr<XUnsignedChar> fileData,
   int dataSize,
   bool loadIconsName,
@@ -310,7 +310,7 @@ int GuiListView(
 /// See [RaylibGuiFlat.GuiListViewEx].
 int GuiListViewEx(
   Rectangle bounds,
-  XPtr<XRawPtr<XChar>> text,
+  XPtr<XPtrType<XChar>> text,
   int count,
   XPtr<XInt> scrollIndex,
   XPtr<XInt> active,
@@ -328,7 +328,7 @@ int GuiTabBar(
 /// See [RaylibGuiFlat.GuiTabBarEx].
 int GuiTabBarEx(
   Rectangle bounds,
-  XPtr<XRawPtr<XChar>> text,
+  XPtr<XPtrType<XChar>> text,
   int count,
   XPtr<XInt> hscroll,
   XPtr<XInt> active,

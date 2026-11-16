@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
+final class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
 
   RaylibGuiFlatNative(super.rl);
 
@@ -123,7 +123,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
   XNativePtr<XUnsignedInt> GuiGetIcons() => _ffi.GuiGetIcons().asXPtr();
 
   @override
-  XNativePtr<XRawPtr<XChar>> GuiLoadIcons(
+  XNativePtr<XPtrType<XChar>> GuiLoadIcons(
     XPtr<XChar> fileName,
     bool loadIconsName,
   ) => _ffi.GuiLoadIcons(
@@ -132,7 +132,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
   ).asXPtr();
 
   @override
-  XNativePtr<XRawPtr<XChar>> GuiLoadIconsFromMemory(
+  XNativePtr<XPtrType<XChar>> GuiLoadIconsFromMemory(
     XPtr<XUnsignedChar> fileData,
     int dataSize,
     bool loadIconsName,
@@ -472,7 +472,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
   @override
   int GuiListViewEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> scrollIndex,
     XPtr<XInt> active,
@@ -502,7 +502,7 @@ class RaylibGuiFlatNative extends RaylibGuiFlat<Raylib> {
   @override
   int GuiTabBarEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> hscroll,
     XPtr<XInt> active,

@@ -7,7 +7,7 @@ enum AutomationEventField with XFields {
 }
 
 /// Automation event
-class AutomationEvent extends XStruct<AutomationEvent> {
+final class AutomationEvent extends XStruct<AutomationEvent> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,7 +19,7 @@ class AutomationEvent extends XStruct<AutomationEvent> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<AutomationEvent> struct = .create(
+  static final XStructDef<AutomationEvent> struct = .create(
     factory: AutomationEvent.new,
     layout: .aligned<AutomationEventField>({
       .frame:  XUnsignedInt(), // Event frame
@@ -74,13 +74,10 @@ class AutomationEvent extends XStruct<AutomationEvent> {
 
   AutomationEvent({
     super.op,
-    int frame = 0,
-    AutomationEventType type = .EVENT_NONE,
+    this._frame = 0,
+    this._type = .EVENT_NONE,
     List<int>? params,
-  }) :
-    _frame = frame,
-    _type = type
-  {
+  }) {
     _params = field_params.live(
       () => op,
       .filled(field_params.codec.type.count, 0),

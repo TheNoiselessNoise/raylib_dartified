@@ -3,7 +3,7 @@
 import 'dart:math' as math;
 import '../../base_dart.dart';
 
-class Body {
+final class Body {
   Vector3 position;
   Vector3 velocity;
   Vector3 dir;

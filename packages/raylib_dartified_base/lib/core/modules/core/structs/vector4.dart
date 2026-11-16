@@ -11,7 +11,7 @@ enum Vector4Field with XFields {
 }
 
 /// Vector4, 4 components
-class Vector4 extends XStruct<Vector4> {
+final class Vector4 extends XStruct<Vector4> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -23,7 +23,7 @@ class Vector4 extends XStruct<Vector4> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Vector4> struct = .createValue(
+  static final XStructDef<Vector4> struct = .createValue(
     factory: Vector4.new,
     layout: .aligned<Vector4Field>({
       .x: XFloat(), // Vector x component
@@ -75,15 +75,11 @@ class Vector4 extends XStruct<Vector4> {
 
   Vector4({
     super.op,
-    double x = 0,
-    double y = 0,
-    double z = 0,
-    double w = 0,
-  }) :
-    _x = x,
-    _y = y,
-    _z = z,
-    _w = w;
+    this._x = 0,
+    this._y = 0,
+    this._z = 0,
+    this._w = 0,
+  });
 
   factory Vector4.zero() => .vec4(0, 0, 0, 0);
 

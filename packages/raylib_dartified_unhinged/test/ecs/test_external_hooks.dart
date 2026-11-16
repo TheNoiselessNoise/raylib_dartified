@@ -4,7 +4,7 @@ import '../mocks.dart';
 
 typedef G = TestApp;
 
-class TestApp extends TestingApp<G> {
+final class TestApp extends TestingApp<G> {
   TestApp(super.backend);
 }
 

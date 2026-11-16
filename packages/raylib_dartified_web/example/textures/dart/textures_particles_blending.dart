@@ -7,7 +7,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_PARTICLES = 200;
 
-class Particle {
+final class Particle {
   Vector2 position;
   Color color;
   double alpha;

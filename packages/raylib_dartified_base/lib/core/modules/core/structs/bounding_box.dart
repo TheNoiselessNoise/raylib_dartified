@@ -6,7 +6,7 @@ enum BoundingBoxField with XFields {
 }
 
 /// BoundingBox
-class BoundingBox extends XStruct<BoundingBox> {
+final class BoundingBox extends XStruct<BoundingBox> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,11 +18,11 @@ class BoundingBox extends XStruct<BoundingBox> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<BoundingBox> struct = .createValue(
+  static final XStructDef<BoundingBox> struct = .createValue(
     factory: BoundingBox.new,
     layout: .aligned<BoundingBoxField>({
-      .min: XRawStruct(Vector3.struct), // Minimum vertex box-corner
-      .max: XRawStruct(Vector3.struct), // Maximum vertex box-corner
+      .min: XStructType(Vector3.struct), // Minimum vertex box-corner
+      .max: XStructType(Vector3.struct), // Maximum vertex box-corner
     }),
   );
 

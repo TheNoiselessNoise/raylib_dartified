@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibAudio extends RaylibModuleWasm {
+final class RaylibAudio extends RaylibModuleWasm {
   /// Initialize audio device and context
   late final XF0<void> InitAudioDevice;
   /// Close the audio device and context

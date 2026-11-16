@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FExpanded<T extends App<T>> extends FWidgetLeaf<T> {
+final class FExpanded<T extends App<T>> extends FWidgetLeaf<T> {
   int flex;
 
   FExpanded(super.app, {

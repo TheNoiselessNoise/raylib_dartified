@@ -110,14 +110,7 @@ class COutOfBounds<T extends App<T>> extends Comp<T> {
   }
 
   @override
-  COutOfBounds<T> createInstance() => .new(app,
-    checkTop: checkTop,
-    checkLeft: checkLeft,
-    checkBottom: checkBottom,
-    checkRight: checkRight,
-    then: then,
-    triggerOnce: triggerOnce,
-  );
+  COutOfBounds<T> createInstance() => .new(app);
 
   // state
 

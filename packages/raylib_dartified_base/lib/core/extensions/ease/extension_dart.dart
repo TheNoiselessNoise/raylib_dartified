@@ -14,7 +14,7 @@ part of '../../raylib_dartified_base.dart';
 /// - [d] total duration
 ///
 /// Returns the interpolated value at time [t].
-class RaylibEaseExtDart<R extends RaylibBase> extends RaylibModule<R> {
+final class RaylibEaseExtDart<R extends RaylibBase> extends RaylibModule<R> {
   RaylibEaseExtDart(super.rl);
 
   String _debugLabel(String name, num t, num b, num c, num d)

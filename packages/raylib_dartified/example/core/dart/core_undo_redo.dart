@@ -11,7 +11,7 @@ const int GRID_CELL_SIZE = 24;
 const int MAX_GRID_CELLS_X = 30;
 const int MAX_GRID_CELLS_Y = 13;
 
-class Point {
+final class Point {
   int x = 0;
   int y = 0;
 
@@ -21,7 +21,7 @@ class Point {
   }
 }
 
-class PlayerState {
+final class PlayerState {
   Point cell = .new();
   Color color = .zero();
 

@@ -8,7 +8,7 @@ enum RectangleField with XFields {
 }
 
 /// Rectangle, 4 components
-class Rectangle extends XStruct<Rectangle> {
+final class Rectangle extends XStruct<Rectangle> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,7 +20,7 @@ class Rectangle extends XStruct<Rectangle> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Rectangle> struct = .createValue(
+  static final XStructDef<Rectangle> struct = .createValue(
     factory: Rectangle.new,
     layout: .aligned<RectangleField>({
       .x:      XFloat(), // Rectangle top-left corner position x
@@ -72,15 +72,11 @@ class Rectangle extends XStruct<Rectangle> {
   
   Rectangle({
     super.op,
-    double x = 0,
-    double y = 0,
-    double width = 0,
-    double height = 0,
-  }) :
-    _x = x,
-    _y = y,
-    _width = width,
-    _height = height;
+    this._x = 0,
+    this._y = 0,
+    this._width = 0,
+    this._height = 0,
+  });
 
   factory Rectangle.zero() => .new();
 

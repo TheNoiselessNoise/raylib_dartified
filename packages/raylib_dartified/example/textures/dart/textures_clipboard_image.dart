@@ -7,7 +7,7 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class TextureCollection {
+final class TextureCollection {
   final Texture texture;
   final Vector2 position;
 

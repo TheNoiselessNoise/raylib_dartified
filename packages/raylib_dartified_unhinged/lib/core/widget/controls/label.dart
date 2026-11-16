@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FLabel<T extends App<T>> extends FWidgetLeaf<T> {
+final class FLabel<T extends App<T>> extends FWidgetLeaf<T> {
   String text;
   int fontSize;
   Color color;

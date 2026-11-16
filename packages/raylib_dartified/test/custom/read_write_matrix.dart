@@ -17,7 +17,7 @@ void main() {
 
   setUpAll(() => findRaylib('raylib-6.0_linux_amd64/lib', silent: true));
 
-  late XPtr<XRawPtr<XRawStruct>> ptr;
+  late XPtr<XPtrType<XStructType>> ptr;
   setUp(() => ptr = Color$.$.Array(colorMatrix));
 
   test("readMatrix (direct)", () {

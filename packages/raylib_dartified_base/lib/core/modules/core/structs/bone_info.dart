@@ -6,7 +6,7 @@ enum BoneInfoField with XFields {
 }
 
 /// Bone, skeletal animation bone
-class BoneInfo extends XStruct<BoneInfo> {
+final class BoneInfo extends XStruct<BoneInfo> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,7 +18,7 @@ class BoneInfo extends XStruct<BoneInfo> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<BoneInfo> struct = .createValue(
+  static final XStructDef<BoneInfo> struct = .createValue(
     factory: BoneInfo.new,
     layout: .aligned<BoneInfoField>({
       .name:   XArray(XChar(), BASE_nameLength), // Bone name
@@ -65,11 +65,9 @@ class BoneInfo extends XStruct<BoneInfo> {
 
   BoneInfo({
     super.op,
-    String name = '',
-    int parent = 0,
-  }) :
-    _name = name,
-    _parent = parent;
+    this._name = '',
+    this._parent = 0,
+  });
 
   factory BoneInfo.zero() => .new();
 

@@ -7,7 +7,7 @@ void main() {
   test("Color - compareBytes", () {
     final struct1 = structAllocator<Color>().$new..set(42, 42, 42, 42);
     final struct2 = structAllocator<Color>().$new..set(42, 42, 42, 42);
-    final layout = XStructTypes.ofUntyped(struct1);
+    final layout = XStructDefinitions.ofUntyped(struct1);
     final cmp = struct1.getOp().compareBytes(struct2.getOp(), layout.byteSize);
     expect(cmp, equals(0));
   });

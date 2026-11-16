@@ -10,7 +10,7 @@ enum float16Field with XFields {
 }
 
 /// Raylib's `float16` struct holding 16 `float` values
-class float16 extends XStruct<float16> {
+final class float16 extends XStruct<float16> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,7 +22,7 @@ class float16 extends XStruct<float16> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<float16> struct = .createValue(
+  static final XStructDef<float16> struct = .createValue(
     factory: float16.new,
     layout: .aligned<float16Field>({
       .v: XArray(XFloat(), 16),

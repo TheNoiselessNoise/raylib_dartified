@@ -1,7 +1,7 @@
 // Run it: dart run test_begin_end_callback.dart
 import '_base.dart';
 
-class TestBeginEndCallbackScene extends DrawScene<G> {
+final class TestBeginEndCallbackScene extends DrawScene<G> {
   TestBeginEndCallbackScene(super.app);
 
   @override
@@ -22,7 +22,7 @@ class TestBeginEndCallbackScene extends DrawScene<G> {
 
 typedef G = TestBeginEndCallbackApp;
 
-class TestBeginEndCallbackApp extends ExampleRaylibApp<G> {
+final class TestBeginEndCallbackApp extends ExampleRaylibApp<G> {
   TestBeginEndCallbackApp(super.backend);
 
   @override

@@ -2265,10 +2265,10 @@ void DrawBillboardRec(
 
 /// See [RaylibCore.DrawBillboardPro].
 @Deprecated(
-  "Broken by a dart:ffi bug: the trailing Color argument gets corrupted "
-  "(or crashes) once the preceding float-only args exceed the CPU's 8 "
-  "float registers. Use DrawBillboard, or wait for the fix. "
-  "See dart-lang/sdk#63976."
+  "On Dart < 3.14.0, the trailing Color argument is corrupted (or crashes) "
+  "once the preceding float-only args exceed the 8 float registers "
+  "(dart-lang/sdk#63976). Fixed in Dart 3.14.0; ignore on newer SDKs, "
+  "otherwise use DrawBillboard."
 )
 void DrawBillboardPro(
   Camera3DC camera,

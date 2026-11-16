@@ -12,9 +12,9 @@ void main() {
   test('XTemp.instance.structAllocUntyped(Vector2)', () => expect(XTemp.instance.structAllocUntyped(Vector2), isA<XStructAlloc<Vector2>>()));
   test('XTemp.instance.structAllocUntyped(Vector2())', () => expect(XTemp.instance.structAllocUntyped(Vector2()), isA<XStructAlloc<Vector2>>()));
 
-  test('XStructTypes.of<Vector2>()', () => expect(XStructTypes.of<Vector2>(), isA<XStructType<Vector2>>()));
-  test('XStructTypes.ofUntyped(Vector2)', () => expect(XStructTypes.ofUntyped(Vector2), isA<XStructType<Vector2>>()));
-  test('XStructTypes.ofUntyped(Vector2())', () => expect(XStructTypes.ofUntyped(Vector2()), isA<XStructType<Vector2>>()));
+  test('XStructDefinitions.of<Vector2>()', () => expect(XStructDefinitions.of<Vector2>(), isA<XStructDef<Vector2>>()));
+  test('XStructDefinitions.ofUntyped(Vector2)', () => expect(XStructDefinitions.ofUntyped(Vector2), isA<XStructDef<Vector2>>()));
+  test('XStructDefinitions.ofUntyped(Vector2())', () => expect(XStructDefinitions.ofUntyped(Vector2()), isA<XStructDef<Vector2>>()));
 
   tearDownAll(disposeRaylib);
 }

@@ -6,7 +6,7 @@ import '../../base_dart.dart';
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class ColorRect {
+final class ColorRect {
   Color color = .zero();
   Rectangle rect = .zero();
 }

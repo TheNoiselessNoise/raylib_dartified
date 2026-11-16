@@ -9,21 +9,21 @@ typedef G = Arkanoid;
   EVENTS
 ========================= */
 
-class BallHitBrick extends Event<G> {
+final class BallHitBrick extends Event<G> {
   final Entity<G> brick;
   BallHitBrick(super.app, this.brick);
 }
 
-class BallLost extends Event<G> {
+final class BallLost extends Event<G> {
   BallLost(super.app);
 }
 
-class MovePaddle extends Event<G> {
+final class MovePaddle extends Event<G> {
   final double axis; // -1..1
   MovePaddle(super.app, this.axis);
 }
 
-class SpawnBall extends Event<G> {
+final class SpawnBall extends Event<G> {
   SpawnBall(super.app);
 }
 
@@ -31,7 +31,7 @@ class SpawnBall extends Event<G> {
   PADDLE
 ========================= */
 
-class PaddleEntity extends Entity<G> {
+final class PaddleEntity extends Entity<G> {
   PaddleEntity(super.app);
 
   double speed = 600;
@@ -62,7 +62,7 @@ class PaddleEntity extends Entity<G> {
   BALL
 ========================= */
 
-class BallEntity extends Entity<G> {
+final class BallEntity extends Entity<G> {
   BallEntity(super.app);
 
   @override
@@ -86,7 +86,7 @@ class BallEntity extends Entity<G> {
   BRICK
 ========================= */
 
-class BrickEntity extends Entity<G> {
+final class BrickEntity extends Entity<G> {
   final Vector2 position;
 
   BrickEntity(super.app, this.position);
@@ -108,7 +108,7 @@ class BrickEntity extends Entity<G> {
   SYSTEMS
 ========================= */
 
-class PaddleInputSystem extends SceneSystem<G> {
+final class PaddleInputSystem extends SceneSystem<G> {
   final String K_left = 'left';
   final String K_right = 'right';
 
@@ -131,7 +131,7 @@ class PaddleInputSystem extends SceneSystem<G> {
   }
 }
 
-class ArkanoidRulesSystem extends SceneSystem<G> {
+final class ArkanoidRulesSystem extends SceneSystem<G> {
   int score = 0;
 
   ArkanoidRulesSystem(super.app);
@@ -159,7 +159,7 @@ class ArkanoidRulesSystem extends SceneSystem<G> {
   }
 }
 
-class BallSpawnerSystem extends SceneSystem<G> {
+final class BallSpawnerSystem extends SceneSystem<G> {
   BallSpawnerSystem(super.app);
 
   @override
@@ -174,7 +174,7 @@ class BallSpawnerSystem extends SceneSystem<G> {
   SCENE
 ========================= */
 
-class ArkanoidScene extends DrawScene<G> {
+final class ArkanoidScene extends DrawScene<G> {
   ArkanoidScene(super.app);
 
   @override
@@ -211,7 +211,7 @@ class ArkanoidScene extends DrawScene<G> {
   GAME
 ========================= */
 
-class Arkanoid extends App<G> {
+final class Arkanoid extends App<G> {
   final String K_q = 'q';
 
   Arkanoid(super.backend);
@@ -235,9 +235,9 @@ class Arkanoid extends App<G> {
   }
 }
 
-class ArkanoidEventDriven extends UnhingedRaylibApp<G> {
+final class ArkanoidEventDriven extends UnhingedRaylibApp<G> {
   @override
-  G create(RaylibBackend backend) => G(backend);
+  G create(backend) => G(backend);
 
   @override
   bool shouldClose(Raylib rl) => app.shouldAppExit || super.shouldClose(rl);

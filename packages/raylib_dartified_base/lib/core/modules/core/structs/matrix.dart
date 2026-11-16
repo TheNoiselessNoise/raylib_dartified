@@ -11,7 +11,7 @@ enum MatrixField with XFields {
 }
 
 /// Matrix, 4x4 components, column major, OpenGL style, right-handed
-class Matrix extends XStruct<Matrix> {
+final class Matrix extends XStruct<Matrix> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -23,7 +23,7 @@ class Matrix extends XStruct<Matrix> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Matrix> struct = .createValue(
+  static final XStructDef<Matrix> struct = .createValue(
     factory: Matrix.new,
     layout: .aligned<MatrixField>({
       .m0: XFloat(), .m4: XFloat(), .m8: XFloat(), .m12: XFloat(), // Matrix first row (4 components)
@@ -159,15 +159,11 @@ class Matrix extends XStruct<Matrix> {
 
   Matrix({
     super.op,
-    double m0 = 0, double m1 = 0, double m2 = 0, double m3 = 0,
-    double m4 = 0, double m5 = 0, double m6 = 0, double m7 = 0,
-    double m8 = 0, double m9 = 0, double m10 = 0, double m11 = 0,
-    double m12 = 0, double m13 = 0, double m14 = 0, double m15 = 0,
-  }) :
-    _m0 = m0, _m1 = m1, _m2 = m2, _m3 = m3,
-    _m4 = m4, _m5 = m5, _m6 = m6, _m7 = m7,
-    _m8 = m8, _m9 = m9, _m10 = m10, _m11 = m11,
-    _m12 = m12, _m13 = m13, _m14 = m14, _m15 = m15;
+    this._m0 = 0, this._m1 = 0, this._m2 = 0, this._m3 = 0,
+    this._m4 = 0, this._m5 = 0, this._m6 = 0, this._m7 = 0,
+    this._m8 = 0, this._m9 = 0, this._m10 = 0, this._m11 = 0,
+    this._m12 = 0, this._m13 = 0, this._m14 = 0, this._m15 = 0,
+  });
 
   factory Matrix.zero() => .new();
 

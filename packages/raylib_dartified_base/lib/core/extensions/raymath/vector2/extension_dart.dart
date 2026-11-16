@@ -3,21 +3,19 @@ part of '../../../raylib_dartified_base.dart';
 /// Exposes Raylib's vector math API as module-level functions by delegating
 /// to the corresponding [Vector2] methods/factories.
 /// Exists purely for Raylib API symmetry.
-class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
-
-  final _debugLabels = _RaylibVector2ExtDartDebugLabels();
+final class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
 
   RaylibVector2ExtDart(super.rl);
 
   /// See [Vector2.zero].
   Vector2 Vector2Zero() => debugRun(
-    () => _debugLabels.Vector2Zero(),
+    () => 'Vector2Zero()',
     () => .zero(),
   );
 
   /// See [Vector2.one].
   Vector2 Vector2One() => debugRun(
-    () => _debugLabels.Vector2One(),
+    () => 'Vector2One()',
     () => .one(),
   );
 
@@ -26,7 +24,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Add(v1, v2),
+    () => 'Vector2Add($v1, $v2)',
     () => v1.add(v2),
   );
 
@@ -35,7 +33,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     double add,
   ) => debugRun(
-    () => _debugLabels.Vector2AddValue(v, add),
+    () => 'Vector2AddValue($v, $add)',
     () => v.addValue(add),
   );
 
@@ -44,7 +42,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Subtract(v1, v2),
+    () => 'Vector2Subtract($v1, $v2)',
     () => v1.sub(v2),
   );
 
@@ -53,7 +51,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     double sub,
   ) => debugRun(
-    () => _debugLabels.Vector2SubtractValue(v, sub),
+    () => 'Vector2SubtractValue($v, $sub)',
     () => v.subValue(sub),
   );
 
@@ -61,7 +59,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double Vector2Length(
     Vector2 v,
   ) => debugRun(
-    () => _debugLabels.Vector2Length(v),
+    () => 'Vector2Length($v)',
     () => v.length,
   );
 
@@ -69,7 +67,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double Vector2LengthSqr(
     Vector2 v,
   ) => debugRun(
-    () => _debugLabels.Vector2LengthSqr(v),
+    () => 'Vector2LengthSqr($v)',
     () => v.lengthSqr,
   );
 
@@ -78,7 +76,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2DotProduct(v1, v2),
+    () => 'Vector2DotProduct($v1, $v2)',
     () => v1.dotProduct(v2),
   );
 
@@ -87,7 +85,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2CrossProduct(v1, v2),
+    () => 'Vector2CrossProduct($v1, $v2)',
     () => v1.crossProduct(v2),
   );
 
@@ -96,7 +94,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Distance(v1, v2),
+    () => 'Vector2Distance($v1, $v2)',
     () => v1.distance(v2),
   );
 
@@ -105,7 +103,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2DistanceSqr(v1, v2),
+    () => 'Vector2DistanceSqr($v1, $v2)',
     () => v1.distanceSqr(v2),
   );
 
@@ -114,7 +112,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Angle(v1, v2),
+    () => 'Vector2Angle($v1, $v2)',
     () => v1.angle(v2),
   );
 
@@ -123,7 +121,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 start,
     Vector2 end,
   ) => debugRun(
-    () => _debugLabels.Vector2LineAngle(start, end),
+    () => 'Vector2LineAngle($start, $end)',
     () => start.lineAngle(end),
   );
 
@@ -132,7 +130,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     double scale,
   ) => debugRun(
-    () => _debugLabels.Vector2Scale(v, scale),
+    () => 'Vector2Scale($v, $scale)',
     () => v.scale(scale),
   );
 
@@ -141,7 +139,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Multiply(v1, v2),
+    () => 'Vector2Multiply($v1, $v2)',
     () => v1.mul(v2),
   );
 
@@ -149,7 +147,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector2 Vector2Negate(
     Vector2 v,
   ) => debugRun(
-    () => _debugLabels.Vector2Negate(v),
+    () => 'Vector2Negate($v)',
     () => v.negate(),
   );
 
@@ -158,7 +156,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Divide(v1, v2),
+    () => 'Vector2Divide($v1, $v2)',
     () => v1.div(v2),
   );
 
@@ -166,7 +164,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector2 Vector2Normalize(
     Vector2 v,
   ) => debugRun(
-    () => _debugLabels.Vector2Normalize(v),
+    () => 'Vector2Normalize($v)',
     () => v.normalize(),
   );
 
@@ -175,7 +173,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.Vector2Transform(v, mat),
+    () => 'Vector2Transform($v, $mat)',
     () => v.transform(mat),
   );
 
@@ -185,7 +183,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v2,
     double amount,
   ) => debugRun(
-    () => _debugLabels.Vector2Lerp(v1, v2, amount),
+    () => 'Vector2Lerp($v1, $v2, $amount)',
     () => v1.lerp(v2, amount),
   );
 
@@ -194,7 +192,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     Vector2 normal,
   ) => debugRun(
-    () => _debugLabels.Vector2Reflect(v, normal),
+    () => 'Vector2Reflect($v, $normal)',
     () => v.reflect(normal),
   );
 
@@ -203,7 +201,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Min(v1, v2),
+    () => 'Vector2Min($v1, $v2)',
     () => v1.min(v2),
   );
 
@@ -212,7 +210,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v1,
     Vector2 v2,
   ) => debugRun(
-    () => _debugLabels.Vector2Max(v1, v2),
+    () => 'Vector2Max($v1, $v2)',
     () => v1.max(v2),
   );
 
@@ -221,7 +219,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 v,
     double angle,
   ) => debugRun(
-    () => _debugLabels.Vector2Rotate(v, angle),
+    () => 'Vector2Rotate($v, $angle)',
     () => v.rotate(angle),
   );
 
@@ -231,7 +229,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 target,
     double maxDistance,
   ) => debugRun(
-    () => _debugLabels.Vector2MoveTowards(v, target, maxDistance),
+    () => 'Vector2MoveTowards($v, $target, $maxDistance)',
     () => v.moveTowards(target, maxDistance),
   );
 
@@ -239,7 +237,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector2 Vector2Invert(
     Vector2 v,
   ) => debugRun(
-    () => _debugLabels.Vector2Invert(v),
+    () => 'Vector2Invert($v)',
     () => v.invert(),
   );
 
@@ -249,7 +247,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 min,
     Vector2 max,
   ) => debugRun(
-    () => _debugLabels.Vector2Clamp(v, min, max),
+    () => 'Vector2Clamp($v, $min, $max)',
     () => v.clamp(min, max),
   );
 
@@ -259,7 +257,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double min,
     double max,
   ) => debugRun(
-    () => _debugLabels.Vector2ClampValue(v, min, max),
+    () => 'Vector2ClampValue($v, $min, $max)',
     () => v.clampValue(min, max),
   );
 
@@ -268,7 +266,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 p,
     Vector2 q,
   ) => debugRun(
-    () => _debugLabels.Vector2Equals(p, q),
+    () => 'Vector2Equals($p, $q)',
     () => p.equals(q),
   );
 
@@ -278,7 +276,7 @@ class RaylibVector2ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector2 n,
     double r,
   ) => debugRun(
-    () => _debugLabels.Vector2Refract(v, n, r),
+    () => 'Vector2Refract($v, $n, $r)',
     () => v.refract(n, r),
   );
 }

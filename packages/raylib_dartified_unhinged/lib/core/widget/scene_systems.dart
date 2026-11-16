@@ -1,6 +1,6 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class FMouseSystem<T extends App<T>> extends SceneSystem<T> {
+final class FMouseSystem<T extends App<T>> extends SceneSystem<T> {
   FMouseSystem(super.app, {
     super.populateDefaults,
   });
@@ -26,7 +26,7 @@ class FMouseSystem<T extends App<T>> extends SceneSystem<T> {
   @override String get persistentTypeId => typeId;
 }
 
-class FWidgetDebugSystem<T extends App<T>> extends SceneSystem<T> {
+final class FWidgetDebugSystem<T extends App<T>> extends SceneSystem<T> {
   FWidgetDebugSystem(super.app, {
     super.populateDefaults,
   });
@@ -53,7 +53,7 @@ class FWidgetDebugSystem<T extends App<T>> extends SceneSystem<T> {
   @override String get persistentTypeId => typeId;
 }
 
-class FValidateWidgetsSystem<T extends App<T>> extends SceneSystem<T> {
+final class FValidateWidgetsSystem<T extends App<T>> extends SceneSystem<T> {
   FValidateWidgetsSystem(super.app, {
     super.populateDefaults,
   });

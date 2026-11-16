@@ -99,7 +99,7 @@ Never logDie(String msg, {List<String> details = const []}) {
   exit(1);
 }
 
-class LogSummary {
+final class LogSummary {
   int _ok = 0, _warn = 0, _err = 0;
   final _sw = Stopwatch()..start();
 

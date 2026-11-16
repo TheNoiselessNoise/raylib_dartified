@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FSized<T extends App<T>> extends FWidgetLeaf<T> {
+final class FSized<T extends App<T>> extends FWidgetLeaf<T> {
   late FSizedMode mode;
   FSizedMode? widthMode;
   FSizedMode? heightMode;

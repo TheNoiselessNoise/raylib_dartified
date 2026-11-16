@@ -9,7 +9,7 @@ enum Vector2Field with XFields {
 }
 
 /// Vector2, 2 components
-class Vector2 extends XStruct<Vector2> {
+final class Vector2 extends XStruct<Vector2> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,7 +21,7 @@ class Vector2 extends XStruct<Vector2> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Vector2> struct = .createValue(
+  static final XStructDef<Vector2> struct = .createValue(
     factory: Vector2.new,
     layout: .aligned<Vector2Field>({
       .x: XFloat(), // Vector x component
@@ -57,11 +57,9 @@ class Vector2 extends XStruct<Vector2> {
 
   Vector2({
     super.op,
-    double x = 0,
-    double y = 0,
-  }) :
-    _x = x,
-    _y = y;
+    this._x = 0,
+    this._y = 0,
+  });
 
   factory Vector2.zero() => .vec2(0, 0);
 

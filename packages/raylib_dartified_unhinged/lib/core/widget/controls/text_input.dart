@@ -6,7 +6,7 @@ enum FTextInputStyle {
   ghost,
 }
 
-class FTextInputThemeColors {
+final class FTextInputThemeColors {
   final Color bg;
   final Color fg;
   final Color border;
@@ -24,7 +24,7 @@ class FTextInputThemeColors {
   });
 }
 
-class FTextInputTheme<T extends App<T>> {
+final class FTextInputTheme<T extends App<T>> {
   final Color bg;
   final Color bgHovered;
   final Color bgFocused;
@@ -142,7 +142,7 @@ class FTextInputTheme<T extends App<T>> {
   }
 }
 
-class FTextInput<T extends App<T>> extends FWidgetLeaf<T> with
+final class FTextInput<T extends App<T>> extends FWidgetLeaf<T> with
   IsWidgetDisableable<T, FTextInput<T>>
 {
   // value

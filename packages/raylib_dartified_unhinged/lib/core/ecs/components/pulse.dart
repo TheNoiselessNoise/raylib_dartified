@@ -68,16 +68,7 @@ class CPulse<T extends App<T>> extends Comp<T> with
   // clone
 
   @override
-  CPulse<T> createInstance() {
-    final c = CPulse<T>(app,
-      minScale: minScale,
-      maxScale: maxScale,
-      speed: speed,
-      time: pulseTime,
-    );
-    c.currentScale = currentScale;
-    return c;
-  }
+  CPulse<T> createInstance() => .new(app);
 
   // state
 

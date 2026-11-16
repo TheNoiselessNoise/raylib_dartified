@@ -39,7 +39,7 @@ abstract class AudioCallback extends AudioCallbackBase {
     => _AudioCallback(f, name: name);
 }
 
-class _AudioCallback extends AudioCallback {
+final class _AudioCallback extends AudioCallback {
   final AudioCallbackFunction _f;
   _AudioCallback(this._f, {String? name}) : super(name);
 

@@ -4,7 +4,7 @@ double _linear(double t) => t;
 
 double _lerpDouble(double from, double to, double t) => from + (to - from) * t;
 
-class _PropertyTween {
+final class _PropertyTween {
   final void Function(double value) set;
   final double from;
   final double to;
@@ -31,13 +31,36 @@ class _PropertyTween {
   }
 }
 
+/// ***WARNING***:
+/// CAnimation cannot be fully restored from persistable data because its
+/// state contain closures (`_PropertyTween.set`, `_PropertyTween.easing`, and `_onCompleteCallbacks`).
+///
+/// Either:
+/// - Extend this class and override `onRestorePersistableData` to set up state there.
+///
+/// - Listen on `factories.comp` (see [App.factories], [ECSFactoryRegistry.comp])
+///   and rebuild state when the restored instance matches your type.
+///
+/// ```dart
+/// MyApp(super.backend) {
+///   factories.comp.listen((typeId, instance) {
+///     if (instance is MyAnimation) {
+///       instance
+///         .property(...)
+///         .property(...);
+///     }
+///   });
+/// }
+/// ```
 class CAnimation<T extends App<T>> extends Comp<T> {
   List<_PropertyTween> _tweens = [];
   List<void Function()> _onCompleteCallbacks = [];
 
   bool _completedFired = false;
 
-  CAnimation(super.app);
+  CAnimation(super.app, {
+    super.populateDefaults,
+  });
 
   /// Animate a single property from [from] (defaults to current value via
   /// [get] if omitted) to [to] over [duration] seconds.
@@ -108,13 +131,7 @@ class CAnimation<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CAnimation<T> createInstance() {
-    final c = CAnimation<T>(app);
-    c._tweens = .from(_tweens);
-    c._onCompleteCallbacks = .from(_onCompleteCallbacks);
-    c._completedFired = _completedFired;
-    return c;
-  }
+  CAnimation<T> createInstance() => .new(app);
 
   // state
 

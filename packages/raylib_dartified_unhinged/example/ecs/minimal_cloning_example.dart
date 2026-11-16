@@ -3,7 +3,7 @@ import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
 
 typedef G = MinimalCloningExampleApp;
 
-class MyScene extends Scene<G> {
+final class MyScene extends Scene<G> {
   int intValue = 0;
   double doubleValue = 0;
 
@@ -20,7 +20,7 @@ class MyScene extends Scene<G> {
 }
 
 // NOTE: [CLONING], simple policy
-class MyAppCloningPolicy extends ClonePolicy<G> {
+final class MyAppCloningPolicy extends ClonePolicy<G> {
   @override
   bool allow(CloneKind kind, { ECSBase<G>? owner, Object? payload }) {
     // we are currently cloning a `scene`
@@ -38,7 +38,7 @@ class MyAppCloningPolicy extends ClonePolicy<G> {
   }
 }
 
-class MinimalCloningExampleApp extends App<G> {
+final class MinimalCloningExampleApp extends App<G> {
   MinimalCloningExampleApp(super.backend);
 
   @override

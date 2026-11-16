@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
+final class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
 
   RaylibGuiFlatWeb(super.rl);
 
@@ -125,7 +125,7 @@ class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
   XWasmPtr<XUnsignedInt> GuiGetIcons() => _wasm.GuiGetIcons();
 
   @override
-  XWasmPtr<XRawPtr<XChar>> GuiLoadIcons(
+  XWasmPtr<XPtrType<XChar>> GuiLoadIcons(
     XPtr<XChar> fileName,
     bool loadIconsName,
   ) => _wasm.GuiLoadIcons(
@@ -134,7 +134,7 @@ class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
   );
 
   @override
-  XWasmPtr<XRawPtr<XChar>> GuiLoadIconsFromMemory(
+  XWasmPtr<XPtrType<XChar>> GuiLoadIconsFromMemory(
     XPtr<XUnsignedChar> fileData,
     int dataSize,
     bool loadIconsName,
@@ -474,7 +474,7 @@ class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
   @override
   int GuiListViewEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> scrollIndex,
     XPtr<XInt> active,
@@ -504,7 +504,7 @@ class RaylibGuiFlatWeb extends RaylibGuiFlat<Raylib> {
   @override
   int GuiTabBarEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> hscroll,
     XPtr<XInt> active,

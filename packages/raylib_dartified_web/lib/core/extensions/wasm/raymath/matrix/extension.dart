@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibMatrixExt extends RaylibModuleWasm {
+final class RaylibMatrixExt extends RaylibModuleWasm {
   /// Compute matrix determinant
   late final XF1<double> MatrixDeterminant;
   /// Get the trace of the matrix (sum of the values along the diagonal)

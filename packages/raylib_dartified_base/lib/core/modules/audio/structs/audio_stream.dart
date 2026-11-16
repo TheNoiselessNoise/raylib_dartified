@@ -9,7 +9,7 @@ enum AudioStreamField with XFields {
 }
 
 /// AudioStream, custom audio stream
-class AudioStream extends XStruct<AudioStream> {
+final class AudioStream extends XStruct<AudioStream> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,11 +21,11 @@ class AudioStream extends XStruct<AudioStream> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<AudioStream> struct = .create(
+  static final XStructDef<AudioStream> struct = .create(
     factory: AudioStream.new,
     layout: .aligned<AudioStreamField>({
-      .buffer:     XRawPtr(XOpaque()), // Pointer to internal data used by the audio system
-      .processor:  XRawPtr(XOpaque()), // Pointer to internal data processor, useful for audio effects
+      .buffer:     XPtrType(XOpaque()), // Pointer to internal data used by the audio system
+      .processor:  XPtrType(XOpaque()), // Pointer to internal data processor, useful for audio effects
       .sampleRate: XUnsignedInt(), // Frequency (samples per second)
       .sampleSize: XUnsignedInt(), // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
       .channels:   XUnsignedInt(), // Number of channels (1-mono, 2-stereo, ...)
@@ -83,13 +83,10 @@ class AudioStream extends XStruct<AudioStream> {
 
   AudioStream({
     super.op,
-    int sampleRate = 0,
-    int sampleSize = 0,
-    int channels = 0,
-  }) :
-    _sampleRate = sampleRate,
-    _sampleSize = sampleSize,
-    _channels = channels;
+    this._sampleRate = 0,
+    this._sampleSize = 0,
+    this._channels = 0,
+  });
 
   factory AudioStream.zero() => .new();
 

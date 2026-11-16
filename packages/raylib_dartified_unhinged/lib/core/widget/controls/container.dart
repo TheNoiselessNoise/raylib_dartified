@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FContainer<T extends App<T>> extends FWidgetLeaf<T> {
+final class FContainer<T extends App<T>> extends FWidgetLeaf<T> {
   Color? backgroundColor;
   double roundness;
 

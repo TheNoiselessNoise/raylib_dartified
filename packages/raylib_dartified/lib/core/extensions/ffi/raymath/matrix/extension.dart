@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified.dart';
 
-class RaylibMatrixExt extends RaylibModule<Raylib> {
+final class RaylibMatrixExt extends RaylibModule<Raylib> {
   RaylibMatrixExt(super.rl);
 
   RaylibLookup get _lookup => rl.lookup<RaylibCore>();

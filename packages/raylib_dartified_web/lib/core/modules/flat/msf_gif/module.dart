@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibMsfGifFlatWeb extends RaylibMsfGifFlat<Raylib> {
+final class RaylibMsfGifFlatWeb extends RaylibMsfGifFlat<Raylib> {
 
   RaylibMsfGifFlatWeb(super.rl);
 

@@ -34,5 +34,3 @@ doc/api/
 unrelated/
 # unrelated examples/tests
 example/other/
-# raylib itself
-raylib-5.5*/

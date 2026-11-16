@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibVector2Ext extends RaylibModuleWasm {
+final class RaylibVector2Ext extends RaylibModuleWasm {
   /// Add two vectors (v1 + v2)
   late final XF3<void> Vector2Add;
   /// Add vector and double value

@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FColumn<T extends App<T>> extends FWidgetLeaf<T> {
+final class FColumn<T extends App<T>> extends FWidgetLeaf<T> {
   double gap;
   FColumnAlignment alignment;
 

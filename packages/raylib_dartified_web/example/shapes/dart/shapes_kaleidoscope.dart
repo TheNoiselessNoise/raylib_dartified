@@ -6,7 +6,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_DRAW_LINES = 8192;
 
-class Line {
+final class Line {
   Vector2 start = .zero();
   Vector2 end = .zero();
 }

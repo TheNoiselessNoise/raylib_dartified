@@ -10,7 +10,7 @@ enum float3Field with XFields {
 }
 
 /// Raylib's `float3` struct holding 3 `float` values
-class float3 extends XStruct<float3> {
+final class float3 extends XStruct<float3> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,7 +22,7 @@ class float3 extends XStruct<float3> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<float3> struct = .createValue(
+  static final XStructDef<float3> struct = .createValue(
     factory: float3.new,
     layout: .aligned<float3Field>({
       .v: XArray(XFloat(), 3),

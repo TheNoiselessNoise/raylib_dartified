@@ -8,7 +8,7 @@ enum FColorPickerVariant {
 
 enum _ColorDrag { none, sv, hue, alpha }
 
-class FColorPickerTheme {
+final class FColorPickerTheme {
   final Color background;
   final Color backgroundHovered;
   final Color border;
@@ -61,7 +61,7 @@ Map<FColorPickerVariant, Color> get _fColorPickerVariantColors => {
   .success: .color(0x1D, 0x9E, 0x75, 0xFF),
 };
 
-class FColorPicker<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FColorPicker<T>> {
+final class FColorPicker<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickable<T, FColorPicker<T>> {
   bool allowAlpha;
   bool allowClear; // shows an "x" in the trigger, emits null on click
   double controlWidth;
@@ -463,8 +463,8 @@ class FColorPicker<T extends App<T>> extends FWidgetLeaf<T> with IsWidgetClickab
     // --- saturation / value square
     final sv = _svRect(origin);
     final pureHue = _hsvToColor(_h, 1, 1, 1);
-    _grad(sv, white, white, pureHue, pureHue); // left → right: white → hue
-    _grad(sv, clear, black, clear, black);     // top → bottom: clear → black
+    _grad(sv, white, white, pureHue, pureHue);
+    _grad(sv, clear, black, black, clear);
     backend.render.drawRectangleLinesEx(sv, 1, theme.border);
 
     final hx = sv.x + _s * sv.width;

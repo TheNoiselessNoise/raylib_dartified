@@ -8,7 +8,7 @@ const _defaultRaylibVersion = '6.0';
 const _supportedRaylibVersions = ['6.0'];
 
 /// Config for an external module cloned alongside raylib itself (raygui, etc).
-class ModuleConfig {
+final class ModuleConfig {
   final String name;
   final String repoUrl;
   final Directory dir;
@@ -63,7 +63,7 @@ Future<void> main(List<String> args) async {
   logInfo('You can now run:  dart run raylib_dartified_web:build --entry=<entry.dart>');
 }
 
-class _SetupArgs {
+final class _SetupArgs {
   final String version;
   final Map<String, String> defines;
   final Map<RaylibSupportedLibs, String> moduleRevisions;

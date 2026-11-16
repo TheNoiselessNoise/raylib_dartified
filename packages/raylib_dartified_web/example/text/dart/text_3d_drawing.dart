@@ -14,7 +14,7 @@ Color LETTER_BOUNDRY_COLOR = .VIOLET;
 bool SHOW_LETTER_BOUNDRY = false;
 bool SHOW_TEXT_BOUNDRY = false;
 
-class WaveTextConfig {
+final class WaveTextConfig {
   Vector3 waveRange;
   Vector3 waveSpeed;
   Vector3 waveOffset;

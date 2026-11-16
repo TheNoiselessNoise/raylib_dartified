@@ -54,7 +54,7 @@ final class _GuiResultConst extends GuiResult {
   const _GuiResultConst(super.value, super.name);
 }
 
-class GuiResultCustom extends GuiResult {
+final class GuiResultCustom extends GuiResult {
   const GuiResultCustom(int value) : super(value, 'RESULT_CUSTOM');
 }
 

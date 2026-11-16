@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class TransformSyncSystem<T extends App<T>> extends SceneSystem<T> {
+final class TransformSyncSystem<T extends App<T>> extends SceneSystem<T> {
   TransformSyncSystem(super.app, {
     super.populateDefaults,
   });
@@ -52,7 +52,7 @@ class TransformSyncSystem<T extends App<T>> extends SceneSystem<T> {
   @override String get persistentTypeId => typeId;
 }
 
-class TransformSyncSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, TransformSyncSystem<T>> {
+final class TransformSyncSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, TransformSyncSystem<T>> {
   TransformSyncSystemSnapshot(super.id);
 
   @override

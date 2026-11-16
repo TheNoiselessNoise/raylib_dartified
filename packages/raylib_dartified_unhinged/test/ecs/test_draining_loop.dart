@@ -16,7 +16,7 @@ enum EventDrainSource {
   reentrant_callback,
 }
 
-class TestApp extends App<G> {
+final class TestApp extends App<G> {
   TestApp(super.backend);
 
   bool reentrantCallbackMode = false;
@@ -47,12 +47,12 @@ mixin IsSourcedEvent on Event<G> {
   EventDrainSource get source;
 }
 
-class TestEvent extends Event<G> with IsSourcedEvent {
+final class TestEvent extends Event<G> with IsSourcedEvent {
   @override final EventDrainSource source;
   TestEvent(super.app, this.source);
 }
 
-class TestSecondEvent extends Event<G> with IsSourcedEvent {
+final class TestSecondEvent extends Event<G> with IsSourcedEvent {
   @override final EventDrainSource source;
   TestSecondEvent(super.app, this.source);
 }

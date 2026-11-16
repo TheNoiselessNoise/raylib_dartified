@@ -38,7 +38,7 @@ void setupCustomStateMachine(CustomStateMachine c) {
   );
 }
 
-class CustomStateMachine extends CStateMachine<G> {
+final class CustomStateMachine extends CStateMachine<G> {
   CustomStateMachine(super.app, {
     super.populateDefaults,
     super.states,
@@ -59,7 +59,7 @@ class CustomStateMachine extends CStateMachine<G> {
   String get persistentTypeId => typeId;
 }
 
-class TestEntity extends Entity<G> {
+final class TestEntity extends Entity<G> {
   TestEntity(super.app, { super.populateDefaults }) {
     if (populateDefaults) {
       final comp = CustomStateMachine(app);
@@ -76,7 +76,7 @@ class TestEntity extends Entity<G> {
   String get persistentTypeId => typeId;
 }
 
-class TestScene extends Scene<G> {
+final class TestScene extends Scene<G> {
   TestScene(super.app, { super.populateDefaults }) {    
     if (populateDefaults) addEntity(TestEntity(app));
   }
@@ -89,7 +89,7 @@ class TestScene extends Scene<G> {
   String get persistentTypeId => typeId;
 }
 
-class TestApp extends App<G> {
+final class TestApp extends App<G> {
   TestApp(super.backend, { super.populateDefaults }) {
     factories.scene.register(TestScene.typeId, TestScene.new);
     factories.entity.register(TestEntity.typeId, TestEntity.new);

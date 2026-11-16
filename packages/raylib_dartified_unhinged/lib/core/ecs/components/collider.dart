@@ -186,18 +186,7 @@ class CCircleCollider<T extends App<T>> extends CCollider<T> {
   // clone
 
   @override
-  CCircleCollider<T> createInstance() {
-    final c = CCircleCollider<T>(app,
-      radius: baseRadius,
-      tag: tag,
-      enableCollision: enableCollision,
-      debugDraw: debugDraw,
-      debugLinesThick: debugLinesThick,
-      debugColor: debugColor,
-    );
-    c.radius = radius;
-    return c;
-  }
+  CCircleCollider<T> createInstance() => .new(app);
 
   // state
 
@@ -357,19 +346,7 @@ class CRectCollider<T extends App<T>> extends CCollider<T> {
   // clone
 
   @override
-  CRectCollider<T> createInstance() {
-    final c = CRectCollider<T>(app,
-      size: size?.copy(),
-      tag: tag,
-      autoSync: autoSync,
-      enableCollision: enableCollision,
-      debugDraw: debugDraw,
-      debugLinesThick: debugLinesThick,
-      debugColor: debugColor,
-    );
-    c.rect = rect.copy();
-    return c;
-  }
+  CRectCollider<T> createInstance() => .new(app);
 
   // state
 

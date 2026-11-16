@@ -1,7 +1,7 @@
 // dart run test_entity_group.dart
 import '_base.dart';
 
-class SimpleEntity extends Entity<G> {
+final class SimpleEntity extends Entity<G> {
   final int i;
 
   int get size => 42;
@@ -19,7 +19,7 @@ class SimpleEntity extends Entity<G> {
 
 // NOTE: constrain the group for only `SimpleEntity` types
 //       you can still use generic type `AnyEntityGroup<G>`
-class SimpleEntityGroup extends EntityGroup<G, SimpleEntity> {
+final class SimpleEntityGroup extends EntityGroup<G, SimpleEntity> {
   final int speed = 1;
 
   SimpleEntityGroup(super.app) {
@@ -41,7 +41,7 @@ class SimpleEntityGroup extends EntityGroup<G, SimpleEntity> {
   });
 }
 
-class EmptyScene extends DrawScene<G> {
+final class EmptyScene extends DrawScene<G> {
   EmptyScene(super.app);
 
   @override
@@ -52,7 +52,7 @@ class EmptyScene extends DrawScene<G> {
 
 typedef G = EmptyGame;
 
-class EmptyGame extends ExampleRaylibApp<G> {
+final class EmptyGame extends ExampleRaylibApp<G> {
   EmptyGame(super.backend);
 
   @override

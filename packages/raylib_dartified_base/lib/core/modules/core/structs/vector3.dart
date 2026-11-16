@@ -10,7 +10,7 @@ enum Vector3Field with XFields {
 }
 
 /// Vector3, 3 components
-class Vector3 extends XStruct<Vector3> {
+final class Vector3 extends XStruct<Vector3> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,7 +22,7 @@ class Vector3 extends XStruct<Vector3> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Vector3> struct = .createValue(
+  static final XStructDef<Vector3> struct = .createValue(
     factory: Vector3.new,
     layout: .aligned<Vector3Field>({
       .x: XFloat(), // Vector x component
@@ -66,13 +66,10 @@ class Vector3 extends XStruct<Vector3> {
   
   Vector3({
     super.op,
-    double x = 0,
-    double y = 0,
-    double z = 0,
-  }) :
-    _x = x,
-    _y = y,
-    _z = z;
+    this._x = 0,
+    this._y = 0,
+    this._z = 0,
+  });
 
   factory Vector3.zero() => .vec3(0, 0, 0);
 

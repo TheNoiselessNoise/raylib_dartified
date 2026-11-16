@@ -100,7 +100,7 @@ That's the floor, not a rule about how you have to build. Identity is yours to c
 ---
 Subclass `Entity` directly and let the type system carry the identity:
 ```dart
-class Turret extends Entity<MyApp> { ... }
+final class Turret extends Entity<MyApp> { ... }
 ```
   `QueryEntity.On<Turret>()` works exactly the way you'd expect, because a `Turret` *is* one, all the way down, no component required to tell it what it is.
 

@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class ScreenBounceSystem<T extends App<T>> extends SceneSystem<T> {
+final class ScreenBounceSystem<T extends App<T>> extends SceneSystem<T> {
   static const double _defaultRestitution = 1;
 
   double restitution; // 1.0 = perfect bounce, <1 = energy loss
@@ -68,13 +68,7 @@ class ScreenBounceSystem<T extends App<T>> extends SceneSystem<T> {
   // clone
 
   @override
-  ScreenBounceSystem<T> createInstance() => .new(app,
-    restitution: restitution,
-    top: top,
-    left: left,
-    bottom: bottom,
-    right: right,
-  );
+  ScreenBounceSystem<T> createInstance() => .new(app);
   
   // state
 
@@ -130,7 +124,7 @@ class ScreenBounceSystem<T extends App<T>> extends SceneSystem<T> {
   }
 }
 
-class ScreenBounceSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, ScreenBounceSystem<T>> {
+final class ScreenBounceSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, ScreenBounceSystem<T>> {
   late double restitution;
   late bool top;
   late bool left;

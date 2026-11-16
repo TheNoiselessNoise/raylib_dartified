@@ -1,9 +1,11 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class ECSBaseFactoryRegistry<
+final class ECSBaseFactoryRegistry<
   T extends App<T>,
   E extends ECSBase<T>
 > {
+  ECSBaseFactoryRegistry._();
+
   final _factories = <String, E Function(T app, {bool populateDefaults})>{};
 
   final List<void Function(String typeId, E instance)> _listeners = [];
@@ -27,12 +29,14 @@ class ECSBaseFactoryRegistry<
   }
 }
 
-class ECSFactoryRegistry<T extends App<T>> {
-  late final ECSBaseFactoryRegistry<T, AppSystem<T>> appSystem = .new();
-  late final ECSBaseFactoryRegistry<T, Scene<T>> scene = .new();
-  late final ECSBaseFactoryRegistry<T, SceneSystem<T>> sceneSystem = .new();
-  late final ECSBaseFactoryRegistry<T, Entity<T>> entity = .new();
-  late final ECSBaseFactoryRegistry<T, Comp<T>> comp = .new();
+final class ECSFactoryRegistry<T extends App<T>> {
+  ECSFactoryRegistry._();
+  
+  late final ECSBaseFactoryRegistry<T, AppSystem<T>> appSystem = ._();
+  late final ECSBaseFactoryRegistry<T, Scene<T>> scene = ._();
+  late final ECSBaseFactoryRegistry<T, SceneSystem<T>> sceneSystem = ._();
+  late final ECSBaseFactoryRegistry<T, Entity<T>> entity = ._();
+  late final ECSBaseFactoryRegistry<T, Comp<T>> comp = ._();
 
   void _registerBases() {
     appSystem.register(AppSystem.typeId, AppSystem<T>.new);
@@ -55,7 +59,7 @@ class ECSFactoryRegistry<T extends App<T>> {
   }
 
   void _registerComponents() {
-    // TODO: add CAnimation
+    comp.register(CAnimation.typeId, CAnimation<T>.new);
     comp.register(CAnimator.typeId, CAnimator<T>.new);
     comp.register(CBoundsBounce.typeId, CBoundsBounce<T>.new);
     comp.register(CBoundsConstraint.typeId, CBoundsConstraint<T>.new);

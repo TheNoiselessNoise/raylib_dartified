@@ -8,7 +8,7 @@ enum MsfGifResultField with XFields {
 }
 
 /// MsfGifResult
-class MsfGifResult extends XStruct<MsfGifResult> {
+final class MsfGifResult extends XStruct<MsfGifResult> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,13 +20,13 @@ class MsfGifResult extends XStruct<MsfGifResult> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<MsfGifResult> struct = .create(
+  static final XStructDef<MsfGifResult> struct = .create(
     factory: MsfGifResult.new,
     layout: .aligned<MsfGifResultField>({
-      .data:           XRawPtr(XVoid()),
+      .data:           XPtrType(XVoid()),
       .dataSize:       XSize(),
       .allocSize:      XSize(),
-      .contextPointer: XRawPtr(XVoid()),
+      .contextPointer: XPtrType(XVoid()),
     }),
   );
 

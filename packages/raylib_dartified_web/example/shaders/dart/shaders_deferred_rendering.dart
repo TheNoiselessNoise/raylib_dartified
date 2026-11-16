@@ -9,7 +9,7 @@ const int screenHeight = 450;
 const int MAX_CUBES = 30;
 const int MAX_LIGHTS = 4;
 
-class GBuffer {
+final class GBuffer {
   int framebuffer = 0;
   int positionTexture = 0;
   int normalTexture = 0;

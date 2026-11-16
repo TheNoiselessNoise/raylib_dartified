@@ -3,9 +3,7 @@ part of '../../../raylib_dartified_base.dart';
 /// Exposes Raylib's quaternion math API as module-level functions by delegating
 /// to the corresponding [Quaternion] methods/factories.
 /// Exists purely for Raylib API symmetry.
-class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
-
-  final _debugLabels = _RaylibQuaternionExtDartDebugLabels();
+final class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
 
   RaylibQuaternionExtDart(super.rl);
 
@@ -14,7 +12,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q1,
     Quaternion q2,
   ) => debugRun(
-    () => _debugLabels.QuaternionAdd(q1, q2),
+    () => 'QuaternionAdd($q1, $q2)',
     () => q1.add(q2),
   );
 
@@ -23,7 +21,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q,
     double add,
   ) => debugRun(
-    () => _debugLabels.QuaternionAddValue(q, add),
+    () => 'QuaternionAddValue($q, $add)',
     () => q.addValue(add),
   );
 
@@ -32,7 +30,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q1,
     Quaternion q2,
   ) => debugRun(
-    () => _debugLabels.QuaternionSubtract(q1, q2),
+    () => 'QuaternionSubtract($q1, $q2)',
     () => q1.sub(q2),
   );
 
@@ -41,13 +39,13 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q,
     double sub,
   ) => debugRun(
-    () => _debugLabels.QuaternionSubtractValue(q, sub),
+    () => 'QuaternionSubtractValue($q, $sub)',
     () => q.subValue(sub),
   );
 
   /// See [Quaternion.identity].
   Quaternion QuaternionIdentity() => debugRun(
-    () => _debugLabels.QuaternionIdentity(),
+    () => 'QuaternionIdentity()',
     () => .identity(),
   );
 
@@ -55,7 +53,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double QuaternionLength(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionLength(q),
+    () => 'QuaternionLength($q)',
     () => q.length,
   );
 
@@ -63,7 +61,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Quaternion QuaternionNormalize(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionNormalize(q),
+    () => 'QuaternionNormalize($q)',
     () => q.normalize(),
   );
 
@@ -71,7 +69,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Quaternion QuaternionInvert(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionInvert(q),
+    () => 'QuaternionInvert($q)',
     () => q.invert(),
   );
 
@@ -80,7 +78,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q1,
     Quaternion q2,
   ) => debugRun(
-    () => _debugLabels.QuaternionMultiply(q1, q2),
+    () => 'QuaternionMultiply($q1, $q2)',
     () => q1.mul(q2),
   );
 
@@ -89,7 +87,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q,
     double mul,
   ) => debugRun(
-    () => _debugLabels.QuaternionScale(q, mul),
+    () => 'QuaternionScale($q, $mul)',
     () => q.scale(mul),
   );
 
@@ -98,7 +96,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q1,
     Quaternion q2,
   ) => debugRun(
-    () => _debugLabels.QuaternionDivide(q1, q2),
+    () => 'QuaternionDivide($q1, $q2)',
     () => q1.div(q2),
   );
 
@@ -108,7 +106,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q2,
     double amount,
   ) => debugRun(
-    () => _debugLabels.QuaternionLerp(q1, q2, amount),
+    () => 'QuaternionLerp($q1, $q2, $amount)',
     () => q1.lerp(q2, amount),
   );
 
@@ -118,7 +116,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q2,
     double amount,
   ) => debugRun(
-    () => _debugLabels.QuaternionNlerp(q1, q2, amount),
+    () => 'QuaternionNlerp($q1, $q2, $amount)',
     () => q1.nLerp(q2, amount),
   );
 
@@ -128,7 +126,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q2,
     double amount,
   ) => debugRun(
-    () => _debugLabels.QuaternionSlerp(q1, q2, amount),
+    () => 'QuaternionSlerp($q1, $q2, $amount)',
     () => q1.sLerp(q2, amount),
   );
 
@@ -140,7 +138,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion inTangent2,
     double t,
   ) => debugRun(
-    () => _debugLabels.QuaternionCubicHermiteSpline(q1, outTangent1, q2, inTangent2, t),
+    () => 'QuaternionCubicHermiteSpline($q1, $outTangent1, $q2, $inTangent2, $t)',
     () => q1.cubicHermiteSpline(outTangent1, q2, inTangent2, t),
   );
 
@@ -149,7 +147,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector3 from,
     Vector3 to,
   ) => debugRun(
-    () => _debugLabels.QuaternionFromVector3ToVector3(from, to),
+    () => 'QuaternionFromVector3ToVector3($from, $to)',
     () => .fromVector3ToVector3(from, to),
   );
 
@@ -157,7 +155,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Quaternion QuaternionFromMatrix(
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.QuaternionFromMatrix(mat),
+    () => 'QuaternionFromMatrix($mat)',
     () => .fromMatrix(mat),
   );
 
@@ -165,7 +163,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Matrix QuaternionToMatrix(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionToMatrix(q),
+    () => 'QuaternionToMatrix($q)',
     () => q.toMatrix(),
   );
 
@@ -174,7 +172,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector3 axis,
     double angle,
   ) => debugRun(
-    () => _debugLabels.QuaternionFromAxisAngle(axis, angle),
+    () => 'QuaternionFromAxisAngle($axis, $angle)',
     () => .fromAxisAngle(axis, angle),
   );
 
@@ -182,7 +180,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   (Vector3 outAxis, double outAngle) QuaternionToAxisAngle(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionToAxisAngle(q),
+    () => 'QuaternionToAxisAngle($q)',
     () => q.toAxisAngle(),
   );
 
@@ -192,7 +190,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     double yaw,
     double roll,
   ) => debugRun(
-    () => _debugLabels.QuaternionFromEuler(pitch, yaw, roll),
+    () => 'QuaternionFromEuler($pitch, $yaw, $roll)',
     () => .fromEuler(pitch, yaw, roll),
   );
 
@@ -200,7 +198,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector3 QuaternionToEuler(
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionToEuler(q),
+    () => 'QuaternionToEuler($q)',
     () => q.toEuler(),
   );
 
@@ -209,7 +207,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion q,
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.QuaternionTransform(q, mat),
+    () => 'QuaternionTransform($q, $mat)',
     () => q.transform(mat),
   );
 
@@ -218,7 +216,7 @@ class RaylibQuaternionExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Quaternion p,
     Quaternion q,
   ) => debugRun(
-    () => _debugLabels.QuaternionEquals(p, q),
+    () => 'QuaternionEquals($p, $q)',
     () => p.equals(q),
   );
 }

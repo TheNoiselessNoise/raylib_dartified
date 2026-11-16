@@ -16,13 +16,13 @@ XStructAlloc structAllocatorUntyped(Object type)
 XScalarAlloc scalarAllocator<R extends XType>([Object? type])
   => XTemp.instance.scalarAlloc<R>(type);
 
-/// See [XStructTypes.of].
-XStructType<D> structType<D extends XStruct<D>>()
-  => XStructTypes.of<D>();
+/// See [XStructDefinitions.of].
+XStructDef<D> structType<D extends XStruct<D>>()
+  => XStructDefinitions.of<D>();
 
-/// See [XStructTypes.ofUntyped].
-XStructType structTypeUntyped(Object type)
-  => XStructTypes.ofUntyped(type);
+/// See [XStructDefinitions.ofUntyped].
+XStructDef structTypeUntyped(Object type)
+  => XStructDefinitions.ofUntyped(type);
 
 /// See [RaylibBase.rand].
 double rand() => _rl.rand();

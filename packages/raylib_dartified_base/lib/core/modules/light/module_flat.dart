@@ -11,7 +11,7 @@ mixin RaylibLightModuleExtras<R extends RaylibBase> on RaylibModule<R> {
 
 /// Backend-agnostic contract for the Raylib Light module.
 ///
-/// Concrete platform implementations mix in or extend this to provide
+/// Concrete platform implementations extend this to provide
 /// the full API surface across different backends.
 abstract class RaylibLightFlat<R extends RaylibBase> extends RaylibModule<R> with RaylibLightModuleExtras<R> {
 

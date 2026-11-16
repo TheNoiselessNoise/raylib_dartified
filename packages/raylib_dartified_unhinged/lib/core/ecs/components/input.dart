@@ -42,10 +42,7 @@ class CInput<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CInput<T> createInstance() => .new(app,
-    mouseMap: .from(mouseMap),
-    keyMap: .from(keyMap),
-  );
+  CInput<T> createInstance() => .new(app);
 
   // state
 

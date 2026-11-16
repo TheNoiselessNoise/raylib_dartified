@@ -7,7 +7,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_BALLS = 5000;
 
-class Ball {
+final class Ball {
   Vector2 pos;
   Vector2 vel;
   Vector2 ppos;

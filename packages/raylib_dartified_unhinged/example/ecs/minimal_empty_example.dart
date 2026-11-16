@@ -3,7 +3,7 @@ import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
 
 typedef G = MinimalEmptyExampleApp;
 
-class MinimalEmptyExampleApp extends App<G> {
+final class MinimalEmptyExampleApp extends App<G> {
   MinimalEmptyExampleApp(super.backend);
 }
 

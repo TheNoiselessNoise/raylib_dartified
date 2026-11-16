@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class _RecordedEvent<T extends App<T>> {
+final class _RecordedEvent<T extends App<T>> {
   final Event<T> event;
   final double simTime;
   final EventScope? scope;

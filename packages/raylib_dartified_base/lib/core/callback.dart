@@ -24,7 +24,7 @@ abstract class RaylibCallback<
   }
 
   /// Backend-specific: produces the callable native pointer for [function].
-  /// Native: wraps a `NativeCallable<C>`, returns its nativeFunction cast to XVoid.
+  /// Native: wraps a `NativeCallable<C>`, returns its nativeFunction.
   /// Wasm: registers via addFunction(jsFunction, signature), wraps the int as a pointer.
   XPtr<XFunction<R>> initializer();
 
@@ -65,7 +65,7 @@ abstract class RaylibCallback<
     if (keepAlive) return ptr;
     registry.remove(ptr.address);
     dispose();
-    return nativeFunction;
+    return ptr;
   }
 
   /// Marks this instance as disposed.

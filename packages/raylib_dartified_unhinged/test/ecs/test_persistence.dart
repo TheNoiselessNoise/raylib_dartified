@@ -34,7 +34,7 @@ mixin HasRandomValues<E extends ECSBase<G>> on IsPersistableBase<G, E> {
   }
 }
 
-class TestComponent extends Comp<G> with HasRandomValues {
+final class TestComponent extends Comp<G> with HasRandomValues {
   TestComponent(super.app, { super.populateDefaults }) {
     if (populateDefaults) {
       setRandomValues();
@@ -49,7 +49,7 @@ class TestComponent extends Comp<G> with HasRandomValues {
   String get persistentTypeId => typeId;
 }
 
-class TestEntity extends Entity<G> with HasRandomValues {
+final class TestEntity extends Entity<G> with HasRandomValues {
   TestEntity(super.app, { super.populateDefaults }) {
     if (populateDefaults) {
       setRandomValues();
@@ -73,7 +73,7 @@ class TestEntity extends Entity<G> with HasRandomValues {
   String get persistentTypeId => typeId;
 }
 
-class TestScene extends Scene<G> with HasRandomValues {
+final class TestScene extends Scene<G> with HasRandomValues {
   TestScene(super.app, { super.populateDefaults }) {    
     if (populateDefaults) {
       setRandomValues();
@@ -95,7 +95,7 @@ class TestScene extends Scene<G> with HasRandomValues {
   String get persistentTypeId => typeId;
 }
 
-class TestApp extends App<G> with HasRandomValues {
+final class TestApp extends App<G> with HasRandomValues {
   TestApp(super.backend, { super.populateDefaults }) {
     factories.scene.register(TestScene.typeId, TestScene.new);
     factories.entity.register(TestEntity.typeId, TestEntity.new);

@@ -6,7 +6,7 @@ enum SoundField with XFields {
 }
 
 /// Sound
-class Sound extends XStruct<Sound> {
+final class Sound extends XStruct<Sound> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,10 +18,10 @@ class Sound extends XStruct<Sound> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Sound> struct = .create(
+  static final XStructDef<Sound> struct = .create(
     factory: Sound.new,
     layout: .aligned<SoundField>({
-      .stream:     XRawStruct(AudioStream.struct), // Audio stream
+      .stream:     XStructType(AudioStream.struct), // Audio stream
       .frameCount: XUnsignedInt(), // Total number of frames (considering channels)
     }),
   );
@@ -55,10 +55,9 @@ class Sound extends XStruct<Sound> {
   Sound({
     super.op,
     AudioStream? stream,
-    int frameCount = 0,
+    this._frameCount = 0,
   }) :
-    _stream = stream ?? .zero(),
-    _frameCount = frameCount;
+    _stream = stream ?? .zero();
 
   factory Sound.zero() => .new();
 

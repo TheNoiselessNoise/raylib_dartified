@@ -1,7 +1,7 @@
 // Run it: dart run test_state.dart
 import '_base.dart';
 
-class MyComponent extends Comp<G> {
+final class MyComponent extends Comp<G> {
   int compField;
 
   MyComponent(super.app, {
@@ -21,7 +21,7 @@ class MyComponent extends Comp<G> {
 }
 
 // NOTE: this is optional, only for custom state `compField`
-class MyComponentSnapshot extends CompSnapshot<G, MyComponent> {
+final class MyComponentSnapshot extends CompSnapshot<G, MyComponent> {
   int compField;
 
   MyComponentSnapshot(super.namedId, this.compField);
@@ -32,7 +32,7 @@ class MyComponentSnapshot extends CompSnapshot<G, MyComponent> {
   );
 }
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   int entityField;
 
   late MyComponent comp;
@@ -58,7 +58,7 @@ class MyEntity extends Entity<G> {
 }
 
 // NOTE: this is optional, only for custom state `entityField`
-class MyEntitySnapshot extends EntitySnapshot<G, MyEntity> {
+final class MyEntitySnapshot extends EntitySnapshot<G, MyEntity> {
   int entityField;
 
   MyEntitySnapshot(super.namedId, this.entityField);
@@ -69,7 +69,7 @@ class MyEntitySnapshot extends EntitySnapshot<G, MyEntity> {
   );
 }
 
-class TestStateScene extends DrawScene<G> {
+final class TestStateScene extends DrawScene<G> {
   late MyEntity myEntity;
 
   TestStateScene(super.app) {
@@ -133,7 +133,7 @@ class TestStateScene extends DrawScene<G> {
 
 typedef G = TestStateApp;
 
-class TestStateApp extends ExampleRaylibApp<G> {
+final class TestStateApp extends ExampleRaylibApp<G> {
   TestStateApp(super.backend);
 
   @override

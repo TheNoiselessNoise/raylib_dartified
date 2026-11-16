@@ -6,7 +6,7 @@ enum FilePathListField with XFields {
 }
 
 /// File path list
-class FilePathList extends XStruct<FilePathList> {
+final class FilePathList extends XStruct<FilePathList> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,11 +18,11 @@ class FilePathList extends XStruct<FilePathList> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<FilePathList> struct = .create(
+  static final XStructDef<FilePathList> struct = .create(
     factory: FilePathList.new,
     layout: .aligned<FilePathListField>({
       .count: XUnsignedInt(), // Filepaths entries count
-      .paths: XRawPtr(XRawPtr(XChar())), // Filepaths entries
+      .paths: XPtrType(XPtrType(XChar())), // Filepaths entries
     }),
   );
 
@@ -32,7 +32,7 @@ class FilePathList extends XStruct<FilePathList> {
   /// Field descriptor for [count].
   static final field_count = _l.integer<XUnsignedInt>(.count);
   /// Field descriptor for [paths].
-  static final field_paths = _l.ptrAny<XRawPtr<XChar>>(.paths);
+  static final field_paths = _l.ptrAny<XPtrType<XChar>>(.paths);
 
   // ░███████   ░██████████ ░██████████
   // ░██   ░██  ░██         ░██        
@@ -47,7 +47,7 @@ class FilePathList extends XStruct<FilePathList> {
 
   /// Filepaths entries
   List<String> get paths => getOp()
-    .readPtr<XRawPtr<XChar>>(_l.offset(.paths))
+    .readPtr<XPtrType<XChar>>(_l.offset(.paths))
     .readStringArray(count);
   
   FilePathList({ super.op });

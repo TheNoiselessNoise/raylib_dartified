@@ -9,7 +9,7 @@ const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-class RayLocs {
+final class RayLocs {
   int camPos, camDir, screenCenter;
   RayLocs(this.camPos, this.camDir, this.screenCenter);
 }

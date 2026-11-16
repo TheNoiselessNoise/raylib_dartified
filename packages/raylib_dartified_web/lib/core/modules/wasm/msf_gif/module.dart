@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibMsfGif extends RaylibModuleWasm {
+final class RaylibMsfGif extends RaylibModuleWasm {
   /// `msf_gif_alpha_threshold`
   late final XWasmPtr<XInt> msf_gif_alpha_threshold;
   /// `msf_gif_bgra_flag`

@@ -1,7 +1,7 @@
 // Run it: dart run test_widgets.dart
 import '_base.dart';
 
-class Counter extends FWidget<G> {
+final class Counter extends FWidget<G> {
   int count = 0;
 
   Counter(super.app);
@@ -13,7 +13,7 @@ class Counter extends FWidget<G> {
   FWidget<G> build() => FLabel(app, text: 'Count: $count');
 }
 
-class SliderValue extends FWidget<G> {
+final class SliderValue extends FWidget<G> {
   double _value = 0;
 
   SliderValue(super.app);
@@ -24,7 +24,7 @@ class SliderValue extends FWidget<G> {
   FWidget<G> build() => FLabel(app, text: 'Value: ${_value.f2}');
 }
 
-class TestWidgetsScene extends FWidgetScene<G> {
+final class TestWidgetsScene extends FWidgetScene<G> {
   late Counter counter;
   late SliderValue sliderValue;
 
@@ -214,7 +214,7 @@ class TestWidgetsScene extends FWidgetScene<G> {
 
 typedef G = TestWidgetsApp;
 
-class TestWidgetsApp extends ExampleRaylibApp<G> {
+final class TestWidgetsApp extends ExampleRaylibApp<G> {
   TestWidgetsApp(super.backend);
 
   @override

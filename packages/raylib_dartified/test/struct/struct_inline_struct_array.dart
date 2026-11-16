@@ -5,12 +5,12 @@ enum MyStructField with XFields {
   inlineStructArray,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .inlineStructArray: XArray(XRawStruct(Color.struct), 2),
+      .inlineStructArray: XArray(XStructType(Color.struct), 2),
     }),
   );
 
@@ -43,10 +43,10 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
-  late XPtr<XRawStruct> ptr;
+  late XPtr<XStructType> ptr;
   setUp(() => ptr = XPtr.calloc(1, MyStruct.struct.byteSize));
   tearDown(() => ptr.free());
 

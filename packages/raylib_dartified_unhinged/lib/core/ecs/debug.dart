@@ -43,7 +43,7 @@ mixin _DebugUtils<T extends App<T>> on FWidget<T> {
   }
 }
 
-class DebugObjectWidget<T extends App<T>> extends FWidget<T> with _DebugUtils<T> {
+final class DebugObjectWidget<T extends App<T>> extends FWidget<T> with _DebugUtils<T> {
   final DebugWidget<T> debugWidget;
   
   DebugObjectWidget(super.app, this.debugWidget);
@@ -363,7 +363,7 @@ class DebugObjectWidget<T extends App<T>> extends FWidget<T> with _DebugUtils<T>
   }
 }
 
-class DebugPerformanceWidget<T extends App<T>> extends FWidget<T> {
+final class DebugPerformanceWidget<T extends App<T>> extends FWidget<T> {
   final DebugWidget<T> debugWidget;
   
   // Rolling buffer for smoothing FPS/frame time calculations
@@ -414,7 +414,7 @@ enum DebugTabs {
   final String tabName;
 }
 
-class DebugWatchWidget<T extends App<T>> extends FWidget<T> {
+final class DebugWatchWidget<T extends App<T>> extends FWidget<T> {
   final DebugWidget<T> debugWidget;
 
   DebugWatchWidget(super.app, this.debugWidget);
@@ -437,7 +437,7 @@ class DebugWatchWidget<T extends App<T>> extends FWidget<T> {
   );
 }
 
-class DebugWidget<T extends App<T>> extends FWidget<T> {
+final class DebugWidget<T extends App<T>> extends FWidget<T> {
   late DebugObjectWidget<T> objectDebugWidget;
   late DebugWatchWidget<T> watchWidget;
   late DebugPerformanceWidget<T> performanceWidget;
@@ -510,7 +510,7 @@ class DebugWidget<T extends App<T>> extends FWidget<T> {
   );
 }
 
-class DebugAppSystem<T extends App<T>> extends AppSystem<T> {
+final class DebugAppSystem<T extends App<T>> extends AppSystem<T> {
   late DebugWidget<T> debugWidget;
   Scene<T>? lastScene;
 

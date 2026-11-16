@@ -13,7 +13,7 @@ enum QuaternionField with XFields {
 /// Quaternion, 4 components
 /// 
 /// A unit quaternion representing a 3D rotation as `xi + yj + zk + w`.
-class Quaternion extends XStruct<Quaternion> {
+final class Quaternion extends XStruct<Quaternion> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -25,7 +25,7 @@ class Quaternion extends XStruct<Quaternion> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Quaternion> struct = .createValue(
+  static final XStructDef<Quaternion> struct = .createValue(
     factory: Quaternion.new,
     layout: .aligned<QuaternionField>({
       .x: XFloat(), // Imaginary i component
@@ -77,15 +77,11 @@ class Quaternion extends XStruct<Quaternion> {
 
   Quaternion({
     super.op,
-    double x = 0,
-    double y = 0,
-    double z = 0,
-    double w = 0,
-  }) :
-    _x = x,
-    _y = y,
-    _z = z,
-    _w = w;
+    this._x = 0,
+    this._y = 0,
+    this._z = 0,
+    this._w = 0,
+  });
 
   factory Quaternion.zero() => .new();
 

@@ -16,7 +16,7 @@ enum LightField with XFields {
 }
 
 /// Light
-class Light extends XStruct<Light> {
+final class Light extends XStruct<Light> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -28,14 +28,14 @@ class Light extends XStruct<Light> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Light> struct = .createValue(
+  static final XStructDef<Light> struct = .createValue(
     factory: Light.new,
     layout: .aligned<LightField>({
       .type:           XInt(),
       .enabled:        XBool(),
-      .position:       XRawStruct(Vector3.struct),
-      .target:         XRawStruct(Vector3.struct),
-      .color:          XRawStruct(Color.struct),
+      .position:       XStructType(Vector3.struct),
+      .target:         XStructType(Vector3.struct),
+      .color:          XStructType(Color.struct),
       .attenuation:    XFloat(),
 
       // Shader locations
@@ -146,31 +146,22 @@ class Light extends XStruct<Light> {
 
   Light({
     super.op,
-    LightType type = .LIGHT_POINT,
-    bool enabled = false,
+    this._type = .LIGHT_POINT,
+    this._enabled = false,
     Vector3? position,
     Vector3? target,
     Color? color,
-    double attenuation = 0,
-    int enabledLoc = 0,
-    int typeLoc = 0,
-    int positionLoc = 0,
-    int targetLoc = 0,
-    int colorLoc = 0,
-    int attenuationLoc = 0,
+    this._attenuation = 0,
+    this._enabledLoc = 0,
+    this._typeLoc = 0,
+    this._positionLoc = 0,
+    this._targetLoc = 0,
+    this._colorLoc = 0,
+    this._attenuationLoc = 0,
   }) :
-    _type = type,
-    _enabled = enabled,
     _position = position ?? .zero(),
     _target = target ?? .zero(),
-    _color = color ?? .zero(),
-    _attenuation = attenuation,
-    _enabledLoc = enabledLoc,
-    _typeLoc = typeLoc,
-    _positionLoc = positionLoc,
-    _targetLoc = targetLoc,
-    _colorLoc = colorLoc,
-    _attenuationLoc = attenuationLoc;
+    _color = color ?? .zero();
 
   factory Light.zero() => .new();
 

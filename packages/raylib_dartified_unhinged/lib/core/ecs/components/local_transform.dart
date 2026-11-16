@@ -39,11 +39,7 @@ class CLocalTransform<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CLocalTransform<T> createInstance() => .new(app,
-    offset: offset.copy(),
-    rotation: rotation,
-    scale: scale.copy(),
-  );
+  CLocalTransform<T> createInstance() => .new(app);
 
   // state
 

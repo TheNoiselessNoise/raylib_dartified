@@ -1,7 +1,7 @@
 // Run it: dart run test_tasks.dart
 import '_base.dart';
 
-class TestTasksScene extends FWidgetScene<G> {
+final class TestTasksScene extends FWidgetScene<G> {
   late ExampleMessagesWidget<G> messagesWidget;
 
   TestTasksScene(super.app) {
@@ -87,7 +87,7 @@ class TestTasksScene extends FWidgetScene<G> {
 
 typedef G = TestTasksApp;
 
-class TestTasksApp extends ExampleRaylibApp<G> {
+final class TestTasksApp extends ExampleRaylibApp<G> {
   TestTasksApp(super.backend);
 
   @override

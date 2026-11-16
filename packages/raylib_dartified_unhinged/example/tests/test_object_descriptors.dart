@@ -1,14 +1,14 @@
 // Run it: dart run test_object_descriptors.dart
 import '_base.dart';
 
-class TestEntity extends Entity<G> {
+final class TestEntity extends Entity<G> {
   TestEntity(super.app) {
     add(CTransform(app, position: sceneBounds.size.divideBy(2)));
     add(CRectCollider(app, debugDraw: true, debugColor: .RED, size: .vec2(50, 50), enableRotation: true));
   }
 }
 
-class TestObjectDescriptorsScene extends FWidgetScene<G> {
+final class TestObjectDescriptorsScene extends FWidgetScene<G> {
   late TestEntity testEntity;
 
   TestObjectDescriptorsScene(super.app) {
@@ -58,7 +58,7 @@ class TestObjectDescriptorsScene extends FWidgetScene<G> {
 
 typedef G = TestObjectDescriptorsApp;
 
-class TestObjectDescriptorsApp extends ExampleRaylibApp<G> {
+final class TestObjectDescriptorsApp extends ExampleRaylibApp<G> {
   TestObjectDescriptorsApp(super.backend);
 
   @override

@@ -6,7 +6,7 @@ enum RayField with XFields {
 }
 
 /// Ray, ray for raycasting
-class Ray extends XStruct<Ray> {
+final class Ray extends XStruct<Ray> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -18,11 +18,11 @@ class Ray extends XStruct<Ray> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Ray> struct = .createValue(
+  static final XStructDef<Ray> struct = .createValue(
     factory: Ray.new,
     layout: .aligned<RayField>({
-      .position:  XRawStruct(Vector3.struct), // Ray position (origin)
-      .direction: XRawStruct(Vector3.struct), // Ray direction (normalized)
+      .position:  XStructType(Vector3.struct), // Ray position (origin)
+      .direction: XStructType(Vector3.struct), // Ray direction (normalized)
     }),
   );
 

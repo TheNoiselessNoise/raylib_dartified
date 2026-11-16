@@ -24,7 +24,7 @@ enum EventSystemMode {
 /// Subscriptions remain active until [cancel] is called. Cancelling a
 /// subscription prevents further event delivery and marks it for removal
 /// from its internal subscription bucket.
-class EventSubscription<T extends App<T>> {
+final class EventSubscription<T extends App<T>> {
   EventSubscription._(this._bucket, this._handler, this.owner);
 
   final _Bucket<T> _bucket;
@@ -67,7 +67,7 @@ class EventSubscription<T extends App<T>> {
 /// Inactive subscriptions are lazily removed after the outermost dispatch
 /// completes, avoiding modifications to the subscription list while it
 /// is being iterated.
-class _Bucket<T extends App<T>> {
+final class _Bucket<T extends App<T>> {
   /// All subscriptions registered in this bucket, including inactive ones
   /// awaiting cleanup.
   final subs = <EventSubscription<T>>[];

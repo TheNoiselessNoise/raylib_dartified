@@ -1,7 +1,7 @@
 // Run it: dart run test_spawner.dart
 import '_base.dart';
 
-class BallEntity extends Entity<G> {
+final class BallEntity extends Entity<G> {
   BallEntity(super.app) {
     add(CVelocity(app,
       velocity: .vec2(
@@ -16,7 +16,7 @@ class BallEntity extends Entity<G> {
   }
 }
 
-class SpawnerEntity extends Entity<G> {
+final class SpawnerEntity extends Entity<G> {
   SpawnerEntity(super.app) {
     add(CTransform(app, position: screenSize.divideBy(2)));
     add(CAnyParticleEmitter(app, rate: 20, factory: createBall));
@@ -33,7 +33,7 @@ class SpawnerEntity extends Entity<G> {
   }
 }
 
-class TestSpawnerScene extends DrawScene<G> {
+final class TestSpawnerScene extends DrawScene<G> {
   late SpawnerEntity spawner;
 
   TestSpawnerScene(super.app);
@@ -67,7 +67,7 @@ class TestSpawnerScene extends DrawScene<G> {
 
 typedef G = TestSpawner;
 
-class TestSpawner extends ExampleRaylibApp<G> {
+final class TestSpawner extends ExampleRaylibApp<G> {
   TestSpawner(super.backend);
 
   @override

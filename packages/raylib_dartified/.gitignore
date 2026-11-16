@@ -33,11 +33,5 @@ doc/api/
 
 # raylib_dartified project related
 
-# `custom` examples are not in usable form
-example/custom/
 # raylib resources (you can copy-paste them)
 example/*/resources/
-# Markdown is better
-CHEATSHEET*html
-# something
-DEV.md

@@ -29,7 +29,7 @@ enum RaylibPlatformType {
 ///
 /// Unless otherwise documented, values should be configured before initializing
 /// `Raylib`.
-class RaylibConfig {
+final class RaylibConfig {
   /// The number of string slots to pre-allocate.
   ///
   /// Defaults to `4`. Increase this if your frame logic needs to pass
@@ -101,6 +101,9 @@ abstract class RaylibModule<R extends RaylibBase> extends XModule {
 
   /// Override to perform one-time module initialization.
   void load() {}
+
+  /// Formats [flags] as a `|`-separated string of enum names, mirroring C bitflag notation.
+  String _EnumsAsFlagsOr(Iterable<XEnum> flags) => flags.map((e) => e.name).join(' | ');
 }
 
 /// Root class for a fully initialized Raylib context, exposing all modules,
@@ -121,10 +124,9 @@ abstract class RaylibBase with XDisposable {
 
   RaylibBase({
     math.Random? random,
-    bool silent = false,
+    this._silent = false,
   }) :
-    random = random ?? .new(),
-    _silent = silent
+    random = random ?? .new()
   {
     if (_instance != null) throw StateError("There can only be one instance of $runtimeType!");
     _instance = this;
@@ -169,53 +171,53 @@ abstract class RaylibBase with XDisposable {
   }
 
   void _registerStructs() {
-    XStructTypes.register(float3.struct);
-    XStructTypes.register(float16.struct);
+    XStructDefinitions.register(float3.struct);
+    XStructDefinitions.register(float16.struct);
 
-    XStructTypes.register(AutomationEventList.struct);
-    XStructTypes.register(AutomationEvent.struct);
-    XStructTypes.register(AudioStream.struct);
-    XStructTypes.register(BoneInfo.struct);
-    XStructTypes.register(BoundingBox.struct);
-    XStructTypes.register(Camera2D.struct);
-    XStructTypes.register(Camera3D.struct);
-    XStructTypes.register(Color.struct);
-    XStructTypes.register(FilePathList.struct);
-    XStructTypes.register(Font.struct);
-    XStructTypes.register(GestureEvent.struct);
-    XStructTypes.register(GlyphInfo.struct);
-    XStructTypes.register(Image.struct);
-    XStructTypes.register(Light.struct);
-    XStructTypes.register(MaterialMap.struct);
-    XStructTypes.register(Material.struct);
-    XStructTypes.register(Matrix.struct);
-    XStructTypes.register(Mesh.struct);
-    XStructTypes.register(ModelAnimation.struct);
-    XStructTypes.register(ModelSkeleton.struct);
-    XStructTypes.register(Model.struct);
-    XStructTypes.register(Music.struct);
-    XStructTypes.register(NPatchInfo.struct);
-    XStructTypes.register(Quaternion.struct);
-    XStructTypes.register(RayCollision.struct);
-    XStructTypes.register(Ray.struct);
-    XStructTypes.register(Rectangle.struct);
-    XStructTypes.register(RenderTexture.struct);
-    XStructTypes.register(RlDrawCall.struct);
-    XStructTypes.register(RlRenderBatch.struct);
-    XStructTypes.register(RlVertexBuffer.struct);
-    XStructTypes.register(Shader.struct);
-    XStructTypes.register(Sound.struct);
-    XStructTypes.register(Texture.struct);
-    XStructTypes.register(Transform.struct);
-    XStructTypes.register(Vector2.struct);
-    XStructTypes.register(Vector3.struct);
-    XStructTypes.register(Vector4.struct);
-    XStructTypes.register(VrDeviceInfo.struct);
-    XStructTypes.register(VrStereoConfig.struct);
-    XStructTypes.register(Wave.struct);
+    XStructDefinitions.register(AutomationEventList.struct);
+    XStructDefinitions.register(AutomationEvent.struct);
+    XStructDefinitions.register(AudioStream.struct);
+    XStructDefinitions.register(BoneInfo.struct);
+    XStructDefinitions.register(BoundingBox.struct);
+    XStructDefinitions.register(Camera2D.struct);
+    XStructDefinitions.register(Camera3D.struct);
+    XStructDefinitions.register(Color.struct);
+    XStructDefinitions.register(FilePathList.struct);
+    XStructDefinitions.register(Font.struct);
+    XStructDefinitions.register(GestureEvent.struct);
+    XStructDefinitions.register(GlyphInfo.struct);
+    XStructDefinitions.register(Image.struct);
+    XStructDefinitions.register(Light.struct);
+    XStructDefinitions.register(MaterialMap.struct);
+    XStructDefinitions.register(Material.struct);
+    XStructDefinitions.register(Matrix.struct);
+    XStructDefinitions.register(Mesh.struct);
+    XStructDefinitions.register(ModelAnimation.struct);
+    XStructDefinitions.register(ModelSkeleton.struct);
+    XStructDefinitions.register(Model.struct);
+    XStructDefinitions.register(Music.struct);
+    XStructDefinitions.register(NPatchInfo.struct);
+    XStructDefinitions.register(Quaternion.struct);
+    XStructDefinitions.register(RayCollision.struct);
+    XStructDefinitions.register(Ray.struct);
+    XStructDefinitions.register(Rectangle.struct);
+    XStructDefinitions.register(RenderTexture.struct);
+    XStructDefinitions.register(RlDrawCall.struct);
+    XStructDefinitions.register(RlRenderBatch.struct);
+    XStructDefinitions.register(RlVertexBuffer.struct);
+    XStructDefinitions.register(Shader.struct);
+    XStructDefinitions.register(Sound.struct);
+    XStructDefinitions.register(Texture.struct);
+    XStructDefinitions.register(Transform.struct);
+    XStructDefinitions.register(Vector2.struct);
+    XStructDefinitions.register(Vector3.struct);
+    XStructDefinitions.register(Vector4.struct);
+    XStructDefinitions.register(VrDeviceInfo.struct);
+    XStructDefinitions.register(VrStereoConfig.struct);
+    XStructDefinitions.register(Wave.struct);
 
-    XStructTypes.register(MsfGifResult.struct);
-    XStructTypes.register(MsfGifState.struct);
+    XStructDefinitions.register(MsfGifResult.struct);
+    XStructDefinitions.register(MsfGifState.struct);
   }
 
   /// Calls [RaylibCoreDart.CloseWindow] and [dispose].
@@ -459,7 +461,7 @@ abstract class RaylibAppBase<R extends RaylibBase> {
   ///   - `false` (on web)
   /// 
   /// Override to implement custom exit conditions.
-  bool shouldClose(R rl) => switch (currentMemoryPlatform.type) {
+  bool shouldClose(R rl) => switch (currentMemoryPlatformType) {
     .native => rl.module<RaylibCoreDart>().WindowShouldClose(),
     .web => false,
   };

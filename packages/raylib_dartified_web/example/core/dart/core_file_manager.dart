@@ -16,7 +16,7 @@ const List<String> BIN_EXTS = ['.exe', '.bin', '.so'];
 const List<String> TEXT_EXTS = ['.txt', '.md' , '.yaml'];
 const List<String> SHADER_EXTS = ['.fs', '.vs'];
 
-class DoubleClickDetector {
+final class DoubleClickDetector {
   final Map<MouseButton, double> _lastClickTimes = {};
   final Map<MouseButton, int> _lastClickIndex = {};
 
@@ -37,7 +37,7 @@ class DoubleClickDetector {
     => checkIndexed(button, 0, interval);
 }
 
-class TextBoxFocus {
+final class TextBoxFocus {
   BetterTextBox? current;
   bool _claimedThisFrame = false;
 
@@ -56,7 +56,7 @@ class TextBoxFocus {
   bool get isFocused => current != null;
 }
 
-class BetterTextBox {
+final class BetterTextBox {
   final TextBoxFocus focus;
   Rectangle rect;
   String oldText;
@@ -89,7 +89,7 @@ class BetterTextBox {
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
 
-class Colors {
+final class Colors {
   static Color RAYWHITE  = .color(245, 245, 245, 255);
   static Color PANEL_BG  = .color(230, 230, 235, 255);
   static Color INFO_BG   = .color(220, 220, 228, 255);
@@ -112,7 +112,7 @@ class Colors {
 enum SortField { name, size, date }
 enum SortDir   { asc, desc }
 
-class FileEntry {
+final class FileEntry {
   final String fullPath;
   final String name;
   final bool   isDir;

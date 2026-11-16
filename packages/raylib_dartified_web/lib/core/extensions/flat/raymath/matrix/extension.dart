@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibMatrixExtFlatWeb extends RaylibMatrixFlatExt<Raylib> {
+final class RaylibMatrixExtFlatWeb extends RaylibMatrixFlatExt<Raylib> {
   RaylibMatrixExtFlatWeb(super.rl);
 
   RaylibMatrixExt get _wasm => rl.module();

@@ -1,11 +1,11 @@
 part of '../../raylib_dartified_base.dart';
 
-// void (XPtr<Char>, XPtr<Void>)
+// void (XInt, XPtr<Char>, XPtr<Void>)
 /// User-facing `TraceLogCallback` signature.
 typedef TraceLogCallbackFunction = void Function(
   int logLevel,
   XPtr<XChar> text,
-  XPtr<XVoid> args,
+  XPtr<XVoid> va,
 );
 
 typedef TraceLogCallbackFriendlyFunction = void Function(

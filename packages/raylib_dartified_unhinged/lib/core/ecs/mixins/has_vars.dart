@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class VarNumKey<T extends num> extends VarKey<T> {
+final class VarNumKey<T extends num> extends VarKey<T> {
   const VarNumKey(super.name);
 
   T inc(HasVars vars, [num? amount]) {
@@ -18,7 +18,7 @@ class VarNumKey<T extends num> extends VarKey<T> {
   }
 }
 
-class VarKey<T> {
+final class VarKey<T> {
   final String name;
   
   const VarKey(this.name);

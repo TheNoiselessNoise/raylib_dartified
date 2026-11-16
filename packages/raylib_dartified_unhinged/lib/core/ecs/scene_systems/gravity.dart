@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class GravitySystem<T extends App<T>> extends SceneSystem<T> {
+final class GravitySystem<T extends App<T>> extends SceneSystem<T> {
   Vector2 gravity;
 
   GravitySystem(super.app, {
@@ -16,9 +16,7 @@ class GravitySystem<T extends App<T>> extends SceneSystem<T> {
   // clone
 
   @override
-  GravitySystem<T> createInstance() => .new(app,
-    gravity: gravity.copy(),
-  );
+  GravitySystem<T> createInstance() => .new(app);
   
   // state
 
@@ -59,7 +57,7 @@ class GravitySystem<T extends App<T>> extends SceneSystem<T> {
   }
 }
 
-class GravitySystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, GravitySystem<T>> {
+final class GravitySystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, GravitySystem<T>> {
   late Vector2 gravity;
   
   GravitySystemSnapshot(super.id);

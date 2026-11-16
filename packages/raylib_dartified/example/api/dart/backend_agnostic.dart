@@ -9,7 +9,7 @@ import '../../base_dart.dart';
   then calls `close` and `dispose`. You never write the loop yourself.
 */
 
-class BackendAgnosticRaylibExample extends RaylibAppBase<Raylib> {
+final class BackendAgnosticRaylibExample extends RaylibAppBase<Raylib> {
   @override
   void init(_) {
     InitWindow(800, 450, 'Backend Agnostic Raylib Example');

@@ -7,7 +7,7 @@ final String TAG_ENTITY1 = 'entity1';
 final String TAG_ENTITY2 = 'entity2';
 final String TAG_BULLET = 'bullet';
 
-class CHealth extends Comp<G> {
+final class CHealth extends Comp<G> {
   CHealth(super.app, {this.maxHealth = 100}) : currentHealth = maxHealth;
 
   final int maxHealth;
@@ -21,13 +21,13 @@ class CHealth extends Comp<G> {
   }
 }
 
-class _DamagePopup {
+final class _DamagePopup {
   _DamagePopup(this.amount);
   final int amount;
   double age = 0;
 }
 
-class CHealthBar extends Comp<G> {
+final class CHealthBar extends Comp<G> {
   CHealthBar(super.app, {
     this.width = 50,
     this.height = 6,
@@ -109,7 +109,7 @@ class CHealthBar extends Comp<G> {
   });
 }
 
-class CDeathAnim extends Comp<G> {
+final class CDeathAnim extends Comp<G> {
   CDeathAnim(super.app);
 
   static const double _duration = 0.5;
@@ -135,14 +135,14 @@ class CDeathAnim extends Comp<G> {
   });
 }
 
-class BulletExplosion extends Entity<G> {
+final class BulletExplosion extends Entity<G> {
   BulletExplosion(super.app, Vector2 position) {
     add(CTransform(app, position: position));
     add(CExplosionAnim(app));
   }
 }
 
-class CExplosionAnim extends Comp<G> {
+final class CExplosionAnim extends Comp<G> {
   CExplosionAnim(super.app);
 
   static const double _duration = 0.25;
@@ -165,7 +165,7 @@ class CExplosionAnim extends Comp<G> {
   }
 }
 
-class Bullet extends Entity<G> {
+final class Bullet extends Entity<G> {
   static const double _travelDuration = 0.6;
   static const double _wobbleAmplitude = 40;
 
@@ -202,7 +202,7 @@ class Bullet extends Entity<G> {
   });
 }
 
-class Entity1 extends Entity<G> {
+final class Entity1 extends Entity<G> {
   Entity1(super.app) {
     // TOP-LEFT CORNER
     add(CTransform(app, position: ENTITY_SIZE.copy()));
@@ -214,7 +214,7 @@ class Entity1 extends Entity<G> {
   }
 }
 
-class CMoveUpDown extends Comp<G> {
+final class CMoveUpDown extends Comp<G> {
   int speed = 5;
 
   CMoveUpDown(super.app);
@@ -232,7 +232,7 @@ class CMoveUpDown extends Comp<G> {
   });
 }
 
-class Entity2 extends Entity<G> {
+final class Entity2 extends Entity<G> {
   Entity2(super.app) {
     // BOTTOM-RIGHT CORNER
     add(CTransform(app, position: sceneSize.sub(ENTITY_SIZE)));
@@ -256,7 +256,7 @@ class Entity2 extends Entity<G> {
   }
 }
 
-class WhateverCollisionSystem extends CollisionResolverSystem<G> {
+final class WhateverCollisionSystem extends CollisionResolverSystem<G> {
   WhateverCollisionSystem(super.app);
 
   @override
@@ -276,7 +276,7 @@ class WhateverCollisionSystem extends CollisionResolverSystem<G> {
   }
 }
 
-class TestWhateverScene extends FWidgetScene<G> {
+final class TestWhateverScene extends FWidgetScene<G> {
   TestWhateverScene(super.app);
 
   int bulletDamage = 10;
@@ -332,7 +332,7 @@ class TestWhateverScene extends FWidgetScene<G> {
 
 typedef G = TestWhateverApp;
 
-class TestWhateverApp extends ExampleRaylibApp<G> {
+final class TestWhateverApp extends ExampleRaylibApp<G> {
   TestWhateverApp(super.backend);
 
   @override

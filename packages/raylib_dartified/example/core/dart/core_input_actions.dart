@@ -15,7 +15,7 @@ enum ActionType {
   ACTION_FIRE,
 }
 
-class ActionInput {
+final class ActionInput {
   late KeyboardKey key;
   late GamepadButton button;
 }

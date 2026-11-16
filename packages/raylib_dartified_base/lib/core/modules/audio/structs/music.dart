@@ -9,7 +9,7 @@ enum MusicField with XFields {
 }
 
 /// Music, audio stream, anything longer than ~10 seconds should be streamed
-class Music extends XStruct<Music> {
+final class Music extends XStruct<Music> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,14 +21,14 @@ class Music extends XStruct<Music> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Music> struct = .create(
+  static final XStructDef<Music> struct = .create(
     factory: Music.new,
     layout: .aligned<MusicField>({
-      .stream:     XRawStruct(AudioStream.struct), // Audio stream
+      .stream:     XStructType(AudioStream.struct), // Audio stream
       .frameCount: XUnsignedInt(), // Total number of frames (considering channels)
       .looping:    XBool(), // Music looping enable
       .ctxType:    XInt(), // Type of music context (audio filetype)
-      .ctxData:    XRawPtr(XVoid()), // Audio context data, depends on type
+      .ctxData:    XPtrType(XVoid()), // Audio context data, depends on type
     }),
   );
 
@@ -83,14 +83,11 @@ class Music extends XStruct<Music> {
   Music({
     super.op,
     AudioStream? stream,
-    int frameCount = 0,
-    bool looping = false,
-    MusicContextType ctxType = .MUSIC_AUDIO_NONE,
+    this._frameCount = 0,
+    this._looping = false,
+    this._ctxType = .MUSIC_AUDIO_NONE,
   }) :
-    _stream = stream ?? .zero(),
-    _frameCount = frameCount,
-    _looping = looping,
-    _ctxType = ctxType;
+    _stream = stream ?? .zero();
 
   factory Music.zero() => .new();
 

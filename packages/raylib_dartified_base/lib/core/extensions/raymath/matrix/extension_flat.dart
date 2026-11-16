@@ -2,7 +2,7 @@ part of '../../../raylib_dartified_base.dart';
 
 /// Backend-agnostic contract for the Raylib Audio flat module.
 ///
-/// Concrete platform implementations mix in or extend this to provide
+/// Concrete platform implementations extend this to provide
 /// the full API surface across different backends.
 abstract class RaylibMatrixFlatExt<R extends RaylibBase> extends RaylibModule<R> {
 

@@ -23,7 +23,7 @@ mixin TestingIsOnEventCallbackHandler<T extends TestingApp<T>, E extends ECSBase
   void onEvent(Event<T> event) => _onEventHandler?.call(event);
 }
 
-class TestingOnEventCallbackPackage<T extends TestingApp<T>> {
+final class TestingOnEventCallbackPackage<T extends TestingApp<T>> {
   final TestingOnEventHandler<T>? appOnEvent;
   final TestingOnEventHandler<T>? appSystemOnEvent;
   final TestingOnEventHandler<T>? sceneOnEvent;
@@ -47,7 +47,7 @@ class TestingOnEventCallbackPackage<T extends TestingApp<T>> {
   });
 }
 
-class TestingEvent<T extends App<T>> extends Event<T> {
+final class TestingEvent<T extends App<T>> extends Event<T> {
   final String? source;
 
   TestingEvent(super.app, [this.source]);
@@ -94,21 +94,21 @@ class TestingApp<T extends TestingApp<T>> extends App<T> with TestingIsOnEventCa
   T createInstance() => throw StateError('To support cloning of TestingApp, override `createInstance`.');
 }
 
-class TestingAppSystem<T extends TestingApp<T>> extends AppSystem<T> with TestingIsOnEventCallbackHandler<T, AppSystem<T>> {
+final class TestingAppSystem<T extends TestingApp<T>> extends AppSystem<T> with TestingIsOnEventCallbackHandler<T, AppSystem<T>> {
   TestingAppSystem(super.app);
 
   @override
   TestingAppSystem<T> createInstance() => .new(app);
 }
 
-class TestingSceneSystem<T extends TestingApp<T>> extends SceneSystem<T> with TestingIsOnEventCallbackHandler<T, SceneSystem<T>> {
+final class TestingSceneSystem<T extends TestingApp<T>> extends SceneSystem<T> with TestingIsOnEventCallbackHandler<T, SceneSystem<T>> {
   TestingSceneSystem(super.app);
 
   @override
   TestingSceneSystem<T> createInstance() => .new(app);
 }
 
-class TestingScene<T extends TestingApp<T>> extends Scene<T> with TestingIsOnEventCallbackHandler<T, Scene<T>> {
+final class TestingScene<T extends TestingApp<T>> extends Scene<T> with TestingIsOnEventCallbackHandler<T, Scene<T>> {
   late final TestingSceneSystem<T> sceneSystem;
   late final TestingEntity1<T> entity1;
   late final TestingEntity2<T> entity2;
@@ -123,14 +123,14 @@ class TestingScene<T extends TestingApp<T>> extends Scene<T> with TestingIsOnEve
   TestingScene<T> createInstance() => .new(app);
 }
 
-class TestingComponent1<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
+final class TestingComponent1<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
   TestingComponent1(super.app);
 
   @override
   TestingComponent1<T> createInstance() => .new(app);
 }
 
-class TestingEntity1<T extends TestingApp<T>> extends Entity<T> with TestingIsOnEventCallbackHandler<T, Entity<T>> {
+final class TestingEntity1<T extends TestingApp<T>> extends Entity<T> with TestingIsOnEventCallbackHandler<T, Entity<T>> {
   late final TestingComponent1<T> comp1;
 
   TestingEntity1(super.app) {
@@ -141,7 +141,7 @@ class TestingEntity1<T extends TestingApp<T>> extends Entity<T> with TestingIsOn
   TestingEntity1<T> createInstance() => .new(app);
 }
 
-class TestingComponent2<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
+final class TestingComponent2<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
   late final TestingComponent3<T> comp3;
 
   TestingComponent2(super.app);
@@ -150,7 +150,7 @@ class TestingComponent2<T extends TestingApp<T>> extends Comp<T> with TestingIsO
   TestingComponent2<T> createInstance() => .new(app);
 }
 
-class TestingEntity2<T extends TestingApp<T>> extends Entity<T> with TestingIsOnEventCallbackHandler<T, Entity<T>> {
+final class TestingEntity2<T extends TestingApp<T>> extends Entity<T> with TestingIsOnEventCallbackHandler<T, Entity<T>> {
   late final TestingComponent2<T> comp2;
 
   TestingEntity2(super.app) {
@@ -162,7 +162,7 @@ class TestingEntity2<T extends TestingApp<T>> extends Entity<T> with TestingIsOn
   TestingEntity2<T> createInstance() => .new(app);
 }
 
-class TestingComponent3<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
+final class TestingComponent3<T extends TestingApp<T>> extends Comp<T> with TestingIsOnEventCallbackHandler<T, Comp<T>> {
   TestingComponent3(super.app);
 
   @override

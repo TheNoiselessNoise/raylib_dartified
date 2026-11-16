@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified.dart';
 
-class RaylibCamera extends RaylibModule<Raylib> {
+final class RaylibCamera extends RaylibModule<Raylib> {
   RaylibCamera(super.rl);
 
   RaylibLookup get _lookup => rl.lookup<RaylibCore>();

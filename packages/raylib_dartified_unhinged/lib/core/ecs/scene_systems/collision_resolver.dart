@@ -1,7 +1,7 @@
 part of '../../raylib_dartified_unhinged.dart';
 
 // Reduces O(n^2) to O(n) collision checks
-class SpatialGrid<T extends App<T>> {
+final class SpatialGrid<T extends App<T>> {
   double cellSize;
   Map<int, List<Entity<T>>> grid = {};
   
@@ -125,7 +125,7 @@ class SpatialGrid<T extends App<T>> {
 }
 
 // MTV (Minimum Translation Vector) - Used for collision response
-class MTV {
+final class MTV {
   Vector2 normal;
   double depth;
 
@@ -587,11 +587,7 @@ class CollisionResolverSystem<T extends App<T>> extends SceneSystem<T> {
   // clone
 
   @override
-  CollisionResolverSystem<T> createInstance() => .new(app,
-    gridCellSize: gridCellSize,
-    restitution: restitution,
-    enableEventEmitting: enableEventEmitting,
-  );
+  CollisionResolverSystem<T> createInstance() => .new(app);
   
   // state
 
@@ -646,7 +642,7 @@ class CollisionResolverSystem<T extends App<T>> extends SceneSystem<T> {
   }
 }
 
-class CollisionResolverSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, CollisionResolverSystem<T>> {
+final class CollisionResolverSystemSnapshot<T extends App<T>> extends SceneSystemSnapshot<T, CollisionResolverSystem<T>> {
   late double restitution;
   late bool enableEventEmitting;
   late double gridCellSize;
@@ -730,7 +726,7 @@ mixin WithCollisionResolver<T extends App<T>, E extends IsComponentManagable<T, 
 
 /// Represents a collision between two [CCollider] components and exposes
 /// helpers for resolving what kind of objects collided.
-class ColliderCollision<T extends App<T>> with WithCollisionResolver<T, Comp<T>> {
+final class ColliderCollision<T extends App<T>> with WithCollisionResolver<T, Comp<T>> {
   @override
   final CCollider<T> a;
 
@@ -769,7 +765,7 @@ class ColliderCollision<T extends App<T>> with WithCollisionResolver<T, Comp<T>>
   bool hasEntities<A extends Entity<T>, B extends Entity<T>>() => asEntities<A, B>() != null;
 }
 
-class _EntityColliderData<T extends App<T>> {
+final class _EntityColliderData<T extends App<T>> {
   final Entity<T> entity;
   final CTransform<T> transform;
   final CVelocity<T>? velocity;

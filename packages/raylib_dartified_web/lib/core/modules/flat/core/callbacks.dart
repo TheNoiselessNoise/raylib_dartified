@@ -44,7 +44,7 @@ abstract class TraceLogCallback extends TraceLogCallbackBase {
     => _TraceLogCallbackFriendly(f, name: name);
 }
 
-class _TraceLogCallback extends TraceLogCallback {
+final class _TraceLogCallback extends TraceLogCallback {
   final TraceLogCallbackFunction _f;
   _TraceLogCallback(this._f, {String? name}) : super(name);
 
@@ -52,7 +52,7 @@ class _TraceLogCallback extends TraceLogCallback {
   TraceLogCallbackFunction get function => _f;
 }
 
-class _TraceLogCallbackFriendly extends TraceLogCallback {
+final class _TraceLogCallbackFriendly extends TraceLogCallback {
   final TraceLogCallbackFriendlyFunction _f;
   _TraceLogCallbackFriendly(this._f, {String? name}) : super(name);
 
@@ -103,7 +103,7 @@ abstract class LoadFileDataCallback extends LoadFileDataCallbackBase {
     => _LoadFileDataCallbackFriendly(f, name: name);
 }
 
-class _LoadFileDataCallback extends LoadFileDataCallback {
+final class _LoadFileDataCallback extends LoadFileDataCallback {
   final LoadFileDataCallbackFunction _f;
   _LoadFileDataCallback(this._f, {String? name}) : super(name);
 
@@ -111,7 +111,7 @@ class _LoadFileDataCallback extends LoadFileDataCallback {
   LoadFileDataCallbackFunction get function => _f;
 }
 
-class _LoadFileDataCallbackFriendly extends LoadFileDataCallback {
+final class _LoadFileDataCallbackFriendly extends LoadFileDataCallback {
   final LoadFileDataCallbackFriendlyFunction _f;
   _LoadFileDataCallbackFriendly(this._f, {String? name}) : super(name);
 
@@ -166,7 +166,7 @@ abstract class SaveFileDataCallback extends SaveFileDataCallbackBase {
     => _SaveFileDataCallbackFriendly(f, name: name);
 }
 
-class _SaveFileDataCallback extends SaveFileDataCallback {
+final class _SaveFileDataCallback extends SaveFileDataCallback {
   final SaveFileDataCallbackFunction _f;
   _SaveFileDataCallback(this._f, {String? name}) : super(name);
 
@@ -174,7 +174,7 @@ class _SaveFileDataCallback extends SaveFileDataCallback {
   SaveFileDataCallbackFunction get function => _f;
 }
 
-class _SaveFileDataCallbackFriendly extends SaveFileDataCallback {
+final class _SaveFileDataCallbackFriendly extends SaveFileDataCallback {
   final SaveFileDataCallbackFriendlyFunction _f;
   _SaveFileDataCallbackFriendly(this._f, {String? name}) : super(name);
 
@@ -228,7 +228,7 @@ abstract class LoadFileTextCallback extends LoadFileTextCallbackBase {
     => _LoadFileTextCallbackFriendly(f, name: name);
 }
 
-class _LoadFileTextCallback extends LoadFileTextCallback {
+final class _LoadFileTextCallback extends LoadFileTextCallback {
   final LoadFileTextCallbackFunction _f;
   _LoadFileTextCallback(this._f, {String? name}) : super(name);
 
@@ -236,7 +236,7 @@ class _LoadFileTextCallback extends LoadFileTextCallback {
   LoadFileTextCallbackFunction get function => _f;
 }
 
-class _LoadFileTextCallbackFriendly extends LoadFileTextCallback {
+final class _LoadFileTextCallbackFriendly extends LoadFileTextCallback {
   final LoadFileTextCallbackFriendlyFunction _f;
   _LoadFileTextCallbackFriendly(this._f, {String? name}) : super(name);
 
@@ -289,7 +289,7 @@ abstract class SaveFileTextCallback extends SaveFileTextCallbackBase {
     => _SaveFileTextCallbackFriendly(f, name: name);
 }
 
-class _SaveFileTextCallback extends SaveFileTextCallback {
+final class _SaveFileTextCallback extends SaveFileTextCallback {
   final SaveFileTextCallbackFunction _f;
   _SaveFileTextCallback(this._f, {String? name}) : super(name);
 
@@ -297,7 +297,7 @@ class _SaveFileTextCallback extends SaveFileTextCallback {
   SaveFileTextCallbackFunction get function => _f;
 }
 
-class _SaveFileTextCallbackFriendly extends SaveFileTextCallback {
+final class _SaveFileTextCallbackFriendly extends SaveFileTextCallback {
   final SaveFileTextCallbackFriendlyFunction _f;
   _SaveFileTextCallbackFriendly(this._f, {String? name}) : super(name);
 

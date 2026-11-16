@@ -23,7 +23,7 @@ mixin HasRandomValues {
   }
 }
 
-class TestScene extends FWidgetScene<G> with HasRandomValues {
+final class TestScene extends FWidgetScene<G> with HasRandomValues {
   late TestSceneSystem testSceneSystem;
   late TestEntity1 entity1;
   late TestEntity2 entity2;
@@ -63,14 +63,14 @@ class TestScene extends FWidgetScene<G> with HasRandomValues {
   }
 }
 
-class TestSceneSnapshot extends SceneSnapshot<G, TestScene> with HasRandomValues {
+final class TestSceneSnapshot extends SceneSnapshot<G, TestScene> with HasRandomValues {
   TestSceneSnapshot(super.namedId);
 
   @override
   TestScene createInstance(G app) => .new(app);
 }
 
-class TestSceneSystem extends SceneSystem<G> with HasRandomValues {
+final class TestSceneSystem extends SceneSystem<G> with HasRandomValues {
   TestSceneSystem(super.app);
   
   @override
@@ -87,14 +87,14 @@ class TestSceneSystem extends SceneSystem<G> with HasRandomValues {
   }
 }
 
-class TestSceneSystemSnapshot extends SceneSystemSnapshot<G, TestSceneSystem> with HasRandomValues {
+final class TestSceneSystemSnapshot extends SceneSystemSnapshot<G, TestSceneSystem> with HasRandomValues {
   TestSceneSystemSnapshot(super.namedId);
 
   @override
   TestSceneSystem createInstance(G app) => .new(app);
 }
 
-class TestComponent1 extends Comp<G> with HasRandomValues {
+final class TestComponent1 extends Comp<G> with HasRandomValues {
   TestComponent1(super.app);
 
   @override
@@ -111,14 +111,14 @@ class TestComponent1 extends Comp<G> with HasRandomValues {
   }
 }
 
-class TestComponent1Snapshot extends CompSnapshot<G, TestComponent1> with HasRandomValues {
+final class TestComponent1Snapshot extends CompSnapshot<G, TestComponent1> with HasRandomValues {
   TestComponent1Snapshot(super.namedId);
 
   @override
   TestComponent1 createInstance(G app) => .new(app);
 }
 
-class TestEntity1 extends Entity<G> with HasRandomValues {
+final class TestEntity1 extends Entity<G> with HasRandomValues {
   late TestComponent1 comp1;
 
   TestEntity1(super.app) {
@@ -151,14 +151,14 @@ class TestEntity1 extends Entity<G> with HasRandomValues {
   }
 }
 
-class TestEntity1Snapshot extends EntitySnapshot<G, TestEntity1> with HasRandomValues {
+final class TestEntity1Snapshot extends EntitySnapshot<G, TestEntity1> with HasRandomValues {
   TestEntity1Snapshot(super.namedId);
 
   @override
   TestEntity1 createInstance(G app) => .new(app);
 }
 
-class TestComponent2 extends Comp<G> with HasRandomValues {
+final class TestComponent2 extends Comp<G> with HasRandomValues {
   late TestComponent3 comp3;
 
   TestComponent2(super.app);
@@ -189,14 +189,14 @@ class TestComponent2 extends Comp<G> with HasRandomValues {
   }
 }
 
-class TestComponent2Snapshot extends CompSnapshot<G, TestComponent2> with HasRandomValues {
+final class TestComponent2Snapshot extends CompSnapshot<G, TestComponent2> with HasRandomValues {
   TestComponent2Snapshot(super.namedId);
 
   @override
   TestComponent2 createInstance(G app) => .new(app);
 }
 
-class TestEntity2 extends Entity<G> with HasRandomValues {
+final class TestEntity2 extends Entity<G> with HasRandomValues {
   late TestComponent2 comp2;
 
   TestEntity2(super.app) {
@@ -230,14 +230,14 @@ class TestEntity2 extends Entity<G> with HasRandomValues {
   }
 }
 
-class TestEntity2Snapshot extends EntitySnapshot<G, TestEntity2> with HasRandomValues {
+final class TestEntity2Snapshot extends EntitySnapshot<G, TestEntity2> with HasRandomValues {
   TestEntity2Snapshot(super.namedId);
 
   @override
   TestEntity2 createInstance(G app) => .new(app);
 }
 
-class TestComponent3 extends Comp<G> with HasRandomValues {
+final class TestComponent3 extends Comp<G> with HasRandomValues {
   TestComponent3(super.app);
   
   @override
@@ -254,14 +254,14 @@ class TestComponent3 extends Comp<G> with HasRandomValues {
   }
 }
 
-class TestComponent3Snapshot extends CompSnapshot<G, TestComponent3> with HasRandomValues {
+final class TestComponent3Snapshot extends CompSnapshot<G, TestComponent3> with HasRandomValues {
   TestComponent3Snapshot(super.namedId);
 
   @override
   TestComponent3 createInstance(G app) => .new(app);
 }
 
-class TestAppSystem extends AppSystem<G> with HasRandomValues {
+final class TestAppSystem extends AppSystem<G> with HasRandomValues {
   TestAppSystem(super.app);
   
   @override
@@ -278,14 +278,14 @@ class TestAppSystem extends AppSystem<G> with HasRandomValues {
   }
 }
 
-class TestAppSystemSnapshot extends AppSystemSnapshot<G, TestAppSystem> with HasRandomValues {
+final class TestAppSystemSnapshot extends AppSystemSnapshot<G, TestAppSystem> with HasRandomValues {
   TestAppSystemSnapshot(super.namedId);
 
   @override
   TestAppSystem createInstance(G app) => .new(app);
 }
 
-class TestApp extends App<G> with HasRandomValues {
+final class TestApp extends App<G> with HasRandomValues {
   late TestAppSystem testAppSystem;
   late TestScene testScene;
 
@@ -333,7 +333,7 @@ class TestApp extends App<G> with HasRandomValues {
   }
 }
 
-class TestAppSnapshot extends AppSnapshot<G> with HasRandomValues {
+final class TestAppSnapshot extends AppSnapshot<G> with HasRandomValues {
   TestAppSnapshot(super.namedId);
 
   @override

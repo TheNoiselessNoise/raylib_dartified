@@ -10,17 +10,17 @@ import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
 
 typedef G = Minesweeper;
 
-class CellRevealedEvent extends Event<G> {
+final class CellRevealedEvent extends Event<G> {
   final Cell cell;
   CellRevealedEvent(super.app, this.cell);
 }
 
-class CellFlaggedEvent extends Event<G> {
+final class CellFlaggedEvent extends Event<G> {
   final Cell cell;
   CellFlaggedEvent(super.app, this.cell);
 }
 
-class GameOverEvent extends Event<G> {
+final class GameOverEvent extends Event<G> {
   final bool won;
   GameOverEvent(super.app, this.won);
 }
@@ -61,7 +61,7 @@ enum MinesweeperDifficulty {
   final int bombCount;
 }
 
-class CellGrid2D extends Grid2D<G, Cell> {
+final class CellGrid2D extends Grid2D<G, Cell> {
   CellGrid2D(super.app, {
     super.width,
     super.height,
@@ -130,7 +130,7 @@ class CellGrid2D extends Grid2D<G, Cell> {
   }
 }
 
-class Cell extends Entity<G> {
+final class Cell extends Entity<G> {
   final int x;
   final int y;
   final Rectangle rect;
@@ -225,7 +225,7 @@ extension on HasAppAccess<G> {
   CellGrid2D get grid => msState.grid!;
 }
 
-class MinesweeperStateSystem extends SceneSystem<G> {
+final class MinesweeperStateSystem extends SceneSystem<G> {
   int flaggedBombs = 0;
   int revealedSafeCells = 0;
   
@@ -347,7 +347,7 @@ class MinesweeperStateSystem extends SceneSystem<G> {
   }
 }
 
-class MinesweeperScene extends DrawScene<G> {
+final class MinesweeperScene extends DrawScene<G> {
   MinesweeperScene(super.app) {
     addSystem(MinesweeperStateSystem(app));
   }
@@ -507,7 +507,7 @@ class MinesweeperScene extends DrawScene<G> {
   }
 }
 
-class MainMenuScene extends FWidgetScene<G> {
+final class MainMenuScene extends FWidgetScene<G> {
   MainMenuScene(super.app);
 
   @override
@@ -538,7 +538,7 @@ class MainMenuScene extends FWidgetScene<G> {
   }
 }
 
-class ChooseDifficultyWidget extends FWidget<G> {
+final class ChooseDifficultyWidget extends FWidget<G> {
   ChooseDifficultyWidget(super.app);
 
   void _prepareLevel(MinesweeperDifficulty diff) {
@@ -591,7 +591,7 @@ class ChooseDifficultyWidget extends FWidget<G> {
   );
 }
 
-class SettingsScene extends FWidgetScene<G> {
+final class SettingsScene extends FWidgetScene<G> {
   late final ChooseDifficultyWidget widget;
   
   SettingsScene(super.app) {
@@ -607,7 +607,7 @@ extension on AssetManager {
   Texture get atlas => texture('xp.png').asset;
 }
 
-class Minesweeper extends App<G> {
+final class Minesweeper extends App<G> {
   Minesweeper(super.backend);
 
   @override
@@ -622,12 +622,12 @@ class Minesweeper extends App<G> {
   }
 }
 
-class UnhingedBridge extends UnhingedRaylibApp<G> {
+final class Bridge extends UnhingedRaylibApp<G> {
   @override
-  G create(RaylibBackend backend) => G(backend);
+  G create(backend) => G(backend);
 }
 
 void main() => runRaylib(
-  UnhingedBridge(),
+  Bridge(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
 );

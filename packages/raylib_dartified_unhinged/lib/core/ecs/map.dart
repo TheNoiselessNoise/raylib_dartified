@@ -3,7 +3,7 @@ part of '../raylib_dartified_unhinged.dart';
 typedef MapData<T> = Map<String, T>;
 typedef MapDataEntry<T> = MapEntry<String, T>;
 
-class _MapUtils {
+final class _MapUtils {
   static void mergeMaps(Map original, Map updates) {
     updates.forEach((key, value) {
       if (value is Map && original[key] is Map) {
@@ -73,7 +73,7 @@ class _MapUtils {
   }
 }
 
-class MapTraversable<T> {
+final class MapTraversable<T> {
   const MapTraversable([this.data = const {}]);
 
   final MapData<T> data;
@@ -83,7 +83,7 @@ class MapTraversable<T> {
 
   bool has(String path) => _MapUtils.mapListWalker(data, path) != null;
 
-  bool __isDataEmpty(dynamic test) {
+  bool _isDataEmpty(dynamic test) {
     if (test is String) return test.isEmpty;
     if (test is List) return test.isEmpty;
     if (test is Map) return test.isEmpty;
@@ -97,7 +97,7 @@ class MapTraversable<T> {
   ]) {
     if (newData.isEmpty) return {};
 
-    bool Function(dynamic) isDataEmpty = testFunc ?? __isDataEmpty;
+    bool Function(dynamic) isDataEmpty = testFunc ?? _isDataEmpty;
 
     Map changes = {};
     for (String key in newData.keys) {

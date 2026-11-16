@@ -118,19 +118,7 @@ class CImage<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CImage<T> createInstance() {
-    final c = CImage<T>(
-      app,
-      texture: texture,
-      sourceRect: sourceRect?.copy(),
-      tint: tint,
-      size: size?.copy(),
-    );
-    c.source = source.copy();
-    c.dest = dest.copy();
-    c.origin = origin.copy();
-    return c;
-  }
+  CImage<T> createInstance() => .new(app);
 
   // state
 

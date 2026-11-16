@@ -8,7 +8,7 @@ enum RayCollisionField with XFields {
 }
 
 /// RayCollision, ray hit information
-class RayCollision extends XStruct<RayCollision> {
+final class RayCollision extends XStruct<RayCollision> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,13 +20,13 @@ class RayCollision extends XStruct<RayCollision> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<RayCollision> struct = .createValue(
+  static final XStructDef<RayCollision> struct = .createValue(
     factory: RayCollision.new,
     layout: .aligned<RayCollisionField>({
       .hit:      XBool(), // Did the ray hit something?
       .distance: XFloat(), // Distance to the nearest hit
-      .point:    XRawStruct(Vector3.struct), // Point of the nearest hit
-      .normal:   XRawStruct(Vector3.struct), // Surface normal of hit
+      .point:    XStructType(Vector3.struct), // Point of the nearest hit
+      .normal:   XStructType(Vector3.struct), // Surface normal of hit
     }),
   );
 
@@ -72,13 +72,11 @@ class RayCollision extends XStruct<RayCollision> {
 
   RayCollision({
     super.op,
-    bool hit = false,
-    double distance = 0,
+    this._hit = false,
+    this._distance = 0,
     Vector3? point,
     Vector3? normal
   }) :
-    _hit = hit,
-    _distance = distance,
     _point = point ?? .zero(),
     _normal = normal ?? .zero();
 

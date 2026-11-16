@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 typedef G = TestApp;
 
-class TestApp extends App<G> {
+final class TestApp extends App<G> {
   TestApp(super.backend); 
 }
 

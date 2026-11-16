@@ -1,7 +1,7 @@
 part of '../raylib_dartified_unhinged.dart';
 
 /// Per-type monotonic ID counter, used by [ECSBase] to assign unique IDs.
-class _GlobalIdCounter {
+final class _GlobalIdCounter {
   static final Map<Type, int> _counters = {};
 
   /// Returns the next ID for [type], incrementing its counter.
@@ -92,7 +92,7 @@ abstract class ECSBase<T extends App<T>> with
   String toString() => '$runtimeType(id=$id)';
 }
 
-class Bounds {
+final class Bounds {
   double top;
   double left;
   double bottom;

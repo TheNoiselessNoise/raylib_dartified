@@ -4,7 +4,7 @@ version: 6.0.4
 repository: https://github.com/TheNoiselessNoise/raylib_dartified
 
 environment:
-  sdk: ^3.10.7
+  sdk: ^3.12.0
 
 resolution: workspace
 
@@ -16,3 +16,6 @@ dependencies:
   xffi_core: ^1.0.0
   xffi_native: ^1.0.0
   raylib_dartified_base: ^6.0.4
+
+dev_dependencies:
+  test: ^1.25.6

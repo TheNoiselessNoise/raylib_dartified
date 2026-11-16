@@ -9,7 +9,7 @@ enum ImageField with XFields {
 }
 
 /// Image, pixel data stored in CPU memory (RAM)
-class Image extends XStruct<Image> {
+final class Image extends XStruct<Image> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,10 +21,10 @@ class Image extends XStruct<Image> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Image> struct = .create(
+  static final XStructDef<Image> struct = .create(
     factory: Image.new,
     layout: .aligned<ImageField>({
-      .data:    XRawPtr(XVoid()), // Image raw data
+      .data:    XPtrType(XVoid()), // Image raw data
       .width:   XInt(), // Image base width
       .height:  XInt(), // Image base height
       .mipmaps: XInt(), // Mipmap levels, 1 by default
@@ -162,16 +162,12 @@ class Image extends XStruct<Image> {
   Image({
     super.op,
     Uint8List? data,
-    int width = 0,
-    int height = 0,
-    int mipmaps = 0,
-    PixelFormat format = .PIXELFORMAT_NONE,
+    this._width = 0,
+    this._height = 0,
+    this._mipmaps = 0,
+    this._format = .PIXELFORMAT_NONE,
   }) :
-    _initialData = data,
-    _width = width,
-    _height = height,
-    _mipmaps = mipmaps,
-    _format = format;
+    _initialData = data;
 
   factory Image.zero() => .new();
 

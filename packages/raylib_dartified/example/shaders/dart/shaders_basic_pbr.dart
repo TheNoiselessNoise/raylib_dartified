@@ -9,7 +9,7 @@ const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_LIGHTS = 4;
 
-class LightDEx {
+final class LightDEx {
   LightType type;
   bool enabled;
   Vector3 position;

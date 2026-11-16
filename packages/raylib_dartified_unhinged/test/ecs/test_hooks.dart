@@ -16,11 +16,11 @@ const ID_POST_COMP_UPDATE = 'onPostCompUpdate';
 const ID_PRE_COMP_DRAW = 'onPreCompDraw';
 const ID_POST_COMP_DRAW = 'onPostCompDraw';
 
-class TestComponent extends Comp<G> {
+final class TestComponent extends Comp<G> {
   TestComponent(super.app);
 }
 
-class TestEntity extends Entity<G> {
+final class TestEntity extends Entity<G> {
   TestEntity(super.app) {
     add(TestComponent(app));
   }
@@ -48,7 +48,7 @@ class TestEntity extends Entity<G> {
   }
 }
 
-class TestScene extends Scene<G> {
+final class TestScene extends Scene<G> {
   TestScene(super.app) {    
     addEntity(TestEntity(app));
   }
@@ -76,7 +76,7 @@ class TestScene extends Scene<G> {
   }
 }
 
-class TestApp extends App<G> {
+final class TestApp extends App<G> {
   TestApp(super.backend) {
     addScene(TestScene(app));
   }

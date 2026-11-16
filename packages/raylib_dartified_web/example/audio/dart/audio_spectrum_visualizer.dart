@@ -24,14 +24,14 @@ const int    TEXTURE_HEIGHT                = 1;
 const int    FFT_ROW                       = 0;
 const double UNUSED_CHANNEL                = 0.0;
 
-class FFTComplex {
+final class FFTComplex {
   double real;
   double imaginary;
 
   FFTComplex([this.real = 0, this.imaginary = 0]);
 }
 
-class FFTData {
+final class FFTData {
   List<FFTComplex> spectrum;
   List<FFTComplex> workBuffer;
   List<double> prevMagnitudes;

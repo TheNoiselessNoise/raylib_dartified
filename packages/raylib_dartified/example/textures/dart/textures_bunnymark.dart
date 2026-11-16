@@ -10,7 +10,7 @@ const int screenHeight = 450;
 const int MAX_BUNNIES = 50000;
 const int MAX_BATCH_ELEMENTS = 8192;
 
-class Bunny {
+final class Bunny {
   Vector2 position;
   Vector2 speed;
   Color color;

@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class _TimestampedSnapshot<
+final class _TimestampedSnapshot<
   T extends App<T>,
   E extends ECSBase<T>,
   S extends StateSnapshot<T, E>
@@ -255,7 +255,9 @@ implements
   }
 }
 
-class ECSPersistentKeys {
+final class ECSPersistentKeys {
+  ECSPersistentKeys._();
+  
   static final String appSystems = '__appSystems__';
   static final String scenes = '__scenes__';
   static final String sceneSystems = '__sceneSystems__';

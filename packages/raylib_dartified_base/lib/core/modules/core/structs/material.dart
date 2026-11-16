@@ -7,7 +7,7 @@ enum MaterialField with XFields {
 }
 
 /// Material, includes shader and maps
-class Material extends XStruct<Material> {
+final class Material extends XStruct<Material> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,11 +19,11 @@ class Material extends XStruct<Material> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Material> struct = .create(
+  static final XStructDef<Material> struct = .create(
     factory: Material.new,
     layout: .aligned<MaterialField>({
-      .shader: XRawStruct(Shader.struct), // Material shader
-      .maps:   XRawPtr(XArray(XRawStruct(MaterialMap.struct), BASE_mapsCount)), // Material maps array (MAX_MATERIAL_MAPS)
+      .shader: XStructType(Shader.struct), // Material shader
+      .maps:   XPtrType(XArray(XStructType(MaterialMap.struct), BASE_mapsCount)), // Material maps array (MAX_MATERIAL_MAPS)
       .params: XArray(XFloat(), BASE_paramsCount), // Material generic parameters (if required)
     }),
   );

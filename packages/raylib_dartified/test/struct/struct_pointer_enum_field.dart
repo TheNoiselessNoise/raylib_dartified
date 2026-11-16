@@ -5,12 +5,12 @@ enum MyStructField with XFields {
   pointerEnumField,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerEnumField: XRawPtr(XInt()),
+      .pointerEnumField: XPtrType(XInt()),
     }),
   );
 
@@ -23,8 +23,8 @@ class MyStruct extends XStruct<MyStruct> {
 
   MyStruct({
     super.op,
-    KeyboardKey pointerEnumField = .KEY_NULL,
-  }) : _pointerEnumField = pointerEnumField;
+    this._pointerEnumField = .KEY_NULL,
+  });
 
   @override
   MyStruct clone() => .new(op: op);
@@ -48,7 +48,7 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
   test("Pointer Enum - after assignment", () {

@@ -10,7 +10,7 @@ enum RlRenderBatchField with XFields {
 }
 
 /// rlRenderBatch type
-class RlRenderBatch extends XStruct<RlRenderBatch> {
+final class RlRenderBatch extends XStruct<RlRenderBatch> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -22,13 +22,13 @@ class RlRenderBatch extends XStruct<RlRenderBatch> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<RlRenderBatch> struct = .create(
+  static final XStructDef<RlRenderBatch> struct = .create(
     factory: RlRenderBatch.new,
     layout: .aligned<RlRenderBatchField>({
       .bufferCount:   XInt(), // Number of vertex buffers (multi-buffering support)
       .currentBuffer: XInt(), // Current buffer tracking in case of multi-buffering
-      .vertexBuffer:  XRawPtr(XRawStruct(RlVertexBuffer.struct)), // Dynamic buffer(s) for vertex data
-      .draws:         XRawPtr(XRawStruct(RlDrawCall.struct)), // Draw calls array, depends on textureId
+      .vertexBuffer:  XPtrType(XStructType(RlVertexBuffer.struct)), // Dynamic buffer(s) for vertex data
+      .draws:         XPtrType(XStructType(RlDrawCall.struct)), // Draw calls array, depends on textureId
       .drawCounter:   XInt(), // Draw calls counter
       .currentDepth:  XFloat(), // Current depth value for next draw
     }),
@@ -90,18 +90,13 @@ class RlRenderBatch extends XStruct<RlRenderBatch> {
   
   RlRenderBatch({
     super.op,
-    int bufferCount = 0,
-    int currentBuffer = 0,
+    this._bufferCount = 0,
+    this._currentBuffer = 0,
     List<RlVertexBuffer>? vertexBuffer,
     List<RlDrawCall>? draws,
-    int drawCounter = 0,
-    double currentDepth = 0,
-  }) :
-    _bufferCount = bufferCount,
-    _currentBuffer = currentBuffer,
-    _drawCounter = drawCounter,
-    _currentDepth = currentDepth
-  {
+    this._drawCounter = 0,
+    this._currentDepth = 0,
+  }) {
     _vertexBuffer = field_vertexBuffer.live(() => op, vertexBuffer ?? []);
     _draws = field_draws.live(() => op, draws ?? []);
   }

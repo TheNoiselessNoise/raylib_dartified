@@ -38,7 +38,7 @@ enum TermStyle {
 }
 
 /// A piece of text with accumulated SGR codes.
-class TermSpan {
+final class TermSpan {
   final String text;
   final List<int> codes;
 
@@ -97,7 +97,7 @@ class TermSpan {
 /// Ordered collection of spans/plain strings, rendered together.
 /// Plain strings added via `write` pass through uncolored unless you give
 /// codes explicitly.
-class TermBuffer {
+final class TermBuffer {
   final List<TermSpan> _spans = [];
 
   TermBuffer add(TermSpan span) {

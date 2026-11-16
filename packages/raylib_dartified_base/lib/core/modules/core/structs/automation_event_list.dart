@@ -7,7 +7,7 @@ enum AutomationEventListField with XFields {
 }
 
 /// Automation event list
-class AutomationEventList extends XStruct<AutomationEventList> {
+final class AutomationEventList extends XStruct<AutomationEventList> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,12 +19,12 @@ class AutomationEventList extends XStruct<AutomationEventList> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<AutomationEventList> struct = .create(
+  static final XStructDef<AutomationEventList> struct = .create(
     factory: AutomationEventList.new,
     layout: .aligned<AutomationEventListField>({
       .capacity: XUnsignedInt(), // Events max entries (MAX_AUTOMATION_EVENTS)
       .count:    XUnsignedInt(), // Events entries count
-      .events:   XRawPtr(XRawStruct(AutomationEvent.struct)), // Events entries
+      .events:   XPtrType(XStructType(AutomationEvent.struct)), // Events entries
     }),
   );
 

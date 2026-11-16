@@ -84,7 +84,7 @@ abstract class CollisionBackend {
   void dispose() {}
 }
 
-class UnhingedAsset<X> {
+final class UnhingedAsset<X> {
   final String id;
   final X asset;
 

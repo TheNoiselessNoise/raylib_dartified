@@ -34,9 +34,7 @@ class CLifetime<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CLifetime<T> createInstance() => .new(app,
-    timeLeft: timeLeft,
-  );
+  CLifetime<T> createInstance() => .new(app);
 
   // state
 

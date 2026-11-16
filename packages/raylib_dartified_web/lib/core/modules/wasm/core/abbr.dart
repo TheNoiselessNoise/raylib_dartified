@@ -871,7 +871,7 @@ XF2<int> get GetCodepointPrevious => _module.GetCodepointPrevious;
 /// See [RaylibCore.CodepointToUTF8].
 XF2<XWasmPtr<XChar>> get CodepointToUTF8 => _module.CodepointToUTF8;
 /// See [RaylibCore.LoadTextLines].
-XF2<XWasmPtr<XRawPtr<XChar>>> get LoadTextLines => _module.LoadTextLines;
+XF2<XWasmPtr<XPtrType<XChar>>> get LoadTextLines => _module.LoadTextLines;
 /// See [RaylibCore.UnloadTextLines].
 XF2<void> get UnloadTextLines => _module.UnloadTextLines;
 /// See [RaylibCore.TextCopy].
@@ -903,7 +903,7 @@ XF3<XWasmPtr<XChar>> get TextInsertAlloc => _module.TextInsertAlloc;
 /// See [RaylibCore.TextJoin].
 XF3<XWasmPtr<XChar>> get TextJoin => _module.TextJoin;
 /// See [RaylibCore.TextSplit].
-XF3<XWasmPtr<XRawPtr<XChar>>> get TextSplit => _module.TextSplit;
+XF3<XWasmPtr<XPtrType<XChar>>> get TextSplit => _module.TextSplit;
 /// See [RaylibCore.TextAppend].
 XF3<void> get TextAppend => _module.TextAppend;
 /// See [RaylibCore.TextFindIndex].

@@ -3,8 +3,6 @@ part of '../../raylib_dartified_base.dart';
 /// Backend-agnostic Raylib Rlgl module.
 final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with RaylibRlglModuleExtras<R> {
 
-  final _debugLabels = _RaylibRlglDartDebugLabels();
-
   RaylibRlglDart(super.rl);
 
   RaylibCoreDart get _coreDart => rl.module();
@@ -14,7 +12,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlMatrixMode(
     RlMatrixMode mode,
   ) => debugRun(
-    () => _debugLabels.rlMatrixMode(mode),
+    () => 'rlMatrixMode(${mode.name})',
     () => _flat.rlMatrixMode(
       mode.value,
     ),
@@ -22,19 +20,19 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Push the current matrix to stack
   void rlPushMatrix() => debugRun(
-    () => _debugLabels.rlPushMatrix(),
+    () => 'rlPushMatrix()',
     () => _flat.rlPushMatrix(),
   );
 
   /// Pop latest inserted matrix from stack
   void rlPopMatrix() => debugRun(
-    () => _debugLabels.rlPopMatrix(),
+    () => 'rlPopMatrix()',
     () => _flat.rlPopMatrix(),
   );
 
   /// Reset current matrix to identity matrix
   void rlLoadIdentity() => debugRun(
-    () => _debugLabels.rlLoadIdentity(),
+    () => 'rlLoadIdentity()',
     () => _flat.rlLoadIdentity(),
   );
 
@@ -44,7 +42,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlTranslatef(x, y, z),
+    () => 'rlTranslatef($x, $y, $z)',
     () => _flat.rlTranslatef(
       x.toDouble(),
       y.toDouble(),
@@ -59,7 +57,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlRotatef(angle, x, y, z),
+    () => 'rlRotatef($angle, $x, $y, $z)',
     () => _flat.rlRotatef(
       angle.toDouble(),
       x.toDouble(),
@@ -74,7 +72,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlScalef(x, y, z),
+    () => 'rlScalef($x, $y, $z)',
     () => _flat.rlScalef(
       x.toDouble(),
       y.toDouble(),
@@ -86,7 +84,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlMultMatrixf(
     List<num> matf,
   ) => debugRun(
-    () => _debugLabels.rlMultMatrixf(matf),
+    () => 'rlMultMatrixf($matf)',
     () => _flat.rlMultMatrixf(
       Float32$.Array(matf),
     ),
@@ -101,7 +99,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num znear,
     num zfar,
   ) => debugRun(
-    () => _debugLabels.rlFrustum(left, right, bottom, top, znear, zfar),
+    () => 'rlFrustum($left, $right, $bottom, $top, $znear, $zfar)',
     () => _flat.rlFrustum(
       left.toDouble(),
       right.toDouble(),
@@ -121,7 +119,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num znear,
     num zfar,
   ) => debugRun(
-    () => _debugLabels.rlOrtho(left, right, bottom, top, znear, zfar),
+    () => 'rlOrtho($left, $right, $bottom, $top, $znear, $zfar)',
     () => _flat.rlOrtho(
       left.toDouble(),
       right.toDouble(),
@@ -139,7 +137,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.rlViewport(x, y, width, height),
+    () => 'rlViewport($x, $y, $width, $height)',
     () => _flat.rlViewport(
       x.toInt(),
       y.toInt(),
@@ -153,7 +151,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num nearPlane,
     num farPlane,
   ) => debugRun(
-    () => _debugLabels.rlSetClipPlanes(nearPlane, farPlane),
+    () => 'rlSetClipPlanes($nearPlane, $farPlane)',
     () => _flat.rlSetClipPlanes(
       nearPlane.toDouble(),
       farPlane.toDouble(),
@@ -162,13 +160,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Get cull plane distance near
   double rlGetCullDistanceNear() => debugRun(
-    () => _debugLabels.rlGetCullDistanceNear(),
+    () => 'rlGetCullDistanceNear()',
     () => _flat.rlGetCullDistanceNear(),
   );
 
   /// Get cull plane distance far
   double rlGetCullDistanceFar() => debugRun(
-    () => _debugLabels.rlGetCullDistanceFar(),
+    () => 'rlGetCullDistanceFar()',
     () => _flat.rlGetCullDistanceFar(),
   );
 
@@ -176,7 +174,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlBegin(
     RlDrawMode mode,
   ) => debugRun(
-    () => _debugLabels.rlBegin(mode),
+    () => 'rlBegin(${mode.name})',
     () => _flat.rlBegin(
       mode.value,
     ),
@@ -184,7 +182,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Finish vertex providing
   void rlEnd() => debugRun(
-    () => _debugLabels.rlEnd(),
+    () => 'rlEnd()',
     () => _flat.rlEnd(),
   );
 
@@ -193,7 +191,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num x,
     num y,
   ) => debugRun(
-    () => _debugLabels.rlVertex2i(x, y),
+    () => 'rlVertex2i($x, $y)',
     () => _flat.rlVertex2i(
       x.toInt(),
       y.toInt(),
@@ -205,7 +203,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num x,
     num y,
   ) => debugRun(
-    () => _debugLabels.rlVertex2f(x, y),
+    () => 'rlVertex2f($x, $y)',
     () => _flat.rlVertex2f(
       x.toDouble(),
       y.toDouble(),
@@ -218,7 +216,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlVertex3f(x, y, z),
+    () => 'rlVertex3f($x, $y, $z)',
     () => _flat.rlVertex3f(
       x.toDouble(),
       y.toDouble(),
@@ -231,7 +229,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num x,
     num y,
   ) => debugRun(
-    () => _debugLabels.rlTexCoord2f(x, y),
+    () => 'rlTexCoord2f($x, $y)',
     () => _flat.rlTexCoord2f(
       x.toDouble(),
       y.toDouble(),
@@ -244,7 +242,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlNormal3f(x, y, z),
+    () => 'rlNormal3f($x, $y, $z)',
     () => _flat.rlNormal3f(
       x.toDouble(),
       y.toDouble(),
@@ -259,7 +257,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num b,
     num a,
   ) => debugRun(
-    () => _debugLabels.rlColor4ub(r, g, b, a),
+    () => 'rlColor4ub($r, $g, $b, $a)',
     () => _flat.rlColor4ub(
       r.toInt(),
       g.toInt(),
@@ -274,7 +272,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num y,
     num z,
   ) => debugRun(
-    () => _debugLabels.rlColor3f(x, y, z),
+    () => 'rlColor3f($x, $y, $z)',
     () => _flat.rlColor3f(
       x.toDouble(),
       y.toDouble(),
@@ -289,7 +287,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num z,
     num w,
   ) => debugRun(
-    () => _debugLabels.rlColor4f(x, y, z, w),
+    () => 'rlColor4f($x, $y, $z, $w)',
     () => _flat.rlColor4f(
       x.toDouble(),
       y.toDouble(),
@@ -302,7 +300,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   bool rlEnableVertexArray(
     num vaoId,
   ) => debugRun(
-    () => _debugLabels.rlEnableVertexArray(vaoId),
+    () => 'rlEnableVertexArray($vaoId)',
     () => _flat.rlEnableVertexArray(
       vaoId.toInt(),
     ),
@@ -310,7 +308,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable vertex array (VAO, if supported)
   void rlDisableVertexArray() => debugRun(
-    () => _debugLabels.rlDisableVertexArray(),
+    () => 'rlDisableVertexArray()',
     () => _flat.rlDisableVertexArray(),
   );
 
@@ -318,7 +316,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableVertexBuffer(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableVertexBuffer(id),
+    () => 'rlEnableVertexBuffer($id)',
     () => _flat.rlEnableVertexBuffer(
       id.toInt(),
     ),
@@ -326,7 +324,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable vertex buffer (VBO)
   void rlDisableVertexBuffer() => debugRun(
-    () => _debugLabels.rlDisableVertexBuffer(),
+    () => 'rlDisableVertexBuffer()',
     () => _flat.rlDisableVertexBuffer(),
   );
 
@@ -334,7 +332,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableVertexBufferElement(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableVertexBufferElement(id),
+    () => 'rlEnableVertexBufferElement($id)',
     () => _flat.rlEnableVertexBufferElement(
       id.toInt(),
     ),
@@ -342,7 +340,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable vertex buffer element (VBO element)
   void rlDisableVertexBufferElement() => debugRun(
-    () => _debugLabels.rlDisableVertexBufferElement(),
+    () => 'rlDisableVertexBufferElement()',
     () => _flat.rlDisableVertexBufferElement(),
   );
 
@@ -350,7 +348,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableVertexAttribute(
     num index,
   ) => debugRun(
-    () => _debugLabels.rlEnableVertexAttribute(index),
+    () => 'rlEnableVertexAttribute($index)',
     () => _flat.rlEnableVertexAttribute(
       index.toInt(),
     ),
@@ -360,7 +358,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlDisableVertexAttribute(
     num index,
   ) => debugRun(
-    () => _debugLabels.rlDisableVertexAttribute(index),
+    () => 'rlDisableVertexAttribute($index)',
     () => _flat.rlDisableVertexAttribute(
       index.toInt(),
     ),
@@ -370,7 +368,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Enable attribute state pointer
   void rlEnableStatePointer(int vertexAttribType, TypedDataList buffer) => debugRun(
-    () => _debugLabels.rlEnableStatePointer(vertexAttribType, buffer),
+    () => 'rlEnableStatePointer($vertexAttribType, data: ${buffer.length})',
     () {
       final existing = _rlEnableStatePointer_statePointers[vertexAttribType];
       if (existing != null) existing.free();
@@ -388,7 +386,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable attribute state pointer
   void rlDisableStatePointer(int vertexAttribType) => debugRun(
-    () => _debugLabels.rlDisableStatePointer(vertexAttribType),
+    () => 'rlDisableStatePointer($vertexAttribType)',
     () {
       _flat.rlDisableStatePointer(
         vertexAttribType,
@@ -403,7 +401,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlActiveTextureSlot(
     num slot,
   ) => debugRun(
-    () => _debugLabels.rlActiveTextureSlot(slot),
+    () => 'rlActiveTextureSlot($slot)',
     () => _flat.rlActiveTextureSlot(
       slot.toInt(),
     ),
@@ -413,7 +411,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableTexture(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableTexture(id),
+    () => 'rlEnableTexture($id)',
     () => _flat.rlEnableTexture(
       id.toInt(),
     ),
@@ -421,7 +419,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable texture
   void rlDisableTexture() => debugRun(
-    () => _debugLabels.rlDisableTexture(),
+    () => 'rlDisableTexture()',
     () => _flat.rlDisableTexture(),
   );
 
@@ -429,7 +427,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableTextureCubemap(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableTextureCubemap(id),
+    () => 'rlEnableTextureCubemap($id)',
     () => _flat.rlEnableTextureCubemap(
       id.toInt(),
     ),
@@ -437,7 +435,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable texture cubemap
   void rlDisableTextureCubemap() => debugRun(
-    () => _debugLabels.rlDisableTextureCubemap(),
+    () => 'rlDisableTextureCubemap()',
     () => _flat.rlDisableTextureCubemap(),
   );
 
@@ -447,7 +445,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num param,
     num value,
   ) => debugRun(
-    () => _debugLabels.rlTextureParameters(id, param, value),
+    () => 'rlTextureParameters($id, $param, $value)',
     () => _flat.rlTextureParameters(
       id.toInt(),
       param.toInt(),
@@ -461,7 +459,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num param,
     num value,
   ) => debugRun(
-    () => _debugLabels.rlCubemapParameters(id, param, value),
+    () => 'rlCubemapParameters($id, $param, $value)',
     () => _flat.rlCubemapParameters(
       id.toInt(),
       param.toInt(),
@@ -473,7 +471,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableShader(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableShader(id),
+    () => 'rlEnableShader($id)',
     () => _flat.rlEnableShader(
       id.toInt(),
     ),
@@ -481,7 +479,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable shader program
   void rlDisableShader() => debugRun(
-    () => _debugLabels.rlDisableShader(),
+    () => 'rlDisableShader()',
     () => _flat.rlDisableShader(),
   );
 
@@ -489,7 +487,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlEnableFramebuffer(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlEnableFramebuffer(id),
+    () => 'rlEnableFramebuffer($id)',
     () => _flat.rlEnableFramebuffer(
       id.toInt(),
     ),
@@ -497,13 +495,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Disable render texture (fbo), return to default framebuffer
   void rlDisableFramebuffer() => debugRun(
-    () => _debugLabels.rlDisableFramebuffer(),
+    () => 'rlDisableFramebuffer()',
     () => _flat.rlDisableFramebuffer(),
   );
 
   /// Get the currently active render texture (fbo), 0 for default framebuffer
   int rlGetActiveFramebuffer() => debugRun(
-    () => _debugLabels.rlGetActiveFramebuffer(),
+    () => 'rlGetActiveFramebuffer()',
     () => _flat.rlGetActiveFramebuffer(),
   );
 
@@ -511,7 +509,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlActiveDrawBuffers(
     num count,
   ) => debugRun(
-    () => _debugLabels.rlActiveDrawBuffers(count),
+    () => 'rlActiveDrawBuffers($count)',
     () => _flat.rlActiveDrawBuffers(
       count.toInt(),
     ),
@@ -529,7 +527,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num dstHeight,
     num bufferMask,
   ) => debugRun(
-    () => _debugLabels.rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask),
+    () => 'rlBlitFramebuffer($srcX, $srcY, $srcWidth, $srcHeight, $dstX, $dstY, $dstWidth, $dstHeight, $bufferMask)',
     () => _flat.rlBlitFramebuffer(
       srcX.toInt(),
       srcY.toInt(),
@@ -548,7 +546,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num target,
     num framebuffer,
   ) => debugRun(
-    () => _debugLabels.rlBindFramebuffer(target, framebuffer),
+    () => 'rlBindFramebuffer($target, $framebuffer)',
     () => _flat.rlBindFramebuffer(
       target.toInt(),
       framebuffer.toInt(),
@@ -557,49 +555,49 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Enable color blending
   void rlEnableColorBlend() => debugRun(
-    () => _debugLabels.rlEnableColorBlend(),
+    () => 'rlEnableColorBlend()',
     () => _flat.rlEnableColorBlend(),
   );
 
   /// Disable color blending
   void rlDisableColorBlend() => debugRun(
-    () => _debugLabels.rlDisableColorBlend(),
+    () => 'rlDisableColorBlend()',
     () => _flat.rlDisableColorBlend(),
   );
 
   /// Enable depth test
   void rlEnableDepthTest() => debugRun(
-    () => _debugLabels.rlEnableDepthTest(),
+    () => 'rlEnableDepthTest()',
     () => _flat.rlEnableDepthTest(),
   );
 
   /// Disable depth test
   void rlDisableDepthTest() => debugRun(
-    () => _debugLabels.rlDisableDepthTest(),
+    () => 'rlDisableDepthTest()',
     () => _flat.rlDisableDepthTest(),
   );
 
   /// Enable depth write
   void rlEnableDepthMask() => debugRun(
-    () => _debugLabels.rlEnableDepthMask(),
+    () => 'rlEnableDepthMask()',
     () => _flat.rlEnableDepthMask(),
   );
 
   /// Disable depth write
   void rlDisableDepthMask() => debugRun(
-    () => _debugLabels.rlDisableDepthMask(),
+    () => 'rlDisableDepthMask()',
     () => _flat.rlDisableDepthMask(),
   );
 
   /// Enable backface culling
   void rlEnableBackfaceCulling() => debugRun(
-    () => _debugLabels.rlEnableBackfaceCulling(),
+    () => 'rlEnableBackfaceCulling()',
     () => _flat.rlEnableBackfaceCulling(),
   );
 
   /// Disable backface culling
   void rlDisableBackfaceCulling() => debugRun(
-    () => _debugLabels.rlDisableBackfaceCulling(),
+    () => 'rlDisableBackfaceCulling()',
     () => _flat.rlDisableBackfaceCulling(),
   );
 
@@ -610,7 +608,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     bool b,
     bool a,
   ) => debugRun(
-    () => _debugLabels.rlColorMask(r, g, b, a),
+    () => 'rlColorMask($r, $g, $b, $a)',
     () => _flat.rlColorMask(
       r,
       g,
@@ -623,7 +621,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetCullFace(
     RlCullMode mode,
   ) => debugRun(
-    () => _debugLabels.rlSetCullFace(mode),
+    () => 'rlSetCullFace(${mode.name})',
     () => _flat.rlSetCullFace(
       mode.value,
     ),
@@ -631,13 +629,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Enable scissor test
   void rlEnableScissorTest() => debugRun(
-    () => _debugLabels.rlEnableScissorTest(),
+    () => 'rlEnableScissorTest()',
     () => _flat.rlEnableScissorTest(),
   );
 
   /// Disable scissor test
   void rlDisableScissorTest() => debugRun(
-    () => _debugLabels.rlDisableScissorTest(),
+    () => 'rlDisableScissorTest()',
     () => _flat.rlDisableScissorTest(),
   );
 
@@ -648,7 +646,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.rlScissor(x, y, width, height),
+    () => 'rlScissor($x, $y, $width, $height)',
     () => _flat.rlScissor(
       x.toInt(),
       y.toInt(),
@@ -659,13 +657,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Enable point mode
   void rlEnablePointMode() => debugRun(
-    () => _debugLabels.rlEnablePointMode(),
+    () => 'rlEnablePointMode()',
     () => _flat.rlEnablePointMode(),
   );
 
   /// Disable point mode
   void rlDisablePointMode() => debugRun(
-    () => _debugLabels.rlDisablePointMode(),
+    () => 'rlDisablePointMode()',
     () => _flat.rlDisablePointMode(),
   );
 
@@ -673,7 +671,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetPointSize(
     num size,
   ) => debugRun(
-    () => _debugLabels.rlSetPointSize(size),
+    () => 'rlSetPointSize($size)',
     () => _flat.rlSetPointSize(
       size.toDouble(),
     ),
@@ -681,19 +679,19 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   
   /// Get the point drawing size
   double rlGetPointSize() => debugRun(
-    () => _debugLabels.rlGetPointSize(),
+    () => 'rlGetPointSize()',
     () => _flat.rlGetPointSize(),
   );
 
   /// Enable wire mode
   void rlEnableWireMode() => debugRun(
-    () => _debugLabels.rlEnableWireMode(),
+    () => 'rlEnableWireMode()',
     () => _flat.rlEnableWireMode(),
   );
 
   /// Disable wire mode
   void rlDisableWireMode() => debugRun(
-    () => _debugLabels.rlDisableWireMode(),
+    () => 'rlDisableWireMode()',
     () => _flat.rlDisableWireMode(),
   );
 
@@ -701,7 +699,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetLineWidth(
     num width,
   ) => debugRun(
-    () => _debugLabels.rlSetLineWidth(width),
+    () => 'rlSetLineWidth($width)',
     () => _flat.rlSetLineWidth(
       width.toDouble(),
     ),
@@ -709,37 +707,37 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Get the line drawing width
   double rlGetLineWidth() => debugRun(
-    () => _debugLabels.rlGetLineWidth(),
+    () => 'rlGetLineWidth()',
     () => _flat.rlGetLineWidth(),
   );
 
   /// Enable line aliasing
   void rlEnableSmoothLines() => debugRun(
-    () => _debugLabels.rlEnableSmoothLines(),
+    () => 'rlEnableSmoothLines()',
     () => _flat.rlEnableSmoothLines(),
   );
 
   /// Disable line aliasing
   void rlDisableSmoothLines() => debugRun(
-    () => _debugLabels.rlDisableSmoothLines(),
+    () => 'rlDisableSmoothLines()',
     () => _flat.rlDisableSmoothLines(),
   );
 
   /// Enable stereo rendering
   void rlEnableStereoRender() => debugRun(
-    () => _debugLabels.rlEnableStereoRender(),
+    () => 'rlEnableStereoRender()',
     () => _flat.rlEnableStereoRender(),
   );
 
   /// Disable stereo rendering
   void rlDisableStereoRender() => debugRun(
-    () => _debugLabels.rlDisableStereoRender(),
+    () => 'rlDisableStereoRender()',
     () => _flat.rlDisableStereoRender(),
   );
 
   /// Check if stereo render is enabled
   bool rlIsStereoRenderEnabled() => debugRun(
-    () => _debugLabels.rlIsStereoRenderEnabled(),
+    () => 'rlIsStereoRenderEnabled()',
     () => _flat.rlIsStereoRenderEnabled(),
   );
 
@@ -750,7 +748,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num b,
     num a,
   ) => debugRun(
-    () => _debugLabels.rlClearColor(r, g, b, a),
+    () => 'rlClearColor($r, $g, $b, $a)',
     () => _flat.rlClearColor(
       r.toInt(),
       g.toInt(),
@@ -761,13 +759,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Clear used screen buffers (color and depth)
   void rlClearScreenBuffers() => debugRun(
-    () => _debugLabels.rlClearScreenBuffers(),
+    () => 'rlClearScreenBuffers()',
     () => _flat.rlClearScreenBuffers(),
   );
 
   /// Check and log OpenGL error codes
   void rlCheckErrors() => debugRun(
-    () => _debugLabels.rlCheckErrors(),
+    () => 'rlCheckErrors()',
     () => _flat.rlCheckErrors(),
   );
 
@@ -775,7 +773,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetBlendMode(
     BlendMode mode,
   ) => debugRun(
-    () => _debugLabels.rlSetBlendMode(mode),
+    () => 'rlSetBlendMode(${mode.name})',
     () => _flat.rlSetBlendMode(
       mode.value,
     ),
@@ -787,7 +785,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num glDstFactor,
     num glEquation,
   ) => debugRun(
-    () => _debugLabels.rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation),
+    () => 'rlSetBlendFactors($glSrcFactor, $glDstFactor, $glEquation)',
     () => _flat.rlSetBlendFactors(
       glSrcFactor.toInt(),
       glDstFactor.toInt(),
@@ -804,7 +802,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num glEqRGB,
     num glEqAlpha,
   ) => debugRun(
-    () => _debugLabels.rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha),
+    () => 'rlSetBlendFactorsSeparate($glSrcRGB, $glDstRGB, $glSrcAlpha, $glDstAlpha, $glEqRGB, $glEqAlpha)',
     () => _flat.rlSetBlendFactorsSeparate(
       glSrcRGB.toInt(),
       glDstRGB.toInt(),
@@ -820,7 +818,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.rlglInit(width, height),
+    () => 'rlglInit($width, $height)',
     () => _flat.rlglInit(
       width.toInt(),
       height.toInt(),
@@ -829,13 +827,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// De-initialize rlgl (buffers, shaders, textures)
   void rlglClose() => debugRun(
-    () => _debugLabels.rlglClose(),
+    () => 'rlglClose()',
     () => _flat.rlglClose(),
   );
 
   /// Get current OpenGL version
   int rlGetVersion() => debugRun(
-    () => _debugLabels.rlGetVersion(),
+    () => 'rlGetVersion()',
     () => _flat.rlGetVersion(),
   );
 
@@ -843,7 +841,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetFramebufferWidth(
     num width,
   ) => debugRun(
-    () => _debugLabels.rlSetFramebufferWidth(width),
+    () => 'rlSetFramebufferWidth($width)',
     () => _flat.rlSetFramebufferWidth(
       width.toInt(),
     ),
@@ -851,7 +849,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Get default framebuffer width
   int rlGetFramebufferWidth() => debugRun(
-    () => _debugLabels.rlGetFramebufferWidth(),
+    () => 'rlGetFramebufferWidth()',
     () => _flat.rlGetFramebufferWidth(),
   );
 
@@ -859,7 +857,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetFramebufferHeight(
     num height,
   ) => debugRun(
-    () => _debugLabels.rlSetFramebufferHeight(height),
+    () => 'rlSetFramebufferHeight($height)',
     () => _flat.rlSetFramebufferHeight(
       height.toInt(),
     ),
@@ -867,25 +865,25 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Get default framebuffer height
   int rlGetFramebufferHeight() => debugRun(
-    () => _debugLabels.rlGetFramebufferHeight(),
+    () => 'rlGetFramebufferHeight()',
     () => _flat.rlGetFramebufferHeight(),
   );
 
   /// Get default texture id
   int rlGetTextureIdDefault() => debugRun(
-    () => _debugLabels.rlGetTextureIdDefault(),
+    () => 'rlGetTextureIdDefault()',
     () => _flat.rlGetTextureIdDefault(),
   );
 
   /// Get default shader id
   int rlGetShaderIdDefault() => debugRun(
-    () => _debugLabels.rlGetShaderIdDefault(),
+    () => 'rlGetShaderIdDefault()',
     () => _flat.rlGetShaderIdDefault(),
   );
 
   /// Get default shader locations
   List<int> rlGetShaderLocsDefault() => debugRun(
-    () => _debugLabels.rlGetShaderLocsDefault(),
+    () => 'rlGetShaderLocsDefault()',
     () {
       final locs = _flat.rlGetShaderLocsDefault();
       return .generate(RL_MAX_SHADER_LOCATIONS, (i) => locs[i]);
@@ -897,7 +895,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num numBuffers,
     num bufferElements,
   ) => debugRun(
-    () => _debugLabels.rlLoadRenderBatch(numBuffers, bufferElements),
+    () => 'rlLoadRenderBatch($numBuffers, $bufferElements)',
     () => _flat.rlLoadRenderBatch(
       numBuffers.toInt(),
       bufferElements.toInt(),
@@ -908,7 +906,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadRenderBatch(
     RlRenderBatch batch,
   ) => debugRun(
-    () => _debugLabels.rlUnloadRenderBatch(batch),
+    () => 'rlUnloadRenderBatch($batch)',
     () => _flat.rlUnloadRenderBatch(
       batch,
     ),
@@ -918,7 +916,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlDrawRenderBatch(
     RlRenderBatch batch,
   ) => debugRun(
-    () => _debugLabels.rlDrawRenderBatch(batch),
+    () => 'rlDrawRenderBatch($batch)',
     () => _flat.rlDrawRenderBatch(
       RlRenderBatch$.Ref1(batch),
     ),
@@ -928,7 +926,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetRenderBatchActive([
     RlRenderBatch? batch,
   ]) => debugRun(
-    () => _debugLabels.rlSetRenderBatchActive(batch),
+    () => 'rlSetRenderBatchActive($batch)',
     () => _flat.rlSetRenderBatchActive(
       RlRenderBatch$.Ref1(batch),
     ),
@@ -936,7 +934,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Update and draw internal render batch
   void rlDrawRenderBatchActive() => debugRun(
-    () => _debugLabels.rlDrawRenderBatchActive(),
+    () => 'rlDrawRenderBatchActive()',
     () => _flat.rlDrawRenderBatchActive(),
   );
 
@@ -944,7 +942,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   bool rlCheckRenderBatchLimit(
     num vCount,
   ) => debugRun(
-    () => _debugLabels.rlCheckRenderBatchLimit(vCount),
+    () => 'rlCheckRenderBatchLimit($vCount)',
     () => _flat.rlCheckRenderBatchLimit(
       vCount.toInt(),
     ),
@@ -954,7 +952,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetTexture(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlSetTexture(id),
+    () => 'rlSetTexture($id)',
     () => _flat.rlSetTexture(
       id.toInt(),
     ),
@@ -962,7 +960,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Load vertex array (vao) if supported
   int rlLoadVertexArray() => debugRun(
-    () => _debugLabels.rlLoadVertexArray(),
+    () => 'rlLoadVertexArray()',
     () => _flat.rlLoadVertexArray(),
   );
 
@@ -971,7 +969,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     TypedDataList buffer,
     bool dynamic,
   ) => debugRun(
-    () => _debugLabels.rlLoadVertexBuffer(buffer, dynamic),
+    () => 'rlLoadVertexBuffer(${buffer.lengthInBytes}, $dynamic)',
     () => _flat.rlLoadVertexBuffer(
       TypedDataList$.Array(buffer),
       buffer.length,
@@ -984,7 +982,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     TypedDataList buffer,
     bool dynamic,
   ) => debugRun(
-    () => _debugLabels.rlLoadVertexBufferElement(buffer, dynamic),
+    () => 'rlLoadVertexBufferElement(${buffer.lengthInBytes}, $dynamic)',
     () => _flat.rlLoadVertexBufferElement(
       TypedDataList$.Array(buffer),
       buffer.length,
@@ -999,7 +997,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num dataSize,
     num offset,
   ) => debugRun(
-    () => _debugLabels.rlUpdateVertexBuffer(bufferId, data, dataSize, offset),
+    () => 'rlUpdateVertexBuffer($bufferId, ${data.lengthInBytes}, $dataSize, $offset)',
     () => _flat.rlUpdateVertexBuffer(
       bufferId.toInt(),
       TypedDataList$.Array(data),
@@ -1015,7 +1013,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num dataSize,
     num offset,
   ) => debugRun(
-    () => _debugLabels.rlUpdateVertexBufferElements(id, data, dataSize, offset),
+    () => 'rlLoadVertexBufferElement($id, ${data.lengthInBytes}, $dataSize, $offset)',
     () => _flat.rlUpdateVertexBufferElements(
       id.toInt(),
       TypedDataList$.Array(data),
@@ -1028,7 +1026,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadVertexArray(
     num vaoId,
   ) => debugRun(
-    () => _debugLabels.rlUnloadVertexArray(vaoId),
+    () => 'rlUnloadVertexArray($vaoId)',
     () => _flat.rlUnloadVertexArray(
       vaoId.toInt(),
     ),
@@ -1038,7 +1036,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadVertexBuffer(
     num vboId,
   ) => debugRun(
-    () => _debugLabels.rlUnloadVertexBuffer(vboId),
+    () => 'rlUnloadVertexBuffer($vboId)',
     () => _flat.rlUnloadVertexBuffer(
       vboId.toInt(),
     ),
@@ -1053,7 +1051,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num stride,
     num offset,
   ) => debugRun(
-    () => _debugLabels.rlSetVertexAttribute(index, compSize, type, normalized, stride, offset),
+    () => 'rlSetVertexAttribute($index, $compSize, $type, $normalized, $stride, $offset)',
     () => _flat.rlSetVertexAttribute(
       index.toInt(),
       compSize.toInt(),
@@ -1069,7 +1067,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num index,
     num divisor,
   ) => debugRun(
-    () => _debugLabels.rlSetVertexAttributeDivisor(index, divisor),
+    () => 'rlSetVertexAttributeDivisor($index, $divisor)',
     () => _flat.rlSetVertexAttributeDivisor(
       index.toInt(),
       divisor.toInt(),
@@ -1082,7 +1080,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     Float32List value,
     RlShaderAttributeDataType attribType,
   ) => debugRun(
-    () => _debugLabels.rlSetVertexAttributeDefault(locIndex, value, attribType),
+    () => 'rlSetVertexAttributeDefault($locIndex, ${value.length}, ${attribType.name})',
     () => _flat.rlSetVertexAttributeDefault(
       locIndex.toInt(),
       Float32$.FromTypedList(value).cast(),
@@ -1096,7 +1094,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num offset,
     num count,
   ) => debugRun(
-    () => _debugLabels.rlDrawVertexArray(offset, count),
+    () => 'rlDrawVertexArray($offset, $count)',
     () => _flat.rlDrawVertexArray(
       offset.toInt(),
       count.toInt(),
@@ -1109,7 +1107,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num count,
     Uint16List buffer,
   ) => debugRun(
-    () => _debugLabels.rlDrawVertexArrayElements(offset, count, buffer),
+    () => 'rlDrawVertexArrayElements($offset, ${buffer.length})',
     () => _flat.rlDrawVertexArrayElements(
       offset.toInt(),
       count.toInt(),
@@ -1123,7 +1121,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num count,
     num instances,
   ) => debugRun(
-    () => _debugLabels.rlDrawVertexArrayInstanced(offset, count, instances),
+    () => 'rlDrawVertexArrayInstanced($offset, $count, $instances)',
     () => _flat.rlDrawVertexArrayInstanced(
       offset.toInt(),
       count.toInt(),
@@ -1138,7 +1136,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     Uint16List buffer,
     num instances,
   ) => debugRun(
-    () => _debugLabels.rlDrawVertexArrayElementsInstanced(offset, count, buffer, instances),
+    () => 'rlDrawVertexArrayElementsInstanced($offset, $count, ${buffer.length}, $instances)',
     () => _flat.rlDrawVertexArrayElementsInstanced(
       offset.toInt(),
       count.toInt(),
@@ -1155,7 +1153,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     PixelFormat format,
     num mipmapCount,
   ) => debugRun(
-    () => _debugLabels.rlLoadTexture(data, width, height, format, mipmapCount),
+    () => 'rlLoadTexture(${data?.length}, $width, $height, $format, $mipmapCount)',
     () => _flat.rlLoadTexture(
       data == null ? .nullptr() : Uint8$.FromTypedList(data).cast(),
       width.toInt(),
@@ -1171,7 +1169,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num height,
     bool useRenderBuffer,
   ) => debugRun(
-    () => _debugLabels.rlLoadTextureDepth(width, height, useRenderBuffer),
+    () => 'rlLoadTextureDepth($width, $height, $useRenderBuffer)',
     () => _flat.rlLoadTextureDepth(
       width.toInt(),
       height.toInt(),
@@ -1186,7 +1184,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     PixelFormat format,
     num mipmapCount,
   ) => debugRun(
-    () => _debugLabels.rlLoadTextureCubemap(data, size, format, mipmapCount),
+    () => 'rlLoadTextureCubemap(${data?.length}, $size, ${format.name}, $mipmapCount)',
     () => _flat.rlLoadTextureCubemap(
       data == null ? .nullptr() : Uint8$.FromTypedList(data).cast(),
       size.toInt(),
@@ -1205,7 +1203,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     PixelFormat format,
     Uint8List data,
   ) => debugRun(
-    () => _debugLabels.rlUpdateTexture(id, offsetX, offsetY, width, height, format, data),
+    () => 'rlUpdateTexture($id, $offsetX, $offsetY, $width, $height, ${format.name}, ${data.length})',
     () => _flat.rlUpdateTexture(
       id.toInt(),
       offsetX.toInt(),
@@ -1221,7 +1219,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   (int glInternalFormat, int glFormat, int glType) rlGetGlTextureFormats(
     PixelFormat format,
   ) => debugRun(
-    () => _debugLabels.rlGetGlTextureFormats(format),
+    () => 'rlGetGlTextureFormats(${format.name})',
     () {
       final glInternalFormat = UnsignedInt$.Ref1();
       final glFormat = UnsignedInt$.Ref2();
@@ -1240,7 +1238,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   String rlGetPixelFormatName(
     PixelFormat format,
   ) => debugRun(
-    () => _debugLabels.rlGetPixelFormatName(format),
+    () => 'rlGetPixelFormatName(${format.name})',
     () => _flat.rlGetPixelFormatName(
       format.value,
     ).toDartString(),
@@ -1250,7 +1248,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadTexture(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlUnloadTexture(id),
+    () => 'rlUnloadTexture($id)',
     () => _flat.rlUnloadTexture(
       id.toInt(),
     ),
@@ -1263,7 +1261,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num height,
     PixelFormat format,
   ) => debugRun(
-    () => _debugLabels.rlGenTextureMipmaps(id, width, height, format),
+    () => 'rlGenTextureMipmaps($id, $width, $height, ${format.name})',
     () {
       final mipmaps = Int$.Ref1();
       _flat.rlGenTextureMipmaps(
@@ -1284,7 +1282,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num height,
     PixelFormat format,
   ) => debugRun(
-    () => _debugLabels.rlReadTexturePixels(id, width, height, format),
+    () => 'rlReadTexturePixels($id, $width, $height, ${format.name})',
     () {
       final size = _coreDart.GetPixelDataSize(
         width.toInt(),
@@ -1310,7 +1308,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.rlReadScreenPixels(width, height),
+    () => 'rlReadScreenPixels($width, $height)',
     () {
       final pixelsPtr = _flat.rlReadScreenPixels(
         width.toInt(),
@@ -1326,7 +1324,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Load an empty framebuffer
   int rlLoadFramebuffer() => debugRun(
-    () => _debugLabels.rlLoadFramebuffer(),
+    () => 'rlLoadFramebuffer()',
     () => _flat.rlLoadFramebuffer(),
   );
 
@@ -1338,7 +1336,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     RlFramebufferAttachTextureType texType,
     num mipLevel,
   ) => debugRun(
-    () => _debugLabels.rlFramebufferAttach(fboId, texId, attachType, texType, mipLevel),
+    () => 'rlFramebufferAttach($fboId, $texId, ${attachType.name}, ${texType.name}, $mipLevel)',
     () => _flat.rlFramebufferAttach(
       fboId.toInt(),
       texId.toInt(),
@@ -1352,7 +1350,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   bool rlFramebufferComplete(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlFramebufferComplete(id),
+    () => 'rlFramebufferComplete($id)',
     () => _flat.rlFramebufferComplete(
       id.toInt(),
     ),
@@ -1362,7 +1360,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadFramebuffer(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlUnloadFramebuffer(id),
+    () => 'rlUnloadFramebuffer($id)',
     () => _flat.rlUnloadFramebuffer(
       id.toInt(),
     ),
@@ -1376,7 +1374,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num height,
     PixelFormat format,
   ) => debugRun(
-    () => _debugLabels.rlCopyFramebuffer(x, y, width, height, format),
+    () => 'rlCopyFramebuffer($x, $y, $width, $height, $format)',
     () {
       final size = _coreDart.GetPixelDataSize(width, height, format);
       if (size <= 0) {
@@ -1406,7 +1404,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num width,
     num height,
   ) => debugRun(
-    () => _debugLabels.rlResizeFramebuffer(width, height),
+    () => 'rlResizeFramebuffer($width, $height)',
     () => _flat.rlResizeFramebuffer(
       width.toInt(),
       height.toInt(),
@@ -1418,7 +1416,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     String code,
     RlShaderType type,
   ) => debugRun(
-    () => _debugLabels.rlLoadShader(code, type),
+    () => 'rlLoadShader(${code.length}, $type)',
     () => _flat.rlLoadShader(
       String$.ValueOrNull(code),
       type.value,
@@ -1430,7 +1428,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     String vsCode,
     String fsCode,
   ) => debugRun(
-    () => _debugLabels.rlLoadShaderProgram(vsCode, fsCode),
+    () => 'rlLoadShaderProgram($vsCode, $fsCode)',
     () => _flat.rlLoadShaderProgram(
       String$.ValueOrNull(vsCode),
       String$.ValueOrNull(fsCode),
@@ -1442,7 +1440,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num vsId,
     num fsId,
   ) => debugRun(
-    () => _debugLabels.rlLoadShaderProgramEx(vsId, fsId),
+    () => 'rlLoadShaderProgramEx($vsId, $fsId)',
     () => _flat.rlLoadShaderProgramEx(
       vsId.toInt(),
       fsId.toInt(),
@@ -1453,7 +1451,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   int rlLoadShaderProgramCompute(
     num csId,
   ) => debugRun(
-    () => _debugLabels.rlLoadShaderProgramCompute(csId),
+    () => 'rlLoadShaderProgramCompute($csId)',
     () => _flat.rlLoadShaderProgramCompute(
       csId.toInt(),
     ),
@@ -1463,7 +1461,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadShader(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlUnloadShader(id),
+    () => 'rlUnloadShader($id)',
     () => _flat.rlUnloadShader(
       id.toInt(),
     ),
@@ -1473,7 +1471,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadShaderProgram(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlUnloadShaderProgram(id),
+    () => 'rlUnloadShaderProgram($id)',
     () => _flat.rlUnloadShaderProgram(
       id.toInt(),
     ),
@@ -1484,7 +1482,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num shaderId,
     String uniformName,
   ) => debugRun(
-    () => _debugLabels.rlGetLocationUniform(shaderId, uniformName),
+    () => 'rlGetLocationUniform($shaderId, $uniformName)',
     () => _flat.rlGetLocationUniform(
       shaderId.toInt(),
       String$.ValueOrNull(uniformName),
@@ -1496,7 +1494,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num shaderId,
     String attribName,
   ) => debugRun(
-    () => _debugLabels.rlGetLocationAttrib(shaderId, attribName),
+    () => 'rlGetLocationAttrib($shaderId, $attribName)',
     () => _flat.rlGetLocationAttrib(
       shaderId.toInt(),
       String$.ValueOrNull(attribName),
@@ -1510,7 +1508,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     RlShaderUniformDataType uniformType,
     num count,
   ) => debugRun(
-    () => _debugLabels.rlSetUniform(locIndex, value, uniformType, count),
+    () => 'rlSetUniform($locIndex, ${value.lengthInBytes}, ${uniformType.name})',
     () {
       final XPtr ptr;
       switch (uniformType) {
@@ -1545,7 +1543,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num locIndex,
     Matrix mat,
   ) => debugRun(
-    () => _debugLabels.rlSetUniformMatrix(locIndex, mat),
+    () => 'rlSetUniformMatrix($locIndex, $mat)',
     () => _flat.rlSetUniformMatrix(
       locIndex.toInt(),
       mat,
@@ -1557,7 +1555,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num locIndex,
     List<Matrix> mat,
   ) => debugRun(
-    () => _debugLabels.rlSetUniformMatrices(locIndex, mat),
+    () => 'rlSetUniformMatrices($locIndex, mat: ${mat.length})',
     () => _flat.rlSetUniformMatrices(
       locIndex.toInt(),
       Matrix$.Array(mat),
@@ -1570,7 +1568,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num locIndex,
     num textureId,
   ) => debugRun(
-    () => _debugLabels.rlSetUniformSampler(locIndex, textureId),
+    () => 'rlSetUniformSampler($locIndex, $textureId)',
     () => _flat.rlSetUniformSampler(
       locIndex.toInt(),
       textureId.toInt(),
@@ -1582,7 +1580,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num id,
     List<int> locs,
   ) => debugRun(
-    () => _debugLabels.rlSetShader(id, locs),
+    () => 'rlSetShader($id, $locs)',
     () => _flat.rlSetShader(
       id.toInt(),
       Int$.Array(locs),
@@ -1595,7 +1593,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num groupY,
     num groupZ,
   ) => debugRun(
-    () => _debugLabels.rlComputeShaderDispatch(groupX, groupY, groupZ),
+    () => 'rlComputeShaderDispatch($groupX, $groupY, $groupZ)',
     () => _flat.rlComputeShaderDispatch(
       groupX.toInt(),
       groupY.toInt(),
@@ -1609,7 +1607,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     TypedDataList? data,
     RlUsageHint? usageHint,
   ) => debugRun(
-    () => _debugLabels.rlLoadShaderBuffer(size, data, usageHint),
+    () => 'rlLoadShaderBuffer($size, data: ${data?.lengthInBytes}, $usageHint)',
     () => _flat.rlLoadShaderBuffer(
       size.toInt(),
       data == null ? .nullptr() : TypedDataList$.Array(data),
@@ -1621,7 +1619,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlUnloadShaderBuffer(
     num ssboId,
   ) => debugRun(
-    () => _debugLabels.rlUnloadShaderBuffer(ssboId),
+    () => 'rlUnloadShaderBuffer($ssboId)',
     () => _flat.rlUnloadShaderBuffer(
       ssboId.toInt(),
     ),
@@ -1633,7 +1631,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     TypedDataList data,
     num offset,
   ) => debugRun(
-    () => _debugLabels.rlUpdateShaderBuffer(id, data, offset),
+    () => 'rlUpdateShaderBuffer($id, data: ${data.lengthInBytes}, $offset)',
     () => _flat.rlUpdateShaderBuffer(
       id.toInt(),
       TypedDataList$.Array(data),
@@ -1647,7 +1645,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num id,
     num index,
   ) => debugRun(
-    () => _debugLabels.rlBindShaderBuffer(id, index),
+    () => 'rlBindShaderBuffer($id, $index)',
     () => _flat.rlBindShaderBuffer(
       id.toInt(),
       index.toInt(),
@@ -1660,7 +1658,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num count,
     num offset,
   ) => debugRun(
-    () => _debugLabels.rlReadShaderBuffer(id, count, offset),
+    () => 'rlReadShaderBuffer($id, $count, $offset)',
     () {
       final values = Uint8$.Sized(count.toInt());
       _flat.rlReadShaderBuffer(
@@ -1681,7 +1679,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     num srcOffset,
     num count,
   ) => debugRun(
-    () => _debugLabels.rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count),
+    () => 'rlCopyShaderBuffer($destId, $srcId, $destOffset, $srcOffset, $count)',
     () => _flat.rlCopyShaderBuffer(
       destId.toInt(),
       srcId.toInt(),
@@ -1695,7 +1693,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   int rlGetShaderBufferSize(
     num id,
   ) => debugRun(
-    () => _debugLabels.rlGetShaderBufferSize(id),
+    () => 'rlGetShaderBufferSize($id)',
     () => _flat.rlGetShaderBufferSize(
       id.toInt(),
     ),
@@ -1708,7 +1706,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     PixelFormat format,
     bool readonly,
   ) => debugRun(
-    () => _debugLabels.rlBindImageTexture(id, index, format, readonly),
+    () => 'rlBindImageTexture($id, $index, ${format.name}, $readonly)',
     () => _flat.rlBindImageTexture(
       id.toInt(),
       index.toInt(),
@@ -1719,19 +1717,19 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Get internal modelview matrix
   Matrix rlGetMatrixModelview() => debugRun(
-    () => _debugLabels.rlGetMatrixModelview(),
+    () => 'rlGetMatrixModelview()',
     () => _flat.rlGetMatrixModelview(),
   );
 
   /// Get internal projection matrix
   Matrix rlGetMatrixProjection() => debugRun(
-    () => _debugLabels.rlGetMatrixProjection(),
+    () => 'rlGetMatrixProjection()',
     () => _flat.rlGetMatrixProjection(),
   );
 
   /// Get internal accumulated transform matrix
   Matrix rlGetMatrixTransform() => debugRun(
-    () => _debugLabels.rlGetMatrixTransform(),
+    () => 'rlGetMatrixTransform()',
     () => _flat.rlGetMatrixTransform(),
   );
 
@@ -1739,7 +1737,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   Matrix rlGetMatrixProjectionStereo(
     num eye,
   ) => debugRun(
-    () => _debugLabels.rlGetMatrixProjectionStereo(eye),
+    () => 'rlGetMatrixProjectionStereo($eye)',
     () => _flat.rlGetMatrixProjectionStereo(eye.toInt()),
   );
 
@@ -1747,7 +1745,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   Matrix rlGetMatrixViewOffsetStereo(
     num eye,
   ) => debugRun(
-    () => _debugLabels.rlGetMatrixViewOffsetStereo(eye),
+    () => 'rlGetMatrixViewOffsetStereo($eye)',
     () => _flat.rlGetMatrixViewOffsetStereo(eye.toInt()),
   );
 
@@ -1755,7 +1753,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetMatrixProjection(
     Matrix proj,
   ) => debugRun(
-    () => _debugLabels.rlSetMatrixProjection(proj),
+    () => 'rlSetMatrixProjection($proj)',
     () => _flat.rlSetMatrixProjection(
       proj,
     ),
@@ -1765,7 +1763,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
   void rlSetMatrixModelview(
     Matrix view,
   ) => debugRun(
-    () => _debugLabels.rlSetMatrixModelview(view),
+    () => 'rlSetMatrixModelview($view)',
     () => _flat.rlSetMatrixModelview(
       view,
     ),
@@ -1776,7 +1774,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     Matrix right,
     Matrix left,
   ) => debugRun(
-    () => _debugLabels.rlSetMatrixProjectionStereo(right, left),
+    () => 'rlSetMatrixProjectionStereo($right, $left)',
     () => _flat.rlSetMatrixProjectionStereo(
       right,
       left,
@@ -1788,7 +1786,7 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
     Matrix right,
     Matrix left,
   ) => debugRun(
-    () => _debugLabels.rlSetMatrixViewOffsetStereo(right, left),
+    () => 'rlSetMatrixViewOffsetStereo($right, $left)',
     () => _flat.rlSetMatrixViewOffsetStereo(
       right,
       left,
@@ -1797,13 +1795,13 @@ final class RaylibRlglDart<R extends RaylibBase> extends RaylibModule<R> with Ra
 
   /// Load and draw a cube
   void rlLoadDrawCube() => debugRun(
-    () => _debugLabels.rlLoadDrawCube(),
+    () => 'rlLoadDrawCube()',
     () => _flat.rlLoadDrawCube(),
   );
 
   /// Load and draw a quad
   void rlLoadDrawQuad() => debugRun(
-    () => _debugLabels.rlLoadDrawQuad(),
+    () => 'rlLoadDrawQuad()',
     () => _flat.rlLoadDrawQuad(),
   );
 }

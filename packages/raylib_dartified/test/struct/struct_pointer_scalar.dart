@@ -5,12 +5,12 @@ enum MyStructField with XFields {
   pointerScalar,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerScalar: XRawPtr(XInt()), // exactly 1 value
+      .pointerScalar: XPtrType(XInt()), // exactly 1 value
     }),
   );
 
@@ -23,8 +23,8 @@ class MyStruct extends XStruct<MyStruct> {
 
   MyStruct({
     super.op,
-    int pointerScalar = 0,
-  }) : _pointerScalar = pointerScalar;
+    this._pointerScalar = 0,
+  });
 
   @override
   MyStruct clone() => .new(op: op);
@@ -48,7 +48,7 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
   test("Pointer Scalar - after assignment", () {

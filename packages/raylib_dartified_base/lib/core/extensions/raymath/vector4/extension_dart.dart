@@ -3,21 +3,19 @@ part of '../../../raylib_dartified_base.dart';
 /// Exposes Raylib's vector math API as module-level functions by delegating
 /// to the corresponding [Vector4] methods/factories.
 /// Exists purely for Raylib API symmetry.
-class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
-
-  final _debugLabels = _RaylibVector4ExtDartDebugLabels();
+final class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
 
   RaylibVector4ExtDart(super.rl);
 
   /// See [Vector4.zero].
   Vector4 Vector4Zero() => debugRun(
-    () => _debugLabels.Vector4Zero(),
+    () => 'Vector4Zero()',
     () => .zero(),
   );
 
   /// See [Vector4.one].
   Vector4 Vector4One() => debugRun(
-    () => _debugLabels.Vector4One(),
+    () => 'Vector4One()',
     () => .one(),
   );
 
@@ -26,7 +24,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Add(v1, v2),
+    () => 'Vector4Add($v1, $v2)',
     () => v1.add(v2),
   );
 
@@ -35,7 +33,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v,
     double add,
   ) => debugRun(
-    () => _debugLabels.Vector4AddValue(v, add),
+    () => 'Vector4AddValue($v, $add)',
     () => v.addValue(add),
   );
 
@@ -44,7 +42,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Subtract(v1, v2),
+    () => 'Vector4Subtract($v1, $v2)',
     () => v1.sub(v2),
   );
 
@@ -53,7 +51,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v,
     double sub,
   ) => debugRun(
-    () => _debugLabels.Vector4SubtractValue(v, sub),
+    () => 'Vector4SubtractValue($v, $sub)',
     () => v.subValue(sub),
   );
 
@@ -61,7 +59,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double Vector4Length(
     Vector4 v,
   ) => debugRun(
-    () => _debugLabels.Vector4Length(v),
+    () => 'Vector4Length($v)',
     () => v.length,
   );
 
@@ -69,7 +67,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   double Vector4LengthSqr(
     Vector4 v,
   ) => debugRun(
-    () => _debugLabels.Vector4LengthSqr(v),
+    () => 'Vector4LengthSqr($v)',
     () => v.lengthSqr,
   );
 
@@ -78,7 +76,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4DotProduct(v1, v2),
+    () => 'Vector4DotProduct($v1, $v2)',
     () => v1.dotProduct(v2),
   );
 
@@ -87,7 +85,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Distance(v1, v2),
+    () => 'Vector4Distance($v1, $v2)',
     () => v1.distance(v2),
   );
 
@@ -96,7 +94,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4DistanceSqr(v1, v2),
+    () => 'Vector4DistanceSqr($v1, $v2)',
     () => v1.distanceSqr(v2),
   );
 
@@ -105,7 +103,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v,
     double scale,
   ) => debugRun(
-    () => _debugLabels.Vector4Scale(v, scale),
+    () => 'Vector4Scale($v, $scale)',
     () => v.scale(scale),
   );
 
@@ -114,7 +112,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Multiply(v1, v2),
+    () => 'Vector4Multiply($v1, $v2)',
     () => v1.mul(v2),
   );
 
@@ -122,7 +120,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector4 Vector4Negate(
     Vector4 v,
   ) => debugRun(
-    () => _debugLabels.Vector4Negate(v),
+    () => 'Vector4Negate($v)',
     () => v.negate(),
   );
 
@@ -131,7 +129,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Divide(v1, v2),
+    () => 'Vector4Divide($v1, $v2)',
     () => v1.div(v2),
   );
 
@@ -139,7 +137,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector4 Vector4Normalize(
     Vector4 v,
   ) => debugRun(
-    () => _debugLabels.Vector4Normalize(v),
+    () => 'Vector4Normalize($v)',
     () => v.normalize(),
   );
 
@@ -148,7 +146,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Min(v1, v2),
+    () => 'Vector4Min($v1, $v2)',
     () => v1.min(v2),
   );
 
@@ -157,7 +155,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v1,
     Vector4 v2,
   ) => debugRun(
-    () => _debugLabels.Vector4Max(v1, v2),
+    () => 'Vector4Max($v1, $v2)',
     () => v1.max(v2),
   );
 
@@ -167,7 +165,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 v2,
     double amount,
   ) => debugRun(
-    () => _debugLabels.Vector4Lerp(v1, v2, amount),
+    () => 'Vector4Lerp($v1, $v2, $amount)',
     () => v1.lerp(v2, amount),
   );
 
@@ -177,7 +175,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 target,
     double maxDistance,
   ) => debugRun(
-    () => _debugLabels.Vector4MoveTowards(v, target, maxDistance),
+    () => 'Vector4MoveTowards($v, $target, $maxDistance)',
     () => v.moveTowards(target, maxDistance),
   );
 
@@ -185,7 +183,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
   Vector4 Vector4Invert(
     Vector4 v,
   ) => debugRun(
-    () => _debugLabels.Vector4Invert(v),
+    () => 'Vector4Invert($v)',
     () => v.invert(),
   );
 
@@ -194,7 +192,7 @@ class RaylibVector4ExtDart<R extends RaylibBase> extends RaylibModule<R> {
     Vector4 p,
     Vector4 q,
   ) => debugRun(
-    () => _debugLabels.Vector4Equals(p, q),
+    () => 'Vector4Equals($p, $q)',
     () => p.equals(q),
   );
 }

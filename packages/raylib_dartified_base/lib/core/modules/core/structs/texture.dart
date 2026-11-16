@@ -9,7 +9,7 @@ enum TextureField with XFields {
 }
 
 /// Texture, tex data stored in GPU memory (VRAM)
-class Texture extends XStruct<Texture> {
+final class Texture extends XStruct<Texture> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,7 +21,7 @@ class Texture extends XStruct<Texture> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Texture> struct = .create(
+  static final XStructDef<Texture> struct = .create(
     factory: Texture.new,
     layout: .aligned<TextureField>({
       .id:      XUnsignedInt(), // OpenGL texture id
@@ -81,17 +81,12 @@ class Texture extends XStruct<Texture> {
 
   Texture({
     super.op,
-    int id = 0,
-    int width = 0,
-    int height = 0,
-    int mipmaps = 0,
-    PixelFormat format = .PIXELFORMAT_NONE,
-  }) :
-    _id = id,
-    _width = width,
-    _height = height,
-    _mipmaps = mipmaps,
-    _format = format;
+    this._id = 0,
+    this._width = 0,
+    this._height = 0,
+    this._mipmaps = 0,
+    this._format = .PIXELFORMAT_NONE,
+  });
 
   factory Texture.zero() => .new();
 

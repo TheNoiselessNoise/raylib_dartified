@@ -1,6 +1,6 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class Grid2DPosition<T extends App<T>, E extends Entity<T>> {
+final class Grid2DPosition<T extends App<T>, E extends Entity<T>> {
   final int x;
   final int y;
   final E entity;

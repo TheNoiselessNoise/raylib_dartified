@@ -1,11 +1,11 @@
 // Run it: dart run test_dev_debug.dart
 import '_base.dart';
 
-class MyEvent extends Event<G> {
+final class MyEvent extends Event<G> {
   MyEvent(super.app);
 }
 
-class RectEntity extends Entity<G> {
+final class RectEntity extends Entity<G> {
   static final double radius = 32;
 
   RectEntity(super.app, int i) {
@@ -22,7 +22,7 @@ class RectEntity extends Entity<G> {
   }
 }
 
-class TestDevDebugScene extends DrawScene<G> {
+final class TestDevDebugScene extends DrawScene<G> {
   TestDevDebugScene(super.app) {
     for (int i = 1; i <= 5; i++) {
       addEntity(RectEntity(app, i));
@@ -37,7 +37,7 @@ class TestDevDebugScene extends DrawScene<G> {
   }
 }
 
-class SecondScene extends DrawScene<G> {
+final class SecondScene extends DrawScene<G> {
   SecondScene(super.app);
 
   @override
@@ -50,7 +50,7 @@ class SecondScene extends DrawScene<G> {
 
 typedef G = TestDevDebugApp;
 
-class TestDevDebugApp extends ExampleRaylibApp<G> {
+final class TestDevDebugApp extends ExampleRaylibApp<G> {
   late DebugAppSystem<G> debugSystem;
 
   TestDevDebugApp(super.backend);

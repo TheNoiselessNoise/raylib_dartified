@@ -43,9 +43,7 @@ class CBoundsWrap<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CBoundsWrap<T> createInstance() => .new(app,
-    area: area.copy(),
-  );
+  CBoundsWrap<T> createInstance() => .new(app);
 
   // state
 

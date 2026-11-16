@@ -5,22 +5,22 @@ import 'package:test/test.dart';
 bool isBound(XStruct s) => s.op != null;
 
 void sentinel<D extends XStruct<D>>(XStructPtr<D> p)
-  => p.fillBytes(0xAB, XStructTypes.of<D>().byteSize);
+  => p.fillBytes(0xAB, XStructDefinitions.of<D>().byteSize);
 
 D? Function(XStructPtr<D> ptr) fnPopulates<D extends XStruct<D>>(Map<String, dynamic> values) => (XStructPtr<D> ptr) {
-  XStructTypes.of<D>().poke(ptr, values);
+  XStructDefinitions.of<D>().poke(ptr, values);
   return null as D?;
 };
 
 D Function(XStructPtr<D> ptr) fnReturns<D extends XStruct<D>>(Map<String, dynamic> values) => (ptr) {
   final alloc = XTemp.instance.structAlloc<D>();
   final scratch = alloc.AtUnique(key: 'fnReturns');
-  XStructTypes.of<D>().poke(scratch, values);
+  XStructDefinitions.of<D>().poke(scratch, values);
   return scratch.snapshot;
 };
 
 Map<String, dynamic> fieldsOf<D extends XStruct<D>>(D s) {
-  final t = XStructTypes.of<D>();
+  final t = XStructDefinitions.of<D>();
   final alloc = XTemp.instance.structAlloc<D>();
   final op = s.op;
   if (op != null) return t.peek(op);        // bound: native is the truth
@@ -31,7 +31,7 @@ Map<String, dynamic> fieldsOf<D extends XStruct<D>>(D s) {
 }
 
 XStructPtr<D> allocWith<D extends XStruct<D>>(Map<String, dynamic> values, {bool? bind}) {
-  final t = XStructTypes.of<D>();
+  final t = XStructDefinitions.of<D>();
   final ptr = t.allocator.Allocate(unique: true, bind: bind);
   t.poke(ptr, values);
   return ptr;

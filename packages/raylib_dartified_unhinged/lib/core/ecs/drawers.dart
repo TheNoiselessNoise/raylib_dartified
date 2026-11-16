@@ -26,7 +26,7 @@ enum TextDrawerVAlign { top, middle, bottom }
 ///   draw.text.at(20, 20).text('HP: ', .WHITE).text('$hp', .RED).end();
 /// Single string:
 ///   draw.text.print(20, 20, 'Hello', .RED);
-class TextDrawer<T extends App<T>> extends BaseDrawer<T> {
+final class TextDrawer<T extends App<T>> extends BaseDrawer<T> {
   TextDrawer(super.app);
 
   static const int _defaultSize = 20;
@@ -207,7 +207,7 @@ class TextDrawer<T extends App<T>> extends BaseDrawer<T> {
   }
 }
 
-class ComponentDrawer<T extends App<T>> extends BaseDrawer<T> {
+final class ComponentDrawer<T extends App<T>> extends BaseDrawer<T> {
   ComponentDrawer(super.app);
 
   void _drawComponentTree(
@@ -276,7 +276,7 @@ class ComponentDrawer<T extends App<T>> extends BaseDrawer<T> {
   }
 }
 
-class DigitalStyle {
+final class DigitalStyle {
   /// Segment thickness as a fraction of the digit width.
   final double segmentThickness;
 
@@ -303,7 +303,7 @@ class DigitalStyle {
   static const THIN = DigitalStyle(segmentThickness: 0.08, roundedEnds: true, roundness: 0.6);
 }
 
-class DigitalDrawer<T extends App<T>> extends BaseDrawer<T> {
+final class DigitalDrawer<T extends App<T>> extends BaseDrawer<T> {
   DigitalDrawer(super.app);
 
   // Segment bitmask indices: a=0, b=1, c=2, d=3, e=4, f=5, g=6
@@ -482,7 +482,7 @@ class DigitalDrawer<T extends App<T>> extends BaseDrawer<T> {
   }
 }
 
-class Drawers<T extends App<T>> with HasAppAccess<T> {
+final class Drawers<T extends App<T>> with HasAppAccess<T> {
   @override
   final T app;
 

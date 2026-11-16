@@ -1,7 +1,7 @@
 ## 6.0.4
 
 - update pub.dev example
-- cleanup
+- adapt to `xffi`
 
 ## 6.0.3
 

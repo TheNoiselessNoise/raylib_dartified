@@ -14,7 +14,7 @@ typedef G = MyApp;
 ========================= */
 
 /// Fired when the active scene should advance to the next one.
-class SwitchSceneEvent extends Event<G> {
+final class SwitchSceneEvent extends Event<G> {
   SwitchSceneEvent(super.app);
 }
 
@@ -23,7 +23,7 @@ class SwitchSceneEvent extends Event<G> {
 ========================= */
 
 /// A pulsing ball that moves around the screen, bouncing off of edges.
-class BallEntity extends Entity<G> {
+final class BallEntity extends Entity<G> {
   BallEntity(super.app) {
     add(CTransform(app, position: sceneBounds.position.divideBy(2)));
     add(CVelocity(app, velocity: .vec2(-100, 100)));
@@ -36,7 +36,7 @@ class BallEntity extends Entity<G> {
 /// A short-lived particle spawned by [BallEntityFollowingMouse].
 /// Drifts downward with a random horizontal offset and removes itself
 /// when it leaves the screen.
-class ParticleEntity extends Entity<G> {
+final class ParticleEntity extends Entity<G> {
   ParticleEntity(super.app) {
     add(CTransform(app));
     add(CCircleCollider(app, radius: 8, debugColor: .PINK, debugDraw: true));
@@ -50,7 +50,7 @@ class ParticleEntity extends Entity<G> {
 
 /// A pulsing ball that follows the mouse cursor and continuously
 /// emits [ParticleEntity] particles from its position.
-class BallEntityFollowingMouse extends Entity<G> {
+final class BallEntityFollowingMouse extends Entity<G> {
   final double radius = 32;
 
   BallEntityFollowingMouse(super.app) {
@@ -74,7 +74,7 @@ class BallEntityFollowingMouse extends Entity<G> {
 
 /// The first scene. Shows a bouncing ball, a mouse-following ball,
 /// and a button that switches to the next scene on double-click.
-class FirstScene extends FWidgetScene<G> {
+final class FirstScene extends FWidgetScene<G> {
   FirstScene(super.app);
 
   @override
@@ -107,7 +107,7 @@ class FirstScene extends FWidgetScene<G> {
 
 /// The second scene. Automatically switches back to the first scene
 /// after [_switchAfter] seconds.
-class SecondScene extends DrawScene<G> {
+final class SecondScene extends DrawScene<G> {
   SecondScene(super.app);
 
   static const _switchAfter = 5.0;
@@ -143,7 +143,7 @@ class SecondScene extends DrawScene<G> {
 ========================= */
 
 /// The application.
-class MyApp extends App<G> {
+final class MyApp extends App<G> {
   MyApp(super.backend);
 
   @override
@@ -163,9 +163,9 @@ class MyApp extends App<G> {
 
 /// Raylib-specific entry point. Provides the concrete [Raylib] instance
 /// to [MyApp] while keeping the app itself backend-agnostic.
-class MyAppRaylib extends UnhingedRaylibApp<G> {
+final class MyAppRaylib extends UnhingedRaylibApp<G> {
   @override
-  G create(RaylibBackend backend) => G(backend);
+  G create(backend) => G(backend);
 }
 
 void main() => runRaylib(

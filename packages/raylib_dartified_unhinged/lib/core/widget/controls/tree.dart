@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FTree<T extends App<T>> extends FWidgetLeaf<T> {
+final class FTree<T extends App<T>> extends FWidgetLeaf<T> {
   double indent;
   final List<FTreeNode<T>> nodes;
 
@@ -60,7 +60,7 @@ class FTree<T extends App<T>> extends FWidgetLeaf<T> {
   }
 }
 
-class FTreeNode<T extends App<T>> extends FWidgetLeaf<T> {
+final class FTreeNode<T extends App<T>> extends FWidgetLeaf<T> {
   bool expanded;
   bool selected;
   final FWidget<T> header;

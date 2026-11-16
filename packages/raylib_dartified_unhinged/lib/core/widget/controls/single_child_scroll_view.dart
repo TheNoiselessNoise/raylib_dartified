@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FSingleChildScrollView<T extends App<T>> extends FWidgetLeaf<T> {
+final class FSingleChildScrollView<T extends App<T>> extends FWidgetLeaf<T> {
   bool scrollVertical;
   bool scrollHorizontal;
 

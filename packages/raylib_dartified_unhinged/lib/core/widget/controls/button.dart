@@ -13,7 +13,7 @@ enum FButtonVariant {
   success,
 }
 
-class FButtonThemeColors {
+final class FButtonThemeColors {
   final Color bg;
   final Color fg;
   final Color border;
@@ -25,7 +25,7 @@ class FButtonThemeColors {
   });
 }
 
-class FButtonTheme<T extends App<T>> {
+final class FButtonTheme<T extends App<T>> {
   final Color bg;
   final Color bgHovered;
   final Color bgClicked;
@@ -126,7 +126,7 @@ class FButtonTheme<T extends App<T>> {
   }
 }
 
-class _FButtonVariantPalette {
+final class _FButtonVariantPalette {
   final Color solid;
   final Color solidHover;
   final Color solidActive;
@@ -166,7 +166,7 @@ Map<FButtonVariant, _FButtonVariantPalette> get _fButtonVariantColors => {
   ),
 };
 
-class FButton<T extends App<T>> extends FWidgetLeaf<T> with
+final class FButton<T extends App<T>> extends FWidgetLeaf<T> with
   
   IsWidgetClickable<T, FButton<T>>,
   IsWidgetDisableable<T, FButton<T>>

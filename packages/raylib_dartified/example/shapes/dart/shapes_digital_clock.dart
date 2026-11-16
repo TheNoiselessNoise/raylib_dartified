@@ -18,7 +18,7 @@ extension Binary on int {
   }
 }
 
-class ClockHand {
+final class ClockHand {
   int value;
 
   double angle;
@@ -35,7 +35,7 @@ class ClockHand {
   });
 }
 
-class Clock {
+final class Clock {
   ClockHand second;
   ClockHand minute;
   ClockHand hour;

@@ -10,7 +10,7 @@ const int screenHeight = 450;
 const int MAX_SPOTS = 3;
 const int MAX_STARS = 400;
 
-class Spot {
+final class Spot {
   Vector2 position;
   Vector2 speed;
   double inner;
@@ -34,7 +34,7 @@ class Spot {
     speed = speed ?? .zero();
 }
 
-class Star {
+final class Star {
   Vector2 position;
   Vector2 speed;
 

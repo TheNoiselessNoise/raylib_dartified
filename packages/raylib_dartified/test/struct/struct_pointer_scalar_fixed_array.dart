@@ -5,12 +5,12 @@ enum MyStructField with XFields {
   pointerScalarFixedArray,
 }
 
-class MyStruct extends XStruct<MyStruct> {
+final class MyStruct extends XStruct<MyStruct> {
 
-  static final XStructType<MyStruct> struct = .create(
+  static final XStructDef<MyStruct> struct = .create(
     factory: MyStruct.new,
     layout: .aligned<MyStructField>({
-      .pointerScalarFixedArray: XRawPtr(XArray(XInt(), 4)),
+      .pointerScalarFixedArray: XPtrType(XArray(XInt(), 4)),
     }),
   );
 
@@ -48,7 +48,7 @@ class MyStruct extends XStruct<MyStruct> {
 void main() {
   setUpAll(() {
     findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
-    XStructTypes.register(MyStruct.struct);
+    XStructDefinitions.register(MyStruct.struct);
   });
 
   test("Pointer Scalar Array - after assignment", () {

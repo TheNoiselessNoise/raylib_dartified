@@ -10,7 +10,7 @@ const double GRAVITY = 400;
 const double PLAYER_JUMP_SPD = 350.0;
 const double PLAYER_HOR_SPD = 200.0;
 
-class Player {
+final class Player {
   Vector2 position;
   double speed;
   bool canJump;
@@ -23,7 +23,7 @@ class Player {
     position = position ?? .zero();
 }
 
-class EnvElement {
+final class EnvElement {
   Rectangle rect;
   bool blocking;
   Color color;

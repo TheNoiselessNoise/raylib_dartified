@@ -9,7 +9,7 @@ enum WaveField with XFields {
 }
 
 /// Wave, audio wave data
-class Wave extends XStruct<Wave> {
+final class Wave extends XStruct<Wave> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,14 +21,14 @@ class Wave extends XStruct<Wave> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Wave> struct = .create(
+  static final XStructDef<Wave> struct = .create(
     factory: Wave.new,
     layout: .aligned<WaveField>({
       .frameCount: XUnsignedInt(), // Total number of frames (considering channels)
       .sampleRate: XUnsignedInt(), // Frequency (samples per second)
       .sampleSize: XUnsignedInt(), // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
       .channels:   XUnsignedInt(), // Number of channels (1-mono, 2-stereo, ...)
-      .data:       XRawPtr(XVoid()), // Buffer data pointer
+      .data:       XPtrType(XVoid()), // Buffer data pointer
     }),
   );
 
@@ -149,17 +149,12 @@ class Wave extends XStruct<Wave> {
 
   Wave({
     super.op,
-    int frameCount = 0,
-    int sampleRate = 0,
-    int sampleSize = 8, // NOTE: we can't have it as `0` due to `BASE_dummyData`
-    int channels = 0,
+    this._frameCount = 0,
+    this._sampleRate = 0,
+    this._sampleSize = 8, // NOTE: we can't have it as `0` due to `BASE_dummyData`
+    this._channels = 0,
     ByteBuffer? data,
-  }) :
-    _frameCount = frameCount,
-    _sampleRate = sampleRate,
-    _sampleSize = sampleSize,
-    _channels = channels
-  {
+  }) {
     _isNew = false;
     _dataBuffer = data ?? BASE_dummyData(sampleSize, waveLength);
   }

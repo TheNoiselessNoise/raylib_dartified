@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified.dart';
 
-class RaylibQuaternionExt extends RaylibModule<Raylib> {
+final class RaylibQuaternionExt extends RaylibModule<Raylib> {
   RaylibQuaternionExt(super.rl);
 
   RaylibLookup get _lookup => rl.lookup<RaylibCore>();

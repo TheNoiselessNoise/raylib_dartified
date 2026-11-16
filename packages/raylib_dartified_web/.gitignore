@@ -30,8 +30,3 @@ doc/api/
 
 # editors
 .vscode/
-
-# raylib_dartified project related
-
-# some unimportant bash files
-*.sh

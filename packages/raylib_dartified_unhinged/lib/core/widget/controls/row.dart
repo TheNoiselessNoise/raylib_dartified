@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class FRow<T extends App<T>> extends FWidgetLeaf<T> {
+final class FRow<T extends App<T>> extends FWidgetLeaf<T> {
   double gap;
   FRowAlignment alignment;
 

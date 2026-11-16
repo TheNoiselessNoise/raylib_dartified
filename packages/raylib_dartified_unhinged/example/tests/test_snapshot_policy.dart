@@ -1,7 +1,7 @@
 // Run it: dart run test_snapshot_policy.dart
 import '_base.dart';
 
-class Comp1 extends Comp<G> {
+final class Comp1 extends Comp<G> {
   Comp1(super.app);
 
   // NOTE: required for correctly returning appropriate type `Comp1`
@@ -11,14 +11,14 @@ class Comp1 extends Comp<G> {
 
 // NOTE: custom component needs custom snapshot, even if empty
 //       for proper "snapshotting"
-class Comp1Snapshot extends CompSnapshot<G, Comp1> {
+final class Comp1Snapshot extends CompSnapshot<G, Comp1> {
   Comp1Snapshot(super.sourceId);
 
   @override
   Comp1 createInstance(G app) => .new(app);
 }
 
-class Comp2 extends Comp<G> {
+final class Comp2 extends Comp<G> {
   Comp2(super.app);
 
   // NOTE: required for correctly returning appropriate type `Comp2`
@@ -28,14 +28,14 @@ class Comp2 extends Comp<G> {
 
 // NOTE: custom component needs custom snapshot, even if empty
 //       for proper "snapshotting"
-class Comp2Snapshot extends CompSnapshot<G, Comp2> {
+final class Comp2Snapshot extends CompSnapshot<G, Comp2> {
   Comp2Snapshot(super.sourceId);
 
   @override
   Comp2 createInstance(G app) => .new(app);
 }
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   MyEntity(super.app) { reset(); }
 
   void reset() {
@@ -61,7 +61,7 @@ extension on SnapshotMissingPolicy {
   };
 }
 
-class TestSnapshotPolicyScene extends DrawScene<G> {
+final class TestSnapshotPolicyScene extends DrawScene<G> {
   late MyEntity origEntity;
 
   TestSnapshotPolicyScene(super.app);
@@ -183,7 +183,7 @@ class TestSnapshotPolicyScene extends DrawScene<G> {
 
 typedef G = TestSnapshotPolicyApp;
 
-class TestSnapshotPolicyApp extends ExampleRaylibApp<G> {
+final class TestSnapshotPolicyApp extends ExampleRaylibApp<G> {
   TestSnapshotPolicyApp(super.backend);
 
   @override

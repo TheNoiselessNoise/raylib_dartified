@@ -7,7 +7,7 @@ typedef G = TestRenderLayerApp;
 
 final _random = math.Random();
 
-class CustomRenderLayer extends RenderLayer {
+final class CustomRenderLayer extends RenderLayer {
   final Color color;
 
   CustomRenderLayer(super.name, super.order, this.color);
@@ -24,7 +24,7 @@ final _allLayers = <CustomRenderLayer>[
   .new('overlay', 5, .PURPLE),
 ];
 
-class LayerTestEntity extends Entity<G> {
+final class LayerTestEntity extends Entity<G> {
   final int testId;
 
   double get areaLeft => 350.0;
@@ -45,7 +45,7 @@ class LayerTestEntity extends Entity<G> {
   }
 }
 
-class CLayerTestVisual extends Comp<G> {
+final class CLayerTestVisual extends Comp<G> {
   CLayerTestVisual(super.app);
 
   double _time = 0;
@@ -65,7 +65,7 @@ class CLayerTestVisual extends Comp<G> {
   }
 }
 
-class TestRenderLayerScene extends DrawScene<G> {
+final class TestRenderLayerScene extends DrawScene<G> {
   TestRenderLayerScene(super.app);
 
   int _nextId = 0;
@@ -310,7 +310,7 @@ class TestRenderLayerScene extends DrawScene<G> {
   }
 }
 
-class TestRenderLayerApp extends ExampleRaylibApp<G> {
+final class TestRenderLayerApp extends ExampleRaylibApp<G> {
   TestRenderLayerApp(super.backend);
 
   @override

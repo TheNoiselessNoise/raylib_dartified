@@ -1,6 +1,6 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class InputSystem<T extends App<T>> extends AppSystem<T> {
+final class InputSystem<T extends App<T>> extends AppSystem<T> {
   InputSystem(super.app);
 
   Map<String, int> _mouseMap = {};

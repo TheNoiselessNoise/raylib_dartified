@@ -1,6 +1,6 @@
 part of '../../../../raylib_dartified_web.dart';
 
-class RaylibQuaternionExtFlatWeb extends RaylibQuaternionFlatExt<Raylib> {
+final class RaylibQuaternionExtFlatWeb extends RaylibQuaternionFlatExt<Raylib> {
   RaylibQuaternionExtFlatWeb(super.rl);
 
   RaylibQuaternionExt get _wasm => rl.module();

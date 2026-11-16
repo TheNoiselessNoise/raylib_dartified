@@ -4,7 +4,7 @@ import '../mocks.dart';
 
 typedef G = TestApp;
 
-class TestApp extends TestingApp<G> {
+final class TestApp extends TestingApp<G> {
   TestApp(super.backend, {
     super.populateDefaults,
   });
@@ -15,13 +15,13 @@ class TestApp extends TestingApp<G> {
 
 TestApp createTestApp() => .new(HeadlessBackend())..init();
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   final int value;
 
   MyEntity(super.app, this.value);
 }
 
-class MyClonePolicy extends ClonePolicy<G> {
+final class MyClonePolicy extends ClonePolicy<G> {
   @override
   bool allow(CloneKind kind, {ECSBase<G>? owner, Object? payload})
     => true; // allow everything, even identity

@@ -1,7 +1,7 @@
 // Run it: dart run test_animations.dart
 import '_base.dart';
 
-class MyEntity extends Entity<G> {
+final class MyEntity extends Entity<G> {
   double entityField;
 
   late CAnimation<G> animation;
@@ -32,7 +32,7 @@ extension on HasAppAccess<G> {
     => testScene.messagesWidget.setState(() => testScene.messagesWidget.addMessage(message, isValid: isValid));
 }
 
-class TestStateMachineScene extends DrawScene<G> {
+final class TestStateMachineScene extends DrawScene<G> {
   late MyEntity myEntity;
   late ExampleMessagesWidget<G> messagesWidget;
 
@@ -58,7 +58,7 @@ class TestStateMachineScene extends DrawScene<G> {
 
 typedef G = TestStateMachineApp;
 
-class TestStateMachineApp extends ExampleRaylibApp<G> {
+final class TestStateMachineApp extends ExampleRaylibApp<G> {
   TestStateMachineApp(super.backend);
 
   @override

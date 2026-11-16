@@ -9,12 +9,12 @@ const int screenHeight = 450;
 const int STR_MAX_SIZE = 10000;
 const int TURTLE_STACK_MAX_SIZE = 50;
 
-class TurtleState {
+final class TurtleState {
   Vector2 origin = .zero();
   double angle = 0;
 }
 
-class PenroseLSystem {
+final class PenroseLSystem {
   int steps = 0;
   String production = '';
   String ruleW = '';

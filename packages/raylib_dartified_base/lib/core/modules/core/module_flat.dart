@@ -2,7 +2,7 @@ part of '../../raylib_dartified_base.dart';
 
 /// Backend-agnostic contract for the Raylib Core module.
 ///
-/// Concrete platform implementations mix in or extend this to provide
+/// Concrete platform implementations extend this to provide
 /// the full API surface across different backends.
 abstract class RaylibCoreFlat<R extends RaylibBase> extends RaylibModule<R> {
 
@@ -2462,7 +2462,7 @@ abstract class RaylibCoreFlat<R extends RaylibBase> extends RaylibModule<R> {
   /// Generate image font atlas using chars info
   Image GenImageFontAtlas(
     XStructPtr<GlyphInfo> glyphs,
-    XPtr<XRawPtr<XRawStruct>> glyphRecs, // RectangleD
+    XPtr<XPtrType<XStructType>> glyphRecs, // RectangleD
     int glyphCount,
     int fontSize,
     int padding,
@@ -2641,14 +2641,14 @@ abstract class RaylibCoreFlat<R extends RaylibBase> extends RaylibModule<R> {
   );
 
   /// Load text as separate lines ('\n')
-  XPtr<XRawPtr<XChar>> LoadTextLines(
+  XPtr<XPtrType<XChar>> LoadTextLines(
     XPtr<XChar> text,
     XPtr<XInt> count,
   );
 
   /// Unload text lines
   void UnloadTextLines(
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int lineCount,
   );
 
@@ -2741,13 +2741,13 @@ abstract class RaylibCoreFlat<R extends RaylibBase> extends RaylibModule<R> {
 
   /// Join text strings with delimiter ([delimiter] is expected to be length of 1)
   XPtr<XChar> TextJoin(
-    XPtr<XRawPtr<XChar>> textList,
+    XPtr<XPtrType<XChar>> textList,
     int count,
     XPtr<XChar> delimiter,
   );
 
   /// Split text into multiple strings
-  XPtr<XRawPtr<XChar>> TextSplit(
+  XPtr<XPtrType<XChar>> TextSplit(
     XPtr<XChar> text,
     int delimiter,
     XPtr<XInt> count,

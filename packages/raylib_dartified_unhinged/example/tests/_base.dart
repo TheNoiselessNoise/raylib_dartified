@@ -14,22 +14,22 @@ abstract class ExampleRaylibApp<T extends ExampleRaylibApp<T>> extends App<T> {
   }
 }
 
-class ExampleRaylibBridge<T extends ExampleRaylibApp<T>> extends UnhingedRaylibApp<ExampleRaylibApp<T>> {
+final class _ExampleRaylibBridge<T extends ExampleRaylibApp<T>> extends UnhingedRaylibApp<ExampleRaylibApp<T>> {
   final T Function(UnhingedBackend backend) constructor;
 
-  ExampleRaylibBridge(this.constructor);
+  _ExampleRaylibBridge(this.constructor);
 
   @override
   T create(UnhingedBackend backend) => constructor(backend);
 }
 
 void runExample<T extends ExampleRaylibApp<T>>(T Function(UnhingedBackend backend) constructor) => runRaylib(
-  ExampleRaylibBridge<T>(constructor),
+  _ExampleRaylibBridge<T>(constructor),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
   silent: true,
 );
 
-class Message {
+final class Message {
   final DateTime date;
   final String message;
   final bool? isValid;
@@ -43,7 +43,7 @@ class Message {
   ].join('');
 }
 
-class ExampleMessagesWidget<T extends ExampleRaylibApp<T>> extends FWidget<T> {
+final class ExampleMessagesWidget<T extends ExampleRaylibApp<T>> extends FWidget<T> {
   ExampleMessagesWidget(super.app);
 
   final List<Message> messages = [];

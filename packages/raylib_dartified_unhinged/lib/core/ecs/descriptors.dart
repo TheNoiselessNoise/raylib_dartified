@@ -164,7 +164,7 @@ final class IntFieldDescriptor extends NumberFieldDescriptor<int> {
   );
 }
 
-class ObjectFieldDescriptor<X> extends FieldDescriptor {
+final class ObjectFieldDescriptor<X> extends FieldDescriptor {
   final X? Function() getter;
   final void Function(X?)? setter;
 
@@ -220,7 +220,7 @@ final class ColorFieldDescriptor extends ObjectFieldDescriptor<Color> {
   );
 }
 
-class ObjectDescriptor<T extends App<T>> {
+final class ObjectDescriptor<T extends App<T>> {
   final Map<String, FieldDescriptor> fields = {};
 
   FieldDescriptor getField<X>(String name) {

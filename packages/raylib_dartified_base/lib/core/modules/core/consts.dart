@@ -1,7 +1,7 @@
 part of '../../raylib_dartified_base.dart';
 
 /// Dart-side mirror of compile-time constants.
-class RaylibConstants {
+final class RaylibConstants {
   
   /// `RAYLIB_VERSION_MAJOR`
   static int RAYLIB_VERSION_MAJOR = 6;
@@ -90,7 +90,7 @@ class RaylibConstants {
 
 /// Pure Dart implementations of Raylib's inline/math utility functions,
 /// shared across backends to avoid duplicating logic that doesn't touch native memory.
-class RaylibFunctions {
+final class RaylibFunctions {
 
   /// Clamps [value] to the range `[min, max]`.
   static double Clamp(num value, num min, num max) {

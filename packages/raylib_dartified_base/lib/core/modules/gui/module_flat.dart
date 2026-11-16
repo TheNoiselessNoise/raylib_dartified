@@ -122,7 +122,7 @@ mixin RaylibGuiModuleExtras<R extends RaylibBase> on RaylibModule<R> {
 
 /// Backend-agnostic contract for the Raygui module.
 ///
-/// Concrete platform implementations mix in or extend this to provide
+/// Concrete platform implementations extend this to provide
 /// the full API surface across different backends.
 abstract class RaylibGuiFlat<R extends RaylibBase> extends RaylibModule<R> with RaylibGuiModuleExtras<R> {
 
@@ -220,13 +220,13 @@ abstract class RaylibGuiFlat<R extends RaylibBase> extends RaylibModule<R> with 
   XPtr<XUnsignedInt> GuiGetIcons();
 
   /// Load raygui icons file (.rgi) into internal icons data
-  XPtr<XRawPtr<XChar>> GuiLoadIcons(
+  XPtr<XPtrType<XChar>> GuiLoadIcons(
     XPtr<XChar> fileName,
     bool loadIconsName,
   );
 
   /// Load raygui icons file (.rgi) from memory into internal icons data
-  XPtr<XRawPtr<XChar>> GuiLoadIconsFromMemory(
+  XPtr<XPtrType<XChar>> GuiLoadIconsFromMemory(
     XPtr<XUnsignedChar> fileData,
     int dataSize,
     bool loadIconsName,
@@ -439,7 +439,7 @@ abstract class RaylibGuiFlat<R extends RaylibBase> extends RaylibModule<R> with 
   /// List View control, using text entries list and returning focus entry
   int GuiListViewEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> scrollIndex,
     XPtr<XInt> active,
@@ -457,7 +457,7 @@ abstract class RaylibGuiFlat<R extends RaylibBase> extends RaylibModule<R> with 
   /// Tab Bar control, using text entries list and returning focus entry
   int GuiTabBarEx(
     Rectangle bounds,
-    XPtr<XRawPtr<XChar>> text,
+    XPtr<XPtrType<XChar>> text,
     int count,
     XPtr<XInt> hscroll,
     XPtr<XInt> active,

@@ -40,7 +40,7 @@ abstract class MsfGifFileWriteCallback extends MsfGifFileWriteCallbackBase {
     => _MsfGifFileWriteCallback(f, name: name);
 }
 
-class _MsfGifFileWriteCallback extends MsfGifFileWriteCallback {
+final class _MsfGifFileWriteCallback extends MsfGifFileWriteCallback {
   final MsfGifFileWriteFunction _f;
 
   _MsfGifFileWriteCallback(this._f, {String? name}) : super(name);

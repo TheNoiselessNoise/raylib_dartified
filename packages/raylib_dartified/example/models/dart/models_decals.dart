@@ -10,7 +10,7 @@ const int screenHeight = 450;
 const double FLT_MAX = 340282346638528859811704183484516925440.0;
 const int MAX_DECALS = 256;
 
-class MeshBuilder {
+final class MeshBuilder {
   int vertexCount = 0;
   int vertexCapacity = 0;
   List<Vector3> vertices = [];

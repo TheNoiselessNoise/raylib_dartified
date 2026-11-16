@@ -7,7 +7,7 @@ enum RenderTextureField with XFields {
 }
 
 /// RenderTexture, fbo for texture rendering
-class RenderTexture extends XStruct<RenderTexture> {
+final class RenderTexture extends XStruct<RenderTexture> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -19,12 +19,12 @@ class RenderTexture extends XStruct<RenderTexture> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<RenderTexture> struct = .createValue(
+  static final XStructDef<RenderTexture> struct = .createValue(
     factory: RenderTexture.new,
     layout: .aligned<RenderTextureField>({
       .id:      XUnsignedInt(), // OpenGL framebuffer object id
-      .texture: XRawStruct(Texture.struct), // Color buffer attachment texture
-      .depth:   XRawStruct(Texture.struct), // Depth buffer attachment texture
+      .texture: XStructType(Texture.struct), // Color buffer attachment texture
+      .depth:   XStructType(Texture.struct), // Depth buffer attachment texture
     }),
   );
 
@@ -63,11 +63,10 @@ class RenderTexture extends XStruct<RenderTexture> {
 
   RenderTexture({
     super.op,
-    int id = 0,
+    this._id = 0,
     Texture? texture,
     Texture? depth,
   }) :
-    _id = id,
     _texture = texture ?? .new(),
     _depth = depth ?? .new();
 

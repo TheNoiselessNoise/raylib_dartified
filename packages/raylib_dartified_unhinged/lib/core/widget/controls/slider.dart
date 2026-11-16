@@ -11,7 +11,7 @@ enum FSliderVariant {
   success,
 }
 
-class FSliderTheme {
+final class FSliderTheme {
   final Color track;
   final Color trackHovered;
   final Color fill;
@@ -44,7 +44,7 @@ class FSliderTheme {
   }
 }
 
-class _FSliderVariantPalette {
+final class _FSliderVariantPalette {
   final Color solid;
   final Color solidHover;
   final Color solidActive;
@@ -283,7 +283,7 @@ abstract class FSlider<T extends App<T>, X extends num> extends FWidgetLeaf<T> w
   }
 }
 
-class FDoubleSlider<T extends App<T>> extends FSlider<T, double> {
+final class FDoubleSlider<T extends App<T>> extends FSlider<T, double> {
   FDoubleSlider(super.app, {
     super.key,
     super.position,
@@ -305,7 +305,7 @@ class FDoubleSlider<T extends App<T>> extends FSlider<T, double> {
   FDoubleSlider<T> createInstance() => .new(app);
 }
 
-class FIntSlider<T extends App<T>> extends FSlider<T, int> {
+final class FIntSlider<T extends App<T>> extends FSlider<T, int> {
   FIntSlider(super.app, {
     super.key,
     super.position,

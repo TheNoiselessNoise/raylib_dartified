@@ -8,7 +8,7 @@ enum ColorField with XFields {
 }
 
 /// Color, 4 components, R8G8B8A8 (32bit)
-class Color extends XStruct<Color> {
+final class Color extends XStruct<Color> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -20,7 +20,7 @@ class Color extends XStruct<Color> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Color> struct = .createValue(
+  static final XStructDef<Color> struct = .createValue(
     factory: Color.new,
     layout: .aligned<ColorField>({
       .r: XUnsignedChar(), // Color red value
@@ -80,15 +80,11 @@ class Color extends XStruct<Color> {
 
   Color({
     super.op,
-    int r = 0,
-    int g = 0,
-    int b = 0,
-    int a = 0,
-  }) :
-    _r = r,
-    _g = g,
-    _b = b,
-    _a = a;
+    this._r = 0,
+    this._g = 0,
+    this._b = 0,
+    this._a = 0,
+  });
 
   factory Color.zero() => .new();
 

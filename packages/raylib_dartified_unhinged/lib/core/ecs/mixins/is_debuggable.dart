@@ -2,7 +2,7 @@ part of '../../raylib_dartified_unhinged.dart';
 
 enum ECSDebugLevel { simple, v, vv, vvv }
 
-class ECSDebugMessageOptions {
+final class ECSDebugMessageOptions {
   bool showTime = true;
   bool showTimeDate = true;
   bool showSource = true;
@@ -10,7 +10,7 @@ class ECSDebugMessageOptions {
   bool colorize = true;
 }
 
-class ECSDebugMessage {
+final class ECSDebugMessage {
   final String text;
   final ECSDebugLevel level;
   final DateTime time;

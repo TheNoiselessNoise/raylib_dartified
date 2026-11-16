@@ -1,6 +1,6 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class FWidgetClickState {
+final class FWidgetClickState {
   int framesHeld = 0;
   double secondsHeld = 0;
   double secondsUntilHeld = 0.5;

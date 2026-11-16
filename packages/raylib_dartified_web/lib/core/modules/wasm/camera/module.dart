@@ -1,6 +1,6 @@
 part of '../../../raylib_dartified_web.dart';
 
-class RaylibCamera extends RaylibModuleWasm {
+final class RaylibCamera extends RaylibModuleWasm {
   /// Returns the forward vector (normalized) of [camera].
   late final XF2<void> GetCameraForward;
   /// Returns the up vector (normalized) of [camera].

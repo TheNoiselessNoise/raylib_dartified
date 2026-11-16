@@ -3,7 +3,7 @@ import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
 
 typedef G = MinimalSnapshotExampleApp;
 
-class MyScene extends Scene<G> {
+final class MyScene extends Scene<G> {
   int intValue = 0;
   double doubleValue = 0;
 
@@ -28,7 +28,7 @@ class MyScene extends Scene<G> {
 }
 
 // NOTE: [SNAPSHOT], snapshot instance
-class MySceneSnapshot extends SceneSnapshot<G, MyScene> {
+final class MySceneSnapshot extends SceneSnapshot<G, MyScene> {
   late int intValue;
   late double doubleValue;
 
@@ -39,7 +39,7 @@ class MySceneSnapshot extends SceneSnapshot<G, MyScene> {
   MyScene createInstance(G app) => .new(app);
 }
 
-class MinimalSnapshotExampleApp extends App<G> {
+final class MinimalSnapshotExampleApp extends App<G> {
   MinimalSnapshotExampleApp(super.backend) {
     addScene(MyScene(app));
   }

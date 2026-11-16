@@ -4,7 +4,7 @@
 import 'package:raylib_dartified_base/raylib_dartified_base.dart';
 import 'package:raylib_dartified_base/abbr/dart.dart';
 
-class BackendAgnosticRaylibExample<R extends RaylibBase> extends RaylibAppBase<R> {
+final class BackendAgnosticRaylibExample<R extends RaylibBase> extends RaylibAppBase<R> {
   final width = 800, height = 450;
 
   @override

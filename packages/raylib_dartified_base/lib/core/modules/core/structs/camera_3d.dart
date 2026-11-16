@@ -9,7 +9,7 @@ enum Camera3DField with XFields {
 }
 
 /// Camera, defines position/orientation in 3d space
-class Camera3D extends XStruct<Camera3D> {
+final class Camera3D extends XStruct<Camera3D> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -21,12 +21,12 @@ class Camera3D extends XStruct<Camera3D> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<Camera3D> struct = .createValue(
+  static final XStructDef<Camera3D> struct = .createValue(
     factory: Camera3D.new,
     layout: .aligned<Camera3DField>({
-      .position:   XRawStruct(Vector3.struct), // Camera position
-      .target:     XRawStruct(Vector3.struct), // Camera target it looks-at
-      .up:         XRawStruct(Vector3.struct), // Camera up vector (rotation over its axis)
+      .position:   XStructType(Vector3.struct), // Camera position
+      .target:     XStructType(Vector3.struct), // Camera target it looks-at
+      .up:         XStructType(Vector3.struct), // Camera up vector (rotation over its axis)
       .fovy:       XFloat(), // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane height in world units in orthographic
       .projection: XInt(), // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
     }),
@@ -84,14 +84,12 @@ class Camera3D extends XStruct<Camera3D> {
     Vector3? position,
     Vector3? target,
     Vector3? up,
-    double fovy = 45,
-    CameraProjection projection = .CAMERA_PERSPECTIVE,
+    this._fovy = 45,
+    this._projection = .CAMERA_PERSPECTIVE,
   }) :
     _position = position ?? .zero(),
     _target = target ?? .zero(),
-    _up = up ?? .zero(),
-    _fovy = fovy,
-    _projection = projection;
+    _up = up ?? .zero();
 
   factory Camera3D.zero() => .new();
 

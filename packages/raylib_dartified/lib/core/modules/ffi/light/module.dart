@@ -5,7 +5,7 @@ part of '../../../raylib_dartified.dart';
 //  That's why we need to literally re-implement these two functions.
 
 // NOTE: we don't use rl.Temp on purpose to not make the logs *suspicious*
-class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Raylib> {
+final class RaylibLight extends RaylibModule<Raylib> with RaylibLightModuleExtras<Raylib> {
   final List<Pointer<LightC>> _lights = [];
 
   final Pointer<Int8> _int8Ptr = ffi.calloc<Int8>();

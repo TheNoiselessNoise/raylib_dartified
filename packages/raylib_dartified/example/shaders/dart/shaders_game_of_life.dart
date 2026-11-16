@@ -12,7 +12,7 @@ const int MODE_RUN = 0;
 const int MODE_PAUSE = 1;
 const int MODE_DRAW = 2;
 
-class PresetPattern {
+final class PresetPattern {
   String name;
   Vector2 position;
 

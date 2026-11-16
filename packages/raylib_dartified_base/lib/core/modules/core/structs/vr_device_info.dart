@@ -13,7 +13,7 @@ enum VrDeviceInfoField with XFields {
 }
 
 /// VrDeviceInfo, Head-Mounted-Display device parameters
-class VrDeviceInfo extends XStruct<VrDeviceInfo> {
+final class VrDeviceInfo extends XStruct<VrDeviceInfo> {
 
   //   ░██████   ░██████████░█████████  ░██     ░██   ░██████  ░██████████
   //  ░██   ░██      ░██    ░██     ░██ ░██     ░██  ░██   ░██     ░██    
@@ -25,7 +25,7 @@ class VrDeviceInfo extends XStruct<VrDeviceInfo> {
 
   /// Describes the raw memory layout, construction, and pointer representation
   /// of this struct type.
-  static final XStructType<VrDeviceInfo> struct = .create(
+  static final XStructDef<VrDeviceInfo> struct = .create(
     factory: VrDeviceInfo.new,
     layout: .aligned<VrDeviceInfoField>({
       .hResolution:            XInt(), // Horizontal resolution in pixels
@@ -128,24 +128,16 @@ class VrDeviceInfo extends XStruct<VrDeviceInfo> {
 
   VrDeviceInfo({
     super.op,
-    int hResolution = 0,
-    int vResolution = 0,
-    double hScreenSize = 0,
-    double vScreenSize = 0,
-    double eyeToScreenDistance = 0,
-    double lensSeparationDistance = 0,
-    double interpupillaryDistance = 0,
+    this._hResolution = 0,
+    this._vResolution = 0,
+    this._hScreenSize = 0,
+    this._vScreenSize = 0,
+    this._eyeToScreenDistance = 0,
+    this._lensSeparationDistance = 0,
+    this._interpupillaryDistance = 0,
     List<double>? lensDistortionValues,
     List<double>? chromaAbCorrection,
-  }) :
-    _hResolution = hResolution,
-    _vResolution = vResolution,
-    _hScreenSize = hScreenSize,
-    _vScreenSize = vScreenSize,
-    _eyeToScreenDistance = eyeToScreenDistance,
-    _lensSeparationDistance = lensSeparationDistance,
-    _interpupillaryDistance = interpupillaryDistance
-  {
+  }) {
     _lensDistortionValues = field_lensDistortionValues.live(() => op,
       lensDistortionValues ?? .filled(field_lensDistortionValues.codec.type.count, 0)
     );

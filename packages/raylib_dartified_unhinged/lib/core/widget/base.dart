@@ -1,6 +1,6 @@
 part of '../raylib_dartified_unhinged.dart';
 
-class FAnimationController {
+final class FAnimationController {
   double value = 0;
   double duration;
   bool _running = false;
@@ -35,7 +35,7 @@ class FAnimationController {
   }
 }
 
-class FConstraints {
+final class FConstraints {
   final double minWidth, maxWidth, minHeight, maxHeight;
 
   const FConstraints({
@@ -71,13 +71,13 @@ class FConstraints {
   String toString() => 'Constraints(minw=$minWidth, maxw=$maxWidth, minh=$minHeight, maxh=$maxHeight)';
 }
 
-class FWidgetComp<T extends App<T>> extends Comp<T> {
+final class FWidgetComp<T extends App<T>> extends Comp<T> {
   FWidgetComp(super.app);
 
   FWidget<T> get widget => entity as FWidget<T>;
 }
 
-class CWidgetMouseInteractable<T extends App<T>> extends FWidgetComp<T> {
+final class CWidgetMouseInteractable<T extends App<T>> extends FWidgetComp<T> {
 
   bool hovered = false;
   bool clicked = false;
@@ -116,12 +116,7 @@ class CWidgetMouseInteractable<T extends App<T>> extends FWidgetComp<T> {
   });
 
   @override
-  CWidgetMouseInteractable<T> createInstance() {
-    final copy = CWidgetMouseInteractable<T>(app);
-    copy.hovered = hovered;
-    copy.clicked = clicked;
-    return copy;
-  }
+  CWidgetMouseInteractable<T> createInstance() => .new(app);
 }
 
 abstract class FWidgetLeaf<T extends App<T>> extends FWidget<T> {

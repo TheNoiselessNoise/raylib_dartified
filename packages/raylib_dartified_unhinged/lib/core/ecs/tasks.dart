@@ -26,7 +26,7 @@ abstract class Task<T extends App<T>> extends ECSBase<T> with
   void _reset() => _isCanceled = false;
 }
 
-class DelayTask<T extends App<T>> extends Task<T> {
+final class DelayTask<T extends App<T>> extends Task<T> {
   double remaining;
   final void Function(DelayTask<T> self) action;
 
@@ -46,7 +46,7 @@ class DelayTask<T extends App<T>> extends Task<T> {
   }
 }
 
-class DurationTask<T extends App<T>> extends Task<T> {
+final class DurationTask<T extends App<T>> extends Task<T> {
   double remaining;
   final void Function(DurationTask<T> self, double dt) actionUpdate;
   final void Function(DurationTask<T> self)? actionFinish;
@@ -71,7 +71,7 @@ class DurationTask<T extends App<T>> extends Task<T> {
   }
 }
 
-class IntervalTask<T extends App<T>> extends Task<T> {
+final class IntervalTask<T extends App<T>> extends Task<T> {
   double? remaining; // null = runs until stopped externally
   final double interval; // seconds; ignored if frameInterval is set
   final int? frameInterval;

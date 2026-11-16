@@ -1,6 +1,6 @@
 part of '../../raylib_dartified_unhinged.dart';
 
-class RaylibRenderBackend extends RenderBackend {
+final class RaylibRenderBackend extends RenderBackend {
   final Raylib rl;
 
   RaylibRenderBackend(this.rl);
@@ -119,7 +119,7 @@ class RaylibRenderBackend extends RenderBackend {
   }
 }
 
-class RaylibInputBackend extends InputBackend {
+final class RaylibInputBackend extends InputBackend {
   final Raylib rl;
 
   RaylibInputBackend(this.rl);
@@ -159,7 +159,7 @@ class RaylibInputBackend extends InputBackend {
     => _core.IsMouseButtonDown(button);
 }
 
-class RaylibCollisionBackend extends CollisionBackend {
+final class RaylibCollisionBackend extends CollisionBackend {
   final Raylib rl;
 
   RaylibCollisionBackend(this.rl);
@@ -183,7 +183,7 @@ class RaylibCollisionBackend extends CollisionBackend {
     => _core.CheckCollisionPointRec(point, rec);
 }
 
-class RaylibAssetManager extends AssetManager {
+final class RaylibAssetManager extends AssetManager {
   final Raylib rl;
 
   RaylibAssetManager(this.rl);
@@ -223,7 +223,7 @@ class RaylibAssetManager extends AssetManager {
   }
 }
 
-class RaylibBackend extends UnhingedBackend {
+final class RaylibBackend extends UnhingedBackend {
   final Raylib rl;
 
   RaylibBackend(this.rl, {

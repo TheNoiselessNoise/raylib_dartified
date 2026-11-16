@@ -9,7 +9,7 @@ separate base class for each. What you return from `build()` decides which
 one you're doing, per call.
 
 ```dart
-class CounterWidget extends FWidget<G> {
+final class CounterWidget extends FWidget<G> {
   int count = 0;
 
   CounterWidget(super.app);
@@ -40,7 +40,7 @@ To do that, hold a reference to the child and return *that same instance*
 from `build()` instead of constructing a new one:
 
 ```dart
-class ParentWidget extends FWidget<G> {
+final class ParentWidget extends FWidget<G> {
   late CounterWidget counter;
 
   ParentWidget(super.app) {

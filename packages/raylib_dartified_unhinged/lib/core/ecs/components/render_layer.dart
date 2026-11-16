@@ -38,9 +38,7 @@ class CRenderLayer<T extends App<T>> extends Comp<T> {
   // clone
 
   @override
-  CRenderLayer<T> createInstance() => .new(app,
-    layer: layer,
-  );
+  CRenderLayer<T> createInstance() => .new(app);
 
   // state
 
