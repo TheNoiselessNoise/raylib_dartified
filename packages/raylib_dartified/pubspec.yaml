@@ -1,6 +1,6 @@
 name: raylib_dartified
 description: Cross-platform, Dart-native Raylib bindings with native FFI and WebAssembly backends.
-version: 6.0.5
+version: 6.0.6
 repository: https://github.com/TheNoiselessNoise/raylib_dartified
 
 platforms:
@@ -21,7 +21,7 @@ dependencies:
   meta: ^1.17.0
   xffi_core: ^1.0.2
   xffi_native: ^1.0.1
-  xffi_web: ^1.0.0
+  xffi_web: ^1.0.1
   xffi_web_emscripten: ^1.0.0
   ffi: ^2.2.0
   args: ^2.7.0

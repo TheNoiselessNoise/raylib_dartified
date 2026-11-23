@@ -557,7 +557,7 @@ packages:
       path: "../xffi/packages/xffi_web"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1"
   xffi_web_emscripten:
     dependency: "direct overridden"
     description:
