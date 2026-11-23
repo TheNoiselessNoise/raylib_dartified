@@ -1,31 +1,30 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_textured_cube.c
-// Run it: dart run models_textured_cube.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Texture texture;
 
-  InitWindow(screenWidth, screenHeight, "models_textured_cube");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_textured_cube");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(0, 10, 10),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(0, 10, 10),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final texture = LoadTexture("../resources/cubicmap_atlas.png");
-
-  while (!WindowShouldClose())
-  {
+    texture = LoadTexture("../resources/cubicmap_atlas.png");
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -44,12 +43,12 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);
 
 void DrawCubeTexture(
   Texture texture,

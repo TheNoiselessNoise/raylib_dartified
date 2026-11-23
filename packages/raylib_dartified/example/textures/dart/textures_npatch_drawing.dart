@@ -1,55 +1,63 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_npatch_drawing.c
-// Run it: dart run textures_npatch_drawing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture nPatchTexture;
+late Vector2 mousePosition;
+late Vector2 origin;
+late Rectangle dstRec1;
+late Rectangle dstRec2;
+late Rectangle dstRecH;
+late Rectangle dstRecV;
+late NPatchInfo ninePatchInfo1;
+late NPatchInfo ninePatchInfo2;
+late NPatchInfo h3PatchInfo;
+late NPatchInfo v3PatchInfo;
 
-  InitWindow(screenWidth, screenHeight, "textures_npatch_drawing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_npatch_drawing");
+    SetTargetFPS(60);
 
-  final nPatchTexture = LoadTexture("../resources/ninepatch_button.png");
+    nPatchTexture = LoadTexture("../resources/ninepatch_button.png");
 
-  Vector2 mousePosition = .zero();
-  final Vector2 origin = .zero();
+    mousePosition = .zero();
+    origin = .zero();
 
-  final Rectangle dstRec1 = .rect(480.0, 160.0, 32.0, 32.0);
-  final Rectangle dstRec2 = .rect(160.0, 160.0, 32.0, 32.0);
-  final Rectangle dstRecH = .rect(160.0, 93.0, 32.0, 32.0);
-  final Rectangle dstRecV = .rect(92.0, 160.0, 32.0, 32.0);
+    dstRec1 = .rect(480.0, 160.0, 32.0, 32.0);
+    dstRec2 = .rect(160.0, 160.0, 32.0, 32.0);
+    dstRecH = .rect(160.0, 93.0, 32.0, 32.0);
+    dstRecV = .rect(92.0, 160.0, 32.0, 32.0);
 
-  final NPatchInfo ninePatchInfo1 = .new(
-    source: .rect(0.0, 0.0, 64.0, 64.0),
-    left: 12, top: 40, right: 12, bottom: 12,
-    layout: .NPATCH_NINE_PATCH
-  );
+    ninePatchInfo1 = .new(
+      source: .rect(0.0, 0.0, 64.0, 64.0),
+      left: 12, top: 40, right: 12, bottom: 12,
+      layout: .NPATCH_NINE_PATCH
+    );
 
-  final NPatchInfo ninePatchInfo2 = .new(
-    source: .rect(0.0, 128.0, 64.0, 64.0),
-    left: 16, top: 16, right: 16, bottom: 16,
-    layout: .NPATCH_NINE_PATCH
-  );
+    ninePatchInfo2 = .new(
+      source: .rect(0.0, 128.0, 64.0, 64.0),
+      left: 16, top: 16, right: 16, bottom: 16,
+      layout: .NPATCH_NINE_PATCH
+    );
 
-  final NPatchInfo h3PatchInfo = .new(
-    source: .rect(0.0,  64.0, 64.0, 64.0),
-    left: 8, top: 8, right: 8, bottom: 8,
-    layout: .NPATCH_THREE_PATCH_HORIZONTAL
-  );
+    h3PatchInfo = .new(
+      source: .rect(0.0,  64.0, 64.0, 64.0),
+      left: 8, top: 8, right: 8, bottom: 8,
+      layout: .NPATCH_THREE_PATCH_HORIZONTAL
+    );
 
-  final NPatchInfo v3PatchInfo = .new(
-    source: .rect(0.0, 192.0, 64.0, 64.0),
-    left: 6, top: 6, right: 6, bottom: 6,
-    layout: .NPATCH_THREE_PATCH_VERTICAL
-  );
-
-  while (!WindowShouldClose())
-  {
+    v3PatchInfo = .new(
+      source: .rect(0.0, 192.0, 64.0, 64.0),
+      left: 6, top: 6, right: 6, bottom: 6,
+      layout: .NPATCH_THREE_PATCH_VERTICAL
+    );
+  },
+  loop: (_) async {
     mousePosition = GetMousePosition();
 
     dstRec1.width = mousePosition.x - dstRec1.x;
@@ -90,9 +98,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(nPatchTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(nPatchTexture);
+    CloseWindow();
+  },
+);

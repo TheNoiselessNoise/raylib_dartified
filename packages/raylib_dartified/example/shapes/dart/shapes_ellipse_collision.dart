@@ -1,31 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_ellipse_collision.c
-// Run it: dart run shapes_ellipse_collision.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 ellipseACenter;
+double ellipseARx = 120.0;
+double ellipseARy = 70.0;
+late Vector2 ellipseBCenter;
+double ellipseBRx = 90.0;
+double ellipseBRy = 140.0;
+int controlled = 0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_ellipse_collision");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_ellipse_collision");
+    SetTargetFPS(60);
 
-  Vector2 ellipseACenter = .vec2(screenWidth/4, screenHeight/2);
-  double ellipseARx = 120.0;
-  double ellipseARy = 70.0;
-
-  Vector2 ellipseBCenter = .vec2(screenWidth*3/4, screenHeight/2);
-  double ellipseBRx = 90.0;
-  double ellipseBRy = 140.0;
-
-  int controlled = 0;
-
-  while (!WindowShouldClose())
-  {
+    ellipseACenter = .vec2(screenWidth/4, screenHeight/2);
+    ellipseBCenter = .vec2(screenWidth*3/4, screenHeight/2);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_A)) controlled = 0;
     if (IsKeyPressed(.KEY_B)) controlled = 1;
 
@@ -66,10 +63,11 @@ void main()
       DrawText("Press [A] or [B] to switch control", 20, 20, 20, .GRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 bool CheckCollisionPointEllipse(Vector2 point, Vector2 center, double rx, double ry)
 {

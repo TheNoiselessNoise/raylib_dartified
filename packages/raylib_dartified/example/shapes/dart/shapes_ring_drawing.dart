@@ -1,35 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_ring_drawing.c
-// Run it: dart run shapes_ring_drawing.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 center;
+double innerRadius = 80.0;
+double outerRadius = 190.0;
+double startAngle = 0.0;
+double endAngle = 360.0;
+double segments = 0.0;
+bool drawRing = true;
+bool drawRingLines = false;
+bool drawCircleLines = false;
 
-  InitWindow(screenWidth, screenHeight, "shapes_ring_drawing");
-  SetTargetFPS(60);
-
-  final Vector2 center = .vec2(
-    (GetScreenWidth() - 300)/2.0, GetScreenHeight()/2.0
-  );
-
-  double innerRadius = 80.0;
-  double outerRadius = 190.0;
-
-  double startAngle = 0.0;
-  double endAngle = 360.0;
-  double segments = 0.0;
-
-  bool drawRing = true;
-  bool drawRingLines = false;
-  bool drawCircleLines = false;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_ring_drawing");
+    SetTargetFPS(60);
+    
+    center = .vec2((GetScreenWidth() - 300)/2.0, GetScreenHeight()/2.0);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -64,58 +57,82 @@ void main()
         Fade(.BLACK, 0.4)
       );
 
-      (_, startAngle) = GuiSliderBar(
-        .rect(600, 40, 120, 20),
-        "StartAngle",
-        startAngle.f2,
-        startAngle, -450, 450
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(600, 40, 120, 20),
+          "StartAngle",
+          startAngle.f2,
+          startAngle, -450, 450
+        );
+        startAngle = newValue;
+      }
 
-      (_, endAngle) = GuiSliderBar(
-        .rect(600, 70, 120, 20),
-        "EndAngle",
-        endAngle.f2,
-        endAngle, -450, 450
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(600, 70, 120, 20),
+          "EndAngle",
+          endAngle.f2,
+          endAngle, -450, 450
+        );
+        endAngle = newValue;
+      }
 
-      (_, innerRadius) = GuiSliderBar(
-        .rect(600, 140, 120, 20),
-        "InnerRadius",
-        innerRadius.f2,
-        innerRadius, 0, 100
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(600, 140, 120, 20),
+          "InnerRadius",
+          innerRadius.f2,
+          innerRadius, 0, 100
+        );
+        innerRadius = newValue;
+      }
       
-      (_, outerRadius) = GuiSliderBar(
-        .rect(600, 170, 120, 20),
-        "OuterRadius",
-        outerRadius.f2,
-        outerRadius, 0, 200
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(600, 170, 120, 20),
+          "OuterRadius",
+          outerRadius.f2,
+          outerRadius, 0, 200
+        );
+        outerRadius = newValue;
+      }
 
-      (_, segments) = GuiSliderBar(
-        .rect(600, 240, 120, 20),
-        "Segments",
-        segments.f2,
-        segments, 0, 100
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(600, 240, 120, 20),
+          "Segments",
+          segments.f2,
+          segments, 0, 100
+        );
+        segments = newValue;
+      }
 
-      (_, drawRing) = GuiCheckBox(
-        .rect(600, 320, 20, 20),
-        "Draw Ring",
-        drawRing
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(600, 320, 20, 20),
+          "Draw Ring",
+          drawRing
+        );
+        drawRing = newValue;
+      }
 
-      (_, drawRingLines) = GuiCheckBox(
-        .rect(600, 350, 20, 20),
-        "Draw RingLines",
-        drawRingLines
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(600, 350, 20, 20),
+          "Draw RingLines",
+          drawRingLines
+        );
+        drawRingLines = newValue;
+      }
 
-      (_, drawCircleLines) = GuiCheckBox(
-        .rect(600, 380, 20, 20),
-        "Draw CircleLines",
-        drawCircleLines
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(600, 380, 20, 20),
+          "Draw CircleLines",
+          drawCircleLines
+        );
+        drawCircleLines = newValue;
+      }
 
       int minSegments = ((endAngle - startAngle)/90).ceil();
       DrawText(
@@ -126,7 +143,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

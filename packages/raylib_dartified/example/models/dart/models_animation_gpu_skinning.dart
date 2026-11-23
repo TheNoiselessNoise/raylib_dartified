@@ -1,48 +1,47 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_animation_gpu_skinning.c
-// Run it: dart run models_animation_gpu_skinning.dart
 // WARNING: expects resources from the raylib source
 
 // WARNING: This example uses GPU skinning.
 // It requires raylib to be built with `SUPPORT_GPU_SKINNING=1` (NOT the raylib default).
 // And [RaylibConfig.SUPPORT_GPU_SKINNING] to be set to `true` before loading Raylib.
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Shader skinningShader;
+late List<ModelAnimation> anims;
+int animIndex = 0;
+int animCurrentFrame = 0;
 
-  InitWindow(screenWidth, screenHeight, "models_animation_gpu_skinning");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_animation_gpu_skinning");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(5, 5, 5),
-    target: .vec3(0, 1, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(5, 5, 5),
+      target: .vec3(0, 1, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel('../resources/models/gltf/greenman.glb');
+    model = LoadModel('../resources/models/gltf/greenman.glb');
 
-  final skinningShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.fs",
-  );
+    skinningShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.fs",
+    );
 
-  model.materials[1].shader = skinningShader;
-    
-  final anims = LoadModelAnimations("../resources/models/gltf/greenman.glb");
-
-  int animIndex = 0;
-  int animCurrentFrame = 0;
-
-  while (!WindowShouldClose())
-  {
+    model.materials[1].shader = skinningShader;
+      
+    anims = LoadModelAnimations("../resources/models/gltf/greenman.glb");
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsKeyPressed(.KEY_RIGHT)) 
@@ -75,11 +74,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModelAnimations(anims);
-  UnloadModel(model);
-  UnloadShader(skinningShader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModelAnimations(anims);
+    UnloadModel(model);
+    UnloadShader(skinningShader);
+    CloseWindow();
+  },
+);

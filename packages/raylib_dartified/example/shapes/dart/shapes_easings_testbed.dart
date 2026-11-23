@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_easings_testbed.c
-// Run it: dart run shapes_easings_testbed.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -40,7 +39,7 @@ enum EasingTypes {
   EASE_ELASTIC_IN,
   EASE_ELASTIC_OUT,
   EASE_ELASTIC_IN_OUT,
-  EASING_NONE
+  EASING_NONE,
   ;
 
   EasingTypes get next => .fromIndex(index + 1);
@@ -48,61 +47,59 @@ enum EasingTypes {
   static EasingTypes fromIndex(int index) => values[index % values.length];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+Map<EasingTypes, double Function(num, num, num, num)> Easings = {
+  .EASE_LINEAR_NONE: EaseLinearNone,
+  .EASE_LINEAR_IN: EaseLinearIn,
+  .EASE_LINEAR_OUT: EaseLinearOut,
+  .EASE_LINEAR_IN_OUT: EaseLinearInOut,
+  .EASE_SINE_IN: EaseSineIn,
+  .EASE_SINE_OUT: EaseSineOut,
+  .EASE_SINE_IN_OUT: EaseSineInOut,
+  .EASE_CIRC_IN: EaseCircIn,
+  .EASE_CIRC_OUT: EaseCircOut,
+  .EASE_CIRC_IN_OUT: EaseCircInOut,
+  .EASE_CUBIC_IN: EaseCubicIn,
+  .EASE_CUBIC_OUT: EaseCubicOut,
+  .EASE_CUBIC_IN_OUT: EaseCubicInOut,
+  .EASE_QUAD_IN: EaseQuadIn,
+  .EASE_QUAD_OUT: EaseQuadOut,
+  .EASE_QUAD_IN_OUT: EaseQuadInOut,
+  .EASE_EXPO_IN: EaseExpoIn,
+  .EASE_EXPO_OUT: EaseExpoOut,
+  .EASE_EXPO_IN_OUT: EaseExpoInOut,
+  .EASE_BACK_IN: EaseBackIn,
+  .EASE_BACK_OUT: EaseBackOut,
+  .EASE_BACK_IN_OUT: EaseBackInOut,
+  .EASE_BOUNCE_OUT: EaseBounceOut,
+  .EASE_BOUNCE_IN: EaseBounceIn,
+  .EASE_BOUNCE_IN_OUT: EaseBounceInOut,
+  .EASE_ELASTIC_IN: EaseElasticIn,
+  .EASE_ELASTIC_OUT: EaseElasticOut,
+  .EASE_ELASTIC_IN_OUT: EaseElasticInOut,
+  .EASING_NONE: (a, b, c, d) => b.toDouble(),
+};
 
-  InitWindow(screenWidth, screenHeight, "shapes_easings_testbed");
-  SetTargetFPS(60);
+late Vector2 ballPosition;
 
-  Map<EasingTypes, double Function(num, num, num, num)> Easings = {
-    .EASE_LINEAR_NONE: EaseLinearNone,
-    .EASE_LINEAR_IN: EaseLinearIn,
-    .EASE_LINEAR_OUT: EaseLinearOut,
-    .EASE_LINEAR_IN_OUT: EaseLinearInOut,
-    .EASE_SINE_IN: EaseSineIn,
-    .EASE_SINE_OUT: EaseSineOut,
-    .EASE_SINE_IN_OUT: EaseSineInOut,
-    .EASE_CIRC_IN: EaseCircIn,
-    .EASE_CIRC_OUT: EaseCircOut,
-    .EASE_CIRC_IN_OUT: EaseCircInOut,
-    .EASE_CUBIC_IN: EaseCubicIn,
-    .EASE_CUBIC_OUT: EaseCubicOut,
-    .EASE_CUBIC_IN_OUT: EaseCubicInOut,
-    .EASE_QUAD_IN: EaseQuadIn,
-    .EASE_QUAD_OUT: EaseQuadOut,
-    .EASE_QUAD_IN_OUT: EaseQuadInOut,
-    .EASE_EXPO_IN: EaseExpoIn,
-    .EASE_EXPO_OUT: EaseExpoOut,
-    .EASE_EXPO_IN_OUT: EaseExpoInOut,
-    .EASE_BACK_IN: EaseBackIn,
-    .EASE_BACK_OUT: EaseBackOut,
-    .EASE_BACK_IN_OUT: EaseBackInOut,
-    .EASE_BOUNCE_OUT: EaseBounceOut,
-    .EASE_BOUNCE_IN: EaseBounceIn,
-    .EASE_BOUNCE_IN_OUT: EaseBounceInOut,
-    .EASE_ELASTIC_IN: EaseElasticIn,
-    .EASE_ELASTIC_OUT: EaseElasticOut,
-    .EASE_ELASTIC_IN_OUT: EaseElasticInOut,
-    .EASING_NONE: (a, b, c, d) => b.toDouble(),
-  };
+double t = 0.0;
+double d = 300.0;
+bool paused = true;
+bool boundedT = true;
+EasingTypes easingX = .EASING_NONE;
+EasingTypes easingY = .EASING_NONE;
 
-  final Vector2 ballPosition = .vec2(100.0, 100.0);
+// NOTE: not part of the original example
+final List<Vector2> tail = [];
+// ---------
 
-  double t = 0.0;
-  double d = 300.0;
-  bool paused = true;
-  bool boundedT = true;
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_easings_testbed");
+    SetTargetFPS(60);
 
-  EasingTypes easingX = .EASING_NONE;
-  EasingTypes easingY = .EASING_NONE;
-
-  // NOTE: not part of the original example
-  final tail = <Vector2>[];
-  // ---------
-
-  while (!WindowShouldClose())
-  {
+    ballPosition = .vec2(100.0, 100.0);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_T)) boundedT = !boundedT;
 
     if (IsKeyPressed(.KEY_RIGHT)) easingX = easingX.next;
@@ -182,7 +179,8 @@ void main()
       DrawCircleV(ballPosition, 16.0, .MAROON);
 
     EndDrawing();
-  }
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

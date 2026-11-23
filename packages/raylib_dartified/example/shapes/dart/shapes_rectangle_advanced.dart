@@ -1,22 +1,18 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_rectangle_advanced.c
-// Run it: dart run shapes_rectangle_advanced.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const bool SUPPORT_QUADS_DRAW_MODE = true;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
-
-  InitWindow(screenWidth, screenHeight, "shapes_rectangle_advanced");
-  SetTargetFPS(60);
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_rectangle_advanced");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     final width = GetScreenWidth()/2.0, height = GetScreenHeight()/6.0;
     
     final Rectangle rec = .rect(
@@ -42,10 +38,11 @@ void main()
       rec.y += rec.height + 1;
       DrawRectangleRoundedGradientH(rec, 1.0, 0.0, 36, .BLUE, .PINK);
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawRectangleRoundedGradientH(
   Rectangle rec,
@@ -123,13 +120,13 @@ void DrawRectangleRoundedGradientH(
           rlVertex2f(center.x, center.y);
 
           rlTexCoord2f((shapeRect.x + shapeRect.width)/texShapes.width, shapeRect.y/texShapes.height);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*(angle + stepLength*2))*radius, center.y + math.sin(rl.DEG2RAD*(angle + stepLength*2))*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*(angle + stepLength*2))*radius, center.y + math.sin(DEG2RAD*(angle + stepLength*2))*radius);
 
           rlTexCoord2f((shapeRect.x + shapeRect.width)/texShapes.width, (shapeRect.y + shapeRect.height)/texShapes.height);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(rl.DEG2RAD*(angle + stepLength))*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(DEG2RAD*(angle + stepLength))*radius);
 
           rlTexCoord2f(shapeRect.x/texShapes.width, (shapeRect.y + shapeRect.height)/texShapes.height);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*angle)*radius, center.y + math.sin(rl.DEG2RAD*angle)*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*angle)*radius, center.y + math.sin(DEG2RAD*angle)*radius);
 
           angle += (stepLength*2);
         }
@@ -140,10 +137,10 @@ void DrawRectangleRoundedGradientH(
           rlVertex2f(center.x, center.y);
 
           rlTexCoord2f((shapeRect.x + shapeRect.width)/texShapes.width, (shapeRect.y + shapeRect.height)/texShapes.height);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(rl.DEG2RAD*(angle + stepLength))*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(DEG2RAD*(angle + stepLength))*radius);
 
           rlTexCoord2f(shapeRect.x/texShapes.width, (shapeRect.y + shapeRect.height)/texShapes.height);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*angle)*radius, center.y + math.sin(rl.DEG2RAD*angle)*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*angle)*radius, center.y + math.sin(DEG2RAD*angle)*radius);
 
           rlTexCoord2f((shapeRect.x + shapeRect.width)/texShapes.width, shapeRect.y/texShapes.height);
           rlVertex2f(center.x, center.y);
@@ -249,8 +246,8 @@ void DrawRectangleRoundedGradientH(
         {
           rlColor4ub(color.r, color.g, color.b, color.a);
           rlVertex2f(center.x, center.y);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(rl.DEG2RAD*(angle + stepLength))*radius);
-          rlVertex2f(center.x + math.cos(rl.DEG2RAD*angle)*radius, center.y + math.sin(rl.DEG2RAD*angle)*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*(angle + stepLength))*radius, center.y + math.sin(DEG2RAD*(angle + stepLength))*radius);
+          rlVertex2f(center.x + math.cos(DEG2RAD*angle)*radius, center.y + math.sin(DEG2RAD*angle)*radius);
           angle += stepLength;
         }
       }

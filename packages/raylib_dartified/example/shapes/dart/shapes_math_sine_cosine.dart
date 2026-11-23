@@ -1,40 +1,41 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_math_sine_cosine.c
-// Run it: dart run shapes_math_sine_cosine.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int WAVE_POINTS = 36;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Vector2> sinePoints;
+late List<Vector2> cosPoints;
+late Vector2 center;
+late Rectangle start;
+double radius = 130.0;
+double angle = 0.0;
+bool pause = false;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shapes_math_sine_cosine");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shapes_math_sine_cosine");
+    SetTargetFPS(60);
 
-  final List<Vector2> sinePoints = .generate(WAVE_POINTS, (_) => .zero());
-  final List<Vector2> cosPoints = .generate(WAVE_POINTS, (_) => .zero());
-  final Vector2 center = .vec2((screenWidth/2.0) - 30.0, screenHeight/2.0);
-  final Rectangle start = .rect(20.0, screenHeight - 120.0, 200.0, 100.0);
-  double radius = 130.0;
-  double angle = 0.0;
-  bool pause = false;
+    sinePoints = .generate(WAVE_POINTS, (_) => .zero());
+    cosPoints = .generate(WAVE_POINTS, (_) => .zero());
+    center = .vec2((screenWidth/2.0) - 30.0, screenHeight/2.0);
+    start = .rect(20.0, screenHeight - 120.0, 200.0, 100.0);
 
-  for (int i = 0; i < WAVE_POINTS; i++)
-  {
-    final t = i/(WAVE_POINTS - 1);
-    final currentAngle = t*360.0*rl.DEG2RAD;
-    sinePoints[i].set(start.x + t*start.width, start.y + start.height/2.0 - math.sin(currentAngle)*(start.height/2.0));
-    cosPoints[i].set(start.x + t*start.width, start.y + start.height/2.0 - math.cos(currentAngle)*(start.height/2.0));
-  }
-
-  while (!WindowShouldClose())
-  {
-    final angleRad = angle*rl.DEG2RAD;
+    for (int i = 0; i < WAVE_POINTS; i++)
+    {
+      final t = i/(WAVE_POINTS - 1);
+      final currentAngle = t*360.0*DEG2RAD;
+      sinePoints[i].set(start.x + t*start.width, start.y + start.height/2.0 - math.sin(currentAngle)*(start.height/2.0));
+      cosPoints[i].set(start.x + t*start.width, start.y + start.height/2.0 - math.cos(currentAngle)*(start.height/2.0));
+    }
+  },
+  loop: (_) async {
+    final angleRad = angle*DEG2RAD;
     final cosRad = math.cos(angleRad);
     final sinRad = math.sin(angleRad);
 
@@ -121,15 +122,22 @@ void main()
       DrawCircleV(point, 4.0, .BLACK);
 
       GuiSetStyle(.LABEL, GuiControlProperty.TEXT_COLOR_NORMAL, ColorToInt(.GRAY));
-      (_, pause) = GuiToggle(.rect(640, 70, 120, 20), "Pause", pause);
+      {
+        final (_, newValue) = GuiToggle(.rect(640, 70, 120, 20), "Pause", pause);
+        pause = newValue;
+      }
       GuiSetStyle(.LABEL, GuiControlProperty.TEXT_COLOR_NORMAL, ColorToInt(.LIME));
-      (_, angle) = GuiSliderBar(.rect(640, 40, 120, 20), "Angle", "${angle.f0}°", angle, 0.0, 360.0);
+      {
+        final (_, newValue) = GuiSliderBar(.rect(640, 40, 120, 20), "Angle", "${angle.f0}°", angle, 0.0, 360.0);
+        angle = newValue;
+      }
       GuiGroupBox(.rect(620, 110, 140, 170), "Angle Values");
 
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,7 +1,15 @@
 name: raylib_dartified
-description: Dart-native Raylib bindings that don't make you feel like you're writing C.
-version: 6.0.4
+description: Cross-platform, Dart-native Raylib bindings with native FFI and WebAssembly backends.
+version: 6.0.5
 repository: https://github.com/TheNoiselessNoise/raylib_dartified
+
+platforms:
+  linux:
+  windows:
+  macos:
+  android:
+  ios:
+  web:
 
 environment:
   sdk: ^3.12.0
@@ -11,11 +19,9 @@ resolution: workspace
 dependencies:
   path: ^1.9.1
   meta: ^1.17.0
+  xffi_core: ^1.0.2
+  xffi_native: ^1.0.1
+  xffi_web: ^1.0.0
+  xffi_web_emscripten: ^1.0.0
   ffi: ^2.2.0
-  logging: ^1.3.0
-  xffi_core: ^1.0.0
-  xffi_native: ^1.0.0
-  raylib_dartified_base: ^6.0.4
-
-dev_dependencies:
-  test: ^1.25.6
+  args: ^2.7.0

@@ -1,67 +1,68 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_color_correction.c
-// Run it: dart run shaders_color_correction.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Texture> textures;
+late Shader shader;
+int imageIndex = 0;
+bool resetButtonClicked = false;
+double contrast = 0;
+double saturation = 0;
+double brightness = 0;
+late int contrastLoc;
+late int saturationLoc;
+late int brightnessLoc;
+late Color lineColor;
+late Color rectColor;
 
-  InitWindow(screenWidth, screenHeight, "shaders_color_correction");
-  SetTargetFPS(60);
-
-  final textures = [
-    LoadTexture("../resources/parrots.png"),
-    LoadTexture("../resources/cat.png"),
-    LoadTexture("../resources/mandrill.png"),
-    LoadTexture("../resources/fudesumi.png"),
-  ];
-
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/color_correction.fs",
+void updateShaderValues() {
+  SetShaderValue(
+    shader, contrastLoc, [contrast],
+    .SHADER_UNIFORM_FLOAT,
   );
 
-  int imageIndex = 0;
-  bool resetButtonClicked = false;
+  SetShaderValue(
+    shader, saturationLoc, [saturation],
+    .SHADER_UNIFORM_FLOAT,
+  );
 
-  double contrast = 0;
-  double saturation = 0;
-  double brightness = 0;
+  SetShaderValue(
+    shader, brightnessLoc, [brightness],
+    .SHADER_UNIFORM_FLOAT,
+  );
+}
 
-  int contrastLoc = GetShaderLocation(shader, "contrast");
-  int saturationLoc = GetShaderLocation(shader, "saturation");
-  int brightnessLoc = GetShaderLocation(shader, "brightness");
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_color_correction");
+    SetTargetFPS(60);
 
-  void updateShaderValues() {
-    SetShaderValue(
-      shader, contrastLoc, [contrast],
-      .SHADER_UNIFORM_FLOAT,
+    textures = [
+      LoadTexture("../resources/parrots.png"),
+      LoadTexture("../resources/cat.png"),
+      LoadTexture("../resources/mandrill.png"),
+      LoadTexture("../resources/fudesumi.png"),
+    ];
+
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/color_correction.fs",
     );
 
-    SetShaderValue(
-      shader, saturationLoc, [saturation],
-      .SHADER_UNIFORM_FLOAT,
-    );
+    contrastLoc = GetShaderLocation(shader, "contrast");
+    saturationLoc = GetShaderLocation(shader, "saturation");
+    brightnessLoc = GetShaderLocation(shader, "brightness");
 
-    SetShaderValue(
-      shader, brightnessLoc, [brightness],
-      .SHADER_UNIFORM_FLOAT,
-    );
-  }
+    updateShaderValues();
 
-  updateShaderValues();
-
-  final Color lineColor = .color(218, 218, 218, 255);
-  final Color rectColor = .color(232, 232, 232, 255);
-
-  while (!WindowShouldClose())
-  {
+    lineColor = .color(218, 218, 218, 255);
+    rectColor = .color(232, 232, 232, 255);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_ONE)) imageIndex = 0;
     else if (IsKeyPressed(.KEY_TWO)) imageIndex = 1;
     else if (IsKeyPressed(.KEY_THREE)) imageIndex = 2;
@@ -114,37 +115,49 @@ void main()
         600, 250, 8, .GRAY
       );
 
-      (_, imageIndex) = GuiToggleGroup(
-        .rect(645, 70, 20, 20),
-        "1;2;3;4", imageIndex
-      );
+      {
+        final (_, newValue) = GuiToggleGroup(
+          .rect(645, 70, 20, 20),
+          "1;2;3;4", imageIndex
+        );
+        imageIndex = newValue;
+      }
 
-      (_, contrast) = GuiSliderBar(
-        .rect(645, 100, 120, 20),
-        "Contrast",
-        contrast.f0, contrast, -100.0, 100.0
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(645, 100, 120, 20),
+          "Contrast",
+          contrast.f0, contrast, -100.0, 100.0
+        );
+        contrast = newValue;
+      }
 
-      (_, saturation) = GuiSliderBar(
-        .rect(645, 130, 120, 20),
-        "Saturation",
-        saturation.f0, saturation, -100.0, 100.0
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(645, 130, 120, 20),
+          "Saturation",
+          saturation.f0, saturation, -100.0, 100.0
+        );
+        saturation = newValue;
+      }
       
-      (_, brightness) = GuiSliderBar(
-        .rect(645, 160, 120, 20),
-        "Brightness", 
-        brightness.f0, brightness, -100.0, 100.0
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(645, 160, 120, 20),
+          "Brightness", 
+          brightness.f0, brightness, -100.0, 100.0
+        );
+        brightness = newValue;
+      }
 
       resetButtonClicked = GuiButton(.rect(645, 190, 40, 20), "Reset") != .RESULT_NONE;
 
       DrawFPS(710, 10);
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

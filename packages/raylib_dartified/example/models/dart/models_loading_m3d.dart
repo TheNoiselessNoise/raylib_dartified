@@ -1,47 +1,46 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_loading_m3d.c
-// Run it: dart run models_loading_m3d.dart
 // WARNING: expects resources from the raylib source
 
 // WARNING: This example uses CPU skinning.
 // It requires raylib to be built with `SUPPORT_GPU_SKINNING=0` (the raylib default).
 // If your raylib build has SUPPORT_GPU_SKINNING=1, the model will render frozen in
 // bind pose with no errors.
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Vector3 position;
+final modelFileName = "../resources/models/m3d/cesium_man.m3d";
+bool drawMesh = true;
+bool drawSkeleton = true;
+bool animPlaying = false;
+late Model model;
+int animFrameCounter = 0;
+int animId = 0;
+late List<ModelAnimation> anims;
 
-  InitWindow(screenWidth, screenHeight, "models_loading_m3d");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_loading_m3d");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(1.5, 1.5, 1.5),
-    target: .vec3(0, 0.4, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(1.5, 1.5, 1.5),
+      target: .vec3(0, 0.4, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final Vector3 position = .zero();
-
-  final modelFileName = "../resources/models/m3d/cesium_man.m3d";
-  bool drawMesh = true;
-  bool drawSkeleton = true;
-  bool animPlaying = false;
-
-  final model = LoadModel(modelFileName);
-
-  int animFrameCounter = 0, animId = 0;
-  final anims = LoadModelAnimations(modelFileName);
-
-  while (!WindowShouldClose())
-  {
+    position = .zero();
+    model = LoadModel(modelFileName);
+    anims = LoadModelAnimations(modelFileName);
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
     if (anims.isNotEmpty)
@@ -138,10 +137,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModelAnimations(anims);
-  UnloadModel(model);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModelAnimations(anims);
+    UnloadModel(model);
+    CloseWindow();
+  },
+);

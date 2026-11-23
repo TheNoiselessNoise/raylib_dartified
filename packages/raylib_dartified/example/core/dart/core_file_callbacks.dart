@@ -1,7 +1,6 @@
 // Custom example, there's no original equivalent
-// Run it: dart run core_file_callbacks.dart
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -103,34 +102,36 @@ TestResult testSaveFileText() {
   return sftResult;
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late bool allPassed;
 
-  InitWindow(screenWidth, screenHeight, "core_file_callbacks");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_file_callbacks");
+    SetTargetFPS(60);
 
-  results.add(testLoadFileData());
-  results.add(testSaveFileData());
-  results.add(testLoadFileText());
-  results.add(testSaveFileText());
+    results.add(testLoadFileData());
+    results.add(testSaveFileData());
+    results.add(testLoadFileText());
+    results.add(testSaveFileText());
 
-  final allPassed = results.every((r) => r.passed);
+    allPassed = results.every((r) => r.passed);
 
-  final TestResult failedTest = .new('FailedTest');
-  failedTest.assertIt(false, 'This test is failing on purpose');
-  results.add(failedTest);
-
-  while (!WindowShouldClose()) {
+    final TestResult failedTest = .new('FailedTest');
+    failedTest.assertIt(false, 'This test is failing on purpose');
+    results.add(failedTest);
+  },
+  loop: (_) async {
     BeginDrawing();
     ClearBackground(.RAYWHITE);
 
     DrawTestResults(allPassed);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawTestResults(bool allPassed) {
   const int padX   = 30;

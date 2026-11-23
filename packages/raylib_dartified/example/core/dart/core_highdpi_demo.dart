@@ -1,33 +1,31 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_highdpi_demo.c
-// Run it: dart run core_highdpi_demo.dart
 // WARNING: if you are running under Linux/Wayland you should run with:
 // `WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11`
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int logicalGridDescY = 120;
+int logicalGridLabelY = logicalGridDescY + 30;
+int logicalGridTop = logicalGridLabelY + 30;
+int logicalGridBottom = logicalGridTop + 80;
+int pixelGridTop = logicalGridBottom - 20;
+int pixelGridBottom = pixelGridTop + 80;
+int pixelGridLabelY = pixelGridBottom + 30;
+int pixelGridDescY = pixelGridLabelY + 30;
+int cellSize = 50;
+double cellSizePx = cellSize.toDouble();
 
-  SetConfigFlags([.FLAG_WINDOW_HIGHDPI, .FLAG_WINDOW_RESIZABLE]);
-  InitWindow(screenWidth, screenHeight, "core_highdpi_demo");
-  SetWindowMinSize(450, 450);
-  SetTargetFPS(60);
-
-  int logicalGridDescY = 120;
-  int logicalGridLabelY = logicalGridDescY + 30;
-  int logicalGridTop = logicalGridLabelY + 30;
-  int logicalGridBottom = logicalGridTop + 80;
-  int pixelGridTop = logicalGridBottom - 20;
-  int pixelGridBottom = pixelGridTop + 80;
-  int pixelGridLabelY = pixelGridBottom + 30;
-  int pixelGridDescY = pixelGridLabelY + 30;
-  int cellSize = 50;
-  double cellSizePx = cellSize.toDouble();
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_HIGHDPI, .FLAG_WINDOW_RESIZABLE]);
+    InitWindow(screenWidth, screenHeight, "core_highdpi_demo");
+    SetWindowMinSize(450, 450);
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     int monitorCount = GetMonitorCount();
 
     if ((monitorCount > 1) && IsKeyPressed(.KEY_N))
@@ -82,10 +80,11 @@ void main() {
       DrawTextEx(GetFontDefault(), text, pos, 20, 3, LIGHTGRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawTextCenter(String text, int x, int y, int fontSize, Color color)
 {

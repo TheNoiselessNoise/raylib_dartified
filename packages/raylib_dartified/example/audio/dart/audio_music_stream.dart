@@ -1,33 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_music_stream.c
-// Run it: dart run audio_music_stream.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Music music;
+double timePlayed = 0;
+bool pause = false;
+double pan = 0;
+double volume = 0.8;
 
-  InitWindow(800, 450, "audio_music_stream");
-  SetTargetFPS(30);
+void main() => runExample(
+  init: (_) {
+    InitWindow(800, 450, "audio_music_stream");
+    SetTargetFPS(30);
 
-  SetAudioStreamBufferSizeDefault(8192);
-  InitAudioDevice();
+    SetAudioStreamBufferSizeDefault(8192);
+    InitAudioDevice();
 
-  final music = LoadMusicStream("../resources/country.mp3");
-  PlayMusicStream(music);
-
-  double timePlayed = 0;
-  bool pause = false;
-
-  double pan = 0;
-  SetMusicPan(music, pan);
-
-  double volume = 0.8;
-  SetMusicVolume(music, volume);
-
-  while (!WindowShouldClose())
-  {
+    music = LoadMusicStream("../resources/country.mp3");
+    PlayMusicStream(music);
+    SetMusicPan(music, pan);
+    SetMusicVolume(music, volume);
+  },
+  loop: (_) async {
     UpdateMusicStream(music);
 
     if (IsKeyPressed(.KEY_SPACE)) {
@@ -92,10 +87,10 @@ void main()
       DrawRectangle(300 + volume*200 - 5, 352, 10, 28, .DARKGRAY);
 
     EndDrawing();
-  }
-
-  UnloadMusicStream(music);
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadMusicStream(music);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

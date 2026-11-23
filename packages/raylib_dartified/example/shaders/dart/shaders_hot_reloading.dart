@@ -1,38 +1,35 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_hot_reloading.c
-// Run it: dart run shaders_hot_reloading.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+String fragShaderFileName = "../resources/shaders/glsl${Raylib.glslVersion}/reload.fs";
+late int fragShaderFileModTime;
+late Shader shader;
+late int resolutionLoc;
+late int mouseLoc;
+late int timeLoc;
+final resolution = [ screenWidth, screenHeight ];
+void updateShaderResolution() => SetShaderValue(shader, resolutionLoc, [ screenWidth, screenHeight ], .SHADER_UNIFORM_VEC2);
+double totalTime = 0.0;
+bool shaderAutoReloading = false;
 
-  InitWindow(screenWidth, screenHeight, "shaders_hot_reloading");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_hot_reloading");
+    SetTargetFPS(60);
 
-  String fragShaderFileName = "../resources/shaders/glsl$GLSL_VERSION/reload.fs";
-  int fragShaderFileModTime = GetFileModTime(fragShaderFileName);
-
-  var shader = LoadShader(null, fragShaderFileName);
-
-  int resolutionLoc = GetShaderLocation(shader, "resolution");
-  int mouseLoc = GetShaderLocation(shader, "mouse");
-  int timeLoc = GetShaderLocation(shader, "time");
-
-  final resolution = [ screenWidth, screenHeight ];
-  void updateShaderResolution() => SetShaderValue(shader, resolutionLoc, resolution, .SHADER_UNIFORM_VEC2);
-  updateShaderResolution();
-
-  double totalTime = 0.0;
-  bool shaderAutoReloading = false;
-
-  while (!WindowShouldClose())
-  {
+    fragShaderFileModTime = GetFileModTime(fragShaderFileName);
+    shader = LoadShader(null, fragShaderFileName);
+    resolutionLoc = GetShaderLocation(shader, "resolution");
+    mouseLoc = GetShaderLocation(shader, "mouse");
+    timeLoc = GetShaderLocation(shader, "time");
+    updateShaderResolution();
+  },
+  loop: (_) async {
     totalTime += GetFrameTime();
     final mouse = GetMousePosition();
 
@@ -89,9 +86,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

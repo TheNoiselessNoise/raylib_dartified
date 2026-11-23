@@ -1,6 +1,5 @@
 export 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-export 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-export 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+export 'package:raylib_dartified_unhinged/backends/raylib.dart';
 import '';
 
 abstract class ExampleRaylibApp<T extends ExampleRaylibApp<T>> extends App<T> {
@@ -23,7 +22,7 @@ final class _ExampleRaylibBridge<T extends ExampleRaylibApp<T>> extends Unhinged
   T create(UnhingedBackend backend) => constructor(backend);
 }
 
-void runExample<T extends ExampleRaylibApp<T>>(T Function(UnhingedBackend backend) constructor) => runRaylib(
+void runExample<T extends ExampleRaylibApp<T>>(T Function(UnhingedBackend backend) constructor) => runRaylibApp(
   _ExampleRaylibBridge<T>(constructor),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
   silent: true,

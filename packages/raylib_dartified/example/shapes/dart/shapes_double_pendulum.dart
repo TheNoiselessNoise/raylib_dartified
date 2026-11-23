@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_double_pendulum.c
-// Run it: dart run shapes_double_pendulum.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -9,34 +8,32 @@ const int screenHeight = 450;
 const int SIMULATION_STEPS = 30;
 const double G = 9.81;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+double l1 = 15.0, m1 = 0.2, theta1 = DEG2RAD*170, w1 = 0;
+double l2 = 15.0, m2 = 0.1, theta2 = DEG2RAD*0, w2 = 0;
+double lengthScaler = 0.1;
+double totalM = m1 + m2;
 
-  SetConfigFlags([.FLAG_WINDOW_HIGHDPI]);
-  InitWindow(screenWidth, screenHeight, "shapes_double_pendulum");
-  SetTargetFPS(60);
+late Vector2 previousPosition;
+double L1 = l1*lengthScaler;
+double L2 = l2*lengthScaler;
+double lineThick = 20, trailThick = 2;
+double fateAlpha = 0.01;
+late RenderTexture target;
 
-  double l1 = 15.0, m1 = 0.2, theta1 = rl.DEG2RAD*170, w1 = 0;
-  double l2 = 15.0, m2 = 0.1, theta2 = rl.DEG2RAD*0, w2 = 0;
-  double lengthScaler = 0.1;
-  double totalM = m1 + m2;
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_HIGHDPI]);
+    InitWindow(screenWidth, screenHeight, "shapes_double_pendulum");
+    SetTargetFPS(60);
 
-  Vector2 previousPosition = CalculateDoublePendulumEndPoint(l1, theta1, l2, theta2);
-  previousPosition.x += screenWidth/2;
-  previousPosition.y += screenHeight/2 - 100;
+    previousPosition = CalculateDoublePendulumEndPoint(l1, theta1, l2, theta2);
+    previousPosition.x += screenWidth/2;
+    previousPosition.y += screenHeight/2 - 100;
 
-  double L1 = l1*lengthScaler;
-  double L2 = l2*lengthScaler;
-
-  double lineThick = 20, trailThick = 2;
-  double fateAlpha = 0.01;
-
-  final target = LoadRenderTexture(screenWidth, screenHeight);
-  SetTextureFilter(target.texture, .TEXTURE_FILTER_BILINEAR);
-
-  while (!WindowShouldClose())
-  {
+    target = LoadRenderTexture(screenWidth, screenHeight);
+    SetTextureFilter(target.texture, .TEXTURE_FILTER_BILINEAR);
+  },
+  loop: (_) async {
     final dt = GetFrameTime();
     final step = dt/SIMULATION_STEPS, step2 = step*step;
 
@@ -99,7 +96,7 @@ void main()
           10*l1, lineThick
         ),
         .vec2(0, lineThick*0.5),
-        90 - rl.RAD2DEG*theta1,
+        90 - RAD2DEG*theta1,
         .RAYWHITE
       );
 
@@ -110,26 +107,20 @@ void main()
           10*l2, lineThick
         ),
         .vec2(0, lineThick*0.5),
-        90 - rl.RAD2DEG*theta2,
+        90 - RAD2DEG*theta2,
         .RAYWHITE
       );
 
     EndDrawing();
-  }
-
-  UnloadRenderTexture(target);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);
 
 Vector2 CalculatePendulumEndPoint(double l, double theta)
-{
-  return .vec2(10*l*math.sin(theta), 10*l*math.cos(theta));
-}
+  => .vec2(10*l*math.sin(theta), 10*l*math.cos(theta));
 
 Vector2 CalculateDoublePendulumEndPoint(double l1, double theta1, double l2, double theta2)
-{
-  final endpoint1 = CalculatePendulumEndPoint(l1, theta1);
-  final endpoint2 = CalculatePendulumEndPoint(l2, theta2);
-  return .vec2(endpoint1.x + endpoint2.x, endpoint1.y + endpoint2.y);
-}
+  => CalculatePendulumEndPoint(l1, theta1).add(CalculatePendulumEndPoint(l2, theta2));

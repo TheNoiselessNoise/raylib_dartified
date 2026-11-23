@@ -1,23 +1,21 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_sound_loading.c
-// Run it: dart run audio_sound_loading.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Sound fxWav;
+late Sound fxOgg;
 
-  InitWindow(800, 450, "audio_sound_loading");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(800, 450, "audio_sound_loading");
+    SetTargetFPS(60);
+    InitAudioDevice();
 
-  InitAudioDevice();
-
-  final fxWav = LoadSound("../resources/sound.wav");
-  final fxOgg = LoadSound("../resources/target.ogg");
-
-  while (!WindowShouldClose())
-  {
+    fxWav = LoadSound("../resources/sound.wav");
+    fxOgg = LoadSound("../resources/target.ogg");
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE)) {
       PlaySound(fxWav);
     }
@@ -39,11 +37,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadSound(fxWav);
-  UnloadSound(fxOgg);
-  CloseAudioDevice();
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadSound(fxWav);
+    UnloadSound(fxOgg);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_top_down_lights.c
-// Run it: dart run shapes_top_down_lights.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -52,43 +51,42 @@ final class LightInfo {
 }
 
 late List<LightInfo> lights;
+late List<Rectangle> boxes;
+late Texture backgroundTexture;
+late RenderTexture lightMask;
+int nextLight = 1;
+bool showLines = false;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_top_down_lights");
+    SetTargetFPS(60);
 
-  InitWindow(screenWidth, screenHeight, "shapes_top_down_lights");
-  SetTargetFPS(60);
+    lights = .generate(MAX_LIGHTS, (i) => .new());
 
-  lights = .generate(MAX_LIGHTS, (i) => .new());
+    boxes = .generate(MAX_BOXES, (i) => switch (i) {
+      0 => .rect(150, 80, 40, 40),
+      1 => .rect(1200, 700, 40, 40),
+      2 => .rect(200, 600, 40, 40),
+      3 => .rect(1000, 50, 40, 40),
+      4 => .rect(500, 350, 40, 40),
+      _ => .rect(
+        GetRandomValue(0, GetScreenWidth()),
+        GetRandomValue(0, GetScreenHeight()),
+        GetRandomValue(10, 100),
+        GetRandomValue(10, 100)
+      ),
+    });
 
-  final List<Rectangle> boxes = .generate(MAX_BOXES, (i) => switch (i) {
-    0 => .rect(150, 80, 40, 40),
-    1 => .rect(1200, 700, 40, 40),
-    2 => .rect(200, 600, 40, 40),
-    3 => .rect(1000, 50, 40, 40),
-    4 => .rect(500, 350, 40, 40),
-    _ => .rect(
-      GetRandomValue(0, GetScreenWidth()),
-      GetRandomValue(0, GetScreenHeight()),
-      GetRandomValue(10, 100),
-      GetRandomValue(10, 100)
-    ),
-  });
+    final img = GenImageChecked(64, 64, 32, 32, .DARKBROWN, .DARKGRAY);
+    backgroundTexture = LoadTextureFromImage(img);
+    UnloadImage(img);
 
-  final img = GenImageChecked(64, 64, 32, 32, .DARKBROWN, .DARKGRAY);
-  final backgroundTexture = LoadTextureFromImage(img);
-  UnloadImage(img);
+    lightMask = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-  final lightMask = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-
-  SetupLight(0, 600, 400, 300);
-  int nextLight = 1;
-
-  bool showLines = false;
-
-  while (!WindowShouldClose())
-  {
+    SetupLight(0, 600, 400, 300);
+  },
+  loop: (_) async {
     final mousePos = GetMousePosition();
     final w = GetScreenWidth(), h = GetScreenHeight();
 
@@ -199,17 +197,18 @@ void main()
       DrawText("Right click to add new light", 10, 30, 10, .DARKGREEN);
 
     EndDrawing();
-  }
+  },
+  close: (_) {
+    UnloadTexture(backgroundTexture);
+    UnloadRenderTexture(lightMask);
+    for (int i = 0; i < MAX_LIGHTS; i++)
+    {
+      if (lights[i].active) UnloadRenderTexture(lights[i].mask);
+    }
 
-  UnloadTexture(backgroundTexture);
-  UnloadRenderTexture(lightMask);
-  for (int i = 0; i < MAX_LIGHTS; i++)
-  {
-    if (lights[i].active) UnloadRenderTexture(lights[i].mask);
-  }
-
-  CloseWindowAndDispose();
-}
+    CloseWindow();
+  },
+);
 
 void MoveLight(int slot, double x, double y)
 {

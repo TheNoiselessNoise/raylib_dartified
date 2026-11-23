@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_bullet_hell.c
-// Run it: dart run shapes_bullet_hell.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -22,40 +21,37 @@ final class Bullet {
   });
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final List<Bullet> bullets = [];
+int bulletDisabledCount = 0;
+int bulletRadius = 10;
+double bulletSpeed = 3.0;
+int bulletRows = 6;
+late List<Color> bulletColor;
+double baseDirection = 0;
+int angleIncrement = 5;
+double spawnCooldown = 2;
+double spawnCooldownTimer = spawnCooldown;
+double magicCircleRotation = 0;
+late RenderTexture bulletTexture;
+bool drawInPerformanceMode = true;
+late Color color;
 
-  InitWindow(screenWidth, screenHeight, "shapes_bullet_hell");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_bullet_hell");
+    SetTargetFPS(60);
 
-  List<Bullet> bullets = [];
-  int bulletDisabledCount = 0;
-  int bulletRadius = 10;
-  double bulletSpeed = 3.0;
-  int bulletRows = 6;
-  List<Color> bulletColor = [ .RED, .BLUE ];
+    bulletColor = [ .RED, .BLUE ];
 
-  double baseDirection = 0;
-  int angleIncrement = 5;
-  double spawnCooldown = 2;
-  double spawnCooldownTimer = spawnCooldown;
+    bulletTexture = LoadRenderTexture(24, 24);
+    BeginTextureMode(bulletTexture);
+      DrawCircle(12, 12, bulletRadius, .WHITE);
+      DrawCircleLines(12, 12, bulletRadius, .BLACK);
+    EndTextureMode();
 
-  double magicCircleRotation = 0;
-
-  final bulletTexture = LoadRenderTexture(24, 24);
-
-  BeginTextureMode(bulletTexture);
-    DrawCircle(12, 12, bulletRadius, .WHITE);
-    DrawCircleLines(12, 12, bulletRadius, .BLACK);
-  EndTextureMode();
-
-  bool drawInPerformanceMode = true;
-
-  final Color color = .color(0, 0, 0, 200);
-
-  while (!WindowShouldClose())
-  {
+    color = .color(0, 0, 0, 200);
+  },
+  loop: (_) async {
     if (bullets.length >= MAX_BULLETS) {
       bullets.clear();
       bulletDisabledCount = 0;
@@ -73,8 +69,8 @@ void main()
           bullets.add(Bullet(
             position: .vec2(screenWidth / 2, screenHeight / 2),
             acceleration: .vec2(
-              bulletSpeed*math.cos(bulletDirection*rl.DEG2RAD),
-              bulletSpeed*math.sin(bulletDirection*rl.DEG2RAD)
+              bulletSpeed*math.cos(bulletDirection*DEG2RAD),
+              bulletSpeed*math.sin(bulletDirection*DEG2RAD)
             ),
             disabled: false,
             color: bulletColor[row%2],
@@ -233,9 +229,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadRenderTexture(bulletTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(bulletTexture);
+    CloseWindow();
+  },
+);

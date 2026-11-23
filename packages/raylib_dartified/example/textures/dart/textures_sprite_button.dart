@@ -1,44 +1,38 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_sprite_button.c
-// Run it: dart run textures_sprite_button.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int NUM_FRAMES = 3;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Sound fxButton;
+late Texture button;
+late double frameHeight;
+late Rectangle sourceRec;
+late Rectangle btnBounds;
+int btnState = 0;
+bool btnAction = false;
+late Vector2 mousePoint;
 
-  InitWindow(screenWidth, screenHeight, "textures_sprite_button");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_sprite_button");
+    InitAudioDevice();
+    SetTargetFPS(60);
 
-  InitAudioDevice();
-
-  final fxButton = LoadSound("../resources/buttonfx.wav");
-  final button = LoadTexture("../resources/button.png");
-
-  final frameHeight = button.height/NUM_FRAMES;
-  final Rectangle sourceRec = .rect(
-    0, 0, button.width, frameHeight
-  );
-
-  final Rectangle btnBounds = .rect(
-    screenWidth/2.0 - button.width/2.0,
-    screenHeight/2.0 - button.height/NUM_FRAMES/2.0,
-    button.width,
-    frameHeight
-  );
-
-  int btnState = 0;
-  bool btnAction = false;
-
-  Vector2 mousePoint = .zero();
-
-  while (!WindowShouldClose())
-  {
+    fxButton = LoadSound("../resources/buttonfx.wav");
+    button = LoadTexture("../resources/button.png");
+    frameHeight = button.height/NUM_FRAMES;
+    sourceRec = .rect(0, 0, button.width, frameHeight);
+    btnBounds = .rect(
+      screenWidth/2.0 - button.width/2.0, screenHeight/2.0 - button.height/NUM_FRAMES/2.0,
+      button.width, frameHeight
+    );
+    mousePoint = .zero();
+  },
+  loop: (_) async {
     mousePoint = GetMousePosition();
     btnAction = false;
 
@@ -73,12 +67,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(button);
-  UnloadSound(fxButton);
-
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(button);
+    UnloadSound(fxButton);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

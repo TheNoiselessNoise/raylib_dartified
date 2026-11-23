@@ -1,9 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_recursive_tree.c
-// Run it: dart run shapes_recursive_tree.dart
 import 'dart:math' as math;
 
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -15,26 +14,24 @@ final class Branch {
   double length = 0;
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 start;
+double angle = 40.0;
+double thick = 1.0;
+double treeDepth = 10.0;
+double branchDecay = 0.66;
+double length = 120.0;
+bool bezier = false;
+final List<Branch> branches = .generate(1030, (_) => .new());
 
-  InitWindow(screenWidth, screenHeight, "shapes_recursive_tree");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_recursive_tree");
+    SetTargetFPS(60);
 
-  final Vector2 start = .vec2((screenWidth/2.0) - 125.0, screenHeight);
-  double angle = 40.0;
-  double thick = 1.0;
-  double treeDepth = 10.0;
-  double branchDecay = 0.66;
-  double length = 120.0;
-  bool bezier = false;
-
-  final List<Branch> branches = .generate(1030, (_) => .new());
-
-  while (!WindowShouldClose())
-  {
-    final theta = angle*rl.DEG2RAD;
+    start = .vec2((screenWidth/2.0) - 125.0, screenHeight);
+  },
+  loop: (_) async {
+    final theta = angle*DEG2RAD;
     int maxBranches = math.pow(2, treeDepth.floor()).toInt();
     int count = 0;
 
@@ -131,7 +128,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

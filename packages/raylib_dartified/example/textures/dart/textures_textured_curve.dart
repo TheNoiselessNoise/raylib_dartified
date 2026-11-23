@@ -1,46 +1,37 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_textured_curve.c
-// Run it: dart run textures_textured_curve.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 late Texture texRoad;
 bool showCurve = false;
-
 double curveWidth = 50;
 int curveSegments = 24;
-
 late Vector2 curveStartPosition;
 late Vector2 curveStartPositionTangent;
-
 late Vector2 curveEndPosition;
 late Vector2 curveEndPositionTangent;
-
 Vector2? curveSelectedPoint;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_VSYNC_HINT, .FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "textures_textured_curve");
+    SetTargetFPS(60);
 
-  SetConfigFlags([.FLAG_VSYNC_HINT, .FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "textures_textured_curve");
-  SetTargetFPS(60);
+    texRoad = LoadTexture("../resources/road.png");
+    SetTextureFilter(texRoad, .TEXTURE_FILTER_BILINEAR);
 
-  texRoad = LoadTexture("../resources/road.png");
-  SetTextureFilter(texRoad, .TEXTURE_FILTER_BILINEAR);
-
-  curveStartPosition = .vec2(80, 100);
-  curveStartPositionTangent = .vec2(100, 300);
-
-  curveEndPosition = .vec2(700, 350);
-  curveEndPositionTangent = .vec2(600, 100);
-
-  while (!WindowShouldClose())
-  {
+    curveStartPosition = .vec2(80, 100);
+    curveStartPositionTangent = .vec2(100, 300);
+    curveEndPosition = .vec2(700, 350);
+    curveEndPositionTangent = .vec2(600, 100);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE)) showCurve = !showCurve;
     if (IsKeyPressed(.KEY_UP)) curveWidth += 2;
     if (IsKeyPressed(.KEY_DOWN)) curveWidth -= 2;
@@ -116,12 +107,12 @@ void main()
       );
         
     EndDrawing();
-  }
-
-  UnloadTexture(texRoad);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texRoad);
+    CloseWindow();
+  },
+);
 
 void DrawTexturedCurve()
 {

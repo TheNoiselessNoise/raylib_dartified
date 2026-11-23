@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_strings_management.c
-// Run it: dart run text_strings_management.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -23,21 +22,18 @@ final class TextParticle {
   bool grabbed = false;
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final List<TextParticle> textParticles = [];
+TextParticle? grabbedTextParticle;
+final Vector2 pressOffset = .zero();
 
-  InitWindow(screenWidth, screenHeight, "text_strings_management");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_strings_management");
+    SetTargetFPS(60);
 
-  final List<TextParticle> textParticles = [];
-  TextParticle? grabbedTextParticle;
-  final Vector2 pressOffset = .zero();
-
-  PrepareFirstTextParticle("raylib => fun videogames programming!", textParticles);
-
-  while (!WindowShouldClose())
-  {
+    PrepareFirstTextParticle("raylib => fun videogames programming!", textParticles);
+  },
+  loop: (_) async {
     final delta = GetFrameTime();
     final mousePos = GetMousePosition();
 
@@ -61,7 +57,7 @@ void main()
     {
       if (grabbedTextParticle != null)
       {
-        grabbedTextParticle.grabbed = false;
+        grabbedTextParticle!.grabbed = false;
         grabbedTextParticle = null;
       }
     }
@@ -164,11 +160,11 @@ void main()
         {
           for (int i = 0; i < textParticles.length; i++)
           {
-            if (grabbedTextParticle != null && textParticles[i] != grabbedTextParticle && grabbedTextParticle.grabbed)
+            if (grabbedTextParticle != null && textParticles[i] != grabbedTextParticle && grabbedTextParticle!.grabbed)
             {
-              if (CheckCollisionRecs(grabbedTextParticle.rect, textParticles[i].rect))
+              if (CheckCollisionRecs(grabbedTextParticle!.rect, textParticles[i].rect))
               {
-                GlueTextParticles(grabbedTextParticle, textParticles[i], textParticles);
+                GlueTextParticles(grabbedTextParticle!, textParticles[i], textParticles);
                 grabbedTextParticle = textParticles[textParticles.length-1];
               }
             }
@@ -198,10 +194,11 @@ void main()
       DrawText("TEXT PARTICLE COUNT: ${textParticles.length}", 10, GetScreenHeight() - 30, 20, .BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void PrepareFirstTextParticle(String text, List<TextParticle> tps)
 {

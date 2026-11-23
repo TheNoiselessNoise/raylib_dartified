@@ -1,10 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_rounded_rectangle.c
-// Run it: dart run shaders_rounded_rectangle.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
@@ -25,36 +23,39 @@ final class RoundedRectangle {
   int borderColorLoc = 0;
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Shader shader;
+late RoundedRectangle roundedRectangle;
+late Color rectangleColor;
+late Color shadowColor;
+late Color borderColor;
 
-  InitWindow(screenWidth, screenHeight, "shaders_rounded_rectangle");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_rounded_rectangle");
+    SetTargetFPS(60);
 
-  final shader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/base.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/rounded_rectangle.fs"
-  );
+    shader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/base.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/rounded_rectangle.fs"
+    );
 
-  final roundedRectangle = CreateRoundedRectangle(
-    .vec4(5.0, 10.0, 15.0, 20.0),
-    20.0,
-    .vec2(0.0, -5.0),
-    0.95,
-    5.0,
-    shader
-  );
+    roundedRectangle = CreateRoundedRectangle(
+      .vec4(5.0, 10.0, 15.0, 20.0),
+      20.0,
+      .vec2(0.0, -5.0),
+      0.95,
+      5.0,
+      shader
+    );
 
-  // Update shader uniforms
-  UpdateRoundedRectangle(roundedRectangle, shader);
+    // Update shader uniforms
+    UpdateRoundedRectangle(roundedRectangle, shader);
 
-  final Color rectangleColor = .BLUE;
-  final Color shadowColor = .DARKBLUE;
-  final Color borderColor = .SKYBLUE;
-
-  while (!WindowShouldClose())
-  {
+    rectangleColor = .BLUE;
+    shadowColor = .DARKBLUE;
+    borderColor = .SKYBLUE;
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -131,12 +132,12 @@ void main()
       DrawText("(c) Rounded rectangle SDF by Iñigo Quilez. MIT License.", screenWidth - 300, screenHeight - 20, 10, .BLACK);
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);
 
 RoundedRectangle CreateRoundedRectangle(Vector4 cornerRadius, double shadowRadius, Vector2 shadowOffset, double shadowScale, double borderThickness, Shader shader)
 {

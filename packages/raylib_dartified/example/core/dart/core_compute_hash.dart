@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_compute_hash.c
-// Run it: dart run core_compute_hash.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,39 +10,36 @@ String GetDataAsHexText(List<int> data, int size) {
   return List.generate(data.length, (i) => data[i].hex).join('');
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+String input = "The quick brown fox jumps over the lazy dog.";
+bool textBoxEditMode = false;
+bool btnComputeHashes = false;
+int hashCRC32 = 0;
+List<int> hashMD5 = [];
+List<int> hashSHA1 = [];
+List<int> hashSHA256 = [];
+String base64Text = '';
 
-  InitWindow(screenWidth, screenHeight, "core_compute_hash");
-  SetTargetFPS(60);
+void computeHashes() {
+  base64Text = EncodeDataBase64(.fromList(input.codeUnits)).toDartString();
+  hashCRC32 = ComputeCRC32(.fromList(input.codeUnits));
+  hashMD5 = ComputeMD5(.fromList(input.codeUnits));
+  hashSHA1 = ComputeSHA1(.fromList(input.codeUnits));
+  hashSHA256 = ComputeSHA256(.fromList(input.codeUnits));
+}
 
-  String input = "The quick brown fox jumps over the lazy dog.";
-
-  bool textBoxEditMode = false;
-  bool btnComputeHashes = false;
-
-  int hashCRC32 = 0;
-  List<int> hashMD5 = [];
-  List<int> hashSHA1 = [];
-  List<int> hashSHA256 = [];
-
-  String base64Text = '';
-
-  void computeHashes() {
-    base64Text = EncodeDataBase64(.fromList(input.codeUnits)).toDartString();
-    hashCRC32 = ComputeCRC32(.fromList(input.codeUnits));
-    hashMD5 = ComputeMD5(.fromList(input.codeUnits));
-    hashSHA1 = ComputeSHA1(.fromList(input.codeUnits));
-    hashSHA256 = ComputeSHA256(.fromList(input.codeUnits));
-  } computeHashes();
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_compute_hash");
+    SetTargetFPS(60);
+    computeHashes();
+  },
+  loop: (_) async {
     if (btnComputeHashes) computeHashes();
 
     BeginDrawing();
 
     ClearBackground(.RAYWHITE);
-
+    
     GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SIZE, 20);
     GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SPACING, 2);
     GuiLabel(.rect(40, 26, 720, 32), "INPUT DATA (TEXT):");
@@ -88,7 +84,8 @@ void main() {
     GuiSetStyle(.TEXTBOX, GuiTextBoxProperty.TEXT_READONLY, 0);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

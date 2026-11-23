@@ -1,37 +1,34 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_rotate.c
-// Run it: dart run textures_image_rotate.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Texture> textures;
+int currentTexture = 0;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_rotate");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_rotate");
+    SetTargetFPS(60);
 
-  final image45 = LoadImage("../resources/raylib_logo.png");
-  final image90 = LoadImage("../resources/raylib_logo.png");
-  final imageNeg90 = LoadImage("../resources/raylib_logo.png");
+    final image45 = LoadImage("../resources/raylib_logo.png");
+    final image90 = LoadImage("../resources/raylib_logo.png");
+    final imageNeg90 = LoadImage("../resources/raylib_logo.png");
 
-  ImageRotate(image45, 45);
-  ImageRotate(image90, 90);
-  ImageRotate(imageNeg90, -90);
+    ImageRotate(image45, 45);
+    ImageRotate(image90, 90);
+    ImageRotate(imageNeg90, -90);
 
-  final textures = [
-    LoadTextureFromImage(image45),
-    LoadTextureFromImage(image90),
-    LoadTextureFromImage(imageNeg90),
-  ];
-
-  int currentTexture = 0;
-
-  while (!WindowShouldClose())
-  {
+    textures = [
+      LoadTextureFromImage(image45),
+      LoadTextureFromImage(image90),
+      LoadTextureFromImage(imageNeg90),
+    ];
+  },
+  loop: (_) async {
     if (
       IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) ||
       IsKeyPressed(.KEY_RIGHT)
@@ -56,9 +53,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  textures.forEach(UnloadTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    textures.forEach(UnloadTexture);
+    CloseWindow();
+  },
+);

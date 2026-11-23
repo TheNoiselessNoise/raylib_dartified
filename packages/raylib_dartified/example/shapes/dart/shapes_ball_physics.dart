@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_ball_physics.c
-// Run it: dart run shapes_ball_physics.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -41,32 +40,32 @@ double hypot(double x, double y) {
   return max * math.sqrt(1 + r * r);
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Ball> balls;
+Ball? grabbedBall;
+late Vector2 pressOffset;
+double gravity = 100;
 
-  InitWindow(screenWidth, screenHeight, "shapes_ball_physics");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_ball_physics");
+    SetTargetFPS(60);
 
-  List<Ball> balls = [
-    .new(
-      pos: .vec2(screenWidth/2, screenHeight/2),
-      vel: .vec2(200, 200),
-      ppos: .zero(),
-      radius: 40,
-      friction: 0.99,
-      elasticity: 0.9,
-      color: .BLUE,
-      grabbed: false,
-    )
-  ];
+    balls = [
+      .new(
+        pos: .vec2(screenWidth/2, screenHeight/2),
+        vel: .vec2(200, 200),
+        ppos: .zero(),
+        radius: 40,
+        friction: 0.99,
+        elasticity: 0.9,
+        color: .BLUE,
+        grabbed: false,
+      )
+    ];
 
-  Ball? grabbedBall;
-  Vector2 pressOffset = .zero();
-  double gravity = 100;
-
-  while (!WindowShouldClose())
-  {
+    pressOffset = .zero();
+  },
+  loop: (_) async {
     double delta = GetFrameTime();
     final mousePos = GetMousePosition();
 
@@ -85,7 +84,7 @@ void main()
 
     if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) {
       if (grabbedBall != null) {
-        grabbedBall.grabbed = false;
+        grabbedBall!.grabbed = false;
         grabbedBall = null;
       }
     }
@@ -202,7 +201,8 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,7 +1,0 @@
-include: package:lints/recommended.yaml
-analyzer:
-  errors:
-    non_constant_identifier_names: ignore
-    avoid_function_literals_in_foreach_calls: ignore
-    curly_braces_in_flow_control_structures: ignore
-    constant_identifier_names: ignore

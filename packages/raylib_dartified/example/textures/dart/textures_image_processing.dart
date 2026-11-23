@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_processing.c
-// Run it: dart run textures_image_processing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -24,29 +23,30 @@ enum ImageProcess {
   static ImageProcess fromIndex(int index) => values[index % values.length];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Image imOrigin;
+late Texture texture;
+late Image imCopy;
+ImageProcess currentProcess = .NONE;
+bool textureReload = false;
+int mouseHoverRec = -1;
+late List<Rectangle> toggleRecs;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_processing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_processing");
+    SetTargetFPS(60);
 
-  final imOrigin = LoadImage("../resources/parrots.png");
-  ImageFormat(imOrigin, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
-  final texture = LoadTextureFromImage(imOrigin);
+    imOrigin = LoadImage("../resources/parrots.png");
+    ImageFormat(imOrigin, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    texture = LoadTextureFromImage(imOrigin);
 
-  var imCopy = ImageCopy(imOrigin);
-
-  ImageProcess currentProcess = .NONE;
-  bool textureReload = false;
-  int mouseHoverRec = -1;
-
-  final List<Rectangle> toggleRecs = .generate(ImageProcess.values.length,
-    (i) => .rect(40.0, 50 + 32*i, 150.0, 30.0),
-  );
-
-  while (!WindowShouldClose())
-  {
+    imCopy = ImageCopy(imOrigin);
+    
+    toggleRecs = .generate(ImageProcess.values.length,
+      (i) => .rect(40.0, 50 + 32*i, 150.0, 30.0),
+    );
+  },
+  loop: (_) async {
     for (final (i, process) in ImageProcess.values.indexed)
     {
       if (CheckCollisionPointRec(GetMousePosition(), toggleRecs[i]))
@@ -150,11 +150,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-  UnloadImage(imOrigin);
-  UnloadImage(imCopy);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    UnloadImage(imOrigin);
+    UnloadImage(imCopy);
+    CloseWindow();
+  },
+);

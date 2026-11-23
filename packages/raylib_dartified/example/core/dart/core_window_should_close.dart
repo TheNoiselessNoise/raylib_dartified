@@ -1,24 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_window_should_close.c
-// Run it: dart run core_window_should_close.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+bool exitWindowRequested = false;
+bool exitWindow = false;
 
-  InitWindow(screenWidth, screenHeight, "core_window_should_close");
-  SetTargetFPS(60);
+bool _windowShouldClose() => switch (currentMemoryPlatformType) {
+  .native => WindowShouldClose(),
+  .web => false,
+};
 
-  SetExitKey(.KEY_NULL);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_window_should_close");
+    SetTargetFPS(60);
 
-  bool exitWindowRequested = false;
-  bool exitWindow = false;
-
-  while (!exitWindow) {
-    if (WindowShouldClose() || IsKeyPressed(.KEY_ESCAPE)) exitWindowRequested = true;
+    SetExitKey(.KEY_NULL);  
+  },
+  shouldClose: (_) => exitWindow,
+  loop: (_) async {
+    if (_windowShouldClose() || IsKeyPressed(.KEY_ESCAPE)) exitWindowRequested = true;
 
     if (exitWindowRequested)
     {
@@ -38,7 +42,8 @@ void main() {
       else DrawText("Try to close the window to get confirmation message!", 120, 200, 20, LIGHTGRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

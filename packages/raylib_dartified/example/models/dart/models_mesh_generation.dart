@@ -1,65 +1,67 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_mesh_generation.c
-// Run it: dart run models_mesh_generation.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Texture texture;
+late Map<String, Model> models;
+late Vector3 position;
+late int currentModel;
 
-  InitWindow(screenWidth, screenHeight, "models_mesh_generation");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_mesh_generation");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(5, 5, 5),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(5, 5, 5),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final checked = GenImageChecked(2, 2, 1, 1, .RED, .GREEN);
-  final texture = LoadTextureFromImage(checked);
-  UnloadImage(checked);
+    final checked = GenImageChecked(2, 2, 1, 1, .RED, .GREEN);
+    texture = LoadTextureFromImage(checked);
+    UnloadImage(checked);
 
-  final models = <String, Model>{
-    "PLANE": LoadModelFromMesh(GenMeshPlane(2, 2, 4, 3)),
-    "CUBE": LoadModelFromMesh(GenMeshCube(2.0, 1.0, 2.0)),
-    "SPHERE": LoadModelFromMesh(GenMeshSphere(2, 32, 32)),
-    "HEMISPHERE": LoadModelFromMesh(GenMeshHemiSphere(2, 16, 16)),
-    "CYLINDER": LoadModelFromMesh(GenMeshCylinder(1, 2, 16)),
-    "TORUS": LoadModelFromMesh(GenMeshTorus(0.25, 4.0, 16, 32)),
-    "KNOT": LoadModelFromMesh(GenMeshKnot(1.0, 2.0, 16, 128)),
-    "POLY": LoadModelFromMesh(GenMeshPoly(5, 2.0)),
-    "Custom (triangle)": LoadModelFromMesh(GenMeshCustom()),
-  };
-  
-  // Generated meshes could be exported as .obj files
-  // ExportMesh(models[0].meshes[0], "plane.obj");
-  // ExportMesh(models[1].meshes[0], "cube.obj");
-  // ExportMesh(models[2].meshes[0], "sphere.obj");
-  // ExportMesh(models[3].meshes[0], "hemisphere.obj");
-  // ExportMesh(models[4].meshes[0], "cylinder.obj");
-  // ExportMesh(models[5].meshes[0], "torus.obj");
-  // ExportMesh(models[6].meshes[0], "knot.obj");
-  // ExportMesh(models[7].meshes[0], "poly.obj");
-  // ExportMesh(models[8].meshes[0], "custom.obj");
+    models = <String, Model>{
+      "PLANE": LoadModelFromMesh(GenMeshPlane(2, 2, 4, 3)),
+      "CUBE": LoadModelFromMesh(GenMeshCube(2.0, 1.0, 2.0)),
+      "SPHERE": LoadModelFromMesh(GenMeshSphere(2, 32, 32)),
+      "HEMISPHERE": LoadModelFromMesh(GenMeshHemiSphere(2, 16, 16)),
+      "CYLINDER": LoadModelFromMesh(GenMeshCylinder(1, 2, 16)),
+      "TORUS": LoadModelFromMesh(GenMeshTorus(0.25, 4.0, 16, 32)),
+      "KNOT": LoadModelFromMesh(GenMeshKnot(1.0, 2.0, 16, 128)),
+      "POLY": LoadModelFromMesh(GenMeshPoly(5, 2.0)),
+      "Custom (triangle)": LoadModelFromMesh(GenMeshCustom()),
+    };
+    
+    // Generated meshes could be exported as .obj files
+    // ExportMesh(models[0].meshes[0], "plane.obj");
+    // ExportMesh(models[1].meshes[0], "cube.obj");
+    // ExportMesh(models[2].meshes[0], "sphere.obj");
+    // ExportMesh(models[3].meshes[0], "hemisphere.obj");
+    // ExportMesh(models[4].meshes[0], "cylinder.obj");
+    // ExportMesh(models[5].meshes[0], "torus.obj");
+    // ExportMesh(models[6].meshes[0], "knot.obj");
+    // ExportMesh(models[7].meshes[0], "poly.obj");
+    // ExportMesh(models[8].meshes[0], "custom.obj");
 
-  // Set checked texture as default diffuse component for all models material
-  for (final model in models.values) {
-    model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
-  }
+    // Set checked texture as default diffuse component for all models material
+    for (final model in models.values) {
+      model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
+    }
 
-  final Vector3 position = .zero();
+    position = .zero();
 
-  int currentModel = models.length - 1;
-
-  while (!WindowShouldClose())
-  {
+    currentModel = models.length - 1;
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
@@ -98,13 +100,13 @@ void main()
       DrawText(modelName, 20, 10, 20, .DARKBLUE);
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-  models.values.forEach(UnloadModel);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    models.values.forEach(UnloadModel);
+    CloseWindow();
+  },
+);
 
 Mesh GenMeshCustom() {
   final mesh = Mesh();

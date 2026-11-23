@@ -1,11 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_spotlight_rendering.c
-// Run it: dart run shaders_spotlight_rendering.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_SPOTS = 3;
@@ -47,82 +45,68 @@ final class Star {
     speed = speed ?? .zero();
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture texRay;
+late List<Star> stars;
+int frameCounter = 0;
+late Shader shdrSpot;
+late List<Spot> spots;
 
-  InitWindow(screenWidth, screenHeight, "shaders_spotlight_rendering");
-  SetTargetFPS(60);
-  HideCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_spotlight_rendering");
+    SetTargetFPS(60);
+    HideCursor();
 
-  final texRay = LoadTexture("../resources/raysan.png");
+    texRay = LoadTexture("../resources/raysan.png");
 
-  List<Star> stars = .generate(MAX_STARS, (_) => .new());
+    stars = .generate(MAX_STARS, (_) => .new());
+    stars.forEach(ResetStar);
 
-  stars.forEach(ResetStar);
-
-  for (int m = 0; m < screenWidth/2.0; m++)
-  {
-    stars.forEach(UpdateStar);
-  }
-
-  int frameCounter = 0;
-
-  final shdrSpot = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/spotlight.fs",
-  );
-
-  List<Spot> spots = .generate(MAX_SPOTS, (_) => .new());
-
-  for (int i = 0; i < MAX_SPOTS; i++)
-  {
-    String posName = "spots[$i].pos";
-    String innerName = "spots[$i].inner";
-    String radiusName = "spots[$i].radius";
-
-    spots[i].positionLoc = GetShaderLocation(shdrSpot, posName);
-    spots[i].innerLoc = GetShaderLocation(shdrSpot, innerName);
-    spots[i].radiusLoc = GetShaderLocation(shdrSpot, radiusName);
-  }
-
-  SetShaderValue(shdrSpot,
-    GetShaderLocation(shdrSpot, "screenWidth"),
-    [GetScreenWidth()],
-    .SHADER_UNIFORM_FLOAT,
-  );
-
-  for (int i = 0; i < MAX_SPOTS; i++)
-  {
-    spots[i].position.x = GetRandomValue(64, screenWidth - 64).toDouble();
-    spots[i].position.y = GetRandomValue(64, screenHeight - 64).toDouble();
-    spots[i].speed.set(0, 0);
-
-    while (((spots[i].speed.x).abs() + (spots[i].speed.y).abs()) < 2)
-    {
-      spots[i].speed.x = GetRandomValue(-400, 40) / 10.0;
-      spots[i].speed.y = GetRandomValue(-400, 40) / 10.0;
+    for (int m = 0; m < screenWidth/2.0; m++) {
+      stars.forEach(UpdateStar);
     }
 
-    spots[i].inner = 28.0 * (i + 1);
-    spots[i].radius = 48.0 * (i + 1);
+    shdrSpot = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/spotlight.fs",
+    );
 
-    SetShaderValue(shdrSpot, spots[i].positionLoc,
-      spots[i].position.toArray(),
-      .SHADER_UNIFORM_VEC2,
-    );
-    SetShaderValue(shdrSpot, spots[i].innerLoc,
-      [spots[i].inner],
-      .SHADER_UNIFORM_FLOAT,
-    );
-    SetShaderValue(shdrSpot, spots[i].radiusLoc,
-      [spots[i].radius],
-      .SHADER_UNIFORM_FLOAT,
-    );
-  }
+    spots = .generate(MAX_SPOTS, (_) => .new());
 
-  while (!WindowShouldClose())
-  {
+    for (int i = 0; i < MAX_SPOTS; i++)
+    {
+      String posName = "spots[$i].pos";
+      String innerName = "spots[$i].inner";
+      String radiusName = "spots[$i].radius";
+
+      spots[i].positionLoc = GetShaderLocation(shdrSpot, posName);
+      spots[i].innerLoc = GetShaderLocation(shdrSpot, innerName);
+      spots[i].radiusLoc = GetShaderLocation(shdrSpot, radiusName);
+    }
+
+    SetShaderValue(shdrSpot, GetShaderLocation(shdrSpot, "screenWidth"), [GetScreenWidth()], .SHADER_UNIFORM_FLOAT);
+
+    for (int i = 0; i < MAX_SPOTS; i++)
+    {
+      spots[i].position.x = GetRandomValue(64, screenWidth - 64).toDouble();
+      spots[i].position.y = GetRandomValue(64, screenHeight - 64).toDouble();
+      spots[i].speed.set(0, 0);
+
+      while (((spots[i].speed.x).abs() + (spots[i].speed.y).abs()) < 2)
+      {
+        spots[i].speed.x = GetRandomValue(-400, 40) / 10.0;
+        spots[i].speed.y = GetRandomValue(-400, 40) / 10.0;
+      }
+
+      spots[i].inner = 28.0 * (i + 1);
+      spots[i].radius = 48.0 * (i + 1);
+
+      SetShaderValue(shdrSpot, spots[i].positionLoc, spots[i].position.toArray(), .SHADER_UNIFORM_VEC2);
+      SetShaderValue(shdrSpot, spots[i].innerLoc, [spots[i].inner], .SHADER_UNIFORM_FLOAT);
+      SetShaderValue(shdrSpot, spots[i].radiusLoc, [spots[i].radius], .SHADER_UNIFORM_FLOAT);
+    }
+  },
+  loop: (_) async {
     frameCounter++;
 
     stars.forEach(UpdateStar);
@@ -146,10 +130,7 @@ void main()
         if (spots[i].position.y > (screenHeight - 64)) spots[i].speed.y = -spots[i].speed.y;
       }
 
-      SetShaderValue(shdrSpot, spots[i].positionLoc,
-        spots[i].position.toArray(),
-        .SHADER_UNIFORM_VEC2,
-      );
+      SetShaderValue(shdrSpot, spots[i].positionLoc, spots[i].position.toArray(), .SHADER_UNIFORM_VEC2);
     }
 
     BeginDrawing();
@@ -195,13 +176,13 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texRay);
-  UnloadShader(shdrSpot);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texRay);
+    UnloadShader(shdrSpot);
+    CloseWindow();
+  },
+);
 
 void ResetStar(Star s)
 {
@@ -225,5 +206,3 @@ void UpdateStar(Star s)
     (s.position.y < 0) || (s.position.y > GetScreenHeight())
   ) ResetStar(s);
 }
-
-

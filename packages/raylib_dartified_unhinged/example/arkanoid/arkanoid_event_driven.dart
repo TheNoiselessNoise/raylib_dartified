@@ -1,7 +1,6 @@
 // dart run arkanoid_test.dart
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 typedef G = Arkanoid;
 
@@ -72,8 +71,8 @@ final class BallEntity extends Entity<G> {
     ));
     add(CVelocity(app,
       velocity: .vec2(
-        (rl.rand() * 300) * (rl.rand() < .5 ? 1 : -1),
-        (rl.rand() * 300) * (rl.rand() < .5 ? 1 : -1)
+        (rand() * 300) * (rand() < .5 ? 1 : -1),
+        (rand() * 300) * (rand() < .5 ? 1 : -1)
       ),
       linearDamping: 0,
     ));
@@ -243,7 +242,7 @@ final class ArkanoidEventDriven extends UnhingedRaylibApp<G> {
   bool shouldClose(Raylib rl) => app.shouldAppExit || super.shouldClose(rl);
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   ArkanoidEventDriven(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib'
 );

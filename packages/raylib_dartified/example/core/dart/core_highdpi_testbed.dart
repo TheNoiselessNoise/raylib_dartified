@@ -1,26 +1,23 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_highdpi_testbed.c
-// Run it: dart run core_highdpi_testbed.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 scaleDpi;
+late Vector2 mousePos;
+late int currentMonitor;
+late Vector2 windowPos;
+int gridSpacing = 40;
 
-  SetConfigFlags([.FLAG_WINDOW_HIGHDPI, .FLAG_WINDOW_RESIZABLE]);
-  InitWindow(screenWidth, screenHeight, "core_highdpi_testbed");
-  SetTargetFPS(60);
-
-  var scaleDpi = GetWindowScaleDPI();
-  var mousePos = GetMousePosition();
-  int currentMonitor = GetCurrentMonitor();
-  var windowPos = GetWindowPosition();
-
-  int gridSpacing = 40;
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_HIGHDPI, .FLAG_WINDOW_RESIZABLE]);
+    InitWindow(screenWidth, screenHeight, "core_highdpi_testbed");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     mousePos = GetMousePosition();
     currentMonitor = GetCurrentMonitor();
     scaleDpi = GetWindowScaleDPI();
@@ -65,7 +62,8 @@ void main() {
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

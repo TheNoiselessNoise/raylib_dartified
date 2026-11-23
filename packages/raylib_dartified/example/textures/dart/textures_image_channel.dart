@@ -1,62 +1,71 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_channel.c
-// Run it: dart run textures_image_channel.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture fudesumiTexture;
+late Texture textureAlpha;
+late Texture textureRed;
+late Texture textureGreen;
+late Texture textureBlue;
+late Texture backgroundTexture;
+late Rectangle fudesumiRec;
+late Rectangle fudesumiPos;
+late Rectangle redPos;
+late Rectangle greenPos;
+late Rectangle bluePos;
+late Rectangle alphaPos;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_channel");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_channel");
+    SetTargetFPS(60);
 
-  final fudesumiImage = LoadImage("../resources/fudesumi.png");
+    final fudesumiImage = LoadImage("../resources/fudesumi.png");
 
-  final imageAlpha = ImageFromChannel(fudesumiImage, 3);
-  ImageAlphaMask(imageAlpha, imageAlpha);
+    final imageAlpha = ImageFromChannel(fudesumiImage, 3);
+    ImageAlphaMask(imageAlpha, imageAlpha);
 
-  final imageRed = ImageFromChannel(fudesumiImage, 0);
-  ImageAlphaMask(imageRed, imageAlpha);
+    final imageRed = ImageFromChannel(fudesumiImage, 0);
+    ImageAlphaMask(imageRed, imageAlpha);
 
-  final imageGreen = ImageFromChannel(fudesumiImage, 1);
-  ImageAlphaMask(imageGreen, imageAlpha);
+    final imageGreen = ImageFromChannel(fudesumiImage, 1);
+    ImageAlphaMask(imageGreen, imageAlpha);
 
-  final imageBlue = ImageFromChannel(fudesumiImage, 2);
-  ImageAlphaMask(imageBlue, imageAlpha);
+    final imageBlue = ImageFromChannel(fudesumiImage, 2);
+    ImageAlphaMask(imageBlue, imageAlpha);
 
-  final backgroundImage = GenImageChecked(
-    screenWidth, screenHeight,
-    screenWidth/20, screenHeight/20,
-    .ORANGE, .YELLOW
-  );
+    final backgroundImage = GenImageChecked(
+      screenWidth, screenHeight,
+      screenWidth/20, screenHeight/20,
+      .ORANGE, .YELLOW
+    );
 
-  final fudesumiTexture = LoadTextureFromImage(fudesumiImage);
-  final textureAlpha = LoadTextureFromImage(imageAlpha);
-  final textureRed = LoadTextureFromImage(imageRed);
-  final textureGreen = LoadTextureFromImage(imageGreen);
-  final textureBlue = LoadTextureFromImage(imageBlue);
-  final backgroundTexture = LoadTextureFromImage(backgroundImage);
+    fudesumiTexture = LoadTextureFromImage(fudesumiImage);
+    textureAlpha = LoadTextureFromImage(imageAlpha);
+    textureRed = LoadTextureFromImage(imageRed);
+    textureGreen = LoadTextureFromImage(imageGreen);
+    textureBlue = LoadTextureFromImage(imageBlue);
+    backgroundTexture = LoadTextureFromImage(backgroundImage);
 
-  UnloadImage(fudesumiImage);
-  UnloadImage(imageAlpha);
-  UnloadImage(imageRed);
-  UnloadImage(imageGreen);
-  UnloadImage(imageBlue);
-  UnloadImage(backgroundImage);
+    UnloadImage(fudesumiImage);
+    UnloadImage(imageAlpha);
+    UnloadImage(imageRed);
+    UnloadImage(imageGreen);
+    UnloadImage(imageBlue);
+    UnloadImage(backgroundImage);
 
-  final Rectangle fudesumiRec = .rect(0, 0, fudesumiImage.width, fudesumiImage.height);
-  final Rectangle fudesumiPos = .rect(50, 10, fudesumiImage.width*0.8, fudesumiImage.height*0.8);
-  final Rectangle redPos = .rect(410, 10, fudesumiPos.width / 2, fudesumiPos.height / 2 );
-  final Rectangle greenPos = .rect(600, 10, fudesumiPos.width / 2, fudesumiPos.height / 2 );
-  final Rectangle bluePos = .rect(410, 230, fudesumiPos.width / 2, fudesumiPos.height / 2 );
-  final Rectangle alphaPos = .rect(600, 230, fudesumiPos.width / 2, fudesumiPos.height / 2 );
-
-  while (!WindowShouldClose())
-  {
+    fudesumiRec = .rect(0, 0, fudesumiImage.width, fudesumiImage.height);
+    fudesumiPos = .rect(50, 10, fudesumiImage.width*0.8, fudesumiImage.height*0.8);
+    redPos = .rect(410, 10, fudesumiPos.width / 2, fudesumiPos.height / 2 );
+    greenPos = .rect(600, 10, fudesumiPos.width / 2, fudesumiPos.height / 2 );
+    bluePos = .rect(410, 230, fudesumiPos.width / 2, fudesumiPos.height / 2 );
+    alphaPos = .rect(600, 230, fudesumiPos.width / 2, fudesumiPos.height / 2 );
+  },
+  loop: (_) async {
     BeginDrawing();
 
       final Vector2 origin = .zero();
@@ -70,14 +79,14 @@ void main()
       DrawTexturePro(textureAlpha, fudesumiRec, alphaPos, origin, 0, .WHITE);
 
     EndDrawing();
-  }
-
-  UnloadTexture(backgroundTexture);
-  UnloadTexture(fudesumiTexture);
-  UnloadTexture(textureRed);
-  UnloadTexture(textureGreen);
-  UnloadTexture(textureBlue);
-  UnloadTexture(textureAlpha);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(backgroundTexture);
+    UnloadTexture(fudesumiTexture);
+    UnloadTexture(textureRed);
+    UnloadTexture(textureGreen);
+    UnloadTexture(textureBlue);
+    UnloadTexture(textureAlpha);
+    CloseWindow();
+  },
+);

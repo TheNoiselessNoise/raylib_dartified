@@ -1,52 +1,51 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_vertex_displacement.c
-// Run it: dart run shaders_vertex_displacement.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Shader shader;
+late Texture perlinNoiseMap;
+late Model planeModel;
+double time = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "shaders_vertex_displacement");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_vertex_displacement");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(20.0, 5.0, -20.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 60.0,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(20.0, 5.0, -20.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 60.0,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final shader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/vertex_displacement.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/vertex_displacement.fs",
-  );
+    shader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/vertex_displacement.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/vertex_displacement.fs",
+    );
 
-  final perlinNoiseImage = GenImagePerlinNoise(512, 512, 0, 0, 1.0);
-  final perlinNoiseMap = LoadTextureFromImage(perlinNoiseImage);
-  UnloadImage(perlinNoiseImage);
+    final perlinNoiseImage = GenImagePerlinNoise(512, 512, 0, 0, 1.0);
+    perlinNoiseMap = LoadTextureFromImage(perlinNoiseImage);
+    UnloadImage(perlinNoiseImage);
 
-  int perlinNoiseMapLoc = GetShaderLocation(shader, "perlinNoiseMap");
-  rlEnableShader(shader.id);
-  rlActiveTextureSlot(1);
-  rlEnableTexture(perlinNoiseMap.id);
-  rlSetUniformSampler(perlinNoiseMapLoc, 1);
-  
-  final planeMesh = GenMeshPlane(50, 50, 50, 50);
-  final planeModel = LoadModelFromMesh(planeMesh);
-  planeModel.materials[0].shader = shader;
-
-  double time = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    int perlinNoiseMapLoc = GetShaderLocation(shader, "perlinNoiseMap");
+    rlEnableShader(shader.id);
+    rlActiveTextureSlot(1);
+    rlEnableTexture(perlinNoiseMap.id);
+    rlSetUniformSampler(perlinNoiseMapLoc, 1);
+    
+    final planeMesh = GenMeshPlane(50, 50, 50, 50);
+    planeModel = LoadModelFromMesh(planeMesh);
+    planeModel.materials[0].shader = shader;
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FREE);
 
     time += GetFrameTime();
@@ -80,11 +79,11 @@ void main()
       DrawFPS(10, 40);
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  UnloadModel(planeModel);
-  UnloadTexture(perlinNoiseMap);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    UnloadModel(planeModel);
+    UnloadTexture(perlinNoiseMap);
+    CloseWindow();
+  },
+);

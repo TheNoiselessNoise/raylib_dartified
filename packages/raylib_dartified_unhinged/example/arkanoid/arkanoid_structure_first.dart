@@ -1,7 +1,6 @@
 // Run it: dart run arkanoid_structure_first.dart
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 /*
   A fully-featured Arkanoid clone built in the UNHINGED Framework.
@@ -217,7 +216,7 @@ final class BrickEntity extends Entity<G> {
 
   @override
   void onPostUpdate(double dt) => on<CRectCollider<G>>((c) {
-    final value = rl.Remap(health, maxHealth, 0, 1, 0);
+    final value = RaylibFunctions.Remap(health, maxHealth, 0, 1, 0);
     c.debugColor = Fade(color, value);
   });
 
@@ -750,7 +749,7 @@ final class ArkanoidScene extends DrawScene<G> {
   void _setupLevel3() {
     for (int y = 0; y < 4; y++) {
       for (int x = 0; x < 11; x++) {
-        if (rl.rand() > .85) {
+        if (rand() > .85) {
           _addPowerUpBrick(x, y, healthMultiplier: 1.0);
         } else {
           _addBrick(x, y, health: 2, color: .ORANGE);
@@ -766,7 +765,7 @@ final class ArkanoidScene extends DrawScene<G> {
     for (int y = 0; y < 5; y++) {
       for (int x = 0; x < 11; x++) {
         if ((x - cx).abs() + (y - cy).abs() <= 4) {
-          if (rl.rand() > .80) {
+          if (rand() > .80) {
             _addPowerUpBrick(x, y, healthMultiplier: 1.0);
           } else {
             _addBrick(x, y, health: 3, color: .VIOLET);
@@ -782,7 +781,7 @@ final class ArkanoidScene extends DrawScene<G> {
       final int start = y;
       final int end = 10 - y;
       for (int x = start; x <= end; x++) {
-        if (rl.rand() > .78) {
+        if (rand() > .78) {
           _addPowerUpBrick(x, y, healthMultiplier: 1.5);
         } else {
           _addBrick(x, y, health: (3 + y).toDouble(), color: .RED);
@@ -800,7 +799,7 @@ final class ArkanoidScene extends DrawScene<G> {
     final double healthMult = 1.0 + (level - 6) * 0.2;
 
     // pick a random layout style each level
-    final int style = (rl.rand() * 4).toInt();
+    final int style = (rand() * 4).toInt();
 
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < cols; x++) {
@@ -808,13 +807,13 @@ final class ArkanoidScene extends DrawScene<G> {
           0 => true, // full grid
           1 => (x + y) % 2 == 0, // checkerboard
           2 => (x - 5).abs() + (y - rows ~/ 2).abs() <= 3 + level % 3, // growing diamond
-          3 => rl.rand() > skipChance, // random gaps
+          3 => rand() > skipChance, // random gaps
           _ => true,
         };
 
         if (!place) continue;
 
-        if (rl.rand() < powerUpChance) {
+        if (rand() < powerUpChance) {
           _addPowerUpBrick(x, y, healthMultiplier: healthMult);
         } else {
           final double health = 2 + level * 0.5;
@@ -920,7 +919,7 @@ final class ArkanoidStructureFirst extends UnhingedRaylibApp<G> {
   G create(backend) => G(backend);
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   ArkanoidStructureFirst(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib'
 );

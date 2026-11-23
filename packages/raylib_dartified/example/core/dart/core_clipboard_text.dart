@@ -1,83 +1,72 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_clipboard_text.c
-// Run it: dart run core_clipboard_text.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final sampleTexts = [
+  "Hello from raylib!",
+  "The quick brown fox jumps over the lazy dog",
+  "Clipboard operations are useful!",
+  "raylib is a simple and easy-to-use library",
+  "Copy and paste me!"
+];
 
-  InitWindow(screenWidth, screenHeight, "core_clipboard_text");
-  SetTargetFPS(60);
+String input = sampleTexts[0];
+String clipboardText = input;
+bool textBoxEditMode = false;
+bool btnCutPressed = false;
+bool btnCopyPressed = false;
+bool btnPastePressed = false;
+bool btnClearPressed = false;
+bool btnRandomPressed = false;
 
-  final sampleTexts = [
-    "Hello from raylib!",
-    "The quick brown fox jumps over the lazy dog",
-    "Clipboard operations are useful!",
-    "raylib is a simple and easy-to-use library",
-    "Copy and paste me!"
-  ];
+void doCut() {
+  SetClipboardText(input);
+  clipboardText = GetClipboardText();
+  input = '';
+}
 
-  String input = sampleTexts[0];
-  String clipboardText = input;
+void doCopy() {
+  SetClipboardText(input);
+  clipboardText = GetClipboardText();
+}
 
-  bool textBoxEditMode = false;
+void doPaste() {
+  clipboardText = GetClipboardText();
+  input = clipboardText;
+}
 
-  bool btnCutPressed = false;
-  bool btnCopyPressed = false;
-  bool btnPastePressed = false;
-  bool btnClearPressed = false;
-  bool btnRandomPressed = false;
+void doClear() => input = '';
 
-  GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SIZE, 20);
-  GuiSetIconScale(2);
+void doRandom() {
+  input = sampleTexts[GetRandomValue(0, sampleTexts.length - 1)];
+}
 
-  void doCut() {
-    SetClipboardText(input);
-    clipboardText = GetClipboardText();
-    input = '';
-  }
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_clipboard_text");
+    SetTargetFPS(60);
 
-  void doCopy() {
-    SetClipboardText(input);
-    clipboardText = GetClipboardText();
-  }
-
-  void doPaste() {
-    clipboardText = GetClipboardText();
-    input = clipboardText;
-  }
-
-  void doClear() => input = '';
-
-  void doRandom() {
-    input = sampleTexts[GetRandomValue(0, sampleTexts.length - 1)];
-  }
-
-  while (!WindowShouldClose()) {
+    GuiSetStyle(.DEFAULT, GuiDefaultProperty.TEXT_SIZE, 20);
+    GuiSetIconScale(2);
+  },
+  loop: (_) async {
     if (btnCutPressed) doCut();
     if (btnCopyPressed) doCopy();
     if (btnPastePressed) doPaste();
     if (btnClearPressed) doClear();
     if (btnRandomPressed) doRandom();
 
-    if (
-      IsKeyDown(.KEY_LEFT_CONTROL) ||
-      IsKeyDown(.KEY_RIGHT_CONTROL)
-    ) {
-      if (IsKeyPressed(.KEY_X))
-      {
+    if (IsKeyDown(.KEY_LEFT_CONTROL) || IsKeyDown(.KEY_RIGHT_CONTROL)) {
+      if (IsKeyPressed(.KEY_X)) {
         SetClipboardText(input);
         input = '';
       }
 
-      if (IsKeyPressed(.KEY_C))
-        SetClipboardText(input);
-
-      if (IsKeyPressed(.KEY_V))
-        doPaste();
+      if (IsKeyPressed(.KEY_C)) SetClipboardText(input);
+      if (IsKeyPressed(.KEY_V)) doPaste();
     }
 
     BeginDrawing();
@@ -148,7 +137,8 @@ void main() {
     GuiSetState(.STATE_NORMAL);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

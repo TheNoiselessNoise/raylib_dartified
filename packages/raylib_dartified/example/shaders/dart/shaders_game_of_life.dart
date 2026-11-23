@@ -1,10 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_game_of_life.c
-// Run it: dart run shaders_game_of_life.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
@@ -19,95 +17,90 @@ final class PresetPattern {
   PresetPattern(this.name, double x, double y) : position = .vec2(x, y);
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+const int menuWidth = 100;
+const int windowWidth = screenWidth - menuWidth;
+const int windowHeight = screenHeight;
+const int worldWidth = 2048;
+const int worldHeight = 2048;
+const int randomTiles = 8;
+late Rectangle worldRectSource;
+late Rectangle worldRectDest;
+late Rectangle textureOnScreen;
+late List<PresetPattern> presetPatterns;
+int zoom = 1;
+double offsetX = (worldWidth - windowWidth)/2.0;
+double offsetY = (worldHeight - windowHeight)/2.0;
+int framesPerStep = 1;
+int frame = 0;
+int preset = -1;
+int mode = MODE_RUN;
+bool buttonZoomIn = false;
+bool buttonZomOut = false;
+bool buttonFaster = false;
+bool buttonSlower = false;
+late Shader shdrGameOfLife;
+late int resolutionLoc;
+late Vector2 resolution;
+late RenderTexture world1;
+late RenderTexture world2;
+late Image startPattern;
+late RenderTexture currentWorld;
+late RenderTexture previousWorld;
+Image? imageToDraw;
+late Image pattern;
+int firstColor = -1;
+late Vector2 prevMousePos;
 
-  InitWindow(screenWidth, screenHeight, "shaders_game_of_life");
-  SetTargetFPS(60);
-
-  const int menuWidth = 100;
-  const int windowWidth = screenWidth - menuWidth;
-  const int windowHeight = screenHeight;
-
-  const int worldWidth = 2048;
-  const int worldHeight = 2048;
-
-  const int randomTiles = 8;
-
-  final Rectangle worldRectSource = .rect(0, 0, worldWidth, -worldHeight);
-  final Rectangle worldRectDest = .rect(0, 0, worldWidth, worldHeight);
-  final Rectangle textureOnScreen = .rect(0, 0, windowWidth, windowHeight);
-
-  final presetPatterns = <PresetPattern>[
-    .new("Glider", 0.5, 0.5), .new("R-pentomino", 0.5, 0.5),
-    .new("Acorn", 0.5, 0.5), .new("Spaceships", 0.1, 0.5),
-    .new("Still lifes", 0.5, 0.5), .new("Oscillators", 0.5, 0.5),
-    .new("Puffer train", 0.1, 0.5), .new("Glider Gun", 0.2, 0.2),
-    .new("Breeder", 0.1, 0.5), .new("Random", 0.5, 0.5)
-  ];
-
-  int zoom = 1;
-  double offsetX = (worldWidth - windowWidth)/2.0;
-  double offsetY = (worldHeight - windowHeight)/2.0;
-  int framesPerStep = 1;
-  int frame = 0;
-
-  int preset = -1;
-  int mode = MODE_RUN;
-  bool buttonZoomIn = false;
-  bool buttonZomOut = false;
-  bool buttonFaster = false;
-  bool buttonSlower = false;
-
-  final shdrGameOfLife = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/game_of_life.fs",
-  );
-
-  int resolutionLoc = GetShaderLocation(shdrGameOfLife, "resolution");
-  final Vector2 resolution = .vec2(worldWidth, worldHeight);
-  SetShaderValue(
-    shdrGameOfLife, resolutionLoc, resolution.toArray(),
-    .SHADER_UNIFORM_VEC2,
-  );
-
-  final world1 = LoadRenderTexture(worldWidth, worldHeight);
-  final world2 = LoadRenderTexture(worldWidth, worldHeight);
-
-  BeginTextureMode(world2);
-    ClearBackground(.RAYWHITE);
-  EndTextureMode();
-
-  var startPattern = LoadImage("../resources/game_of_life/r_pentomino.png");
-  UpdateTextureRec(
-    world2.texture,
-    .rect(
-      worldWidth/2.0, worldHeight/2.0,
-      startPattern.width, startPattern.height
-    ),
-    .fromList(startPattern.dataView),
-  );
-  UnloadImage(startPattern);
-
-  var currentWorld = world2;
-  var previousWorld = world1;
-
-  Image? imageToDraw;
-  late Image pattern;
-
-  int firstColor = -1;
-  Vector2 prevMousePos = .zero();
-
-  void FreeImageToDraw() {
-    if (imageToDraw != null) {
-      UnloadImage(imageToDraw!);
-      imageToDraw = null;
-    }
+void FreeImageToDraw() {
+  if (imageToDraw != null) {
+    UnloadImage(imageToDraw!);
+    imageToDraw = null;
   }
+}
 
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_game_of_life");
+    SetTargetFPS(60);
+
+    worldRectSource = .rect(0, 0, worldWidth, -worldHeight);
+    worldRectDest = .rect(0, 0, worldWidth, worldHeight);
+    textureOnScreen = .rect(0, 0, windowWidth, windowHeight);
+
+    presetPatterns = [
+      .new("Glider", 0.5, 0.5), .new("R-pentomino", 0.5, 0.5),
+      .new("Acorn", 0.5, 0.5), .new("Spaceships", 0.1, 0.5),
+      .new("Still lifes", 0.5, 0.5), .new("Oscillators", 0.5, 0.5),
+      .new("Puffer train", 0.1, 0.5), .new("Glider Gun", 0.2, 0.2),
+      .new("Breeder", 0.1, 0.5), .new("Random", 0.5, 0.5)
+    ];
+
+    shdrGameOfLife = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/game_of_life.fs",
+    );
+
+    resolutionLoc = GetShaderLocation(shdrGameOfLife, "resolution");
+    resolution = .vec2(worldWidth, worldHeight);
+    SetShaderValue(shdrGameOfLife, resolutionLoc, resolution.toArray(), .SHADER_UNIFORM_VEC2);
+
+    world1 = LoadRenderTexture(worldWidth, worldHeight);
+    world2 = LoadRenderTexture(worldWidth, worldHeight);
+
+    BeginTextureMode(world2);
+      ClearBackground(.RAYWHITE);
+    EndTextureMode();
+
+    startPattern = LoadImage("../resources/game_of_life/r_pentomino.png");
+    UpdateTextureRec(world2.texture, .rect(worldWidth/2.0, worldHeight/2.0, startPattern.width, startPattern.height), .fromList(startPattern.dataView));
+    UnloadImage(startPattern);
+
+    currentWorld = world2;
+    previousWorld = world1;
+
+    prevMousePos = .zero();
+  },
+  loop: (_) async {
     frame++;
 
     final mouseWheelMove = GetMouseWheelMove();
@@ -314,11 +307,14 @@ void main()
         if (GuiButton(.rect(710.0, 70.0 + 18*i, 80.0, 16.0), presetPatterns[i].name) != .RESULT_NONE)
           preset = i;
 
-      (_, mode) = GuiToggleGroup(
-        .rect(710, 258, 80, 16),
-        "Run\nPause\nDraw",
-        mode,
-      );
+      {
+        final (_, newValue) = GuiToggleGroup(
+          .rect(710, 258, 80, 16),
+          "Run\nPause\nDraw",
+          mode,
+        );
+        mode = newValue;
+      }
 
       DrawText(
         "Zoom: $zoom",
@@ -337,13 +333,12 @@ void main()
       DrawFPS(712, 426);
 
     EndDrawing();
-  }
-
-  UnloadShader(shdrGameOfLife);
-  UnloadRenderTexture(world1);
-  UnloadRenderTexture(world2);
-
-  FreeImageToDraw();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shdrGameOfLife);
+    UnloadRenderTexture(world1);
+    UnloadRenderTexture(world2);
+    FreeImageToDraw();
+    CloseWindow();
+  },
+);

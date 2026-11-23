@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_penrose_tile.c
-// Run it: dart run shapes_penrose_tile.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -27,25 +26,22 @@ final class PenroseLSystem {
 
 final List<TurtleState> turtleStack = .generate(TURTLE_STACK_MAX_SIZE, (_) => .new());
 int turtleTop = -1;
+double drawLength = 460.0;
+int minGenerations = 0;
+int maxGenerations = 4;
+int generations = 0;
+late PenroseLSystem ls;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shapes_penrose_tile");
+    SetTargetFPS(120);
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shapes_penrose_tile");
-  SetTargetFPS(120);
-
-  double drawLength = 460.0;
-  int minGenerations = 0;
-  int maxGenerations = 4;
-  int generations = 0;
-
-  var ls = CreatePenroseLSystem(drawLength*(generations/maxGenerations));
-  for (int i = 0; i < generations; i++) BuildProductionStep(ls);
-
-  while (!WindowShouldClose())
-  {
+    ls = CreatePenroseLSystem(drawLength*(generations/maxGenerations));
+    for (int i = 0; i < generations; i++) BuildProductionStep(ls);
+  },
+  loop: (_) async {
     bool rebuild = false;
     if (IsKeyPressed(.KEY_UP))
     {
@@ -81,10 +77,11 @@ void main()
       DrawText("generations: $generations", 10, 50, 20, .DARKGRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void PushTurtleState(TurtleState state)
 {
@@ -161,7 +158,7 @@ void DrawPenroseLSystem(PenroseLSystem ls)
       for (int j = 0; j < repeats; j++)
       {
         final startPosWorld = turtle.origin.copy();
-        final radAngle = rl.DEG2RAD*turtle.angle;
+        final radAngle = DEG2RAD*turtle.angle;
         turtle.origin.x += ls.drawLength*math.cos(radAngle);
         turtle.origin.y += ls.drawLength*math.sin(radAngle);
 

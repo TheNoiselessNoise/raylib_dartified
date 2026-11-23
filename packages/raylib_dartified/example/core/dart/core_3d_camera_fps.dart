@@ -1,21 +1,14 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_camera_fps.c
-// Run it: dart run core_3d_camera_fps.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 final class Body {
   Vector3 position;
   Vector3 velocity;
   Vector3 dir;
   bool isGrounded;
-
-  Body({
-    required this.position,
-    required this.velocity,
-    required this.dir,
-    required this.isGrounded,
-  });
+  Body({required this.position, required this.velocity, required this.dir, required this.isGrounded});
 }
 
 const double GRAVITY = 32.0;
@@ -47,38 +40,33 @@ final Vector2 lean = .zero();
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
 
-  final camera = Camera3D(
-    position: .vec3(
-      player.position.x,
-      player.position.y + (BOTTOM_HEIGHT + headLerp),
-      player.position.z,
-    ),
-    fovy: 60,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_3d_camera_fps");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  InitWindow(screenWidth, screenHeight, "core_3d_camera_fps");
-  SetTargetFPS(60);
-  DisableCursor();
+    camera = .new(
+      position: .vec3(
+        player.position.x,
+        player.position.y + (BOTTOM_HEIGHT + headLerp),
+        player.position.z,
+      ),
+      fovy: 60,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  UpdateCameraFPS(camera);
-
-  while (!WindowShouldClose()) {
+    UpdateCameraFPS(camera);
+  },
+  loop: (_) async {
     final mouseDelta = GetMouseDelta();
     lookRotation.x -= mouseDelta.x*sensitivity.x;
     lookRotation.y += mouseDelta.y*sensitivity.y;
 
-    int sideway = (
-      IsKeyDown(.KEY_D).toInt() -
-      IsKeyDown(.KEY_A).toInt()
-    );
-    int forward = (
-      IsKeyDown(.KEY_W).toInt() -
-      IsKeyDown(.KEY_S).toInt()
-    );
+    int sideway = (IsKeyDown(.KEY_D).toInt() - IsKeyDown(.KEY_A).toInt());
+    int forward = (IsKeyDown(.KEY_W).toInt() - IsKeyDown(.KEY_S).toInt());
     bool crouching = IsKeyDown(.KEY_LEFT_CONTROL);
     bool jumping = IsKeyPressed(.KEY_SPACE);
     UpdateBody(player, lookRotation.x, sideway, forward, jumping, crouching);
@@ -124,10 +112,11 @@ void main() {
       DrawText("- Velocity Len: (${velLen.f3})", 15, 60, 10, .BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void UpdateCameraFPS(Camera3D camera)
 {

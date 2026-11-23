@@ -1,63 +1,51 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_basic_lighting.c
-// Run it: dart run shaders_basic_lighting.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Shader shader;
+late List<Light> lights;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_basic_lighting");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_basic_lighting");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(2, 4, 6),
-    target: .vec3(0, 0.5, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(2, 4, 6),
+      target: .vec3(0, 0.5, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final shader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/lighting.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/lighting.fs",
-  );
+    shader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/lighting.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/lighting.fs",
+    );
 
-  shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    GetShaderLocation(shader, "viewPos");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value]
+      = GetShaderLocation(shader, "viewPos");
 
-  SetShaderValue(shader,
-    GetShaderLocation(shader, "ambient"),
-    [0.1, 0.1, 0.1, 1.0],
-    .SHADER_UNIFORM_VEC4,
-  );
+    SetShaderValue(shader,
+      GetShaderLocation(shader, "ambient"),
+      [0.1, 0.1, 0.1, 1.0],
+      .SHADER_UNIFORM_VEC4,
+    );
 
-  final lights = <Light>[];
-
-  lights.add(CreateLight(.LIGHT_POINT,
-    .vec3(-2, 1, -2), .zero(), .YELLOW, shader,
-  ));
-
-  lights.add(CreateLight(.LIGHT_POINT,
-    .vec3(2, 1, 2), .zero(), .RED, shader,
-  ));
-
-  lights.add(CreateLight(.LIGHT_POINT,
-    .vec3(-2, 1, 2), .zero(), .GREEN, shader,
-  ));
-
-  lights.add(CreateLight(.LIGHT_POINT,
-    .vec3(2, 1, -2), .zero(), .BLUE, shader,
-  ));
-
-  while (!WindowShouldClose())
-  {
+    lights = [
+      CreateLight(.LIGHT_POINT, .vec3(-2, 1, -2), .zero(), .YELLOW, shader),
+      CreateLight(.LIGHT_POINT, .vec3(2, 1, 2), .zero(), .RED, shader),
+      CreateLight(.LIGHT_POINT, .vec3(-2, 1, 2), .zero(), .GREEN, shader),
+      CreateLight(.LIGHT_POINT, .vec3(2, 1, -2), .zero(), .BLUE, shader),
+    ];
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     SetShaderValue(
@@ -109,9 +97,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

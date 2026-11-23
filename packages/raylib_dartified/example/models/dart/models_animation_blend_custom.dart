@@ -1,53 +1,52 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_animation_blend_custom.c
-// Run it: dart run models_animation_blend_custom.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Vector3 position;
+late Shader skinningShader;
+late List<ModelAnimation> anims;
+int animIndex0 = 2;
+int animIndex1 = 3;
+int animCurrentFrame0 = 0;
+int animCurrentFrame1 = 0;
+bool upperBodyBlend = true;
 
-  InitWindow(screenWidth, screenHeight, "models_animation_blend_custom");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_animation_blend_custom");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(4.0, 4.0, 4.0),
-    target: .vec3(0.0, 1.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(4.0, 4.0, 4.0),
+      target: .vec3(0.0, 1.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/gltf/greenman.glb");
-  final Vector3 position = .vec3(0.0, 0.0, 0.0);
+    model = LoadModel("../resources/models/gltf/greenman.glb");
+    position = .vec3(0.0, 0.0, 0.0);
 
-  final skinningShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.fs"
-  );
-  model.materials[1].shader = skinningShader;
+    skinningShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.fs"
+    );
+    model.materials[1].shader = skinningShader;
 
-  final anims = LoadModelAnimations("../resources/models/gltf/greenman.glb");
+    anims = LoadModelAnimations("../resources/models/gltf/greenman.glb");
 
-  int animIndex0 = 2;
-  int animIndex1 = 3;
-  int animCurrentFrame0 = 0;
-  int animCurrentFrame1 = 0;
-
-  if (animIndex0 >= anims.length) animIndex0 = 0;
-  if (animIndex1 >= anims.length) animIndex1 = (anims.length > 1) ? 1 : 0;
-
-  bool upperBodyBlend = true;
-
-  while (!WindowShouldClose())
-  {
+    if (animIndex0 >= anims.length) animIndex0 = 0;
+    if (animIndex1 >= anims.length) animIndex1 = (anims.length > 1) ? 1 : 0;
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsKeyPressed(.KEY_SPACE))
@@ -91,14 +90,14 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModelAnimations(anims);
-  UnloadModel(model);
-  UnloadShader(skinningShader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModelAnimations(anims);
+    UnloadModel(model);
+    UnloadShader(skinningShader);
+    CloseWindow();
+  },
+);
 
 bool IsUpperBodyBone(String boneName)
 {

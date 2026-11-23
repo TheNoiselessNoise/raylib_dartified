@@ -1,40 +1,38 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_sprite_explosion.c
-// Run it: dart run textures_sprite_explosion.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int NUM_FRAMES_PER_LINE = 5;
 const int NUM_LINES = 5;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Sound fxBoom;
+late Texture explosion;
+late double frameWidth;
+late double frameHeight;
+int currentFrame = 0;
+int currentLine = 0;
+late Rectangle frameRec;
+late Vector2 position;
+bool active = false;
+int framesCounter = 0;
 
-  InitWindow(screenWidth, screenHeight, "textures_sprite_explosion");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_sprite_explosion");
+    InitAudioDevice();
+    SetTargetFPS(60);
 
-  InitAudioDevice();
-
-  final fxBoom = LoadSound("../resources/boom.wav");
-
-  final explosion = LoadTexture("../resources/explosion.png");
-
-  final frameWidth = explosion.width/NUM_FRAMES_PER_LINE;
-  final frameHeight = explosion.height/NUM_LINES;
-  int currentFrame = 0;
-  int currentLine = 0;
-
-  final Rectangle frameRec = .rect(0, 0, frameWidth, frameHeight);
-  Vector2 position = .vec2(0.0, 0.0);
-
-  bool active = false;
-  int framesCounter = 0;
-
-  while (!WindowShouldClose())
-  {
+    fxBoom = LoadSound("../resources/boom.wav");
+    explosion = LoadTexture("../resources/explosion.png");
+    frameWidth = explosion.width/NUM_FRAMES_PER_LINE;
+    frameHeight = explosion.height/NUM_LINES;
+    frameRec = .rect(0, 0, frameWidth, frameHeight);
+    position = .vec2(0.0, 0.0);
+  },
+  loop: (_) async {
     if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) && !active)
     {
       position = GetMousePosition();
@@ -81,12 +79,11 @@ void main()
         DrawTextureRec(explosion, frameRec, position, .WHITE);
 
     EndDrawing();
-  }
-
-  UnloadTexture(explosion);
-  UnloadSound(fxBoom);
-
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(explosion);
+    UnloadSound(fxBoom);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

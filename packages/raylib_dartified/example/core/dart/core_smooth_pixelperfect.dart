@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_smooth_pixelperfect.c
-// Run it: dart run core_smooth_pixelperfect.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -10,35 +9,35 @@ const int virtualScreenWidth = 160;
 const int virtualScreenHeight = 90; 
 const double virtualRatio = screenWidth/virtualScreenWidth;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera2D worldSpaceCamera;
+late Camera2D screenSpaceCamera;
+late RenderTexture target;
+late Rectangle rec01;
+late Rectangle rec02;
+late Rectangle rec03;
+late Rectangle sourceRec;
+late Rectangle destRec;
+late Vector2 origin;
+double rotation = 0.0;
+double cameraX = 0.0;
+double cameraY = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "core_smooth_pixelperfect");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_smooth_pixelperfect");
+    SetTargetFPS(60);
 
-  final worldSpaceCamera = Camera2D();
-  worldSpaceCamera.zoom = 1.0;
-
-  final screenSpaceCamera = Camera2D();
-  screenSpaceCamera.zoom = 1.0;
-
-  final target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
-
-  final Rectangle rec01 = .rect(70.0, 35.0, 20.0, 20.0);
-  final Rectangle rec02 = .rect(90.0, 55.0, 30.0, 10.0);
-  final Rectangle rec03 = .rect(80.0, 65.0, 15.0, 25.0);
-
-  final Rectangle sourceRec = .rect(0.0, 0.0, target.texture.width, -target.texture.height);
-  final Rectangle destRec = .rect(-virtualRatio, -virtualRatio, screenWidth + (virtualRatio*2), screenHeight + (virtualRatio*2));
-
-  final Vector2 origin = .vec2(0.0, 0.0);
-
-  double rotation = 0.0;
-
-  double cameraX = 0.0;
-  double cameraY = 0.0;
-
-  while (!WindowShouldClose()) {
+    worldSpaceCamera = .new(zoom: 1.0);
+    screenSpaceCamera = .new(zoom: 1.0);
+    target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
+    rec01 = .rect(70.0, 35.0, 20.0, 20.0);
+    rec02 = .rect(90.0, 55.0, 30.0, 10.0);
+    rec03 = .rect(80.0, 65.0, 15.0, 25.0);
+    sourceRec = .rect(0.0, 0.0, target.texture.width, -target.texture.height);
+    destRec = .rect(-virtualRatio, -virtualRatio, screenWidth + (virtualRatio*2), screenHeight + (virtualRatio*2));
+    origin = .vec2(0.0, 0.0);
+  },
+  loop: (_) async {
     rotation += 60.0*GetFrameTime();
 
     cameraX = (math.sin(GetTime())*50.0) - 10.0;
@@ -81,9 +80,9 @@ void main() {
       );
       DrawFPS(GetScreenWidth() - 95, 10);
     EndDrawing();
-  }
-
-  UnloadRenderTexture(target);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);

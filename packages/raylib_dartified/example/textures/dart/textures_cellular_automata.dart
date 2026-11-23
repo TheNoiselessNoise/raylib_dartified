@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_cellular_automata.c
-// Run it: dart run textures_cellular_automata.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -33,26 +32,22 @@ void ComputeLine(Image image, int line, int rule)
   }
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Image image;
+late Texture texture;
+final List<int> presetValues = [ 18, 30, 60, 86, 102, 124, 126, 150, 182, 225 ];
+int rule = 30;
+int line = 1;
 
-  InitWindow(screenWidth, screenHeight, "textures_cellular_automata");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_cellular_automata");
+    SetTargetFPS(60);
 
-  final image = GenImageColor(imageWidth, imageHeight, .RAYWHITE);
-  
-  ImageDrawPixel(image, imageWidth~/2, 0, .BLACK);
-
-  final texture = LoadTextureFromImage(image);
-
-  final List<int> presetValues = [ 18, 30, 60, 86, 102, 124, 126, 150, 182, 225 ];
-
-  int rule = 30;
-  int line = 1;
-
-  while (!WindowShouldClose())
-  {
+    image = GenImageColor(imageWidth, imageHeight, .RAYWHITE);
+    ImageDrawPixel(image, imageWidth~/2, 0, .BLACK);
+    texture = LoadTextureFromImage(image);
+  },
+  loop: (_) async {
     final mouse = GetMousePosition();
     int mouseInCell = -1;
 
@@ -148,10 +143,10 @@ void main()
       DrawText("RULE: $rule", drawRuleStartX + drawRuleSpacing*4, drawRuleStartY + 1, 30, .GRAY);
 
     EndDrawing();
-  }
-  
-  UnloadImage(image);
-  UnloadTexture(texture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadImage(image);
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);

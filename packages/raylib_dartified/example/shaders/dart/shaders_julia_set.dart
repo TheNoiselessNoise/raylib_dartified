@@ -1,10 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_julia_set.c
-// Run it: dart run shaders_julia_set.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
@@ -19,47 +17,40 @@ const List<List<double>> pointsOfInterest = [
 const double zoomSpeed = 1.01;
 const double offsetSpeedMul = 2.0;
 const double startingZoom = 0.75;
+late Shader shader;
+late RenderTexture target;
+List<double> c = [ pointsOfInterest[0][0], pointsOfInterest[0][1] ];
+List<double> offset = [ 0.0, 0.0 ];
+double zoom = startingZoom;
+late int cLoc;
+late int zoomLoc;
+late int offsetLoc;
+int incrementSpeed = 0;
+bool showControls = true;
+void updateShaderC() => SetShaderValue(shader, cLoc, c, .SHADER_UNIFORM_VEC2);
+void updateShaderZoom() => SetShaderValue(shader, zoomLoc, [zoom], .SHADER_UNIFORM_FLOAT);
+void updateShaderOffset() => SetShaderValue(shader, offsetLoc, offset, .SHADER_UNIFORM_VEC2);
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_julia_set");
+    SetTargetFPS(60);
 
-  InitWindow(screenWidth, screenHeight, "shaders_julia_set");
-  SetTargetFPS(60);
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/julia_set.fs",
+    );
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/julia_set.fs",
-  );
+    target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+    cLoc = GetShaderLocation(shader, "c");
+    zoomLoc = GetShaderLocation(shader, "zoom");
+    offsetLoc = GetShaderLocation(shader, "offset");
 
-  final target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-  
-  List<double> c = [ pointsOfInterest[0][0], pointsOfInterest[0][1] ];
-
-  List<double> offset = [ 0.0, 0.0 ];
-  double zoom = startingZoom;
-
-  int cLoc = GetShaderLocation(shader, "c");
-  int zoomLoc = GetShaderLocation(shader, "zoom");
-  int offsetLoc = GetShaderLocation(shader, "offset");
-
-  void updateShaderC() => SetShaderValue(
-    shader, cLoc, c, .SHADER_UNIFORM_VEC2,
-  ); updateShaderC();
-
-  void updateShaderZoom() => SetShaderValue(
-    shader, zoomLoc, [zoom], .SHADER_UNIFORM_FLOAT,
-  ); updateShaderZoom();
-
-  void updateShaderOffset() => SetShaderValue(
-    shader, offsetLoc, offset, .SHADER_UNIFORM_VEC2,
-  ); updateShaderOffset();
-
-  int incrementSpeed = 0;
-  bool showControls = true;
-
-  while (!WindowShouldClose())
-  {
+    updateShaderC();
+    updateShaderZoom();
+    updateShaderOffset();
+  },
+  loop: (_) async {
     if (
       IsKeyPressed(.KEY_ONE) ||
       IsKeyPressed(.KEY_TWO) ||
@@ -162,10 +153,10 @@ void main()
         );
       }
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  UnloadRenderTexture(target);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);

@@ -1,36 +1,38 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_magnifying_glass.c
-// Run it: dart run textures_magnifying_glass.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture bunny;
+late Texture parrots;
+late Texture mask;
+late RenderTexture magnifiedWorld;
+late Camera2D camera;
 
-  InitWindow(screenWidth, screenHeight, "textures_magnifying_glass");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_magnifying_glass");
+    SetTargetFPS(60);
 
-  final bunny = LoadTexture("../resources/raybunny.png");
-  final parrots = LoadTexture("../resources/parrots.png");
+    bunny = LoadTexture("../resources/raybunny.png");
+    parrots = LoadTexture("../resources/parrots.png");
 
-  final circle = GenImageColor(256, 256, .BLANK);
-  ImageDrawCircle(circle, 128, 128, 128, .WHITE);
-  final mask = LoadTextureFromImage(circle);
-  UnloadImage(circle);
+    final circle = GenImageColor(256, 256, .BLANK);
+    ImageDrawCircle(circle, 128, 128, 128, .WHITE);
+    mask = LoadTextureFromImage(circle);
+    UnloadImage(circle);
 
-  final magnifiedWorld = LoadRenderTexture(256, 256);
+    magnifiedWorld = LoadRenderTexture(256, 256);
 
-  final camera = Camera2D(
-    zoom: 2,
-    offset: .vec2(128, 128),
-  );
-
-  while (!WindowShouldClose())
-  {
+    camera = .new(
+      zoom: 2,
+      offset: .vec2(128, 128),
+    );
+  },
+  loop: (_) async {
     final mPos = GetMousePosition();
     camera.target = mPos;
 
@@ -71,12 +73,12 @@ void main()
       DrawCircle((mPos.x - 64*rx) - 32, (mPos.y - 64*ry) - 32, 4, ColorAlpha(.WHITE, 0.5));
 
     EndDrawing();
-  }
-
-  UnloadTexture(parrots);
-  UnloadTexture(bunny);
-  UnloadTexture(mask);
-  UnloadRenderTexture(magnifiedWorld);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(parrots);
+    UnloadTexture(bunny);
+    UnloadTexture(mask);
+    UnloadRenderTexture(magnifiedWorld);
+    CloseWindow();
+  },
+);

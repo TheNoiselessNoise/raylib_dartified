@@ -1,34 +1,33 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_sound_positioning.c
-// Run it: dart run audio_sound_positioning.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Sound sound;
+late Camera3D camera;
 
-  InitWindow(screenWidth, screenHeight, "audio_sound_positioning");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_sound_positioning");
+    SetTargetFPS(60);
+    DisableCursor();
+    InitAudioDevice();
 
-  InitAudioDevice();
+    sound = LoadSound("../resources/coin.wav");
 
-  final sound = LoadSound("../resources/coin.wav");
-
-  final camera = Camera3D(
-    position: .vec3(0, 5, 5),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 60,
-    projection: .CAMERA_PERSPECTIVE,
-  );
-
-  while (!WindowShouldClose())
-  {
+    camera = .new(
+      position: .vec3(0, 5, 5),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 60,
+      projection: .CAMERA_PERSPECTIVE,
+    );
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FREE);
 
     final th = GetTime().toDouble();
@@ -53,13 +52,13 @@ void main() {
       EndMode3D();
 
     EndDrawing();
-  }
-
-  UnloadSound(sound);
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadSound(sound);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);
 
 void SetSoundPosition(Camera3D listener, Sound sound, Vector3 position, double maxDist)
 {

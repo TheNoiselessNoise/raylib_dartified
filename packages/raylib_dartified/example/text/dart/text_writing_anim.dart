@@ -1,26 +1,21 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_writing_anim.c
-// Run it: dart run text_writing_anim.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_INPUT_CHARS = 9;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+String message = "This sample illustrates a text writing\nanimation effect! Check it out! ;)";
+int framesCounter = 0;
 
-  InitWindow(screenWidth, screenHeight, "text_writing_anim");
-  SetTargetFPS(60);
-
-  String message = "This sample illustrates a text writing\nanimation effect! Check it out! ;)";
-
-  int framesCounter = 0;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_writing_anim");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     if (IsKeyDown(.KEY_SPACE)) framesCounter += 8;
     else framesCounter++;
 
@@ -48,7 +43,8 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_module_playing.c
-// Run it: dart run audio_module_playing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -26,45 +25,45 @@ final class CircleWave {
     color = color ?? .zero();
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Color> colors;
+late List<CircleWave> circles;
+late Music music;
+double pitch = 1.0;
+double timePlayed = 0.0;
+bool pause = false;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "audio_module_playing");
-  SetTargetFPS(30);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "audio_module_playing");
+    SetTargetFPS(30);
 
-  InitAudioDevice();
+    InitAudioDevice();
 
-  final colors = <Color>[
-    .ORANGE, .RED, .GOLD, .LIME,
-    .BLUE, .VIOLET, .BROWN, .LIGHTGRAY,
-    .PINK, .YELLOW, .GREEN, .SKYBLUE,
-    .PURPLE, .BEIGE
-  ];
+    colors = [
+      .ORANGE, .RED, .GOLD, .LIME,
+      .BLUE, .VIOLET, .BROWN, .LIGHTGRAY,
+      .PINK, .YELLOW, .GREEN, .SKYBLUE,
+      .PURPLE, .BEIGE
+    ];
 
-  final circles = List.generate(MAX_CIRCLES, (i) {
-    final circle = CircleWave();
-    circle.alpha = 0.0;
-    circle.radius = GetRandomValue(10, 40).toDouble();
-    circle.position.x = GetRandomValue(circle.radius, screenWidth - circle.radius).toDouble();
-    circle.position.y = GetRandomValue(circle.radius, screenHeight - circle.radius).toDouble();
-    circle.speed = GetRandomValue(1, 100)/2000.0;
-    circle.color = colors[GetRandomValue(0, 13)];
-    return circle;
-  });
+    circles = .generate(MAX_CIRCLES, (i) {
+      final circle = CircleWave();
+      circle.alpha = 0.0;
+      circle.radius = GetRandomValue(10, 40).toDouble();
+      circle.position.x = GetRandomValue(circle.radius, screenWidth - circle.radius).toDouble();
+      circle.position.y = GetRandomValue(circle.radius, screenHeight - circle.radius).toDouble();
+      circle.speed = GetRandomValue(1, 100)/2000.0;
+      circle.color = colors[GetRandomValue(0, 13)];
+      return circle;
+    });
 
-  final music = LoadMusicStream("../resources/mini1111.xm");
-  music.looping = false;
-  double pitch = 1.0;
+    music = LoadMusicStream("../resources/mini1111.xm");
+    music.looping = false;
 
-  PlayMusicStream(music);
-
-  double timePlayed = 0.0;
-  bool pause = false;
-
-  while (!WindowShouldClose())
-  {
+    PlayMusicStream(music);
+  },
+  loop: (_) async {
     UpdateMusicStream(music);
 
     if (IsKeyPressed(.KEY_SPACE))
@@ -132,10 +131,10 @@ void main()
       DrawText("SPEED: ${pitch.f2}", 40, 130, 20, .MAROON);
 
     EndDrawing();
-  }
-
-  UnloadMusicStream(music);
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadMusicStream(music);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

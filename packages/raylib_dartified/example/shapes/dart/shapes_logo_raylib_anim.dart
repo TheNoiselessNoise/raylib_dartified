@@ -1,37 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_logo_raylib_anim.c
-// Run it: dart run shapes_logo_raylib_anim.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int logoPositionX = screenWidth~/2 - 128;
+int logoPositionY = screenHeight~/2 - 128;
+int framesCounter = 0;
+int lettersCount = 0;
+int topSideRecWidth = 16;
+int leftSideRecHeight = 16;
+int bottomSideRecWidth = 16;
+int rightSideRecHeight = 16;
+int state = 0;
+double alpha = 1.0;
+String text = "raylib";
 
-  InitWindow(screenWidth, screenHeight, "shapes_logo_raylib_anim");
-  SetTargetFPS(60);
-
-  int logoPositionX = screenWidth~/2 - 128;
-  int logoPositionY = screenHeight~/2 - 128;
-
-  int framesCounter = 0;
-  int lettersCount = 0;
-
-  int topSideRecWidth = 16;
-  int leftSideRecHeight = 16;
-
-  int bottomSideRecWidth = 16;
-  int rightSideRecHeight = 16;
-
-  int state = 0;
-  double alpha = 1.0;
-
-  String text = "raylib";
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_logo_raylib_anim");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     if (state == 0)
     {
       framesCounter++;
@@ -142,7 +133,8 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

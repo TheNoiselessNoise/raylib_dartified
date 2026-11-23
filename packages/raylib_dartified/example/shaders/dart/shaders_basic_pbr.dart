@@ -1,15 +1,12 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_basic_pbr.c
-// Run it: dart run shaders_basic_pbr.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
-const int MAX_LIGHTS = 4;
 
-final class LightDEx {
+final class LightExt {
   LightType type;
   bool enabled;
   Vector3 position;
@@ -23,7 +20,7 @@ final class LightDEx {
   int colorLoc;
   int intensityLoc;
 
-  LightDEx({
+  LightExt({
     this.type = .LIGHT_POINT,
     this.enabled = true,
     Vector3? position,
@@ -42,157 +39,92 @@ final class LightDEx {
     color = color ?? [0, 0, 0, 0];
 }
 
-List<LightDEx> lights = [];
+late Camera3D camera;
+late Shader shader;
+late int emissiveIntensityLoc;
+late int emissiveColorLoc;
+late int textureTilingLoc;
+late Model car;
+late Model floor;
+late Vector2 carTextureTiling;
+late Vector2 floorTextureTiling;
+List<LightExt> lights = [];
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_basic_pbr");
+    SetTargetFPS(60);
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_basic_pbr");
-  SetTargetFPS(60);
+    camera = .new(
+      position: .vec3(2, 2, 6),
+      target: .vec3(0, 0.5, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final camera = Camera3D(
-    position: .vec3(2, 2, 6),
-    target: .vec3(0, 0.5, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    shader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/pbr.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/pbr.fs",
+    );
 
-  final shader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/pbr.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/pbr.fs",
-  );
+    shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_ALBEDO.value] = GetShaderLocation(shader, "albedoMap");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_METALNESS.value] = GetShaderLocation(shader, "mraMap");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_NORMAL.value] = GetShaderLocation(shader, "normalMap");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_EMISSION.value] = GetShaderLocation(shader, "emissiveMap");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_COLOR_DIFFUSE.value] = GetShaderLocation(shader, "albedoColor");
+    shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] = GetShaderLocation(shader, "viewPos");
 
-  final albedoMapLoc = GetShaderLocation(shader, "albedoMap");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_ALBEDO.value] = albedoMapLoc;
-  final mraMapLoc = GetShaderLocation(shader, "mraMap");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_METALNESS.value] = mraMapLoc;
-  final normalMapLoc = GetShaderLocation(shader, "normalMap");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_NORMAL.value] = normalMapLoc;
-  final emissiveMapLoc = GetShaderLocation(shader, "emissiveMap");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_EMISSION.value] = emissiveMapLoc;
-  final albedoColorLoc = GetShaderLocation(shader, "albedoColor");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_COLOR_DIFFUSE.value] = albedoColorLoc;
-  final viewPosLoc = GetShaderLocation(shader, "viewPos");
-  shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] = viewPosLoc;
+    SetShaderValue(shader, GetShaderLocation(shader, "numOfLights"), [MAX_LIGHTS], .SHADER_UNIFORM_INT);
 
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "numOfLights"),
-    [MAX_LIGHTS],
-    .SHADER_UNIFORM_INT,
-  );
+    final ambientIntensity = 0.02;
+    final Color ambientColor = .color(26, 32, 135, 255);
+    SetShaderValue(shader, GetShaderLocation(shader, "ambientColor"), ambientColor.normalized().toArray(), .SHADER_UNIFORM_VEC3);
+    SetShaderValue(shader, GetShaderLocation(shader, "ambient"), [ambientIntensity], .SHADER_UNIFORM_FLOAT);
 
-  final ambientIntensity = 0.02;
-  final Color ambientColor = .color(26, 32, 135, 255);
-  final Vector3 ambientColorNormalized = .vec3(
-    ambientColor.r/255.0,
-    ambientColor.g/255.0,
-    ambientColor.b/255.0,
-  );
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "ambientColor"),
-    ambientColorNormalized.toArray(),
-    .SHADER_UNIFORM_VEC3,
-  );
+    emissiveIntensityLoc = GetShaderLocation(shader, "emissivePower");
+    emissiveColorLoc = GetShaderLocation(shader, "emissiveColor");
+    textureTilingLoc = GetShaderLocation(shader, "tiling");
 
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "ambient"),
-    [ambientIntensity],
-    .SHADER_UNIFORM_FLOAT,
-  );
+    car = LoadModel("../resources/models/old_car_new.glb");
+    car.materials[0].shader = shader;
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = .WHITE;
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color.set(255, 162, 0, 255);
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].texture = LoadTexture("../resources/old_car_d.png");
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].texture = LoadTexture("../resources/old_car_mra.png");
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture = LoadTexture("../resources/old_car_n.png");
+    car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = LoadTexture("../resources/old_car_e.png");
+      
+    floor = LoadModel("../resources/models/plane.glb");
+    floor.materials[0].shader = shader;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = .WHITE;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color = .BLACK;
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].texture = LoadTexture("../resources/road_a.png");
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].texture = LoadTexture("../resources/road_mra.png");
+    floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture = LoadTexture("../resources/road_n.png");
 
-  int emissiveIntensityLoc = GetShaderLocation(shader, "emissivePower");
-  int emissiveColorLoc = GetShaderLocation(shader, "emissiveColor");
-  int textureTilingLoc = GetShaderLocation(shader, "tiling");
+    carTextureTiling = .vec2(0.5, 0.5);
+    floorTextureTiling = .vec2(0.5, 0.5);
 
-  final car = LoadModel("../resources/models/old_car_new.glb");
+    final usage = 1;
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexAlbedo"), [usage], .SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexNormal"), [usage], .SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexMRA"), [usage], .SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexEmissive"), [usage], .SHADER_UNIFORM_INT);
 
-  car.materials[0].shader = shader.clone();
-
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = .WHITE;
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color.set(255, 162, 0, 255);
-
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].texture =
-    LoadTexture("../resources/old_car_d.png");
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].texture =
-    LoadTexture("../resources/old_car_mra.png");
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture =
-    LoadTexture("../resources/old_car_n.png");
-  car.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture =
-    LoadTexture("../resources/old_car_e.png");
-    
-  final floor = LoadModel("../resources/models/plane.glb");
-
-  floor.materials[0].shader = shader.clone();
-  
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].color = .WHITE;
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].value = 0.0;
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ROUGHNESS.value].value = 0.0;
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_OCCLUSION.value].value = 1.0;
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].color = .BLACK;
-
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO.value].texture =
-    LoadTexture("../resources/road_a.png");
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_METALNESS.value].texture =
-    LoadTexture("../resources/road_mra.png");
-  floor.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_NORMAL.value].texture =
-    LoadTexture("../resources/road_n.png");
-
-  final Vector2 carTextureTiling = .vec2(0.5, 0.5);
-  final Vector2 floorTextureTiling = .vec2(0.5, 0.5);
-
-  final usage = 1;
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "useTexAlbedo"),
-    [usage],
-    .SHADER_UNIFORM_INT,
-  );
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "useTexNormal"),
-    [usage],
-    .SHADER_UNIFORM_INT,
-  );
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "useTexMRA"),
-    [usage],
-    .SHADER_UNIFORM_INT,
-  );
-  SetShaderValue(
-    shader,
-    GetShaderLocation(shader, "useTexEmissive"),
-    [usage],
-    .SHADER_UNIFORM_INT,
-  );
-
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(-1, 1, -2), .zero(), .YELLOW, 4.0, shader
-  ));
-
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(2, 1, 1), .zero(), .RED, 3.3, shader
-  ));
-
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(-2, 1, 1), .zero(), .GREEN, 8.3, shader
-  ));
-
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(1, 1, -2), .zero(), .BLUE, 2.0, shader
-  ));
-
-  while (!WindowShouldClose())
-  {
+    lights.add(CreateLight(.LIGHT_POINT, .vec3(-1, 1, -2), .zero(), .YELLOW, 4.0, shader));
+    lights.add(CreateLight(.LIGHT_POINT, .vec3(2, 1, 1), .zero(), .RED, 3.3, shader));
+    lights.add(CreateLight(.LIGHT_POINT, .vec3(-2, 1, 1), .zero(), .GREEN, 8.3, shader));
+    lights.add(CreateLight(.LIGHT_POINT, .vec3(1, 1, -2), .zero(), .BLUE, 2.0, shader));
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     SetShaderValue(
@@ -297,16 +229,16 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
+  },
+  close: (_) {
+    UnloadModel(car);
+    UnloadModel(floor);
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);
 
-  UnloadModel(car);
-  UnloadModel(floor);
-  UnloadShader(shader);
-
-  CloseWindowAndDispose();
-}
-
-LightDEx CreateLight(
+LightExt CreateLight(
   LightType type,
   Vector3 position,
   Vector3 target,
@@ -314,7 +246,7 @@ LightDEx CreateLight(
   double intensity,
   Shader shader,
 ) {
-  final LightDEx light = .new();
+  final LightExt light = .new();
 
   light.enabled = true;
   light.type = type;
@@ -326,25 +258,19 @@ LightDEx CreateLight(
   light.color[3] = color.a/255.0;
   light.intensity = intensity;
   
-  light.enabledLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].enabled");
-  light.typeLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].type");
-  light.positionLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].position");
-  light.targetLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].target");
-  light.colorLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].color");
-  light.intensityLoc = GetShaderLocation(
-    shader, "lights[${lights.length}].intensity");
+  light.enabledLoc = GetShaderLocation(shader, "lights[${lights.length}].enabled");
+  light.typeLoc = GetShaderLocation(shader, "lights[${lights.length}].type");
+  light.positionLoc = GetShaderLocation(shader, "lights[${lights.length}].position");
+  light.targetLoc = GetShaderLocation(shader, "lights[${lights.length}].target");
+  light.colorLoc = GetShaderLocation(shader, "lights[${lights.length}].color");
+  light.intensityLoc = GetShaderLocation(shader, "lights[${lights.length}].intensity");
   
   UpdateLight(shader, light);
 
   return light;
 }
 
-void UpdateLight(Shader shader, LightDEx light)
+void UpdateLight(Shader shader, LightExt light)
 {
   SetShaderValue(shader, light.enabledLoc, [light.enabled.toInt()], .SHADER_UNIFORM_INT);
   SetShaderValue(shader, light.typeLoc, [light.type.value], .SHADER_UNIFORM_INT);

@@ -1,30 +1,36 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raygui/blob/master/examples/portable_window/portable_window.c
-// Run it: dart run portable_window.dart
 // WARNING: if you are running under Linux/Wayland you should run with:
 // `WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11`
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 600;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+bool _windowShouldClose() => switch (currentMemoryPlatformType) {
+  .native => WindowShouldClose(),
+  .web => false,
+};
 
-  Vector2 mousePosition = .zero();
-  Vector2 windowPosition = .vec2(500, 200);
-  Vector2 panOffset = .zero();
-  bool dragWindow = false;
-  bool exitWindow = false;
+late Vector2 mousePosition;
+late Vector2 windowPosition;
+late Vector2 panOffset;
+bool dragWindow = false;
+bool exitWindow = false;
 
-  SetConfigFlags([.FLAG_WINDOW_UNDECORATED]);
-  InitWindow(screenWidth, screenHeight, "portable_window");
-  SetWindowPosition(windowPosition.x, windowPosition.y);
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    mousePosition = .zero();
+    windowPosition = .vec2(500, 200);
+    panOffset = .zero();
 
-  while (!exitWindow && !WindowShouldClose())
-  {
+    SetConfigFlags([.FLAG_WINDOW_UNDECORATED]);
+    InitWindow(screenWidth, screenHeight, "portable_window");
+    SetWindowPosition(windowPosition.x, windowPosition.y);
+    SetTargetFPS(60);
+  },
+  shouldClose: (_) => !(!exitWindow && !_windowShouldClose()),
+  loop: (_) async {
     mousePosition = GetMousePosition();
 
     if (
@@ -70,7 +76,8 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

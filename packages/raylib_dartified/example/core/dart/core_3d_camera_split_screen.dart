@@ -1,41 +1,44 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_camera_split_screen.c
-// Run it: dart run core_3d_camera_split_screen.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D cameraPlayer1;
+late RenderTexture screenPlayer1;
+late Camera3D cameraPlayer2;
+late RenderTexture screenPlayer2;
+late Rectangle splitScreenRect;
+final int count = 5;
+final double spacing = 4;
 
-  InitWindow(screenWidth, screenHeight, "core_3d_camera_split_screen");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_3d_camera_split_screen");
+    SetTargetFPS(60);
 
-  final cameraPlayer1 = Camera3D();
-  cameraPlayer1.fovy = 45.0;
-  cameraPlayer1.up.y = 1.0;
-  cameraPlayer1.target.y = 1.0;
-  cameraPlayer1.position.z = -3.0;
-  cameraPlayer1.position.y = 1.0;
+    cameraPlayer1 = .new(
+      position: .vec3(0, 1.0, -3.0),
+      target: .vec3(0, 1.0, 0),
+      up: .vec3(0, 1.0, 0),
+      fovy: 45.0,
+    );
 
-  final screenPlayer1 = LoadRenderTexture(screenWidth~/2, screenHeight);
+    screenPlayer1 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final cameraPlayer2 = Camera3D();
-  cameraPlayer2.fovy = 45.0;
-  cameraPlayer2.up.y = 1.0;
-  cameraPlayer2.target.y = 3.0;
-  cameraPlayer2.position.x = -3.0;
-  cameraPlayer2.position.y = 3.0;
+    cameraPlayer2 = .new(
+      position: .vec3(-3.0, 3.0, 0),
+      target: .vec3(0, 3.0, 0),
+      up: .vec3(0, 1.0, 0),
+      fovy: 45.0,
+    );
 
-  final screenPlayer2 = LoadRenderTexture(screenWidth~/2, screenHeight);
+    screenPlayer2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final Rectangle splitScreenRect = .rect(0.0, 0.0, screenPlayer1.texture.width, -screenPlayer1.texture.height);
-  
-  int count = 5;
-  double spacing = 4;
-
-  while (!WindowShouldClose()) {
+    splitScreenRect = .rect(0.0, 0.0, screenPlayer1.texture.width, -screenPlayer1.texture.height);
+  },
+  loop: (_) async {
     double offsetThisFrame = 10.0*GetFrameTime();
 
     if (IsKeyDown(.KEY_W))
@@ -131,10 +134,11 @@ void main() {
       
       DrawRectangle(GetScreenWidth()~/2 - 2, 0, 4, GetScreenHeight(), .LIGHTGRAY);
     EndDrawing();
-  }
+  },
+  close: (_) {
+    UnloadRenderTexture(screenPlayer1);
+    UnloadRenderTexture(screenPlayer2);
 
-  UnloadRenderTexture(screenPlayer1);
-  UnloadRenderTexture(screenPlayer2);
-
-  CloseWindowAndDispose();
-}
+    CloseWindow();
+  },
+);

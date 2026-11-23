@@ -1,9 +1,10 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_bunnymark.c
-// Run it: dart run textures_bunnymark.dart
 // WARNING: expects resources from the raylib source
-// INFORMATION: ~27 FPS with all 50000 bunnies
-import '../../base_dart.dart';
+// INFORMATION:
+//    NATIVE: ~31 FPS with all 50000 bunnies
+//       WEB:  ~3 FPS with all 50000 bunnies
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -22,18 +23,17 @@ final class Bunny {
   });
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture texBunny;
+final List<Bunny> bunnies = [];
 
-  InitWindow(screenWidth, screenHeight, "textures_bunnymark");
-  SetTargetFPS(120);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_bunnymark");
+    SetTargetFPS(120);
 
-  final texBunny = LoadTexture("../resources/raybunny.png");
-  final bunnies = <Bunny>[];
-
-  while (!WindowShouldClose())
-  {
+    texBunny = LoadTexture("../resources/raybunny.png");
+  },
+  loop: (_) async {
     if (IsMouseButtonDown(.MOUSE_BUTTON_LEFT))
     {
       for (int i = 0; i < 100; i++)
@@ -95,9 +95,9 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadTexture(texBunny);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texBunny);
+    CloseWindow();
+  },
+);

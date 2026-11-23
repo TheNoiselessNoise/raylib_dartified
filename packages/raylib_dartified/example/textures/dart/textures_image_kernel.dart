@@ -1,72 +1,74 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_kernel.c
-// Run it: dart run textures_image_kernel.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final gaussiankernel = [
+  1.0, 2.0, 1.0,
+  2.0, 4.0, 2.0,
+  1.0, 2.0, 1.0
+];
 
-  InitWindow(screenWidth, screenHeight, "textures_image_kernel");
-  SetTargetFPS(60);
+final sobelkernel = [
+  1.0, 0.0, -1.0,
+  2.0, 0.0, -2.0,
+  1.0, 0.0, -1.0
+];
 
-  final image = LoadImage("../resources/cat.png");
+final sharpenkernel = [
+  0.0, -1.0, 0.0,
+  -1.0, 5.0, -1.0,
+  0.0, -1.0, 0.0
+];
 
-  final gaussiankernel = [
-    1.0, 2.0, 1.0,
-    2.0, 4.0, 2.0,
-    1.0, 2.0, 1.0
-  ];
+late Image image;
+late Texture texture;
+late Texture catSharpendTexture;
+late Texture catSobelTexture;
+late Texture catGaussianTexture;
 
-  final sobelkernel = [
-    1.0, 0.0, -1.0,
-    2.0, 0.0, -2.0,
-    1.0, 0.0, -1.0
-  ];
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_kernel");
+    SetTargetFPS(60);
 
-  final sharpenkernel = [
-    0.0, -1.0, 0.0,
-    -1.0, 5.0, -1.0,
-    0.0, -1.0, 0.0
-  ];
+    image = LoadImage("../resources/cat.png");
 
-  NormalizeKernel(gaussiankernel);
-  NormalizeKernel(sharpenkernel);
-  NormalizeKernel(sobelkernel);
+    NormalizeKernel(gaussiankernel);
+    NormalizeKernel(sharpenkernel);
+    NormalizeKernel(sobelkernel);
 
-  final catSharpend = ImageCopy(image);
-  ImageKernelConvolution(catSharpend, sharpenkernel);
+    final catSharpend = ImageCopy(image);
+    ImageKernelConvolution(catSharpend, sharpenkernel);
 
-  final catSobel = ImageCopy(image);
-  ImageKernelConvolution(catSobel, sobelkernel);
+    final catSobel = ImageCopy(image);
+    ImageKernelConvolution(catSobel, sobelkernel);
 
-  final catGaussian = ImageCopy(image);
-  
-  for (int i = 0; i < 6; i++) {
-    ImageKernelConvolution(catGaussian, gaussiankernel);
-  }
+    final catGaussian = ImageCopy(image);
+    
+    for (int i = 0; i < 6; i++) {
+      ImageKernelConvolution(catGaussian, gaussiankernel);
+    }
 
-  ImageCrop(image, .rect(0, 0, 200, 450));
-  ImageCrop(catGaussian, .rect(0, 0, 200, 450));
-  ImageCrop(catSobel, .rect(0, 0, 200, 450));
-  ImageCrop(catSharpend, .rect(0, 0, 200, 450));
-  
-  final texture = LoadTextureFromImage(image);
-  final catSharpendTexture = LoadTextureFromImage(catSharpend);
-  final catSobelTexture = LoadTextureFromImage(catSobel);
-  final catGaussianTexture = LoadTextureFromImage(catGaussian);
-  
-  UnloadImage(image);
-  UnloadImage(catGaussian);
-  UnloadImage(catSobel);
-  UnloadImage(catSharpend);
-
-  while (!WindowShouldClose())
-  {
+    ImageCrop(image, .rect(0, 0, 200, 450));
+    ImageCrop(catGaussian, .rect(0, 0, 200, 450));
+    ImageCrop(catSobel, .rect(0, 0, 200, 450));
+    ImageCrop(catSharpend, .rect(0, 0, 200, 450));
+    
+    texture = LoadTextureFromImage(image);
+    catSharpendTexture = LoadTextureFromImage(catSharpend);
+    catSobelTexture = LoadTextureFromImage(catSobel);
+    catGaussianTexture = LoadTextureFromImage(catGaussian);
+    
+    UnloadImage(image);
+    UnloadImage(catGaussian);
+    UnloadImage(catSobel);
+    UnloadImage(catSharpend);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -77,15 +79,15 @@ void main()
       DrawTexture(texture, 600, 0, .WHITE);
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-  UnloadTexture(catGaussianTexture);
-  UnloadTexture(catSobelTexture);
-  UnloadTexture(catSharpendTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    UnloadTexture(catGaussianTexture);
+    UnloadTexture(catSobelTexture);
+    UnloadTexture(catSharpendTexture);
+    CloseWindow();
+  },
+);
 
 void NormalizeKernel(List<double> kernel)
 {

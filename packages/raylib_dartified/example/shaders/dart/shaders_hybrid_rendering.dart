@@ -1,11 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_hybrid_rendering.c
-// Run it: dart run shaders_hybrid_rendering.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
@@ -14,66 +12,61 @@ final class RayLocs {
   RayLocs(this.camPos, this.camDir, this.screenCenter);
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Shader shdrRaymarch;
+late Shader shdrRaster;
+late RayLocs marchLocs;
+late Vector2 screenCenter;
+late RenderTexture target;
+late Camera3D camera;
+late double camDist;
 
-  InitWindow(screenWidth, screenHeight, "shaders_hybrid_rendering");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_hybrid_rendering");
+    SetTargetFPS(60);
 
-  final shdrRaymarch = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/hybrid_raymarch.fs",
-  );
+    shdrRaymarch = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/hybrid_raymarch.fs",
+    );
 
-  final shdrRaster = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/hybrid_raster.fs",
-  );
+    shdrRaster = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/hybrid_raster.fs",
+    );
 
-  final marchLocs = RayLocs(
-    GetShaderLocation(shdrRaymarch, "camPos"),
-    GetShaderLocation(shdrRaymarch, "camDir"),
-    GetShaderLocation(shdrRaymarch, "screenCenter"),
-  );
+    marchLocs = .new(
+      GetShaderLocation(shdrRaymarch, "camPos"),
+      GetShaderLocation(shdrRaymarch, "camDir"),
+      GetShaderLocation(shdrRaymarch, "screenCenter"),
+    );
 
-  final Vector2 screenCenter = .vec2(screenWidth/2.0, screenHeight/2.0);
-  
-  SetShaderValue(shdrRaymarch, marchLocs.screenCenter,
-    screenCenter.toArray(),
-    .SHADER_UNIFORM_VEC2,
-  );
+    screenCenter = .vec2(screenWidth/2.0, screenHeight/2.0);
+    SetShaderValue(shdrRaymarch, marchLocs.screenCenter, screenCenter.toArray(), .SHADER_UNIFORM_VEC2);
 
-  final target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
+    target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
 
-  final camera = Camera3D(
-    position: .vec3(0.5, 1.0, 1.5),
-    target: .vec3(0.0, 0.5, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(0.5, 1.0, 1.5),
+      target: .vec3(0.0, 0.5, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  double camDist = 1.0/(math.tan(camera.fovy*0.5*rl.DEG2RAD));
-
-  while (!WindowShouldClose())
-  {
+    camDist = 1.0/(math.tan(camera.fovy*0.5*DEG2RAD));
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
-    SetShaderValue(shdrRaymarch, marchLocs.camPos,
-      camera.position.toArray(),
-      .SHADER_UNIFORM_VEC3,
-    );
+    SetShaderValue(shdrRaymarch, marchLocs.camPos, camera.position.toArray(), .SHADER_UNIFORM_VEC3);
     
     final camDir = camera.target
       .sub(camera.position)
       .normalize()
       .scale(camDist);
       
-    SetShaderValue(shdrRaymarch, marchLocs.camDir,
-      camDir.toArray(),
-      .SHADER_UNIFORM_VEC3,
-    );
+    SetShaderValue(shdrRaymarch, marchLocs.camDir, camDir.toArray(), .SHADER_UNIFORM_VEC3);
     
     BeginTextureMode(target);
       ClearBackground(.WHITE);
@@ -109,14 +102,14 @@ void main()
 
       DrawFPS(10, 10);
     EndDrawing();
-  }
-
-  UnloadRenderTextureDepthTex(target);
-  UnloadShader(shdrRaymarch);
-  UnloadShader(shdrRaster);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTextureDepthTex(target);
+    UnloadShader(shdrRaymarch);
+    UnloadShader(shdrRaster);
+    CloseWindow();
+  },
+);
 
 RenderTexture LoadRenderTextureDepthTex(int width, int height)
 {
@@ -176,7 +169,6 @@ void UnloadRenderTextureDepthTex(RenderTexture target)
   {
     rlUnloadTexture(target.texture.id);
     rlUnloadTexture(target.depth.id);
-
     rlUnloadFramebuffer(target.id);
   }
 }

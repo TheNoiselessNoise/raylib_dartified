@@ -1,25 +1,23 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_loading.c
-// Run it: dart run textures_image_loading.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture texture;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_loading");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_loading");
+    SetTargetFPS(60);
 
-  final image = LoadImage("../resources/raylib_logo.png");
-  final texture = LoadTextureFromImage(image);
-  UnloadImage(image);
-
-  while (!WindowShouldClose())
-  {
+    final image = LoadImage("../resources/raylib_logo.png");
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -37,9 +35,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_particles_blending.c
-// Run it: dart run textures_particles_blending.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -26,39 +25,36 @@ final class Particle {
   });
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final List<Particle> mouseTail = [];
+late Texture smoke;
+double gravity = 3.0;
+BlendMode blending = .BLEND_ALPHA;
 
-  InitWindow(screenWidth, screenHeight, "textures_particles_blending");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_particles_blending");
+    SetTargetFPS(60);
 
-  final mouseTail = <Particle>[];
+    for (int i = 0; i < MAX_PARTICLES; i++)
+    {
+      mouseTail.add(Particle(
+        position: .zero(),
+        color: .color(
+          GetRandomValue(0, 255),
+          GetRandomValue(0, 255),
+          GetRandomValue(0, 255),
+          255,
+        ),
+        alpha: 1.0,
+        size: GetRandomValue(1, 30)/20.0,
+        rotation: GetRandomValue(0, 360).toDouble(),
+        active: false,
+      ));
+    }
 
-  for (int i = 0; i < MAX_PARTICLES; i++)
-  {
-    mouseTail.add(Particle(
-      position: .zero(),
-      color: .color(
-        GetRandomValue(0, 255),
-        GetRandomValue(0, 255),
-        GetRandomValue(0, 255),
-        255,
-      ),
-      alpha: 1.0,
-      size: GetRandomValue(1, 30)/20.0,
-      rotation: GetRandomValue(0, 360).toDouble(),
-      active: false,
-    ));
-  }
-
-  final smoke = LoadTexture("../resources/spark_flame.png");
-
-  double gravity = 3.0;
-  BlendMode blending = .BLEND_ALPHA;
-
-  while (!WindowShouldClose())
-  {
+    smoke = LoadTexture("../resources/spark_flame.png");
+  },
+  loop: (_) async {
     for (int i = 0; i < MAX_PARTICLES; i++)
     {
       if (!mouseTail[i].active)
@@ -141,9 +137,9 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  UnloadTexture(smoke);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(smoke);
+    CloseWindow();
+  },
+);

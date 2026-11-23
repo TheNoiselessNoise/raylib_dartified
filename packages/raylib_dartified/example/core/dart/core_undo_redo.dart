@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_undo_redo.c
-// Run it: dart run core_undo_redo.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -45,28 +44,31 @@ final class PlayerState {
   }
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int currentUndoIndex = 0;
+int firstUndoIndex = 0;
+int lastUndoIndex = 0;
+int undoFrameCounter = 0;
+late Vector2 undoInfoPos;
 
-  InitWindow(screenWidth, screenHeight, "core_undo_redo");
-  SetTargetFPS(60);
+late PlayerState player;
+late List<PlayerState> states;
+late Vector2 gridPosition;
 
-  int currentUndoIndex = 0;
-  int firstUndoIndex = 0;
-  int lastUndoIndex = 0;
-  int undoFrameCounter = 0;
-  final Vector2 undoInfoPos = .vec2(110, 400);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_undo_redo");
+    SetTargetFPS(60);
 
-  PlayerState player = .new();
-  player.cell.set(10, 10);
-  player.color = RED;
+    undoInfoPos = .vec2(110, 400);
+    
+    player = .new();
+    player.cell.set(10, 10);
+    player.color = RED;
 
-  final List<PlayerState> states = .generate(MAX_UNDO_STATES, (_) => .new());
-  for (int i = 0; i < MAX_UNDO_STATES; i++) states[i] = player.copy();
-
-  final Vector2 gridPosition = .vec2(40, 60);
-
-  while (!WindowShouldClose()) {
+    states = .generate(MAX_UNDO_STATES, (_) => player.copy());
+    gridPosition = .vec2(40, 60);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_RIGHT)) player.cell.x++;
     else if (IsKeyPressed(.KEY_LEFT)) player.cell.x--;
     else if (IsKeyPressed(.KEY_UP)) player.cell.y--;
@@ -193,10 +195,11 @@ void main() {
       DrawUndoBuffer(undoInfoPos, firstUndoIndex, lastUndoIndex, currentUndoIndex, 24);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawUndoBuffer(Vector2 position, int firstUndoIndex, int lastUndoIndex, int currentUndoIndex, int slotSize)
 {

@@ -1,71 +1,66 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_animation_blending.c
-// Run it: dart run models_animation_blending.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Vector3 position;
+late Shader skinningShader;
+late List<ModelAnimation> anims;
 
-  InitWindow(screenWidth, screenHeight, "models_animation_blending");
-  SetTargetFPS(60);
+int currentAnimPlaying = 0;
+int nextAnimToPlay = 1;
+bool animTransition = false;
+int animIndex0 = 10;
+double animCurrentFrame0 = 0.0;
+double animFrameSpeed0 = 0.5;
+int animIndex1 = 6;
+double animCurrentFrame1 = 0.0;
+double animFrameSpeed1 = 0.5;
+double animBlendFactor = 0.0;
+double animBlendTime = 2.0;
+double animBlendTimeCounter = 0.0;
+bool animPause = false;
+List<String> animNames = anims.map((a) => a.name).toList();
+bool dropdownEditMode0 = false;
+bool dropdownEditMode1 = false;
+double animFrameProgress0 = 0.0;
+double animFrameProgress1 = 0.0;
+double animBlendProgress = 0.0;
 
-  final camera = Camera3D(
-    position: .vec3(6.0, 6.0, 6.0),
-    target: .vec3(0.0, 2.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_animation_blending");
+    SetTargetFPS(60);
 
-  final model = LoadModel("../resources/models/gltf/robot.glb");
-  final Vector3 position = .vec3(0.0, 0.0, 0.0);
+    camera = .new(
+      position: .vec3(6.0, 6.0, 6.0),
+      target: .vec3(0.0, 2.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  // Load skinning shader
-  // WARNING: It requires SUPPORT_GPU_SKINNING enabled on raylib (disabled by default)
-  final skinningShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/skinning.fs"
-  );
+    model = LoadModel("../resources/models/gltf/robot.glb");
+    position = .vec3(0.0, 0.0, 0.0);
 
-  // Assign skinning shader to all materials shaders
-  // for (int i = 0; i < model.ref.materialCount; i++) model.ref.materials[i].shader = skinningShader;
+    // Load skinning shader
+    // WARNING: It requires SUPPORT_GPU_SKINNING enabled on raylib (disabled by default)
+    skinningShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/skinning.fs"
+    );
 
-  final anims = LoadModelAnimations("../resources/models/gltf/robot.glb");
+    // Assign skinning shader to all materials shaders
+    // for (int i = 0; i < model.ref.materialCount; i++) model.ref.materials[i].shader = skinningShader;
 
-  int currentAnimPlaying = 0;
-  int nextAnimToPlay = 1;
-  bool animTransition = false;
-
-  int animIndex0 = 10;
-  double animCurrentFrame0 = 0.0;
-  double animFrameSpeed0 = 0.5;
-  int animIndex1 = 6;
-  double animCurrentFrame1 = 0.0;
-  double animFrameSpeed1 = 0.5;
-
-  double animBlendFactor = 0.0;
-
-  double animBlendTime = 2.0;
-  double animBlendTimeCounter = 0.0;
-
-  bool animPause = false;
-
-  List<String> animNames = anims.map((a) => a.name).toList();
-
-  bool dropdownEditMode0 = false;
-  bool dropdownEditMode1 = false;
-  double animFrameProgress0 = 0.0;
-  double animFrameProgress1 = 0.0;
-  double animBlendProgress = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    anims = LoadModelAnimations("../resources/models/gltf/robot.glb");
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsKeyPressed(.KEY_P)) animPause = !animPause;
@@ -166,18 +161,24 @@ void main()
       if (animTransition) DrawText("ANIM TRANSITION BLENDING!", 170, 50, 30, BLUE);
 
       if (dropdownEditMode0) GuiDisable();
-      (_, animFrameSpeed0) = GuiSlider(
-        .rect(10, 38, 160, 12),
-        null, animFrameSpeed0.f1,
-        animFrameSpeed0, 0.1, 2.0
-      );
+      {
+        final (_, value) = GuiSlider(
+          .rect(10, 38, 160, 12),
+          null, animFrameSpeed0.f1,
+          animFrameSpeed0, 0.1, 2.0
+        );
+        animFrameSpeed0 = value;
+      }
       GuiEnable();
       if (dropdownEditMode1) GuiDisable();
-      (_, animFrameSpeed1) = GuiSlider(
-        .rect(GetScreenWidth() - 170.0, 38, 160, 12),
-        "${animFrameSpeed1.f1}x", null,
-        animFrameSpeed1, 0.1, 2.0
-      );
+      {
+        final (_, value) = GuiSlider(
+          .rect(GetScreenWidth() - 170.0, 38, 160, 12),
+          "${animFrameSpeed1.f1}x", null,
+          animFrameSpeed1, 0.1, 2.0
+        );
+        animFrameSpeed1 = value;
+      }
       GuiEnable();
 
       GuiSetStyle(.DROPDOWNBOX, GuiDropdownBoxProperty.DROPDOWN_ITEMS_SPACING, 1);
@@ -193,11 +194,14 @@ void main()
 
       if (nextAnimToPlay == 1) GuiSetStyle(.PROGRESSBAR, GuiProgressBarProperty.PROGRESS_SIDE, 0);
       else GuiSetStyle(.PROGRESSBAR, GuiProgressBarProperty.PROGRESS_SIDE, 1);
-      (_, animBlendProgress) = GuiProgressBar(
-        .rect(180, 14, 440, 16),
-        null, null,
-        animBlendProgress, 0.0, 1.0
-      );
+      {
+        final (_, value) = GuiProgressBar(
+          .rect(180, 14, 440, 16),
+          null, null,
+          animBlendProgress, 0.0, 1.0
+        );
+        animBlendProgress = value;
+      }
       GuiSetStyle(.PROGRESSBAR, GuiProgressBarProperty.PROGRESS_SIDE, 0);
       {
         final (result, active) = GuiDropdownBox(
@@ -232,11 +236,11 @@ void main()
         );
 
     EndDrawing();
-  }
-
-  UnloadModelAnimations(anims);
-  UnloadModel(model);
-  UnloadShader(skinningShader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModelAnimations(anims);
+    UnloadModel(model);
+    UnloadShader(skinningShader);
+    CloseWindow();
+  },
+);

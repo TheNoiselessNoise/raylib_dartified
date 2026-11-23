@@ -1,9 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_decals.c
-// Run it: dart run models_decals.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -17,63 +16,71 @@ final class MeshBuilder {
   List<Vector2> uvs = [];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
 
-  InitWindow(screenWidth, screenHeight, "models_decals");
-  SetTargetFPS(60);
+late Model model;
+late Texture modelTexture;
+late BoundingBox modelBBox;
+late double modelSize;
+late double decalSize;
+late double decalOffset;
+late Model placementCube;
+late Material decalMaterial;
+late Texture decalTexture;
+bool showModel = true;
+final List<Model> decalModels = [];
 
-  final camera = Camera3D(
-    position: .vec3(5.0, 5.0, 5.0),
-    target: .vec3(0.0, 1.0, 0.0),
-    up: .vec3(0.0, 1.6, 0.0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_decals");
+    SetTargetFPS(60);
 
-  final model = LoadModel("../resources/models/obj/character.obj");
+    camera = .new(
+      position: .vec3(5.0, 5.0, 5.0),
+      target: .vec3(0.0, 1.0, 0.0),
+      up: .vec3(0.0, 1.6, 0.0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final modelTexture = LoadTexture("../resources/models/obj/character_diffuse.png");
-  SetTextureFilter(modelTexture, .TEXTURE_FILTER_BILINEAR);
-  model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = modelTexture;
+    model = LoadModel("../resources/models/obj/character.obj");
 
-  final modelBBox = GetMeshBoundingBox(model.meshes[0]);
+    modelTexture = LoadTexture("../resources/models/obj/character_diffuse.png");
+    SetTextureFilter(modelTexture, .TEXTURE_FILTER_BILINEAR);
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = modelTexture;
 
-  camera.target = modelBBox.min.lerp(modelBBox.max, 0.5);
-  camera.position = modelBBox.max.scale(1.0);
-  camera.position.x *= 0.1;
+    modelBBox = GetMeshBoundingBox(model.meshes[0]);
 
-  final modelSize = math.min(
-    math.min((modelBBox.max.x - modelBBox.min.x).abs(), (modelBBox.max.y - modelBBox.min.y).abs()),
-    (modelBBox.max.z - modelBBox.min.z).abs()
-  );
+    camera.target = modelBBox.min.lerp(modelBBox.max, 0.5);
+    camera.position = modelBBox.max.scale(1.0);
+    camera.position.x *= 0.1;
 
-  camera.position = .vec3(0.0, modelBBox.max.y*1.2, modelSize*3.0);
+    modelSize = math.min(
+      math.min((modelBBox.max.x - modelBBox.min.x).abs(), (modelBBox.max.y - modelBBox.min.y).abs()),
+      (modelBBox.max.z - modelBBox.min.z).abs()
+    );
 
-  final decalSize = modelSize*0.25;
-  final decalOffset = 0.01;
+    camera.position = .vec3(0.0, modelBBox.max.y*1.2, modelSize*3.0);
 
-  final placementCube = LoadModelFromMesh(GenMeshCube(decalSize, decalSize, decalSize));
-  placementCube.materials[0].maps[0].color = LIME;
+    decalSize = modelSize*0.25;
+    decalOffset = 0.01;
 
-  final decalMaterial = LoadMaterialDefault();
-  decalMaterial.maps[0].color = YELLOW;
+    placementCube = LoadModelFromMesh(GenMeshCube(decalSize, decalSize, decalSize));
+    placementCube.materials[0].maps[0].color = LIME;
 
-  final decalImage = LoadImage("../resources/raylib_logo.png");
-  ImageResizeNN(decalImage, decalImage.width~/4, decalImage.height~/4);
-  final decalTexture = LoadTextureFromImage(decalImage);
-  UnloadImage(decalImage);
+    decalMaterial = LoadMaterialDefault();
+    decalMaterial.maps[0].color = YELLOW;
 
-  SetTextureFilter(decalTexture, .TEXTURE_FILTER_BILINEAR);
-  decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].texture = decalTexture;
-  decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].color = RAYWHITE;
+    final decalImage = LoadImage("../resources/raylib_logo.png");
+    ImageResizeNN(decalImage, decalImage.width~/4, decalImage.height~/4);
+    decalTexture = LoadTextureFromImage(decalImage);
+    UnloadImage(decalImage);
 
-  bool showModel = true;
-  final List<Model> decalModels = [];
-
-  while (!WindowShouldClose())
-  {
+    SetTextureFilter(decalTexture, .TEXTURE_FILTER_BILINEAR);
+    decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].texture = decalTexture;
+    decalMaterial.maps[MATERIAL_MAP_DIFFUSE.value].color = RAYWHITE;
+  },
+  loop: (_) async {
     if (IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) {
       UpdateCamera(camera, .CAMERA_THIRD_PERSON);
     }
@@ -203,17 +210,15 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  UnloadTexture(modelTexture);
-
-  for (int i = 0; i < decalModels.length; i++) UnloadModel(decalModels[i]);
-
-  UnloadTexture(decalTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    UnloadTexture(modelTexture);
+    decalModels.forEach(UnloadModel);
+    UnloadTexture(decalTexture);
+    CloseWindow();
+  },
+);
 
 void AddTriangleToMeshBuilder(MeshBuilder mb, List<Vector3> vertices)
 {

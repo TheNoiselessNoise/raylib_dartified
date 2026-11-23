@@ -1,103 +1,101 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_loading_vox.c
-// Run it: dart run models_loading_vox.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final voxFileNames = <String>[
+  "../resources/models/vox/chr_knight.vox",
+  "../resources/models/vox/chr_sword.vox",
+  "../resources/models/vox/monu9.vox",
+  "../resources/models/vox/fez.vox"
+];
+final int MAX_VOX_FILES = voxFileNames.length;
+late Camera3D camera;
+final List<Model> models = [];
+int currentModel = 0;
+late Shader shader;
+late List<Light> lights;
+late Vector3 modelpos;
+late Vector3 camerarot;
 
-  InitWindow(screenWidth, screenHeight, "models_loading_vox");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_loading_vox");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(10, 10, 10),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
-
-  final voxFileNames = <String>[
-		"../resources/models/vox/chr_knight.vox",
-		"../resources/models/vox/chr_sword.vox",
-		"../resources/models/vox/monu9.vox",
-		"../resources/models/vox/fez.vox"
-  ];
-  final int MAX_VOX_FILES = voxFileNames.length;
-
-  final models = <Model>[];
-
-	for (int i = 0; i < MAX_VOX_FILES; i++)
-	{
-		double t0 = GetTime() * 1000.0;
-		models.add(LoadModel(voxFileNames[i]));
-		double t1 = GetTime() * 1000.0;
-
-		TraceLog(.LOG_WARNING,
-      "[${voxFileNames[i]}] File loaded in ${(t1 - t0).f3} ms"
+    camera = .new(
+      position: .vec3(10, 10, 10),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
     );
 
-		final bb = GetModelBoundingBox(models[i]);
+    for (int i = 0; i < MAX_VOX_FILES; i++)
+    {
+      double t0 = GetTime() * 1000.0;
+      models.add(LoadModel(voxFileNames[i]));
+      double t1 = GetTime() * 1000.0;
 
-    final Vector3 center = .new(
-      x: bb.min.x + (((bb.max.x - bb.min.x) / 2)),
-		  z: bb.min.z + (((bb.max.z - bb.min.z) / 2)),
+      TraceLog(.LOG_WARNING,
+        "[${voxFileNames[i]}] File loaded in ${(t1 - t0).f3} ms"
+      );
+
+      final bb = GetModelBoundingBox(models[i]);
+
+      final Vector3 center = .new(
+        x: bb.min.x + (((bb.max.x - bb.min.x) / 2)),
+        z: bb.min.z + (((bb.max.z - bb.min.z) / 2)),
+      );
+
+      models[i].transform = .translate(-center.x, 0, -center.z);
+    }
+
+    shader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/voxel_lighting.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/voxel_lighting.fs",
     );
 
-		models[i].transform = .translate(-center.x, 0, -center.z);
-	}
+    shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value]
+      = GetShaderLocation(shader, "viewPos");
 
-	int currentModel = 0;
+    SetShaderValue(shader,
+      GetShaderLocation(shader, "ambient"),
+      [0.1, 0.1, 0.1, 1.0],
+      .SHADER_UNIFORM_VEC4,
+    );
 
-  final shader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/voxel_lighting.vs",
-		"../resources/shaders/glsl$GLSL_VERSION/voxel_lighting.fs",
-  );
+    for (int i = 0; i < MAX_VOX_FILES; i++)
+    {
+      final m = models[i];
+      for (int j = 0; j < m.materialCount; j++)
+      {
+        m.materials[j].shader = shader;
+      }
+    }
 
-	shader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    GetShaderLocation(shader, "viewPos");
+    lights = [
+      CreateLight(.LIGHT_POINT,
+        .vec3(-20, 20, -20), .zero(), .GRAY, shader
+      ),
+      CreateLight(.LIGHT_POINT,
+        .vec3(20, -20, 20), .zero(), .GRAY, shader
+      ),
+      CreateLight(.LIGHT_POINT,
+        .vec3(-20, 20, 20), .zero(), .GRAY, shader
+      ),
+      CreateLight(.LIGHT_POINT,
+        .vec3(20, -20, -20), .zero(), .GRAY, shader
+      ),
+    ];
 
-	SetShaderValue(shader,
-    GetShaderLocation(shader, "ambient"),
-    [0.1, 0.1, 0.1, 1.0],
-    .SHADER_UNIFORM_VEC4,
-  );
-
-  for (int i = 0; i < MAX_VOX_FILES; i++)
-	{
-		final m = models[i];
-		for (int j = 0; j < m.materialCount; j++)
-		{
-			m.materials[j].shader = shader;
-		}
-	}
-
-  final lights = <Light>[
-    CreateLight(.LIGHT_POINT,
-      .vec3(-20, 20, -20), .zero(), .GRAY, shader
-    ),
-    CreateLight(.LIGHT_POINT,
-      .vec3(20, -20, 20), .zero(), .GRAY, shader
-    ),
-    CreateLight(.LIGHT_POINT,
-      .vec3(-20, 20, 20), .zero(), .GRAY, shader
-    ),
-    CreateLight(.LIGHT_POINT,
-      .vec3(20, -20, -20), .zero(), .GRAY, shader
-    ),
-  ];
-
-  final Vector3 modelpos = .zero();
-	final Vector3 camerarot = .zero();
-
-  while (!WindowShouldClose())
-  {
+    modelpos = .zero();
+    camerarot = .zero();
+  },
+  loop: (_) async {
     if (IsMouseButtonDown(.MOUSE_BUTTON_MIDDLE))
 		{
 			final mouseDelta = GetMouseDelta();
@@ -115,7 +113,7 @@ void main()
 
     double y = (IsKeyDown(.KEY_D) || IsKeyDown(.KEY_RIGHT)).toInt() * 0.1 -
       (IsKeyDown(.KEY_A) || IsKeyDown(.KEY_LEFT)).toInt() * 0.1;
-
+  
 		UpdateCameraPro(camera,
       .vec3(x, y, 0.0),
 			camerarot,
@@ -178,9 +176,9 @@ void main()
       );
 
 		EndDrawing();
-  }
-
-  models.forEach(UnloadModel);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    models.forEach(UnloadModel);
+    CloseWindow();
+  },
+);

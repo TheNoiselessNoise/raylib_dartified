@@ -543,14 +543,14 @@ packages:
       path: "../xffi/packages/xffi_core"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.2"
   xffi_native:
     dependency: "direct overridden"
     description:
       path: "../xffi/packages/xffi_native"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1"
   xffi_web:
     dependency: "direct overridden"
     description:

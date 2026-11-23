@@ -1,29 +1,27 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_shapes_textures.c
-// Run it: dart run shaders_shapes_textures.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture fudesumi;
+late Shader shader;
 
-  InitWindow(screenWidth, screenHeight, "shaders_shapes_textures");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_shapes_textures");
+    SetTargetFPS(60);
 
-  final fudesumi = LoadTexture("../resources/fudesumi.png");
+    fudesumi = LoadTexture("../resources/fudesumi.png");
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs",
-  );
-
-  while (!WindowShouldClose())
-  {
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/grayscale.fs",
+    );
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -83,10 +81,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  UnloadTexture(fudesumi);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    UnloadTexture(fudesumi);
+    CloseWindow();
+  },
+);

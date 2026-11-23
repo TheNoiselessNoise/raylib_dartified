@@ -8,7 +8,7 @@ It is a **deterministic playground for constructing realities out of data, struc
 
 ## Platform Support
 
-UNHINGED automatically selects the right backend at compile time. Native (`raylib_dartified`) or web (`raylib_dartified_web`). So you don't need to choose.
+UNHINGED automatically selects the right backend at compile time.
 
 | Platform | Status | Backend | Notes |
 |---|:-:|---|---|

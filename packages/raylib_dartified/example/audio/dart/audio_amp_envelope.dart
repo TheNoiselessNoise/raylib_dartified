@@ -1,9 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_amp_envelope.c
-// Run it: dart run audio_amp_envelope.dart
 import 'dart:math' as math;
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -28,31 +27,29 @@ final class Envelope {
   ADSRState state = .IDLE;
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Float32List buffer;
+late AudioStream stream;
+double audioTime = 0.0;
+late Envelope env;
 
-  InitWindow(screenWidth, screenHeight, "audio_amp_envelope");
-  SetTargetFPS(60);
-
-  InitAudioDevice();
-
-  SetAudioStreamBufferSizeDefault(BUFFER_SIZE);
-
-  final buffer = Float32List(BUFFER_SIZE);
-  final stream = LoadAudioStream(SAMPLE_RATE, 32, 1);
-
-  double audioTime = 0.0;
-
-  final env = Envelope();
-  env.attackTime = 1.0;
-  env.decayTime = 1.0;
-  env.sustainLevel = 0.5;
-  env.releaseTime = 1.0;
-  env.currentValue = 0.0;
-  env.state = .IDLE;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_amp_envelope");
+    SetTargetFPS(60);
+    InitAudioDevice();
+    SetAudioStreamBufferSizeDefault(BUFFER_SIZE);
+    
+    buffer = Float32List(BUFFER_SIZE);
+    stream = LoadAudioStream(SAMPLE_RATE, 32, 1);
+    env = Envelope();
+    env.attackTime = 1.0;
+    env.decayTime = 1.0;
+    env.sustainLevel = 0.5;
+    env.releaseTime = 1.0;
+    env.currentValue = 0.0;
+    env.state = .IDLE;
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE)) env.state = .ATTACK;
 
     if (IsKeyReleased(.KEY_SPACE) && (env.state != .IDLE)) env.state = .RELEASE;
@@ -105,13 +102,13 @@ void main() {
       DrawText("Press SPACE to PLAY the sound!", 200, 400, 20, LIGHTGRAY);
 
     EndDrawing();
-  }
-
-  UnloadAudioStream(stream);
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadAudioStream(stream);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);
 
 double FillAudioBuffer(int i, Float32List buffer, double envelopeValue, double audioTime)
 {

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_sprite_fonts.c
-// Run it: dart run text_sprite_fonts.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -31,44 +30,42 @@ final List<String> messages = [
 
 final List<int> spacings = [2, 4, 8, 4, 3, 4, 4, 1];
 
-void main()
-{
-  assert(fontPaths.length == messages.length);
-  assert(fontPaths.length == spacings.length);
+late List<Color> colors;
+late List<Font> fonts;
+late List<Vector2> positions;
 
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    assert(fontPaths.length == messages.length);
+    assert(fontPaths.length == spacings.length);
 
-  final List<Color> colors = [
-    .MAROON, .ORANGE, .DARKGREEN, .DARKBLUE,
-    .DARKPURPLE, .LIME, .GOLD, .RED
-  ];
-  assert(fontPaths.length == colors.length);
+    InitWindow(screenWidth, screenHeight, "text_sprite_fonts");
+    SetTargetFPS(60);
 
-  InitWindow(screenWidth, screenHeight, "text_sprite_fonts");
-  SetTargetFPS(60);
-  
-  final fonts = fontPaths.map((path) => LoadFont(path)).toList();
+    colors = [.MAROON, .ORANGE, .DARKGREEN, .DARKBLUE, .DARKPURPLE, .LIME, .GOLD, .RED];
+    assert(fontPaths.length == colors.length);
+    
+    fonts = fontPaths.map((path) => LoadFont(path)).toList();
 
-  final positions = <Vector2>[];
-  for (int i = 0; i < fontPaths.length; i++) {
-    final fontSize = MeasureTextEx(
-      fonts[i],
-      messages[i],
-      fonts[i].baseSize*2,
-      spacings[i],
-    );
-    positions.add(.vec2(
-      screenWidth/2 - fontSize.x/2,
-      60 + fonts[i].baseSize + 45*i,
-    ));
-  }
+    positions = <Vector2>[];
+    for (int i = 0; i < fontPaths.length; i++) {
+      final fontSize = MeasureTextEx(
+        fonts[i],
+        messages[i],
+        fonts[i].baseSize*2,
+        spacings[i],
+      );
+      positions.add(.vec2(
+        screenWidth/2 - fontSize.x/2,
+        60 + fonts[i].baseSize + 45*i,
+      ));
+    }
 
-  positions[3].y += 8;
-  positions[4].y += 2;
-  positions[7].y -= 8;
-
-  while (!WindowShouldClose())
-  {
+    positions[3].y += 8;
+    positions[4].y += 2;
+    positions[7].y -= 8;
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -92,11 +89,9 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  for (int i = 0; i < fontPaths.length; i++) {
-    UnloadFont(fonts[i]);
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    fonts.forEach(UnloadFont);
+    CloseWindow();
+  },
+);

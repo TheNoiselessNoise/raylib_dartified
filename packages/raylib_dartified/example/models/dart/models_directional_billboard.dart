@@ -1,34 +1,32 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_directional_billboard.c
-// Run it: dart run models_directional_billboard.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Texture skillbot;
+double anim_timer = 0.0;
+int anim = 0;
 
-  InitWindow(screenWidth, screenHeight, "models_directional_billboard");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_directional_billboard");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(2.0, 1.0, 2.0),
-    target: .vec3(0.0, 0.5, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(2.0, 1.0, 2.0),
+      target: .vec3(0.0, 0.5, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final skillbot = LoadTexture("../resources/skillbot.png");
-
-  double anim_timer = 0.0;
-  int anim = 0;
-
-  while (!WindowShouldClose())
-  {
+    skillbot = LoadTexture("../resources/skillbot.png");
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     anim_timer += GetFrameTime();
@@ -77,9 +75,9 @@ void main()
       DrawText("direction frame: ${dir.f0}", 10, 40, 20, DARKGRAY);
 
     EndDrawing();
-  }
-
-  UnloadTexture(skillbot);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(skillbot);
+    CloseWindow();
+  },
+);

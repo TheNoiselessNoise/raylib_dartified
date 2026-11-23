@@ -1,98 +1,97 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_skybox_rendering.c
-// Run it: dart run models_skybox_rendering.dart
 // WARNING: expects resources from the raylib source
-// ignore_for_file: dead_code
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+bool useHDR = false;
+late Camera3D camera;
+late Model skybox;
+late Shader skyboxShader;
+late Shader shdrCubemap;
+String skyboxFileName = '';
 
-  InitWindow(screenWidth, screenHeight, "models_skybox_rendering");
-  SetTargetFPS(60);
-  DisableCursor();
-
-  final camera = Camera3D(
-    position: .vec3(1, 1, 1),
-    target: .vec3(4, 1, 4),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
+void updateSkyboxHDRShader() {
+  SetShaderValue(
+    skybox.materials[0].shader,
+    GetShaderLocation(skybox.materials[0].shader, "doGamma"),
+    [useHDR ? 1 : 0],
+    .SHADER_UNIFORM_INT,
   );
-
-  final cube = GenMeshCube(1.0, 1.0, 1.0);
-  final skybox = LoadModelFromMesh(cube);
-
-  bool useHDR = false;
-
-  final skyboxShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/skybox.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/skybox.fs"
-  );
-  skybox.materials[0].shader = skyboxShader;
 
   SetShaderValue(
     skybox.materials[0].shader,
-    GetShaderLocation(skybox.materials[0].shader, "environmentMap"),
-    [MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value],
+    GetShaderLocation(skybox.materials[0].shader, "vflipped"),
+    [useHDR ? 1 : 0],
     .SHADER_UNIFORM_INT,
   );
+}
 
-  void updateSkyboxHDRShader() {
-    SetShaderValue(
-      skybox.materials[0].shader,
-      GetShaderLocation(skybox.materials[0].shader, "doGamma"),
-      [useHDR ? 1 : 0],
-      .SHADER_UNIFORM_INT,
-    );
-
-    SetShaderValue(
-      skybox.materials[0].shader,
-      GetShaderLocation(skybox.materials[0].shader, "vflipped"),
-      [useHDR ? 1 : 0],
-      .SHADER_UNIFORM_INT,
-    );
-  } updateSkyboxHDRShader();
-
-  final shdrCubemap = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/cubemap.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/cubemap.fs"
-  );
-
-  SetShaderValue(
-    shdrCubemap,
-    GetShaderLocation(shdrCubemap, "equirectangularMap"),
-    [0],
-    .SHADER_UNIFORM_INT,
-  );
-
-  String skyboxFileName = '';
-
-  void loadSkybox([String? file]) {
-    if (useHDR) {
-      skyboxFileName = file ?? "../resources/dresden_square_2k.hdr";
-      final panorama = LoadTexture(skyboxFileName);
-      final texture = GenTextureCubemap(shdrCubemap, panorama, 1024, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
-      skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture = texture;
-      UnloadTexture(panorama);
-    } else {
-      skyboxFileName = file ?? "../resources/skybox.png";
-      final img = LoadImage(skyboxFileName);
-      final texture = LoadTextureCubemap(img, .CUBEMAP_LAYOUT_AUTO_DETECT);
-      skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture = texture;
-      UnloadImage(img);
-    }
+void loadSkybox([String? file]) {
+  if (useHDR) {
+    skyboxFileName = file ?? "../resources/dresden_square_2k.hdr";
+    final panorama = LoadTexture(skyboxFileName);
+    final texture = GenTextureCubemap(shdrCubemap, panorama, 1024, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture = texture;
+    UnloadTexture(panorama);
+  } else {
+    skyboxFileName = file ?? "../resources/skybox.png";
+    final img = LoadImage(skyboxFileName);
+    final texture = LoadTextureCubemap(img, .CUBEMAP_LAYOUT_AUTO_DETECT);
+    skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture = texture;
+    UnloadImage(img);
   }
+}
 
-  loadSkybox();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_skybox_rendering");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  while (!WindowShouldClose())
-  {
+    camera = .new(
+      position: .vec3(1, 1, 1),
+      target: .vec3(4, 1, 4),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
+
+    final cube = GenMeshCube(1.0, 1.0, 1.0);
+    skybox = LoadModelFromMesh(cube);
+
+    skyboxShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/skybox.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/skybox.fs"
+    );
+    skybox.materials[0].shader = skyboxShader;
+
+    SetShaderValue(
+      skybox.materials[0].shader,
+      GetShaderLocation(skybox.materials[0].shader, "environmentMap"),
+      [MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value],
+      .SHADER_UNIFORM_INT,
+    );
+
+    updateSkyboxHDRShader();
+
+    shdrCubemap = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/cubemap.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/cubemap.fs"
+    );
+
+    SetShaderValue(
+      shdrCubemap,
+      GetShaderLocation(shdrCubemap, "equirectangularMap"),
+      [0],
+      .SHADER_UNIFORM_INT,
+    );
+
+    loadSkybox();
+  },
+  loop: (_) async {
     // NOTE: not part of original example 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT)) {
       useHDR = !useHDR;
@@ -150,15 +149,14 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadTexture(skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture);
-
-  UnloadShader(skybox.materials[0].shader);
-  UnloadModel(skybox);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(skybox.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_CUBEMAP.value].texture);
+    UnloadShader(skyboxShader);
+    UnloadModel(skybox);
+    CloseWindow();
+  },
+);
 
 Texture GenTextureCubemap(Shader shader, Texture panorama, int size, PixelFormat format)
 {
@@ -196,7 +194,7 @@ Texture GenTextureCubemap(Shader shader, Texture panorama, int size, PixelFormat
   rlEnableShader(shader.id);
 
   final matFboProjection = MatrixPerspective(
-    90.0*rl.DEG2RAD,
+    90.0*DEG2RAD,
     1.0,
     rlGetCullDistanceNear(),
     rlGetCullDistanceFar()

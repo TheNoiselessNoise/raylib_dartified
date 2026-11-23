@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_digital_clock.c
-// Run it: dart run shapes_digital_clock.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
@@ -10,12 +9,6 @@ const int screenHeight = 450;
 enum ClockType {
   CLOCK_ANALOG,
   CLOCK_DIGITAL
-}
-
-extension Binary on int {
-  int get b {
-    return int.parse(toRadixString(10), radix: 2);
-  }
 }
 
 final class ClockHand {
@@ -47,39 +40,37 @@ final class Clock {
   });
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+ClockType clockMode = .CLOCK_DIGITAL;
+late Clock clock;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shapes_digital_clock");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shapes_digital_clock");
+    SetTargetFPS(60);
 
-  ClockType clockMode = .CLOCK_DIGITAL;
-
-  final clock = Clock(
-    second: ClockHand(
-      angle: 45,
-      length: 140,
-      thickness: 3,
-      color: .MAROON,
-    ),
-    minute: ClockHand(
-      angle: 10,
-      length: 130,
-      thickness: 7,
-      color: .DARKGRAY,
-    ),
-    hour: ClockHand(
-      angle: 0,
-      length: 100,
-      thickness: 7,
-      color: .BLACK,
-    ),
-  );
-
-  while (!WindowShouldClose())
-  {
+    clock = .new(
+      second: .new(
+        angle: 45,
+        length: 140,
+        thickness: 3,
+        color: .MAROON,
+      ),
+      minute: .new(
+        angle: 10,
+        length: 130,
+        thickness: 7,
+        color: .DARKGRAY,
+      ),
+      hour: .new(
+        angle: 0,
+        length: 100,
+        thickness: 7,
+        color: .BLACK,
+      ),
+    );
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE))
     {
       if (clockMode == .CLOCK_DIGITAL) clockMode = .CLOCK_ANALOG;
@@ -112,10 +103,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void UpdateClock(Clock clock)
 {
@@ -145,13 +137,13 @@ void DrawClockAnalog(Clock clock, Vector2 position)
   for (int i = 0; i < 60; i++)
   {
     final Vector2 v1 = .vec2(
-      position.x + (clock.second.length + ((i%5>0)? 10 : 6))*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
-      position.y + (clock.second.length + ((i%5>0)? 10 : 6))*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
+      position.x + (clock.second.length + ((i%5>0)? 10 : 6))*math.cos((6.0*i - 90.0)*DEG2RAD),
+      position.y + (clock.second.length + ((i%5>0)? 10 : 6))*math.sin((6.0*i - 90.0)*DEG2RAD)
     );
 
     final Vector2 v2 = .vec2(
-      position.x + (clock.second.length + 20)*math.cos((6.0*i - 90.0)*rl.DEG2RAD),
-      position.y + (clock.second.length + 20)*math.sin((6.0*i - 90.0)*rl.DEG2RAD)
+      position.x + (clock.second.length + 20)*math.cos((6.0*i - 90.0)*DEG2RAD),
+      position.y + (clock.second.length + 20)*math.sin((6.0*i - 90.0)*DEG2RAD)
     );
 
     DrawLineEx(v1, v2, ((i%5>1)? 1.0 : 3.0), .DARKGRAY);

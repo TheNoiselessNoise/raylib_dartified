@@ -1,40 +1,32 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_srcrec_dstrec.c
-// Run it: dart run textures_srcrec_dstrec.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture scarfy;
+late int frameWidth;
+late int frameHeight;
+late Rectangle sourceRec;
+late Rectangle destRec;
+late Vector2 origin;
+int rotation = 0;
 
-  InitWindow(screenWidth, screenHeight, "textures_srcrec_dstrec");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_srcrec_dstrec");
+    SetTargetFPS(60);
 
-  final scarfy = LoadTexture("../resources/scarfy.png");
-
-  int frameWidth = scarfy.width~/6;
-  int frameHeight = scarfy.height;
-
-  final Rectangle sourceRec = .rect(
-    0.0, 0.0,
-    frameWidth, frameHeight
-  );
-
-  final Rectangle destRec = .rect(
-    screenWidth/2.0, screenHeight/2.0,
-    frameWidth*2.0, frameHeight*2.0
-  );
-
-  final Vector2 origin = .vec2(frameWidth, frameHeight);
-
-  int rotation = 0;
-
-  while (!WindowShouldClose())
-  {
+    scarfy = LoadTexture("../resources/scarfy.png");
+    frameWidth = scarfy.width~/6;
+    frameHeight = scarfy.height;
+    sourceRec = .rect(0.0, 0.0, frameWidth, frameHeight);
+    destRec = .rect(screenWidth/2.0, screenHeight/2.0, frameWidth*2.0, frameHeight*2.0);
+    origin = .vec2(frameWidth, frameHeight);
+  },
+  loop: (_) async {
     rotation++;
 
     BeginDrawing();
@@ -66,9 +58,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(scarfy);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(scarfy);
+    CloseWindow();
+  },
+);

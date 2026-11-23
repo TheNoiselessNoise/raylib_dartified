@@ -1,32 +1,20 @@
-# Raylib for Dart (FFI)
+# Raylib Dartified
 
-A **Dart-first**, modular set of **FFI bindings for [raylib](https://www.raylib.com/)**.
+<img src="raylib_dartified.png" width="128px">
 
-This project exposes raylib through an idiomatic Dart API while staying close to the original C design. Most bindings are generated using `ffigen`, but this project goes significantly beyond raw `ffigen` output.
+**Dart bindings for [raylib](https://www.raylib.com/), with native and WebAssembly backends.**
 
-In short: **`ffigen` gives you the raw function table. This project gives you something you can actually use.**
+Raylib Dartified brings raylib's functionality to Dart through a shared, backend-independent API. It provides both low-level access to raylib and a more Dart-idiomatic interface, with separate implementations for native platforms and the web.
 
-<p align="center"><img src="raylib_dartified.png" width="128px"></p>
-
----
-
-## Contents
+# Contents
 - [Platform Support](#platform-support)
-- [Installation](#installation)
 - [API Tiers](#api-tiers)
-  - [Dart API](#dart-api)
-  - [Flat API](#flat-api---backend-agnostic-low-level-api)
-  - [FFI API](#ffi-api---full-native-control)
-- [Abbreviated API](#abbreviated-api)
-- [Writing Backend-Agnostic Apps](#writing-backend-agnostic-apps)
-- [Safety Notes](#safety-notes)
+- [Installation & Setup](#installation--setup)
 - [Examples](#examples)
-  - [Running Examples](#running-examples)
+- [Module revisions](#module-revisions)
 - [See Also](#see-also)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-
----
 
 # Platform Support
 
@@ -35,7 +23,7 @@ In short: **`ffigen` gives you the raw function table. This project gives you so
 | **Linux** | ✅ | Primary development platform |
 | **Windows** | ✅ | Should work out of the box |
 | **macOS** | ❌ | See below |
-| **Web** | ❌ | See [`raylib_dartified_web`](https://pub.dev/packages/raylib_dartified_web) instead |
+| **Web** | ✅ | Requires a browser with WebAssembly and WebGL support, all modern browsers should qualify. |
 | **Android** | ❓ | Not tested |
 | **iOS** | ❓ | Not tested, likely blocked |
 
@@ -60,303 +48,140 @@ These platforms have not been tested.
 - **Android** - Raylib has official Android support and Dart FFI works on Android (dynamic libraries only, no static linking). In theory, this could work, but significant platform-specific setup (NDK, CMake, Activity lifecycle integration) would be required. Untested and unsupported for now.
 - **iOS** - Doubly blocked: raylib itself [does not have official iOS support](https://github.com/raysan5/raylib/discussions/2681) (there is an open PR with a community `rcore_ios.c` attempt), and Dart FFI on iOS shares the same main-thread issue as macOS. Not expected to work.
 
-# Installation
-
-This package currently assumes you already have **raylib compiled** for your platform.
-
-Place the compiled library somewhere in your project tree (or in a parent directory). The expected filenames are platform-specific:
-
-| Platform | raylib | raygui (optional) |
-|----------|--------|-------------------|
-| Linux | `libraylib.so` | `libraygui.so` |
-| Windows | `raylib.dll` | `raygui.dll` |
-| macOS | `libraylib.dylib` | `libraygui.dylib` |
-
-Then pass the folder path to `findRaylib`:
-
-```dart
-final rl = findRaylib('raylib-6.0_linux_amd64/lib');
-```
-
-`findRaylib` walks **up from the current working directory** until it finds a folder matching the given path. The path therefore does not need to be absolute.
-
-If `raygui` is present in the same folder, it is loaded automatically. If it is not present, it is silently skipped.
-
-For explicit control over library paths, use the `Raylib` constructor directly:
-
-```dart
-final rl = Raylib(
-  core: '/absolute/path/to/libraylib.so',
-  gui: '/absolute/path/to/libraygui.so', // optional
-);
-```
-
----
-
 # API Tiers
 
-This package provides three API layers. They all expose the same underlying raylib functionality, but offer different levels of abstraction and control.
+These bindings provide three API layers. They all expose the same underlying raylib functionality, but offer different levels of abstraction and control.
 
 | API | Memory | Backend | Style |
 |-----|--------|---------|-------|
-| **Dart** | Managed by Dart layer | Native + Web | Idiomatic Dart |
-| **Flat** | Manual | Native + Web | Close to raylib C API |
+| **Dart** | Managed | Native + Web | Idiomatic Dart |
+| **Flat** | Manual | Native + Web | Low Level |
+|*<ins>BACKEND SPECIFIC</ins>*||||
 | **FFI** | Manual | Native only | Direct FFI |
-
----
-
-## Dart API
-
-Provides idiomatic Dart types and objects which manage their own data and memory. Structs can exist as ordinary Dart values or act as live views over native/backend memory when needed.
-
-The Dart API handles most pointer lifetimes, native struct layouts, null terminators, and other low-level details for you.
+| **WASM** | Manual | Web only | Direct JS + WASM |
 
 ### ⚠️ Stability
 
-The **Dart API** is convenient, but **not yet battle-tested at the level the Flat API is**. It's a comparatively young abstraction sitting on top of raw memory access, and it's the kind of thing where a subtle mistake in a single getter/setter can produce backend-specific memory corruption that's silent, hard to reproduce, and only shows up under certain conditions (particular platforms, particular allocation patterns, etc.).
-
-**Recommendation:** for anything where correctness matters, performance matters, or anything touching raw pixel/buffer data, prefer the **Flat API**. It's intentionally modeled after `dart:ffi`'s direct pointer semantics (just platform-independent), which makes the memory access explicit and auditable rather than hidden behind wrapper abstractions. It's more verbose, but what you see is what actually happens.
+The **Dart API** is convenient, but **not yet battle-tested**. It's a comparatively young abstraction sitting on top of raw memory access, and it's the kind of thing where a subtle mistake in a single getter/setter can produce backend-specific memory corruption that's silent, hard to reproduce, and only shows up under certain conditions (particular platforms, particular allocation patterns, etc.).
 
 If you hit a bug that smells like memory corruption (garbage data, platform-specific weirdness, things that work on native but not on WASM or vice versa) while using the **Dart API**, try reproducing it with the **Flat API** first, it's the more trustworthy baseline while **Dart API** matures.
 
 ### Usage
 
-Each raylib module has a corresponding Dart counterpart, both accessible from the same `Raylib` instance via `module<T>()`:
+Each raylib module has a corresponding `Dart` and `Flat` counterpart, both accessible from the same `Raylib` instance via `module<T>()`:
 
-| FFI | Flat | Dart |
-|-----|------|------|
-| `rl.module<RaylibCore>()` | `rl.module<RaylibCoreFlat>()` | `rl.module<RaylibCoreDart>()` |
-| `rl.module<RaylibRlgl>()` | `rl.module<RaylibRlglFlat>()` | `rl.module<RaylibRlglDart>()` |
-| `rl.module<RaylibGui>()` | `rl.module<RaylibGuiFlat>()` | `rl.module<RaylibGuiDart>()` |
+| FFI / WASM | Flat | Dart |
+|:-----:|:------:|:------:|
+| `RaylibCore` | `RaylibCoreFlat` | `RaylibCoreDart` |
+| `RaylibRlgl` | `RaylibRlglFlat` | `RaylibRlglDart` |
+| `RaylibGui` | `RaylibGuiFlat` | `RaylibGuiDart` |
 | ... | ... | ... |
 
-You are **not required to choose one API layer exclusively**. The layers can coexist, and it is perfectly valid to use the lower-level APIs when necessary.
+The `Dart` and `Flat` APIs are backend-agnostic and can be used interchangeably within the same application, allowing you to mix both API tiers as needed.
+
+The `FFI` and `WASM` APIs, however, are platform-specific. Using either directly ties your application to its respective backend and prevents cross-platform compilation.
 
 See any `dart` example in `example/<category>/dart/`.
 
-Or start here:
+Or start here: [core/dart/core_basic_window.dart](example/core/dart/core_basic_window.dart)
 
-[core/dart/core_basic_window.dart](example/core/dart/core_basic_window.dart)
+# Installation & Setup
 
----
+## Native
 
-## Flat API - Backend-Agnostic Low-Level API
+Native platforms require raylib to be compiled for your target platform. Place the libraries somewhere in your project tree:
 
-The **Flat API** is for when you want the raylib API to remain close to the original C interface, but you **do not want your code to depend on platform-specific pointer types**.
+| Platform | raylib | <RaylibSupportedLibs.id> |
+|:---:|:---:|:---:|
+| Linux | `libraylib.so` | `lib<id>.so` |
+| Windows | `raylib.dll` | `<id>.dll` |
+| macOS | `libraylib.dylib` | `lib<id>.dylib` |
 
-It exposes essentially the same flat, 1:1 function-oriented API as raylib, but replaces native `Pointer<T>` usage with the package's backend-independent `XPtr` abstraction.
-
-This makes the Flat API usable across both **native and web/WASM backends**.
-
-For example:
-
-```dart
-final ptr = Int32$.Value(42);
-
-print(ptr.value);
-
-ptr.free();
-```
-
-The underlying memory implementation is supplied by the active backend. Native builds use FFI-backed memory, while web builds use the appropriate WASM memory implementation.
-
-The Flat API therefore sits between the two other layers:
-
-```text
-        Dart API
-High-level / backend-agnostic
-            │
-            ▼
-        Flat API
-Low-level / backend-agnostic
-            │
-            ▼
-         FFI API
-     Native / Pointer<T>
-```
-
-Use Flat when you want:
-
-- raylib's original function-oriented API;
-- direct control over memory and struct values;
-- minimal abstraction over the C API;
-- the ability to run the same code on native and web/WASM.
-
-If you need actual `dart:ffi` `Pointer<T>` objects, use the FFI API instead.
-
-See any `flat` example in `example/<category>/flat/`.
-
-Or start here:
-
-[core/flat/core_basic_window.dart](example/core/flat/core_basic_window.dart)
-
----
-
-## FFI API - Full Native Control
-
-If you really want to manage your own pointers and interact directly with the native FFI layer, you can.
-
-This layer exposes raylib's native signatures essentially 1:1:
-
-- `Pointer<T>`
-- `ffi.Struct`
-- manual allocation and freeing;
-- direct interaction with the generated FFI bindings.
-
-The trade-off is that this layer is **native-only** and ties your code directly to `dart:ffi`.
-
-If you do not specifically need native FFI pointers, **prefer the Flat API instead**.
-
-See any `ffi` example in `example/<category>/ffi/`.
-
-Or start here:
-
-[core/ffi/core_basic_window.dart](example/core/ffi/core_basic_window.dart)
-
----
-
-# Abbreviated API
-
-If you want raylib's functions without any namespacing, you can use one of the abbreviated APIs.
-
-The `abbr/` variants expose the same three API tiers without requiring a module prefix:
-
-- **`abbr/dart.dart`** - Idiomatic Dart API. Backend-agnostic.
-- **`abbr/flat.dart`** - Flat raylib-style API using `XPtr`. Backend-agnostic.
-- **`abbr/ffi.dart`** - FFI API using native `Pointer<T>`. Native-only.
-
-Pick **one** per file. Mixing abbreviated APIs in the same scope will cause name collisions.
-
-### Dart
+Use `resolveRaylibLibs()` to locate them:
 
 ```dart
-import 'package:raylib_dartified/abbr/dart.dart';
-
-void main() {
-  findRaylib('path/to/raylib');
-
-  InitWindow(800, 600, 'Title');
-  SetTargetFPS(60);
-
-  // ... and so on, exactly like the raylib C API
-
-  disposeRaylib();
-}
+void main() => Raylib(
+  libs: resolveRaylibLibs('raylib-6.0_linux_amd64/lib'),
+  main: (rl) {
+    // Your application
+  },
+);
 ```
 
-### Flat
+The resolver searches upward from the current working directory, so the path doesn't need to be absolute. raygui is optional and will be loaded automatically if found.
 
-The same raylib-style API, but with backend-independent memory:
+You can also specify library paths explicitly using the `libs` parameter:
 
 ```dart
-import 'package:raylib_dartified/abbr/flat.dart';
-
-void main() {
-  findRaylib('path/to/raylib');
-
-  InitWindow(800, 600, 'Title'.toC);
-  SetTargetFPS(60);
-
-  final ptr = Int32$.Value(42);
-  ptr.free();
-
-  // ... and so on
-
-  disposeRaylib();
-}
+Raylib(
+  libs: {
+    .raylib: .path('/path/to/libraylib.so'),
+    .raygui: .path('/path/to/libraygui.so'),
+  },
+);
 ```
 
-### FFI
+## Web / WASM
 
-The same API directly against the native FFI layer:
+### Prerequisites
 
-```dart
-import 'package:raylib_dartified/abbr/ffi.dart';
+- [Emscripten (emsdk)](https://emscripten.org/docs/getting_started/downloads.html) installed and sourced
+- `git`, `cmake`, and `dart` available on your PATH
 
-void main() {
-  findRaylib('path/to/raylib');
+### Setup
 
-  InitWindow(800, 600, 'Title'.toNativeUtf8().cast());
-  SetTargetFPS(60);
+Download and build raylib for WASM:
 
-  final ptr = calloc<Int32>()..value = 42;
-  calloc.free(ptr);
-
-  // ... and so on
-
-  disposeRaylib();
-}
+```sh
+dart run raylib_dartified:setup
 ```
 
----
+This only needs to be done once.
 
-# Writing Backend-Agnostic Apps
+### Build
 
-To write an app once and run it on both backends, implement
-`RaylibAppBase` and let each backend's `runRaylib` drive the lifecycle.
+Compile your application:
 
-See [api/dart/backend_agnostic.dart](example/api/dart/backend_agnostic.dart)
+```sh
+dart run raylib_dartified:build --entry=lib/main.dart
+```
 
----
+The output is written to `build/` in your current directory.
 
-# Safety Notes
-
-The lower you go in the API stack, the more responsibility you take for memory management.
-
-- This is **not memory-safe Dart** when using the FFI layer.
-- Passing invalid native pointers can crash the Dart VM.
-- Manually allocated memory must be freed by its owner.
-- Optional modules such as `Gui` are unavailable if their native library was not loaded.
-- The Flat API removes platform-specific pointer types, but it still exposes manual memory management.
-
----
+Native library resolution is not required on Web/WASM.
 
 # Examples
 
-This repository includes ported raylib examples rewritten to use the Dart APIs exposed here.
+Ported original raylib examples rewritten to use the APIs exposed here.
 
 The examples closely follow the **original raylib examples**, making it easy to cross-reference the Dart implementation with the original C source.
-
-Every example has a **Dart version**, while only selected examples also have **FFI** and **Flat** versions.
-
-The reason is simple: the Dart versions remain close to the original raylib examples, while the lower-level APIs introduce memory-management and pointer-related details that would make the examples harder to cross-reference.
 
 See the [example/](example/) directory for runnable examples.
 
 > **Warning:** Some examples require the `resources/` directory from the original raylib source.  
-> If so, copy the `resources/` folder into `example/<category>/`.
+
+> **NATIVE:** Copy the `resources/` folder into `example/<category>/`. Examples expect the `resources/` folder to be located in their parent directory.
+
+> **WEB**: Just copy-paste the `resources/` folder into your project folder or provide `--resources=<path>` option to the `raylib_dartified:build` utility.
 
 ---
 
-## Running Examples
+## Module revisions
 
-Examples expect the following file to exist somewhere in the current directory or one of its parents:
+Some modules are sourced from external projects rather than the official
+raylib repository. The following table records the exact upstream revision
+used for each package version.
 
-```text
-raylib-6.0_linux_amd64/lib/libraylib.so
-```
-
-Then run an example with:
-
-```bash
-dart run <example>
-```
-
-### Linux / Wayland
-
-If you are running under Wayland but want to force X11:
-
-```bash
-WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11 dart run <example>
-```
-
----
+|Package | Module | Upstream | Revision |
+|:---:|:---:|:---:|:---:|
+|6.0.5|  *  | [raylib](https://github.com/raysan5/raylib) | `dbc56a87da87d973a9c5baa4e7438a9d20121d28` |
+|6.0.5| Gui | [raygui](https://github.com/raysan5/raygui) | `30e303400781d3ef6e81f01e1b95cdf3b19386df` |
+|___|___|___|___|
 
 # See Also
 
 - [LIMITATIONS.md](LIMITATIONS.md)
-
----
+- [SHADER_CONVERSION.md](SHADER_CONVERSION.md)
 
 # License
 
@@ -365,8 +190,6 @@ This project is released under the **zlib/libpng license**.
 It contains bindings and rewritten components derived from [raylib](https://www.raylib.com/), which is also licensed under zlib.
 
 See [LICENSE](LICENSE) for details.
-
----
 
 # Acknowledgements
 

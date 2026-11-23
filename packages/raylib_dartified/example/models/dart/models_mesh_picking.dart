@@ -1,54 +1,66 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_mesh_picking.c
-// Run it: dart run models_mesh_picking.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Ray ray;
+late Model tower;
+late Texture texture;
+late Vector3 towerPos;
+late BoundingBox towerBBox;
+late Vector3 g0;
+late Vector3 g1;
+late Vector3 g2;
+late Vector3 g3;
+// Test triangle
+late Vector3 ta;
+late Vector3 tb;
+late Vector3 tc;
+late Vector3 bary;
+// Test sphere
+late Vector3 sp;
+double sr = 4.0;
 
-  InitWindow(screenWidth, screenHeight, "models_mesh_picking");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_mesh_picking");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(20, 20, 20),
-    target: .vec3(0, 8, 0),
-    up: .vec3(0, 1.6, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(20, 20, 20),
+      target: .vec3(0, 8, 0),
+      up: .vec3(0, 1.6, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  late Ray ray;
+    tower = LoadModel("../resources/models/obj/turret.obj");
+    texture = LoadTexture("../resources/models/obj/turret_diffuse.png");
+    tower.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final tower = LoadModel("../resources/models/obj/turret.obj");
-  final texture = LoadTexture("../resources/models/obj/turret_diffuse.png");
-  tower.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
+    towerPos = .zero();
+    towerBBox = GetMeshBoundingBox(tower.meshes[0]);
 
-  final Vector3 towerPos = .zero();
-  final towerBBox = GetMeshBoundingBox(tower.meshes[0]);
+    g0 = .vec3(-50.0, 0.0, -50.0);
+    g1 = .vec3(-50.0, 0.0,  50.0);
+    g2 = .vec3( 50.0, 0.0,  50.0);
+    g3 = .vec3( 50.0, 0.0, -50.0);
 
-  final Vector3 g0 = .vec3(-50.0, 0.0, -50.0);
-  final Vector3 g1 = .vec3(-50.0, 0.0,  50.0);
-  final Vector3 g2 = .vec3( 50.0, 0.0,  50.0);
-  final Vector3 g3 = .vec3( 50.0, 0.0, -50.0);
+    // Test triangle
+    ta = .vec3(-25.0, 0.5, 0.0);
+    tb = .vec3(-4.0, 2.5, 1.0);
+    tc = .vec3(-8.0, 6.5, 0.0);
 
-  // Test triangle
-  final Vector3 ta = .vec3(-25.0, 0.5, 0.0);
-  final Vector3 tb = .vec3(-4.0, 2.5, 1.0);
-  final Vector3 tc = .vec3(-8.0, 6.5, 0.0);
+    bary = .zero();
 
-  Vector3 bary = .zero();
-
-  // Test sphere
-  final Vector3 sp = .vec3(-30.0, 5.0, 5.0);
-  double sr = 4.0;
-
-  while (!WindowShouldClose())
-  {
+    // Test sphere
+    sp = .vec3(-30.0, 5.0, 5.0);
+  },
+  loop: (_) async {
     if (IsCursorHidden()) UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT))
@@ -207,10 +219,10 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadModel(tower);
-  UnloadTexture(texture);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(tower);
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);

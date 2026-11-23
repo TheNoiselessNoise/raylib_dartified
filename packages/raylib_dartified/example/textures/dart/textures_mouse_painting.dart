@@ -1,56 +1,53 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_mouse_painting.c
-// Run it: dart run textures_mouse_painting.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Color> colors;
+late List<Rectangle> colorsRecs;
+int colorSelected = 0;
+int colorSelectedPrev = colorSelected;
+int colorMouseHover = 0;
+double brushSize = 20;
+bool mouseWasPressed = false;
+late Rectangle btnSaveRec;
+bool btnSaveMouseHover = false;
+bool showSaveMessage = false;
+int saveMessageCounter = 0;
+late RenderTexture target;
 
-  final colors = <Color>[
-    .RAYWHITE, .YELLOW, .GOLD, .ORANGE,
-    .PINK, .RED, .MAROON, .GREEN,
-    .LIME, .DARKGREEN, .SKYBLUE, .BLUE,
-    .DARKBLUE, .PURPLE, .VIOLET, .DARKPURPLE,
-    .BEIGE, .BROWN, .DARKBROWN, .LIGHTGRAY,
-    .GRAY, .DARKGRAY, .BLACK,
-  ];
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_mouse_painting");
+    SetTargetFPS(120);
+    
+    colors = <Color>[
+      .RAYWHITE, .YELLOW, .GOLD, .ORANGE,
+      .PINK, .RED, .MAROON, .GREEN,
+      .LIME, .DARKGREEN, .SKYBLUE, .BLUE,
+      .DARKBLUE, .PURPLE, .VIOLET, .DARKPURPLE,
+      .BEIGE, .BROWN, .DARKBROWN, .LIGHTGRAY,
+      .GRAY, .DARKGRAY, .BLACK,
+    ];
 
-  final colorsRecs = <Rectangle>[];
-  for (int i = 0; i < colors.length; i++) {
-    colorsRecs.add(.new(
+    colorsRecs = .generate(colors.length, (i) => .new(
       x: (10 + 30*i + 2*i).toDouble(),
       y: 10,
       width: 30,
       height: 30,
     ));
-  }
 
-  int colorSelected = 0;
-  int colorSelectedPrev = colorSelected;
-  int colorMouseHover = 0;
-  double brushSize = 20;
-  bool mouseWasPressed = false;
+    btnSaveRec = .rect(750, 10, 40, 30);
 
-  final Rectangle btnSaveRec = .rect(750, 10, 40, 30);
-  bool btnSaveMouseHover = false;
-  bool showSaveMessage = false;
-  int saveMessageCounter = 0;
+    target = LoadRenderTexture(screenWidth, screenHeight);
 
-  InitWindow(screenWidth, screenHeight, "textures_mouse_painting");
-  SetTargetFPS(120);
-
-  final target = LoadRenderTexture(screenWidth, screenHeight);
-
-  BeginTextureMode(target);
-  ClearBackground(colors[0]);
-  EndTextureMode();
-
-  while (!WindowShouldClose())
-  {
+    BeginTextureMode(target);
+      ClearBackground(colors[0]);
+    EndTextureMode();
+  },
+  loop: (_) async {
     final mousePos = GetMousePosition();
 
     if (IsKeyPressed(.KEY_RIGHT)) colorSelected++;
@@ -188,9 +185,9 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  UnloadRenderTexture(target);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);

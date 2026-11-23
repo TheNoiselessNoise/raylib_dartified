@@ -1,8 +1,7 @@
 // Run it: dart run mc.dart
 // Texture from https://github.com/Minesweeper-World/MS-Texture
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 // WARNING: this example grew piecemeal alongside the framework itself rather
 // than being written against a finished API, so don't read it as "the"
@@ -378,7 +377,7 @@ final class MinesweeperScene extends DrawScene<G> {
 
     // prepare bombs
     final positions = msState.grid!.positions();
-    positions.shuffle(rl.random);
+    positions.shuffle(Raylib.instance.random);
     for (final (x, y) in positions.take(msState.bombCount)) {
       msState.grid!.at(x, y).value = -1;
     }
@@ -627,7 +626,7 @@ final class Bridge extends UnhingedRaylibApp<G> {
   G create(backend) => G(backend);
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   Bridge(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
 );

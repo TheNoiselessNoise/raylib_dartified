@@ -1,10 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_stream_effects.c
-// Run it: dart run audio_stream_effects.dart
 // WARNING: expects resources from the raylib source
 // WARNING: NO EFFECTS, see LIMITATIONS.md
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -50,29 +49,26 @@ AudioCallback AudioProcessEffectDelay = .function((buffer, frames) {
   }
 });
 
-void main() async {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Music music;
+double timePlayed = 0.0;
+bool pause = false;
+bool enableEffectLPF = false;
+bool enableEffectDelay = false;
 
-  InitWindow(screenWidth, screenHeight, "audio_stream_effects");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_stream_effects");
+    InitAudioDevice();
+    SetTargetFPS(60);
 
-  InitAudioDevice();
+    music = LoadMusicStream("../resources/country.mp3");
 
-  final music = LoadMusicStream("../resources/country.mp3");
+    delayBufferSize = 48000*2;
+    delayBuffer = .calloc(delayBufferSize, XFloat32.size);
 
-  delayBufferSize = 48000*2;
-  delayBuffer = Float32$.At('delayBuffer', delayBufferSize).cast<XFloat32>();
-
-  PlayMusicStream(music);
-
-  double timePlayed = 0.0;
-  bool pause = false;
-  
-  bool enableEffectLPF = false;
-  bool enableEffectDelay = false;
-
-  while (!WindowShouldClose())
-  {
+    PlayMusicStream(music);
+  },
+  loop: (_) async {
     UpdateMusicStream(music);
 
     if (IsKeyPressed(.KEY_SPACE))
@@ -126,12 +122,14 @@ void main() async {
     EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
-    await Future.delayed(Duration.zero);
-  }
-
-  UnloadMusicStream(music);
-
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+    if (currentMemoryPlatformType == .native) {
+      await Future.delayed(Duration.zero);
+    }
+  },
+  close: (_) {
+    delayBuffer.free();
+    UnloadMusicStream(music);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

@@ -1,30 +1,27 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_sprite_stacking.c
-// Run it: dart run textures_sprite_stacking.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture booth;
+double stackScale = 3.0;
+double stackSpacing = 2.0;
+int stackCount = 122;
+double rotationSpeed = 30.0;
+double rotation = 0.0;
+const double speedChange = 0.25;
 
-  InitWindow(screenWidth, screenHeight, "textures_sprite_stacking");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_sprite_stacking");
+    SetTargetFPS(60);
 
-  final booth = LoadTexture("../resources/booth.png");
-
-  double stackScale = 3.0;
-  double stackSpacing = 2.0;
-  int stackCount = 122;
-  double rotationSpeed = 30.0;
-  double rotation = 0.0;
-  const double speedChange = 0.25;
-
-  while (!WindowShouldClose())
-  {
+    booth = LoadTexture("../resources/booth.png");
+  },
+  loop: (_) async {
     stackSpacing += GetMouseWheelMove()*0.1;
     stackSpacing = Clamp(stackSpacing, 0.0, 5.0);
 
@@ -63,9 +60,9 @@ void main()
       DrawText("redbooth model (c) kluchek under cc 4.0", 10, 420, 20, .DARKGRAY);
 
     EndDrawing();
-  }
-
-  UnloadTexture(booth);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(booth);
+    CloseWindow();
+  },
+);

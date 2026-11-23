@@ -1,18 +1,14 @@
 // Custom example, there's no original equivalent
-// Run it: dart run basic_example.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+bool showMessageBox = false;
 
-  InitWindow(400, 200, "basic_example");
-  SetTargetFPS(60);
-
-  bool showMessageBox = false;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(400, 200, "basic_example");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       final style = GuiGetStyle(.DEFAULT, GuiDefaultProperty.BACKGROUND_COLOR);
@@ -36,7 +32,8 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

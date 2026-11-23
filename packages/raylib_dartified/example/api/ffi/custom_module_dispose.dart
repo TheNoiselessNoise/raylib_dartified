@@ -1,13 +1,10 @@
-// Run it: dart run custom_module_dispose.dart
-import 'dart:ffi';
-import 'package:ffi/ffi.dart';
-import '../../base_ffi.dart';
+import '../../_example/ffi.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-final class MyModule extends RaylibModule<Raylib> {
-  MyModule(super.rl);
+final class MyModule extends XPackageModule<Raylib> {
+  MyModule(super.pkg);
 
   // fields initialized in load(), which is called by registerModule()
   late Pointer<ColorC> background;
@@ -49,26 +46,27 @@ final class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
-  allocateRaylibColors();
-  
-  final myModule = registerModule(MyModule(rl));
+// you should see in the output:
+// Disposing MyModule
 
-  InitWindow(screenWidth, screenHeight, "custom_module_dispose".toC);
-  SetTargetFPS(60);
+late MyModule myModule;
 
-  while (!WindowShouldClose())
-  {
+void main() => runRaylib(
+  nativeLibPath: 'raylib-6.0_linux_amd64/lib',
+  init: (rl) {
+    myModule = registerModule(MyModule(rl));
+
+    InitWindow(screenWidth, screenHeight, "custom_module_dispose".toC);
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     myModule.Update();
 
     BeginDrawing();
       myModule.Draw();
     EndDrawing();
-  }
-
-  // you should see in the output:
-  // Disposing MyModule
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,11 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_3d_drawing.c
-// Run it: dart run text_3d_drawing.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const double LETTER_BOUNDRY_SIZE = 0.25;
@@ -30,62 +28,66 @@ final class WaveTextConfig {
     waveOffset = waveOffset ?? .zero();
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+bool spin = true;
+bool multicolor = false;
+CameraMode cameraMode = .CAMERA_ORBITAL;
+late Vector3 cubePosition;
+late Vector3 cubeSize;
+late Font font;
+double fontSize = 8.0;
+double fontSpacing = 0.5;
+double lineSpacing = -1.0;
+// Set the text (using markdown!)
+String text = "Hello ~~World~~ in 3D!";
+late Vector3 tbox;
+int layers = 1;
+int quads = 0;
+double layerDistance = 0.01;
+late WaveTextConfig wcfg;
+double time = 0.0;
+late Color light;
+late Color dark;
+late Shader alphaDiscard;
+late List<Color> multi;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT,.FLAG_VSYNC_HINT]);
-  InitWindow(screenWidth, screenHeight, "text_3d_drawing");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT,.FLAG_VSYNC_HINT]);
+    InitWindow(screenWidth, screenHeight, "text_3d_drawing");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(-10.0, 15.0, -10.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45.0,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(-10.0, 15.0, -10.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45.0,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  bool spin = true;
-  bool multicolor = false;
-  CameraMode cameraMode = .CAMERA_ORBITAL;
+    cubePosition = .vec3(0.0, 1.0, 0.0);
+    cubeSize = .vec3(2.0, 2.0, 2.0);
+    font = GetFontDefault();
+    tbox = .zero();
 
-  final Vector3 cubePosition = .vec3(0.0, 1.0, 0.0);
-  final Vector3 cubeSize = .vec3(2.0, 2.0, 2.0);
+    wcfg = .new(
+      waveSpeed: .vec3(3.0, 3.0, 0.5),
+      waveOffset: .vec3(0.35, 0.35, 0.35),
+      waveRange: .vec3(0.45, 0.45, 0.45),
+    );
 
-  var font = GetFontDefault();
-  double fontSize = 8.0;
-  double fontSpacing = 0.5;
-  double lineSpacing = -1.0;
+    light = .MAROON;
+    dark = .RED;
 
-  // Set the text (using markdown!)
-  String text = "Hello ~~World~~ in 3D!";
-  Vector3 tbox = .zero();
-  int layers = 1;
-  int quads = 0;
-  double layerDistance = 0.01;
+    alphaDiscard = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/alpha_discard.fs",
+    );
 
-  final wcfg = WaveTextConfig(
-    waveSpeed: .vec3(3.0, 3.0, 0.5),
-    waveOffset: .vec3(0.35, 0.35, 0.35),
-    waveRange: .vec3(0.45, 0.45, 0.45),
-  );
-
-  double time = 0.0;
-
-  Color light = .MAROON;
-  Color dark = .RED;
-
-  final alphaDiscard = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/alpha_discard.fs",
-  );
-
-  final List<Color> multi = .generate(TEXT_MAX_LAYERS, (_) => .WHITE);
-
-  while (!WindowShouldClose())
-  {
+    multi = .generate(TEXT_MAX_LAYERS, (_) => .WHITE);
+  },
+  loop: (_) async {
     UpdateCamera(camera, cameraMode);
         
     if (IsFileDropped())
@@ -367,12 +369,12 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadFont(font);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadFont(font);
+    CloseWindow();
+  },
+);
 
 void DrawTextCodepoint3D(
   Font font,

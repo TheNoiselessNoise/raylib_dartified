@@ -1,37 +1,36 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_yaw_pitch_roll.c
-// Run it: dart run models_yaw_pitch_roll.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Texture texture;
+double pitch = 0.0;
+double roll = 0.0;
+double yaw = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "models_yaw_pitch_roll");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_yaw_pitch_roll");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(0, 50, -120),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 30,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(0, 50, -120),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 30,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/obj/plane.obj");
-  final texture = LoadTexture("../resources/models/obj/plane_diffuse.png");
-  model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
-
-  double pitch = 0.0;
-  double roll = 0.0;
-  double yaw = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    model = LoadModel("../resources/models/obj/plane.obj");
+    texture = LoadTexture("../resources/models/obj/plane_diffuse.png");
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
+  },
+  loop: (_) async {
     if (IsKeyDown(.KEY_DOWN)) pitch += 0.6;
     else if (IsKeyDown(.KEY_UP)) pitch -= 0.6;
     else
@@ -56,7 +55,7 @@ void main()
       else if (roll < 0.0) roll += 0.5;
     }
 
-    model.transform = .rotateXYZ(.vec3(rl.DEG2RAD*pitch, rl.DEG2RAD*yaw, rl.DEG2RAD*roll));
+    model.transform = .rotateXYZ(.vec3(DEG2RAD*pitch, DEG2RAD*yaw, DEG2RAD*roll));
 
     BeginDrawing();
 
@@ -90,10 +89,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  UnloadTexture(texture);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);

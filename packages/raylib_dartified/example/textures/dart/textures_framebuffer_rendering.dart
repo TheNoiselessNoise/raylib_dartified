@@ -1,53 +1,63 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_framebuffer_rendering.c
-// Run it: dart run textures_framebuffer_rendering.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int splitWidth = screenWidth~/2;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D subjectCamera;
+late Camera3D observerCamera;
+late RenderTexture observerTarget;
+late Rectangle observerSource;
+late Rectangle observerDest;
+late RenderTexture subjectTarget;
+late Rectangle subjectSource;
+late Rectangle subjectDest;
+late double textureAspectRatio;
 
-  InitWindow(screenWidth, screenHeight, "textures_framebuffer_rendering");
-  SetTargetFPS(60);
-  DisableCursor();
+final captureSize = 128.0;
+late Rectangle cropSource;
+late Rectangle cropDest;
 
-  final subjectCamera = Camera3D(
-    position: .vec3(5.0, 5.0, 5.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45.0,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_framebuffer_rendering");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final observerCamera = Camera3D(
-    position: .vec3(10.0, 10.0, 10.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45.0,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    subjectCamera = .new(
+      position: .vec3(5.0, 5.0, 5.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45.0,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final observerTarget = LoadRenderTexture(splitWidth, screenHeight);
-  final Rectangle observerSource = .rect(0.0, 0.0, observerTarget.texture.width, -observerTarget.texture.height);
-  final Rectangle observerDest = .rect(0.0, 0.0, splitWidth, screenHeight);
+    observerCamera = .new(
+      position: .vec3(10.0, 10.0, 10.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45.0,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final subjectTarget = LoadRenderTexture(splitWidth, screenHeight);
-  final Rectangle subjectSource = .rect(0.0, 0.0, subjectTarget.texture.width, -subjectTarget.texture.height);
-  final Rectangle subjectDest = .rect(splitWidth, 0.0, splitWidth, screenHeight);
-  final textureAspectRatio = subjectTarget.texture.width/subjectTarget.texture.height;
+    observerTarget = LoadRenderTexture(splitWidth, screenHeight);
+    observerSource = .rect(0.0, 0.0, observerTarget.texture.width, -observerTarget.texture.height);
+    observerDest = .rect(0.0, 0.0, splitWidth, screenHeight);
 
-  final captureSize = 128.0;
-  final Rectangle cropSource = .rect(
-    (subjectTarget.texture.width - captureSize)/2.0, (subjectTarget.texture.height - captureSize)/2.0, captureSize, -captureSize
-  );
-  final Rectangle cropDest = .rect(splitWidth + 20.0, 20.0, captureSize, captureSize);
+    subjectTarget = LoadRenderTexture(splitWidth, screenHeight);
+    subjectSource = .rect(0.0, 0.0, subjectTarget.texture.width, -subjectTarget.texture.height);
+    subjectDest = .rect(splitWidth, 0.0, splitWidth, screenHeight);
+    textureAspectRatio = subjectTarget.texture.width/subjectTarget.texture.height;
 
-  while (!WindowShouldClose())
-  {
+    cropSource = .rect(
+      (subjectTarget.texture.width - captureSize)/2.0, (subjectTarget.texture.height - captureSize)/2.0,
+      captureSize, -captureSize
+    );
+    cropDest = .rect(splitWidth + 20.0, 20.0, captureSize, captureSize);
+  },
+  loop: (_) async {
     UpdateCamera(observerCamera, .CAMERA_FREE);
     UpdateCamera(subjectCamera, .CAMERA_ORBITAL);
 
@@ -110,13 +120,13 @@ void main()
       DrawLine(splitWidth, 0, splitWidth, screenHeight, .BLACK);
 
     EndDrawing();
-  }
-
-  UnloadRenderTexture(observerTarget);
-  UnloadRenderTexture(subjectTarget);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(observerTarget);
+    UnloadRenderTexture(subjectTarget);
+    CloseWindow();
+  },
+);
 
 void DrawCameraPrism(Camera3D camera, double aspect, Color color)
 {
@@ -130,7 +140,7 @@ void DrawCameraPrism(Camera3D camera, double aspect, Color color)
   ];
 
   final view = GetCameraMatrix(camera);
-  final Matrix proj = .perspective(camera.fovy * rl.DEG2RAD, aspect, 0.05, length);
+  final Matrix proj = .perspective(camera.fovy * DEG2RAD, aspect, 0.05, length);
   final viewProj = view.mul(proj);
   final inverseViewProj = viewProj.invert();
 

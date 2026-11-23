@@ -30,8 +30,3 @@ doc/api/
 
 # editors
 .vscode/
-
-# raylib_dartified project related
-
-# raylib resources (you can copy-paste them)
-example/*/resources/

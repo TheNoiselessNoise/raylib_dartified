@@ -1,9 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_monitor_detector.c
-// Run it: dart run core_monitor_detector.dart
 // WARNING: if you are running under Linux/Wayland you should run with:
 // `WAYLAND_DISPLAY= XDG_SESSION_TYPE=x11`
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -18,16 +17,17 @@ final class MonitorInfo {
   int refreshRate = 0;
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final List<MonitorInfo> monitors = [];
+late int currentMonitorIndex;
 
-  InitWindow(screenWidth, screenHeight, "core_monitor_detector");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_monitor_detector");
+    SetTargetFPS(60);
 
-  final List<MonitorInfo> monitors = [];
-  int currentMonitorIndex = GetCurrentMonitor();
-
-  while (!WindowShouldClose()) {
+    currentMonitorIndex = GetCurrentMonitor();
+  },
+  loop: (_) async {
     int maxWidth = 1;
     int maxHeight = 1;
 
@@ -109,7 +109,8 @@ void main() {
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

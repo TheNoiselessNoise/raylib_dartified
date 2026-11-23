@@ -1,0 +1,237 @@
+part of '../../raylib_dartified.dart';
+
+/// Dart-side mirror of compile-time constants.
+final class RaylibRlglConstants {
+  
+  /// `RLGL_VERSION`
+  static String RLGL_VERSION = '6.0';
+
+  /// `RL_DEFAULT_BATCH_BUFFER_ELEMENTS`
+  static int RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192;
+
+  /// `RL_DEFAULT_BATCH_BUFFERS`
+  static int RL_DEFAULT_BATCH_BUFFERS = 1;
+
+  /// `RL_DEFAULT_BATCH_DRAWCALLS`
+  static int RL_DEFAULT_BATCH_DRAWCALLS = 256;
+
+  /// `RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS`
+  static int RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4;
+
+  /// `RL_MAX_MATRIX_STACK_SIZE`
+  static int RL_MAX_MATRIX_STACK_SIZE = 32;
+
+  /// `RL_MAX_SHADER_LOCATIONS`
+  static int RL_MAX_SHADER_LOCATIONS = 32;
+
+  /// `RL_CULL_DISTANCE_NEAR`
+  static double RL_CULL_DISTANCE_NEAR = 0.05;
+
+  /// `RL_CULL_DISTANCE_FAR`
+  static double RL_CULL_DISTANCE_FAR = 4000.0;
+
+  /// `RL_TEXTURE_WRAP_S`
+  static int RL_TEXTURE_WRAP_S = 0x2802;
+
+  /// `RL_TEXTURE_WRAP_T`
+  static int RL_TEXTURE_WRAP_T = 0x2803;
+
+  /// `RL_TEXTURE_MAG_FILTER`
+  static int RL_TEXTURE_MAG_FILTER = 0x2800;
+
+  /// `RL_TEXTURE_MIN_FILTER`
+  static int RL_TEXTURE_MIN_FILTER = 0x2801;
+
+  /// `RL_TEXTURE_FILTER_NEAREST`
+  static int RL_TEXTURE_FILTER_NEAREST = 0x2600;
+
+  /// `RL_TEXTURE_FILTER_LINEAR`
+  static int RL_TEXTURE_FILTER_LINEAR = 0x2601;
+
+  /// `RL_TEXTURE_FILTER_MIP_NEAREST`
+  static int RL_TEXTURE_FILTER_MIP_NEAREST = 0x2700;
+
+  /// `RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR`
+  static int RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR = 0x2702;
+
+  /// `RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST`
+  static int RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST = 0x2701;
+
+  /// `RL_TEXTURE_FILTER_MIP_LINEAR`
+  static int RL_TEXTURE_FILTER_MIP_LINEAR = 0x2703;
+
+  /// `RL_TEXTURE_FILTER_ANISOTROPIC`
+  static int RL_TEXTURE_FILTER_ANISOTROPIC = 0x3000;
+
+  /// `RL_TEXTURE_MIPMAP_BIAS_RATIO`
+  static int RL_TEXTURE_MIPMAP_BIAS_RATIO = 0x4000;
+
+  /// `RL_TEXTURE_WRAP_REPEAT`
+  static int RL_TEXTURE_WRAP_REPEAT = 0x2901;
+
+  /// `RL_TEXTURE_WRAP_CLAMP`
+  static int RL_TEXTURE_WRAP_CLAMP = 0x812F;
+
+  /// `RL_TEXTURE_WRAP_MIRROR_REPEAT`
+  static int RL_TEXTURE_WRAP_MIRROR_REPEAT = 0x8370;
+
+  /// `RL_TEXTURE_WRAP_MIRROR_CLAMP`
+  static int RL_TEXTURE_WRAP_MIRROR_CLAMP = 0x8742;
+
+  /// `RL_MODELVIEW`
+  static int RL_MODELVIEW = 0x1700;
+
+  /// `RL_PROJECTION`
+  static int RL_PROJECTION = 0x1701;
+
+  /// `RL_TEXTURE`
+  static int RL_TEXTURE = 0x1702;
+
+  /// `RL_LINES`
+  static int RL_LINES = 0x0001;
+
+  /// `RL_TRIANGLES`
+  static int RL_TRIANGLES = 0x0004;
+
+  /// `RL_QUADS`
+  static int RL_QUADS = 0x0007;
+
+  /// `RL_UNSIGNED_BYTE`
+  static int RL_UNSIGNED_BYTE = 0x1401;
+
+  /// `RL_FLOAT`
+  static int RL_FLOAT = 0x1406;
+
+  /// `RL_STREAM_DRAW`
+  static int RL_STREAM_DRAW = 0x88E0;
+
+  /// `RL_STREAM_READ`
+  static int RL_STREAM_READ = 0x88E1;
+
+  /// `RL_STREAM_COPY`
+  static int RL_STREAM_COPY = 0x88E2;
+
+  /// `RL_STATIC_DRAW`
+  static int RL_STATIC_DRAW = 0x88E4;
+
+  /// `RL_STATIC_READ`
+  static int RL_STATIC_READ = 0x88E5;
+
+  /// `RL_STATIC_COPY`
+  static int RL_STATIC_COPY = 0x88E6;
+
+  /// `RL_DYNAMIC_DRAW`
+  static int RL_DYNAMIC_DRAW = 0x88E8;
+
+  /// `RL_DYNAMIC_READ`
+  static int RL_DYNAMIC_READ = 0x88E9;
+
+  /// `RL_DYNAMIC_COPY`
+  static int RL_DYNAMIC_COPY = 0x88EA;
+
+  /// `RL_FRAGMENT_SHADER`
+  static int RL_FRAGMENT_SHADER = 0x8B30;
+
+  /// `RL_VERTEX_SHADER`
+  static int RL_VERTEX_SHADER = 0x8B31;
+
+  /// `RL_COMPUTE_SHADER`
+  static int RL_COMPUTE_SHADER = 0x91B9;
+
+  /// `RL_ZERO`
+  static int RL_ZERO = 0;
+
+  /// `RL_ONE`
+  static int RL_ONE = 1;
+
+  /// `RL_SRC_COLOR`
+  static int RL_SRC_COLOR = 0x0300;
+
+  /// `RL_ONE_MINUS_SRC_COLOR`
+  static int RL_ONE_MINUS_SRC_COLOR = 0x0301;
+
+  /// `RL_SRC_ALPHA`
+  static int RL_SRC_ALPHA = 0x0302;
+
+  /// `RL_ONE_MINUS_SRC_ALPHA`
+  static int RL_ONE_MINUS_SRC_ALPHA = 0x0303;
+
+  /// `RL_DST_ALPHA`
+  static int RL_DST_ALPHA = 0x0304;
+
+  /// `RL_ONE_MINUS_DST_ALPHA`
+  static int RL_ONE_MINUS_DST_ALPHA = 0x0305;
+
+  /// `RL_DST_COLOR`
+  static int RL_DST_COLOR = 0x0306;
+
+  /// `RL_ONE_MINUS_DST_COLOR`
+  static int RL_ONE_MINUS_DST_COLOR = 0x0307;
+
+  /// `RL_SRC_ALPHA_SATURATE`
+  static int RL_SRC_ALPHA_SATURATE = 0x0308;
+
+  /// `RL_CONSTANT_COLOR`
+  static int RL_CONSTANT_COLOR = 0x8001;
+
+  /// `RL_ONE_MINUS_CONSTANT_COLOR`
+  static int RL_ONE_MINUS_CONSTANT_COLOR = 0x8002;
+
+  /// `RL_CONSTANT_ALPHA`
+  static int RL_CONSTANT_ALPHA = 0x8003;
+
+  /// `RL_ONE_MINUS_CONSTANT_ALPHA`
+  static int RL_ONE_MINUS_CONSTANT_ALPHA = 0x8004;
+
+  /// `RL_FUNC_ADD`
+  static int RL_FUNC_ADD = 0x8006;
+
+  /// `RL_MIN`
+  static int RL_MIN = 0x8007;
+
+  /// `RL_MAX`
+  static int RL_MAX = 0x8008;
+
+  /// `RL_FUNC_SUBTRACT`
+  static int RL_FUNC_SUBTRACT = 0x800A;
+
+  /// `RL_FUNC_REVERSE_SUBTRACT`
+  static int RL_FUNC_REVERSE_SUBTRACT = 0x800B;
+
+  /// `RL_BLEND_EQUATION`
+  static int RL_BLEND_EQUATION = 0x8009;
+
+  /// `RL_BLEND_EQUATION_RGB`
+  static int RL_BLEND_EQUATION_RGB = 0x8009;
+
+  /// `RL_BLEND_EQUATION_ALPHA`
+  static int RL_BLEND_EQUATION_ALPHA = 0x883D;
+
+  /// `RL_BLEND_DST_RGB`
+  static int RL_BLEND_DST_RGB = 0x80C8;
+
+  /// `RL_BLEND_SRC_RGB`
+  static int RL_BLEND_SRC_RGB = 0x80C9;
+
+  /// `RL_BLEND_DST_ALPHA`
+  static int RL_BLEND_DST_ALPHA = 0x80CA;
+
+  /// `RL_BLEND_SRC_ALPHA`
+  static int RL_BLEND_SRC_ALPHA = 0x80CB;
+
+  /// `RL_BLEND_COLOR`
+  static int RL_BLEND_COLOR = 0x8005;
+
+  /// `RL_READ_FRAMEBUFFER`
+  static int RL_READ_FRAMEBUFFER = 0x8CA8;
+
+  /// `RL_DRAW_FRAMEBUFFER`
+  static int RL_DRAW_FRAMEBUFFER = 0x8CA9;
+
+  /// `RL_SHADER_LOC_MAP_DIFFUSE`
+  static int RL_SHADER_LOC_MAP_DIFFUSE = 15;
+
+  /// `RL_SHADER_LOC_MAP_SPECULAR`
+  static int RL_SHADER_LOC_MAP_SPECULAR = 16;
+
+}

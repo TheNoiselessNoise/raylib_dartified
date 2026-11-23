@@ -1,54 +1,53 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_raw_data.c
-// Run it: dart run textures_raw_data.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib', silent: true);
+late Texture fudesumi;
+late Texture checked;
 
-  InitWindow(screenWidth, screenHeight, "textures_raw_data");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_raw_data");
+    SetTargetFPS(60);
 
-  final fudesumiRaw = LoadImageRaw(
-    "../resources/fudesumi.raw",
-    384, 512, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 0
-  );
-  final fudesumi = LoadTextureFromImage(fudesumiRaw);
-  UnloadImage(fudesumiRaw);
+    final fudesumiRaw = LoadImageRaw(
+      "../resources/fudesumi.raw",
+      384, 512, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 0
+    );
+    fudesumi = LoadTextureFromImage(fudesumiRaw);
+    UnloadImage(fudesumiRaw);
 
-  int width = 960;
-  int height = 480;
+    int width = 960;
+    int height = 480;
 
-  final List<Color> pixels = .generate(width*height, (_) => .BLACK);
+    final List<Color> pixels = .generate(width*height, (_) => .BLACK);
 
-  for (int y = 0; y < height; y++)
-  {
-    for (int x = 0; x < width; x++)
+    for (int y = 0; y < height; y++)
     {
-      if (((x~/32+y~/32)/1)%2 == 0) pixels[y*width + x] = .ORANGE;
-      else pixels[y*width + x] = .GOLD;
+      for (int x = 0; x < width; x++)
+      {
+        if (((x~/32+y~/32)/1)%2 == 0) pixels[y*width + x] = .ORANGE;
+        else pixels[y*width + x] = .GOLD;
+      }
     }
-  }
 
-  final checkedIm = Image(
-    data: .fromList(pixels.expand((p) => p.toArray()).toList()),
-    width: width,
-    height: height,
-    format: .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
-    mipmaps: 1,
-  );
+    final checkedIm = Image(
+      data: .fromList(pixels.expand((p) => p.toArray()).toList()),
+      width: width,
+      height: height,
+      format: .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
+      mipmaps: 1,
+    );
 
-  final checked = LoadTextureFromImage(checkedIm);
-  
-  UnloadImage(checkedIm);
-
-  while (!WindowShouldClose())
-  {
+    checked = LoadTextureFromImage(checkedIm);
+    
+    UnloadImage(checkedIm);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -81,10 +80,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(fudesumi);
-  UnloadTexture(checked);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(fudesumi);
+    UnloadTexture(checked);
+    CloseWindow();
+  },
+);

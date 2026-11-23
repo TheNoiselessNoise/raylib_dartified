@@ -1,36 +1,35 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_starfield_effect.c
-// Run it: dart run shapes_starfield_effect.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int STAR_COUNT = 7;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Color bgColor;
+double speed = 10.0/9.0;
+bool drawLines = true;
 
-  InitWindow(screenWidth, screenHeight, "shapes_starfield_effect");
-  SetTargetFPS(60);
+final stars = <Vector3>[];
+late List<Vector2> starsScreenPos;
 
-  final bgColor = ColorLerp(.DARKBLUE, .BLACK, 0.69);
-  double speed = 10.0/9.0;
-  bool drawLines = true;
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_starfield_effect");
+    SetTargetFPS(60);
 
-  final stars = <Vector3>[];
-  List<Vector2> starsScreenPos = .generate(STAR_COUNT, (_) => .zero());
+    bgColor = ColorLerp(.DARKBLUE, .BLACK, 0.69);
+    starsScreenPos = .generate(STAR_COUNT, (_) => .zero());
 
-  for (int i = 0; i < STAR_COUNT; i++) {
-    stars.add(.vec3(
-      GetRandomValue(-screenWidth / 2, screenWidth / 2),
-      GetRandomValue(-screenHeight / 2, screenHeight / 2),
-      1.0,
-    ));
-  }
-
-  while (!WindowShouldClose())
-  {
+    for (int i = 0; i < STAR_COUNT; i++) {
+      stars.add(.vec3(
+        GetRandomValue(-screenWidth / 2, screenWidth / 2),
+        GetRandomValue(-screenHeight / 2, screenHeight / 2),
+        1.0,
+      ));
+    }
+  },
+  loop: (_) async {
     final mouseMove = GetMouseWheelMove();
     if (mouseMove != 0) speed += 2.0*mouseMove/9.0;
     if (speed < 0.0) speed = 0.1;
@@ -98,7 +97,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

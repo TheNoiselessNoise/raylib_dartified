@@ -1,66 +1,61 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_cel_shading.c
-// Run it: dart run shaders_cel_shading.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Shader celShader;
+late Shader defaultShader;
+double numBands = 10.0;
+late int numBandsLoc;
+late Shader outlineShader;
+late int outlineThicknessLoc;
+final List<Light> lights = [];
+bool celEnabled = true;
+bool outlineEnabled = true;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_cel_shading");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_cel_shading");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(9.0, 6.0, 9.0),
-    target: .vec3(0.0, 1.0, 0.0),
-    up: .vec3(0.0, 1.0, 0.0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(9.0, 6.0, 9.0),
+      target: .vec3(0.0, 1.0, 0.0),
+      up: .vec3(0.0, 1.0, 0.0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/old_car_new.glb");
+    model = LoadModel("../resources/models/old_car_new.glb");
 
-  final celShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/cel.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/cel.fs"
-  );
-  celShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] = GetShaderLocation(celShader, "viewPos");
+    celShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/cel.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/cel.fs"
+    );
+    celShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] = GetShaderLocation(celShader, "viewPos");
 
-  final defaultShader = model.materials[0].shader;
-  model.materials[0].shader = celShader;
+    defaultShader = model.materials[0].shader;
+    model.materials[0].shader = celShader;
 
-  double numBands = 10.0;
-  int numBandsLoc = GetShaderLocation(celShader, "numBands");
-  SetShaderValue(celShader, numBandsLoc, [numBands], .SHADER_UNIFORM_FLOAT);
+    numBandsLoc = GetShaderLocation(celShader, "numBands");
+    SetShaderValue(celShader, numBandsLoc, [numBands], .SHADER_UNIFORM_FLOAT);
 
-  final outlineShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/outline_hull.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/outline_hull.fs"
-  );
-  int outlineThicknessLoc = GetShaderLocation(outlineShader, "outlineThickness");
+    outlineShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/outline_hull.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/outline_hull.fs"
+    );
+    outlineThicknessLoc = GetShaderLocation(outlineShader, "outlineThickness");
 
-  final List<Light> lights = [
-    CreateLight(
-      .LIGHT_DIRECTIONAL,
-      .vec3(50.0, 50.0, 50.0),
-      .zero(),
-      .WHITE,
-      celShader
-    ),
-  ];
-
-  bool celEnabled = true;
-  bool outlineEnabled = true;
-
-  while (!WindowShouldClose())
-  {
+    lights.add(CreateLight(.LIGHT_DIRECTIONAL, .vec3(50.0, 50.0, 50.0), .zero(), .WHITE, celShader));
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     SetShaderValue(celShader, celShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value], camera.position.toArray(), .SHADER_UNIFORM_VEC3);
@@ -131,11 +126,11 @@ void main()
       DrawText("Bands: ${numBands.f0} [Q/E]", 10, 115, 20, .DARKGRAY);
 
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  UnloadShader(celShader);
-  UnloadShader(outlineShader);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    UnloadShader(celShader);
+    UnloadShader(outlineShader);
+    CloseWindow();
+  },
+);

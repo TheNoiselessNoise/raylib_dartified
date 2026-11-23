@@ -1,46 +1,39 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
-// Run it: dart run text_rectangle_bounds.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+String text =
+  "Text cannot escape\tthis container\t...word wrap also works when active so here's "
+  "a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+  "tempor incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
 
-  InitWindow(screenWidth, screenHeight, "text_rectangle_bounds");
-  SetTargetFPS(60);
+bool resizing = false;
+bool wordWrap = true;
+late Rectangle container;
+late Rectangle resizer;
+final minWidth = 60;
+final minHeight = 60;
+final maxWidth = screenWidth - 50.0;
+final maxHeight = screenHeight - 160.0;
+late Vector2 lastMouse;
+late Color borderColor;
+late Font font;
 
-  String text =
-    "Text cannot escape\tthis container\t...word wrap also works when active so here's "
-    "a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-    "tempor incididunt ut labore et dolore magna aliqua. Nec ullamcorper sit amet risus nullam eget felis eget.";
-
-  bool resizing = false;
-  bool wordWrap = true;
-
-  final Rectangle container = .rect(
-    25.0, 25.0,
-    screenWidth - 50.0, screenHeight - 250.0
-  );
-  final Rectangle resizer = .rect(
-    container.x + container.width - 17, container.y + container.height - 17,
-    14, 14
-  );
-
-  final minWidth = 60;
-  final minHeight = 60;
-  final maxWidth = screenWidth - 50.0;
-  final maxHeight = screenHeight - 160.0;
-
-  Vector2 lastMouse = .zero();
-  Color borderColor = .MAROON;
-  final font = GetFontDefault();
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_rectangle_bounds");
+    SetTargetFPS(60);
+    
+    container = .rect(25.0, 25.0, screenWidth - 50.0, screenHeight - 250.0);
+    resizer = .rect(container.x + container.width - 17, container.y + container.height - 17, 14, 14);
+    lastMouse = .zero();
+    borderColor = .MAROON;
+    font = GetFontDefault();
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE))
       wordWrap = !wordWrap;
 
@@ -124,10 +117,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawTextBoxed(
   Font font,

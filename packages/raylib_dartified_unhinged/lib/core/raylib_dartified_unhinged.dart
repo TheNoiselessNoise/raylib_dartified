@@ -5,8 +5,7 @@ import 'dart:math' as math;
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:raylib_dartified_web/raylib_dartified_web.dart'
-  if (dart.library.ffi) 'package:raylib_dartified/raylib_dartified.dart';
+import 'package:raylib_dartified/raylib_dartified.dart';
 import 'package:uuid/uuid.dart';
 
 // backends

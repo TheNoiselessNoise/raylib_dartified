@@ -1,10 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_postprocessing.c
-// Run it: dart run shaders_postprocessing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
@@ -29,47 +27,49 @@ enum PostproShader {
   static PostproShader fromIndex(int index) => values[index % values.length];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Texture texture;
+late Map<PostproShader, Shader> shaders;
+PostproShader currentShader = .GRAYSCALE;
+late RenderTexture target;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_postprocessing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_postprocessing");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(2.0, 3.0, 2.0),
-    target: .vec3(0.0, 1.0, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(2.0, 3.0, 2.0),
+      target: .vec3(0.0, 1.0, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/church.obj");
-  final texture = LoadTexture("../resources/models/church_diffuse.png");
-  model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
+    model = LoadModel("../resources/models/church.obj");
+    texture = LoadTexture("../resources/models/church_diffuse.png");
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final shaders = <PostproShader, Shader>{
-    .GRAYSCALE: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs"),
-    .POSTERIZATION: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/posterization.fs"),
-    .DREAM_VISION: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/dream_vision.fs"),
-    .PIXELIZER: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/pixelizer.fs"),
-    .CROSS_HATCHING: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/cross_hatching.fs"),
-    .CROSS_STITCHING: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/cross_stitching.fs"),
-    .PREDATOR_VIEW: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/predator.fs"),
-    .SCANLINES: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/scanlines.fs"),
-    .FISHEYE: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/fisheye.fs"),
-    .SOBEL: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/sobel.fs"),
-    .BLOOM: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/bloom.fs"),
-    .BLUR: LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/blur.fs"),
-  };
+    shaders = {
+      .GRAYSCALE: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/grayscale.fs"),
+      .POSTERIZATION: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/posterization.fs"),
+      .DREAM_VISION: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/dream_vision.fs"),
+      .PIXELIZER: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/pixelizer.fs"),
+      .CROSS_HATCHING: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/cross_hatching.fs"),
+      .CROSS_STITCHING: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/cross_stitching.fs"),
+      .PREDATOR_VIEW: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/predator.fs"),
+      .SCANLINES: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/scanlines.fs"),
+      .FISHEYE: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/fisheye.fs"),
+      .SOBEL: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/sobel.fs"),
+      .BLOOM: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/bloom.fs"),
+      .BLUR: LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/blur.fs"),
+    };
 
-  PostproShader currentShader = .GRAYSCALE;
-
-  final target = LoadRenderTexture(screenWidth, screenHeight);
-
-  while (!WindowShouldClose())
-  {
+    target = LoadRenderTexture(screenWidth, screenHeight);
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsKeyPressed(.KEY_RIGHT)) currentShader = currentShader.next;
@@ -120,13 +120,12 @@ void main()
       
       DrawFPS(700, 15);
     EndDrawing();
-  }
-
-  shaders.values.forEach(UnloadShader);
-
-  UnloadTexture(texture);
-  UnloadModel(model);
-  UnloadRenderTexture(target);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    shaders.values.forEach(UnloadShader);
+    UnloadTexture(texture);
+    UnloadModel(model);
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);

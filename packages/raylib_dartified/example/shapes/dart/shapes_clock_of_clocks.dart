@@ -1,60 +1,66 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_clock_of_clocks.c
-// Run it: dart run shapes_clock_of_clocks.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Color bgColor;
+late Color handsColor;
+const double clockFaceSize = 24;
+const double clockFaceSpacing = 8.0;
+const double sectionSpacing = 16.0;
+late Vector2 TL;
+late Vector2 TR;
+late Vector2 BR;
+late Vector2 BL;
+late Vector2 HH;
+late Vector2 VV;
+late Vector2 ZZ;
+late List<List<Vector2>> digitAngles;
+const double handsMoveDuration = 0.5;
+int prevSeconds = -1;
+late List<List<Vector2>> currentAngles;
+late List<List<Vector2>> srcAngles;
+late List<List<Vector2>> dstAngles;
+double handsMoveTimer = 0.0;
+int hourMode = 24;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shapes_clock_of_clocks");
-  SetTargetFPS(60);
-  
-  final bgColor = ColorLerp(.DARKBLUE, .BLACK, 0.75);
-  final handsColor = ColorLerp(.YELLOW, .RAYWHITE, .25);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shapes_clock_of_clocks");
+    SetTargetFPS(60);
+    
+    bgColor = ColorLerp(.DARKBLUE, .BLACK, 0.75);
+    handsColor = ColorLerp(.YELLOW, .RAYWHITE, .25);
+    
+    TL = .vec2(  0.0,  90.0); // Top-left corner
+    TR = .vec2( 90.0, 180.0); // Top-right corner
+    BR = .vec2(180.0, 270.0); // Bottom-right corner
+    BL = .vec2(  0.0, 270.0); // Bottom-left corner
+    HH = .vec2(  0.0, 180.0); // Horizontal line
+    VV = .vec2( 90.0, 270.0); // Vertical line
+    ZZ = .vec2(135.0, 135.0); // Not relevant
+    
+    digitAngles = [
+      /* 0 */ [ TL,HH,HH,TR,/* */ VV,TL,TR,VV,/* */ VV,VV,VV,VV,/* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
+      /* 1 */ [ TL,HH,TR,ZZ,/* */ BL,TR,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ TL,BR,BL,TR,/* */ BL,HH,HH,BR ],
+      /* 2 */ [ TL,HH,HH,TR,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ BL,HH,HH,BR ],
+      /* 3 */ [ TL,HH,HH,TR,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
+      /* 4 */ [ TL,TR,TL,TR,/* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,TR,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,BL,BR ],
+      /* 5 */ [ TL,HH,HH,TR,/* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
+      /* 6 */ [ TL,HH,HH,TR,/* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
+      /* 7 */ [ TL,HH,HH,TR,/* */ BL,HH,TR,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,BL,BR ],
+      /* 8 */ [ TL,HH,HH,TR,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
+      /* 9 */ [ TL,HH,HH,TR,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
+    ];
 
-  const double clockFaceSize = 24;
-  const double clockFaceSpacing = 8.0;
-  const double sectionSpacing = 16.0;
-
-  final Vector2 TL = .vec2(  0.0,  90.0); // Top-left corner
-  final Vector2 TR = .vec2( 90.0, 180.0); // Top-right corner
-  final Vector2 BR = .vec2(180.0, 270.0); // Bottom-right corner
-  final Vector2 BL = .vec2(  0.0, 270.0); // Bottom-left corner
-  final Vector2 HH = .vec2(  0.0, 180.0); // Horizontal line
-  final Vector2 VV = .vec2( 90.0, 270.0); // Vertical line
-  final Vector2 ZZ = .vec2(135.0, 135.0); // Not relevant
-
-  List<List<Vector2>> digitAngles = [
-    /* 0 */ [ TL,HH,HH,TR, /* */ VV,TL,TR,VV,/* */ VV,VV,VV,VV,/* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
-    /* 1 */ [ TL,HH,TR,ZZ, /* */ BL,TR,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ ZZ,VV,VV,ZZ,/* */ TL,BR,BL,TR,/* */ BL,HH,HH,BR ],
-    /* 2 */ [ TL,HH,HH,TR, /* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ BL,HH,HH,BR ],
-    /* 3 */ [ TL,HH,HH,TR, /* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
-    /* 4 */ [ TL,TR,TL,TR, /* */ VV,VV,VV,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,TR,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,BL,BR ],
-    /* 5 */ [ TL,HH,HH,TR, /* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
-    /* 6 */ [ TL,HH,HH,TR, /* */ VV,TL,HH,BR,/* */ VV,BL,HH,TR,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
-    /* 7 */ [ TL,HH,HH,TR, /* */ BL,HH,TR,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,VV,VV,/* */ ZZ,ZZ,BL,BR ],
-    /* 8 */ [ TL,HH,HH,TR, /* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,HH,BR ],
-    /* 9 */ [ TL,HH,HH,TR, /* */ VV,TL,TR,VV,/* */ VV,BL,BR,VV,/* */ BL,HH,TR,VV,/* */ TL,HH,BR,VV,/* */ BL,HH,HH,BR ],
-  ];
-
-  const double handsMoveDuration = 0.5;
-
-  int prevSeconds = -1;
-  
-  final List<List<Vector2>> currentAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
-  final List<List<Vector2>> srcAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
-  final List<List<Vector2>> dstAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
-
-  double handsMoveTimer = 0.0;
-  int hourMode = 24;
-
-  while (!WindowShouldClose())
-  {
+    currentAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+    srcAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+    dstAngles = .generate(6, (_) => .generate(24, (_) => .zero()));
+  },
+  loop: (_) async {
     final dt = DateTime.now();
 
     if (dt.second != prevSeconds)
@@ -150,7 +156,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

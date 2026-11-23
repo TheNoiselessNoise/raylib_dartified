@@ -1,11 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_deferred_rendering.c
-// Run it: dart run shaders_deferred_rendering.dart
 // WARNING: expects resources from the raylib source
-import 'dart:io';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_CUBES = 30;
@@ -26,138 +23,136 @@ enum DeferredMode {
   DEFERRED_SHADING
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Model cube;
+late Shader gbufferShader;
+late Shader deferredShader;
+late GBuffer gBuffer;
+late List<Light> lights;
+const double CUBE_SCALE = 0.25;
+late List<Vector3> cubePositions;
+late List<double> cubeRotations;
+DeferredMode mode = .DEFERRED_SHADING;
 
-  InitWindow(screenWidth, screenHeight, "shaders_deferred_rendering");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_deferred_rendering");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(5, 4, 5),
-    target: .vec3(0, 1, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 60,
-    projection: .CAMERA_PERSPECTIVE,
-  );
-
-  final model = LoadModelFromMesh(GenMeshPlane(10.0, 10.0, 3, 3));
-  final cube = LoadModelFromMesh(GenMeshCube(2.0, 2.0, 2.0));
-
-  final gbufferShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/gbuffer.fs",
-  );
-
-  final deferredShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/deferred_shading.fs",
-  );
-
-  deferredShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    GetShaderLocation(deferredShader, "viewPosition");
-
-  final gBuffer = GBuffer();
-  gBuffer.framebuffer = rlLoadFramebuffer();
-
-  if (!gBuffer.framebuffer.toBool())
-  {
-    TraceLog(.LOG_WARNING, "Failed to create framebuffer");
-    exit(1);
-  }
-  
-  rlEnableFramebuffer(gBuffer.framebuffer);
-
-  gBuffer.positionTexture = rlLoadTexture(
-    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
-  );
-  gBuffer.normalTexture = rlLoadTexture(
-    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R32G32B32, 1
-  );
-  gBuffer.albedoSpecTexture = rlLoadTexture(
-    null, screenWidth, screenHeight, .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 1
-  );
-
-  rlActiveDrawBuffers(3);
-
-  rlFramebufferAttach(
-    gBuffer.framebuffer, gBuffer.positionTexture,
-    .RL_ATTACHMENT_COLOR_CHANNEL0,
-    .RL_ATTACHMENT_TEXTURE2D, 0
-  );
-  rlFramebufferAttach(
-    gBuffer.framebuffer, gBuffer.normalTexture,
-    .RL_ATTACHMENT_COLOR_CHANNEL1,
-    .RL_ATTACHMENT_TEXTURE2D, 0
-  );
-  rlFramebufferAttach(
-    gBuffer.framebuffer, gBuffer.albedoSpecTexture,
-    .RL_ATTACHMENT_COLOR_CHANNEL2,
-    .RL_ATTACHMENT_TEXTURE2D, 0
-  );
-
-  gBuffer.depthRenderbuffer = rlLoadTextureDepth(screenWidth, screenHeight, true);
-  rlFramebufferAttach(
-    gBuffer.framebuffer, gBuffer.depthRenderbuffer,
-    .RL_ATTACHMENT_DEPTH,
-    .RL_ATTACHMENT_RENDERBUFFER, 0
-  );
-
-  if (!rlFramebufferComplete(gBuffer.framebuffer))
-  {
-    TraceLog(.LOG_WARNING, "Framebuffer is not complete");
-    exit(1);
-  }
-
-  rlEnableShader(deferredShader.id);
-
-    rlSetUniformSampler(
-      rlGetLocationUniform(deferredShader.id, "gPosition"), 0
-    );
-    rlSetUniformSampler(
-      rlGetLocationUniform(deferredShader.id, "gNormal"), 1
-    );
-    rlSetUniformSampler(
-      rlGetLocationUniform(deferredShader.id, "gAlbedoSpec"), 2
+    camera = .new(
+      position: .vec3(5, 4, 5),
+      target: .vec3(0, 1, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 60,
+      projection: .CAMERA_PERSPECTIVE,
     );
 
-  rlDisableShader();
+    model = LoadModelFromMesh(GenMeshPlane(10.0, 10.0, 3, 3));
+    cube = LoadModelFromMesh(GenMeshCube(2.0, 2.0, 2.0));
 
-  model.materials[0].shader = gbufferShader;
-  cube.materials[0].shader = gbufferShader;
+    gbufferShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/gbuffer.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/gbuffer.fs",
+    );
 
-  List<Light> lights = [];
+    deferredShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/deferred_shading.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/deferred_shading.fs",
+    );
 
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(-2, 1, -2), .zero(), .YELLOW, deferredShader
-  ));
+    deferredShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] = GetShaderLocation(deferredShader, "viewPosition");
 
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(2, 1, 2), .zero(), .RED, deferredShader
-  ));
+    gBuffer = GBuffer();
+    gBuffer.framebuffer = rlLoadFramebuffer();
 
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(-2, 1, 2), .zero(), .GREEN, deferredShader
-  ));
+    if (!gBuffer.framebuffer.toBool())
+    {
+      TraceLog(.LOG_WARNING, "Failed to create framebuffer");
+      throw "Failed to create framebuffer";
+    }
+    
+    rlEnableFramebuffer(gBuffer.framebuffer);
 
-  lights.add(CreateLight(
-    .LIGHT_POINT, .vec3(2, 1, -2), .zero(), .BLUE, deferredShader
-  ));
+    gBuffer.positionTexture = rlLoadTexture(
+      null, screenWidth, screenHeight,
+      // NOTE: native uses PIXELFORMAT_UNCOMPRESSED_R32G32B32, but WebGL has problems with it
+      currentMemoryPlatformType == .native ? .PIXELFORMAT_UNCOMPRESSED_R32G32B32 : .PIXELFORMAT_UNCOMPRESSED_R32G32B32A32,
+      1
+    );
+    gBuffer.normalTexture = rlLoadTexture(
+      null, screenWidth, screenHeight,
+      // NOTE: native uses PIXELFORMAT_UNCOMPRESSED_R32G32B32, but WebGL has problems with it
+      currentMemoryPlatformType == .native ? .PIXELFORMAT_UNCOMPRESSED_R32G32B32 : .PIXELFORMAT_UNCOMPRESSED_R32G32B32A32,
+      1
+    );
+    gBuffer.albedoSpecTexture = rlLoadTexture(
+      null, screenWidth, screenHeight,
+      .PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
+      1
+    );
 
-  const double CUBE_SCALE = 0.25;
-  final List<Vector3> cubePositions = .generate(MAX_CUBES, (_) => .vec3(
-    rl.randC()%10 - 5,
-    rl.randC()%5,
-    rl.randC()%10 - 5,
-  ));
-  final List<double> cubeRotations = .generate(MAX_CUBES, (_) => rl.randC()%360);
+    rlActiveDrawBuffers(3);
 
-  DeferredMode mode = .DEFERRED_SHADING;
+    rlFramebufferAttach(
+      gBuffer.framebuffer, gBuffer.positionTexture,
+      .RL_ATTACHMENT_COLOR_CHANNEL0,
+      .RL_ATTACHMENT_TEXTURE2D, 0
+    );
+    rlFramebufferAttach(
+      gBuffer.framebuffer, gBuffer.normalTexture,
+      .RL_ATTACHMENT_COLOR_CHANNEL1,
+      .RL_ATTACHMENT_TEXTURE2D, 0
+    );
+    rlFramebufferAttach(
+      gBuffer.framebuffer, gBuffer.albedoSpecTexture,
+      .RL_ATTACHMENT_COLOR_CHANNEL2,
+      .RL_ATTACHMENT_TEXTURE2D, 0
+    );
 
-  rlEnableDepthTest();
+    gBuffer.depthRenderbuffer = rlLoadTextureDepth(screenWidth, screenHeight, true);
+    rlFramebufferAttach(
+      gBuffer.framebuffer, gBuffer.depthRenderbuffer,
+      .RL_ATTACHMENT_DEPTH,
+      .RL_ATTACHMENT_RENDERBUFFER, 0
+    );
 
-  while (!WindowShouldClose())
-  {
+    if (!rlFramebufferComplete(gBuffer.framebuffer))
+    {
+      TraceLog(.LOG_WARNING, "Framebuffer is not complete");
+      throw "Framebuffer is not complete";
+    }
+
+    rlEnableShader(deferredShader.id);
+
+      rlSetUniformSampler(
+        rlGetLocationUniform(deferredShader.id, "gPosition"), 0
+      );
+      rlSetUniformSampler(
+        rlGetLocationUniform(deferredShader.id, "gNormal"), 1
+      );
+      rlSetUniformSampler(
+        rlGetLocationUniform(deferredShader.id, "gAlbedoSpec"), 2
+      );
+
+    rlDisableShader();
+
+    model.materials[0].shader = gbufferShader;
+    cube.materials[0].shader = gbufferShader;
+
+    lights = [
+      CreateLight(.LIGHT_POINT, .vec3(-2, 1, -2), .zero(), .YELLOW, deferredShader),
+      CreateLight(.LIGHT_POINT, .vec3(2, 1, 2), .zero(), .RED, deferredShader),
+      CreateLight(.LIGHT_POINT, .vec3(-2, 1, 2), .zero(), .GREEN, deferredShader),
+      CreateLight(.LIGHT_POINT, .vec3(2, 1, -2), .zero(), .BLUE, deferredShader),
+    ];
+
+    cubePositions = .generate(MAX_CUBES, (_) => .vec3(randC()%10 - 5, randC()%5, randC()%10 - 5));
+    cubeRotations = .generate(MAX_CUBES, (_) => randC()%360);
+
+    rlEnableDepthTest();
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     SetShaderValue(
@@ -327,19 +322,17 @@ void main()
       DrawFPS(10, 10);
         
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  UnloadModel(cube);
-
-  UnloadShader(deferredShader);
-  UnloadShader(gbufferShader);
-
-  rlUnloadFramebuffer(gBuffer.framebuffer);
-  rlUnloadTexture(gBuffer.positionTexture);
-  rlUnloadTexture(gBuffer.normalTexture);
-  rlUnloadTexture(gBuffer.albedoSpecTexture);
-  rlUnloadTexture(gBuffer.depthRenderbuffer);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    UnloadModel(cube);
+    UnloadShader(deferredShader);
+    UnloadShader(gbufferShader);
+    rlUnloadFramebuffer(gBuffer.framebuffer);
+    rlUnloadTexture(gBuffer.positionTexture);
+    rlUnloadTexture(gBuffer.normalTexture);
+    rlUnloadTexture(gBuffer.albedoSpecTexture);
+    rlUnloadTexture(gBuffer.depthRenderbuffer);
+    CloseWindow();
+  },
+);

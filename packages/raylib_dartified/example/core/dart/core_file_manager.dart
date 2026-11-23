@@ -1,6 +1,5 @@
 // Custom example, there's no original equivalent
-// Run it: dart run core_file_manager.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'package:path/path.dart' as path;
 
 const int screenWidth = 900;
@@ -12,10 +11,23 @@ const int BREADCRUMB_HEIGHT = 30;
 const int ITEM_HEIGHT = 24;
 const int SEARCH_HEIGHT = 30;
 const int SORT_BAR_HEIGHT = 24;
-const List<String> IMAGE_EXTS = ['.png', '.jpg', '.gif'];
-const List<String> BIN_EXTS = ['.exe', '.bin', '.so'];
-const List<String> TEXT_EXTS = ['.txt', '.md' , '.yaml'];
-const List<String> SHADER_EXTS = ['.fs', '.vs'];
+
+enum FileType {
+  audio('AUD', ['.ogg', '.mp3']),
+  image('IMG', ['.png', '.jpg', '.gif']),
+  binary('BIN', ['.exe', '.bin', '.so']),
+  text('TXT', ['.txt', '.md' , '.yaml']),
+  shader('SHD', ['.fs', '.vs']),
+  unknown('UNK'),
+  ;
+
+  const FileType(this.shortName, [this.extensions = const []]);
+  final String shortName;
+  final List<String> extensions;
+
+  static FileType fromExtension(String ext)
+    => values.where((e) => e.extensions.contains(ext)).firstOrNull ?? .unknown;
+}
 
 final class DoubleClickDetector {
   final Map<MouseButton, double> _lastClickTimes = {};
@@ -88,8 +100,6 @@ final class BetterTextBox {
   }
 }
 
-// ─── Colors ───────────────────────────────────────────────────────────────────
-
 final class Colors {
   static Color RAYWHITE  = .color(245, 245, 245, 255);
   static Color PANEL_BG  = .color(230, 230, 235, 255);
@@ -97,6 +107,7 @@ final class Colors {
   static Color SELECTED  = .color(100, 149, 237, 180);
   static Color HOVERED   = .color(200, 215, 240, 180);
   static Color DIR_COLOR = .color( 60, 120, 200, 255);
+  static Color AUD_COLOR = .color(130,  40, 220, 255);
   static Color IMG_COLOR = .color(220, 130,  40, 255);
   static Color BIN_COLOR = .color(180,  60,  60, 255);
   static Color TXT_COLOR = .color( 80,  80,  80, 255);
@@ -107,8 +118,6 @@ final class Colors {
   static Color SORT_HDR  = .color(210, 210, 218, 255);
   static Color SORT_ACT  = .color(100, 149, 237, 255);
 }
-
-// ─── File info ────────────────────────────────────────────────────────────────
 
 enum SortField { name, size, date }
 enum SortDir   { asc, desc }
@@ -130,7 +139,7 @@ final class FileEntry {
 
   String get ext => isDir ? '' : path.extension(name).toLowerCase();
 
-  bool get isImage => IMAGE_EXTS.contains(ext);
+  late final FileType type = .fromExtension(ext);
 
   String get modifiedString =>
     '${modified.year}-'
@@ -139,21 +148,17 @@ final class FileEntry {
 
   Color get color {
     if (isDir) return Colors.DIR_COLOR;
-    if (IMAGE_EXTS.contains(ext)) return Colors.IMG_COLOR;
-    if (BIN_EXTS.contains(ext)) return Colors.BIN_COLOR;
-    if (TEXT_EXTS.contains(ext)) return Colors.TXT_COLOR;
-    if (SHADER_EXTS.contains(ext)) return Colors.SHD_COLOR;
-    return Colors.DEF_COLOR;
+    return switch (type) {
+      .audio => Colors.AUD_COLOR,
+      .image => Colors.IMG_COLOR,
+      .binary => Colors.BIN_COLOR,
+      .text => Colors.TXT_COLOR,
+      .shader => Colors.SHD_COLOR,
+      .unknown => Colors.DEF_COLOR,
+    };
   }
 
-  String get icon {
-    if (isDir) return '[DIR]';
-    if (IMAGE_EXTS.contains(ext)) return '[IMG]';
-    if (BIN_EXTS.contains(ext)) return '[BIN]';
-    if (TEXT_EXTS.contains(ext)) return '[TXT]';
-    if (SHADER_EXTS.contains(ext)) return '[SHD]';
-    return '[___]';
-  }
+  String get icon => isDir ? '[DIR]' : '[${type.shortName}]';
 
   String get sizeLabel {
     if (isDir) return '--';
@@ -194,13 +199,13 @@ List<FileEntry> sortEntries(
   final files = entries.where((e) => !e.isDir).toList();
 
   int cmp(FileEntry a, FileEntry b) => switch (field) {
-    SortField.name => a.name.compareTo(b.name),
-    SortField.size => a.size.compareTo(b.size),
-    SortField.date => a.modified.compareTo(b.modified),
+    .name => a.name.compareTo(b.name),
+    .size => a.size.compareTo(b.size),
+    .date => a.modified.compareTo(b.modified),
   };
 
-  dirs.sort((a, b)  => dir == SortDir.asc ? cmp(a, b) : cmp(b, a));
-  files.sort((a, b) => dir == SortDir.asc ? cmp(a, b) : cmp(b, a));
+  dirs.sort((a, b)  => dir == .asc ? cmp(a, b) : cmp(b, a));
+  files.sort((a, b) => dir == .asc ? cmp(a, b) : cmp(b, a));
   return [...dirs, ...files]; // dirs always first
 }
 
@@ -213,69 +218,96 @@ List<String> breadcrumbs(String filePath) {
   return result;
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int selectedIdx = -1;
+int scrollOffset = 0;
+SortField sortField = .name;
+SortDir sortDir = .asc;
 
-  InitWindow(screenWidth, screenHeight, "File Browser");
-  SetTargetFPS(60);
+List<FileEntry> allEntries = [];
+List<FileEntry> visibleEntries = [];
 
-  int selectedIdx = -1;
-  int scrollOffset = 0;
-  SortField sortField = SortField.name;
-  SortDir sortDir = SortDir.asc;
+late DoubleClickDetector dblclick;
+late TextBoxFocus focus;
+late BetterTextBox pathBox;
+late BetterTextBox searchBox;
 
-  List<FileEntry> allEntries = [];
-  List<FileEntry> visibleEntries = [];
+// Layout constants
+int listTop = TOOLBAR_HEIGHT + BREADCRUMB_HEIGHT + SEARCH_HEIGHT + SORT_BAR_HEIGHT;
+int listLeft = 0;
+int listW = screenWidth - PANEL_WIDTH;
+int listH = screenHeight - listTop;
 
-  final dblclick = DoubleClickDetector();
-  final focus = TextBoxFocus();
-  final pathBox = BetterTextBox(focus, text: GetApplicationDirectory());
-  final searchBox = BetterTextBox(focus);
+final Map<String, Music> cachedSounds = {};
+final Map<String, Image> cachedImages = {};
+final Map<String, Texture> cachedTextures = {};
 
-  void navigate(String path) {
-    pathBox.text = path;
-    selectedIdx = 0;
-    scrollOffset = 0;
-    allEntries = loadDirectory(path);
-  }
+Music? _currentPlayingMusic;
+String? _currentPlayingMusicPath;
+bool _currentMusicPause = false;
 
-  void rebuildVisible() {
-    var filtered = allEntries.where((e) {
-      return searchBox.text.isEmpty ||
-        e.name.toLowerCase().contains(searchBox.text.toLowerCase());
-    }).toList();
-    visibleEntries = sortEntries(filtered, sortField, sortDir);
-  }
+void UpdateMusicPlayer() {
+  final m = _currentPlayingMusic;
+  if (m != null) UpdateMusicStream(m);
+}
 
-  navigate(pathBox.text);
-  rebuildVisible();
+String _formatMusicDuration(double seconds) {
+  final s = seconds.floor();
+  return '${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')}';
+}
 
-  // Layout constants
-  int listTop = TOOLBAR_HEIGHT + BREADCRUMB_HEIGHT + SEARCH_HEIGHT + SORT_BAR_HEIGHT;
-  int listLeft = 0;
-  int listW = screenWidth - PANEL_WIDTH;
-  int listH = screenHeight - listTop;
+void navigate(String path) {
+  pathBox.text = path;
+  selectedIdx = 0;
+  scrollOffset = 0;
+  allEntries = loadDirectory(path);
+}
 
-  final Map<String, Image> cachedImages = {};
-  final Map<String, Texture> cachedTextures = {};
+void rebuildVisible() {
+  var filtered = allEntries.where((e) {
+    return searchBox.text.isEmpty ||
+      e.name.toLowerCase().contains(searchBox.text.toLowerCase());
+  }).toList();
+  visibleEntries = sortEntries(filtered, sortField, sortDir);
+}
 
-  Image getImageFromFile(String path, int width, int height) {
-    if (cachedImages.containsKey(path)) return cachedImages[path]!;
-    final image = LoadImage(path);
-    ImageResize(image, width, height);
-    cachedImages[path] = image;
-    return image;
-  }
+Image getImageFromFile(String path, int width, int height) {
+  if (cachedImages.containsKey(path)) return cachedImages[path]!;
+  final image = LoadImage(path);
+  ImageResize(image, width, height);
+  return cachedImages[path] = image;
+}
 
-  Texture getTextureFromFile(String path, int width, int height) {
-    if (cachedTextures.containsKey(path)) return cachedTextures[path]!;
-    final image = getImageFromFile(path, width, height);
-    final texture = LoadTextureFromImage(image);
-    cachedTextures[path] = texture;
-    return texture;
-  }
+Texture getTextureFromFile(String path, int width, int height) {
+  if (cachedTextures.containsKey(path)) return cachedTextures[path]!;
+  final image = getImageFromFile(path, width, height);
+  final texture = LoadTextureFromImage(image);
+  return cachedTextures[path] = texture;
+}
 
-  while (!WindowShouldClose()) {
+Music getMusicFromFile(String path) {
+  if (cachedSounds.containsKey(path)) return cachedSounds[path]!;
+  final music = LoadMusicStream(path);
+  return cachedSounds[path] = music;
+}
+
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "File Browser");
+    InitAudioDevice();
+    SetAudioStreamBufferSizeDefault(4096);
+    SetTargetFPS(60);
+
+    dblclick = DoubleClickDetector();
+    focus = TextBoxFocus();
+    pathBox = BetterTextBox(focus, text: GetApplicationDirectory());
+    searchBox = BetterTextBox(focus);
+
+    navigate(pathBox.text);
+    rebuildVisible();
+  },
+  loop: (_) async {
+    UpdateMusicPlayer();
+
     // Keyboard navigation
     if (!focus.isFocused) {
       if (IsKeyPressed(.KEY_UP)) {
@@ -371,23 +403,23 @@ void main() {
     {
       DrawRectangle(0, y, screenWidth - PANEL_WIDTH, SORT_BAR_HEIGHT, Colors.SORT_HDR);
 
-      final cols = [
-        ('Name', SortField.name, listW - 160),
-        ('Size', SortField.size, 80),
-        ('Date', SortField.date, 80),
+      final cols = <(String, SortField, int)>[
+        ('Name', .name, listW - 160),
+        ('Size', .size, 80),
+        ('Date', .date, 80),
       ];
 
       int sx = listLeft;
       for (final (label, field, w) in cols) {
         final active = sortField == field;
-        final btnText = active ? '$label ${sortDir == SortDir.asc ? "^" : "v"}' : label;
+        final btnText = active ? '$label ${sortDir == .asc ? "^" : "v"}' : label;
         final pressed = GuiButton(.rect(sx, y, w, SORT_BAR_HEIGHT), btnText) != .RESULT_NONE;
         if (pressed) {
           if (sortField == field) {
-            sortDir = sortDir == SortDir.asc ? SortDir.desc : SortDir.asc;
+            sortDir = sortDir == .asc ? .desc : .asc;
           } else {
             sortField = field;
-            sortDir   = SortDir.asc;
+            sortDir   = .asc;
           }
           rebuildVisible();
         }
@@ -475,12 +507,7 @@ void main() {
           if (openPressed) { navigate(e.fullPath); rebuildVisible(); }
         }
 
-        if (e.isImage) {
-          py += 32;
-
-          final texture = getTextureFromFile(e.fullPath, 256, 256);
-          DrawTexture(texture, px + 8, py, .WHITE);
-        }
+        DrawFileDescription(e, px, py);
       } else {
         DrawText('Select a file\nto see details.', px + 8, py, 13, Colors.DEF_COLOR);
       }
@@ -507,10 +534,74 @@ void main() {
     focus.frameEnd(IsMouseButtonPressed(.MOUSE_BUTTON_LEFT));
 
     EndDrawing();
+  },
+  close: (_) {
+    cachedSounds.values.forEach(UnloadMusicStream);
+    cachedImages.values.forEach(UnloadImage);
+    cachedTextures.values.forEach(UnloadTexture);
+
+    CloseWindow();
+  },
+);
+
+void DrawFileDescription(FileEntry file, int px, int py) {
+  py += 32;
+
+  switch (file.type) {
+    case .image: {
+      final texture = getTextureFromFile(file.fullPath, 256, 256);
+      DrawTexture(texture, px + 8, py, .WHITE);
+    }
+    case .audio: {
+      final music = getMusicFromFile(file.fullPath);
+      final isCurrent = _currentPlayingMusicPath == file.fullPath;
+      final isPlaying = isCurrent && IsMusicStreamPlaying(music);
+      final length = GetMusicTimeLength(music);
+      final played = isCurrent ? GetMusicTimePlayed(music) : 0.0;
+
+      final int barX = px + 8;
+      final int barW = PANEL_WIDTH - 16;
+
+      final Rectangle btn = .rect(barX, py, 64, 24);
+      final Rectangle bar = .rect(barX, py + 40, barW, 8);
+      final Rectangle barHit = .rect(bar.x, bar.y - 6, bar.width, bar.height + 12);
+
+      final mouse = GetMousePosition();
+
+      // play / pause button
+      if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mouse, btn)) {
+        if (isPlaying) {
+          PauseMusicStream(music);
+          _currentMusicPause = true;
+        } else if (isCurrent && _currentMusicPause) {
+          ResumeMusicStream(music);
+          _currentMusicPause = false;
+        } else {
+          final prev = _currentPlayingMusic;
+          if (prev != null && !isCurrent) StopMusicStream(prev);
+          _currentPlayingMusic = music;
+          _currentPlayingMusicPath = file.fullPath;
+          _currentMusicPause = false;
+          PlayMusicStream(music); // starts from the beginning
+        }
+      }
+
+      // seek by click/drag
+      if (isCurrent && length > 0 && IsMouseButtonDown(.MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mouse, barHit)) {
+        final t = ((mouse.x - bar.x) / bar.width).clamp(0.0, 1.0);
+        SeekMusicStream(music, t * length);
+      }
+
+      // draw
+      DrawRectangleRec(btn, .DARKGRAY);
+      DrawText(isPlaying ? "Pause" : "Play", barX + 8, py + 4, 16, .WHITE);
+
+      DrawRectangleRec(bar, .GRAY);
+      final fill = length > 0 ? (played / length).clamp(0.0, 1.0) : 0.0;
+      DrawRectangle(barX, py + 40, (barW * fill).round(), 8, .SKYBLUE);
+
+      DrawText("${_formatMusicDuration(played)} / ${_formatMusicDuration(length)}", barX, py + 56, 10, .GRAY);
+    }
+    case _: {}
   }
-
-  cachedImages.values.forEach(UnloadImage);
-  cachedTextures.values.forEach(UnloadTexture);
-
-  CloseWindowAndDispose();
 }

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_tiled_drawing.c
-// Run it: dart run textures_tiled_drawing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -10,55 +9,58 @@ const int OPT_WIDTH = 220;
 const int MARGIN_SIZE = 8;
 const int COLOR_SIZE = 16;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture texPattern;
+late List<Rectangle> recPattern;
+late List<Color> colors;
+final colorRec = <Rectangle>[];
+int activePattern = 0;
+int activeCol = 0;
+double scale = 1.0;
+double rotation = 0.0;
 
-  SetConfigFlags([.FLAG_WINDOW_RESIZABLE]);
-  InitWindow(screenWidth, screenHeight, "textures_tiled_drawing");
-  SetTargetFPS(120);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_RESIZABLE]);
+    InitWindow(screenWidth, screenHeight, "textures_tiled_drawing");
+    SetTargetFPS(120);
 
-  final texPattern = LoadTexture("../resources/patterns.png");
-  SetTextureFilter(texPattern, .TEXTURE_FILTER_TRILINEAR);
+    texPattern = LoadTexture("../resources/patterns.png");
+    SetTextureFilter(texPattern, .TEXTURE_FILTER_TRILINEAR);
 
-  final recPattern = <Rectangle>[
-    .rect(3, 3, 66, 66),
-    .rect(75, 3, 100, 100),
-    .rect(3, 75, 66, 66),
-    .rect(7, 156, 50, 50),
-    .rect(85, 106, 90, 45),
-    .rect(75, 154, 100, 60),
-  ];
+    recPattern = <Rectangle>[
+      .rect(3, 3, 66, 66),
+      .rect(75, 3, 100, 100),
+      .rect(3, 75, 66, 66),
+      .rect(7, 156, 50, 50),
+      .rect(85, 106, 90, 45),
+      .rect(75, 154, 100, 60),
+    ];
 
-  final colors = <Color>[
-    .BLACK, .MAROON, .ORANGE, .BLUE, .PURPLE,
-    .BEIGE, .LIME, .RED, .DARKGRAY, .SKYBLUE
-  ];
+    colors = <Color>[
+      .BLACK, .MAROON, .ORANGE, .BLUE, .PURPLE,
+      .BEIGE, .LIME, .RED, .DARKGRAY, .SKYBLUE
+    ];
 
-  final colorRec = <Rectangle>[];
+    final colorRec = <Rectangle>[];
 
-  for (int i = 0, x = 0, y = 0; i < colors.length; i++)
-  {
-    colorRec.add(.new(
-      x: 2.0 + MARGIN_SIZE + x,
-      y: 22.0 + 256.0 + MARGIN_SIZE + y,
-      width: COLOR_SIZE*2.0,
-      height: COLOR_SIZE.toDouble(),
-    ));
-
-    if (i == (colors.length/2 - 1))
+    for (int i = 0, x = 0, y = 0; i < colors.length; i++)
     {
-      x = 0;
-      y += COLOR_SIZE + MARGIN_SIZE;
+      colorRec.add(.new(
+        x: 2.0 + MARGIN_SIZE + x,
+        y: 22.0 + 256.0 + MARGIN_SIZE + y,
+        width: COLOR_SIZE*2.0,
+        height: COLOR_SIZE.toDouble(),
+      ));
+
+      if (i == (colors.length/2 - 1))
+      {
+        x = 0;
+        y += COLOR_SIZE + MARGIN_SIZE;
+      }
+      else x += (COLOR_SIZE*2 + MARGIN_SIZE);
     }
-    else x += (COLOR_SIZE*2 + MARGIN_SIZE);
-  }
-
-  int activePattern = 0, activeCol = 0;
-  double scale = 1.0, rotation = 0.0;
-
-  while (!WindowShouldClose())
-  {
+  },
+  loop: (_) async {
     if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
       final mouse = GetMousePosition();
 
@@ -178,12 +180,12 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texPattern);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texPattern);
+    CloseWindow();
+  },
+);
 
 void DrawTextureTiled(
   Texture texture,

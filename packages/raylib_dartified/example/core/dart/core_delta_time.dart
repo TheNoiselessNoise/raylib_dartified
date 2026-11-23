@@ -1,28 +1,26 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_delta_time.c
-// Run it: dart run core_delta_time.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int currentFps = 60;
+late Vector2 deltaCircle;
+late Vector2 frameCircle;
+const double speed = 10.0;
+const double circleRadius = 32.0;
 
-  InitWindow(screenWidth, screenHeight, "core_delta_time");
-  SetWindowMonitor(0);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_delta_time");
+    SetWindowMonitor(0);
+    SetTargetFPS(currentFps);
 
-  int currentFps = 60;
-
-  final Vector2 deltaCircle = .vec2(0, screenHeight/3.0);
-  final Vector2 frameCircle = .vec2(0, screenHeight*(2.0/3.0));
-
-  const double speed = 10.0;
-  const double circleRadius = 32.0;
-
-  SetTargetFPS(currentFps);
-
-  while (!WindowShouldClose()) {
+    deltaCircle = .vec2(0, screenHeight/3.0);
+    frameCircle = .vec2(0, screenHeight*(2.0/3.0));
+  },
+  loop: (_) async {
     double mouseWheel = GetMouseWheelMove();
     if (mouseWheel != 0)
     {
@@ -61,7 +59,8 @@ void main() {
       DrawText("FUNC: x += speed", 10, 240, 20, BLUE);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,23 +1,21 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_mouse_trail.c
-// Run it: dart run shapes_mouse_trail.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_TRAIL_LENGTH = 30;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Vector2> trailPositions;
 
-  InitWindow(screenWidth, screenHeight, "shapes_mouse_trail");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_mouse_trail");
+    SetTargetFPS(60);
 
-  final List<Vector2> trailPositions = .generate(MAX_TRAIL_LENGTH, (_) => .zero());
-
-  while (!WindowShouldClose())
-  {
+    trailPositions = .generate(MAX_TRAIL_LENGTH, (_) => .zero());
+  },
+  loop: (_) async {
     final mousePosition = GetMousePosition();
 
     for (int i = MAX_TRAIL_LENGTH - 1; i > 0; i--)
@@ -50,7 +48,8 @@ void main()
       DrawText("Move the mouse to see the trail effect!", 10, screenHeight - 30, 20, .LIGHTGRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

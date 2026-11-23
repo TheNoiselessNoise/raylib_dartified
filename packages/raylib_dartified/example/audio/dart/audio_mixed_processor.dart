@@ -1,60 +1,57 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_mixed_processor.c
-// Run it: dart run audio_mixed_processor.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
 double exponent = 1;
 final List<double> averageVolume = .filled(400, 0.0);
+late Music music;
+late Sound sound;
 
-void main() async {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_mixed_processor");
+    SetTargetFPS(60);
+    InitAudioDevice();
 
-  InitWindow(screenWidth, screenHeight, "audio_mixed_processor");
-  SetTargetFPS(60);
+    AttachAudioMixedProcessor(AudioCallback.function((buffer, frames) {
+      final samples = buffer.asView<Float32List>(frames * 2);
 
-  InitAudioDevice();
+      double average = 0.0;
 
-  AttachAudioMixedProcessor(AudioCallback.function((buffer, frames) {
-    final samples = buffer.asView<Float32List>(frames * 2);
+      for (int frame = 0; frame < frames; frame++)
+      {
+        double left = samples[frame * 2 + 0], right = samples[frame * 2 + 1];
 
-    double average = 0.0;
+        if (left.abs() > 2.0 || right.abs() > 2.0 || left.isNaN || right.isNaN) {
+          continue;
+        }
 
-    for (int frame = 0; frame < frames; frame++)
-    {
-      double left = samples[frame * 2 + 0], right = samples[frame * 2 + 1];
+        left = math.pow(left.abs(), exponent) * ( (left < 0.0) ? -1.0 : 1.0 );
+        samples[frame * 2 + 0] = left;
 
-      if (left.abs() > 2.0 || right.abs() > 2.0 || left.isNaN || right.isNaN) {
-        continue;
+        right = math.pow(right.abs(), exponent) * ( (right < 0.0) ? -1.0 : 1.0 );
+        samples[frame * 2 + 1] = right;
+
+        average += left.abs() / frames;
+        average += right.abs() / frames;
       }
 
-      left = math.pow(left.abs(), exponent) * ( (left < 0.0) ? -1.0 : 1.0 );
-      samples[frame * 2 + 0] = left;
+      for (int i = 0; i < 399; i++) averageVolume[i] = averageVolume[i + 1];
 
-      right = math.pow(right.abs(), exponent) * ( (right < 0.0) ? -1.0 : 1.0 );
-      samples[frame * 2 + 1] = right;
+      averageVolume[399] = average;
+    }));
 
-      average += left.abs() / frames;
-      average += right.abs() / frames;
-    }
-
-    for (int i = 0; i < 399; i++) averageVolume[i] = averageVolume[i + 1];
-
-    averageVolume[399] = average;
-  }));
-
-  final music = LoadMusicStream("../resources/country.mp3");
-  final sound = LoadSound("../resources/coin.wav");
-
-  PlayMusicStream(music);
-
-  while (!WindowShouldClose())
-  {
+    music = LoadMusicStream("../resources/country.mp3");
+    sound = LoadSound("../resources/coin.wav");
+    PlayMusicStream(music);
+  },
+  loop: (_) async {
     UpdateMusicStream(music);
 
     if (IsKeyPressed(.KEY_LEFT)) exponent -= 0.05;
@@ -86,12 +83,13 @@ void main() async {
     EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
-    await Future.delayed(Duration.zero);
-  }
-
-  UnloadMusicStream(music);
-
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+    if (currentMemoryPlatformType == .native) {
+      await Future.delayed(Duration.zero);
+    }
+  },
+  close: (_) {
+    UnloadMusicStream(music);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

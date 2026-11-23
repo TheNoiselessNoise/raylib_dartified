@@ -1,31 +1,31 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_background_scrolling.c
-// Run it: dart run textures_background_scrolling.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture background;
+late Texture midground;
+late Texture foreground;
 
-  InitWindow(screenWidth, screenHeight, "textures_background_scrolling");
-  SetTargetFPS(60);
+double scrollingBack = 0.0;
+double scrollingMid = 0.0;
+double scrollingFore = 0.0;
 
-  // NOTE: Be careful, background width must be equal or bigger than screen width
-  // if not, texture should be draw more than two times for scrolling effect
-  final background = LoadTexture("../resources/cyberpunk_street_background.png");
-  final midground = LoadTexture("../resources/cyberpunk_street_midground.png");
-  final foreground = LoadTexture("../resources/cyberpunk_street_foreground.png");
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_background_scrolling");
+    SetTargetFPS(60);
 
-  double scrollingBack = 0.0;
-  double scrollingMid = 0.0;
-  double scrollingFore = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    // NOTE: Be careful, background width must be equal or bigger than screen width
+    // if not, texture should be draw more than two times for scrolling effect
+    background = LoadTexture("../resources/cyberpunk_street_background.png");
+    midground = LoadTexture("../resources/cyberpunk_street_midground.png");
+    foreground = LoadTexture("../resources/cyberpunk_street_foreground.png");
+  },
+  loop: (_) async {
     scrollingBack -= 0.1;
     scrollingMid -= 0.5;
     scrollingFore -= 1.0;
@@ -62,11 +62,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(background);
-  UnloadTexture(midground);
-  UnloadTexture(foreground);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(background);
+    UnloadTexture(midground);
+    UnloadTexture(foreground);
+    CloseWindow();
+  },
+);

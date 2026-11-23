@@ -1,40 +1,41 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_colors_palette.c
-// Run it: dart run shapes_colors_palette.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Map<String, Color> colors;
+late List<Rectangle> colorsRecs;
+late List<bool> colorState;
+late Vector2 mousePoint;
 
-  InitWindow(screenWidth, screenHeight, "shapes_colors_palette");
-  SetTargetFPS(60);
-  
-  final colors = <String, Color>{
-    'DARKGRAY': .DARKGRAY, 'MAROON': .MAROON, 'ORANGE': .ORANGE,
-    'DARKGREEN': .DARKGREEN, 'DARKBLUE': .DARKBLUE, 'DARKPURPLE': .DARKPURPLE,
-    'DARKBROWN': .DARKBROWN, 'GRAY': .GRAY, 'RED': .RED, 'GOLD': .GOLD,
-    'LIME': .LIME, 'BLUE': .BLUE, 'VIOLET': .VIOLET, 'BROWN': .BROWN,
-    'LIGHTGRAY': .LIGHTGRAY, 'PINK': .PINK, 'YELLOW': .YELLOW, 
-    'GREEN': .GREEN, 'SKYBLUE': .SKYBLUE, 'PURPLE': .PURPLE, 'BEIGE': .BEIGE
-  };
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_colors_palette");
+    SetTargetFPS(60);
+    
+    colors = {
+      'DARKGRAY': .DARKGRAY, 'MAROON': .MAROON, 'ORANGE': .ORANGE,
+      'DARKGREEN': .DARKGREEN, 'DARKBLUE': .DARKBLUE, 'DARKPURPLE': .DARKPURPLE,
+      'DARKBROWN': .DARKBROWN, 'GRAY': .GRAY, 'RED': .RED, 'GOLD': .GOLD,
+      'LIME': .LIME, 'BLUE': .BLUE, 'VIOLET': .VIOLET, 'BROWN': .BROWN,
+      'LIGHTGRAY': .LIGHTGRAY, 'PINK': .PINK, 'YELLOW': .YELLOW, 
+      'GREEN': .GREEN, 'SKYBLUE': .SKYBLUE, 'PURPLE': .PURPLE, 'BEIGE': .BEIGE
+    };
 
-  final List<Rectangle> colorsRecs = .generate(colors.length, (i) => .new(
-    x: 20.0 + 100.0 * (i%7) + 10.0 * (i%7),
-    y: 80.0 + 100.0 * (i~/7) + 10.0 * (i~/7),
-    width: 100.0,
-    height: 100.0,
-  ));
+    colorsRecs = .generate(colors.length, (i) => .new(
+      x: 20.0 + 100.0 * (i%7) + 10.0 * (i%7),
+      y: 80.0 + 100.0 * (i~/7) + 10.0 * (i~/7),
+      width: 100.0,
+      height: 100.0,
+    ));
 
-  final colorState = List.filled(colors.length, false);
+    colorState = List.filled(colors.length, false);
 
-  Vector2 mousePoint = .zero();
-
-  while (!WindowShouldClose())
-  {
+    mousePoint = .zero();
+  },
+  loop: (_) async {
     mousePoint = GetMousePosition();
 
     for (int i = 0; i < colors.length; i++)
@@ -78,7 +79,8 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_automation_events.c
-// Run it: dart run core_automation_events.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -31,41 +30,46 @@ final class EnvElement {
   EnvElement(this.rect, this.blocking , this.color);
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Player player;
+late List<EnvElement> envElements;
+late Camera2D camera;
+late AutomationEventList aelist;
+bool eventRecording = false;
+bool eventPlaying = false;
+int frameCounter = 0;
+int playFrameCounter = 0;
+int currentPlayFrame = 0;
 
-  InitWindow(screenWidth, screenHeight, "core_automation_events");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_automation_events");
+    SetTargetFPS(60);
 
-  final player = Player();
-  player.position.set(400, 280);
-  player.speed = 0;
-  player.canJump = false;
-  
-  final List<EnvElement> envElements = [
-    .new(.rect(  0,   0, 1000, 400), false, .LIGHTGRAY),
-    .new(.rect(  0, 400, 1000, 200),  true, .GRAY),
-    .new(.rect(300, 200,  400,  10),  true, .GRAY),
-    .new(.rect(250, 300,  100,  10),  true, .GRAY),
-    .new(.rect(650, 300,  100,  10),  true, .GRAY),
-  ];
+    player = .new(
+      position: .vec2(400, 280),
+      speed: 0,
+      canJump: false,
+    );
 
-  final camera = Camera2D();
-  camera.target = player.position;
-  camera.offset.set(screenWidth/2.0, screenHeight/2.0);
-  camera.rotation = 0.0;
-  camera.zoom = 1.0;
-  
-  var aelist = LoadAutomationEventList(null);
-  SetAutomationEventList(aelist);
-  bool eventRecording = false;
-  bool eventPlaying = false;
-  
-  int frameCounter = 0;
-  int playFrameCounter = 0;
-  int currentPlayFrame = 0;
+    envElements = [
+      .new(.rect(  0,   0, 1000, 400), false, .LIGHTGRAY),
+      .new(.rect(  0, 400, 1000, 200),  true, .GRAY),
+      .new(.rect(300, 200,  400,  10),  true, .GRAY),
+      .new(.rect(250, 300,  100,  10),  true, .GRAY),
+      .new(.rect(650, 300,  100,  10),  true, .GRAY),
+    ];
 
-  while (!WindowShouldClose()) {
+    camera = .new(
+      offset: .vec2(screenWidth/2.0, screenHeight/2.0),
+      target: player.position.copy(),
+      rotation: 0.0,
+      zoom: 1.0,      
+    );
+    
+    aelist = LoadAutomationEventList(null);
+    SetAutomationEventList(aelist);
+  },
+  loop: (_) async {
     double deltaTime = 0.015;//GetFrameTime();
        
     if (IsFileDropped())
@@ -284,7 +288,8 @@ void main() {
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

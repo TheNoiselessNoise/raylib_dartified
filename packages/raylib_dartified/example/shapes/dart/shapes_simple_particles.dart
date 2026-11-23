@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_simple_particles.c
-// Run it: dart run shapes_simple_particles.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -49,24 +48,24 @@ final class CircularBuffer {
   List<Particle> buffer = [];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Particle> particles;
+late CircularBuffer circularBuffer;
+int emissionRate = -2;
+ParticleType currentType = .WATER;
+late Vector2 emitterPosition;
+int frameCount = 0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_simple_particles");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_simple_particles");
+    SetTargetFPS(60);
 
-  final List<Particle> particles = .generate(MAX_PARTICLES, (_) => .new());
-  final CircularBuffer circularBuffer = .new();
-  circularBuffer.buffer = particles;
-
-  int emissionRate = -2;
-  ParticleType currentType = .WATER;
-  Vector2 emitterPosition = .vec2(screenWidth/2.0, screenHeight/2.0);
-
-  int frameCount = 0;
-  while (!WindowShouldClose())
-  {
+    particles = .generate(MAX_PARTICLES, (_) => .new());
+    circularBuffer = .new();
+    circularBuffer.buffer = particles;
+    emitterPosition = .vec2(screenWidth/2.0, screenHeight/2.0);
+  },
+  loop: (_) async {
     frameCount++;
 
     if (emissionRate < 0)
@@ -115,10 +114,11 @@ void main()
       DrawFPS(screenWidth - 80, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void EmitParticle(CircularBuffer circularBuffer, Vector2 emitterPosition, ParticleType type)
 {
@@ -132,7 +132,7 @@ void EmitParticle(CircularBuffer circularBuffer, Vector2 emitterPosition, Partic
     newParticle.alive = true;
     newParticle.lifeTime = 0.0;
     newParticle.type = type;
-    double speed = (rl.randC()%10)/5.0;
+    double speed = (randC()%10)/5.0;
     switch (type)
     {
       case .WATER:
@@ -153,10 +153,10 @@ void EmitParticle(CircularBuffer circularBuffer, Vector2 emitterPosition, Partic
       }
     }
 
-    final direction = rl.randC()%360;
+    final direction = randC()%360;
     newParticle.velocity.set(
-      speed*math.cos(direction*rl.DEG2RAD),
-      speed*math.sin(direction*rl.DEG2RAD)
+      speed*math.cos(direction*DEG2RAD),
+      speed*math.sin(direction*DEG2RAD)
     );
   }
 }

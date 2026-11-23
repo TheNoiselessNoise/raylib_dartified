@@ -1,20 +1,18 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_drop_files.c
-// Run it: dart run core_drop_files.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final List<String> filePaths = [];
 
-  InitWindow(screenWidth, screenHeight, "core_drop_files");
-  SetTargetFPS(60);
-
-  final List<String> filePaths = [];
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_drop_files");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     if (IsFileDropped())
     {
       final droppedFiles = LoadDroppedFiles();
@@ -43,7 +41,8 @@ void main() {
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

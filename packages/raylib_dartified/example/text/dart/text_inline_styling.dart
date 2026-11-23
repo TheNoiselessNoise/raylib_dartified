@@ -1,25 +1,25 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_inline_styling.c
-// Run it: dart run text_inline_styling.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Font font;
+late Vector2 textSize;
+late Color colRandom;
+int frameCounter = 0; 
 
-  InitWindow(screenWidth, screenHeight, "text_inline_styling");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_inline_styling");
+    SetTargetFPS(60);
 
-  final font = GetFontDefault();
-  Vector2 textSize = .zero();
-  final Color colRandom = .RED;
-  int frameCounter = 0; 
-
-  while (!WindowShouldClose())
-  {
+    font = GetFontDefault();
+    textSize = .zero();
+    colRandom = .RED;
+  },
+  loop: (_) async {
     frameCounter++;
 
     if ((frameCounter%20) == 0)
@@ -64,10 +64,11 @@ void main()
       DrawRectangleLines(100, 240, textSize.x, textSize.y, .GREEN);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawTextStyled(Font font, String text, Vector2 position, double fontSize, double spacing, Color color)
 {

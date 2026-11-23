@@ -1,6 +1,5 @@
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 typedef G = TestDoubleFreeApp;
 
@@ -19,7 +18,7 @@ final class Bridge extends UnhingedRaylibApp<G> {
   G create(backend) => .new(backend);
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   Bridge(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
   silent: true,

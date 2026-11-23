@@ -1,27 +1,24 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_math_angle_rotation.c
-// Run it: dart run shapes_math_angle_rotation.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 center;
+const double lineLength = 150.0;
+final List<int> angles = [ 0, 30, 60, 90 ];
+double totalAngle = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_math_angle_rotation");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_math_angle_rotation");
+    SetTargetFPS(60);
 
-  final Vector2 center = .vec2(screenWidth/2.0, screenHeight/2.0);
-  const double lineLength = 150.0;
-
-  List<int> angles = [ 0, 30, 60, 90 ];
-  double totalAngle = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    center = .vec2(screenWidth/2.0, screenHeight/2.0);
+  },
+  loop: (_) async {
     totalAngle += 1.0;
     if (totalAngle >= 360.0) totalAngle -= 360.0;
 
@@ -32,7 +29,7 @@ void main()
 
       for (int i = 0; i < angles.length; i++)
       {
-        final rad = angles[i]*rl.DEG2RAD;
+        final rad = angles[i]*DEG2RAD;
         final Vector2 end = .vec2(
           center.x + math.cos(rad)*lineLength,
           center.y + math.sin(rad)*lineLength
@@ -55,7 +52,7 @@ void main()
         DrawText("${angles[i]}°", textPos.x.toInt(), textPos.y.toInt(), 20, col);
       }
 
-      final animRad = totalAngle*rl.DEG2RAD;
+      final animRad = totalAngle*DEG2RAD;
       final Vector2 animEnd = .vec2(
         center.x + math.cos(animRad)*lineLength,
         center.y + math.sin(animRad)*lineLength
@@ -65,7 +62,8 @@ void main()
       DrawLineEx(center, animEnd, 5.0, animCol);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

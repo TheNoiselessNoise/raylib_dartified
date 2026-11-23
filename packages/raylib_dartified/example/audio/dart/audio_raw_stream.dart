@@ -1,10 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_raw_stream.c
-// Run it: dart run audio_raw_stream.dart
 // WARNING: NO SOUND, see LIMITATIONS.md
 import 'dart:math' as math;
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -16,44 +15,42 @@ double audioFrequency = 440.0;
 double oldFrequency = 1.0;
 double sineIdx = 0.0;
 
-void main() async {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late AudioStream stream;
+late XPtr<XShort> data;
+late Vector2 mousePosition;
+int waveLength = 1;
+late Vector2 position;
 
-  InitWindow(screenWidth, screenHeight, "audio_raw_stream");
-  SetTargetFPS(30);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_raw_stream");
+    SetTargetFPS(30);
+    InitAudioDevice();
+    SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
 
-  InitAudioDevice();
+    stream = LoadAudioStream(44100, 16, 1);
 
-  SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
+    SetAudioStreamCallback(stream, AudioCallback.function((buffer, frames) {
+      audioFrequency = frequency + (audioFrequency - frequency)*0.95;
 
-  final stream = LoadAudioStream(44100, 16, 1);
+      final incr = audioFrequency/44100.0;
+      final d = buffer.asView<Int16List>(frames * 2);
 
-  SetAudioStreamCallback(stream, AudioCallback.function((buffer, frames) {
-    audioFrequency = frequency + (audioFrequency - frequency)*0.95;
+      for (int i = 0; i < frames; i++)
+      {
+        d[i] = (32000.0*math.sin(2*PI*sineIdx)).toInt();
+        sineIdx += incr;
+        if (sineIdx > 1.0) sineIdx -= 1.0;
+      }
+    }));
 
-    final incr = audioFrequency/44100.0;
-    final d = buffer.asView<Int16List>(frames * 2);
+    PlayAudioStream(stream);
 
-    for (int i = 0; i < frames; i++)
-    {
-      d[i] = (32000.0*math.sin(2*PI*sineIdx)).toInt();
-      sineIdx += incr;
-      if (sineIdx > 1.0) sineIdx -= 1.0;
-    }
-  }));
-
-  final data = Short$.At('data', MAX_SAMPLES).cast<XShort>();
-
-  PlayAudioStream(stream);
-
-  Vector2 mousePosition = .vec2(-100.0, -100.0);
-
-  int waveLength = 1;
-
-  final Vector2 position = .vec2(0, 0);
-
-  while (!WindowShouldClose())
-  {
+    data = .calloc(MAX_SAMPLES, XShort.size);
+    mousePosition = .vec2(-100.0, -100.0);
+    position = .vec2(0, 0);
+  },
+  loop: (_) async {
     mousePosition = GetMousePosition();
 
     if (IsMouseButtonDown(.MOUSE_BUTTON_LEFT))
@@ -101,12 +98,14 @@ void main() async {
     EndDrawing();
 
     // NOTE: crucial, see LIMITATIONS.md
-    await Future.delayed(Duration.zero);
-  }
-
-  UnloadAudioStream(stream);
-
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+    if (currentMemoryPlatformType == .native) {
+      await Future.delayed(Duration.zero);
+    }
+  },
+  close: (_) {
+    data.free();
+    UnloadAudioStream(stream);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);

@@ -1,63 +1,70 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_simple_mask.c
-// Run it: dart run shaders_simple_mask.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Mesh torus;
+late Model model1;
+late Mesh cube;
+late Model model2;
+late Mesh sphere;
+late Model model3;
+late Shader shader;
+late Texture texDiffuse;
+late Texture texMask;
+late int shaderFrame;
+int framesCounter = 0;
+late Vector3 rotation;
 
-  InitWindow(screenWidth, screenHeight, "shaders_simple_mask");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_simple_mask");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(0.0, 1.0, 2.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(0.0, 1.0, 2.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final torus = GenMeshTorus(0.3, 1, 16, 32);
-  final model1 = LoadModelFromMesh(torus);
+    torus = GenMeshTorus(0.3, 1, 16, 32);
+    model1 = LoadModelFromMesh(torus);
 
-  final cube = GenMeshCube(0.8, 0.8, 0.8);
-  final model2 = LoadModelFromMesh(cube);
+    cube = GenMeshCube(0.8, 0.8, 0.8);
+    model2 = LoadModelFromMesh(cube);
 
-  final sphere = GenMeshSphere(1, 16, 16);
-  final model3 = LoadModelFromMesh(sphere);
+    sphere = GenMeshSphere(1, 16, 16);
+    model3 = LoadModelFromMesh(sphere);
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/mask.fs",
-  );
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/mask.fs",
+    );
 
-  final texDiffuse = LoadTexture("../resources/plasma.png");
-  model1.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
-  model2.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
+    texDiffuse = LoadTexture("../resources/plasma.png");
+    model1.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
+    model2.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texDiffuse;
 
-  final texMask = LoadTexture("../resources/mask.png");
-  model1.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
-  model2.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
-  shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_EMISSION.value] =
-    GetShaderLocation(shader, "mask");
+    texMask = LoadTexture("../resources/mask.png");
+    model1.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
+    model2.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_EMISSION.value].texture = texMask;
+    shader.locs[ShaderLocationIndex.SHADER_LOC_MAP_EMISSION.value] = GetShaderLocation(shader, "mask");
 
-  int shaderFrame = GetShaderLocation(shader, "frame");
+    shaderFrame = GetShaderLocation(shader, "frame");
 
-  model1.materials[0].shader = shader;
-  model2.materials[0].shader = shader;
+    model1.materials[0].shader = shader;
+    model2.materials[0].shader = shader;
 
-  int framesCounter = 0;
-  final Vector3 rotation = .zero();
-
-  while (!WindowShouldClose())
-  {
+    rotation = .zero();
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
         
     framesCounter++;
@@ -98,16 +105,14 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadModel(model1);
-  UnloadModel(model2);
-  UnloadModel(model3);
-
-  UnloadTexture(texDiffuse);
-  UnloadTexture(texMask);
-
-  UnloadShader(shader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model1);
+    UnloadModel(model2);
+    UnloadModel(model3);
+    UnloadTexture(texDiffuse);
+    UnloadTexture(texMask);
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

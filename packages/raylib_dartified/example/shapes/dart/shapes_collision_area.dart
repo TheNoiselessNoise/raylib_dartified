@@ -1,36 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_collision_area.c
-// Run it: dart run shapes_collision_area.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Rectangle boxA;
+int boxASpeedX = 4;
+late Rectangle boxB;
+late Rectangle boxCollision;
+int screenUpperLimit = 40;
+bool pause = false;
+bool collision = false;
 
-  InitWindow(screenWidth, screenHeight, "shapes_collision_area");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_collision_area");
+    SetTargetFPS(60);
 
-  final Rectangle boxA = .rect(
-    10, GetScreenHeight()/2.0 - 50, 200, 100
-  );
-  int boxASpeedX = 4;
-
-  final Rectangle boxB = .rect(
-    GetScreenWidth()/2.0 - 30, GetScreenHeight()/2.0 - 30, 60, 60
-  );
-
-  Rectangle boxCollision = .zero();
-
-  int screenUpperLimit = 40;
-
-  bool pause = false;
-  bool collision = false;
-
-  while (!WindowShouldClose())
-  {
+    boxA = .rect(10, GetScreenHeight()/2.0 - 50, 200, 100);
+    boxB = .rect(GetScreenWidth()/2.0 - 30, GetScreenHeight()/2.0 - 30, 60, 60);
+    boxCollision = .zero();
+  },
+  loop: (_) async {
     final w = GetScreenWidth(), h = GetScreenHeight();
 
     if (!pause) boxA.x += boxASpeedX;
@@ -86,7 +78,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

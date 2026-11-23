@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_splines_drawing.c
-// Run it: dart run shapes_splines_drawing.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -24,45 +23,44 @@ enum SplineType {
   SPLINE_BEZIER
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Vector2> points;
+late List<Vector2> pointsInterleaved;
+int pointCount = 5;
+int selectedPoint = -1;
+int focusedPoint = -1;
+Vector2? selectedControlPoint;
+Vector2? focusedControlPoint;
+late List<ControlPoint> control;
+double splineThickness = 8.0;
+SplineType splineTypeActive = .SPLINE_LINEAR;
+bool splineTypeEditMode = false; 
+bool splineHelpersActive = true;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shapes_splines_drawing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shapes_splines_drawing");
+    SetTargetFPS(60);
 
-  final List<Vector2> points = .generate(MAX_SPLINE_POINTS, (i) => switch(i) {
-    0 => .vec2( 50.0, 400.0),
-    1 => .vec2(160.0, 220.0),
-    2 => .vec2(340.0, 380.0),
-    3 => .vec2(520.0, 60.0),
-    4 => .vec2(710.0, 260.0),
-    _ => .zero(),
-  });
-  
-  final List<Vector2> pointsInterleaved = .generate(
-    3*(MAX_SPLINE_POINTS - 1) + 1, (_) => .zero()
-  );
-  
-  int pointCount = 5;
-  int selectedPoint = -1;
-  int focusedPoint = -1;
-  Vector2? selectedControlPoint;
-  Vector2? focusedControlPoint;
-  
-  List<ControlPoint> control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
-    start: .vec2(points[i].x + 50, points[i].y),
-    end: .vec2(points[i + 1].x - 50, points[i + 1].y),
-  ));
-
-  double splineThickness = 8.0;
-  SplineType splineTypeActive = .SPLINE_LINEAR;
-  bool splineTypeEditMode = false; 
-  bool splineHelpersActive = true;
-
-  while (!WindowShouldClose())
-  {
+    points = .generate(MAX_SPLINE_POINTS, (i) => switch(i) {
+      0 => .vec2( 50.0, 400.0),
+      1 => .vec2(160.0, 220.0),
+      2 => .vec2(340.0, 380.0),
+      3 => .vec2(520.0, 60.0),
+      4 => .vec2(710.0, 260.0),
+      _ => .zero(),
+    });
+    
+    pointsInterleaved = .generate(
+      3*(MAX_SPLINE_POINTS - 1) + 1, (_) => .zero()
+    );
+    
+    control = .generate(MAX_SPLINE_POINTS-1, (i) => ControlPoint(
+      start: .vec2(points[i].x + 50, points[i].y),
+      end: .vec2(points[i + 1].x - 50, points[i + 1].y),
+    ));
+  },
+  loop: (_) async {
     final mousePos = GetMousePosition();
 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT) && (pointCount < MAX_SPLINE_POINTS))
@@ -112,7 +110,7 @@ void main()
       
       if (selectedControlPoint != null)
       {
-        selectedControlPoint.setDart(mousePos);
+        selectedControlPoint!.setDart(mousePos);
         if (IsMouseButtonReleased(.MOUSE_BUTTON_LEFT)) selectedControlPoint = null;
       }
     }
@@ -230,18 +228,24 @@ void main()
         "Spline thickness: $splineThickness"
       );
       
-      (_, splineThickness) = GuiSliderBar(
-        .rect(12, 60 + 24, 140, 16),
-        null,
-        null,
-        splineThickness, 1.0, 40.0
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(12, 60 + 24, 140, 16),
+          null,
+          null,
+          splineThickness, 1.0, 40.0
+        );
+        splineThickness = newValue;
+      }
 
-      (_, splineHelpersActive) = GuiCheckBox(
-        .rect(12, 110, 20, 20),
-        "Show point helpers",
-        splineHelpersActive
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(12, 110, 20, 20),
+          "Show point helpers",
+          splineHelpersActive
+        );
+        splineHelpersActive = newValue;
+      }
 
       GuiUnlock();
 
@@ -265,7 +269,8 @@ void main()
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

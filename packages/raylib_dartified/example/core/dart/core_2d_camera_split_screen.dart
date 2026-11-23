@@ -1,41 +1,47 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_2d_camera_split_screen.c
-// Run it: dart run core_2d_camera_split_screen.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 440;
 const int PLAYER_SIZE = 40;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Rectangle player1;
+late Rectangle player2;
+late Camera2D camera1;
+late Camera2D camera2;
+late RenderTexture screenCamera1;
+late RenderTexture screenCamera2;
+late Rectangle splitScreenRect;
 
-  InitWindow(screenWidth, screenHeight, "core_2d_camera_split_screen");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_2d_camera_split_screen");
+    SetTargetFPS(60);
 
-  final Rectangle player1 = .rect(200, 200, PLAYER_SIZE, PLAYER_SIZE);
-  final Rectangle player2 = .rect(250, 200, PLAYER_SIZE, PLAYER_SIZE);
+    player1 = .rect(200, 200, PLAYER_SIZE, PLAYER_SIZE);
+    player2 = .rect(250, 200, PLAYER_SIZE, PLAYER_SIZE);
 
-  final camera1 = Camera2D(
-    target: .vec2(player1.x, player1.y),
-    offset: .vec2(200.0, 200.0),
-    rotation: 0.0,
-    zoom: 1.0,
-  );
+    camera1 = .new(
+      target: .vec2(player1.x, player1.y),
+      offset: .vec2(200.0, 200.0),
+      rotation: 0.0,
+      zoom: 1.0,
+    );
 
-  final camera2 = Camera2D(
-    target: .vec2(player2.x, player2.y),
-    offset: .vec2(200.0, 200.0),
-    rotation: 0.0,
-    zoom: 1.0,
-  );
+    camera2 = .new(
+      target: .vec2(player2.x, player2.y),
+      offset: .vec2(200.0, 200.0),
+      rotation: 0.0,
+      zoom: 1.0,
+    );
 
-  final screenCamera1 = LoadRenderTexture(screenWidth~/2, screenHeight);
-  final screenCamera2 = LoadRenderTexture(screenWidth~/2, screenHeight);
+    screenCamera1 = LoadRenderTexture(screenWidth~/2, screenHeight);
+    screenCamera2 = LoadRenderTexture(screenWidth~/2, screenHeight);
 
-  final Rectangle splitScreenRect = .rect(0.0, 0.0, screenCamera1.texture.width, -screenCamera1.texture.height);
-
-  while (!WindowShouldClose()) {
+    splitScreenRect = .rect(0.0, 0.0, screenCamera1.texture.width, -screenCamera1.texture.height);
+  },
+  loop: (_) async {
     if (IsKeyDown(.KEY_S)) player1.y += 3.0;
     else if (IsKeyDown(.KEY_W)) player1.y -= 3.0;
     if (IsKeyDown(.KEY_D)) player1.x += 3.0;
@@ -161,10 +167,11 @@ void main() {
       
       DrawRectangle(GetScreenWidth()~/2 - 2, 0, 4, GetScreenHeight(), .LIGHTGRAY);
     EndDrawing();
-  }
+  },
+  close: (_) {
+    UnloadRenderTexture(screenCamera1);
+    UnloadRenderTexture(screenCamera2);
 
-  UnloadRenderTexture(screenCamera1);
-  UnloadRenderTexture(screenCamera2);
-
-  CloseWindowAndDispose();
-}
+    CloseWindow();
+  },
+);

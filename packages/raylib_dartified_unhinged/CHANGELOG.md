@@ -1,3 +1,7 @@
+## 6.0.5
+
+- support for `raylib_dartified`>=`6.0.5`
+
 ## 6.0.4
 
 - fix widgets rendering

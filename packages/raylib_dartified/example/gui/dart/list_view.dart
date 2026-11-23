@@ -1,32 +1,31 @@
 // Custom example, there's no original equivalent
-// Run it: dart run list_view.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+List<String> keyNames = KeyboardKey.values.map((v) => v.name).toList();
+int scrollIndex = 0;
+int activeIndex = 0;
+int focusIndex = 0;
 
-  InitWindow(800, 450, "list_view");
-  SetTargetFPS(60);
-
-  List<String> keyNames = KeyboardKey.values.map((v) => v.name).toList();
-  int scrollIndex = 0;
-  int active = 0;
-  int focus = 0;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(800, 450, "list_view");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.WHITE);
 
-      (_, scrollIndex!, active!, focus!) = GuiListViewEx(
+      final (_, scroll, active, focus) = GuiListViewEx(
         .rect(50, 50, 100, 200),
         keyNames,
         scrollIndex: scrollIndex,
-        active: active,
-        focus: focus,
+        active: activeIndex,
+        focus: focusIndex,
       );
+      scrollIndex = scroll!;
+      activeIndex = active!;
+      focusIndex = focus!;
       
       DrawText("SCROLL INDEX: $scrollIndex [ at ${keyNames[scrollIndex]} ]", 50, 280, 20, .BLACK);
 
@@ -37,7 +36,8 @@ void main()
       DrawText("FOCUS: $focus [ $focusName ]", 50, 340, 20, .BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

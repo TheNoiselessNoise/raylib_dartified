@@ -1,43 +1,44 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_tesseract_view.c
-// Run it: dart run models_tesseract_view.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late List<Vector4> tesseract;
+double rotation = 0.0;
+late List<Vector3> transformed;
+late List<double> wValues;
 
-  InitWindow(screenWidth, screenHeight, "models_tesseract_view");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_tesseract_view");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(4.0, 4.0, 4.0),
-    target: .vec3(0.0, 0.0, 0.0),
-    up: .vec3(0.0, 0.0, 1.0),
-    fovy: 50,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(4.0, 4.0, 4.0),
+      target: .vec3(0.0, 0.0, 0.0),
+      up: .vec3(0.0, 0.0, 1.0),
+      fovy: 50,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  List<Vector4> tesseract = [
-    .vec4(  1,  1,  1, 1 ), .vec4(  1,  1,  1, -1 ),
-    .vec4(  1,  1, -1, 1 ), .vec4(  1,  1, -1, -1 ),
-    .vec4(  1, -1,  1, 1 ), .vec4(  1, -1,  1, -1 ),
-    .vec4(  1, -1, -1, 1 ), .vec4(  1, -1, -1, -1 ),
-    .vec4( -1,  1,  1, 1 ), .vec4( -1,  1,  1, -1 ),
-    .vec4( -1,  1, -1, 1 ), .vec4( -1,  1, -1, -1 ),
-    .vec4( -1, -1,  1, 1 ), .vec4( -1, -1,  1, -1 ),
-    .vec4( -1, -1, -1, 1 ), .vec4( -1, -1, -1, -1 ),
-  ];
+    tesseract = [
+      .vec4(  1,  1,  1, 1 ), .vec4(  1,  1,  1, -1 ),
+      .vec4(  1,  1, -1, 1 ), .vec4(  1,  1, -1, -1 ),
+      .vec4(  1, -1,  1, 1 ), .vec4(  1, -1,  1, -1 ),
+      .vec4(  1, -1, -1, 1 ), .vec4(  1, -1, -1, -1 ),
+      .vec4( -1,  1,  1, 1 ), .vec4( -1,  1,  1, -1 ),
+      .vec4( -1,  1, -1, 1 ), .vec4( -1,  1, -1, -1 ),
+      .vec4( -1, -1,  1, 1 ), .vec4( -1, -1,  1, -1 ),
+      .vec4( -1, -1, -1, 1 ), .vec4( -1, -1, -1, -1 ),
+    ];
 
-  double rotation = 0.0;
-  List<Vector3> transformed = .generate(16, (_) => .zero());
-  List<double> wValues = .filled(16, 0);
-
-  while (!WindowShouldClose())
-  {
+    transformed = .generate(16, (_) => .zero());
+    wValues = .filled(16, 0);
+  },
+  loop: (_) async {
     rotation = DEG2RAD*45.0*GetTime();
 
     for (int i = 0; i < 16; i++)
@@ -86,7 +87,8 @@ void main()
       EndMode3D();
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

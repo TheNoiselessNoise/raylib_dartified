@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_random_sequence.c
-// Run it: dart run core_random_sequence.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,17 +10,18 @@ final class ColorRect {
   Rectangle rect = .zero();
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int rectCount = 20;
+double rectSize = screenWidth/rectCount;
+late List<ColorRect> rectangles;
 
-  InitWindow(screenWidth, screenHeight, "core_random_sequence");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_random_sequence");
+    SetTargetFPS(60);
 
-  int rectCount = 20;
-  double rectSize = screenWidth/rectCount;
-  var rectangles = GenerateRandomColorRectSequence(rectCount, rectSize, screenWidth, 0.75*screenHeight);
-
-  while (!WindowShouldClose()) {
+    rectangles = GenerateRandomColorRectSequence(rectCount, rectSize, screenWidth, 0.75*screenHeight);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE)) ShuffleColorRectSequence(rectangles);
 
     if (IsKeyPressed(.KEY_UP))
@@ -59,10 +59,11 @@ void main() {
       DrawFPS(screenWidth - 80, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 Color GenerateRandomColor() => .color(
   GetRandomValue(0, 255),

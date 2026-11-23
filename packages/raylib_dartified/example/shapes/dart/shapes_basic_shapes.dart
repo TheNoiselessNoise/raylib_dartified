@@ -1,22 +1,18 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_basic_shapes.c
-// Run it: dart run shapes_basic_shapes.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+double rotation = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_basic_shapes");
-  SetTargetFPS(60);
-
-  double rotation = 0.0;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_basic_shapes");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     rotation += 0.2;
 
     BeginDrawing();
@@ -57,7 +53,8 @@ void main()
       DrawLine(18, 42, screenWidth - 18, 42, .BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

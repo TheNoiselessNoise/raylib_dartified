@@ -1,28 +1,25 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_3d_camera_mode.c
-// Run it: dart run core_3d_camera_mode.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final Vector3 cubePosition = .vec3(0, 0, 0);
+final Camera3D camera = .new(
+  position: .vec3(0, 10, 10),
+  target: .vec3(0, 0, 0),
+  up: .vec3(0, 1, 0),
+  fovy: 45,
+  projection: .CAMERA_PERSPECTIVE,
+);
 
-  InitWindow(screenWidth, screenHeight, "core_3d_camera_mode");
-  SetTargetFPS(60);
-
-  final camera = Camera3D(
-    position: .vec3(0, 10, 10),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
-
-  final Vector3 cubePosition = .vec3(0, 0, 0);
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_3d_camera_mode");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     BeginDrawing();
       ClearBackground(.RAYWHITE);
 
@@ -42,7 +39,8 @@ void main() {
 
       DrawFPS(10, 10);
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_clipboard_image.c
-// Run it: dart run textures_clipboard_image.dart
-// WARNING: No support for `GetClipboardImage` on Linux (yet), untested.
-import '../../base_dart.dart';
+// WARNING: No support for `GetClipboardImage` on Linux (yet).
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -14,18 +13,15 @@ final class TextureCollection {
   TextureCollection(this.texture, this.position);
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+List<TextureCollection> collection = [];
+int currentCollectionIndex = 0;
 
-  InitWindow(screenWidth, screenHeight, "textures_clipboard_image");
-  SetTargetFPS(60);
-
-  List<TextureCollection> collection = [];
-  int currentCollectionIndex = 0;
-
-  while (!WindowShouldClose())
-  {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_clipboard_image");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_R))
     {
       for (int i = 0; i < collection.length; i++) {
@@ -76,9 +72,9 @@ void main()
       DrawText("Clipboard Image - Ctrl+V to Paste and R to Reset", 120, 10, 20, .LIGHTGRAY);
 
     EndDrawing();
-  }
-  
-  collection.forEach((e) => UnloadTexture(e.texture));
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    collection.map((e) => e.texture).forEach(UnloadTexture);
+    CloseWindow();
+  },
+);

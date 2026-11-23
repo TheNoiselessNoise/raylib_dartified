@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_input_actions.c
-// Run it: dart run core_input_actions.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -23,20 +22,20 @@ final class ActionInput {
 int gamepadIndex = 0;
 final List<ActionInput> actionInputs = .generate(ActionType.values.length, (_) => .new());
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+bool actionSet = false;
+bool releaseAction = false;
+late Vector2 position;
+late Vector2 size;
 
-  InitWindow(screenWidth, screenHeight, "core_input_actions");
-  SetTargetFPS(60);
-
-  bool actionSet = false;
-  SetActionsDefault();
-  bool releaseAction = false;
-
-  final Vector2 position = .vec2(400.0, 200.0);
-  final Vector2 size = .vec2(40.0, 40.0);
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_input_actions");
+    SetTargetFPS(60);
+    SetActionsDefault();
+    position = .vec2(400.0, 200.0);
+    size = .vec2(40.0, 40.0);
+  },
+  loop: (_) async {
     gamepadIndex = 0;
 
     if (IsActionDown(.ACTION_UP)) position.y -= 2;
@@ -69,25 +68,20 @@ void main() {
       DrawText("Use TAB key to toggles Actions keyset", 10, 50, 20, GREEN);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 bool IsActionPressed(ActionType action)
-{
-  return IsKeyPressed(actionInputs[action.index].key) || IsGamepadButtonPressed(gamepadIndex, actionInputs[action.index].button);
-}
+  => IsKeyPressed(actionInputs[action.index].key) || IsGamepadButtonPressed(gamepadIndex, actionInputs[action.index].button);
 
 bool IsActionReleased(ActionType action)
-{
-  return IsKeyReleased(actionInputs[action.index].key) || IsGamepadButtonReleased(gamepadIndex, actionInputs[action.index].button);
-}
+  => IsKeyReleased(actionInputs[action.index].key) || IsGamepadButtonReleased(gamepadIndex, actionInputs[action.index].button);
 
 bool IsActionDown(ActionType action)
-{
-  return IsKeyDown(actionInputs[action.index].key) || IsGamepadButtonDown(gamepadIndex, actionInputs[action.index].button);
-}
+  => IsKeyDown(actionInputs[action.index].key) || IsGamepadButtonDown(gamepadIndex, actionInputs[action.index].button);
 
 void SetActionsDefault()
 {

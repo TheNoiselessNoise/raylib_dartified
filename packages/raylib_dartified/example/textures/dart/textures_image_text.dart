@@ -1,45 +1,44 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_text.c
-// Run it: dart run textures_image_text.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Font font;
+late Texture texture;
+late Vector2 position;
+bool showFont = false;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_text");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_text");
+    SetTargetFPS(60);
 
-  final parrots = LoadImage("../resources/parrots.png");
+    final parrots = LoadImage("../resources/parrots.png");
 
-  final font = LoadFontEx("../resources/KAISG.ttf", 64);
+    font = LoadFontEx("../resources/KAISG.ttf", 64);
 
-  ImageDrawTextEx(
-    parrots,
-    font,
-    "[Parrots font drawing]",
-    .vec2(20.0, 20.0),
-    font.baseSize,
-    0.0,
-    .RED
-  );
+    ImageDrawTextEx(
+      parrots,
+      font,
+      "[Parrots font drawing]",
+      .vec2(20.0, 20.0),
+      font.baseSize,
+      0.0,
+      .RED
+    );
 
-  final texture = LoadTextureFromImage(parrots);
-  UnloadImage(parrots);
+    texture = LoadTextureFromImage(parrots);
+    UnloadImage(parrots);
 
-  final Vector2 position = .vec2(
-    screenWidth/2 - texture.width/2,
-    screenHeight/2 - texture.height/2 - 20
-  );
-
-  bool showFont = false;
-
-  while (!WindowShouldClose())
-  {
+    position = .vec2(
+      screenWidth/2 - texture.width/2,
+      screenHeight/2 - texture.height/2 - 20
+    );
+  },
+  loop: (_) async {
     showFont = IsKeyDown(.KEY_SPACE);
 
     BeginDrawing();
@@ -72,10 +71,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-  UnloadFont(font);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    UnloadFont(font);
+    CloseWindow();
+  },
+);

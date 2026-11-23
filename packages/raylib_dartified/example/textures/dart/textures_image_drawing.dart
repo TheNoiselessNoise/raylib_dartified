@@ -1,62 +1,60 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_image_drawing.c
-// Run it: dart run textures_image_drawing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture texture;
 
-  InitWindow(screenWidth, screenHeight, "textures_image_drawing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_image_drawing");
+    SetTargetFPS(60);
 
-  final cat = LoadImage("../resources/cat.png");
-  ImageCrop(cat, .rect(100, 10, 280, 380));
-  ImageFlipHorizontal(cat);
-  ImageResize(cat, 150, 200);
+    final cat = LoadImage("../resources/cat.png");
+    ImageCrop(cat, .rect(100, 10, 280, 380));
+    ImageFlipHorizontal(cat);
+    ImageResize(cat, 150, 200);
 
-  final parrots = LoadImage("../resources/parrots.png");
+    final parrots = LoadImage("../resources/parrots.png");
 
-  ImageDraw(
-    parrots, cat,
-    .rect(0, 0, cat.width, cat.height),
-    .rect(30, 40, cat.width*1.5, cat.height*1.5),
-    .WHITE
-  );
+    ImageDraw(
+      parrots, cat,
+      .rect(0, 0, cat.width, cat.height),
+      .rect(30, 40, cat.width*1.5, cat.height*1.5),
+      .WHITE
+    );
 
-  ImageCrop(
-    parrots,
-    .rect(0, 50, parrots.width, parrots.height - 100)
-  );
+    ImageCrop(
+      parrots,
+      .rect(0, 50, parrots.width, parrots.height - 100)
+    );
 
-  ImageDrawPixel(parrots, 10, 10, .RAYWHITE);
-  ImageDrawCircleLines(parrots, 10, 10, 5, .RAYWHITE);
-  ImageDrawRectangle(parrots, 5, 20, 10, 10, .RAYWHITE);
+    ImageDrawPixel(parrots, 10, 10, .RAYWHITE);
+    ImageDrawCircleLines(parrots, 10, 10, 5, .RAYWHITE);
+    ImageDrawRectangle(parrots, 5, 20, 10, 10, .RAYWHITE);
 
-  UnloadImage(cat);
+    UnloadImage(cat);
 
-  final font = LoadFont("../resources/custom_jupiter_crash.png");
+    final font = LoadFont("../resources/custom_jupiter_crash.png");
 
-  ImageDrawTextEx(
-    parrots, font,
-    "PARROTS & CAT",
-    .vec2(300, 230),
-    font.baseSize,
-    -2,
-    .WHITE
-  );
+    ImageDrawTextEx(
+      parrots, font,
+      "PARROTS & CAT",
+      .vec2(300, 230),
+      font.baseSize,
+      -2,
+      .WHITE
+    );
 
-  UnloadFont(font);
+    UnloadFont(font);
 
-  final texture = LoadTextureFromImage(parrots);
-  UnloadImage(parrots);
-
-  while (!WindowShouldClose())
-  {
+    texture = LoadTextureFromImage(parrots);
+    UnloadImage(parrots);
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.RAYWHITE);
@@ -77,9 +75,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(texture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(texture);
+    CloseWindow();
+  },
+);

@@ -1,31 +1,20 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_2d_camera_platformer.c
-// Run it: dart run core_2d_camera_platformer.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 final class Player {
   Vector2 position;
   double speed;
   bool canJump;
-
-  Player({
-    required this.position,
-    required this.speed,
-    required this.canJump,
-  });
+  Player({required this.position, required this.speed, required this.canJump});
 }
 
 final class EnvItem {
   Rectangle rect;
   bool blocking;
   Color color;
-
-  EnvItem({
-    required this.rect,
-    required this.blocking,
-    required this.color,
-  });
+  EnvItem({required this.rect, required this.blocking, required this.color});
 }
 
 const int screenWidth = 800;
@@ -37,54 +26,43 @@ const double PLAYER_HOR_SPD = 200;
 Vector2 minVec = .zero();
 Vector2 maxVec = .zero();
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Player player;
+late List<EnvItem> envItems;
+late Map<String, void Function(Camera2D, Player, List<EnvItem>, double)> cameraUpdaters;
+late Camera2D camera;
+int cameraOption = 1;
 
-  InitWindow(screenWidth, screenHeight, "core_2d_camera_platformer");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_2d_camera_platformer");
+    SetTargetFPS(60);
 
-  final player = Player(
-    position: .vec2(400, 280),
-    speed: 0,
-    canJump: false,
-  );
+    player = .new(position: .vec2(400, 280), speed: 0, canJump: false);
 
-  final envItems = [
-    EnvItem(rect: .rect(0, 0, 1000, 400), blocking: false, color: .LIGHTGRAY),
-    EnvItem(rect: .rect(0, 400, 1000, 200), blocking: true, color: .GRAY),
-    EnvItem(rect: .rect(300, 200, 400, 10), blocking: true, color: .GRAY),
-    EnvItem(rect: .rect(250, 300, 100, 10), blocking: true, color: .GRAY),
-    EnvItem(rect: .rect(650, 300, 100, 10), blocking: true, color: .GRAY)
-  ];
+    envItems = [
+      .new(rect: .rect(0, 0, 1000, 400), blocking: false, color: .LIGHTGRAY),
+      .new(rect: .rect(0, 400, 1000, 200), blocking: true, color: .GRAY),
+      .new(rect: .rect(300, 200, 400, 10), blocking: true, color: .GRAY),
+      .new(rect: .rect(250, 300, 100, 10), blocking: true, color: .GRAY),
+      .new(rect: .rect(650, 300, 100, 10), blocking: true, color: .GRAY)
+    ];
 
-  final cameraUpdaters = [
-    UpdateCameraCenter,
-    UpdateCameraCenterInsideMap,
-    UpdateCameraCenterSmoothFollow,
-    UpdateCameraEvenOutOnLanding,
-    UpdateCameraPlayerBoundsPush
-  ];
+    cameraUpdaters = {
+      "Follow player center": UpdateCameraCenter,
+      "Follow player center, but clamp to map edges": UpdateCameraCenterInsideMap,
+      "Follow player center; smoothed": UpdateCameraCenterSmoothFollow,
+      "Follow player center horizontally; update player center vertically after landing": UpdateCameraEvenOutOnLanding,
+      "Player push camera on getting too close to screen edge": UpdateCameraPlayerBoundsPush,
+    };
 
-  final cameraDescriptions = [
-    "Follow player center",
-    "Follow player center, but clamp to map edges",
-    "Follow player center; smoothed",
-    "Follow player center horizontally; update player center vertically after landing",
-    "Player push camera on getting too close to screen edge"
-  ];
-
-  assert(cameraDescriptions.length == cameraUpdaters.length);
-
-  final camera = Camera2D(
-    target: player.position.copy(),
-    offset: .vec2(screenWidth/2, screenHeight/2),
-    rotation: 0,
-    zoom: 1,
-  );
-
-  int cameraOption = 1;
-
-  while (!WindowShouldClose()) {
+    camera = .new(
+      target: player.position.copy(),
+      offset: .vec2(screenWidth/2, screenHeight/2),
+      rotation: 0,
+      zoom: 1,
+    );
+  },
+  loop: (_) async {
     final deltaTime = GetFrameTime();
 
     UpdatePlayer(player, envItems, deltaTime);
@@ -103,7 +81,8 @@ void main() {
       cameraOption = (cameraOption + 1) % cameraUpdaters.length;
     }
 
-    cameraUpdaters[cameraOption](camera, player, envItems, deltaTime);
+    final updater = cameraUpdaters.values.elementAt(cameraOption);
+    updater(camera, player, envItems, deltaTime);
 
     BeginDrawing();
 
@@ -136,14 +115,15 @@ void main() {
       DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom", 40, 80, 10, .DARKGRAY);
       DrawText("- C to change camera mode", 40, 100, 10, .DARKGRAY);
       DrawText("Current camera mode:", 20, 120, 10, .BLACK);
-      DrawText(cameraDescriptions[cameraOption], 40, 140, 10, .DARKGRAY);
+      DrawText(cameraUpdaters.keys.elementAt(cameraOption), 40, 140, 10, .DARKGRAY);
       DrawText("Player Position: ${player.position.format(1)}", 20, 160, 10, .BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void UpdatePlayer(Player player, List<EnvItem> envItems, double delta)
 {

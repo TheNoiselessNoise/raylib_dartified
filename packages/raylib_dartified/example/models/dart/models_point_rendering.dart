@@ -1,39 +1,39 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_point_rendering.c
-// Run it: dart run models_point_rendering.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_POINTS = 10_000_000;
 const int MIN_POINTS = 1_000;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Vector3 position;
+bool useDrawModelPoints = true;
+bool numPointsChanged = false;
+int numPoints = 1000;
+late Mesh mesh;
+late Model model;
 
-  InitWindow(screenWidth, screenHeight, "models_point_rendering");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_point_rendering");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(3, 3, 3),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(3, 3, 3),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final Vector3 position = .zero();
-  bool useDrawModelPoints = true;
-  bool numPointsChanged = false;
-  int numPoints = 1000;
-  
-  Mesh mesh = GenMeshPoints(numPoints);
-  var model = LoadModelFromMesh(mesh);
-
-  while (!WindowShouldClose())
-  {
+    position = .zero();
+    mesh = GenMeshPoints(numPoints);
+    model = LoadModelFromMesh(mesh);
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsKeyPressed(.KEY_SPACE))
@@ -120,12 +120,12 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    CloseWindow();
+  },
+);
 
 Mesh GenMeshPoints(int numPoints)
 {
@@ -136,9 +136,9 @@ Mesh GenMeshPoints(int numPoints)
   // https://en.wikipedia.org/wiki/Spherical_coordinate_system
   for (int i = 0; i < numPoints; i++)
   {
-    final theta = PI*rl.rand();
-    final phi = 2.0*PI*rl.rand();
-    final r = 10.0*rl.rand();
+    final theta = PI*rand();
+    final phi = 2.0*PI*rand();
+    final r = 10.0*rand();
     
     vertices.addAll([
       r*math.sin(theta)*math.cos(phi),

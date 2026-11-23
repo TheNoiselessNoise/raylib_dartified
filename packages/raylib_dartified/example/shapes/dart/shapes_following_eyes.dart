@@ -1,44 +1,31 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_following_eyes.c
-// Run it: dart run shapes_following_eyes.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 scleraLeftPosition;
+late Vector2 scleraRightPosition;
+double scleraRadius = 80;
+late Vector2 irisLeftPosition;
+late Vector2 irisRightPosition;
+double irisRadius = 24;
+double angle = 0.0;
+double dx = 0.0, dy = 0.0, dxx = 0.0, dyy = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_following_eyes");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_following_eyes");
+    SetTargetFPS(60);
 
-  final Vector2 scleraLeftPosition = .vec2(
-    GetScreenWidth()/2.0 - 100.0,
-    GetScreenHeight()/2.0
-  );
-  final Vector2 scleraRightPosition = .vec2(
-    GetScreenWidth()/2.0 + 100.0,
-    GetScreenHeight()/2.0
-  );
-  double scleraRadius = 80;
-
-  Vector2 irisLeftPosition = .vec2(
-    GetScreenWidth()/2.0 - 100.0,
-    GetScreenHeight()/2.0
-  );
-  Vector2 irisRightPosition = .vec2(
-    GetScreenWidth()/2.0 + 100.0,
-    GetScreenHeight()/2.0
-  );
-  double irisRadius = 24;
-
-  double angle = 0.0;
-  double dx = 0.0, dy = 0.0, dxx = 0.0, dyy = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    scleraLeftPosition = .vec2(GetScreenWidth()/2.0 - 100.0, GetScreenHeight()/2.0);
+    scleraRightPosition = .vec2(GetScreenWidth()/2.0 + 100.0, GetScreenHeight()/2.0);
+    irisLeftPosition = .vec2(GetScreenWidth()/2.0 - 100.0, GetScreenHeight()/2.0);
+    irisRightPosition = .vec2(GetScreenWidth()/2.0 + 100.0, GetScreenHeight()/2.0);
+  },
+  loop: (_) async {
     irisLeftPosition = GetMousePosition();
     irisRightPosition = GetMousePosition();
 
@@ -85,7 +72,8 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

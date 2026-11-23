@@ -1,106 +1,120 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_shadowmap_rendering.c
-// Run it: dart run shaders_shadowmap_rendering.dart
 // WARNING: expects resources from the raylib source
+//
+//
+//
+// WARNING: This example is currently broken in WASM/WebGL2.
+//
+// The root cause is that Raylib's rlLoadTextureDepth() uses GL_DEPTH_COMPONENT
+// (unsized internal format, 0x1902) when creating the depth texture, which is
+// valid in desktop OpenGL but rejected by WebGL2, which requires a sized format
+// such as GL_DEPTH_COMPONENT24 or GL_DEPTH_COMPONENT32F.
+//
+// This results in the depth texture being created with no storage, causing the
+// shadow map FBO to be incomplete or the depth attachment to have no dimensions.
+//
+// Attempts to work around this via JS interop (manually calling texImage2D with
+// GL_DEPTH_COMPONENT24 on the already-allocated texture object) partially work,
+// the FBO reports complete, but WebGL2 then throws a feedback loop error:
+//   "Texture level 0 would be read by TEXTURE_2D unit 1, but written by
+//    framebuffer attachment DEPTH_ATTACHMENT"
+// meaning it considers the depth texture simultaneously attached to the FBO and
+// bound for sampling, even after explicit detach/reattach attempts via
+// framebufferTexture2D and bindFramebuffer.
+//
+// The underlying issue is that rlgl's WASM backend does not expose enough control
+// over framebuffer and texture state to implement shadowmapping correctly, and
+// Raylib's own EndTextureMode() does not fully clean up depth-only FBO state in
+// a way that satisfies WebGL2's feedback loop validation.
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int SHADOWMAP_RESOLUTION = 1024;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Shader shadowShader;
+late Vector3 lightDir;
+late Vector4 lightColor;
+late int lightVPLoc;
+late int shadowMapLoc;
+late Model cube;
+late Model robot;
+late List<ModelAnimation> robotAnimations;
+late RenderTexture shadowMap;
+late Camera3D lightCam;
+int fc = 0;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_shadowmap_rendering");
-  SetTargetFPS(60);
+void updateShaderLightDir() => SetShaderValue(shadowShader, GetShaderLocation(shadowShader, "lightDir"), lightDir.toArray(), .SHADER_UNIFORM_VEC3);
 
-  final cam = Camera3D(
-    position: .vec3(10, 10, 10),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45.0,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_shadowmap_rendering");
+    SetTargetFPS(60);
 
-  final shadowShader = LoadShader(
-    "../resources/shaders/glsl$GLSL_VERSION/shadowmap.vs",
-    "../resources/shaders/glsl$GLSL_VERSION/shadowmap.fs",
-  );
-
-  shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value] =
-    GetShaderLocation(shadowShader, "viewPos");
-
-  Vector3 lightDir = .normalized(0.35, -1.0, -0.35);
-  Vector4 lightColor = .colorNormalize(.WHITE);
-
-  void updateShaderLightDir() {
-    SetShaderValue(shadowShader,
-      GetShaderLocation(shadowShader, "lightDir"),
-      lightDir.toArray(),
-      .SHADER_UNIFORM_VEC3,
+    camera = .new(
+      position: .vec3(10, 10, 10),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45.0,
+      projection: .CAMERA_PERSPECTIVE,
     );
-  } updateShaderLightDir();
 
-  SetShaderValue(shadowShader,
-    GetShaderLocation(shadowShader, "lightColor"),
-    lightColor.toArray(),
-    .SHADER_UNIFORM_VEC4,
-  );
+    shadowShader = LoadShader(
+      "../resources/shaders/glsl${Raylib.glslVersion}/shadowmap.vs",
+      "../resources/shaders/glsl${Raylib.glslVersion}/shadowmap.fs",
+    );
 
-  SetShaderValue(shadowShader,
-    GetShaderLocation(shadowShader, "ambient"),
-    [0.1, 0.1, 0.1, 1.0],
-    .SHADER_UNIFORM_VEC4,
-  );
-  
-  int lightVPLoc = GetShaderLocation(shadowShader, "lightVP");
-  int shadowMapLoc = GetShaderLocation(shadowShader, "shadowMap");
-  SetShaderValue(shadowShader,
-    GetShaderLocation(shadowShader, "shadowMapResolution"),
-    [SHADOWMAP_RESOLUTION],
-    .SHADER_UNIFORM_INT,
-  );
+    shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value]
+      = GetShaderLocation(shadowShader, "viewPos");
 
-  final cube = LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
+    lightDir = .normalized(0.35, -1.0, -0.35);
+    lightColor = .colorNormalize(.WHITE);
 
-  cube.materials[0].shader = shadowShader;
-  
-  final robot = LoadModel("../resources/models/robot.glb");
+    updateShaderLightDir();
 
-  for (int i = 0; i < robot.materialCount; i++)
-  {
-    robot.materials[i].shader = shadowShader;
-  }
+    SetShaderValue(shadowShader, GetShaderLocation(shadowShader, "lightColor"), lightColor.toArray(), .SHADER_UNIFORM_VEC4);
+    SetShaderValue(shadowShader, GetShaderLocation(shadowShader, "ambient"), [0.1, 0.1, 0.1, 1.0], .SHADER_UNIFORM_VEC4);
+    
+    lightVPLoc = GetShaderLocation(shadowShader, "lightVP");
+    shadowMapLoc = GetShaderLocation(shadowShader, "shadowMap");
+    SetShaderValue(shadowShader, GetShaderLocation(shadowShader, "shadowMapResolution"), [SHADOWMAP_RESOLUTION], .SHADER_UNIFORM_INT);
 
-  final robotAnimations = LoadModelAnimations("../resources/models/robot.glb");
+    cube = LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
+    cube.materials[0].shader = shadowShader;
+    
+    robot = LoadModel("../resources/models/robot.glb");
 
-  final shadowMap = LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
+    for (int i = 0; i < robot.materialCount; i++)
+    {
+      robot.materials[i].shader = shadowShader;
+    }
 
-  final lightCam = Camera3D(
-    position: lightDir.scale(-15.0),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 20.0,
-    projection: .CAMERA_ORTHOGRAPHIC,
-  );
+    robotAnimations = LoadModelAnimations("../resources/models/robot.glb");
 
-  int fc = 0;
+    shadowMap = LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
 
-  while (!WindowShouldClose())
-  {
+    lightCam = .new(
+      position: lightDir.scale(-15.0),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 20.0,
+      projection: .CAMERA_ORTHOGRAPHIC,
+    );
+  },
+  loop: (_) async {
     final dt = GetFrameTime();
 
     SetShaderValue(shadowShader,
       shadowShader.locs[ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW.value],
-      cam.position.toArray(),
+      camera.position.toArray(),
       .SHADER_UNIFORM_VEC3,
     );
 
-    UpdateCamera(cam, .CAMERA_ORBITAL);
+    UpdateCamera(camera, .CAMERA_ORBITAL);
 
     fc++;
     fc %= (robotAnimations[0].keyframeCount);
@@ -162,7 +176,7 @@ void main()
         1
       );
 
-      BeginMode3D(cam);
+      BeginMode3D(camera);
         DrawScene(cube, robot);
       EndMode3D();
 
@@ -181,16 +195,16 @@ void main()
     {
       TakeScreenshot("shaders_shadowmap_rendering.png");
     }
-  }
-
-  UnloadShader(shadowShader);
-  UnloadModel(cube);
-  UnloadModel(robot);
-  UnloadModelAnimations(robotAnimations);
-  UnloadShadowmapRenderTexture(shadowMap);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shadowShader);
+    UnloadModel(cube);
+    UnloadModel(robot);
+    UnloadModelAnimations(robotAnimations);
+    UnloadShadowmapRenderTexture(shadowMap);
+    CloseWindow();
+  },
+);
 
 RenderTexture LoadShadowmapRenderTexture(
   int width,
@@ -245,29 +259,8 @@ void UnloadShadowmapRenderTexture(RenderTexture target)
 
 void DrawScene(Model cube, Model robot)
 {
-  DrawModelEx(
-    cube,
-    .vec3(0.0, 0.0, 0.0),
-    .vec3(0.0, 1.0, 0.0),
-    0.0,
-    .vec3(10.0, 1.0, 10.0),
-    .BLUE
-  );
-
-  DrawModelEx(
-    cube,
-    .vec3(1.5, 1.0, -1.5),
-    .vec3(0.0, 1.0, 0.0),
-    0.0,
-    .vec3(1.0, 1.0, 1.0),
-    .WHITE
-  );
-  DrawModelEx(
-    robot,
-    .vec3(0.0, 0.5, 0.0),
-    .vec3(0.0, 1.0, 0.0),
-    0.0,
-    .vec3(1.0, 1.0, 1.0),
-    .RED
-  );
+  DrawModelEx(cube, .vec3(0.0, 0.0, 0.0), .vec3(0.0, 1.0, 0.0), 0.0, .vec3(10.0, 1.0, 10.0), .BLUE);
+  DrawModelEx(cube, .vec3(1.5, 1.0, -1.5), .vec3(0.0, 1.0, 0.0), 0.0, .vec3(1.0, 1.0, 1.0), .WHITE);
+  DrawModelEx(robot, .vec3(0.0, 0.5, 0.0), .vec3(0.0, 1.0, 0.0), 0.0, .vec3(1.0, 1.0, 1.0), .RED);
 }
+

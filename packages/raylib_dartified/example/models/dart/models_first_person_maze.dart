@@ -1,45 +1,50 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_first_person_maze.c
-// Run it: dart run models_first_person_maze.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector3 mapPosition;
+late Vector3 oldCamPos;
+late Camera3D camera;
+late Texture cubicmap;
+late Mesh mesh;
+late Model model;
+late Texture texture;
+late List<Color> mapPixels;
 
-  InitWindow(screenWidth, screenHeight, "models_first_person_maze");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_first_person_maze");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final Vector3 mapPosition = .vec3(-16.0, 0.0, -8.0);
-  Vector3 oldCamPos = .zero();
+    mapPosition = .vec3(-16.0, 0.0, -8.0);
+    oldCamPos = .zero();
 
-  final camera = Camera3D(
-    position: .vec3(0.2, 0.4, 0.2),
-    target: .vec3(0.185, 0.4, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(0.2, 0.4, 0.2),
+      target: .vec3(0.185, 0.4, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final imMap = LoadImage("../resources/cubicmap.png");
-  final cubicmap = LoadTextureFromImage(imMap);
+    final imMap = LoadImage("../resources/cubicmap.png");
+    cubicmap = LoadTextureFromImage(imMap);
 
-  final mesh = GenMeshCubicmap(imMap, .vec3(1.0, 1.0, 1.0));
-  final model = LoadModelFromMesh(mesh); 
+    mesh = GenMeshCubicmap(imMap, .vec3(1.0, 1.0, 1.0));
+    model = LoadModelFromMesh(mesh); 
 
-  final texture = LoadTexture("../resources/cubicmap_atlas.png");
-  model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
+    texture = LoadTexture("../resources/cubicmap_atlas.png");
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
 
-  final mapPixels = LoadImageColors(imMap);
-  UnloadImage(imMap);
-
-  while (!WindowShouldClose())
-  {
+    mapPixels = LoadImageColors(imMap);
+    UnloadImage(imMap);
+  },
+  loop: (_) async {
     oldCamPos = camera.position.copy();
 
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
@@ -103,11 +108,11 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadTexture(cubicmap);
-  UnloadTexture(texture);
-  UnloadModel(model);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(cubicmap);
+    UnloadTexture(texture);
+    UnloadModel(model);
+    CloseWindow();
+  },
+);

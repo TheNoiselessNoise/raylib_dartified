@@ -1,48 +1,52 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_basic_voxel.c
-// Run it: dart run models_basic_voxel.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int WORLD_SIZE = 8;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Mesh cubeMesh;
+late Model cubeModel;
+late List<List<List<bool>>> voxels;
+late Vector2 screenCenter;
+late BoundingBox voxelBB;
+late Vector3 modelPosition;
 
-  InitWindow(screenWidth, screenHeight, "models_basic_voxel");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_basic_voxel");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(-2, 0, -2),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(-2, 0, -2),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final cubeMesh = GenMeshCube(1, 1, 1);
-  final cubeModel = LoadModelFromMesh(cubeMesh);
-  cubeModel.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].color = .BEIGE;
+    cubeMesh = GenMeshCube(1, 1, 1);
+    cubeModel = LoadModelFromMesh(cubeMesh);
+    cubeModel.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].color = .BEIGE;
 
-  final List<List<List<bool>>> voxels = .generate(WORLD_SIZE, (_) {
-    return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
-  });
+    voxels = .generate(WORLD_SIZE, (_) {
+      return .generate(WORLD_SIZE, (_) => .filled(WORLD_SIZE, true));
+    });
 
-  final Vector2 screenCenter = .vec2(screenWidth/2, screenHeight/2);
-  final BoundingBox voxelBB = .zero();
-  final Vector3 modelPosition = .zero();
-
-  while (!WindowShouldClose())
-  {
+    screenCenter = .vec2(screenWidth/2, screenHeight/2);
+    voxelBB = .zero();
+    modelPosition = .zero();
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FIRST_PERSON);
 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_LEFT)) {
       final ray = GetScreenToWorldRay(screenCenter, camera);
 
-      // NOTE: not in original source, i am removing the closest voxel
+      // NOTE: not in original example, i am removing the closest voxel
       double? closestDistance;
       int? removeX, removeY, removeZ;
 
@@ -103,9 +107,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModel(cubeModel);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(cubeModel);
+    CloseWindow();
+  },
+);

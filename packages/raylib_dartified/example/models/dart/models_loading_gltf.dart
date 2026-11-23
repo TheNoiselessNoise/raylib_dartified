@@ -1,36 +1,34 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_loading_gltf.c
-// Run it: dart run models_loading_gltf.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+int animIndex = 0;
+int animCurrentFrame = 0;
+late List<ModelAnimation> modelAnimations;
 
-  InitWindow(screenWidth, screenHeight, "models_loading_gltf");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_loading_gltf");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(6, 6, 6),
-    target: .vec3(0, 2, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(6, 6, 6),
+      target: .vec3(0, 2, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/gltf/robot.glb");
-  
-  int animIndex = 0;
-  int animCurrentFrame = 0;
-  final modelAnimations = LoadModelAnimations("../resources/models/gltf/robot.glb");
-
-  while (!WindowShouldClose())
-  {
-
+    model = LoadModel("../resources/models/gltf/robot.glb");
+    modelAnimations = LoadModelAnimations("../resources/models/gltf/robot.glb");
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     if (IsMouseButtonPressed(.MOUSE_BUTTON_RIGHT))
@@ -61,9 +59,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModel(model);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModel(model);
+    CloseWindow();
+  },
+);

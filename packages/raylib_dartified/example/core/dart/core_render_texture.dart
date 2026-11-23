@@ -1,28 +1,28 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_render_texture.c
-// Run it: dart run core_render_texture.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int renderTextureWidth = 300;
+int renderTextureHeight = 300;
+late RenderTexture target;
+late Vector2 ballPosition;
+late Vector2 ballSpeed;
+int ballRadius = 20;
+double rotation = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "core_render_texture");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_render_texture");
+    SetTargetFPS(60);
 
-  int renderTextureWidth = 300;
-  int renderTextureHeight = 300;
-  final target = LoadRenderTexture(renderTextureWidth, renderTextureHeight);
-
-  final Vector2 ballPosition = .vec2(renderTextureWidth/2.0, renderTextureHeight/2.0);
-  final Vector2 ballSpeed = .vec2(5.0, 4.0);
-  int ballRadius = 20;
-
-  double rotation = 0.0;
-
-  while (!WindowShouldClose()) {
+    target = LoadRenderTexture(renderTextureWidth, renderTextureHeight);
+    ballPosition = .vec2(renderTextureWidth/2.0, renderTextureHeight/2.0);
+    ballSpeed = .vec2(5.0, 4.0);
+  },
+  loop: (_) async {
     ballPosition.x += ballSpeed.x;
     ballPosition.y += ballSpeed.y;
 
@@ -58,7 +58,8 @@ void main() {
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

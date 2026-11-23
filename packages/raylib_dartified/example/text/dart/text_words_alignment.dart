@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_words_alignment.c
-// Run it: dart run text_words_alignment.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -42,32 +41,30 @@ enum TextAlignmentH {
   };
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int wordIndex = 0;
+int fontSize = 40;
+late Rectangle textContainerRect;
+late List<String> words;
+late Font font;
+TextAlignmentH hAlign = .TEXT_ALIGN_CENTRE;
+TextAlignmentV vAlign = .TEXT_ALIGN_MIDDLE;
 
-  InitWindow(screenWidth, screenHeight, "text_words_alignment");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_words_alignment");
+    SetTargetFPS(60);
 
-  final Rectangle textContainerRect = .rect(
-    screenWidth/2-screenWidth/4,
-    screenHeight/2-screenHeight/3,
-    screenWidth/2,
-    screenHeight*2/3
-  );
+    textContainerRect = .rect(
+      screenWidth/2-screenWidth/4,
+      screenHeight/2-screenHeight/3,
+      screenWidth/2,
+      screenHeight*2/3
+    );
 
-  int wordIndex = 0;
-  final words = TextSplit("raylib is a simple and easy-to-use library to enjoy videogames programming", ' ');
-
-  int fontSize = 40;
-
-  final font = GetFontDefault();
-
-  TextAlignmentH hAlign = .TEXT_ALIGN_CENTRE;
-  TextAlignmentV vAlign = .TEXT_ALIGN_MIDDLE;
-
-  while (!WindowShouldClose())
-  {
+    words = TextSplit("raylib is a simple and easy-to-use library to enjoy videogames programming", ' ');
+    font = GetFontDefault();
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_LEFT)) hAlign = hAlign.prev;
     if (IsKeyPressed(.KEY_RIGHT)) hAlign = hAlign.next;
     if (IsKeyPressed(.KEY_UP)) vAlign = vAlign.prev;
@@ -100,7 +97,8 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,32 +1,30 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_sprite_animation.c
-// Run it: dart run textures_sprite_animation.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_FRAME_SPEED = 15;
 const int MIN_FRAME_SPEED = 1;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture scarfy;
+late Vector2 position;
+late Rectangle frameRec;
+int currentFrame = 0;
+int framesCounter = 0;
+int framesSpeed = 8;
 
-  InitWindow(screenWidth, screenHeight, "textures_sprite_animation");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_sprite_animation");
+    SetTargetFPS(60);
 
-  final scarfy = LoadTexture("../resources/scarfy.png");
-
-  final Vector2 position = .vec2(350.0, 280.0);
-  final Rectangle frameRec = .rect(0.0, 0.0, scarfy.width/6, scarfy.height);
-  int currentFrame = 0;
-
-  int framesCounter = 0;
-  int framesSpeed = 8;
-
-  while (!WindowShouldClose())
-  {
+    scarfy = LoadTexture("../resources/scarfy.png");
+    position = .vec2(350.0, 280.0);
+    frameRec = .rect(0.0, 0.0, scarfy.width/6, scarfy.height);
+  },
+  loop: (_) async {
     framesCounter++;
 
     if (framesCounter >= (60/framesSpeed))
@@ -90,9 +88,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(scarfy);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(scarfy);
+    CloseWindow();
+  },
+);

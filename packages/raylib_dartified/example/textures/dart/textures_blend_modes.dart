@@ -1,33 +1,30 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_blend_modes.c
-// Run it: dart run textures_blend_modes.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Texture bgTexture;
+late Texture fgTexture;
+int blendCountMax = 5;
+BlendMode blendMode = .BLEND_ALPHA;
 
-  InitWindow(screenWidth, screenHeight, "textures_blend_modes");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_blend_modes");
+    SetTargetFPS(60);
 
-  final bgImage = LoadImage("../resources/cyberpunk_street_background.png");
-  final bgTexture = LoadTextureFromImage(bgImage);
+    final bgImage = LoadImage("../resources/cyberpunk_street_background.png");
+    bgTexture = LoadTextureFromImage(bgImage);
+    UnloadImage(bgImage);
 
-  final fgImage = LoadImage("../resources/cyberpunk_street_foreground.png");
-  final fgTexture = LoadTextureFromImage(fgImage);
-  
-  UnloadImage(bgImage);
-  UnloadImage(fgImage);
-
-  int blendCountMax = 5;
-  BlendMode blendMode = .BLEND_ALPHA;
-
-  while (!WindowShouldClose())
-  {
+    final fgImage = LoadImage("../resources/cyberpunk_street_foreground.png");
+    fgTexture = LoadTextureFromImage(fgImage);
+    UnloadImage(fgImage);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_SPACE))
     {
       if (blendMode.value >= (blendCountMax - 1)) blendMode = .BLEND_ALPHA;
@@ -70,10 +67,10 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadTexture(fgTexture);
-  UnloadTexture(bgTexture);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadTexture(fgTexture);
+    UnloadTexture(bgTexture);
+    CloseWindow();
+  },
+);

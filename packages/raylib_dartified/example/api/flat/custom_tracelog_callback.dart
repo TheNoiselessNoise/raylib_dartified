@@ -1,25 +1,27 @@
-// Run it: dart run custom_tracelog_callback.dart
-import '../../base_flat.dart';
+import '../../_example/flat.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late TraceLogCallback traceLogCallback;
 
-  InitWindow(screenWidth, screenHeight, 'custom_tracelog_callback'.toC);
+void main() => runExampleNoLoop(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, 'custom_tracelog_callback'.toC);
 
-  final TraceLogCallback traceLogCallback = .function((logLevel, text, args) {
-    // args intentionally unused - see LIMITATIONS.md
-    print('${TraceLogLevel.fromValue(logLevel).name}: ${text.toDartString()}');
-  });
-  SetTraceLogCallback(traceLogCallback.nativeFunction);
+    traceLogCallback = .function((logLevel, text, args) {
+      final levelName = TraceLogLevel.fromValue(logLevel).name;
+      final formatted = XVaList.format(text, args);
+      print('$levelName: $formatted');
+    });
 
-  TraceLog(TraceLogLevel.LOG_INFO.value, "Hello".toC);
-  TraceLog(TraceLogLevel.LOG_INFO.value, "World".toC);
-  
-  CloseWindowAndDispose();
+    SetTraceLogCallback(traceLogCallback.nativeFunction);
 
-  traceLogCallback.dispose();
-}
+    TraceLog(TraceLogLevel.LOG_INFO.value, "Hello".toC);
+    TraceLog(TraceLogLevel.LOG_INFO.value, "World".toC);
+  },
+  close: (_) {
+    CloseWindow();
+    traceLogCallback.dispose();
+  },
+);

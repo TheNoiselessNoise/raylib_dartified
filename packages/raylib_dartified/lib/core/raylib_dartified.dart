@@ -1,79 +1,124 @@
 library;
 
-import 'dart:convert';
-import 'dart:io';
-import 'dart:ffi';
+import 'dart:async';
+import 'dart:collection';
+import 'dart:math' as math;
 import 'dart:typed_data';
-import 'package:ffi/ffi.dart' as ffi;
-import 'package:path/path.dart' as path;
-import 'package:logging/logging.dart';
-import 'package:raylib_dartified_base/raylib_dartified_base.dart';
-import 'package:raylib_dartified_base/abbr/allocators.dart';
-import 'package:xffi_native/xffi_native.dart';
+import 'package:meta/meta.dart' show nonVirtual;
+import 'package:raylib_dartified/api/allocators.dart';
+import 'package:raylib_dartified/backend/api.dart';
+export 'package:xffi_core/xffi_core.dart' hide bootMemoryBackend;
 
+part 'base.dart';
+part 'callback.dart';
 part 'ext.dart';
-part 'lib.dart';
 
 // ===== EXTENSIONS =====
-part 'extensions/ffi/raymath/matrix/extension.dart';
-part 'extensions/flat/raymath/matrix/extension.dart';
+part 'extensions/ease/extension_dart.dart';
 
-part 'extensions/ffi/raymath/quaternion/extension.dart';
-part 'extensions/flat/raymath/quaternion/extension.dart';
+part 'extensions/raymath/matrix/extension_dart.dart';
+part 'extensions/raymath/matrix/extension_flat.dart';
 
-part 'extensions/ffi/raymath/vector2/extension.dart';
-part 'extensions/flat/raymath/vector2/extension.dart';
+part 'extensions/raymath/quaternion/extension_dart.dart';
+part 'extensions/raymath/quaternion/extension_flat.dart';
 
-part 'extensions/ffi/raymath/vector3/extension.dart';
-part 'extensions/flat/raymath/vector3/extension.dart';
+part 'extensions/raymath/vector2/extension_dart.dart';
+part 'extensions/raymath/vector2/extension_flat.dart';
 
-part 'extensions/ffi/raymath/vector4/extension.dart';
-part 'extensions/flat/raymath/vector4/extension.dart';
+part 'extensions/raymath/vector3/extension_dart.dart';
+part 'extensions/raymath/vector3/extension_flat.dart';
+
+part 'extensions/raymath/vector4/extension_dart.dart';
+part 'extensions/raymath/vector4/extension_flat.dart';
 
 // ===== AUDIO MODULE =====
-part 'modules/ffi/audio/module.dart';
-part 'modules/ffi/audio/types.dart';
-
-part 'modules/flat/audio/callbacks.dart';
-part 'modules/flat/audio/module.dart';
-part 'modules/flat/audio/types.dart';
+part 'modules/audio/callbacks.dart';
+part 'modules/audio/capture_ids.dart';
+part 'modules/audio/enums.dart';
+part 'modules/audio/module_dart.dart';
+part 'modules/audio/module_flat.dart';
+part 'modules/audio/structs/audio_stream.dart';
+part 'modules/audio/structs/music.dart';
+part 'modules/audio/structs/sound.dart';
+part 'modules/audio/structs/wave.dart';
 
 // ===== CAMERA MODULE =====
-part 'modules/ffi/camera/module.dart';
-
-part 'modules/flat/camera/module.dart';
+part 'modules/camera/module_dart.dart';
+part 'modules/camera/module_flat.dart';
 
 // ===== CORE MODULE =====
-part 'modules/ffi/core/module.dart';
-part 'modules/ffi/core/types.dart';
-
-part 'modules/flat/core/callbacks.dart';
-part 'modules/flat/core/module.dart';
-part 'modules/flat/core/types.dart';
+part 'modules/core/callbacks.dart';
+part 'modules/core/capture_ids.dart';
+part 'modules/core/consts.dart';
+part 'modules/core/enums.dart';
+part 'modules/core/extra.dart';
+part 'modules/core/module_dart.dart';
+part 'modules/core/module_flat.dart';
+part 'modules/core/structs/automation_event_list.dart';
+part 'modules/core/structs/automation_event.dart';
+part 'modules/core/structs/bone_info.dart';
+part 'modules/core/structs/bounding_box.dart';
+part 'modules/core/structs/camera_2d.dart';
+part 'modules/core/structs/camera_3d.dart';
+part 'modules/core/structs/color.dart';
+part 'modules/core/structs/file_path_list.dart';
+part 'modules/core/structs/float3.dart';
+part 'modules/core/structs/float16.dart';
+part 'modules/core/structs/font.dart';
+part 'modules/core/structs/gesture_event.dart';
+part 'modules/core/structs/glyph_info.dart';
+part 'modules/core/structs/image.dart';
+part 'modules/core/structs/material_map.dart';
+part 'modules/core/structs/material.dart';
+part 'modules/core/structs/matrix.dart';
+part 'modules/core/structs/mesh.dart';
+part 'modules/core/structs/model_animation.dart';
+part 'modules/core/structs/model_skeleton.dart';
+part 'modules/core/structs/model.dart';
+part 'modules/core/structs/n_patch_info.dart';
+part 'modules/core/structs/quaternion.dart';
+part 'modules/core/structs/ray_collision.dart';
+part 'modules/core/structs/ray.dart';
+part 'modules/core/structs/rectangle.dart';
+part 'modules/core/structs/render_texture.dart';
+part 'modules/core/structs/shader.dart';
+part 'modules/core/structs/texture.dart';
+part 'modules/core/structs/transform.dart';
+part 'modules/core/structs/vector2.dart';
+part 'modules/core/structs/vector3.dart';
+part 'modules/core/structs/vector4.dart';
+part 'modules/core/structs/vr_device_info.dart';
+part 'modules/core/structs/vr_stereo_config.dart';
 
 // ===== GUI MODULE =====
-part 'modules/ffi/gui/module.dart';
-
-part 'modules/flat/gui/module.dart';
+part 'modules/gui/capture_ids.dart';
+part 'modules/gui/consts.dart';
+part 'modules/gui/enums.dart';
+part 'modules/gui/module_dart.dart';
+part 'modules/gui/module_flat.dart';
 
 // ===== LIGHT MODULE =====
-part 'modules/ffi/light/module.dart';
-part 'modules/ffi/light/types.dart';
-
-part 'modules/flat/light/module.dart';
-part 'modules/flat/light/types.dart';
+part 'modules/light/capture_ids.dart';
+part 'modules/light/enums.dart';
+part 'modules/light/consts.dart';
+part 'modules/light/module_dart.dart';
+part 'modules/light/module_flat.dart';
+part 'modules/light/structs/light.dart';
 
 // ===== MSF_GIF MODULE =====
-part 'modules/ffi/msf_gif/module.dart';
-part 'modules/ffi/msf_gif/types.dart';
-
-part 'modules/flat/msf_gif/callbacks.dart';
-part 'modules/flat/msf_gif/module.dart';
-part 'modules/flat/msf_gif/types.dart';
+part 'modules/msf_gif/callbacks.dart';
+part 'modules/msf_gif/capture_ids.dart';
+part 'modules/msf_gif/module_dart.dart';
+part 'modules/msf_gif/module_flat.dart';
+part 'modules/msf_gif/structs/msf_gif_result.dart';
+part 'modules/msf_gif/structs/msf_gif_state.dart';
 
 // ===== RLGL MODULE =====
-part 'modules/ffi/rlgl/module.dart';
-part 'modules/ffi/rlgl/types.dart';
-
-part 'modules/flat/rlgl/module.dart';
-part 'modules/flat/rlgl/types.dart';
+part 'modules/rlgl/capture_ids.dart';
+part 'modules/rlgl/consts.dart';
+part 'modules/rlgl/enums.dart';
+part 'modules/rlgl/module_dart.dart';
+part 'modules/rlgl/module_flat.dart';
+part 'modules/rlgl/structs/rl_draw_call.dart';
+part 'modules/rlgl/structs/rl_render_batch.dart';
+part 'modules/rlgl/structs/rl_vertex_buffer.dart';

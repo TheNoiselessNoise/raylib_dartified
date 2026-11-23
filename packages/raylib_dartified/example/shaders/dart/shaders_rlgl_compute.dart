@@ -1,9 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/others/shaders_rlgl_compute.c
-// Run it: dart run shaders_rlgl_compute.dart
 // WARNING: expects resources from the raylib source
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -35,66 +34,57 @@ final class GolUpdateSSBO {
   List<int> get data => [count, ...commands.expand((c) => c.data)];
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 resolution;
+int brushSize = 8;
+late int golLogicProgram;
+late Shader golRenderShader;
+late int resUniformLoc;
+late int golTransfertProgram;
+late int ssboA;
+late int ssboB;
+late GolUpdateSSBO transfertBuffer;
+late int ssboTransfert;
+late Texture whiteTex;
 
-  InitWindow(screenWidth, screenHeight, "shaders_rlgl_compute");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_rlgl_compute");
+    SetTargetFPS(60);
 
-  final Vector2 resolution = .vec2(GOL_WIDTH, GOL_WIDTH);
-  int brushSize = 8;
+    resolution = .vec2(GOL_WIDTH, GOL_WIDTH);
 
-  final golLogicCode = LoadFileText("../resources/shaders/glsl430/gol.glsl");
-  final golLogicShader = rlLoadShader(golLogicCode, .RL_COMPUTE_SHADER);
-  final golLogicProgram = rlLoadShaderProgramCompute(golLogicShader);
+    final golLogicCode = LoadFileText("../resources/shaders/glsl430/gol.glsl");
+    final golLogicShader = rlLoadShader(golLogicCode, .RL_COMPUTE_SHADER);
+    golLogicProgram = rlLoadShaderProgramCompute(golLogicShader);
 
-  final golRenderShader = LoadShader(
-    null,
-    "../resources/shaders/glsl430/gol_render.glsl",
-  );
-  int resUniformLoc = GetShaderLocation(golRenderShader, "resolution");
+    golRenderShader = LoadShader(
+      null,
+      "../resources/shaders/glsl430/gol_render.glsl",
+    );
+    resUniformLoc = GetShaderLocation(golRenderShader, "resolution");
 
-  final golTransfertCode = LoadFileText("../resources/shaders/glsl430/gol_transfert.glsl");
-  final golTransfertShader = rlLoadShader(golTransfertCode, .RL_COMPUTE_SHADER);
-  final golTransfertProgram = rlLoadShaderProgramCompute(golTransfertShader);
+    final golTransfertCode = LoadFileText("../resources/shaders/glsl430/gol_transfert.glsl");
+    final golTransfertShader = rlLoadShader(golTransfertCode, .RL_COMPUTE_SHADER);
+    golTransfertProgram = rlLoadShaderProgramCompute(golTransfertShader);
 
-  int ssboA = rlLoadShaderBuffer(
-    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
-    null,
-    .RL_DYNAMIC_COPY
-  );
-  int ssboB = rlLoadShaderBuffer(
-    UnsignedInt$.Size(GOL_WIDTH*GOL_WIDTH),
-    null,
-    .RL_DYNAMIC_COPY
-  );
+    ssboA = rlLoadShaderBuffer(XUnsignedInt.size * GOL_WIDTH * GOL_WIDTH, null, .RL_DYNAMIC_COPY);
+    ssboB = rlLoadShaderBuffer(XUnsignedInt.size * GOL_WIDTH * GOL_WIDTH, null, .RL_DYNAMIC_COPY);
 
-  final transfertBuffer = GolUpdateSSBO(
-    .generate(MAX_BUFFERED_TRANSFERTS, (_) => .new())
-  );
+    transfertBuffer = GolUpdateSSBO(.generate(MAX_BUFFERED_TRANSFERTS, (_) => .new()));
 
-  final ssboTransfert = rlLoadShaderBuffer(
-    UnsignedInt$.Size(transfertBuffer.data.length),
-    null,
-    .RL_DYNAMIC_COPY
-  );
+    ssboTransfert = rlLoadShaderBuffer(XUnsignedInt.size * transfertBuffer.data.length, null, .RL_DYNAMIC_COPY);
 
-  final whiteImage = GenImageColor(GOL_WIDTH, GOL_WIDTH, .WHITE);
-  final whiteTex = LoadTextureFromImage(whiteImage);
-  UnloadImage(whiteImage);
-
-  while (!WindowShouldClose())
-  {
+    final whiteImage = GenImageColor(GOL_WIDTH, GOL_WIDTH, .WHITE);
+    whiteTex = LoadTextureFromImage(whiteImage);
+    UnloadImage(whiteImage);
+  },
+  loop: (_) async {
     brushSize += GetMouseWheelMove().toInt();
 
     if (
-      (
-        IsMouseButtonDown(.MOUSE_BUTTON_LEFT) ||
-        IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)
-      )
-      && (transfertBuffer.count < MAX_BUFFERED_TRANSFERTS))
-    {
+      (IsMouseButtonDown(.MOUSE_BUTTON_LEFT) || IsMouseButtonDown(.MOUSE_BUTTON_RIGHT)) &&
+      (transfertBuffer.count < MAX_BUFFERED_TRANSFERTS)
+    ) {
       transfertBuffer.commands[transfertBuffer.count].x = GetMouseX() - brushSize~/2;
       transfertBuffer.commands[transfertBuffer.count].y = GetMouseY() - brushSize~/2;
       transfertBuffer.commands[transfertBuffer.count].w = brushSize;
@@ -152,17 +142,15 @@ void main()
       DrawFPS(GetScreenWidth() - 100, 10);
 
     EndDrawing();
-  }
-
-  rlUnloadShaderBuffer(ssboA);
-  rlUnloadShaderBuffer(ssboB);
-  rlUnloadShaderBuffer(ssboTransfert);
-
-  rlUnloadShaderProgram(golTransfertProgram);
-  rlUnloadShaderProgram(golLogicProgram);
-
-  UnloadTexture(whiteTex);
-  UnloadShader(golRenderShader);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    rlUnloadShaderBuffer(ssboA);
+    rlUnloadShaderBuffer(ssboB);
+    rlUnloadShaderBuffer(ssboTransfert);
+    rlUnloadShaderProgram(golTransfertProgram);
+    rlUnloadShaderProgram(golLogicProgram);
+    UnloadTexture(whiteTex);
+    UnloadShader(golRenderShader);
+    CloseWindow();
+  },
+);

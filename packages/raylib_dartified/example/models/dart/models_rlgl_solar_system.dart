@@ -1,41 +1,37 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_rlgl_solar_system.c
-// Run it: dart run models_rlgl_solar_system.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+const double sunRadius = 4.0;
+const double earthRadius = 0.6;
+const double earthOrbitRadius = 8.0;
+const double moonRadius = 0.16;
+const double moonOrbitRadius = 1.5;
+double rotationSpeed = 0.2;
+double earthRotation = 0.0;
+double earthOrbitRotation = 0.0;
+double moonRotation = 0.0;
+double moonOrbitRotation = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "models_rlgl_solar_system");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_rlgl_solar_system");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(16, 16, 16),
-    target: .vec3(0, 0, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
-
-  const double sunRadius = 4.0;
-  const double earthRadius = 0.6;
-  const double earthOrbitRadius = 8.0;
-  const double moonRadius = 0.16;
-  const double moonOrbitRadius = 1.5;
-
-  double rotationSpeed = 0.2;
-  double earthRotation = 0.0;
-  double earthOrbitRotation = 0.0;
-  double moonRotation = 0.0;
-  double moonOrbitRotation = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    camera = .new(
+      position: .vec3(16, 16, 16),
+      target: .vec3(0, 0, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     earthRotation += (5.0*rotationSpeed);
@@ -91,10 +87,11 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void DrawSphereBasic(Color color) {
   int rings = 16;
@@ -110,30 +107,30 @@ void DrawSphereBasic(Color color) {
       for (int j = 0; j < slices; j++)
       {
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*i))*math.sin(rl.DEG2RAD*(j*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*i)),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*i))*math.cos(rl.DEG2RAD*(j*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*i))*math.sin(DEG2RAD*(j*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*i)),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*i))*math.cos(DEG2RAD*(j*360/slices)));
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(rl.DEG2RAD*((j+1)*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1))),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(rl.DEG2RAD*((j+1)*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(DEG2RAD*((j+1)*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*(i+1))),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(DEG2RAD*((j+1)*360/slices)));
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(rl.DEG2RAD*(j*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1))),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(rl.DEG2RAD*(j*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(DEG2RAD*(j*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*(i+1))),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(DEG2RAD*(j*360/slices)));
 
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*i))*math.sin(rl.DEG2RAD*(j*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*i)),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*i))*math.cos(rl.DEG2RAD*(j*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*i))*math.sin(DEG2RAD*(j*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*i)),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*i))*math.cos(DEG2RAD*(j*360/slices)));
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i)))*math.sin(rl.DEG2RAD*((j+1)*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*(i))),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i)))*math.cos(rl.DEG2RAD*((j+1)*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i)))*math.sin(DEG2RAD*((j+1)*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*(i))),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i)))*math.cos(DEG2RAD*((j+1)*360/slices)));
         rlVertex3f(
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(rl.DEG2RAD*((j+1)*360/slices)),
-          math.sin(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1))),
-          math.cos(rl.DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(rl.DEG2RAD*((j+1)*360/slices)));
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.sin(DEG2RAD*((j+1)*360/slices)),
+          math.sin(DEG2RAD*(270+(180/(rings + 1))*(i+1))),
+          math.cos(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*math.cos(DEG2RAD*((j+1)*360/slices)));
       }
     }
   rlEnd();

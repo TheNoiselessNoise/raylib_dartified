@@ -1,11 +1,10 @@
-// Run it: dart run custom_module_dispose.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-final class MyModule extends RaylibModule<Raylib> {
-  MyModule(super.rl);
+final class MyModule extends XPackageModule<Raylib> {
+  MyModule(super.pkg);
 
   Color background = .RAYWHITE;
   Vector2 position = .zero();
@@ -34,30 +33,33 @@ final class MyModule extends RaylibModule<Raylib> {
   }
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
-  
-  final myModule = registerModule(MyModule(rl));
+late MyModule myModule;
+bool doClose = false;
 
-  XTemp.instance.debugFree(true);
-  // NOTE: with `debugFree` enabled you should see output at the exit:
-  // Freeing user-defined 1 Color slots
-  // [FREE] ColorD_struct_1
-  // Freeing user-defined 1 Vector2 slots
-  // [FREE] Vector2D_struct_1
+void main() => runExample(
+  init: (rl) {
+    myModule = registerModule(MyModule(rl));
 
-  InitWindow(screenWidth, screenHeight, "custom_module_dispose");
-  SetTargetFPS(60);
+    XTemp.instance.debugFree(true);
+    // NOTE: with `debugFree` enabled you should see output at the exit:
+    // Freeing user-defined 2 Vector2 slots
+    // [FREE] @extract:1           explanation: GetMousePosition
+    // [FREE] @ref:1               explanation: position
+    // Freeing user-defined 2 Color slots
+    // [FREE] @ref:1               explanation: BLACK and WHITE
+    // [FREE] @extract:1           explanation: ColorFromHSV
 
-  while (!WindowShouldClose())
-  {
+    InitWindow(screenWidth, screenHeight, "custom_module_dispose");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     myModule.Update();
 
     BeginDrawing();
       myModule.Draw();
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,48 +1,50 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_font_sdf.c
-// Run it: dart run text_font_sdf.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import 'dart:typed_data';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+String msg = "Signed Distance Fields";
+late Uint8List fileData;
+late Font fontDefault;
+late Font fontSDF;
+late Shader shader;
+late Vector2 fontPosition;
+late Vector2 textSize;
+double fontSize = 16.0;
+int currentFont = 0;
 
-  InitWindow(screenWidth, screenHeight, "text_font_sdf");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_font_sdf");
+    SetTargetFPS(60);
 
-  String msg = "Signed Distance Fields";
+    fileData = LoadFileData("../resources/anonymous_pro_bold.ttf");
 
-  final fileData = LoadFileData("../resources/anonymous_pro_bold.ttf");
+    fontDefault = Font(baseSize: 16, glyphCount: 95);
+    fontDefault.glyphs = LoadFontData(fileData, 16, null, 95, .FONT_DEFAULT);
+    var (fontDefaultAtlas, fontDefaultRecs) = GenImageFontAtlas(fontDefault.glyphs, 16, 4, 0);
+    fontDefault.recs = fontDefaultRecs;
+    fontDefault.texture = LoadTextureFromImage(fontDefaultAtlas);
+    UnloadImage(fontDefaultAtlas);
 
-  final fontDefault = Font(baseSize: 16, glyphCount: 95);
-  fontDefault.glyphs = LoadFontData(fileData, 16, null, 95, .FONT_DEFAULT);
-  var (fontDefaultAtlas, fontDefaultRecs) = GenImageFontAtlas(fontDefault.glyphs, 16, 4, 0);
-  fontDefault.recs = fontDefaultRecs;
-  fontDefault.texture = LoadTextureFromImage(fontDefaultAtlas);
-  UnloadImage(fontDefaultAtlas);
+    fontSDF = Font(baseSize: 16, glyphCount: 95);
+    fontSDF.glyphs = LoadFontData(fileData, 16, null, 0, .FONT_SDF);
+    var (fontSDFAtlas, fontSDFRects) = GenImageFontAtlas(fontSDF.glyphs, 16, 0, 1);
+    fontSDF.recs = fontSDFRects;
+    fontSDF.texture = LoadTextureFromImage(fontSDFAtlas);
+    UnloadImage(fontSDFAtlas);
 
-  final fontSDF = Font(baseSize: 16, glyphCount: 95);
-  fontSDF.glyphs = LoadFontData(fileData, 16, null, 0, .FONT_SDF);
-  var (fontSDFAtlas, fontSDFRects) = GenImageFontAtlas(fontSDF.glyphs, 16, 0, 1);
-  fontSDF.recs = fontSDFRects;
-  fontSDF.texture = LoadTextureFromImage(fontSDFAtlas);
-  UnloadImage(fontSDFAtlas);
+    shader = LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/sdf.fs");
+    SetTextureFilter(fontSDF.texture, .TEXTURE_FILTER_BILINEAR);
 
-  final shader = LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/sdf.fs");
-  SetTextureFilter(fontSDF.texture, .TEXTURE_FILTER_BILINEAR);
-
-  final Vector2 fontPosition = .vec2(40, screenHeight/2.0 - 50);
-  Vector2 textSize = .vec2(0.0, 0.0);
-  double fontSize = 16.0;
-  int currentFont = 0;
-
-  while (!WindowShouldClose())
-  {
+    fontPosition = .vec2(40, screenHeight/2.0 - 50);
+    textSize = .vec2(0.0, 0.0);
+  },
+  loop: (_) async {
     fontSize += GetMouseWheelMove()*8.0;
 
     if (fontSize < 6) fontSize = 6;
@@ -98,12 +100,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadFont(fontDefault);
-  UnloadFont(fontSDF);
-
-  UnloadShader(shader);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadFont(fontDefault);
+    UnloadFont(fontSDF);
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

@@ -1,43 +1,43 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_model_shader.c
-// Run it: dart run shaders_model_shader.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model model;
+late Texture texture;
+late Shader shader;
 
-  SetConfigFlags([.FLAG_MSAA_4X_HINT]);
-  InitWindow(screenWidth, screenHeight, "shaders_model_shader");
-  SetTargetFPS(60);
-  DisableCursor();
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_MSAA_4X_HINT]);
+    InitWindow(screenWidth, screenHeight, "shaders_model_shader");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  final camera = Camera3D(
-    position: .vec3(4, 4, 4),
-    target: .vec3(0, 1, -1),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = .new(
+      position: .vec3(4, 4, 4),
+      target: .vec3(0, 1, -1),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final model = LoadModel("../resources/models/watermill.obj");
-  final texture = LoadTexture("../resources/models/watermill_diffuse.png");
+    model = LoadModel("../resources/models/watermill.obj");
+    texture = LoadTexture("../resources/models/watermill_diffuse.png");
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/grayscale.fs",
-  );
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/grayscale.fs",
+    );
 
-  model.materials[0].shader = shader;
-  model.materials[0].maps[rl.MATERIAL_MAP_DIFFUSE.value].texture = texture;
-
-  while (!WindowShouldClose())
-  {
+    model.materials[0].shader = shader;
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE.value].texture = texture;
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_FREE);
 
     BeginDrawing();
@@ -60,11 +60,11 @@ void main()
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  UnloadTexture(texture);
-  UnloadModel(model);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    UnloadTexture(texture);
+    UnloadModel(model);
+    CloseWindow();
+  },
+);

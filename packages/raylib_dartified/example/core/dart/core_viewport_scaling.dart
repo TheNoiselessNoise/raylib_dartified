@@ -1,7 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_viewport_scaling.c
-// Run it: dart run core_viewport_scaling.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
+
+int screenWidth = 800;
+int screenHeight = 450;
 
 enum ViewportType {
   // Only upscale, useful for pixel art
@@ -14,41 +16,52 @@ enum ViewportType {
   KEEP_WIDTH;
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Vector2> resolutionList;
+int resolutionIndex = 0;
+int gameWidth = 64;
+int gameHeight = 64;
+late RenderTexture target;
+late Rectangle sourceRect;
+late Rectangle destRect;
+ViewportType viewportType = .KEEP_ASPECT_INTEGER;
+late Rectangle decreaseResolutionButton;
+late Rectangle increaseResolutionButton;
+late Rectangle decreaseTypeButton;
+late Rectangle increaseTypeButton;
 
-  int screenWidth = 800;
-  int screenHeight = 450;
+void apply((int, int, RenderTexture) values) {
+  final (w, h, t) = values;
+  screenWidth = w;
+  screenHeight = h;
+  target = t;
+}
 
-  SetConfigFlags([.FLAG_WINDOW_RESIZABLE]);
-  InitWindow(screenWidth, screenHeight, "core_viewport_scaling");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_RESIZABLE]);
+    InitWindow(screenWidth, screenHeight, "core_viewport_scaling");
+    SetTargetFPS(60);
 
-  List<Vector2> resolutionList = [
-    .vec2(64, 64),
-    .vec2(256, 240),
-    .vec2(320, 180),
-    .vec2(3840, 2160),
-  ];
+    resolutionList = [
+      .vec2(64, 64),
+      .vec2(256, 240),
+      .vec2(320, 180),
+      .vec2(3840, 2160),
+    ];
 
-  int resolutionIndex = 0;
-  int gameWidth = 64;
-  int gameHeight = 64;
+    target = .zero();
+    sourceRect = .zero();
+    destRect = .zero();
 
-  RenderTexture target = .zero();
-  final Rectangle sourceRect = .zero();
-  final Rectangle destRect = .zero();
+    apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
 
-  ViewportType viewportType = .KEEP_ASPECT_INTEGER;
-  (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
-
-  final Rectangle decreaseResolutionButton = .rect(200, 30, 10, 10);
-  final Rectangle increaseResolutionButton = .rect(215, 30, 10, 10);
-  final Rectangle decreaseTypeButton = .rect(200, 45, 10, 10);
-  final Rectangle increaseTypeButton = .rect(215, 45, 10, 10);
-
-  while (!WindowShouldClose()) {
-    if (IsWindowResized()) (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
+    decreaseResolutionButton = .rect(200, 30, 10, 10);
+    increaseResolutionButton = .rect(215, 30, 10, 10);
+    decreaseTypeButton = .rect(200, 45, 10, 10);
+    increaseTypeButton = .rect(215, 45, 10, 10);
+  },
+  loop: (_) async {
+    if (IsWindowResized()) apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
 
     final mousePosition = GetMousePosition();
     bool mousePressed = IsMouseButtonPressed(.MOUSE_BUTTON_LEFT);
@@ -59,7 +72,7 @@ void main() {
       resolutionIndex = (resolutionIndex + resolutionList.length - 1)%resolutionList.length;
       gameWidth = resolutionList[resolutionIndex].x.toInt();
       gameHeight = resolutionList[resolutionIndex].y.toInt();
-      (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
+      apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
     }
 
     if (CheckCollisionPointRec(mousePosition, increaseResolutionButton) && mousePressed)
@@ -67,19 +80,19 @@ void main() {
       resolutionIndex = (resolutionIndex + 1)%resolutionList.length;
       gameWidth = resolutionList[resolutionIndex].x.toInt();
       gameHeight = resolutionList[resolutionIndex].y.toInt();
-      (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
+      apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
     }
 
     if (CheckCollisionPointRec(mousePosition, decreaseTypeButton) && mousePressed)
     {
       viewportType = ViewportType.values[(viewportType.index + ViewportType.values.length - 1)%ViewportType.values.length];
-      (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
+      apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
     }
 
     if (CheckCollisionPointRec(mousePosition, increaseTypeButton) && mousePressed)
     {
       viewportType = ViewportType.values[(viewportType.index + 1)%ViewportType.values.length];
-      (screenWidth, screenHeight, target) = ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target);
+      apply(ResizeRenderSize(viewportType, gameWidth, gameHeight, sourceRect, destRect, target));
     }
 
     final textureMousePosition = Screen2RenderTexturePosition(mousePosition, sourceRect, destRect);
@@ -119,10 +132,11 @@ void main() {
       DrawText(">", increaseResolutionButton.x + 3, increaseResolutionButton.y + 1, 10, BLACK);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 void KeepAspectCenteredInteger(int screenWidth, int screenHeight, int gameWidth, int gameHeight, Rectangle sourceRect, Rectangle destRect)
 {

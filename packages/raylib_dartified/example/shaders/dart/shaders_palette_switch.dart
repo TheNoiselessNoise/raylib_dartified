@@ -1,10 +1,8 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_palette_switch.c
-// Run it: dart run shaders_palette_switch.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int COLORS_PER_PALETTE = 8;
@@ -42,25 +40,24 @@ const palettes = <String, List<int>>{
   ]
 };
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Shader shader;
+late int paletteLoc;
+int currentPalette = 0;
+int lineHeight = screenHeight~/COLORS_PER_PALETTE;
 
-  InitWindow(screenWidth, screenHeight, "shaders_palette_switch");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_palette_switch");
+    SetTargetFPS(60);
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/palette_switch.fs",
-  );
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/palette_switch.fs",
+    );
 
-  int paletteLoc = GetShaderLocation(shader, "palette");
-
-  int currentPalette = 0;
-  int lineHeight = screenHeight~/COLORS_PER_PALETTE;
-
-  while (!WindowShouldClose())
-  {
+    paletteLoc = GetShaderLocation(shader, "palette");
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_RIGHT)) currentPalette++;
     else if (IsKeyPressed(.KEY_LEFT)) currentPalette--;
 
@@ -95,9 +92,9 @@ void main()
       DrawFPS(700, 15);
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);

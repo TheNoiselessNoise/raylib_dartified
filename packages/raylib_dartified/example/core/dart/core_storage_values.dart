@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_storage_values.c
-// Run it: dart run core_storage_values.dart
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -13,17 +12,16 @@ enum StorageData {
   STORAGE_POSITION_HISCORE
 }
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int score = 0;
+int hiscore = 0;
+int framesCounter = 0;
 
-  InitWindow(screenWidth, screenHeight, "core_storage_values");
-  SetTargetFPS(60);
-
-  int score = 0;
-  int hiscore = 0;
-  int framesCounter = 0;
-
-  while (!WindowShouldClose()) {
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_storage_values");
+    SetTargetFPS(60);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_R))
     {
       score = GetRandomValue(1000, 2000);
@@ -57,21 +55,20 @@ void main() {
       DrawText("Press SPACE to LOAD values", 252, 350, 20, LIGHTGRAY);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
-
-const int _intSize = 4;
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);
 
 bool SaveStorageValue(StorageData position, int value) {
   Uint8List fileData;
   try {
     fileData = LoadFileData(STORAGE_DATA_FILE);
   } catch (_) {
-    final newFileData = Uint8List((position.index + 1) * _intSize);
+    final newFileData = Uint8List((position.index + 1) * XInt32.size);
     ByteData.sublistView(newFileData).setInt32(
-      position.index * _intSize,
+      position.index * XInt32.size,
       value,
       Endian.host,
     );
@@ -82,17 +79,17 @@ bool SaveStorageValue(StorageData position, int value) {
     return success;
   }
 
-  final requiredSize = (position.index + 1) * _intSize;
+  final requiredSize = (position.index + 1) * XInt32.size;
   Uint8List newFileData;
 
-  if (fileData.length <= position.index * _intSize) {
+  if (fileData.length <= position.index * XInt32.size) {
     newFileData = Uint8List(requiredSize)..setRange(0, fileData.length, fileData);
   } else {
     newFileData = fileData;
   }
 
   ByteData.sublistView(newFileData).setInt32(
-    position.index * _intSize,
+    position.index * XInt32.size,
     value,
     Endian.host,
   );

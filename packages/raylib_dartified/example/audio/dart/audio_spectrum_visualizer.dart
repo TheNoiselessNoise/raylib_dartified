@@ -1,10 +1,9 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/audio/audio_spectrum_visualizer.c
-// Run it: dart run audio_spectrum_visualizer.dart
 // WARNING: expects resources from the raylib source
 import 'dart:math' as math;
 import 'dart:typed_data';
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int    MONO                          = 1;
 const int    SAMPLE_RATE                   = 44100;
@@ -54,59 +53,67 @@ final class FFTData {
   });
 }
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Image fftImage;
+late Texture fftTexture;
+late RenderTexture bufferA;
+late Vector2 iResolution;
+late Shader shader;
+late int iResolutionLocation;
+late int iChannel0Location;
+late Wave wave;
+late AudioStream audioStream;
+late FFTData fft;
+int wavCursor = 0;
+late Int16List wavPCM16;
+late List<int> chunkSamples;
+late List<double> audioSamples;
 
-  InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "audio_spectrum_visualizer");
+    InitAudioDevice();
+    SetAudioStreamBufferSizeDefault(AUDIO_STREAM_RING_BUFFER_SIZE);
+    SetTargetFPS(60);
 
-  final fftImage = GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, .WHITE);
-  final fftTexture = LoadTextureFromImage(fftImage);
-  final bufferA = LoadRenderTexture(screenWidth, screenHeight);
-  final Vector2 iResolution = .vec2(screenWidth, screenHeight);
+    fftImage = GenImageColor(BUFFER_SIZE, TEXTURE_HEIGHT, .WHITE);
+    fftTexture = LoadTextureFromImage(fftImage);
+    bufferA = LoadRenderTexture(screenWidth, screenHeight);
+    iResolution = .vec2(screenWidth, screenHeight);
 
-  final shader = LoadShader(null, "../resources/shaders/glsl$GLSL_VERSION/fft.fs");
+    shader = LoadShader(null, "../resources/shaders/glsl${Raylib.glslVersion}/fft.fs");
 
-  int iResolutionLocation = GetShaderLocation(shader, "iResolution");
-  int iChannel0Location = GetShaderLocation(shader, "iChannel0");
-  SetShaderValue(shader, iResolutionLocation, iResolution.toArray(), .SHADER_UNIFORM_VEC2);
-  SetShaderValueTexture(shader, iChannel0Location, fftTexture);
+    iResolutionLocation = GetShaderLocation(shader, "iResolution");
+    iChannel0Location = GetShaderLocation(shader, "iChannel0");
+    SetShaderValue(shader, iResolutionLocation, iResolution.toArray(), .SHADER_UNIFORM_VEC2);
+    SetShaderValueTexture(shader, iChannel0Location, fftTexture);
 
-  InitAudioDevice();
-  SetAudioStreamBufferSizeDefault(AUDIO_STREAM_RING_BUFFER_SIZE);
+    wave = LoadWave("../resources/country.mp3");
+    WaveFormat(wave, SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
 
-  final wave = LoadWave("../resources/country.mp3");
-  WaveFormat(wave, SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
+    audioStream = LoadAudioStream(SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
+    PlayAudioStream(audioStream);
 
-  final audioStream = LoadAudioStream(SAMPLE_RATE, PER_SAMPLE_BIT_DEPTH, MONO);
-  PlayAudioStream(audioStream);
+    int fftHistoryLen = (FFT_HISTORICAL_SMOOTHING_DUR/WINDOW_TIME).ceil() + 1;
 
-  int fftHistoryLen = (FFT_HISTORICAL_SMOOTHING_DUR/WINDOW_TIME).ceil() + 1;
+    fft = .new(
+      spectrum: .generate(FFT_WINDOW_SIZE, (_) => .new()),
+      workBuffer: .generate(FFT_WINDOW_SIZE, (_) => .new()),
+      prevMagnitudes: .filled(BUFFER_SIZE, 0),
+      fftHistory: .generate(fftHistoryLen, (_) => .filled(BUFFER_SIZE, 0)),
+      fftHistoryLen: fftHistoryLen,
+      historyPos: 0,
+      lastFftTime: 0,
+      tapbackPos: 0.01,
+    );
 
-  FFTData fft = FFTData(
-    spectrum: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    workBuffer: .generate(FFT_WINDOW_SIZE, (_) => FFTComplex()),
-    prevMagnitudes: .filled(BUFFER_SIZE, 0),
-    fftHistory: .generate(fftHistoryLen, (_) => .filled(BUFFER_SIZE, 0)),
-    fftHistoryLen: fftHistoryLen,
-    historyPos: 0,
-    lastFftTime: 0,
-    tapbackPos: 0.01,
-  );
-
-  int wavCursor = 0;
-  final wavPCM16 = wave.dataBuffer.asInt16List(); // short
-
-  final List<int> chunkSamples = .filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
-  final List<double> audioSamples = .filled(FFT_WINDOW_SIZE, 0);
-
-  while (!WindowShouldClose())
-  {
+    wavPCM16 = wave.dataBuffer.asInt16List(); // short
+    chunkSamples = .filled(AUDIO_STREAM_RING_BUFFER_SIZE, 0);
+    audioSamples = .filled(FFT_WINDOW_SIZE, 0);
+  },
+  loop: (_) async {
     while (IsAudioStreamProcessed(audioStream)) {
       for (int i = 0; i < AUDIO_STREAM_RING_BUFFER_SIZE; i++) {
         int left = (wave.channels == 2) ? wavPCM16[wavCursor*2 + 0] : wavPCM16[wavCursor];
@@ -143,18 +150,18 @@ void main()
       EndShaderMode();
 
     EndDrawing();
-  }
-
-  UnloadShader(shader);
-  UnloadRenderTexture(bufferA);
-  UnloadTexture(fftTexture);
-  UnloadImage(fftImage);
-  UnloadAudioStream(audioStream);
-  UnloadWave(wave);
-  CloseAudioDevice();
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadShader(shader);
+    UnloadRenderTexture(bufferA);
+    UnloadTexture(fftTexture);
+    UnloadImage(fftImage);
+    UnloadAudioStream(audioStream);
+    UnloadWave(wave);
+    CloseAudioDevice();
+    CloseWindow();
+  },
+);
 
 void CooleyTukeyFFTSlow(List<FFTComplex> spectrum, int n) {
   int j = 0;

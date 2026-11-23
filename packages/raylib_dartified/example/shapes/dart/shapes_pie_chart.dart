@@ -1,60 +1,50 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_pie_chart.c
-// Run it: dart run shapes_pie_chart.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 import 'dart:math' as math;
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 const int MAX_PIE_SLICES = 7;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+double donutInnerRadius = 25;
+int sliceCount = MAX_PIE_SLICES;
+final List<double> sliceValues = [ 300.0, 100.0, 450.0, 350.0, 600.0, 380.0, 750.0 ];
+final List<double> values = List.generate(MAX_PIE_SLICES, (i) => sliceValues[i]);
+final List<String> labels = .generate(MAX_PIE_SLICES, (i) => "Slice $i");
+final List<bool> editingLabel = .generate(MAX_PIE_SLICES, (_) => false);
+bool showValues = true;
+bool showPercentages = false;
+bool showDonut = false;
+int hoveredSlice = -1;
+late Rectangle scrollPanelBounds;
+late Vector2 scrollContentOffset;
+late Rectangle view;
+const int panelWidth = 270;
+const int panelMargin = 5;
+late Vector2 panelPos;
+late Rectangle panelRect;
+late Rectangle canvas;
+late Vector2 center;
+const double radius = 205.0;
+double totalValue = 0.0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_pie_chart");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_pie_chart");
+    SetTargetFPS(60);
 
-  double donutInnerRadius = 25;
-  var sliceCount = MAX_PIE_SLICES;
+    assert(sliceValues.length == MAX_PIE_SLICES);
 
-  final sliceValues = [ 300.0, 100.0, 450.0, 350.0, 600.0, 380.0, 750.0 ];
-  assert(sliceValues.length == MAX_PIE_SLICES);
-  final values = List.generate(MAX_PIE_SLICES, (i) => sliceValues[i]);
-
-  List<String> labels = .generate(MAX_PIE_SLICES, (i) => "Slice $i");
-  List<bool> editingLabel = .generate(MAX_PIE_SLICES, (_) => false);
-
-  var showValues = true;
-  var showPercentages = false;
-  var showDonut = false;
-  
-  int hoveredSlice = -1;
-  final Rectangle scrollPanelBounds = .zero();
-  final Vector2 scrollContentOffset = .zero();
-  final Rectangle view = .zero();
-
-  const int panelWidth = 270;
-  const int panelMargin = 5;
-
-  final Vector2 panelPos = .vec2(
-    screenWidth - panelMargin - panelWidth,
-    panelMargin,
-  );
-
-  final Rectangle panelRect = .rect(
-    panelPos.x, panelPos.y,
-    panelWidth, screenHeight - 2.0*panelMargin
-  );
-
-  final Rectangle canvas = .rect(0, 0, panelPos.x, screenHeight);
-  final Vector2 center = .vec2(canvas.width/2.0, canvas.height/2.0);
-  const double radius = 205.0;
-
-  double totalValue = 0.0;
-
-  while (!WindowShouldClose())
-  {
+    scrollPanelBounds = .zero();
+    scrollContentOffset = .zero();
+    view = .zero();
+    panelPos = .vec2(screenWidth - panelMargin - panelWidth, panelMargin);
+    panelRect = .rect(panelPos.x, panelPos.y, panelWidth, screenHeight - 2.0*panelMargin);
+    canvas = .rect(0, 0, panelPos.x, screenHeight);
+    center = .vec2(canvas.width/2.0, canvas.height/2.0);
+  },
+  loop: (_) async {
     totalValue = 0.0;
     for (int i = 0; i < sliceCount; i++) totalValue += values[i];
 
@@ -68,7 +58,7 @@ void main()
 
       if (distance <= radius)
       {
-        double angle = math.atan2(dy, dx)*rl.RAD2DEG;
+        double angle = math.atan2(dy, dx)*RAD2DEG;
         if (angle < 0) angle += 360;
 
         double currentAngle = 0.0;
@@ -114,8 +104,8 @@ void main()
           final textSize = MeasureTextEx(GetFontDefault(), labelText, 20, 1);
           final labelRadius = radius*0.7;
           final Vector2 labelPos = .vec2(
-            center.x + math.cos(midAngle*rl.DEG2RAD)*labelRadius - textSize.x/2.0,
-            center.y + math.sin(midAngle*rl.DEG2RAD)*labelRadius - textSize.y/2.0
+            center.x + math.cos(midAngle*DEG2RAD)*labelRadius - textSize.x/2.0,
+            center.y + math.sin(midAngle*DEG2RAD)*labelRadius - textSize.y/2.0
           );
           DrawText(
             labelText,
@@ -131,32 +121,48 @@ void main()
       DrawRectangleRec(panelRect, Fade(.LIGHTGRAY, 0.5));
       DrawRectangleLinesEx(panelRect, 1.0, .GRAY);
 
-      (_, sliceCount) = GuiSpinner(
-        .rect(panelPos.x + 95, panelPos.y + 12, 125, 25),
-        "Slices ", sliceCount, 1, MAX_PIE_SLICES, false
-      );
+      {
+        final (_, newValue) = GuiSpinner(
+          .rect(panelPos.x + 95, panelPos.y + 12, 125, 25),
+          "Slices ", sliceCount, 1, MAX_PIE_SLICES, false
+        );
+        sliceCount = newValue;
+      }
 
-      (_, showValues) = GuiCheckBox(
-        .rect(panelPos.x + 20, panelPos.y + 12 + 40, 20, 20),
-        "Show Values", showValues
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(panelPos.x + 20, panelPos.y + 12 + 40, 20, 20),
+          "Show Values", showValues
+        );
+        showValues = newValue;
+      }
 
-      (_, showPercentages) = GuiCheckBox(
-        .rect(panelPos.x + 20, panelPos.y + 12 + 70, 20, 20),
-        "Show Percentages", showPercentages
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(panelPos.x + 20, panelPos.y + 12 + 70, 20, 20),
+          "Show Percentages", showPercentages
+        );
+        showPercentages = newValue;
+      }
 
-      (_, showDonut) = GuiCheckBox(
-        .rect(panelPos.x + 20, panelPos.y + 12 + 100, 20, 20),
-        "Make Donut", showDonut
-      );
+      {
+        final (_, newValue) = GuiCheckBox(
+          .rect(panelPos.x + 20, panelPos.y + 12 + 100, 20, 20),
+          "Make Donut", showDonut
+        );
+        showDonut = newValue;
+      }
 
       if (!showDonut) GuiDisable();
       
-      (_, donutInnerRadius) = GuiSliderBar(
-        .rect(panelPos.x + 80, panelPos.y + 12 + 130, panelRect.width - 100, 30),
-        "Inner Radius", null, donutInnerRadius, 5.0, radius - 10.0
-      );
+      {
+        final (_, newValue) = GuiSliderBar(
+          .rect(panelPos.x + 80, panelPos.y + 12 + 130, panelRect.width - 100, 30),
+          "Inner Radius", null, donutInnerRadius, 5.0, radius - 10.0
+        );
+        donutInnerRadius = newValue;
+      }
+      
       GuiEnable();
 
       GuiLine(
@@ -217,7 +223,8 @@ void main()
       EndScissorMode();
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

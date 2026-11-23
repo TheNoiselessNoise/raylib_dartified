@@ -1,30 +1,31 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_window_letterbox.c
-// Run it: dart run core_window_letterbox.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+int gameScreenWidth = 640;
+int gameScreenHeight = 480;
 
-  SetConfigFlags([.FLAG_WINDOW_RESIZABLE, .FLAG_VSYNC_HINT]);
-  InitWindow(screenWidth, screenHeight, "core_window_letterbox");
-  SetWindowMinSize(320, 240);
-  SetTargetFPS(60);
+late RenderTexture target;
+late List<Color> colors;
 
-  int gameScreenWidth = 640;
-  int gameScreenHeight = 480;
+void main() => runExample(
+  init: (_) {
+    SetConfigFlags([.FLAG_WINDOW_RESIZABLE, .FLAG_VSYNC_HINT]);
+    InitWindow(screenWidth, screenHeight, "core_window_letterbox");
+    SetWindowMinSize(320, 240);
+    SetTargetFPS(60);
 
-  final target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
-  SetTextureFilter(target.texture, .TEXTURE_FILTER_BILINEAR);
+    target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+    SetTextureFilter(target.texture, .TEXTURE_FILTER_BILINEAR);
 
-  final List<Color> colors = .generate(10, (_) => .zero());
-  for (int i = 0; i < 10; i++) colors[i] = .color(GetRandomValue(100, 250), GetRandomValue(50, 150), GetRandomValue(10, 100), 255);
-
-  while (!WindowShouldClose()) {
+    colors = .generate(10, (_) => .zero());
+    for (int i = 0; i < 10; i++) colors[i] = .color(GetRandomValue(100, 250), GetRandomValue(50, 150), GetRandomValue(10, 100), 255);
+  },
+  loop: (_) async {
     final scale = math.min(GetScreenWidth()/gameScreenWidth, GetScreenHeight()/gameScreenHeight);
 
     if (IsKeyPressed(.KEY_SPACE))
@@ -63,9 +64,9 @@ void main() {
         .zero(), 0.0, WHITE
       );
     EndDrawing();
-  }
-
-  UnloadRenderTexture(target);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(target);
+    CloseWindow();
+  },
+);

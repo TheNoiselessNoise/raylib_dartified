@@ -1,30 +1,29 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_triangle_strip.c
-// Run it: dart run shapes_triangle_strip.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late List<Vector2> points;
+late Vector2 center;
+double segments = 6.0;
+double insideRadius = 100.0;
+double outsideRadius = 150.0;
+bool outline = true;
 
-  InitWindow(screenWidth, screenHeight, "shapes_triangle_strip");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_triangle_strip");
+    SetTargetFPS(60);
 
-  final List<Vector2> points = .generate(122, (_) => .zero());
-  final Vector2 center = .vec2((screenWidth/2.0) - 125.0, screenHeight/2.0);
-  double segments = 6.0;
-  double insideRadius = 100.0;
-  double outsideRadius = 150.0;
-  bool outline = true;
-
-  while (!WindowShouldClose())
-  {
+    points = .generate(122, (_) => .zero());
+    center = .vec2((screenWidth/2.0) - 125.0, screenHeight/2.0);
+  },
+  loop: (_) async {
     final pointCount = segments.toInt();
-    final angleStep = (360.0/pointCount)*rl.DEG2RAD;
+    final angleStep = (360.0/pointCount)*DEG2RAD;
 
     for (int i = 0, i2 = 0; i < pointCount; i++, i2 += 2)
     {
@@ -49,8 +48,8 @@ void main()
         final d = points[i * 2 + 3];
 
         final angle1 = i * angleStep;
-        DrawTriangle(c, b, a, ColorFromHSV(angle1 * rl.RAD2DEG, 1.0, 1.0));
-        DrawTriangle(d, b, c, ColorFromHSV((angle1 + angleStep / 2) * rl.RAD2DEG, 1.0, 1.0));
+        DrawTriangle(c, b, a, ColorFromHSV(angle1 * RAD2DEG, 1.0, 1.0));
+        DrawTriangle(d, b, c, ColorFromHSV((angle1 + angleStep / 2) * RAD2DEG, 1.0, 1.0));
 
         if (outline)
         {
@@ -62,13 +61,20 @@ void main()
       DrawLine(580, 0, 580, GetScreenHeight(), .color(218, 218, 218, 255));
       DrawRectangle(580, 0, GetScreenWidth(), GetScreenHeight(), .color(232, 232, 232, 255));
 
-      (_, segments) = GuiSliderBar(.rect(640, 40, 120, 20), "Segments", segments.f0, segments, 6.0, 60.0);
-      (_, outline) = GuiCheckBox(.rect(640, 70, 20, 20), "Outline", outline);
+      {
+        final (_, newValue) = GuiSliderBar(.rect(640, 40, 120, 20), "Segments", segments.f0, segments, 6.0, 60.0);
+        segments = newValue;
+      }
+      {
+        final (_, newValue) = GuiCheckBox(.rect(640, 70, 20, 20), "Outline", outline);
+        outline = newValue;
+      }
 
       DrawFPS(10, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

@@ -1,33 +1,34 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_dashed_line.c
-// Run it: dart run shapes_dashed_line.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+// Line Properties
+late Vector2 lineStartPosition;
+late Vector2 lineEndPosition;
+double dashLength = 25.0;
+double blankLength = 15.0;
 
-  InitWindow(screenWidth, screenHeight, "shapes_dashed_line");
-  SetTargetFPS(60);
-  
-  // Line Properties
-  Vector2 lineStartPosition = .vec2(20.0, 50.0);
-  Vector2 lineEndPosition = .vec2(780.0, 400.0);
-  double dashLength = 25.0;
-  double blankLength = 15.0;
+// Color selection
+late List<Color> lineColors;
+int colorIndex = 0;
 
-  // Color selection
-  List<Color> lineColors = [
-    .RED, .ORANGE, .GOLD, .GREEN,
-    .BLUE, .VIOLET, .PINK, .BLACK
-  ];
-  int colorIndex = 0;
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_dashed_line");
+    SetTargetFPS(60);
+    
+    lineStartPosition = .vec2(20.0, 50.0);
+    lineEndPosition = .vec2(780.0, 400.0);
 
-  while (!WindowShouldClose())
-  {
+    lineColors = [
+      .RED, .ORANGE, .GOLD, .GREEN,
+      .BLUE, .VIOLET, .PINK, .BLACK
+    ];
+  },
+  loop: (_) async {
     lineEndPosition = GetMousePosition();
 
     if (IsKeyDown(.KEY_UP)) dashLength += 1.0;
@@ -57,7 +58,8 @@ void main()
       DrawFPS(screenWidth - 80, 10);
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

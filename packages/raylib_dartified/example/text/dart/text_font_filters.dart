@@ -1,33 +1,33 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_font_filters.c
-// Run it: dart run text_font_filters.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final msg = "Loaded Font";
+late Font font;
+late Texture fontTexture;
+late double fontSize;
+late Vector2 fontPosition;
+TextureFilter currentFontFilter = .TEXTURE_FILTER_POINT;
 
-  InitWindow(screenWidth, screenHeight, "text_font_filters");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "text_font_filters");
+    SetTargetFPS(60);
 
-  final msg = "Loaded Font";
+    font = LoadFontEx("../resources/KAISG.ttf", 96);
+    fontTexture = font.texture;
+    GenTextureMipmaps(fontTexture);
 
-  var font = LoadFontEx("../resources/KAISG.ttf", 96);
-  var fontTexture = font.texture;
-  GenTextureMipmaps(fontTexture);
+    fontSize = font.baseSize.toDouble();
+    fontPosition = .vec2(40, screenHeight / 2 - 80);
 
-  double fontSize = font.baseSize.toDouble();
-  final Vector2 fontPosition = .vec2(40, screenHeight / 2 - 80);
-
-  TextureFilter currentFontFilter = .TEXTURE_FILTER_POINT;
-  SetTextureFilter(fontTexture, currentFontFilter);
-
-  while (!WindowShouldClose())
-  {
+    SetTextureFilter(fontTexture, currentFontFilter);
+  },
+  loop: (_) async {
     fontSize += GetMouseWheelMove()*4;
 
     if (IsKeyPressed(.KEY_ONE)) {
@@ -108,9 +108,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadFont(font);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadFont(font);
+    CloseWindow();
+  },
+);

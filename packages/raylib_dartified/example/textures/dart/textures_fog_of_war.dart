@@ -1,7 +1,6 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/textures/textures_fog_of_war.c
-// Run it: dart run textures_fog_of_war.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int MAP_TILE_SIZE = 32;
 const int PLAYER_SIZE = 16;
@@ -23,28 +22,29 @@ final class ExampleMap {
   });
 }
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late ExampleMap map;
+late Vector2 playerPosition;
+int playerTileX = 0;
+int playerTileY = 0;
+late RenderTexture fogOfWar;
 
-  InitWindow(screenWidth, screenHeight, "textures_fog_of_war");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "textures_fog_of_war");
+    SetTargetFPS(60);
 
-  final map = ExampleMap();
-  map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
-  map.tilesY = screenHeight ~/ MAP_TILE_SIZE;
-  map.tileIds = .filled(map.tilesX*map.tilesY, 0);
-  map.tileFog = .filled(map.tilesX*map.tilesY, 0);
+    map = ExampleMap();
+    map.tilesX = screenWidth ~/ MAP_TILE_SIZE;
+    map.tilesY = screenHeight ~/ MAP_TILE_SIZE;
+    map.tileIds = .filled(map.tilesX*map.tilesY, 0);
+    map.tileFog = .filled(map.tilesX*map.tilesY, 0);
 
-  final Vector2 playerPosition = .zero();
-  int playerTileX = 0;
-  int playerTileY = 0;
-
-  final fogOfWar = LoadRenderTexture(map.tilesX, map.tilesY);
-  SetTextureFilter(fogOfWar.texture, .TEXTURE_FILTER_BILINEAR);
-
-  while (!WindowShouldClose())
-  {
+    playerPosition = .zero();
+    
+    fogOfWar = LoadRenderTexture(map.tilesX, map.tilesY);
+    SetTextureFilter(fogOfWar.texture, .TEXTURE_FILTER_BILINEAR);
+  },
+  loop: (_) async {
     if (IsKeyDown(.KEY_RIGHT)) playerPosition.x += 5;
     if (IsKeyDown(.KEY_LEFT)) playerPosition.x -= 5;
     if (IsKeyDown(.KEY_DOWN)) playerPosition.y += 5;
@@ -137,9 +137,9 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadRenderTexture(fogOfWar);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTexture(fogOfWar);
+    CloseWindow();
+  },
+);

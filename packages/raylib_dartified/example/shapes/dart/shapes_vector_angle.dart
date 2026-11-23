@@ -1,30 +1,29 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shapes/shapes_vector_angle.c
-// Run it: dart run shapes_vector_angle.dart
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Vector2 v0;
+late Vector2 v1;
+late Vector2 v2;
+double angle = 0.0;
+bool angleMode = false;
 
-  InitWindow(screenWidth, screenHeight, "shapes_vector_angle");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shapes_vector_angle");
+    SetTargetFPS(60);
 
-  Vector2 v0 = .vec2(screenWidth/2.0, screenHeight/2.0);
-  Vector2 v1 = v0.add(.vec2(100.0, 80.0));
-  Vector2 v2 = .zero();
-
-  double angle = 0.0;
-  bool angleMode = false;
-
-  while (!WindowShouldClose())
-  {
+    v0 = .vec2(screenWidth/2.0, screenHeight/2.0);
+    v1 = v0.add(.vec2(100.0, 80.0));
+    v2 = .zero();
+  },
+  loop: (_) async {
     double startangle = 0.0;
 
-    if (!angleMode) startangle = -v0.lineAngle(v1)*rl.RAD2DEG;
+    if (!angleMode) startangle = -v0.lineAngle(v1)*RAD2DEG;
     if (angleMode) startangle = 0.0;
 
     v2 = GetMousePosition();
@@ -39,11 +38,11 @@ void main()
       Vector2 v1Normal = v1.sub(v0).normalize();
       Vector2 v2Normal = v2.sub(v0).normalize();
 
-      angle = v1Normal.angle(v2Normal)*rl.RAD2DEG;
+      angle = v1Normal.angle(v2Normal)*RAD2DEG;
     }
     else if (angleMode)
     {
-      angle = v0.lineAngle(v2)*rl.RAD2DEG;
+      angle = v0.lineAngle(v2)*RAD2DEG;
     }
 
     BeginDrawing();
@@ -113,7 +112,8 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

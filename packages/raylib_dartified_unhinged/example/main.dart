@@ -3,8 +3,7 @@
 //     particles, and a button that switches to the next scene.
 //   - [SecondScene] which switches back to the first scene after 5 seconds.
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 /// Shorthand alias for [MyApp].
 typedef G = MyApp;
@@ -41,8 +40,8 @@ final class ParticleEntity extends Entity<G> {
     add(CTransform(app));
     add(CCircleCollider(app, radius: 8, debugColor: .PINK, debugDraw: true));
     add(CVelocity(app, velocity: .vec2(
-      rl.rand() * -100 + 50,
-      rl.rand() * 100 + 50
+      rand() * -100 + 50,
+      rand() * 100 + 50
     )));
     add(COutOfBounds(app));
   }
@@ -168,7 +167,7 @@ final class MyAppRaylib extends UnhingedRaylibApp<G> {
   G create(backend) => G(backend);
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   MyAppRaylib(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib',
 );

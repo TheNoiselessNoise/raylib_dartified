@@ -1,7 +1,6 @@
 // dart run arkanoid_test.dart
 import 'package:raylib_dartified_unhinged/raylib_dartified_unhinged.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/backend.dart';
-import 'package:raylib_dartified_unhinged/backends/raylib/abbr.dart';
+import 'package:raylib_dartified_unhinged/backends/raylib.dart';
 
 /* =========================
   EVENTS
@@ -254,7 +253,7 @@ final class ArkanoidInline extends UnhingedRaylibApp<G> {
   });
 }
 
-void main() => runRaylib(
+void main() => runRaylibApp(
   ArkanoidInline(),
   nativeLibPath: 'raylib-6.0_linux_amd64/lib'
 );

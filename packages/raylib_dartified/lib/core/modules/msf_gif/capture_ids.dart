@@ -1,0 +1,10 @@
+part of '../../raylib_dartified.dart';
+
+/// Produces stable slot key strings identifying the allocation origin of each
+/// MsfGif module function's captured Struct.
+final class _RaylibMsfGifDartCaptureIds {
+
+  /// Capture ID for [RaylibMsfGifDart.msf_gif_end].
+  String get msf_gif_end => 'msf_gif_end';
+
+}

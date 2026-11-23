@@ -1,23 +1,22 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/core/core_2d_camera_mouse_zoom.c
-// Run it: dart run core_2d_camera_mouse_zoom.dart
 import 'dart:math' as math;
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera2D camera;
+int zoomMode = 0;
 
-  InitWindow(screenWidth, screenHeight, "core_2d_camera_mouse_zoom");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "core_2d_camera_mouse_zoom");
+    SetTargetFPS(60);
 
-  final camera = Camera2D(zoom: 1);
-
-  int zoomMode = 0;
-
-  while (!WindowShouldClose()) {
+    camera = .new(zoom: 1);
+  },
+  loop: (_) async {
     if (IsKeyPressed(.KEY_ONE)) {
       zoomMode = 0;
     } else if (IsKeyPressed(.KEY_TWO)) {
@@ -98,7 +97,8 @@ void main() {
       }
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

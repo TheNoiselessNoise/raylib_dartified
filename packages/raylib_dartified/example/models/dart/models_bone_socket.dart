@@ -1,8 +1,7 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/models/models_bone_socket.c
-// Run it: dart run models_bone_socket.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -11,64 +10,64 @@ const int BONE_SOCKET_HAT = 0;
 const int BONE_SOCKET_HAND_R = 1;
 const int BONE_SOCKET_HAND_L = 2;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late Model characterModel;
+late List<Model> equipModel;
+final showEquip = List.filled(BONE_SOCKETS, true);
+int animIndex = 0;
+int animCurrentFrame = 0;
+late List<ModelAnimation> modelAnimations;
+final boneSocketIndex = List.filled(BONE_SOCKETS, -1);
+late Vector3 position;
+int angle = 0;
 
-  rl.debugEverything(true);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "models_bone_socket");
+    SetTargetFPS(60);
+    DisableCursor();
 
-  InitWindow(screenWidth, screenHeight, "models_bone_socket");
-  SetTargetFPS(60);
-  DisableCursor();
+    camera = .new(
+      position: .vec3(5.0, 5.0, 5.0),
+      target: .vec3(0, 2, 0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final camera = Camera3D(
-    position: .vec3(5.0, 5.0, 5.0),
-    target: .vec3(0, 2, 0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    characterModel = LoadModel("../resources/models/gltf/greenman.glb");
+    equipModel = <Model>[
+      LoadModel("../resources/models/gltf/greenman_hat.glb"),
+      LoadModel("../resources/models/gltf/greenman_sword.glb"),
+      LoadModel("../resources/models/gltf/greenman_shield.glb"),
+    ];
 
-  final characterModel = LoadModel("../resources/models/gltf/greenman.glb");
-  final equipModel = <Model>[
-    LoadModel("../resources/models/gltf/greenman_hat.glb"),
-    LoadModel("../resources/models/gltf/greenman_sword.glb"),
-    LoadModel("../resources/models/gltf/greenman_shield.glb"),
-  ];
-  final showEquip = List.filled(BONE_SOCKETS, true);
+    modelAnimations = LoadModelAnimations("../resources/models/gltf/greenman.glb");
 
-  int animIndex = 0;
-  int animCurrentFrame = 0;
-  final modelAnimations = LoadModelAnimations("../resources/models/gltf/greenman.glb");
-
-  final boneSocketIndex = List.filled(BONE_SOCKETS, -1);
-
-  for (int i = 0; i < characterModel.skeleton.boneCount; i++)
-  {
-    if (characterModel.skeleton.bones[i].name == "socket_hat")
+    for (int i = 0; i < characterModel.skeleton.boneCount; i++)
     {
-      boneSocketIndex[BONE_SOCKET_HAT] = i;
-      continue;
+      if (characterModel.skeleton.bones[i].name == "socket_hat")
+      {
+        boneSocketIndex[BONE_SOCKET_HAT] = i;
+        continue;
+      }
+      
+      if (characterModel.skeleton.bones[i].name == "socket_hand_R")
+      {
+        boneSocketIndex[BONE_SOCKET_HAND_R] = i;
+        continue;
+      }
+      
+      if (characterModel.skeleton.bones[i].name == "socket_hand_L")
+      {
+        boneSocketIndex[BONE_SOCKET_HAND_L] = i;
+        continue;
+      }
     }
-    
-    if (characterModel.skeleton.bones[i].name == "socket_hand_R")
-    {
-      boneSocketIndex[BONE_SOCKET_HAND_R] = i;
-      continue;
-    }
-    
-    if (characterModel.skeleton.bones[i].name == "socket_hand_L")
-    {
-      boneSocketIndex[BONE_SOCKET_HAND_L] = i;
-      continue;
-    }
-  }
 
-  final Vector3 position = .zero();
-  int angle = 0;
-
-  while (!WindowShouldClose())
-  {
+    position = .zero();
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_THIRD_PERSON);
     
     if (IsKeyDown(.KEY_F)) angle = (angle + 1)%360;
@@ -90,7 +89,7 @@ void main()
       ClearBackground(.RAYWHITE);
 
       BeginMode3D(camera);
-        final Quaternion characterRotate = .fromAxisAngle(.vec3(0.0, 1.0, 0.0), angle*rl.DEG2RAD);
+        final Quaternion characterRotate = .fromAxisAngle(.vec3(0.0, 1.0, 0.0), angle*DEG2RAD);
         
         characterModel.transform = .fromQuaternion(characterRotate)
           .mul(.translateVector3(position));
@@ -135,11 +134,11 @@ void main()
       );
 
     EndDrawing();
-  }
-
-  UnloadModelAnimations(modelAnimations);
-  UnloadModel(characterModel);
-  equipModel.forEach(UnloadModel);
-  
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadModelAnimations(modelAnimations);
+    UnloadModel(characterModel);
+    equipModel.forEach(UnloadModel);
+    CloseWindow();
+  },
+);

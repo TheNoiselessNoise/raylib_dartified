@@ -1,16 +1,16 @@
 // Draws a semi-transparent circle that follows the cursor, with live coordinates
 // displayed at the center of the screen. Demonstrates window setup, the render
 // loop, mouse input, text measurement, and basic drawing via the D-layer API.
-import 'package:raylib_dartified/abbr/dart.dart';
+import 'package:raylib_dartified/api/dart.dart';
 
-void main() {
-  findRaylib('raylib-6.0_linux_amd64/lib');
+final width = 800, height = 450;
 
-  final width = 800, height = 450;
-
-  InitWindow(width, height, 'pub.dev example');
-
-  while(!WindowShouldClose()) {
+void main() => runRaylib(
+  nativeLibPath: 'raylib-6.0_linux_amd64/lib',
+  init: (_) {
+    InitWindow(width, height, 'pub.dev example');
+  },
+  loop: (_) async {
     BeginDrawing();
 
       ClearBackground(.BLACK);
@@ -21,7 +21,8 @@ void main() {
       DrawCircleV(mouse, 32, Fade(.RED, .5));
 
     EndDrawing();
-  }
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    CloseWindow();
+  },
+);

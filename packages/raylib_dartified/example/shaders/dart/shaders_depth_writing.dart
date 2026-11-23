@@ -1,37 +1,36 @@
 // Example dartified, see original for reference:
 // https://github.com/raysan5/raylib/blob/master/examples/shaders/shaders_depth_writing.c
-// Run it: dart run shaders_depth_writing.dart
 // WARNING: expects resources from the raylib source
-import '../../base_dart.dart';
+import '../../_example/dart.dart';
 
-const int GLSL_VERSION = 330;
 const int screenWidth = 800;
 const int screenHeight = 450;
 
-void main()
-{
-  findRaylib('raylib-6.0_linux_amd64/lib');
+late Camera3D camera;
+late RenderTexture target;
+late Shader shader;
 
-  InitWindow(screenWidth, screenHeight, "shaders_depth_writing");
-  SetTargetFPS(60);
+void main() => runExample(
+  init: (_) {
+    InitWindow(screenWidth, screenHeight, "shaders_depth_writing");
+    SetTargetFPS(60);
 
-  final camera = Camera3D(
-    position: .vec3(2.0, 2.0, 3.0),
-    target: .vec3(0.0, 0.5, 0.0),
-    up: .vec3(0, 1, 0),
-    fovy: 45,
-    projection: .CAMERA_PERSPECTIVE,
-  );
+    camera = Camera3D(
+      position: .vec3(2.0, 2.0, 3.0),
+      target: .vec3(0.0, 0.5, 0.0),
+      up: .vec3(0, 1, 0),
+      fovy: 45,
+      projection: .CAMERA_PERSPECTIVE,
+    );
 
-  final target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
+    target = LoadRenderTextureDepthTex(screenWidth, screenHeight);
 
-  final shader = LoadShader(
-    null,
-    "../resources/shaders/glsl$GLSL_VERSION/depth_write.fs"
-  );
-
-  while (!WindowShouldClose())
-  {
+    shader = LoadShader(
+      null,
+      "../resources/shaders/glsl${Raylib.glslVersion}/depth_write.fs"
+    );
+  },
+  loop: (_) async {
     UpdateCamera(camera, .CAMERA_ORBITAL);
 
     BeginTextureMode(target);
@@ -55,13 +54,13 @@ void main()
 
       DrawFPS(10, 10);
     EndDrawing();
-  }
-
-  UnloadRenderTextureDepthTex(target);
-  UnloadShader(shader);
-
-  CloseWindowAndDispose();
-}
+  },
+  close: (_) {
+    UnloadRenderTextureDepthTex(target);
+    UnloadShader(shader);
+    CloseWindow();
+  },
+);
 
 RenderTexture LoadRenderTextureDepthTex(int width, int height)
 {
@@ -123,7 +122,6 @@ void UnloadRenderTextureDepthTex(RenderTexture target)
   {
     rlUnloadTexture(target.texture.id);
     rlUnloadTexture(target.depth.id);
-
     rlUnloadFramebuffer(target.id);
   }
 }
